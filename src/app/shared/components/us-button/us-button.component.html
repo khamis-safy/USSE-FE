@@ -1,0 +1,31 @@
+  <button
+  [disabled]="disabled"
+  UsButton
+  [isDark]="!fill"
+  [isLoading]="loading"
+  [class]=" fill?' text-tra btn rounded-3 ':'no-fill btn rounded-3 '"
+  (click)="setClick($event)"
+  [ngClass]="{
+    'button-size-sm txt-xs': size == 'sm',
+    'button-size-md txt-sm': size == 'md',
+    'button-size-lg txt-md': size == 'lg',
+    'bg-primary-700': appearance == 'primary',
+    'bg-danger-700': appearance == 'danger'
+  }
+  "
+>
+
+<div class="content d-flex flex-wrap align-items-center justify-content-center">
+  <mat-icon *ngIf="matIcon" class="{{iconClass}} icon mx-1">{{matIcon}}</mat-icon>
+  <img *ngIf="img" class="mx-2" width="13" src="{{img}}" >
+  <span class="label mx-1">{{ label }}</span>
+</div>
+
+  <!-- <span *ngIf="icon">
+    <i class="fa-solid fa-file-export"></i>
+  </span>
+
+  <span *ngIf="loading">
+    <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+  </span> -->
+</button>

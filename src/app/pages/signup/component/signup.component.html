@@ -1,0 +1,76 @@
+<section class="d-flex justify-content-center align-items-center vh-100 row p-2">
+  <div class="bs-sm bg-1 d-flex flex-column gap-4 p-3 rounded-5  shadow-sm bg-0 col-12 col-md-8 col-lg-6 col-xl-5">
+    <h2 class="text-center">{{"signup" | translate}}</h2>
+    <form   [formGroup]="es_form" action="">
+      <div class="row">
+        <!-- start-input -->
+        <div class="col-12 my-2 col-12 ">
+          <div class="form-floating mb-1">
+            <input [ngClass]="{'border-danger': contactName.invalid && contactName.touched,'c-2 fs-5': contactName.valid && contactName.touched}" formControlName="contactName" type="text" class="form-control" placeholder="-">
+            <label class="rounded-3" >{{"contactName" | translate}}</label>
+          </div>
+          <span  *ngIf="contactName.invalid && contactName.touched" class="animate__animated anime-duration-800 animate__fadeInUp text-danger d-flex gap-1 rounded-2 bg-danger bg-opacity-10 p-2">
+            <mat-icon class="text-danger" style="height: 20px;width: 20px; font-size: 20px;">error</mat-icon>
+            <span class="text-danger text-wrap d-flex flex-column">
+              <span class="text-danger" *ngIf="organisationName.dirty && organisationName.errors.pattern">{{"patternMaxtext" | translate}}</span>
+              <span class="text-danger" *ngIf="contactName.errors.required">{{"req-filed" | translate}}</span>
+            </span>
+          </span>
+        </div>
+        <!-- end-input -->
+        <!-- start-input -->
+        <div class="col-12 my-2 col-12 ">
+          <div class="form-floating mb-1">
+            <input
+              formControlName="organisationName" type="text"
+              [ngClass]="{'border-danger': organisationName.invalid && organisationName.touched,'c-2 fs-5': organisationName.valid && organisationName.touched}" class="form-control" placeholder="-">
+            <label class="rounded-3" >{{"organisationName" | translate}}</label>
+          </div>
+          <span  *ngIf="organisationName.invalid && organisationName.touched" class="animate__animated anime-duration-800 animate__fadeInUp text-danger d-flex gap-1 rounded-2 bg-danger bg-opacity-10 p-2">
+            <mat-icon class="text-danger" style="height: 20px;width: 20px; font-size: 20px;">error</mat-icon>
+            <span class="text-danger text-wrap d-flex flex-column">
+              <span class="text-danger" *ngIf="organisationName.dirty && organisationName.errors.pattern">{{"patternMaxtext" | translate}}</span>
+              <span class="text-danger" *ngIf="organisationName.errors.required">{{"req-filed" | translate}}</span>
+            </span>
+          </span>
+        </div>
+        <!-- end-input -->
+        <!-- start-input -->
+        <div class="col-12 my-2 col-12 ">
+          <div class="form-floating mb-1">
+            <input [ngClass]="{'border-danger': email.invalid && email.touched,'c-2 fs-5': email.valid && email.touched}" formControlName="email" type="text" class="form-control" placeholder="-">
+            <label class="rounded-3" >{{"email" | translate}}</label>
+          </div>
+          <span  *ngIf="email.invalid && email.touched" class="animate__animated anime-duration-800 animate__fadeInUp text-danger d-flex gap-1 rounded-2 bg-danger bg-opacity-10 p-2">
+            <mat-icon class="text-danger" style="height: 20px;width: 20px; font-size: 20px;">error</mat-icon>
+            <span class="text-danger text-wrap d-flex flex-column">
+              <span class="text-danger" *ngIf="email.dirty && email.errors.pattern">{{"patternEmail" | translate}}</span>
+              <span class="text-danger" *ngIf="email.errors.required">{{"req-filed" | translate}}</span>
+            </span>
+          </span>
+        </div>
+        <!-- end-input -->
+        <!-- start-input -->
+        <div class="col-12 my-2 col-12 ">
+          <div class="form-floating mb-1 position-relative">
+            <mat-icon (click)="isVisiblePass = true" *ngIf="!isVisiblePass" style="cursor: pointer;" class="c-5 position-absolute end-0 top-50 translate-middle-y mx-3">visibility_off</mat-icon>
+            <mat-icon (click)="isVisiblePass = false" *ngIf="isVisiblePass" style="cursor: pointer;" class="c-5 position-absolute end-0 top-50 translate-middle-y mx-3">visibility</mat-icon>
+            <input [ngClass]="{'border-danger': password.invalid && password.touched,'c-2 fs-5': password.valid && password.touched}" formControlName="password" [type]="isVisiblePass ? 'text':'password'" class="pe-5 form-control" placeholder="-">
+            <label class="rounded-3" >{{"password" | translate}}</label>
+          </div>
+          <span  *ngIf="password.invalid && password.touched" class="animate__animated anime-duration-800 animate__fadeInUp text-danger d-flex gap-1 rounded-2 bg-danger bg-opacity-10 p-2">
+            <mat-icon class="text-danger" style="height: 20px;width: 20px; font-size: 20px;">error</mat-icon>
+            <span class="text-danger text-wrap d-flex flex-column">
+              <span class="text-danger" *ngIf="password.dirty && password.errors.pattern">{{"patternMaxtext" | translate}}</span>
+              <span class="text-danger" *ngIf="password.errors.required">{{"req-filed" | translate}}</span>
+            </span>
+          </span>
+        </div>
+        <!-- end-input -->
+        <div class="col-12 my-2 col-12 mt-4">
+          <button UsButton [isLoading]="isLoading" (click)="submit()" class="bg-2 c-1 rounded-pill fs-5 w-100" >{{"signup" |translate}}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

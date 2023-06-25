@@ -1,0 +1,75 @@
+<section class="d-flex flex-column p-4 gap-3 h-100">
+  <!-- modal header -->
+  <div class="d-flex justify-content-center align-items-center position-relative mb-4 " style="height: 10%;">
+    <div *ngIf="!isEdit" class="txt-lg">Add List</div>
+    <div *ngIf="isEdit" class="txt-lg">Edit List</div>
+    <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
+      <img
+        src="assets/icons/close-circle.svg"
+        (click)="onClose()"
+        alt="close-icon"
+        style="cursor: pointer;"
+      />
+    </div>
+  </div>
+  <!-- modal body  -->
+  <div class="modal-body overflow-auto px-1"  style="height: 80%;">
+    <form [formGroup]="form" class="w-100 m-auto">
+      <div class="form-group">
+        <label for="name" class="mb-2 ">Name</label>
+        <input
+          type="text"
+          class="form-control p-2"
+          id="name"
+          placeholder="Enter Your Name"
+          formControlName="name"
+        />
+      </div>
+      <span  *ngIf="name.invalid && name.touched" class="animate__animated anime-duration-800 animate__fadeInUp text-danger d-flex gap-1 rounded-2  bg-opacity-10 p-2">
+        <mat-icon class="text-danger" style="height: 20px;width: 20px; font-size: 20px;">error</mat-icon>
+        <span class="text-danger text-wrap d-flex flex-column">
+          <span class="text-danger" *ngIf="name.errors.required">This filed is required</span>
+        </span>
+      </span>
+     <div class="row m-0 d-flex justify-content-center align-items-center my-4 ">
+      <div class="col-lg-8 col-9 p-0" >
+        <img
+        class="w-100"
+          src="assets/images/add-file.svg"
+          alt=""
+          style="object-fit: contain;opacity: .9;"
+
+        />
+      </div>
+     </div>
+
+    </form>
+  </div>
+  <!-- modal footer -->
+  <div class="modal-footer justify-content-center gap-3"  style="height: 10%;">
+    <us-button  *ngIf="!isEdit"
+      label="Add"
+      size="sm"
+      [loading]="isLoading"
+      [fill]="true"
+      (clicked)="submitAdd()"
+      [disabled]="form.invalid || isLoading"
+    ></us-button>
+    <us-button
+    *ngIf="isEdit"
+    label="Update"
+    size="sm"
+    [loading]="isLoading"
+    [fill]="true"
+    (clicked)="submitEdit()"
+    [disabled]="form.invalid || isLoading"
+  ></us-button>
+    <us-button
+      label="Cancel"
+      size="sm"
+      [fill]="false"
+      (clicked)="onClose()"
+      [loading]="false"
+    ></us-button>
+  </div>
+</section>

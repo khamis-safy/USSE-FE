@@ -1,0 +1,31 @@
+<nav class="d-flex justify-content-between px-5 align-items-center p-2 zi-5 bg-primary-800 text-neutral-0">
+  <h2 class="mb-0">USSE</h2>
+
+  <div class="menu">
+    <button mat-button [matMenuTriggerFor]="menu" class="text-neutral-0">
+      <div class="d-flex align-items-center gap-3">
+        <div class="icon">
+          <img src="assets/icons/lang.svg" alt="" />
+        </div>
+        {{language}}
+        <div class="icon">
+          <img src="assets/icons/polygon.svg" alt="" />
+        </div>
+      </div>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="language='English'">English</button>
+      <button mat-menu-item (click)="language='Arabic'">Arabic</button>
+    </mat-menu>
+  </div>
+
+  <!-- <ul class="list-unstyled d-flex align-items-center mb-0">
+    <div class="icon">
+      <img src="assets/icons/lang.svg" alt="" />
+    </div>
+    <li class="mx-3">English</li>
+    <div class="icon">
+      <img src="assets/icons/polygon.svg" alt="" />
+    </div>
+  </ul> -->
+</nav>

@@ -1,0 +1,83 @@
+:host .us-toaster {
+  color: #292A32;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  width: 395px;
+  height: 80px;
+  position: fixed !important;
+  top: 6%;
+  right: -191px;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  z-index: 5555;
+  box-shadow:-1px 3px 4px 2px rgba(0, 0, 0, 0.107);
+  // box-shadow: 0px 1px 4px 2px rgba(0, 0, 0, 0.107);
+  &.error{
+    background: #FFEAEC;
+    // border: 1px solid var(--clr-danger-700);
+  }
+
+  &.warning {
+    background: #FFF4D9;
+    // border: 1px solid var(--clr-warning-700);
+  }
+
+  &.success {
+    background:#DEFFF3;
+    // border: 1px solid var(--clr-success-700);
+  }
+
+
+}
+.notification-container{
+  position: relative;
+}
+#progress-bar {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+.toaster-progress-bar{
+  width: 0%;
+  height: 4px;
+  animation-name: loading;
+  animation-timing-function: linear;
+  animation:loading 0.3s 0s linear ;
+  -webkit-animation: loading 0.3s 0s linear;
+  -moz-animation: loading 0.3s 0s linear;
+  -o-animation: loading 0.3s 0s linear;
+  animation-delay: 0s;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+@keyframes loading {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+.progress-error {
+  background: var(--clr-danger-700);
+}
+
+.progress-warning {
+  background: #ffc42e;
+}
+
+.progress-success {
+  background:#35d39d;
+}
+.pointer{
+  cursor: pointer;
+}

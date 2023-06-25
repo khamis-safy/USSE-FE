@@ -1,0 +1,11 @@
+        <!-- start errors -->
+        <span class="text-danger d-flex " *ngIf="formControl.invalid && formControl.touched">
+          <svg xmlns="http://www.w3.org/2000/svg"  width="15" height="15" fill="currentColor" style="min-height:15px;min-width:15px" class="m-1 text-danger bi-exclamation-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+          </svg>
+          <span class="text-danger text-wrap">
+            <span class="text-danger" *ngIf="formControl.dirty && formControl.errors.pattern">{{patternText}}</span>
+            <span class="text-danger" *ngIf="formControl.errors.required">This field is required</span>
+          </span>
+        </span>
+        <!-- end errors -->

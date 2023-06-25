@@ -1,0 +1,31 @@
+    <div
+    class="us-toaster d-flex  flex-column p-3 position-relative"
+    [ngClass]="{
+      'error': state == 'error',
+      'warning': state == 'warning',
+      'success': state == 'success'
+    }"
+  >
+    <div  class="d-flex align-items-center h-100">
+      <span class="me-3" *ngIf="state == 'error'">
+        <img src="assets/icons/error.svg" alt="" />
+      </span>
+      <span class="me-3" *ngIf="state == 'warning'">
+            <img src="assets/icons/warning.svg" alt="" />
+      </span>
+      <span class="me-3" *ngIf="state == 'success'">
+        <img src="assets/icons/succsess.svg" alt="" />
+
+      </span>
+      {{ message }}
+    </div>
+    <mat-icon class="position-absolute top-0 end-0 m-3 pointer" (click)="onTagClose($event)">close</mat-icon>
+  <span class="toaster-progress-bar position-absolute bottom-0 start-0"
+      [ngStyle]="{'animation-duration': duration/1000+'s'}"
+      [ngClass]="{
+        'progress-error': state == 'error',
+        'progress-warning': state == 'warning',
+        'progress-success': state == 'success'
+      }"
+  ></span>
+</div>

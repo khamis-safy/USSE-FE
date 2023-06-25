@@ -1,0 +1,19 @@
+<app-nav class="mb-5 w-100" ></app-nav>
+<div class="vh-92 d-flex flex-nowrap w-100 bg-primary-200">
+  <!-- <div class="shadow-bottom-overlay"></div> -->
+  <app-side-bar class="d-none d-md-block bg-1 p-4 h-100 "></app-side-bar>
+  <div class="d-flex justify-content-space-between flex-column w-100  vh-92">
+    <!-- <app-header class="navbar-comp d-flex align-items-center rounded-3" (toggleSidebar)="sidebarTogg()"></app-header> -->
+    <div class="vh-92 overflow-auto" [@routeAnimations]="prepareRoute(outlet)">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
+    <!-- <app-footer></app-footer> -->
+  </div>
+  <!-- <div class="d-md-none offcanvas offcanvas-start sidebar-sm-size" tabindex="-1" id="sidebar-sm" aria-labelledby="offcanvasTopLabel">
+    <div class="offcanvas-body sub-con-color offcanvas-body-overflow p-0">
+      <app-side-bar class="sidebar-comp sidebar-comp-fixed sidebar-comp-lg close"></app-side-bar>
+    </div>
+  </div> -->
+
+</div>
+

@@ -1,0 +1,121 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+.sidnav-container {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 24px;
+  position: relative;
+  gap: 30px;
+  height: 85vh;
+  width: 300px;
+  min-height: 50vh;
+  max-height: 100vh;
+  overflow: hidden;
+  .user-info-container {
+    padding-inline: 15px;
+  }
+  a {
+    gap: 12px;
+    padding: 15px
+  }
+  .all-options-container {
+    height: 100%;
+    overflow-y: auto !important;
+
+    ul {
+      gap: 5px;
+      li {
+        &:hover {
+          a {
+            background: linear-gradient(0deg, #eef4f9, #eef4f9), #ffffff;
+            border-radius: 8px;
+            color: #0a4d68 !important;
+            font-weight: 500 !important;
+          }
+          img{
+            filter : invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
+          }
+        }
+        .active {
+          background: linear-gradient(0deg, #eef4f9, #eef4f9), #ffffff;
+          border-radius: 8px;
+          color: #0a4d68 !important;
+          font-weight: 500 !important;
+          img{
+            filter : invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
+          }
+        }
+      }
+    }
+  }
+  // border: 3px solid;
+
+
+
+
+  .user-img {
+    width: 52px;
+    height: 52px;
+    background: #bfdeea;
+    border-radius: 50%;
+    img{
+      width: 100%;
+      height: 100%;
+    }
+
+  }
+  .user-name {
+    text-transform: capitalize;
+  }
+  .options_icon {
+    cursor: pointer;
+  }
+  .user-options {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 80px;
+    height: 150px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.16);
+    border-radius: 0px 0px 24px 24px;
+    transition: var(--trans-2);
+  }
+  .chars {
+    font-weight: 400;
+  }
+  .icon {
+    width: 20px;
+    height: 20px;
+
+
+  }
+}
+
+@media (max-width:991px){
+  .txt-md {
+    font-size: 14px !important;
+}
+.user-img {
+width: 45px !important;
+height: 45px !important;
+}
+
+.sidnav-container{
+  gap: 10px !important;
+}
+.sidnav-container a {
+  padding: 11px 11px !important;
+}
+}
+
+
+// invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
+// filter : invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
