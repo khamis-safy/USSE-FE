@@ -1,4 +1,4 @@
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -26,6 +26,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { UsButtonComponent } from './components/us-button/us-button.component';
 import { UsButtonDirective } from '../directives/us-button.directive';
 import { ToasterServices } from './components/us-toaster/us-toaster.component';
+// import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { ToasterServices } from './components/us-toaster/us-toaster.component';
     MatMenuModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    MatSortModule
+    MatSortModule,
+    FormsModule
   ],
   declarations: [
     SideBarComponent,
@@ -79,7 +81,8 @@ import { ToasterServices } from './components/us-toaster/us-toaster.component';
     MatSnackBarModule,
     MatSortModule,
     MatIconModule,
-    UsButtonDirective
+    UsButtonDirective,
+    FormsModule
   ],
   providers:[ToasterServices]
 })

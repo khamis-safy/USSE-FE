@@ -1,0 +1,117 @@
+<section class="d-flex flex-column p-5 gap-3 h-100">
+  <!-- modal header -->
+  <div class="d-flex justify-content-between align-items-center mb-4 " style="height: 10%;">
+    <div *ngIf="!isEdit" class="txt-lg" style="font-weight: 800;">Add Contact</div>
+    <div *ngIf="isEdit" class="txt-lg" style="font-weight: 800;">Update Contact</div>
+
+      <img
+        src="assets/icons/close-circle.svg"
+        (click)="onClose()"
+        alt="close-icon"
+        style="cursor: pointer;"
+      />
+    </div>
+
+  <!-- modal body  -->
+  <div class="modal-body overflow-auto px-1"  style="height: 80%;">
+    <form [formGroup]="form" class="w-100 m-auto ">
+
+   <div class="d-flex gap-4 flex-column">
+    <div class="form-group d-flex justify-content-between  w-100">
+      <label for="name" class="mb-2 ">Name <em class="text-danger">*</em> </label>
+
+      <input
+        type="text"
+        class="txt-input p-2"
+        id="name"
+        placeholder="Enter Your Name"
+        formControlName="name"
+      />
+    </div>
+    <!-- <span  *ngIf="name.invalid && name.touched" class="animate__animated anime-duration-800 animate__fadeInUp text-danger d-flex gap-1 rounded-2  bg-opacity-10 p-2">
+      <mat-icon class="text-danger" style="height: 20px;width: 20px; font-size: 20px;">error</mat-icon>
+      <span class="text-danger text-wrap d-flex flex-column">
+        <span class="text-danger" *ngIf="name.errors.required">This filed is required</span>
+      </span>
+    </span> -->
+
+    <div class="form-group d-flex justify-content-between  w-100">
+      <label for="mobile" class="mb-2 ">Mobile Number <em class="text-danger">*</em> </label>
+
+      <input
+        type="text"
+        class="txt-input p-2"
+        id="mobile"
+        formControlName="mobile"
+      />
+    </div>
+
+    <div class="form-group d-flex justify-content-between w-100">
+      <label for="cnName" class="mb-2 ">Company Name </label>
+
+      <input
+        type="text"
+        class="txt-input p-2"
+        id="cnName"
+        formControlName="cnName"
+      />
+    </div>
+
+
+    <div class="form-group d-flex justify-content-between  w-100">
+      <label for="list">Lists</label>
+      <mat-form-field>
+        <mat-select multiple [(ngModel)]="defaultSelected" [ngModelOptions]="{standalone: true}"  (selectionChange)="selectedLists($event.value)">
+          <mat-option *ngFor="let li of lists" [value]="li">{{li.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- <div class="form-group d-flex justify-content-between  w-100">
+      <label for="list">Lists</label>
+      <mat-form-field>
+        <mat-select [formControl]="list" multiple [value]="list"  (selectionChange)="selectedLists($event.value)">
+          <mat-option *ngFor="let li of lists" [value]="li">{{li.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div> -->
+
+    <div class="form-group d-flex justify-content-between  w-100">
+      <label for="note">Notes</label>
+      <textarea class="form-control txt-area" id="note" rows="3"  formControlName="note"></textarea>
+    </div>
+
+  </div>
+
+    </form>
+  </div>
+
+  <!-- modal footer -->
+  <div class="modal-footer justify-content-center gap-3"  style="height: 10%;">
+
+    <us-button
+      label="Cancel"
+      size="sm"
+      [fill]="false"
+      (clicked)="onClose()"
+      [loading]="false"
+    ></us-button>
+    <us-button  *ngIf="!isEdit"
+    label="Save"
+    size="sm"
+    [loading]="isLoading"
+    [fill]="true"
+    (clicked)="submitAdd()"
+    [disabled]="form.invalid || isLoading"
+  ></us-button>
+  <us-button
+  *ngIf="isEdit"
+  label="Save"
+  size="sm"
+  [loading]="isLoading"
+  [fill]="true"
+  (clicked)="submitEdit()"
+  [disabled]="form.invalid || isLoading"
+></us-button>
+  </div>
+</section>

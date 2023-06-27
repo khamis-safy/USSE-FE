@@ -4,16 +4,16 @@ import { CommonModule } from '@angular/common';
 import { ManageContactsRoutes } from './manage-contacts.routing';
 import { ManageContactsService } from './manage-contacts.service';
 import { ContactsComponent } from './components/contacts/contacts.component';
-import {MatTabsModule} from '@angular/material/tabs';
 import { ListsComponent } from './components/lists/lists.component';
-import { MatIconModule } from '@angular/material/icon';
 import { AddListComponent } from './components/lists/addList/addList.component';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
+
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { ManageContactsComponent } from './component/manage-contacts.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DeleteListComponent } from './components/lists/delete-list/delete-list.component';
+import { AddContactComponent } from './components/contacts/addContact/addContact.component';
+import { DeleteContactComponent } from './components/contacts/deleteContact/deleteContact.component';
 
 @NgModule({
   imports: [
@@ -29,7 +29,9 @@ import { DeleteListComponent } from './components/lists/delete-list/delete-list.
     ContactsComponent,
     ListsComponent,
     DeleteListComponent,
-    AddListComponent
+    AddListComponent,
+    AddContactComponent,
+    DeleteContactComponent
   ],
   providers:[ManageContactsService]
 })

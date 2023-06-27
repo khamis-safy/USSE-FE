@@ -24,12 +24,11 @@
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
           <mat-checkbox  color="ch-color"
-          (click)="toggleActive()"
-          (change)="$event ? toggleAllRows()  : null"
-                        [checked]="selection.hasValue() && isAllSelected()"
-                        [indeterminate]="selection.hasValue() && !isAllSelected()"
-                        [aria-label]="checkboxLabel()">
-          </mat-checkbox>
+          (change)="$event ? toggleAllRows() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [aria-label]="checkboxLabel()">
+      </mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let row">
           <mat-checkbox color="ch-color" (click)="$event.stopPropagation() && selectedRow($event) "
@@ -62,12 +61,20 @@
        <!-- Lists Column -->
        <ng-container matColumnDef="lists">
         <th mat-header-cell *matHeaderCellDef > Lists </th>
-        <td mat-cell *matCellDef="let element"> {{element.lists.name}}
-         <ng-container *ngFor="let list of element.lists">
-          <span id="listName" class="w-16">
+        <td mat-cell *matCellDef="let element" > {{element.lists.name}}
+  <div id="list">
+         <div class="lists">
+          <ng-container *ngFor="let list of element.lists">
+          <span id="listName">
             {{list.name}}
           </span>
-         </ng-container>
+        </ng-container>
+
+         </div>
+         <div class="arrow d-flex align-items-center justify-content-end">
+          <img src="assets/icons/arrow.svg" alt="">
+        </div>
+      </div>
         </td>
       </ng-container>
 

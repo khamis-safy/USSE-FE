@@ -37,8 +37,8 @@ active:boolean=false;
   @Output() isDelete = new EventEmitter<ListData[]>;
 
   ngOnInit() {
-    this.getListsCount();
-    this.getListData();
+    // this.getListsCount();
+    // this.getListData();
     // this.length=10
 
     this.selection.changed.subscribe(
@@ -72,6 +72,7 @@ getListsCount(){
 }
 
 getListData(){
+  this.getListsCount();
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
   let email=this.listService.email;
@@ -155,7 +156,7 @@ console.log("from get api",this.dataSource)
   isAllSelected() {
     const numSelected = this.selection.selected.length;
 
-    const numRows = this.length;
+    const numRows = this.listService.display;
     return numSelected === numRows;
   }
 

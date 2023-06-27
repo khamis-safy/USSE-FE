@@ -18,7 +18,7 @@
         [loading]="false"
         [disabled]="false"
         [appearance]="'danger'"
-        (clicked)="openDeleteModal()"
+        (clicked)="tab=='contacts'?openDeleteConModal():tab=='lists'?openDeleteModal():''"
       ></us-button>
       <us-button
         class="m-2"
@@ -29,7 +29,7 @@
         [loading]="false"
         [disabled]="false"
         [appearance]="'primary'"
-        (clicked)="openModal()"
+        (clicked)="tab=='contacts'?openAddContactModal():tab=='lists'?openAddListModal():openunsubscribeModal()"
       ></us-button>
       <us-button
         class="m-2"
@@ -46,7 +46,7 @@
 
   </div>
 
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" (selectedTabChange)="changeModal($event)">
 
     <mat-tab>
       <ng-template mat-tab-label class="txt-md">
@@ -54,7 +54,7 @@
         <!-- <mat-icon class="tab-icon">contacts</mat-icon> -->
           Contacts
       </ng-template>
-      <app-contacts></app-contacts>
+      <app-contacts (isDelete)="onDeleteChange($event)"></app-contacts>
     </mat-tab>
 
     <mat-tab>
@@ -71,7 +71,7 @@
       <ng-template mat-tab-label >
         <img src="assets/icons/unsubscribe.svg" alt="" class="px-2">
 
-          Unsubscribed
+          Unsubscribe
 
         <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
 
