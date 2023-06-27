@@ -65,14 +65,15 @@ addContact(name:string,mobileNumber:string,companyName:string,note:string,email:
   return this.http.post<Contacts>(`${env.api}Contacts/addNewContact`,data)
 }
 
-updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:string,email:string):Observable<any>{
+updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:string,email:string,listId:string[]):Observable<any>{
   const data={
     id:id,
     name: name,
     mobileNumber: mobileNumber,
     companyName: companyName,
     note: note,
-    email: email
+    email: email,
+    listId:listId
 
   }
   return this.http.put(`${env.api}Contacts/updateContact`,data)

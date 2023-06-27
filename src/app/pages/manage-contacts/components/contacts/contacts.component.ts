@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ListData } from '../../list-data';
 import { AddListComponent } from '../lists/addList/addList.component';
 import { Contacts } from '../../contacts';
+import { AddContactComponent } from './addContact/addContact.component';
 
 @Component({
   selector: 'app-contacts',
@@ -37,11 +38,28 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
     @Output() isDelete = new EventEmitter<ListData[]>;
   ngOnInit() {
     this.getContacts();
-    this.contactsCount()
+    // this.contactsCount()
+    this.selection.changed.subscribe(
+      (res) => {
+        console.log("selected data",res)
+        if(res.source.selected.length){
+          console.log("selected",res.source.selected)
+          this.isDelete.emit(res.source.selected)
+        }
+        else{
+          this.isDelete.emit()
+        }
+      });
 
   }
   getContacts(){
+//     let shows=this.listService.display;
+//     let pageNum=this.listService.pageNum;
+//     let email=this.listService.email;
+//     let orderedBy=this.listService.orderedBy;
+//     let search=this.listService.search;
 
+//     console.log(`from get contact data inside list component number of shows is:${shows} page number is ${pageNum} orderBy is ${orderedBy} search is ${search}`)
 
 
 // this.testListContacts=[
@@ -49,16 +67,17 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 // {id: 'ct_105e9c1d-74b8-4167-8160-3ac4cc3a789a', name: 'con', mobileNumber: '9879834234', companyName: '', note: '',createdAt: "2023-06-23T22:12:39.2610235",lists: [
 //   {
 //       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "Carbon",
+//       name: "ADP",
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-06-19T22:41:50.2533008Z",
 //       isDeleted: false,
 //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
 //     },
+
 //     {
 //       id: "sjfksjdflksjdlkjsdlkgj-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "Nitrogen",
+//       name: "VIP",
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-05-19T22:41:50.2533008Z",
@@ -69,7 +88,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 // {id: 'ct_fb9c58f2-6936-4a64-86c2-dd40a637e5e7', name: 'contact', mobileNumber: '0876876776', companyName: 'string', note: 'test',createdAt: "2023-06-23T22:12:39.2610235",lists: [
 //   {
 //       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "Carbon",
+//       name: "ADP",
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-06-19T22:41:50.2533008Z",
@@ -78,7 +97,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 //     },
 //     {
 //       id: "sjfksjdflksjdlkjsdlkgj-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "Nitrogen",
+//       name: "VIP",
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-05-19T22:41:50.2533008Z",
@@ -89,7 +108,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 // {id: 'ct_f32e89a1-8eca-4e7e-9990-b98783fb2fdc', name: 'khamis', mobileNumber: '201206836206', companyName: null, note: null,createdAt: "2023-06-23T22:12:39.2610235",lists: [
 //   {
 //       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "Carbon",
+//       name: "ADP",
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-06-19T22:41:50.2533008Z",
@@ -98,7 +117,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 //     },
 //     {
 //       id: "sjfksjdflksjdlkjsdlkgj-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "Nitrogen",
+//       name: "VIP",
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-05-19T22:41:50.2533008Z",
@@ -108,7 +127,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 
 // ];
 // this.dataSource=new MatTableDataSource<Contacts>(this.testListContacts)
-
+this.contactsCount();
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
   let email=this.listService.email;
@@ -123,27 +142,9 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
          console.log(err);
        })
   }
-  addContact(){
-    this.listService.addContact("con2","98798399934","","","khamis.safy@gmail.com",["ls_44b7b8e2-87fa-4526-bfc7-c10ce5541397"]).subscribe(
-      (res)=>{
-        console.log("added successfully",res)
-      },
-      (err)=>{
-        console.log(err)
-      }
-    )
-  }
 
-  updateContact(){
-    this.listService.updateContact("ct_7215c018-7c20-4a97-86f6-ae2e2b4a2ef0","update","098786876","company","note","khamis.safy@gmail.com").subscribe(
-      (res)=>{
-        console.log("updated successfully",res)
-      },
-      (err)=>{
-        console.log(err)
-      }
-    )
-  }
+
+
   deleteContact(){
     this.listService.deleteContact("khamis.safy@gmail.com",["ct_9ccb3954-33c2-4bf6-8045-0c66d929853e"]).subscribe(
       (res)=>{
@@ -174,13 +175,14 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   isAllSelected() {
     const numSelected = this.selection.selected.length;
 
-    const numRows = this.length;
+    const numRows = this.listService.display;
     return numSelected === numRows;
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     if (this.isAllSelected()) {
+
       this.selection.clear();
       return;
     }
@@ -212,17 +214,17 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 
   openEditModal(data?){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='85vh';
-    dialogConfig.width='35vw';
+    dialogConfig.height='70vh';
+    dialogConfig.width='40vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
     dialogConfig.data= data;
-    const dialogRef = this.dialog.open(AddListComponent,dialogConfig);
+    const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-
+        console.log("edit contact modal work")
       }
     });
 
