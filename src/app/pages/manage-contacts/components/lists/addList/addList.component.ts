@@ -60,7 +60,6 @@ export class AddListComponent implements OnInit {
     )
   }
   submitEdit(){
-
     this.isLoading = true
     let email="khamis.safy@gmail.com";
     this.listService.updateList(this.data.id,this.form.value.name,email).subscribe(
