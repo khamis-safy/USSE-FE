@@ -42,6 +42,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
     // this.contactsCount()
     this.selection.changed.subscribe(
       (res) => {
+
         if(res.source.selected.length){
           console.log("selected",res.source.selected)
           this.isDelete.emit(res.source.selected)
@@ -127,7 +128,6 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 
 // ];
 // this.dataSource=new MatTableDataSource<Contacts>(this.testListContacts)
-
 
 this.contactsCount();
   let shows=this.listService.display;
@@ -220,6 +220,7 @@ this.contactsCount();
       if(result){
         this.getContacts();
             }
+
     });
 
   }

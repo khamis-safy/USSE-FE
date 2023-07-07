@@ -56,11 +56,8 @@ export class ManageContactsComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
+        this.contacts.contactsCount();
         this.contacts.getContacts();
-        console.log("works")
-      }
-      else{
-        console.log("not working")
       }
     });
     console.log("add-contactt-modal")
@@ -94,6 +91,7 @@ export class ManageContactsComponent {
     dialogConfig.minWidth='300px';
     dialogConfig.data = this.isDelete;
     const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
+
 
     dialogRef.afterClosed().subscribe(result => {
       this.contacts.contactsCount();
