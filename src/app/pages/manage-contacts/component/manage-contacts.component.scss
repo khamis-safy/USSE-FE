@@ -25,6 +25,14 @@
   height: 42px !important;
   border-radius: 10px 10px 0px 0px;
   background: transparent;
+  &.mdc-tab--active{
+    background:var(--clr-primary-400);
+    color: var(-clr-primary-700);
+    img{
+      filter: invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg)
+        brightness(39%) contrast(93%);
+    }
+  }
   &:hover {
     background:var(--clr-primary-400);
     color: var(-clr-primary-700);

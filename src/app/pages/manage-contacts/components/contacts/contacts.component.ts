@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../manage-contacts.service';
@@ -25,6 +25,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   toppings = new FormControl('');
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChildren("check") checks:any;
   toppingList: string[] = ['Name', 'Create At	', 'Total Contacts'];
   listTableData:ListData[]=[]
   displayedColumns: string[] = ['select','name', 'mobile', 'notes', "lists",'companyName',"createAt","action"];
@@ -41,7 +42,6 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
     // this.contactsCount()
     this.selection.changed.subscribe(
       (res) => {
-        console.log("selected data",res)
         if(res.source.selected.length){
           console.log("selected",res.source.selected)
           this.isDelete.emit(res.source.selected)
