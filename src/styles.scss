@@ -618,15 +618,20 @@ section.table-wrapper {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     overflow: hidden;
-      thead{
-        background: var(--clr-primary-400) !important;
-        tr{
-          height: 40px !important;
-          th{
-            background: transparent !important;
-          }
+    mat-checkbox{
+      input[type=checkbox]:checked+ label {
+
+      }
+    }
+    thead{
+      background: var(--clr-primary-400) !important;
+      tr{
+        height: 40px !important;
+        th{
+          background: transparent !important;
         }
       }
+    }
       .mat-icon.mat-primary {
         color:var(--clr-primary-700);
         font-size: 20px;
@@ -662,6 +667,7 @@ section.table-wrapper {
       justify-content: space-between;
       padding: 10px;
     }
+
   }
   .mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background{
     background-color:var(--clr-primary-700) !important;
@@ -682,6 +688,5 @@ section.table-wrapper {
   border-radius: 40px;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
   border: 0.5px solid rgba(160, 160, 160, 1);
-
 
 }

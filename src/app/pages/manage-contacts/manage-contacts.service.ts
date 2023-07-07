@@ -9,6 +9,8 @@ import { Contacts } from './contacts';
   providedIn: 'root'
 })
 export class ManageContactsService {
+
+  testPhoneNum:any;
     display:number=5;
     pageNum:number=0;
     email:string="khamis.safy@gmail.com";
@@ -78,6 +80,8 @@ updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:
   }
   return this.http.put(`${env.api}Contacts/updateContact`,data)
 }
+
+
 deleteContact(email:string,listIDs:string[]): Observable<ErrSucc>{
   return this.http.put<ErrSucc>(`${env.api}Contacts/deleteContact?email=${email}`,listIDs)
 }

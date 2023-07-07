@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../manage-contacts.service';
@@ -25,6 +25,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   toppings = new FormControl('');
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChildren("check") checks:any;
   toppingList: string[] = ['Name', 'Create At	', 'Total Contacts'];
   listTableData:ListData[]=[]
   displayedColumns: string[] = ['select','name', 'mobile', 'notes', "lists",'companyName',"createAt","action"];
@@ -41,7 +42,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
     // this.contactsCount()
     this.selection.changed.subscribe(
       (res) => {
-        console.log("selected data",res)
+
         if(res.source.selected.length){
           console.log("selected",res.source.selected)
           this.isDelete.emit(res.source.selected)
@@ -105,7 +106,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
 //     }]},
 
-// {id: 'ct_f32e89a1-8eca-4e7e-9990-b98783fb2fdc', name: 'khamis', mobileNumber: '201206836206', companyName: null, note: null,createdAt: "2023-06-23T22:12:39.2610235",lists: [
+// {id: 'ct_f32e89a1-8eca-4e7e-9990-b98783fb2fdc', name: 'khamis', mobileNumber: '201206836206', companyName: "null", note: "null",createdAt: "2023-06-23T22:12:39.2610235",lists: [
 //   {
 //       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
 //       name: "ADP",
@@ -127,6 +128,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 
 // ];
 // this.dataSource=new MatTableDataSource<Contacts>(this.testListContacts)
+
 this.contactsCount();
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
@@ -145,15 +147,7 @@ this.contactsCount();
 
 
 
-  deleteContact(){
-    this.listService.deleteContact("khamis.safy@gmail.com",["ct_9ccb3954-33c2-4bf6-8045-0c66d929853e"]).subscribe(
-      (res)=>{
-        console.log("deleted successfully",res)
-      },
-      (err)=>{
-        console.log(err) }
-        )
-  }
+
   contactsCount(){
     let email=this.listService.email;
 
@@ -224,8 +218,9 @@ this.contactsCount();
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        console.log("edit contact modal work")
-      }
+        this.getContacts();
+            }
+
     });
 
   }
