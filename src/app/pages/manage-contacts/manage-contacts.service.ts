@@ -88,4 +88,17 @@ deleteContact(email:string,listIDs:string[]): Observable<ErrSucc>{
 contactsCount(email:string):Observable<number>{
   return this.http.get<number>(`${env.api}Contacts/listContactsCount?email=${email}`)
 }
+
+
+addOrMoveContacts(ids:string[],newListIds:string[]): Observable<ErrSucc>{
+  const data ={
+  id:ids,
+  newListId:newListIds
+}
+return this.http.put<ErrSucc>(`${env.api}Contacts/addOrMoveContactsFromLists`,data)
+}
+
+unDeleteContact(email:string,ids:string[]):Observable<ErrSucc>{
+  return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteContact?email=${email}`,ids)
+}
 }

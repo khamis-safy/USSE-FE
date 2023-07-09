@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { SelectionModel} from '@angular/cdk/collections';
 import { MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormControl } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddListComponent } from './addList/addList.component';
@@ -10,6 +9,7 @@ import { ManageContactsService } from '../../manage-contacts.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ListData } from '../../list-data';
 import { Contacts } from '../../contacts';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-lists',
@@ -21,13 +21,16 @@ import { Contacts } from '../../contacts';
 export class ListsComponent implements OnInit ,AfterViewInit  {
 length:number=0;
 active:boolean=false;
+@ViewChildren("check") checks:any;
+
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
-  toppings = new FormControl('');
+  columns :FormControl;
   @ViewChild(MatSort) sort: MatSort;
-  toppingList: string[] = ['Name', 'Create At	', 'Total Contacts'];
+  displayed: string[] = ['Name','Create At', 'Total Contacts'];
   listTableData:ListData[]=[]
-  displayedColumns: string[] = ['select', 'name', 'createdAt', 'totalContacts',"edit"];
+  displayedColumns: string[] = ['select', 'Name', 'Create At', 'Total Contacts',"edit"];
   dataSource:MatTableDataSource<ListData>;
+  deletedLists:string[]=[];
   // dataSource = new MatTableDataSource<any>(this.listTableData);
   selection = new SelectionModel<any>(true, []);
   constructor(public dialog: MatDialog,
@@ -40,7 +43,7 @@ active:boolean=false;
     // this.getListsCount();
     // this.getListData();
     // this.length=10
-
+    this.columns=new FormControl(this.displayedColumns)
     this.selection.changed.subscribe(
       (res) => {
         console.log("selected data",res)
@@ -55,8 +58,6 @@ active:boolean=false;
   }
 
   ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort
   }
 getListsCount(){
   let email=this.listService.email;
@@ -160,6 +161,31 @@ console.log("from get api",this.dataSource)
     return numSelected === numRows;
   }
 
+
+  onClose(){
+    this.deletedLists=[]
+  }
+  undoDelete(){
+    let email='khamis.safy@gmail.com';
+    this.listService.unDeleteList(email,this.deletedLists).subscribe(
+      (res)=>{
+
+        console.log(res)
+        this.toaster.success('Success');
+        this.getListData();
+        this.deletedLists=[];
+
+
+      },
+      (err)=>{
+        console.log(err)
+        this.toaster.error("Error")
+
+      }
+    )
+
+    console.log("Deleted contacts",this.deletedLists)
+  }
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     if (this.isAllSelected()) {
@@ -244,5 +270,12 @@ console.log("from get api",this.dataSource)
   }
   selectedRow(event){
     console.log("selected row",event)
+  }
+
+  changeColumns(event){
+    console.log(event);
+    this.displayedColumns=['select',...event,'edit']
+
+
   }
 }

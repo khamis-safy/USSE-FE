@@ -49,40 +49,40 @@
   margin: 2px;}
 
 }
-.us-select{
-  box-shadow: 0px 1px 4px 0px #0000001A;
-  border-radius:10px ;
-  -webkit-border-radius:10px ;
-  -moz-border-radius:10px ;
-  -ms-border-radius:10px ;
-  -o-border-radius:10px ;
-  ::ng-deep{
-    label{
-      top: 21px !important;
+// .us-select{
+//   box-shadow: 0px 1px 4px 0px #0000001A;
+//   border-radius:10px ;
+//   -webkit-border-radius:10px ;
+//   -moz-border-radius:10px ;
+//   -ms-border-radius:10px ;
+//   -o-border-radius:10px ;
+//   ::ng-deep{
+//     label{
+//       top: 21px !important;
 
-    }
-    .mat-mdc-select-value-text{
-     font-size: 12px !important;
-    }
-    .mat-mdc-select-arrow-wrapper{
-      display: flex !important;
-      align-items: flex-end;
-    }
-    .mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix{
-      padding-top: 10px !important;
-      padding-bottom: 5px !important;
-      min-height: 42px !important;
-      height: 42px !important;
-    }
-    .mdc-text-field--filled .mdc-floating-label--float-above{
-      transform: translateY(-87%) scale(0.75) !important;
-      -webkit-transform: translateY(-87%) scale(0.75) !important;
-      -moz-transform: translateY(-87%) scale(0.75) !important;
-      -ms-transform: translateY(-87%) scale(0.75) !important;
-      -o-transform: translateY(-87%) scale(0.75) !important;
-}
-  }
+//     }
+//     .mat-mdc-select-value-text{
+//      font-size: 12px !important;
+//     }
+//     .mat-mdc-select-arrow-wrapper{
+//       display: flex !important;
+//       align-items: flex-end;
+//     }
+//     .mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix{
+//       padding-top: 10px !important;
+//       padding-bottom: 5px !important;
+//       min-height: 42px !important;
+//       height: 42px !important;
+//     }
+//     .mdc-text-field--filled .mdc-floating-label--float-above{
+//       transform: translateY(-87%) scale(0.75) !important;
+//       -webkit-transform: translateY(-87%) scale(0.75) !important;
+//       -moz-transform: translateY(-87%) scale(0.75) !important;
+//       -ms-transform: translateY(-87%) scale(0.75) !important;
+//       -o-transform: translateY(-87%) scale(0.75) !important;
+// }
+//   }
 
-}
+// }
 
 

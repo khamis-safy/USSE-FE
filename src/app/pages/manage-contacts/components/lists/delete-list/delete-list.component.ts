@@ -32,8 +32,7 @@ export class DeleteListComponent implements OnInit {
     this.listService.deleteList('khamis.safy@gmail.com',body).subscribe(
       (res)=>{
         this.isLoading = false
-        console.log(res)
-        this.onClose();
+        this.onClose(body);
         this.toaster.success(`${res.numberOfSuccess} Deleted Successfully ${res.numberOfErrors} failed`)
 
       },
@@ -46,8 +45,10 @@ export class DeleteListComponent implements OnInit {
       }
     )
   }
-  onClose(): void {
-    this.dialogRef.close();
-    console.log("onClose")
+  onClose(data?): void {
+    this.dialogRef.close(data);
+
+    console.log("onClose",data)
+
   }
 }

@@ -49,7 +49,7 @@ oldData;
   constructor(
     private toaster: ToasterServices,
     private listService:ManageContactsService,
-    public dialogRef: MatDialogRef<AddListComponent>,
+    public dialogRef: MatDialogRef<AddContactComponent>,
     @Inject(MAT_DIALOG_DATA) public data:Contacts,
   ) { }
 
