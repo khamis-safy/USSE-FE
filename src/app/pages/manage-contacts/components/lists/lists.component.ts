@@ -10,6 +10,7 @@ import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster
 import { ListData } from '../../list-data';
 import { Contacts } from '../../contacts';
 import { FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-lists',
@@ -22,7 +23,7 @@ export class ListsComponent implements OnInit ,AfterViewInit  {
 length:number=0;
 active:boolean=false;
 @ViewChildren("check") checks:any;
-
+numRows;
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   columns :FormControl;
   @ViewChild(MatSort) sort: MatSort;
@@ -33,9 +34,12 @@ active:boolean=false;
   deletedLists:string[]=[];
   // dataSource = new MatTableDataSource<any>(this.listTableData);
   selection = new SelectionModel<any>(true, []);
+
+
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
-    private listService:ManageContactsService) {
+    private listService:ManageContactsService,
+    private snackBar: MatSnackBar) {
   }
   @Output() isDelete = new EventEmitter<ListData[]>;
 
@@ -146,6 +150,7 @@ getListData(){
   this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
      (res)=>{
         console.log(res);
+        this.numRows=res.length;
   this.dataSource=new MatTableDataSource<ListData>(res)
 console.log("from get api",this.dataSource)
       },
@@ -153,17 +158,23 @@ console.log("from get api",this.dataSource)
         console.log(err);
       })
 }
+
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
 
-    const numRows = this.listService.display;
+    const numRows =  this.numRows;
     return numSelected === numRows;
   }
 
 
-  onClose(){
-    this.deletedLists=[]
+  openSnackBar(){
+    let message = `${this.deletedLists.length} Item(s) Deleted`;
+    let action ="Undo"
+    let snackBarRef=this.snackBar.open(message,action,{duration:4000});
+    snackBarRef.onAction().subscribe(()=>{
+      this.undoDelete();
+    })
   }
   undoDelete(){
     let email='khamis.safy@gmail.com';
@@ -208,15 +219,7 @@ console.log("from get api",this.dataSource)
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  undeleteList(){
-    this.listService.unDeleteList("khamis.safy@gmail.com",["ls_227b8063-0567-4fb5-9ea6-f81f9fa3499c"]).subscribe(
-      (res)=>{
-        console.log("undelete",res)
-      },
-      (err)=>{
-        console.log(err) }
-        )
-  }
+
   onSortChange(event){
     let sorting = event.active=='name' && event.direction=='asc'?'nameASC':
                   event.active=='name' && event.direction=='desc'?'nameDEC':

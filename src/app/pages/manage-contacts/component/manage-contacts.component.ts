@@ -85,10 +85,11 @@ export class ManageContactsComponent {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.lists.deletedLists=result;
+        this.lists.openSnackBar();
         this.lists.getListData();
       }
-      this.contacts.checks._results=[]
       this.lists.selection.clear();
+      this.lists.checks._results=[]
       console.log("delete afterClosed",this.lists.selection)
 
     });
@@ -106,6 +107,7 @@ export class ManageContactsComponent {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.contacts.deletedContacts=result;
+        this.contacts.openSnackBar();
         this.contacts.getContacts();
 
       }

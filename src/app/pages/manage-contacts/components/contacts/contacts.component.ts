@@ -11,6 +11,7 @@ import { AddListComponent } from '../lists/addList/addList.component';
 import { Contacts } from '../../contacts';
 import { AddContactComponent } from './addContact/addContact.component';
 import { FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-contacts',
@@ -21,6 +22,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   length:number=0;
   active:boolean=false;
   testListContacts:Contacts[]=[]
+  numRows;
 
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
 
@@ -38,6 +40,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
+    private snackBar: MatSnackBar
   ) {
     }
     @Output() isChecked = new EventEmitter<ListData[]>;
@@ -65,8 +68,14 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
       });
 
   }
-  onClose(){
-    this.deletedContacts=[]
+
+  openSnackBar(){
+    let message = `${this.deletedContacts.length} Item(s) Deleted`;
+    let action ="Undo"
+    let snackBarRef=this.snackBar.open(message,action,{duration:4000});
+    snackBarRef.onAction().subscribe(()=>{
+      this.undoDelete();
+    })
   }
   undoDelete(){
     let email='khamis.safy@gmail.com';
@@ -173,6 +182,8 @@ this.contactsCount();
   let search=this.listService.search;
     this.listService.getContacts(email,shows,pageNum,orderedBy,search).subscribe(
       (res)=>{
+        this.numRows=res.length;
+
         this.dataSource=new MatTableDataSource<Contacts>(res)
       console.log("all contacts",res);
        },
@@ -205,7 +216,7 @@ this.contactsCount();
   isAllSelected() {
     const numSelected = this.selection.selected.length;
 
-    const numRows = this.listService.display;
+    const numRows =  this.numRows;
     return numSelected === numRows;
   }
 

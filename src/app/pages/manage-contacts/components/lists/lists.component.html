@@ -88,12 +88,4 @@
   </section>
 
 </section>
-<div class="undo-delete txt-lg bg-neutral-0" *ngIf="deletedLists.length!=0">
-  <div class="close d-flex justify-content-end align-items-center my-2 px-2" (click)="onClose()">  <mat-icon >close</mat-icon>
-  </div>
-<div class=" d-flex justify-content-between align-items-center px-4 " >
-  <span class="items">{{deletedLists.length}} Item(s) Deleted</span>
-  <span class="undo text-primary-800" (click)="undoDelete()">Undo</span>
 
-</div>
-</div>

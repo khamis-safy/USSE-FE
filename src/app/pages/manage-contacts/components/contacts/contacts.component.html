@@ -120,18 +120,4 @@
   </section>
 
 </section>
-<!-- <div class="undo-delete d-flex justify-content-between align-items-center p-4 txt-lg bg-neutral-0 position-relative" *ngIf="deletedContacts.length!=0">
-  <span class="items">{{deletedContacts.length}} Item(s) Deleted</span>
-  <span class="undo text-primary-800" (click)="undoDelete()">Undo</span>
-  <mat-icon class="position-absolute top-0 end-0 m-3 pointer" (click)="onTagClose($event)">close</mat-icon>
 
-</div> -->
-<div class="undo-delete txt-lg bg-neutral-0" *ngIf="deletedContacts.length!=0">
-  <div class="close d-flex justify-content-end align-items-center my-2 px-2" (click)="onClose()">  <mat-icon >close</mat-icon>
-  </div>
-<div class=" d-flex justify-content-between align-items-center px-4 " >
-  <span class="items">{{deletedContacts.length}} Item(s) Deleted</span>
-  <span class="undo text-primary-800" (click)="undoDelete()">Undo</span>
-
-</div>
-</div>
