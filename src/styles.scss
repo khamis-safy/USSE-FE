@@ -527,12 +527,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 
-
-
-
-
-
-
 /*==========sidebar ================*/
 .sidebar-comp-fixed {
   width: 250px !important;
@@ -646,9 +640,44 @@ section.table-wrapper {
     }
 
   }
-   .active-row{
-      background-color: #eef4f9c2 !important;
-      border-left: 3px solid var(--clr-primary-700) !important;
+
+  //  .active-row{
+  //     background-color: #eef4f9c2 !important;
+  //     // border-left: 3px solid var(--clr-primary-700) !important;
+  //     .mdc-data-table__cell:nth-child(1){
+  //       position: relative;
+  //       // background-color: #00658D;
+  //       .mat-mdc-checkbox-touch-target::after{
+  //         position: absolute;
+  //         content: "";
+  //         width: 4px;
+  //         height: 100%;
+  //         background-color: var(--clr-primary-700) ;
+  //         border-radius: 16px, 0px, 0px, 16px;
+  //         left: 0;
+  //         top: 0;
+
+
+  //       }
+
+  //     }
+  //   }
+
+  .mat-mdc-table .mdc-data-table__row.active-row
+  {
+    .left-arrow{
+      background-image: linear-gradient(90deg,#eef4f9c2 70%,transparent) !important;
+    }
+    .right-arrow{
+      background-image: linear-gradient(90deg,#eef4f9c2 33%,transparent) !important;
+    }
+    position:relative;
+    background-color: transparent !important;
+    z-index: 2;
+    &:hover{
+      background-color: transparent !important;
+
+      // border-left: 3px solid var(--clr-primary-700);
     }
 
 
@@ -673,7 +702,7 @@ section.table-wrapper {
   .mat-mdc-checkbox .mdc-checkbox__ripple {
     background: transparent !important;
   }
-
+  }
 // end table override
 // input
 .txt-input{
