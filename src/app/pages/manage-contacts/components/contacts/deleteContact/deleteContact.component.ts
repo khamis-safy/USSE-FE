@@ -36,7 +36,19 @@ export class DeleteContactComponent implements OnInit {
         this.isLoading = false
         console.log(res)
         this.onClose(body);
-        this.toaster.success(`${res.numberOfSuccess} Deleted Successfully ${res.numberOfErrors} failed`)
+        let succ=res.numberOfSuccess;
+        let err =res.numberOfErrors;
+        if(succ==0 && err>0){
+          this.toaster.error(`Error - ${err}`)
+        }
+
+        else if(succ>0 && err >0){
+          this.toaster.warning(`${succ} Success ${err} Failed`)
+        }
+        else if(succ>0 && err ==0){
+          this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
+
+        }
 
       },
       (err)=>{
