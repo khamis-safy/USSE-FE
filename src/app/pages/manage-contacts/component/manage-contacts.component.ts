@@ -8,6 +8,7 @@ import { ContactsComponent } from '../components/contacts/contacts.component';
 import { ManageContactsService } from '../manage-contacts.service';
 import { AddContactComponent } from '../components/contacts/addContact/addContact.component';
 import { DeleteContactComponent } from '../components/contacts/deleteContact/deleteContact.component';
+import { ContactListsComponent } from '../components/contacts/contactLists/contactLists.component';
 
 @Component({
   selector: 'app-manage-contacts',
@@ -20,6 +21,7 @@ export class ManageContactsComponent {
   tab = this.tabs[0];
   added:boolean=false;
   isDelete;
+  isChecked;
   @ViewChild(ListsComponent) lists:ListsComponent;
   @ViewChild(ContactsComponent) contacts:ContactsComponent;
 
@@ -39,8 +41,10 @@ export class ManageContactsComponent {
     const dialogRef = this.dialog.open(AddListComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      this.lists.getListsCount();
-      this.lists.getListData();
+      if(result){
+        this.lists.getListData();
+      }
+
     });
     console.log("add-list-modal")
 
@@ -57,10 +61,6 @@ export class ManageContactsComponent {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.contacts.getContacts();
-        console.log("works")
-      }
-      else{
-        console.log("not working")
       }
     });
     console.log("add-contactt-modal")
@@ -68,6 +68,10 @@ export class ManageContactsComponent {
   onDeleteChange(e){
     this.isDelete = e;
     console.log("onDeleteChange",e)
+  }
+  onChecked(e){
+    this.isChecked=e;
+
   }
   openDeleteModal(){
     const dialogConfig=new MatDialogConfig();
@@ -79,9 +83,13 @@ export class ManageContactsComponent {
     const dialogRef = this.dialog.open(DeleteListComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      this.lists.getListsCount();
-      this.lists.getListData();
+      if(result){
+        this.lists.deletedLists=result;
+        this.lists.openSnackBar();
+        this.lists.getListData();
+      }
       this.lists.selection.clear();
+      this.lists.checks._results=[]
       console.log("delete afterClosed",this.lists.selection)
 
     });
@@ -92,18 +100,48 @@ export class ManageContactsComponent {
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.data = this.isDelete;
+    dialogConfig.data = this.isChecked;
     const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
 
+
     dialogRef.afterClosed().subscribe(result => {
-      this.contacts.contactsCount();
-      this.contacts.getContacts();
+      if(result){
+        this.contacts.deletedContacts=result;
+        this.contacts.openSnackBar();
+        this.contacts.getContacts();
+
+      }
+      this.contacts.checks._results=[]
+
       this.contacts.selection.clear();
       console.log("delete afterClosed",this.lists.selection)
 
     });
     console.log("delete contact")
   }
+  openContactLists(){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='70vh';
+    dialogConfig.width='40vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.maxHeight='85vh';
+    dialogConfig.data = this.isChecked;
+    const dialogRef = this.dialog.open(ContactListsComponent,dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.contacts.getContacts();
+
+      }
+      this.contacts.selection.clear();
+      this.contacts.checks._results=[]
+      console.log("delete afterClosed",this.lists.selection)
+
+    });
+
+  }
+
   openunsubscribeModal(){
     console.log("add-unsubscribe-modal")
   }
@@ -114,6 +152,8 @@ export class ManageContactsComponent {
     this.listService.email="khamis.safy@gmail.com";
     this.listService.orderedBy='';
     this.listService.search='';
+    this.contacts.selection.clear();
+    this.lists.selection.clear();
 
     this.tab=this.tabs[ev.index]
     if(this.tab=='contacts'){

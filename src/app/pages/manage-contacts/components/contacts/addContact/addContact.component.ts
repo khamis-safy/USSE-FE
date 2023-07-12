@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, Inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
@@ -7,6 +8,7 @@ import { ManageContactsService } from '../../../manage-contacts.service';
 import { AddListComponent } from '../../lists/addList/addList.component';
 import { Contacts } from '../../../contacts';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
+
 
 @Component({
   selector: 'app-addContact',
@@ -31,6 +33,7 @@ export class AddContactComponent implements OnInit{
   mobile:any = new FormControl('',[Validators.required]);
   cnName:any = new FormControl('',[Validators.required]);
   note:any=new FormControl(null,[Validators.required]);
+
   form = new FormGroup({
     name:this.name,
     mobile:this.mobile,
@@ -46,10 +49,9 @@ oldData;
   constructor(
     private toaster: ToasterServices,
     private listService:ManageContactsService,
-    public dialogRef: MatDialogRef<AddListComponent>,
+    public dialogRef: MatDialogRef<AddContactComponent>,
     @Inject(MAT_DIALOG_DATA) public data:Contacts,
   ) { }
-
 
   ngOnInit() {
     this.getLists();
@@ -115,13 +117,13 @@ oldData;
       else{
         this.lists=res;
       }
+
       },
       (err)=>{
         console.log(err);
       })
   }
   submitAdd(){
-    console.log(this.form.value)
     this.isLoading = true
     let email="khamis.safy@gmail.com";
     let name =this.form.value.name;
@@ -153,6 +155,7 @@ oldData;
     let note = this.form.value.note;
     this.isLoading = true
     this.listService.updateContact(this.data.id,name,mobile,cnName,note,email,this.listsIds).subscribe(
+
       (res)=>{
         this.isLoading = false
         console.log(res)
@@ -173,6 +176,7 @@ oldData;
 
   }
   changeLists(event){
+
     this.listsIds=event.map((e)=>e.id)
     console.log("selected lists",this.listsIds)
   }

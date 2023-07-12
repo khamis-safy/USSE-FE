@@ -14,6 +14,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { DeleteListComponent } from './components/lists/delete-list/delete-list.component';
 import { AddContactComponent } from './components/contacts/addContact/addContact.component';
 import { DeleteContactComponent } from './components/contacts/deleteContact/deleteContact.component';
+import { ContactListsComponent } from './components/contacts/contactLists/contactLists.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { DeleteContactComponent } from './components/contacts/deleteContact/dele
     DeleteListComponent,
     AddListComponent,
     AddContactComponent,
-    DeleteContactComponent
+    DeleteContactComponent,
+    ContactListsComponent
   ],
   providers:[ManageContactsService]
 })

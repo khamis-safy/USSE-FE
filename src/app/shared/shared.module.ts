@@ -27,6 +27,7 @@ import { UsButtonComponent } from './components/us-button/us-button.component';
 import { UsButtonDirective } from '../directives/us-button.directive';
 import { ToasterServices } from './components/us-toaster/us-toaster.component';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
+
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
 @NgModule({
@@ -50,6 +51,7 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
     MatSortModule,
     FormsModule,
     NgxIntlTelInputModule
+
   ],
   declarations: [
     SideBarComponent,
@@ -86,6 +88,7 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
     UsButtonDirective,
     FormsModule,
     NgxIntlTelInputModule
+
   ],
   providers:[ToasterServices]
 })
