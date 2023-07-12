@@ -49,7 +49,7 @@ oldData;
   constructor(
     private toaster: ToasterServices,
     private listService:ManageContactsService,
-    public dialogRef: MatDialogRef<AddListComponent>,
+    public dialogRef: MatDialogRef<AddContactComponent>,
     @Inject(MAT_DIALOG_DATA) public data:Contacts,
   ) { }
 
@@ -128,7 +128,7 @@ oldData;
     let email="khamis.safy@gmail.com";
     let name =this.form.value.name;
     let cnNName=this.form.value.cnName;
-    let mobile=this.form.value.mobile.internationalNumber;
+    let mobile=this.form.value.mobile.e164Number;
     let note = this.form.value.note;
 
     this.listService.addContact(name,mobile,cnNName,note,email,this.listsIds).subscribe(

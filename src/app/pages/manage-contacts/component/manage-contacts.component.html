@@ -8,7 +8,7 @@
     </div>
     <div class="buttons_ ">
       <us-button
-      *ngIf="isDelete"
+      *ngIf="isChecked || isDelete"
         class="m-2"
         label="Delete"
         img="assets/icons/delete.svg"
@@ -21,6 +21,18 @@
         (clicked)="tab=='contacts'?openDeleteConModal():tab=='lists'?openDeleteModal():''"
       ></us-button>
       <us-button
+      *ngIf="isChecked"
+      class="m-2"
+      label="Add To lists"
+      [matIcon]="'add'"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'primary'"
+      (clicked)="openContactLists()"
+    ></us-button>
+      <us-button
         class="m-2"
         label="Add list"
         [matIcon]="'add'"
@@ -31,6 +43,7 @@
         [appearance]="'primary'"
         (clicked)="tab=='contacts'?openAddContactModal():tab=='lists'?openAddListModal():openunsubscribeModal()"
       ></us-button>
+
       <us-button
         class="m-2"
         label="Export All"
@@ -54,7 +67,7 @@
         <!-- <mat-icon class="tab-icon">contacts</mat-icon> -->
           Contacts
       </ng-template>
-      <app-contacts (isDelete)="onDeleteChange($event)"></app-contacts>
+      <app-contacts (isChecked)="onChecked($event)"></app-contacts>
     </mat-tab>
 
     <mat-tab>

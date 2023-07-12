@@ -3,7 +3,6 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../manage-contacts.service';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormControl } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,6 +10,8 @@ import { ListData } from '../../list-data';
 import { AddListComponent } from '../lists/addList/addList.component';
 import { Contacts } from '../../contacts';
 import { AddContactComponent } from './addContact/addContact.component';
+import { FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-contacts',
@@ -21,37 +22,82 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   length:number=0;
   active:boolean=false;
   testListContacts:Contacts[]=[]
+  numRows;
 
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
-  toppings = new FormControl('');
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren("check") checks:any;
-  toppingList: string[] = ['Name', 'Create At	', 'Total Contacts'];
   listTableData:ListData[]=[]
-  displayedColumns: string[] = ['select','name', 'mobile', 'notes', "lists",'companyName',"createAt","action"];
+  deletedContacts:string[]=[];
+  columns :FormControl;
+  displayed: string[] = ['Name','Mobile','Notes','Lists','Company Name','Create At'];
+  displayedColumns: string[] = ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At","action"];
   dataSource:MatTableDataSource<Contacts>;
+  show:boolean=false;
   // dataSource = new MatTableDataSource<any>(this.listTableData);
   selection = new SelectionModel<any>(true, []);
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
-    private listService:ManageContactsService) {
+    private listService:ManageContactsService,
+    private snackBar: MatSnackBar
+  ) {
     }
     @Output() isDelete = new EventEmitter<ListData[]>;
+    WrapperScrollLeft =0
+    WrapperOffsetWidth =250
+    @Output() isChecked = new EventEmitter<ListData[]>;
+
   ngOnInit() {
+
+    this.columns=new FormControl(this.displayedColumns)
+
     this.getContacts();
     // this.contactsCount()
     this.selection.changed.subscribe(
       (res) => {
 
         if(res.source.selected.length){
-          console.log("selected",res.source.selected)
-          this.isDelete.emit(res.source.selected)
+          this.show=true;
+
+          this.isChecked.emit(res.source.selected)
         }
         else{
-          this.isDelete.emit()
+          this.show=false
+          this.isChecked.emit()
         }
       });
 
+  }
+
+  openSnackBar(){
+    let message = `${this.deletedContacts.length} Item(s) Deleted`;
+    let action ="Undo"
+    let snackBarRef=this.snackBar.open(message,action,{duration:4000});
+    snackBarRef.onAction().subscribe(()=>{
+      this.undoDelete();
+    })
+  }
+  undoDelete(){
+    let email='khamis.safy@gmail.com';
+    this.listService.unDeleteContact(email,this.deletedContacts).subscribe(
+      (res)=>{
+
+        console.log(res)
+        this.toaster.success('Success');
+        this.getContacts();
+        this.deletedContacts=[];
+
+
+      },
+      (err)=>{
+        console.log(err)
+        this.toaster.error("Error")
+
+      }
+    )
+
+    console.log("Deleted contacts",this.deletedContacts)
   }
   getContacts(){
 //     let shows=this.listService.display;
@@ -72,7 +118,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-06-19T22:41:50.2533008Z",
-//       isDeleted: false,
+//       isCheckedd: false,
 //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
 //     },
 
@@ -82,7 +128,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-05-19T22:41:50.2533008Z",
-//       isDeleted: false,
+//       isCheckedd: false,
 //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
 //     }]},
 
@@ -93,7 +139,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-06-19T22:41:50.2533008Z",
-//       isDeleted: false,
+//       isCheckedd: false,
 //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
 //     },
 //     {
@@ -102,7 +148,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-05-19T22:41:50.2533008Z",
-//       isDeleted: false,
+//       isCheckedd: false,
 //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
 //     }]},
 
@@ -113,7 +159,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-06-19T22:41:50.2533008Z",
-//       isDeleted: false,
+//       isCheckedd: false,
 //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
 //     },
 //     {
@@ -122,7 +168,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 //       totalContacts: 0,
 //       totalCancelContacts: 0,
 //       createdAt: "2023-05-19T22:41:50.2533008Z",
-//       isDeleted: false,
+//       isCheckedd: false,
 //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
 //     }]}
 
@@ -137,6 +183,8 @@ this.contactsCount();
   let search=this.listService.search;
     this.listService.getContacts(email,shows,pageNum,orderedBy,search).subscribe(
       (res)=>{
+        this.numRows=res.length;
+
         this.dataSource=new MatTableDataSource<Contacts>(res)
       console.log("all contacts",res);
        },
@@ -169,7 +217,7 @@ this.contactsCount();
   isAllSelected() {
     const numSelected = this.selection.selected.length;
 
-    const numRows = this.listService.display;
+    const numRows =  this.numRows;
     return numSelected === numRows;
   }
 
@@ -247,5 +295,31 @@ this.contactsCount();
   selectedRow(event){
     console.log("selected row",event)
   }
-}
+  scrollRight(wrapper){
+    this.WrapperOffsetWidth = wrapper.offsetWidth
+    this.WrapperScrollLeft =wrapper.scrollLeft+100
+    console.log(this.WrapperOffsetWidth )
 
+    wrapper.scrollTo({
+      left: this.WrapperScrollLeft,
+      behavior: "smooth",
+    })
+
+  }
+  scrollLeft(wrapper){
+    console.log(wrapper)
+    this.WrapperScrollLeft =wrapper.scrollLeft-100
+    if(this.WrapperScrollLeft<0)this.WrapperScrollLeft =0;
+    console.log(this.WrapperScrollLeft )
+    wrapper.scrollTo({
+      left: this.WrapperScrollLeft,
+      behavior: "smooth",
+    })
+
+
+}
+changeColumns(event){
+  this.displayedColumns=['select',...event,'action']
+
+}
+}
