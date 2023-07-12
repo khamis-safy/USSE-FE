@@ -43,6 +43,9 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
     private snackBar: MatSnackBar
   ) {
     }
+    @Output() isDelete = new EventEmitter<ListData[]>;
+    WrapperScrollLeft =0
+    WrapperOffsetWidth =250
     @Output() isChecked = new EventEmitter<ListData[]>;
 
   ngOnInit() {
@@ -56,8 +59,6 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 
         if(res.source.selected.length){
           this.show=true;
-          console.log("selected",res.source.selected);
-          console.log("check",this.checks)
 
           this.isChecked.emit(res.source.selected)
         }
@@ -294,11 +295,31 @@ this.contactsCount();
   selectedRow(event){
     console.log("selected row",event)
   }
+  scrollRight(wrapper){
+    this.WrapperOffsetWidth = wrapper.offsetWidth
+    this.WrapperScrollLeft =wrapper.scrollLeft+100
+    console.log(this.WrapperOffsetWidth )
 
-  changeColumns(event){
-    console.log(event)
-    this.displayedColumns=['select',...event,'action']
+    wrapper.scrollTo({
+      left: this.WrapperScrollLeft,
+      behavior: "smooth",
+    })
 
   }
-}
+  scrollLeft(wrapper){
+    console.log(wrapper)
+    this.WrapperScrollLeft =wrapper.scrollLeft-100
+    if(this.WrapperScrollLeft<0)this.WrapperScrollLeft =0;
+    console.log(this.WrapperScrollLeft )
+    wrapper.scrollTo({
+      left: this.WrapperScrollLeft,
+      behavior: "smooth",
+    })
 
+
+}
+changeColumns(event){
+  this.displayedColumns=['select',...event,'action']
+
+}
+}
