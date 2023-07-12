@@ -37,7 +37,9 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
     private listService:ManageContactsService) {
     }
     @Output() isDelete = new EventEmitter<ListData[]>;
-  ngOnInit() {
+    WrapperScrollLeft =0
+    WrapperOffsetWidth =250
+    ngOnInit() {
     this.getContacts();
     // this.contactsCount()
     this.selection.changed.subscribe(
@@ -245,6 +247,28 @@ this.contactsCount();
   }
   selectedRow(event){
     console.log("selected row",event)
+  }
+  scrollRight(wrapper){
+    this.WrapperOffsetWidth = wrapper.offsetWidth
+    this.WrapperScrollLeft =wrapper.scrollLeft+100
+    console.log(this.WrapperOffsetWidth )
+
+    wrapper.scrollTo({
+      left: this.WrapperScrollLeft,
+      behavior: "smooth",
+    })
+
+  }
+  scrollLeft(wrapper){
+    console.log(wrapper)
+    this.WrapperScrollLeft =wrapper.scrollLeft-100
+    if(this.WrapperScrollLeft<0)this.WrapperScrollLeft =0;
+    console.log(this.WrapperScrollLeft )
+    wrapper.scrollTo({
+      left: this.WrapperScrollLeft,
+      behavior: "smooth",
+    })
+
   }
 }
 
