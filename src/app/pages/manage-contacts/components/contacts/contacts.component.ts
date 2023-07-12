@@ -59,8 +59,6 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 
         if(res.source.selected.length){
           this.show=true;
-          console.log("selected",res.source.selected);
-          console.log("check",this.checks)
 
           this.isChecked.emit(res.source.selected)
         }
