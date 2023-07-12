@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { SelectionModel} from '@angular/cdk/collections';
 import { MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormControl } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddListComponent } from './addList/addList.component';
@@ -10,6 +9,8 @@ import { ManageContactsService } from '../../manage-contacts.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ListData } from '../../list-data';
 import { Contacts } from '../../contacts';
+import { FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-lists',
@@ -21,18 +22,24 @@ import { Contacts } from '../../contacts';
 export class ListsComponent implements OnInit ,AfterViewInit  {
 length:number=0;
 active:boolean=false;
+@ViewChildren("check") checks:any;
+numRows;
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
-  toppings = new FormControl('');
+  columns :FormControl;
   @ViewChild(MatSort) sort: MatSort;
-  toppingList: string[] = ['Name', 'Create At	', 'Total Contacts'];
+  displayed: string[] = ['Name','Create At', 'Total Contacts'];
   listTableData:ListData[]=[]
-  displayedColumns: string[] = ['select', 'name', 'createdAt', 'totalContacts',"edit"];
+  displayedColumns: string[] = ['select', 'Name', 'Create At', 'Total Contacts',"edit"];
   dataSource:MatTableDataSource<ListData>;
+  deletedLists:string[]=[];
   // dataSource = new MatTableDataSource<any>(this.listTableData);
   selection = new SelectionModel<any>(true, []);
+
+
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
-    private listService:ManageContactsService) {
+    private listService:ManageContactsService,
+    private snackBar: MatSnackBar) {
   }
   @Output() isDelete = new EventEmitter<ListData[]>;
 
@@ -40,7 +47,7 @@ active:boolean=false;
     // this.getListsCount();
     // this.getListData();
     // this.length=10
-
+    this.columns=new FormControl(this.displayedColumns)
     this.selection.changed.subscribe(
       (res) => {
         console.log("selected data",res)
@@ -55,8 +62,6 @@ active:boolean=false;
   }
 
   ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort
   }
 getListsCount(){
   let email=this.listService.email;
@@ -145,6 +150,7 @@ getListData(){
   this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
      (res)=>{
         console.log(res);
+        this.numRows=res.length;
   this.dataSource=new MatTableDataSource<ListData>(res)
 console.log("from get api",this.dataSource)
       },
@@ -152,14 +158,45 @@ console.log("from get api",this.dataSource)
         console.log(err);
       })
 }
+
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
 
-    const numRows = this.listService.display;
+    const numRows =  this.numRows;
     return numSelected === numRows;
   }
 
+
+  openSnackBar(){
+    let message = `${this.deletedLists.length} Item(s) Deleted`;
+    let action ="Undo"
+    let snackBarRef=this.snackBar.open(message,action,{duration:4000});
+    snackBarRef.onAction().subscribe(()=>{
+      this.undoDelete();
+    })
+  }
+  undoDelete(){
+    let email='khamis.safy@gmail.com';
+    this.listService.unDeleteList(email,this.deletedLists).subscribe(
+      (res)=>{
+
+        console.log(res)
+        this.toaster.success('Success');
+        this.getListData();
+        this.deletedLists=[];
+
+
+      },
+      (err)=>{
+        console.log(err)
+        this.toaster.error("Error")
+
+      }
+    )
+
+    console.log("Deleted contacts",this.deletedLists)
+  }
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     if (this.isAllSelected()) {
@@ -182,15 +219,7 @@ console.log("from get api",this.dataSource)
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  undeleteList(){
-    this.listService.unDeleteList("khamis.safy@gmail.com",["ls_227b8063-0567-4fb5-9ea6-f81f9fa3499c"]).subscribe(
-      (res)=>{
-        console.log("undelete",res)
-      },
-      (err)=>{
-        console.log(err) }
-        )
-  }
+
   onSortChange(event){
     let sorting = event.active=='name' && event.direction=='asc'?'nameASC':
                   event.active=='name' && event.direction=='desc'?'nameDEC':
@@ -244,5 +273,12 @@ console.log("from get api",this.dataSource)
   }
   selectedRow(event){
     console.log("selected row",event)
+  }
+
+  changeColumns(event){
+    console.log(event);
+    this.displayedColumns=['select',...event,'edit']
+
+
   }
 }

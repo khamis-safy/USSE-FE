@@ -9,6 +9,8 @@ import { Contacts } from './contacts';
   providedIn: 'root'
 })
 export class ManageContactsService {
+
+  testPhoneNum:any;
     display:number=5;
     pageNum:number=0;
     email:string="khamis.safy@gmail.com";
@@ -78,10 +80,25 @@ updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:
   }
   return this.http.put(`${env.api}Contacts/updateContact`,data)
 }
+
+
 deleteContact(email:string,listIDs:string[]): Observable<ErrSucc>{
   return this.http.put<ErrSucc>(`${env.api}Contacts/deleteContact?email=${email}`,listIDs)
 }
 contactsCount(email:string):Observable<number>{
   return this.http.get<number>(`${env.api}Contacts/listContactsCount?email=${email}`)
+}
+
+
+addOrMoveContacts(ids:string[],newListIds:string[]): Observable<ErrSucc>{
+  const data ={
+  id:ids,
+  newListId:newListIds
+}
+return this.http.put<ErrSucc>(`${env.api}Contacts/addOrMoveContactsFromLists`,data)
+}
+
+unDeleteContact(email:string,ids:string[]):Observable<ErrSucc>{
+  return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteContact?email=${email}`,ids)
 }
 }

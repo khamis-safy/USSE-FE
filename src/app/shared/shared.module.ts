@@ -26,6 +26,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { UsButtonComponent } from './components/us-button/us-button.component';
 import { UsButtonDirective } from '../directives/us-button.directive';
 import { ToasterServices } from './components/us-toaster/us-toaster.component';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
+
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
 @NgModule({
@@ -47,7 +49,9 @@ import { ToasterServices } from './components/us-toaster/us-toaster.component';
     MatProgressBarModule,
     MatSnackBarModule,
     MatSortModule,
-    FormsModule
+    FormsModule,
+    NgxIntlTelInputModule
+
   ],
   declarations: [
     SideBarComponent,
@@ -82,7 +86,9 @@ import { ToasterServices } from './components/us-toaster/us-toaster.component';
     MatSortModule,
     MatIconModule,
     UsButtonDirective,
-    FormsModule
+    FormsModule,
+    NgxIntlTelInputModule
+
   ],
   providers:[ToasterServices]
 })

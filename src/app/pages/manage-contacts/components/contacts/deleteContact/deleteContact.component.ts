@@ -16,12 +16,12 @@ export class DeleteContactComponent implements OnInit {
   constructor(
     private toaster: ToasterServices,
     private listService:ManageContactsService,
-    public dialogRef: MatDialogRef<DeleteListComponent>,
+    public dialogRef: MatDialogRef<DeleteContactComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Contacts[],
   ) { }
 
   ngOnInit() {
-    console.log(this.data)
+    console.log("from delete contacts",this.data)
     let body = this.data.map(res=>res.id)
     this.numOfItems=body.length;
     console.log(body)
@@ -29,13 +29,14 @@ export class DeleteContactComponent implements OnInit {
 
   submit(){
     this.isLoading = true
-    let body = this.data.map(res=>res.id)
+    let body = this.data.map(res=>res.id);
+
     this.listService.deleteContact('khamis.safy@gmail.com',body).subscribe(
       (res)=>{
         this.isLoading = false
         console.log(res)
-        this.onClose();
-        this.toaster.success("Success")
+        this.onClose(body);
+        this.toaster.success(`${res.numberOfSuccess} Deleted Successfully ${res.numberOfErrors} failed`)
 
       },
       (err)=>{
@@ -47,9 +48,11 @@ export class DeleteContactComponent implements OnInit {
       }
     )
   }
-  onClose(): void {
-    this.dialogRef.close();
-    console.log("onClose")
+   onClose(data?): void {
+    this.dialogRef.close(data);
+
+    console.log("onClose",data)
+
   }
 
 }

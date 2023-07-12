@@ -1,0 +1,28 @@
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 25px;
+}
+.icon{
+  cursor: pointer;
+}
+
+.table-container{
+  border-radius: 16px;
+  border:1px solid rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  table{
+    // background-color: transparent;
+
+    .mdc-data-table__cell {
+      border-bottom: none !important ;
+    }
+    .contacts{
+      width: 63px;
+      height: 25px;
+      background-color: var(--clr-primary-500);
+      border-radius: 8px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
