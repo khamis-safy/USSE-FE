@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { SelectionModel} from '@angular/cdk/collections';
 import { MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,6 +11,7 @@ import { ListData } from '../../list-data';
 import { Contacts } from '../../contacts';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-lists',
@@ -19,11 +20,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 
 
-export class ListsComponent implements OnInit ,AfterViewInit  {
+export class ListsComponent implements OnInit ,AfterViewInit ,OnDestroy {
 length:number=0;
 active:boolean=false;
 @ViewChildren("check") checks:any;
 numRows;
+loading;
+subscribtions:Subscription[]=[];
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   columns :FormControl;
   @ViewChild(MatSort) sort: MatSort;
@@ -41,6 +44,7 @@ numRows;
     private listService:ManageContactsService,
     private snackBar: MatSnackBar) {
   }
+
   @Output() isDelete = new EventEmitter<ListData[]>;
 
   ngOnInit() {
@@ -66,17 +70,21 @@ numRows;
 getListsCount(){
   let email=this.listService.email;
 
-  this.listService.ListsCount(email).subscribe(
+ let sub1= this.listService.ListsCount(email).subscribe(
     (res)=>{
       this.length=res;
+      // this.length=0;
+
       console.log("pages count",res);
 
     }
     ,(err)=>{console.log(err)}
-  )
+  );
+  this.subscribtions.push(sub1)
 }
 
 getListData(){
+
   this.getListsCount();
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
@@ -84,6 +92,7 @@ getListData(){
   let orderedBy=this.listService.orderedBy;
   let search=this.listService.search;
 
+  this.loading = true;
 
   console.log(`from git list data inside list component number of shows is:${shows} page number is ${pageNum} orderBy is ${orderedBy} search is ${search}`)
   // this.listTableData=[
@@ -147,16 +156,21 @@ getListData(){
 
   // this.dataSource=new MatTableDataSource<ListData>(this.listTableData)
 
-  this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
+ let sub2= this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
      (res)=>{
+      this.loading = false;
+
         console.log(res);
         this.numRows=res.length;
   this.dataSource=new MatTableDataSource<ListData>(res)
 console.log("from get api",this.dataSource)
       },
       (err)=>{
+        this.loading = false;
+
         console.log(err);
       })
+      this.subscribtions.push(sub2)
 }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -280,5 +294,13 @@ console.log("from get api",this.dataSource)
     this.displayedColumns=['select',...event,'edit']
 
 
+  }
+  ngOnDestroy() {
+    this.subscribtions.map(e=>e.unsubscribe())
+    console.log("Destroyed success")
+  }
+  destroy(){
+    this.subscribtions.map(e=>e.unsubscribe())
+    console.log("Destroyed success")
   }
 }

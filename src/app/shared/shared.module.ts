@@ -27,6 +27,7 @@ import { UsButtonComponent } from './components/us-button/us-button.component';
 import { UsButtonDirective } from '../directives/us-button.directive';
 import { ToasterServices } from './components/us-toaster/us-toaster.component';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -50,7 +51,8 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
     MatSnackBarModule,
     MatSortModule,
     FormsModule,
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    MatProgressSpinnerModule
 
   ],
   declarations: [
@@ -87,7 +89,8 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
     MatIconModule,
     UsButtonDirective,
     FormsModule,
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    MatProgressSpinnerModule
 
   ],
   providers:[ToasterServices]

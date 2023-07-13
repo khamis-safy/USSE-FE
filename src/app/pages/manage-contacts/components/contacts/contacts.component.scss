@@ -44,8 +44,8 @@
 
 }
 .listName{
-  border: 1px solid var(--clr-primary-700);
-  color:var(--clr-primary-700);
+  border: 1px solid var(--clr-primary-800);
+  color:var(--clr-primary-800);
 }
 .overflow-control{
   &::after{
@@ -55,7 +55,8 @@
 }
 .right-arrow{
   cursor: pointer;
-  background-image: linear-gradient(90deg,transparent,#fff 33%);
+  // background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(255 255 255 / 79%), rgb(255 255 255));
+  background-image: linear-gradient(90deg,transparent,#fff 90%);
 }
 .left-arrow{
   cursor: pointer;
@@ -71,3 +72,4 @@
 .lists-wrapper{
   scroll-behavior: smooth;
 }
+
