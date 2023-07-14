@@ -296,11 +296,10 @@ console.log("from get api",this.dataSource)
 
   }
   ngOnDestroy() {
-    this.subscribtions.map(e=>e.unsubscribe())
-    console.log("Destroyed success")
+    this.subscribtions.map(e=>e.unsubscribe());
+    this.dataSource.data=[];
+    console.log("lists Destroyed success")
   }
-  destroy(){
-    this.subscribtions.map(e=>e.unsubscribe())
-    console.log("Destroyed success")
-  }
+
+
 }

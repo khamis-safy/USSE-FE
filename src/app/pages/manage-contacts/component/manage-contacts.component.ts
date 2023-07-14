@@ -158,11 +158,11 @@ export class ManageContactsComponent {
     this.tab=this.tabs[ev.index]
     if(this.tab=='contacts'){
       this.contacts.getContacts();
-      this.lists.destroy();
+      this.lists.ngOnDestroy();
     }
     else if(this.tab=='lists'){
       this.lists.getListData();
-      this.contacts.destroy();
+      this.contacts.ngOnDestroy();
 
     }
     else{

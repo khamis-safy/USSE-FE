@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../manage-contacts.service';
@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss']
 })
-export class ContactsComponent  implements OnInit ,AfterViewInit {
+export class ContactsComponent  implements OnInit ,AfterViewInit ,OnDestroy{
   length:number=0;
   active:boolean=false;
   testListContacts:Contacts[]=[]
@@ -46,6 +46,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
     private snackBar: MatSnackBar
   ) {
     }
+
     @Output() isDelete = new EventEmitter<ListData[]>;
     WrapperScrollLeft =0
     WrapperOffsetWidth =250
@@ -332,8 +333,11 @@ changeColumns(event){
   this.displayedColumns=['select',...event,'action']
 
 }
-destroy(){
-  this.subscribtions.map(e=>e.unsubscribe())
-  console.log("Destroyed success")
+
+ngOnDestroy() {
+  this.subscribtions.map(e=>e.unsubscribe());
+  this.dataSource.data=[];
+  console.log("contacts Destroyed success")
+
 }
 }
