@@ -15,6 +15,11 @@ const routes: Routes = [
         path: "contacts",
         loadChildren: () =>
           import("./../../pages/manage-contacts/manage-contacts.module").then((m) => m.ManageContactsModule),
+      },
+      {
+        path: "devices",
+        loadChildren: () =>
+          import("./../../pages/devices/devices.module").then((m) => m.DevicesModule),
       }
 
     ]
