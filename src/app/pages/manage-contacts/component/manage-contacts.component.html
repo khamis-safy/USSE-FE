@@ -34,7 +34,7 @@
     ></us-button>
       <us-button
         class="m-2"
-        label="Add list"
+        [label]="tab=='contacts'?'Add Contact':'Add list'"
         [matIcon]="'add'"
         [fill]="true"
         [size]="'md'"

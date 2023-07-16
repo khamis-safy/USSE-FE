@@ -155,12 +155,20 @@ export class ManageContactsComponent {
     this.contacts.selection.clear();
     this.lists.selection.clear();
 
+
     this.tab=this.tabs[ev.index]
     if(this.tab=='contacts'){
       this.contacts.getContacts();
+      this.lists.destroy();
+      this.lists.paginator.pageSize=this.listService.display;
+      this.lists.paginator.pageIndex=this.listService.pageNum;
     }
     else if(this.tab=='lists'){
       this.lists.getListData();
+      this.contacts.destroy();
+      this.contacts.paginator.pageSize=this.listService.display;
+      this.contacts.paginator.pageIndex=this.listService.pageNum;
+
     }
     else{
       console.log("unsub")

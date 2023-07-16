@@ -31,9 +31,8 @@ export class AddContactComponent implements OnInit{
 
   name:any = new FormControl('',[Validators.required]);
   mobile:any = new FormControl('',[Validators.required]);
-  cnName:any = new FormControl('',[Validators.required]);
-  note:any=new FormControl(null,[Validators.required]);
-
+  cnName:any = new FormControl('');
+  note:any=new FormControl('');
   form = new FormGroup({
     name:this.name,
     mobile:this.mobile,

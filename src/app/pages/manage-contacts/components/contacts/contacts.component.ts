@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../manage-contacts.service';
@@ -12,6 +12,7 @@ import { Contacts } from '../../contacts';
 import { AddContactComponent } from './addContact/addContact.component';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-contacts',
@@ -23,6 +24,8 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   active:boolean=false;
   testListContacts:Contacts[]=[]
   numRows;
+  loading;
+  subscribtions:Subscription[]=[];
 
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
 
@@ -43,6 +46,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
     private snackBar: MatSnackBar
   ) {
     }
+
     @Output() isDelete = new EventEmitter<ListData[]>;
     WrapperScrollLeft =0
     WrapperOffsetWidth =250
@@ -181,16 +185,21 @@ this.contactsCount();
   let email=this.listService.email;
   let orderedBy=this.listService.orderedBy;
   let search=this.listService.search;
-    this.listService.getContacts(email,shows,pageNum,orderedBy,search).subscribe(
+  this.loading = true;
+   let sub1= this.listService.getContacts(email,shows,pageNum,orderedBy,search).subscribe(
       (res)=>{
         this.numRows=res.length;
+        this.loading = false;
 
         this.dataSource=new MatTableDataSource<Contacts>(res)
       console.log("all contacts",res);
        },
        (err)=>{
+        this.loading = false;
+
          console.log(err);
        })
+       this.subscribtions.push(sub1)
   }
 
 
@@ -199,15 +208,17 @@ this.contactsCount();
   contactsCount(){
     let email=this.listService.email;
 
-    this.listService.contactsCount(email).subscribe(
+    let sub2=this.listService.contactsCount(email).subscribe(
       (res)=>{
         this.length=res;
+        // this.length=0;
+
         console.log("pages count contacts",res);
 
       }
       ,(err)=>{console.log(err)}
     )
-
+this.subscribtions.push(sub2)
 
   }
 
@@ -320,6 +331,13 @@ this.contactsCount();
 }
 changeColumns(event){
   this.displayedColumns=['select',...event,'action']
+
+}
+
+destroy() {
+  this.subscribtions.map(e=>e.unsubscribe());
+  this.dataSource.data=[];
+  console.log("contacts Destroyed success")
 
 }
 }
