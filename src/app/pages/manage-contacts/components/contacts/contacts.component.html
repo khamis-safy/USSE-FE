@@ -62,7 +62,7 @@
        <!-- Lists Column -->
        <ng-container matColumnDef="Lists">
         <th mat-header-cell *matHeaderCellDef style="text-align: center;" > Lists </th>
-        <td mat-cell *matCellDef="let element" style=" width: 320px;">
+        <td mat-cell *matCellDef="let element" style=" width: 340px;">
           <div  class=" position-relative" style=" width: 280px;">
             <div class="d-flex gap-2 overflow-hidden lists-wrapper px-4" #listsWrapper  style="width: 260px;">
               <div *ngFor="let item of element.lists" class="listName bg-white text-nowrap px-2 py-1 rounded-2">
@@ -118,12 +118,12 @@
     </table>
     <div *ngIf="loading" class="spinner-container p-3">
 
-      <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center;    filter: invert(24%) sepia(66%) saturate(1894%) hue-rotate(171deg) brightness(96%) contrast(101%);animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
+      <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
     </div>
 
     <mat-paginator
     (page)="onPageChange($event)"
-    [pageSizeOptions]="[5, 10, 20]"
+    [pageSizeOptions]="[10, 50, 100]"
     [length]="length"
         showFirstLastButtons
         aria-label="Select page of periodic elements">

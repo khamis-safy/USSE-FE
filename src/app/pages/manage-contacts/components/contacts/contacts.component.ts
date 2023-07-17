@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss']
 })
-export class ContactsComponent  implements OnInit ,AfterViewInit ,OnDestroy{
+export class ContactsComponent  implements OnInit ,AfterViewInit {
   length:number=0;
   active:boolean=false;
   testListContacts:Contacts[]=[]
@@ -334,7 +334,7 @@ changeColumns(event){
 
 }
 
-ngOnDestroy() {
+destroy() {
   this.subscribtions.map(e=>e.unsubscribe());
   this.dataSource.data=[];
   console.log("contacts Destroyed success")

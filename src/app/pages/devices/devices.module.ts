@@ -4,6 +4,7 @@ import { DevicesComponent } from './component/devices.component';
 import { DevicesRoutes } from './devices.routing';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DevicesService } from './devices.service';
+import { StepsComponent } from './components/steps/steps.component';
 
 @NgModule({
   imports: [
@@ -11,7 +12,10 @@ import { DevicesService } from './devices.service';
     DevicesRoutes,
     SharedModule
   ],
-  declarations: [DevicesComponent],
+  declarations: [
+    DevicesComponent,
+    StepsComponent
+  ],
   providers:[DevicesService]
 })
 export class DevicesModule { }

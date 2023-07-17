@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { SelectionModel} from '@angular/cdk/collections';
 import { MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,7 +8,6 @@ import { AddListComponent } from './addList/addList.component';
 import { ManageContactsService } from '../../manage-contacts.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ListData } from '../../list-data';
-import { Contacts } from '../../contacts';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
@@ -20,7 +19,7 @@ import { Subscription } from 'rxjs';
 })
 
 
-export class ListsComponent implements OnInit ,AfterViewInit ,OnDestroy {
+export class ListsComponent implements OnInit ,AfterViewInit  {
 length:number=0;
 active:boolean=false;
 @ViewChildren("check") checks:any;
@@ -267,9 +266,11 @@ console.log("from get api",this.dataSource)
 
   }
   onPageChange(event){
+
     this.listService.display=event.pageSize;
     this.listService.pageNum=event.pageIndex;
-    // console.log("onPageChange",this.listService.display,event);
+
+
     this.getListData();
   }
   onSearch(event:any){
@@ -295,7 +296,7 @@ console.log("from get api",this.dataSource)
 
 
   }
-  ngOnDestroy() {
+  destroy() {
     this.subscribtions.map(e=>e.unsubscribe());
     this.dataSource.data=[];
     console.log("lists Destroyed success")

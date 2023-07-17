@@ -147,7 +147,7 @@ export class ManageContactsComponent {
   }
 
   changeModal(ev){
-    this.listService.display=5;
+    this.listService.display=10;
     this.listService.pageNum=0;
     this.listService.email="khamis.safy@gmail.com";
     this.listService.orderedBy='';
@@ -155,14 +155,19 @@ export class ManageContactsComponent {
     this.contacts.selection.clear();
     this.lists.selection.clear();
 
+
     this.tab=this.tabs[ev.index]
     if(this.tab=='contacts'){
       this.contacts.getContacts();
-      this.lists.ngOnDestroy();
+      this.lists.destroy();
+      this.lists.paginator.pageSize=this.listService.display;
+      this.lists.paginator.pageIndex=this.listService.pageNum;
     }
     else if(this.tab=='lists'){
       this.lists.getListData();
-      this.contacts.ngOnDestroy();
+      this.contacts.destroy();
+      this.contacts.paginator.pageSize=this.listService.display;
+      this.contacts.paginator.pageIndex=this.listService.pageNum;
 
     }
     else{
