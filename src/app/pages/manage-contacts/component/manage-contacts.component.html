@@ -22,7 +22,7 @@
       ></us-button>
 
       <us-button
-      *ngIf="isChecked || isDelete"
+      *ngIf="isChecked || isDelete ||isCanceled"
         class="m-2"
         label="Delete"
         img="assets/icons/delete.svg"
@@ -47,6 +47,7 @@
       (clicked)="openContactLists()"
     ></us-button>
       <us-button
+      *ngIf="tab=='contacts' || tab=='lists'"
         class="m-2"
         [label]="tab=='contacts'?'Add Contact':'Add list'"
         [matIcon]="'add'"
@@ -91,18 +92,17 @@
         <!-- <mat-icon class="tab-icon">format_list_bulleted</mat-icon> -->
 
       </ng-template>
-      <app-lists (isDelete)="onDeleteChange($event)"></app-lists>
+      <app-lists  (isDelete)="onDeleteChange($event)"></app-lists>
     </mat-tab>
 
     <mat-tab>
       <ng-template mat-tab-label >
         <img src="assets/icons/unsubscribe.svg" alt="" class="px-2">
-
           Canceled Contacts
-
         <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
 
       </ng-template>
+      <app-canceled (DeleteCanceled)="deleteCanceled($event)"></app-canceled>
     </mat-tab>
   </mat-tab-group>
 </section>

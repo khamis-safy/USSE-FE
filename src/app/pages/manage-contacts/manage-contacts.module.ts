@@ -13,6 +13,7 @@ import { DeleteListComponent } from './components/lists/delete-list/delete-list.
 import { AddContactComponent } from './components/contacts/addContact/addContact.component';
 import { DeleteContactComponent } from './components/contacts/deleteContact/deleteContact.component';
 import { ContactListsComponent } from './components/contacts/contactLists/contactLists.component';
+import { CanceledComponent } from './components/canceled/canceled.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,9 @@ import { ContactListsComponent } from './components/contacts/contactLists/contac
     AddListComponent,
     AddContactComponent,
     DeleteContactComponent,
-    ContactListsComponent
+    ContactListsComponent,
+    CanceledComponent
+
   ],
   providers:[ManageContactsService]
 })
