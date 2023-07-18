@@ -8,6 +8,20 @@
     </div>
     <div class="buttons_ ">
       <us-button
+      *ngIf="isChecked"
+        class="m-2"
+        label="Remove Lists"
+        img="assets/icons/delete.svg"
+        [iconClass]="'material-symbols-outlined'"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'danger'"
+        (clicked)="removeLists()"
+      ></us-button>
+
+      <us-button
       *ngIf="isChecked || isDelete"
         class="m-2"
         label="Delete"

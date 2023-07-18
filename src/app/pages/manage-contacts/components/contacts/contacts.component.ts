@@ -37,7 +37,6 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   displayed: string[] = ['Name','Mobile','Notes','Lists','Company Name','Create At'];
   displayedColumns: string[] = ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At","action"];
   dataSource:MatTableDataSource<Contacts>;
-  show:boolean=false;
   // dataSource = new MatTableDataSource<any>(this.listTableData);
   selection = new SelectionModel<any>(true, []);
   constructor(public dialog: MatDialog,
@@ -62,12 +61,11 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
       (res) => {
 
         if(res.source.selected.length){
-          this.show=true;
+          console.log("selected",res.source.selected)
 
           this.isChecked.emit(res.source.selected)
         }
         else{
-          this.show=false
           this.isChecked.emit()
         }
       });

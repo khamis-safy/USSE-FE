@@ -100,7 +100,7 @@ export class ManageContactsComponent {
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.data = this.isChecked;
+    dialogConfig.data =  {contacts:this.isChecked,remove:false};
     const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
 
 
@@ -114,10 +114,30 @@ export class ManageContactsComponent {
       this.contacts.checks._results=[]
 
       this.contacts.selection.clear();
-      console.log("delete afterClosed",this.lists.selection)
 
     });
     console.log("delete contact")
+  }
+
+
+  removeLists(){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.data = {contacts:this.isChecked,remove:true};
+    const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.contacts.getContacts();
+      }
+      this.contacts.checks._results=[]
+
+      this.contacts.selection.clear();
+
+    });
   }
   openContactLists(){
     const dialogConfig=new MatDialogConfig();
