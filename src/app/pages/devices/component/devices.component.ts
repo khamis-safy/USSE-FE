@@ -16,6 +16,7 @@ export class DevicesComponent implements OnInit{
 
   }
 
+
   openStepsModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='95vh';
@@ -30,6 +31,7 @@ export class DevicesComponent implements OnInit{
       }
 
     });
+
 
   }
 }

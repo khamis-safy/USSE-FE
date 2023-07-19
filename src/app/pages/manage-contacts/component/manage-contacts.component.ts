@@ -192,7 +192,6 @@ export class ManageContactsComponent implements AfterViewInit{
     if(this.tab=='contacts'){
       this.contacts.isCanceled=false;
       this.contacts.getContacts();
-
       this.lists.destroy();
 
       this.lists.paginator.pageSize=this.listService.display;

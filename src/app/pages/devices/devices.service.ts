@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 import { CheckCon, Device } from './device';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,5 +22,6 @@ CheckWhatsappBisuness(sessionName:string,token:string):Observable<CheckCon>{
     token:token
   }
   return this.http.post<CheckCon>(`${env.api}Device/CheckWhatsappBisunessSession`,data)
+
 }
 }
