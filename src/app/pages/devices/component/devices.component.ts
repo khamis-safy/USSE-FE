@@ -15,12 +15,8 @@ export class DevicesComponent implements OnInit{
   ngOnInit() {
 
   }
-  initWhatsB(){
-    this.devicesService.initWhatsappB("session_wpp_949e3574-2309-42be-ba28-8b7f3f053e99").subscribe(
-      (res)=>{console.log("works",res.sessionName)},
-      (err)=>{console.log(err)}
-    )
-  }
+
+
   openStepsModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='95vh';
@@ -35,7 +31,7 @@ export class DevicesComponent implements OnInit{
       }
 
     });
-    console.log("add-list-modal")
+
 
   }
 }

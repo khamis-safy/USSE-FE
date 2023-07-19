@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../manage-contacts.service';
@@ -20,16 +20,24 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./contacts.component.scss']
 })
 export class ContactsComponent  implements OnInit ,AfterViewInit {
-  length:number=0;
+  length:number;
   active:boolean=false;
   testListContacts:Contacts[]=[]
   numRows;
   loading;
   subscribtions:Subscription[]=[];
 
-  @ViewChild(MatPaginator)  paginator!: MatPaginator;
 
+  WrapperScrollLeft =0;
+  WrapperOffsetWidth =250;
+  isCanceled:boolean=false;
+
+  @Output() isDelete = new EventEmitter<ListData[]>;
+  @Output() isChecked = new EventEmitter<ListData[]>;
+
+  @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
   @ViewChildren("check") checks:any;
   listTableData:ListData[]=[]
   deletedContacts:string[]=[];
@@ -37,37 +45,30 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   displayed: string[] = ['Name','Mobile','Notes','Lists','Company Name','Create At'];
   displayedColumns: string[] = ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At","action"];
   dataSource:MatTableDataSource<Contacts>;
-  show:boolean=false;
   // dataSource = new MatTableDataSource<any>(this.listTableData);
   selection = new SelectionModel<any>(true, []);
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+
   ) {
     }
 
-    @Output() isDelete = new EventEmitter<ListData[]>;
-    WrapperScrollLeft =0
-    WrapperOffsetWidth =250
-    @Output() isChecked = new EventEmitter<ListData[]>;
 
   ngOnInit() {
 
     this.columns=new FormControl(this.displayedColumns)
 
-    this.getContacts();
-    // this.contactsCount()
     this.selection.changed.subscribe(
       (res) => {
 
         if(res.source.selected.length){
-          this.show=true;
+          console.log("selected",res.source.selected)
 
           this.isChecked.emit(res.source.selected)
         }
         else{
-          this.show=false
           this.isChecked.emit()
         }
       });
@@ -103,8 +104,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 
     console.log("Deleted contacts",this.deletedContacts)
   }
-  getContacts(){
-//     let shows=this.listService.display;
+  //     let shows=this.listService.display;
 //     let pageNum=this.listService.pageNum;
 //     let email=this.listService.email;
 //     let orderedBy=this.listService.orderedBy;
@@ -178,7 +178,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 
 // ];
 // this.dataSource=new MatTableDataSource<Contacts>(this.testListContacts)
-
+  getContacts(){
 this.contactsCount();
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
@@ -186,10 +186,15 @@ this.contactsCount();
   let orderedBy=this.listService.orderedBy;
   let search=this.listService.search;
   this.loading = true;
-   let sub1= this.listService.getContacts(email,shows,pageNum,orderedBy,search).subscribe(
+
+
+   let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNum,orderedBy,search).subscribe(
       (res)=>{
         this.numRows=res.length;
         this.loading = false;
+        if(this.isCanceled){
+          console.log("canceled contacts",this.isCanceled)
+        }
 
         this.dataSource=new MatTableDataSource<Contacts>(res)
       console.log("all contacts",res);
@@ -208,12 +213,14 @@ this.contactsCount();
   contactsCount(){
     let email=this.listService.email;
 
-    let sub2=this.listService.contactsCount(email).subscribe(
+    let sub2=this.listService.contactsCount(email,this.isCanceled).subscribe(
+
       (res)=>{
         this.length=res;
         // this.length=0;
 
         console.log("pages count contacts",res);
+        console.log("length",this.length)
 
       }
       ,(err)=>{console.log(err)}

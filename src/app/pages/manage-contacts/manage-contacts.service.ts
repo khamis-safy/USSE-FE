@@ -11,7 +11,7 @@ import { Contacts } from './contacts';
 export class ManageContactsService {
 
   testPhoneNum:any;
-    display:number=5;
+    display:number=10;
     pageNum:number=0;
     email:string="khamis.safy@gmail.com";
     orderedBy:string="";
@@ -51,8 +51,8 @@ unDeleteList(email:string,ids:string[]):Observable<ErrSucc>{
 }
 
 // contacts methods
-getContacts(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Contacts[]>{
-  return this.http.get<Contacts[]>(`${env.api}Contacts/listContacts?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+getContacts(email:string,isCanceled:boolean,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Contacts[]>{
+  return this.http.get<Contacts[]>(`${env.api}Contacts/listContacts?email=${email}&isCanceled=${isCanceled}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }
 
 addContact(name:string,mobileNumber:string,companyName:string,note:string,email:string,listId:string[]):Observable<Contacts>{
@@ -67,7 +67,7 @@ addContact(name:string,mobileNumber:string,companyName:string,note:string,email:
   return this.http.post<Contacts>(`${env.api}Contacts/addNewContact`,data)
 }
 
-updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:string,email:string,listId:string[]):Observable<any>{
+updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:string,email:string,newListId:string[]):Observable<any>{
   const data={
     id:id,
     name: name,
@@ -75,7 +75,7 @@ updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:
     companyName: companyName,
     note: note,
     email: email,
-    listId:listId
+    newListId:newListId
 
   }
   return this.http.put(`${env.api}Contacts/updateContact`,data)
@@ -85,8 +85,14 @@ updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:
 deleteContact(email:string,listIDs:string[]): Observable<ErrSucc>{
   return this.http.put<ErrSucc>(`${env.api}Contacts/deleteContact?email=${email}`,listIDs)
 }
-contactsCount(email:string):Observable<number>{
-  return this.http.get<number>(`${env.api}Contacts/listContactsCount?email=${email}`)
+removeContactsFromLists(id:string[]): Observable<ErrSucc>{
+  const data={
+    id:id
+  }
+  return this.http.put<ErrSucc>(`${env.api}Contacts/removeContactsFromLists`,data)
+}
+contactsCount(email:string,isCanceled:boolean):Observable<number>{
+  return this.http.get<number>(`${env.api}Contacts/listContactsCount?email=${email}&isCanceled=${isCanceled}`)
 }
 
 

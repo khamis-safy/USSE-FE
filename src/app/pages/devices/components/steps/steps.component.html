@@ -1,11 +1,33 @@
-<section class="p-5 h-100">
-  <ng-container *ngIf="!isLoading && steps">
-    <div class="steps">
+
+<ng-container *ngIf="!isLoading && steps">
+
+<section class="p-5 h-100 d-flex flex-column">
+
+    <div class="steps " style="height: 90%;">
+
       <!-- scanning steps -->
+
     </div>
-  </ng-container>
+    <div class="modal-footer justify-content-center gap-3"  style="height: 10%;">
+      <us-button
+      class="m-2"
+      label="Scann Now"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'primary'"
+      (clicked)="scannCode()"
+    ></us-button>
+      </div>
+</section>
+</ng-container>
+
+
 
   <ng-container *ngIf="isLoading && !steps">
+    <div class="p-5 h-100">
+
     <div class="p-3 d-flex justify-content-center align-items-center flex-column gap-5 h-100">
 
       <div class="spinner-container mb-5">
@@ -16,9 +38,12 @@
         Please wait, QR code is loading...
       </p>
     </div>
+  </div>
   </ng-container>
 
   <ng-container *ngIf="!isLoading && !steps">
+    <div class="p-5 h-100">
+
     <div class="p-3 d-flex justify-content-center align-items-center flex-column gap-5 h-100">
 
       <div class=" qr-code  p-5" style="border:1px solid rgba(0, 101, 141, 1); ">
@@ -28,6 +53,6 @@
         Scan this QR Code to preview
       </p>
     </div>
+  </div>
   </ng-container>
 
-</section>

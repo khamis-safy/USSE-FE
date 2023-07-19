@@ -14,9 +14,14 @@
       <span style="font-weight: 700;">{{numOfItems}} item(s)</span>
       Selected
     </div>
-    <p class="txt-sm text-center">Are you sure you want to delete selected items ?</p>
+
+    <ng-container [ngSwitch]="isRemoveL">
+    <p *ngSwitchCase="false" class="txt-sm text-center">Are you sure you want to delete selected items ?</p>
+    <p *ngSwitchCase="true" class="txt-sm text-center">Clear lists from this contacts ?</p>
+    </ng-container>
+
   </div>
- </div>
+</div>
 
   <!-- modal footer -->
   <div class="modal-footer justify-content-center position-absolute bottom-0 w-100 gap-3"  style="height: 89px; background:#DBE9F2;">

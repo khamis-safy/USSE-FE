@@ -6,7 +6,7 @@ export interface Contacts {
   mobileNumber:string,
   companyName: string,
   note: string,
-  // isCanceled: boolean,
+  isCanceled: boolean,
   // isDeleted: boolean,
   createdAt: string,
   // applicationUser: object,
