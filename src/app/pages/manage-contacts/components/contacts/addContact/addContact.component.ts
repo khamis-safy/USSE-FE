@@ -9,7 +9,11 @@ import { AddListComponent } from '../../lists/addList/addList.component';
 import { Contacts } from '../../../contacts';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
 
+interface CheckedCont{
+  contacts:Contacts,
+  listDetails:boolean
 
+}
 @Component({
   selector: 'app-addContact',
   templateUrl: './addContact.component.html',
@@ -17,7 +21,7 @@ import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-
 })
 export class AddContactComponent implements OnInit{
 // isChanged:boolean=false;
-
+  isListDetails:boolean=false;
   lists: ListData[] ;
   selectedLists:FormControl;
 
@@ -44,24 +48,29 @@ export class AddContactComponent implements OnInit{
 
 oldData;
 
-  listsIds:string[]=[""]
+  listsIds:string[]=[""];
   constructor(
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<AddContactComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:Contacts,
+    @Inject(MAT_DIALOG_DATA) public data:CheckedCont,
   ) { }
 
   ngOnInit() {
     this.getLists();
-
+    if(this.data.listDetails){
+      this.isListDetails=true;
+    }
+    else{
+      this.isListDetails=false
+    }
     if(this.data){
+
       this.isEdit = true
       this.fillingData();
-      this.listsIds=this.data.lists.map((e)=>e.id)
-   console.log("selected lists ids",this.listsIds)
+      this.listsIds=this.data.contacts.lists.map((e)=>e.id);
 
-      this.selectedLists=new FormControl(this.data.lists)
+      this.selectedLists=new FormControl(this.data.contacts.lists)
 
 
       console.log("contacts data",this.data)
@@ -80,10 +89,10 @@ oldData;
 
   fillingData(){
     this.form.setValue({
-      name: this.data.name,
-      mobile:`+${this.data.mobileNumber}`,
-      cnName:this.data.companyName,
-      note:this.data.note,
+      name: this.data.contacts.name,
+      mobile:`+${this.data.contacts.mobileNumber}`,
+      cnName:this.data.contacts.companyName,
+      note:this.data.contacts.note,
     });
 // this.oldData=this.form.value;
 // console.log("old data",this.oldData)
@@ -94,7 +103,7 @@ oldData;
   this.listService.getList("khamis.safy@gmail.com",10,0,"","").subscribe(
      (res)=>{
       if(this.data){
-      let dataLists=this.data.lists;
+      let dataLists=this.data.contacts.lists;
       let resList=res
       const listsMap = new Map();
 
@@ -152,22 +161,43 @@ oldData;
     let cnName=this.form.value.cnName;
     let mobile=this.form.value.mobile.e164Number
     let note = this.form.value.note;
-    this.isLoading = true
-    this.listService.updateContact(this.data.id,name,mobile,cnName,note,email,this.listsIds).subscribe(
+    this.isLoading = true;
 
-      (res)=>{
-        this.isLoading = false
-        console.log(res)
-        this.onClose(true);
-        this.toaster.success("Success")
-      },
-      (err)=>{
-        this.isLoading = false
-        console.log(err)
-        this.onClose(false);
-        this.toaster.error("Error")
-      }
-    )
+    if(this.data.listDetails){
+      this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email).subscribe(
+
+        (res)=>{
+          this.isLoading = false
+          console.log(res)
+          this.onClose(true);
+          this.toaster.success("Success")
+        },
+        (err)=>{
+          this.isLoading = false
+          console.log(err)
+          this.onClose(false);
+          this.toaster.error("Error")
+        }
+      )
+    }
+    else{
+      this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email,this.listsIds).subscribe(
+
+        (res)=>{
+          this.isLoading = false
+          console.log(res)
+          this.onClose(true);
+          this.toaster.success("Success")
+        },
+        (err)=>{
+          this.isLoading = false
+          console.log(err)
+          this.onClose(false);
+          this.toaster.error("Error")
+        }
+      )
+    }
+
   }
   onClose(data?): void {
     this.dialogRef.close(data);

@@ -9,8 +9,8 @@ import { Contacts } from './contacts';
   providedIn: 'root'
 })
 export class ManageContactsService {
+  listName:string="";
 
-  testPhoneNum:any;
     display:number=10;
     pageNum:number=0;
     email:string="khamis.safy@gmail.com";
@@ -49,10 +49,14 @@ ListsCount(email:string):Observable<number>{
 unDeleteList(email:string,ids:string[]):Observable<ErrSucc>{
   return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteList?email=${email}`,ids)
 }
+getListById(listId:string): Observable<ListData>{
+
+    return this.http.get<ListData>(`${env.api}Contacts/getListById?id=${listId}`)
+  }
 
 // contacts methods
-getContacts(email:string,isCanceled:boolean,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Contacts[]>{
-  return this.http.get<Contacts[]>(`${env.api}Contacts/listContacts?email=${email}&isCanceled=${isCanceled}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+getContacts(email:string,isCanceled:boolean,showsNum:number,pageNum:number,orderedBy:string,search:string,listId?:string):Observable<Contacts[]>{
+  return this.http.get<Contacts[]>(`${env.api}Contacts/listContacts?email=${email}&listId=${listId}&isCanceled=${isCanceled}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }
 
 addContact(name:string,mobileNumber:string,companyName:string,note:string,email:string,listId:string[]):Observable<Contacts>{
@@ -67,8 +71,8 @@ addContact(name:string,mobileNumber:string,companyName:string,note:string,email:
   return this.http.post<Contacts>(`${env.api}Contacts/addNewContact`,data)
 }
 
-updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:string,email:string,newListId:string[]):Observable<any>{
-  const data={
+updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:string,email:string,newListId?:string[]):Observable<any>{
+  const data=newListId?{
     id:id,
     name: name,
     mobileNumber: mobileNumber,
@@ -76,12 +80,25 @@ updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:
     note: note,
     email: email,
     newListId:newListId
-
+  }:{
+    id:id,
+    name: name,
+    mobileNumber: mobileNumber,
+    companyName: companyName,
+    note: note,
+    email: email
   }
   return this.http.put(`${env.api}Contacts/updateContact`,data)
 }
 
+removeContactsFromOneList(contactsId:string[],listId:string[]): Observable<ErrSucc>{
+  const data={
+    id:contactsId,
+    newListId:listId
+  }
+    return this.http.put<ErrSucc>(`${env.api}Contacts/removeContactsFromOneList`,data)
 
+}
 deleteContact(email:string,listIDs:string[]): Observable<ErrSucc>{
   return this.http.put<ErrSucc>(`${env.api}Contacts/deleteContact?email=${email}`,listIDs)
 }

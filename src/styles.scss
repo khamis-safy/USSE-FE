@@ -299,7 +299,9 @@ mat-progress-bar mat-progress-bar-buffer {
 button[disabled]{
   cursor: no-drop !important;
 }
-
+.pointer{
+cursor: pointer;
+}
 .txt-lg{
   font-size: 24px;
   @media only screen and (max-width: 1024px)  and (min-width: 600px) {
@@ -863,3 +865,71 @@ section.table-wrapper {
     filter: invert(24%) sepia(66%) saturate(1894%) hue-rotate(171deg) brightness(100%) contrast(100%);
 }
 }
+// mat tabs
+span.mdc-tab__content {
+  font-size: 16px;
+}
+
+.mat-mdc-tab-labels {
+  gap: 10px;
+  border-bottom: 3px solid transparent;
+
+  border-image: linear-gradient(90deg, rgba(44, 124, 182, 0.16) 0%, rgba(44, 124, 182, 0.24) 100%);
+
+    border-image-slice: 1;
+  width:100%;
+
+}
+
+
+.mat-mdc-tab.mdc-tab {
+  height: 42px !important;
+  border-radius: 10px 10px 0px 0px;
+  background: transparent;
+  &.mdc-tab--active{
+    background:var(--clr-primary-400);
+    color: var(--clr-primary-800) !important;
+    span{
+      color: var(--clr-primary-800) !important;
+
+      }
+    img{
+      filter: invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
+      -webkit-filter: invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
+}
+  }
+  &:hover {
+    background:var(--clr-primary-400);
+    color: var(--clr-primary-700) !important;
+    span{
+      color: var(--clr-primary-800) !important;
+
+      }
+    img{
+      filter:  invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
+      -webkit-filter:  invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
+}
+  }
+  &:focus {
+    background:var(--clr-primary-400);
+    color: var(--clr-primary-800) !important;
+    span{
+    color: var(--clr-primary-800) !important;
+
+    }
+    img.ng-star-inserted {
+      filter: invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
+      -webkit-filter: invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
+}
+  }
+}
+.mat-tab-label-active{
+  background:var(--clr-primary-400) !important;
+  color: var(--clr-primary-700) !important;
+  img{
+    filter: invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg)
+      brightness(39%) contrast(93%);
+  }
+}
+
+

@@ -1,4 +1,3 @@
-
 <section class="py-3 d-flex flex-column gap-3">
   <div class="d-flex justify-content-between align-items-center ">
     <div class="d-flex position-relative row m-0">
@@ -8,7 +7,6 @@
       <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
         <img src="assets/icons/search.svg" alt="" width="14">
       </div>
-      <!-- <mat-icon class="w-fit text-neutral-500 position-absolute start-0 top-50 translate-middle-y">search</mat-icon> -->
     </div>
 
     <mat-form-field class="us-select">
@@ -48,52 +46,22 @@
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
 
-      <!-- Mobile Column -->
-      <ng-container matColumnDef="Mobile">
-        <th mat-header-cell *matHeaderCellDef > Mobile </th>
-        <td mat-cell *matCellDef="let element"> {{element.mobileNumber}} </td>
-      </ng-container>
-
-      <!-- Notes Column -->
-      <ng-container matColumnDef="Notes">
-        <th mat-header-cell *matHeaderCellDef > Notes</th>
-        <td mat-cell *matCellDef="let element"> {{element.note}} </td>
-      </ng-container>
-
-       <!-- Lists Column -->
-       <ng-container matColumnDef="Lists">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;" > Lists </th>
-        <td mat-cell *matCellDef="let element" style=" width: 340px;">
-          <div  class=" position-relative" style=" width: 280px;">
-            <div class="d-flex gap-2 overflow-hidden lists-wrapper px-4" #listsWrapper  style="width: 260px;">
-              <div *ngFor="let item of element.lists" class="listName bg-white text-nowrap px-2 py-1 rounded-2">
-                {{item.name}}
-              </div>
-            </div>
-            <div   (click)="scrollRight(listsWrapper)" class="right-arrow position-absolute end-0 top-0 h-100 d-flex justify-content-end align-items-center" style="width: 50%">
-              <img  src="assets/icons/arrow.svg" alt="">
-            </div>
-            <div  (click)="scrollLeft(listsWrapper)" class="left-arrow position-absolute start-0 top-0 h-100 d-flex justify-content-start align-items-center" style="width: 25px;">
-              <img  src="assets/icons/arrow.svg" alt="">
-            </div>
-          </div>
 
 
-        </td>
-      </ng-container>
+        <!-- Create At Column -->
+        <ng-container matColumnDef="Create At">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>  Create At </th>
+          <td mat-cell *matCellDef="let element"> {{element.createdAt | date: 'h:mm a , M/d/y '}} </td>
+        </ng-container>
 
        <!-- Company Name Column -->
-       <ng-container matColumnDef="Company Name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Company Name </th>
+       <ng-container matColumnDef="Company">
+        <th mat-header-cell *matHeaderCellDef > Company </th>
         <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
       </ng-container>
 
 
-       <!-- Create At Column -->
-       <ng-container matColumnDef="Create At">
-        <th mat-header-cell *matHeaderCellDef >  Create At </th>
-        <td mat-cell *matCellDef="let element"> {{element.createdAt| date: 'd MMM y'}} </td>
-      </ng-container>
+
 
        <!-- Action Column -->
        <ng-container matColumnDef="action">

@@ -9,7 +9,6 @@ import { ManageContactsService } from '../manage-contacts.service';
 import { AddContactComponent } from '../components/contacts/addContact/addContact.component';
 import { DeleteContactComponent } from '../components/contacts/deleteContact/deleteContact.component';
 import { ContactListsComponent } from '../components/contacts/contactLists/contactLists.component';
-import { CanceledComponent } from '../components/canceled/canceled.component';
 
 @Component({
   selector: 'app-manage-contacts',
@@ -23,18 +22,15 @@ export class ManageContactsComponent implements AfterViewInit{
   added:boolean=false;
   isDelete;
   isChecked;
-  isCanceled;
   @ViewChild(ListsComponent) lists:ListsComponent;
   @ViewChild(ContactsComponent) contacts:ContactsComponent;
-  @ViewChild(CanceledComponent) canceled:CanceledComponent;
+  isCanceled:boolean;
 
   constructor(public dialog: MatDialog,private  toaster: ToasterServices,private listService:ManageContactsService){
 
   }
   ngAfterViewInit(){
-    this.contacts.getContacts();
-    console.log("contacts",this.contacts.isCanceled)
-    console.log("manage contacts")
+    this.isCanceled=false;
   }
 
   test(){
@@ -72,7 +68,6 @@ export class ManageContactsComponent implements AfterViewInit{
         this.contacts.getContacts();
       }
     });
-    console.log("add-contactt-modal")
   }
   onDeleteChange(e){
     this.isDelete = e;
@@ -82,16 +77,16 @@ export class ManageContactsComponent implements AfterViewInit{
     this.isChecked=e;
 
   }
-  deleteCanceled(e){
-    this.isCanceled=e
-  }
+  // deleteCanceled(e){
+  //   this.isCanceled=e
+  // }
   openDeleteModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.data = this.isDelete;
+    dialogConfig.data = {lists:this.isDelete}
     const dialogRef = this.dialog.open(DeleteListComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -158,7 +153,7 @@ export class ManageContactsComponent implements AfterViewInit{
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
-    dialogConfig.data = this.isChecked;
+    dialogConfig.data = {contacts:this.isChecked , listDetails:false};
     const dialogRef = this.dialog.open(ContactListsComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -190,27 +185,30 @@ export class ManageContactsComponent implements AfterViewInit{
 
     this.tab=this.tabs[ev.index]
     if(this.tab=='contacts'){
-      this.contacts.isCanceled=false;
+      this.isCanceled=false
+      this.contacts.isCanceled=this.isCanceled;
       this.contacts.getContacts();
 
-      this.lists.destroy();
-
+      this.contacts.paginator.pageSize=this.listService.display;
+      this.contacts.paginator.pageIndex=this.listService.pageNum;
       this.lists.paginator.pageSize=this.listService.display;
       this.lists.paginator.pageIndex=this.listService.pageNum;
     }
     else if(this.tab=='lists'){
       this.lists.getListData();
-      this.contacts.destroy();
       this.contacts.paginator.pageSize=this.listService.display;
       this.contacts.paginator.pageIndex=this.listService.pageNum;
 
     }
     else if(this.tab=='cancel'){
-      this.contacts.destroy();
-
-      this.canceled.getContacts();
-      this.canceled.paginator.pageSize=this.listService.display;
-      this.canceled.paginator.pageIndex=this.listService.pageNum;   }
+      this.isCanceled=true
+      this.contacts.isCanceled=this.isCanceled;
+      this.contacts.paginator.pageSize=this.listService.display;
+      this.contacts.paginator.pageIndex=this.listService.pageNum;
+      this.lists.paginator.pageSize=this.listService.display;
+      this.lists.paginator.pageIndex=this.listService.pageNum;
+      this.contacts.getContacts();
+     }
     console.log("tab name: ",this.tab)
   }
 }

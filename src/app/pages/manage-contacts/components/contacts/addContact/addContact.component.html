@@ -69,7 +69,7 @@
       />
     </div>
 
-
+<ng-container *ngIf="!isListDetails">
     <div class="form-group d-flex justify-content-between  w-100">
       <label for="list">Lists</label>
       <mat-form-field>
@@ -79,7 +79,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-
+</ng-container>
     <div class="form-group d-flex justify-content-between  w-100">
       <label for="note">Notes </label>
 
