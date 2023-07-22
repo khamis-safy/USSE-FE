@@ -55,6 +55,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   ) {
     }
 
+
   ngOnInit() {
     this.getContacts();
     this.columns=new FormControl(this.displayedColumns)
@@ -122,6 +123,7 @@ if(this.isCanceled){
   this.displayedColumns= ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At"];
 
 }
+
         this.dataSource=new MatTableDataSource<Contacts>(res)
       console.log("all contacts",res);
        },
@@ -140,6 +142,7 @@ if(this.isCanceled){
     let email=this.listService.email;
 
     let sub2=this.listService.contactsCount(email,this.isCanceled).subscribe(
+
       (res)=>{
         this.length=res;
         // this.length=0;

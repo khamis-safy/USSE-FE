@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { DevicesService } from '../../devices.service';
 
+
 @Component({
   selector: 'app-steps',
   templateUrl: './steps.component.html',
   styleUrls: ['./steps.component.scss']
 })
 export class StepsComponent implements OnInit {
+
 steps:boolean=true;
 isLoading:boolean=false;
 
@@ -71,5 +73,6 @@ checkWBSession(){
   }
 
 }
+
 
 }

@@ -188,9 +188,9 @@ export class ManageContactsComponent implements AfterViewInit{
       this.isCanceled=false
       this.contacts.isCanceled=this.isCanceled;
       this.contacts.getContacts();
-
       this.contacts.paginator.pageSize=this.listService.display;
       this.contacts.paginator.pageIndex=this.listService.pageNum;
+
       this.lists.paginator.pageSize=this.listService.display;
       this.lists.paginator.pageIndex=this.listService.pageNum;
     }

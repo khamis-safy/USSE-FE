@@ -49,6 +49,7 @@ export class DeleteContactComponent implements OnInit {
       (res)=>{
         this.isLoading = false
         console.log(res)
+
         this.onClose(this.body);
         let succ=res.numberOfSuccess;
         let err =res.numberOfErrors;
@@ -79,6 +80,7 @@ export class DeleteContactComponent implements OnInit {
       (res)=>{
         this.isLoading = false
         this.onClose(this.body);
+
         let succ=res.numberOfSuccess;
         let err =res.numberOfErrors;
         if(succ==0 && err>0){
