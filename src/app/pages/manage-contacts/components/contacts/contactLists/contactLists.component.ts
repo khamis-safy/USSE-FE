@@ -32,6 +32,7 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
 
   listIds:string[]=[];
   contactsIds:string[];
+  contacts:boolean=false;
   selection = new SelectionModel<any>(true, []);
 
   constructor(
@@ -57,6 +58,7 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
         if(res.source.selected.length){
           console.log("selected",res.source.selected);
           if(this.data.listDetails){
+            this.contacts=true;
             this.contactsIds=res.source.selected.map((e)=>e.id);
             console.log("selected contactes",this.contactsIds)
           }
@@ -69,6 +71,7 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
         else{
           if(this.data.listDetails){
             this.contactsIds=[];
+            this.contacts=false;
 
           }
           else{
