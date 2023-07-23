@@ -19,6 +19,8 @@ import { DeleteContactComponent } from '../../../contacts/deleteContact/deleteCo
 import { ListContactsComponent } from '../components/list-contacts/list-contacts.component';
 import { ContactListsComponent } from '../../../contacts/contactLists/contactLists.component';
 import { DeleteListComponent } from '../../delete-list/delete-list.component';
+import { TotalContacts } from '../totalContacts';
+
 
 @Component({
   selector: 'app-list-details',
@@ -29,7 +31,7 @@ export class ListDetailsComponent implements OnInit {
   listId:string;
   isChecked: boolean;
   list:ListData;
-  count:number=0;
+  count:TotalContacts;
   @ViewChild(ListContactsComponent) listContacts:ListContactsComponent;
   tabs=["contacts","canceled"];
   tab = this.tabs[0];
@@ -55,7 +57,7 @@ export class ListDetailsComponent implements OnInit {
       this.listService.getListById(this.listId).subscribe(
         (res)=>{
         this.list=res;
-        this.count=this.list.totalContacts;
+        this.count={totalContacts:this.list.totalContacts,totalCancelContacts:this.list.totalCancelContacts}
         console.log("list data",this.list)
         },
 

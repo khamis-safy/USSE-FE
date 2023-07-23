@@ -14,6 +14,7 @@ import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-cont
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { AddContactComponent } from '../../../../contacts/addContact/addContact.component';
 import { ContactsComponent } from '../../../../contacts/contacts.component';
+import { TotalContacts } from '../../totalContacts';
 
 @Component({
   selector: 'app-list-contacts',
@@ -32,7 +33,7 @@ export class ListContactsComponent implements OnInit {
     WrapperOffsetWidth =250;
     @Output() isChecked = new EventEmitter<ListData[]>;
     @Input() isCanceled:boolean;
-    @Input() count:number;
+    @Input() count:TotalContacts;
 
     @ViewChild(MatPaginator)  paginator!: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -76,14 +77,21 @@ export class ListContactsComponent implements OnInit {
       });
     }
     getContacts(){
-      this.length=this.count;
+      if(this.isCanceled){
+        this.length=this.count.totalCancelContacts;
+      }
+      else{
+        this.length=this.count.totalContacts;
+
+      }
+      console.log("length",this.length)
       let shows=this.listService.display;
         let pageNum=this.listService.pageNum;
         let email=this.listService.email;
         let orderedBy=this.listService.orderedBy;
         let search=this.listService.search;
         this.loading = true;
-
+console.log("isCanceled",this.isCanceled)
         let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNum,orderedBy,search,this.listId).subscribe(
             (res)=>{
               this.numRows=res.length;
