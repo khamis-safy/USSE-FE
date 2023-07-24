@@ -1,3 +1,86 @@
-<p>
-  list-details works!
-</p>
+<section class="p-3">
+
+  <div class="d-flex justify-content-between pt-2 align-items-center">
+    <div class="d-flex gap-3 flex-column ">
+      <div >
+        <span class="text-primary-800 pointer "(click)="backTolists()" >Lists</span> / <span style="color:rgba(134, 134, 134, 1)">{{list.name}}</span>
+      </div>
+
+      <div class="mb-3 d-flex gap-2 align-items-center w-100"><p class="txt-lg" style="font-weight: 500;">{{list.name}}</p> <p class="txt-xs mb-2" style="font-weight: 500; color:rgba(134, 134, 134, 1)">{{list.createdAt | date: 'h:mm a , M/d/y '}}</p></div>
+
+    </div>
+    <div class="buttons_ ">
+      <us-button
+      *ngIf="isChecked  "
+        class="m-2"
+        label="Delete"
+        img="assets/icons/delete.svg"
+        [iconClass]="'material-symbols-outlined'"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'danger'"
+        (clicked)="openDeleteConModal()"
+      ></us-button>
+      <us-button
+      *ngIf="isChecked && tab=='contacts' "
+        class="m-2"
+        label="Remove From List"
+        img="assets/icons/delete.svg"
+        [iconClass]="'material-symbols-outlined'"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'danger'"
+        (clicked)="removeContacts()"
+      ></us-button>
+      <us-button
+      *ngIf="tab=='contacts'"
+      class="m-2"
+      label="Add Contact"
+      [matIcon]="'add'"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'primary'"
+      (clicked)="openContactLists()"
+    ></us-button>
+
+      <us-button
+        class="m-2"
+        label="Export All"
+        img="assets/icons/export.svg"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+      ></us-button>
+    </div>
+
+  </div>
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" (selectedTabChange)="changeModal($event)">
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span class="text-primary-800 me-2" style="font-weight: 800;">{{list.totalContacts}}</span>
+          Contacts
+
+      </ng-template>
+      <app-list-contacts [count]="count" [isCanceled]="false" (isChecked)="onChecked($event)"></app-list-contacts>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label >
+
+          Canceled
+
+      </ng-template>
+      <app-list-contacts [count]="count" [isCanceled]="true"></app-list-contacts>
+    </mat-tab>
+  </mat-tab-group>
+
+</section>

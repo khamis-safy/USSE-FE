@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { SelectionModel} from '@angular/cdk/collections';
 import { MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,10 +8,11 @@ import { AddListComponent } from './addList/addList.component';
 import { ManageContactsService } from '../../manage-contacts.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ListData } from '../../list-data';
-import { Contacts } from '../../contacts';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { ListDetailsService } from './list-details/list-details.service';
 
 @Component({
   selector: 'app-lists',
@@ -20,7 +21,7 @@ import { Subscription } from 'rxjs';
 })
 
 
-export class ListsComponent implements OnInit ,AfterViewInit ,OnDestroy {
+export class ListsComponent implements OnInit ,AfterViewInit  {
 length:number=0;
 active:boolean=false;
 @ViewChildren("check") checks:any;
@@ -42,7 +43,8 @@ subscribtions:Subscription[]=[];
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private router:Router) {
   }
 
   @Output() isDelete = new EventEmitter<ListData[]>;
@@ -78,7 +80,8 @@ getListsCount(){
       console.log("pages count",res);
 
     }
-    ,(err)=>{console.log(err)}
+    ,(err)=>{console.log(err);
+      this.length=0;}
   );
   this.subscribtions.push(sub1)
 }
@@ -167,8 +170,9 @@ console.log("from get api",this.dataSource)
       },
       (err)=>{
         this.loading = false;
-
+        this.length=0
         console.log(err);
+
       })
       this.subscribtions.push(sub2)
 }
@@ -235,11 +239,11 @@ console.log("from get api",this.dataSource)
 
 
   onSortChange(event){
-    let sorting = event.active=='name' && event.direction=='asc'?'nameASC':
-                  event.active=='name' && event.direction=='desc'?'nameDEC':
+    let sorting = event.active=='Name' && event.direction=='asc'?'nameASC':
+                  event.active=='Name' && event.direction=='desc'?'nameDEC':
 
-                  event.active=='createdAt' && event.direction=='asc'?'createdAtASC':
-                  event.active=='createdAt' && event.direction=='desc'?'createdAtDEC':
+                  event.active=='Create At' && event.direction=='asc'?'createdAtASC':
+                  event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
                   '';
     this.listService.orderedBy=sorting;
     console.log("sorting from onSortChange function ",this.listService.orderedBy)
@@ -267,9 +271,11 @@ console.log("from get api",this.dataSource)
 
   }
   onPageChange(event){
+
     this.listService.display=event.pageSize;
     this.listService.pageNum=event.pageIndex;
-    // console.log("onPageChange",this.listService.display,event);
+
+
     this.getListData();
   }
   onSearch(event:any){
@@ -295,11 +301,13 @@ console.log("from get api",this.dataSource)
 
 
   }
-  ngOnDestroy() {
+  destroy() {
     this.subscribtions.map(e=>e.unsubscribe());
     this.dataSource.data=[];
     console.log("lists Destroyed success")
   }
 
-
+  navigateTo(id:string){
+    this.router.navigateByUrl(`list/${id}`)
+  }
 }

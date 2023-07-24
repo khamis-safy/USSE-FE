@@ -72,7 +72,7 @@
     [loading]="isLoading"
     [fill]="true"
     (clicked)="submitAdd()"
-    [disabled]="listIds.length==0 || isLoading"
+    [disabled]="listIds.length==0 || !contacts || isLoading"
   ></us-button>
 
   </div>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewChildren, Input } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../manage-contacts.service';
@@ -15,21 +15,28 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
 @Component({
+
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss']
 })
-export class ContactsComponent  implements OnInit ,AfterViewInit ,OnDestroy{
-  length:number=0;
+export class ContactsComponent  implements OnInit ,AfterViewInit {
+  length:number;
   active:boolean=false;
   testListContacts:Contacts[]=[]
   numRows;
   loading;
   subscribtions:Subscription[]=[];
 
-  @ViewChild(MatPaginator)  paginator!: MatPaginator;
+  WrapperScrollLeft =0;
+  WrapperOffsetWidth =250;
+  @Input() isCanceled:boolean;
+  @Output() isDelete = new EventEmitter<ListData[]>;
+  @Output() isChecked = new EventEmitter<ListData[]>;
 
+  @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
   @ViewChildren("check") checks:any;
   listTableData:ListData[]=[]
   deletedContacts:string[]=[];
@@ -37,38 +44,32 @@ export class ContactsComponent  implements OnInit ,AfterViewInit ,OnDestroy{
   displayed: string[] = ['Name','Mobile','Notes','Lists','Company Name','Create At'];
   displayedColumns: string[] = ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At","action"];
   dataSource:MatTableDataSource<Contacts>;
-  show:boolean=false;
+  @Input() listId:string="";
   // dataSource = new MatTableDataSource<any>(this.listTableData);
   selection = new SelectionModel<any>(true, []);
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+
   ) {
     }
 
-    @Output() isDelete = new EventEmitter<ListData[]>;
-    WrapperScrollLeft =0
-    WrapperOffsetWidth =250
-    @Output() isChecked = new EventEmitter<ListData[]>;
     @Input('isUnsubscribe') isUnsubscribe = false;
 
   ngOnInit() {
-
+    this.getContacts();
     this.columns=new FormControl(this.displayedColumns)
 
-    this.getContacts();
-    // this.contactsCount()
     this.selection.changed.subscribe(
       (res) => {
 
         if(res.source.selected.length){
-          this.show=true;
+          console.log("selected",res.source.selected)
 
           this.isChecked.emit(res.source.selected)
         }
         else{
-          this.show=false
           this.isChecked.emit()
         }
       });
@@ -104,83 +105,8 @@ export class ContactsComponent  implements OnInit ,AfterViewInit ,OnDestroy{
 
     console.log("Deleted contacts",this.deletedContacts)
   }
+
   getContacts(){
-    console.log('isCanceled', this.isUnsubscribe)
-//     let shows=this.listService.display;
-//     let pageNum=this.listService.pageNum;
-//     let email=this.listService.email;
-//     let orderedBy=this.listService.orderedBy;
-//     let search=this.listService.search;
-
-//     console.log(`from get contact data inside list component number of shows is:${shows} page number is ${pageNum} orderBy is ${orderedBy} search is ${search}`)
-
-
-// this.testListContacts=[
-
-// {id: 'ct_105e9c1d-74b8-4167-8160-3ac4cc3a789a', name: 'con', mobileNumber: '9879834234', companyName: '', note: '',createdAt: "2023-06-23T22:12:39.2610235",lists: [
-//   {
-//       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "ADP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-06-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     },
-
-//     {
-//       id: "sjfksjdflksjdlkjsdlkgj-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "VIP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-05-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     }]},
-
-// {id: 'ct_fb9c58f2-6936-4a64-86c2-dd40a637e5e7', name: 'contact', mobileNumber: '0876876776', companyName: 'string', note: 'test',createdAt: "2023-06-23T22:12:39.2610235",lists: [
-//   {
-//       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "ADP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-06-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     },
-//     {
-//       id: "sjfksjdflksjdlkjsdlkgj-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "VIP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-05-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     }]},
-
-// {id: 'ct_f32e89a1-8eca-4e7e-9990-b98783fb2fdc', name: 'khamis', mobileNumber: '201206836206', companyName: "null", note: "null",createdAt: "2023-06-23T22:12:39.2610235",lists: [
-//   {
-//       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "ADP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-06-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     },
-//     {
-//       id: "sjfksjdflksjdlkjsdlkgj-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "VIP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-05-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     }]}
-
-// ];
-// this.dataSource=new MatTableDataSource<Contacts>(this.testListContacts)
-
 this.contactsCount();
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
@@ -190,17 +116,23 @@ this.contactsCount();
   let isCanceled=this.isUnsubscribe;
   console.log('isCanceled', this.isUnsubscribe)
   this.loading = true;
-   let sub1= this.listService.getContacts(email,shows,pageNum,orderedBy,search,isCanceled).subscribe(
+
+console.log("is canceled" ,this.isCanceled)
+   let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNum,orderedBy,search,this.listId).subscribe(
       (res)=>{
         this.numRows=res.length;
         this.loading = false;
+if(this.isCanceled){
+  this.displayedColumns= ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At"];
+
+}
 
         this.dataSource=new MatTableDataSource<Contacts>(res)
       console.log("all contacts",res);
        },
        (err)=>{
         this.loading = false;
-
+        this.length=0;
          console.log(err);
        })
        this.subscribtions.push(sub1)
@@ -212,15 +144,18 @@ this.contactsCount();
   contactsCount(){
     let email=this.listService.email;
 
-    let sub2=this.listService.contactsCount(email).subscribe(
+    let sub2=this.listService.contactsCount(email,this.isCanceled).subscribe(
+
       (res)=>{
         this.length=res;
         // this.length=0;
 
         console.log("pages count contacts",res);
+        console.log("length",this.length)
 
       }
-      ,(err)=>{console.log(err)}
+      ,(err)=>{console.log(err);
+        this.length=0;}
     )
 this.subscribtions.push(sub2)
 
@@ -255,11 +190,11 @@ this.subscribtions.push(sub2)
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
   onSortChange(event){
-    let sorting = event.active=='name' && event.direction=='asc'?'nameASC':
-                  event.active=='name' && event.direction=='desc'?'nameDEC':
+    let sorting = event.active=='Name' && event.direction=='asc'?'nameASC':
+                  event.active=='Name' && event.direction=='desc'?'nameDEC':
 
-                  event.active=='createdAt' && event.direction=='asc'?'createdAtASC':
-                  event.active=='createdAt' && event.direction=='desc'?'createdAtDEC':
+                  event.active=='Create At' && event.direction=='asc'?'createdAtASC':
+                  event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
                   '';
     this.listService.orderedBy=sorting;
     console.log("sorting from onSortChange function ",this.listService.orderedBy);
@@ -275,7 +210,7 @@ this.subscribtions.push(sub2)
     dialogConfig.width='40vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.data= data;
+    dialogConfig.data= {contacts:data,listDetails:false};
     const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -333,11 +268,17 @@ this.subscribtions.push(sub2)
 
 }
 changeColumns(event){
-  this.displayedColumns=['select',...event,'action']
+  if(this.isCanceled){
+    this.displayedColumns=['select',...event]
+
+  }
+  else{
+    this.displayedColumns=['select',...event,'action']
+  }
 
 }
 
-ngOnDestroy() {
+destroy() {
   this.subscribtions.map(e=>e.unsubscribe());
   this.dataSource.data=[];
   console.log("contacts Destroyed success")

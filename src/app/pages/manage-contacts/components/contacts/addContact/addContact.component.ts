@@ -10,7 +10,11 @@ import { Contacts } from '../../../contacts';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 
+interface CheckedCont{
+  contacts:Contacts,
+  listDetails:boolean
 
+}
 @Component({
   selector: 'app-addContact',
   templateUrl: './addContact.component.html',
@@ -18,7 +22,7 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 })
 export class AddContactComponent implements OnInit{
 // isChanged:boolean=false;
-
+  isListDetails:boolean=false;
 
   lists: ListData[] ;
   listsArr:SelectOption[]
@@ -46,20 +50,33 @@ export class AddContactComponent implements OnInit{
 
 oldData;
 
-  listsIds:string[]=[""]
+  listsIds:string[]=[""];
   constructor(
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<AddContactComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:Contacts,
+    @Inject(MAT_DIALOG_DATA) public data:any,
   ) { }
 
   ngOnInit() {
     this.getLists();
+    if(this.data.listDetails){
+      this.isListDetails=true;
+    }
+    else{
+      this.isListDetails=false
+    }
     if(this.data){
+
       this.isEdit = true
       this.fillingData();
-      this.listsIds=this.data.lists.map((e)=>e.id)
+      // this.listsIds=this.data.lists.map((e)=>e.id)
+      this.listsIds=this.data.contacts.lists.map((e)=>e.id);
+
+      this.selectedLists=new FormControl(this.data.contacts.lists)
+
+
+      console.log("contacts data",this.data)
     }else{
       this.isEdit = false;
     }
@@ -87,7 +104,7 @@ oldData;
   this.listService.getList("khamis.safy@gmail.com",10,0,"","").subscribe(
      (res)=>{
       if(this.data){
-      let dataLists=this.data.lists;
+      let dataLists=this.data.contacts.lists;
       let resList=res
       const listsMap = new Map();
 
@@ -166,21 +183,44 @@ oldData;
     let note = this.form.value.note;
     let listsIds:any = this.form.value.selectedLists;
     this.isLoading = true
-    this.listService.updateContact(this.data.id,name,mobile,cnName,note,email,listsIds).subscribe(
 
-      (res)=>{
-        this.isLoading = false
-        console.log(res)
-        this.onClose(true);
-        this.toaster.success("Success")
-      },
-      (err)=>{
-        this.isLoading = false
-        console.log(err)
-        this.onClose(false);
-        this.toaster.error("Error")
-      }
-    )
+    this.isLoading = true;
+
+    if(this.data.listDetails){
+      this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email).subscribe(
+
+        (res)=>{
+          this.isLoading = false
+          console.log(res)
+          this.onClose(true);
+          this.toaster.success("Success")
+        },
+        (err)=>{
+          this.isLoading = false
+          console.log(err)
+          this.onClose(false);
+          this.toaster.error("Error")
+        }
+      )
+    }
+    else{
+      this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email,this.listsIds).subscribe(
+
+        (res)=>{
+          this.isLoading = false
+          console.log(res)
+          this.onClose(true);
+          this.toaster.success("Success")
+        },
+        (err)=>{
+          this.isLoading = false
+          console.log(err)
+          this.onClose(false);
+          this.toaster.error("Error")
+        }
+      )
+    }
+
   }
   onClose(data?): void {
     this.dialogRef.close(data);

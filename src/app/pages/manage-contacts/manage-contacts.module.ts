@@ -1,4 +1,3 @@
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ManageContactsRoutes } from './manage-contacts.routing';
@@ -8,7 +7,6 @@ import { ListsComponent } from './components/lists/lists.component';
 import { AddListComponent } from './components/lists/addList/addList.component';
 
 
-import { ReactiveFormsModule } from '@angular/forms';
 import { ManageContactsComponent } from './component/manage-contacts.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DeleteListComponent } from './components/lists/delete-list/delete-list.component';
@@ -20,9 +18,6 @@ import { ContactListsComponent } from './components/contacts/contactLists/contac
   imports: [
     CommonModule,
     ManageContactsRoutes,
-
-    ReactiveFormsModule,
-    HttpClientModule,
     SharedModule
   ],
   declarations: [
@@ -33,7 +28,9 @@ import { ContactListsComponent } from './components/contacts/contactLists/contac
     AddListComponent,
     AddContactComponent,
     DeleteContactComponent,
-    ContactListsComponent
+    ContactListsComponent,
+
+
   ],
   providers:[ManageContactsService]
 })

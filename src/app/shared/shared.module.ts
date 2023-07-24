@@ -33,6 +33,7 @@ import { RadioButtonModule } from './components/radio-button/radio-button.module
 import { CheckboxModule } from './components/checkbox/checkbox.module';
 import { TagModule } from './components/tag/tag.module';
 import { SelectModule } from './components/select/select.module';
+import { HttpClientModule } from '@angular/common/http';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -62,7 +63,8 @@ import { SelectModule } from './components/select/select.module';
     CheckboxModule,
     RadioButtonModule,
     TooltipModule,
-    SelectModule
+    SelectModule,
+    HttpClientModule
 
   ],
   declarations: [
@@ -102,8 +104,9 @@ import { SelectModule } from './components/select/select.module';
     UsButtonDirective,
     FormsModule,
     NgxIntlTelInputModule,
-    MatProgressSpinnerModule
-
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers:[ToasterServices]
 })

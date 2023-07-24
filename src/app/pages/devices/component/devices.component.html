@@ -1,1 +1,37 @@
-<h1>Devices</h1>
+<section class="p-3">
+  <div class="d-flex justify-content-between mb-4 align-items-center">
+    <div class="d-flex justify-content-center ">
+      <img src="assets/icons/devices.svg" alt="" class="px-2 pe-3">
+
+      <!-- <mat-icon class="tab-icon">recent_actors</mat-icon> -->
+   <span class="txt-lg main-heading"> Devices</span>
+    </div>
+    <div class="menu">
+      <button mat-button [matMenuTriggerFor]="menu" class="text-neutral-0 bg-primary-800 rounded-3 p-4">
+        <div class="d-flex align-items-center gap-3">
+          <div class="icon">
+            <img src="assets/icons/device.svg" alt="" />
+          </div>
+          Add Device
+          <div class="icon">
+            <img src="assets/icons/polygon.svg" alt="" />
+          </div>
+        </div>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item ><img src="assets/icons/sms.svg" alt="" /> SMS</button>
+        <button mat-menu-item (click)="openStepsModal()"><img src="assets/icons/whatsB.svg" alt="" /> WhatsApp Business</button>
+        <button mat-menu-item ><img src="assets/icons/whats.svg" alt="" /> WhatsApp Official</button>
+
+      </mat-menu>
+    </div>
+
+  </div>
+
+
+  <section class="table-wrapper ">
+
+  </section>
+
+
+</section>

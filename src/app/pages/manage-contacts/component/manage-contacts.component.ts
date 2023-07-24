@@ -1,6 +1,6 @@
 import { DeleteListComponent } from './../components/lists/delete-list/delete-list.component';
 import { ToasterServices } from './../../../shared/components/us-toaster/us-toaster.component';
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddListComponent } from '../components/lists/addList/addList.component';
 import { ListsComponent } from '../components/lists/lists.component';
@@ -16,18 +16,23 @@ import { ContactListsComponent } from '../components/contacts/contactLists/conta
   styleUrls: ['./manage-contacts.component.scss'],
 
 })
-export class ManageContactsComponent {
-  tabs=["contacts","lists","unsubscribe"];
+export class ManageContactsComponent implements AfterViewInit{
+  tabs=["contacts","lists","cancel"];
   tab = this.tabs[0];
   added:boolean=false;
   isDelete;
   isChecked;
   @ViewChild(ListsComponent) lists:ListsComponent;
   @ViewChild(ContactsComponent) contacts:ContactsComponent;
+  isCanceled:boolean;
 
   constructor(public dialog: MatDialog,private  toaster: ToasterServices,private listService:ManageContactsService){
 
   }
+  ngAfterViewInit(){
+    this.isCanceled=false;
+  }
+
   test(){
     this.toaster.warning('hello')
   }
@@ -63,7 +68,6 @@ export class ManageContactsComponent {
         this.contacts.getContacts();
       }
     });
-    console.log("add-contactt-modal")
   }
   onDeleteChange(e){
     this.isDelete = e;
@@ -73,13 +77,16 @@ export class ManageContactsComponent {
     this.isChecked=e;
 
   }
+  // deleteCanceled(e){
+  //   this.isCanceled=e
+  // }
   openDeleteModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.data = this.isDelete;
+    dialogConfig.data = {lists:this.isDelete}
     const dialogRef = this.dialog.open(DeleteListComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -100,7 +107,7 @@ export class ManageContactsComponent {
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.data = this.isChecked;
+    dialogConfig.data =  {contacts:this.isChecked,remove:false};
     const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
 
 
@@ -114,10 +121,30 @@ export class ManageContactsComponent {
       this.contacts.checks._results=[]
 
       this.contacts.selection.clear();
-      console.log("delete afterClosed",this.lists.selection)
 
     });
     console.log("delete contact")
+  }
+
+
+  removeLists(){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.data = {contacts:this.isChecked,remove:true};
+    const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.contacts.getContacts();
+      }
+      this.contacts.checks._results=[]
+
+      this.contacts.selection.clear();
+
+    });
   }
   openContactLists(){
     const dialogConfig=new MatDialogConfig();
@@ -126,7 +153,7 @@ export class ManageContactsComponent {
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
-    dialogConfig.data = this.isChecked;
+    dialogConfig.data = {contacts:this.isChecked , listDetails:false};
     const dialogRef = this.dialog.open(ContactListsComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -147,7 +174,7 @@ export class ManageContactsComponent {
   }
 
   changeModal(ev){
-    this.listService.display=5;
+    this.listService.display=10;
     this.listService.pageNum=0;
     this.listService.email="khamis.safy@gmail.com";
     this.listService.orderedBy='';
@@ -155,19 +182,33 @@ export class ManageContactsComponent {
     this.contacts.selection.clear();
     this.lists.selection.clear();
 
+
     this.tab=this.tabs[ev.index]
     if(this.tab=='contacts'){
+      this.isCanceled=false
+      this.contacts.isCanceled=this.isCanceled;
       this.contacts.getContacts();
-      this.lists.ngOnDestroy();
+      this.contacts.paginator.pageSize=this.listService.display;
+      this.contacts.paginator.pageIndex=this.listService.pageNum;
+
+      this.lists.paginator.pageSize=this.listService.display;
+      this.lists.paginator.pageIndex=this.listService.pageNum;
     }
     else if(this.tab=='lists'){
       this.lists.getListData();
-      this.contacts.ngOnDestroy();
+      this.contacts.paginator.pageSize=this.listService.display;
+      this.contacts.paginator.pageIndex=this.listService.pageNum;
 
     }
-    else{
-      console.log("unsub")
-    }
+    else if(this.tab=='cancel'){
+      this.isCanceled=true
+      this.contacts.isCanceled=this.isCanceled;
+      this.contacts.paginator.pageSize=this.listService.display;
+      this.contacts.paginator.pageIndex=this.listService.pageNum;
+      this.lists.paginator.pageSize=this.listService.display;
+      this.lists.paginator.pageIndex=this.listService.pageNum;
+      this.contacts.getContacts();
+     }
     console.log("tab name: ",this.tab)
   }
 }
