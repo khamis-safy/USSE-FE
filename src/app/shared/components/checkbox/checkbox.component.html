@@ -1,0 +1,11 @@
+<button #checkbox class="checkbox {{isDisabled ? 'disabled' : state}}" (click)="changeState()" (blur)="onTouched()"
+  [ngClass]="{'has-label': label}">
+  <i
+    [class]="state == 'mid' ? 'si-minus' : state == 'checked' ? 'si-check-ii' : ''">
+  </i>
+</button>
+
+<div *ngIf="label || description" class="info">
+  <p class="txt-body" (click)="checkbox.focus(); changeState()">{{ label }}</p>
+  <p class="txt-caption">{{ description }}</p>
+</div>

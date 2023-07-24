@@ -8,7 +8,7 @@
     </div>
     <div class="buttons_ ">
       <us-button
-      *ngIf="isChecked"
+      *ngIf="isChecked && !isCanceled"
         class="m-2"
         label="Remove Lists"
         img="assets/icons/delete.svg"
@@ -22,7 +22,7 @@
       ></us-button>
 
       <us-button
-      *ngIf="isChecked || isDelete ||isCanceled"
+      *ngIf="isChecked || isDelete "
         class="m-2"
         label="Delete"
         img="assets/icons/delete.svg"
@@ -35,7 +35,7 @@
         (clicked)="tab=='contacts'?openDeleteConModal():tab=='lists'?openDeleteModal():''"
       ></us-button>
       <us-button
-      *ngIf="isChecked"
+      *ngIf="isChecked && !isCanceled"
       class="m-2"
       label="Add To lists"
       [matIcon]="'add'"
@@ -82,7 +82,7 @@
         <!-- <mat-icon class="tab-icon">contacts</mat-icon> -->
           Contacts
       </ng-template>
-      <app-contacts (isChecked)="onChecked($event)"></app-contacts>
+      <app-contacts [isCanceled]="false" (isChecked)="onChecked($event)"></app-contacts>
     </mat-tab>
 
     <mat-tab>
@@ -102,7 +102,7 @@
         <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
 
       </ng-template>
-      <app-canceled (DeleteCanceled)="deleteCanceled($event)"></app-canceled>
+      <app-contacts [isCanceled]="true" (isChecked)="onChecked($event)"></app-contacts>
     </mat-tab>
   </mat-tab-group>
 </section>

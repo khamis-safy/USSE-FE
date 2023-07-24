@@ -1,0 +1,52 @@
+@import './../../../../styles.scss';
+
+:host {
+  display: flex;
+  gap: 8px;
+  cursor: default;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border-radius: $radius_sm;
+  border: 1.5px solid $clr_neutral_500;
+  outline: none;
+  color: $clr_neutral_0;
+  background-color: $clr_neutral_0;
+  font-size: 14px;
+  transition: .2s ease-in;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.mid,
+  &.checked {
+    border-color: $clr_primary_700;
+    background-color: $clr_primary_700;
+  }
+
+  &.disabled {
+    color: $clr_neutral_400;
+    border-color: $clr_neutral_300;
+    background-color: $clr_neutral_100;
+    pointer-events: none;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px $clr_neutral_0, 0 0 0 4px $clr_primary_400;
+  }
+
+  &.has-label {
+    margin-top: 2px;
+  }
+}
+
+.txt-body {
+  color: $clr_neutral_900;
+}
+.txt-caption {
+  color: $clr_neutral_600;
+}
+

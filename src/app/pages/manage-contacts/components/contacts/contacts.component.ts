@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
 @Component({
+
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss']
@@ -27,11 +28,9 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   loading;
   subscribtions:Subscription[]=[];
 
-
   WrapperScrollLeft =0;
   WrapperOffsetWidth =250;
-  isCanceled:boolean=false;
-
+  @Input() isCanceled:boolean;
   @Output() isDelete = new EventEmitter<ListData[]>;
   @Output() isChecked = new EventEmitter<ListData[]>;
 
@@ -45,6 +44,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   displayed: string[] = ['Name','Mobile','Notes','Lists','Company Name','Create At'];
   displayedColumns: string[] = ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At","action"];
   dataSource:MatTableDataSource<Contacts>;
+  @Input() listId:string="";
   // dataSource = new MatTableDataSource<any>(this.listTableData);
   selection = new SelectionModel<any>(true, []);
   constructor(public dialog: MatDialog,
@@ -55,9 +55,10 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   ) {
     }
 
+    @Input('isUnsubscribe') isUnsubscribe = false;
 
   ngOnInit() {
-
+    this.getContacts();
     this.columns=new FormControl(this.displayedColumns)
 
     this.selection.changed.subscribe(
@@ -104,80 +105,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 
     console.log("Deleted contacts",this.deletedContacts)
   }
-  //     let shows=this.listService.display;
-//     let pageNum=this.listService.pageNum;
-//     let email=this.listService.email;
-//     let orderedBy=this.listService.orderedBy;
-//     let search=this.listService.search;
 
-//     console.log(`from get contact data inside list component number of shows is:${shows} page number is ${pageNum} orderBy is ${orderedBy} search is ${search}`)
-
-
-// this.testListContacts=[
-
-// {id: 'ct_105e9c1d-74b8-4167-8160-3ac4cc3a789a', name: 'con', mobileNumber: '9879834234', companyName: '', note: '',createdAt: "2023-06-23T22:12:39.2610235",lists: [
-//   {
-//       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "ADP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-06-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     },
-
-//     {
-//       id: "sjfksjdflksjdlkjsdlkgj-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "VIP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-05-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     }]},
-
-// {id: 'ct_fb9c58f2-6936-4a64-86c2-dd40a637e5e7', name: 'contact', mobileNumber: '0876876776', companyName: 'string', note: 'test',createdAt: "2023-06-23T22:12:39.2610235",lists: [
-//   {
-//       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "ADP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-06-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     },
-//     {
-//       id: "sjfksjdflksjdlkjsdlkgj-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "VIP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-05-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     }]},
-
-// {id: 'ct_f32e89a1-8eca-4e7e-9990-b98783fb2fdc', name: 'khamis', mobileNumber: '201206836206', companyName: "null", note: "null",createdAt: "2023-06-23T22:12:39.2610235",lists: [
-//   {
-//       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "ADP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-06-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     },
-//     {
-//       id: "sjfksjdflksjdlkjsdlkgj-4a50-49f9-9f3c-fd54b8b273ca",
-//       name: "VIP",
-//       totalContacts: 0,
-//       totalCancelContacts: 0,
-//       createdAt: "2023-05-19T22:41:50.2533008Z",
-//       isCheckedd: false,
-//       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-//     }]}
-
-// ];
-// this.dataSource=new MatTableDataSource<Contacts>(this.testListContacts)
   getContacts(){
 this.contactsCount();
   let shows=this.listService.display;
@@ -185,23 +113,26 @@ this.contactsCount();
   let email=this.listService.email;
   let orderedBy=this.listService.orderedBy;
   let search=this.listService.search;
+  let isCanceled=this.isUnsubscribe;
+  console.log('isCanceled', this.isUnsubscribe)
   this.loading = true;
 
-
-   let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNum,orderedBy,search).subscribe(
+console.log("is canceled" ,this.isCanceled)
+   let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNum,orderedBy,search,this.listId).subscribe(
       (res)=>{
         this.numRows=res.length;
         this.loading = false;
-        if(this.isCanceled){
-          console.log("canceled contacts",this.isCanceled)
-        }
+if(this.isCanceled){
+  this.displayedColumns= ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At"];
+
+}
 
         this.dataSource=new MatTableDataSource<Contacts>(res)
       console.log("all contacts",res);
        },
        (err)=>{
         this.loading = false;
-
+        this.length=0;
          console.log(err);
        })
        this.subscribtions.push(sub1)
@@ -223,7 +154,8 @@ this.contactsCount();
         console.log("length",this.length)
 
       }
-      ,(err)=>{console.log(err)}
+      ,(err)=>{console.log(err);
+        this.length=0;}
     )
 this.subscribtions.push(sub2)
 
@@ -258,11 +190,11 @@ this.subscribtions.push(sub2)
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
   onSortChange(event){
-    let sorting = event.active=='name' && event.direction=='asc'?'nameASC':
-                  event.active=='name' && event.direction=='desc'?'nameDEC':
+    let sorting = event.active=='Name' && event.direction=='asc'?'nameASC':
+                  event.active=='Name' && event.direction=='desc'?'nameDEC':
 
-                  event.active=='createdAt' && event.direction=='asc'?'createdAtASC':
-                  event.active=='createdAt' && event.direction=='desc'?'createdAtDEC':
+                  event.active=='Create At' && event.direction=='asc'?'createdAtASC':
+                  event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
                   '';
     this.listService.orderedBy=sorting;
     console.log("sorting from onSortChange function ",this.listService.orderedBy);
@@ -274,18 +206,19 @@ this.subscribtions.push(sub2)
 
   openEditModal(data?){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='70vh';
+    dialogConfig.height='90vh';
     dialogConfig.width='40vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.maxHeight='85vh';
-    dialogConfig.data= data;
+    dialogConfig.data= {contacts:data,listDetails:false};
     const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
-
+    this.checks._results=[]
+    this.selection.clear();
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.getContacts();
             }
+
 
     });
 
@@ -337,7 +270,13 @@ this.subscribtions.push(sub2)
 
 }
 changeColumns(event){
-  this.displayedColumns=['select',...event,'action']
+  if(this.isCanceled){
+    this.displayedColumns=['select',...event]
+
+  }
+  else{
+    this.displayedColumns=['select',...event,'action']
+  }
 
 }
 

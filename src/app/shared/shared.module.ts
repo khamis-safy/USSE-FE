@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
-import { TextInputComponent } from './components/text-input/text-input.component';
 import { NavComponent } from './components/nav/nav.component';
 
 import { MatIconModule } from '@angular/material/icon';
@@ -28,6 +27,12 @@ import { UsButtonDirective } from '../directives/us-button.directive';
 import { ToasterServices } from './components/us-toaster/us-toaster.component';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { InputComponent } from './components/text-input/text-input.component';
+import { TooltipModule } from './components/tooltip/tooltip.module';
+import { RadioButtonModule } from './components/radio-button/radio-button.module';
+import { CheckboxModule } from './components/checkbox/checkbox.module';
+import { TagModule } from './components/tag/tag.module';
+import { SelectModule } from './components/select/select.module';
 import { HttpClientModule } from '@angular/common/http';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
@@ -54,6 +59,11 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     NgxIntlTelInputModule,
     MatProgressSpinnerModule,
+    TagModule,
+    CheckboxModule,
+    RadioButtonModule,
+    TooltipModule,
+    SelectModule,
     HttpClientModule
 
   ],
@@ -62,17 +72,19 @@ import { HttpClientModule } from '@angular/common/http';
     FooterComponent,
     HeaderComponent,
     UsButtonComponent,
-    TextInputComponent,
+    InputComponent,
     NavComponent,
     ToasterServices,
-    UsButtonDirective
+    UsButtonDirective,
+
   ],
   exports:[
     SideBarComponent,
     FooterComponent,
     HeaderComponent,
     UsButtonComponent,
-    TextInputComponent,
+    InputComponent,
+    SelectModule,
     ToasterServices,
     NavComponent,
     MatTabsModule,

@@ -11,6 +11,8 @@ import { ListData } from '../../list-data';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { ListDetailsService } from './list-details/list-details.service';
 
 @Component({
   selector: 'app-lists',
@@ -41,7 +43,8 @@ subscribtions:Subscription[]=[];
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private router:Router) {
   }
 
   @Output() isDelete = new EventEmitter<ListData[]>;
@@ -77,7 +80,8 @@ getListsCount(){
       console.log("pages count",res);
 
     }
-    ,(err)=>{console.log(err)}
+    ,(err)=>{console.log(err);
+      this.length=0;}
   );
   this.subscribtions.push(sub1)
 }
@@ -166,8 +170,9 @@ console.log("from get api",this.dataSource)
       },
       (err)=>{
         this.loading = false;
-
+        this.length=0
         console.log(err);
+
       })
       this.subscribtions.push(sub2)
 }
@@ -234,11 +239,11 @@ console.log("from get api",this.dataSource)
 
 
   onSortChange(event){
-    let sorting = event.active=='name' && event.direction=='asc'?'nameASC':
-                  event.active=='name' && event.direction=='desc'?'nameDEC':
+    let sorting = event.active=='Name' && event.direction=='asc'?'nameASC':
+                  event.active=='Name' && event.direction=='desc'?'nameDEC':
 
-                  event.active=='createdAt' && event.direction=='asc'?'createdAtASC':
-                  event.active=='createdAt' && event.direction=='desc'?'createdAtDEC':
+                  event.active=='Create At' && event.direction=='asc'?'createdAtASC':
+                  event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
                   '';
     this.listService.orderedBy=sorting;
     console.log("sorting from onSortChange function ",this.listService.orderedBy)
@@ -256,7 +261,8 @@ console.log("from get api",this.dataSource)
     dialogConfig.maxHeight='85vh';
     dialogConfig.data= data;
     const dialogRef = this.dialog.open(AddListComponent,dialogConfig);
-
+    this.checks._results=[]
+    this.selection.clear();
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.getListsCount();
@@ -302,5 +308,7 @@ console.log("from get api",this.dataSource)
     console.log("lists Destroyed success")
   }
 
-
+  navigateTo(id:string){
+    this.router.navigateByUrl(`list/${id}`)
+  }
 }

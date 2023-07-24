@@ -1,0 +1,214 @@
+<section class="d-flex flex-lg-row flex-column flex-nowrap gap-lg-3" >
+  <div class="d-none d-lg-block label-widget w-25" *ngIf="optional || label">
+    <label class="txt txt-sm text-nowrap" (click)="toggleDropdown()"><span class="text-wrap text-black txt txt-sm">{{label}}</span> <span style="color: red;">{{optional ? '' :"*"}}</span></label>
+    <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
+  </div>
+  <div class="d-block d-lg-none label-widget w-100" *ngIf="optional || label">
+    <label class="txt txt-sm text-nowrap" (click)="toggleDropdown()"><span class="text-wrap text-black txt txt-sm">{{label}}</span> <span style="color: red;">{{optional ? '' :"*"}}</span></label>
+    <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
+  </div>
+
+  <div  class="host {{class}} w-100" [attr.data-count]="value?.length"
+    [ngClass]="{'multi': value?.length, 'disabled': isDisabled, 'error': isError, grouped, 'actions': actions && !grouped}">
+    <ng-container *ngIf="!isMulti">
+      <!-- Toggler -->
+      <button #toggler type="button" class="toggler {{sizeInGroup}} {{orderInGroup}}" (click)="toggleDropdown()"
+        [disabled]="isDisabled" [ngClass]="{'focus': isOpen && !actions , 'action-icon' : actionsIcon, isSearchable, hasBackground}">
+        <i *ngIf="leadingIcon" class="icon_before {{leadingIcon}}"></i>
+        <span class="placeholder text-netural-2 txt txt-sm" *ngIf="(isPlaceholderFixed || !value?.value || actions) && !actionsIcon"
+          [ngClass]="{'black': value?.value || actions}">{{ placeholder }}
+        </span>
+        <i *ngIf="actionsIcon" class="si-more-horizotnal-outline actions-icon-class" [ngStyle]="{'order': 2}"></i>
+        <span class="placeholder_selected" *ngIf="!isPlaceholderFixed && value?.value && !actions">
+          <p class="placeholder_title txt txt-sm font-w-500">{{value?.title}}</p>
+          <p *ngIf="value.caption" class="placeholder_caption txt txt-sm font-w-500">{{value.caption}}</p>
+        </span>
+        <i *ngIf="clearable && value?.value" class="icon_after si-close clear-single-select" (click)="onOptionSelected(null);  $event.stopPropagation()"></i>
+        <i *ngIf="!actionsIcon" class="si-down" [ngClass]="{'flip-v': isOpen, 'icon_after': !clearable}"></i>
+        <input #searchbar *ngIf="isSearchable && togglerSearch && isOpen" type="text" [(ngModel)]="searchText"
+        (keyup.space)="$event.preventDefault()" (click)="$event.stopPropagation()" (ngModelChange)="search()" [placeholder]="searchPlaceholder">
+      </button>
+
+      <!-- actions list -->
+      <ng-container *ngIf="isOpen && actions">
+        <div class="overflow" (click)="toggleDropdown()"></div>
+        <ul class="list" [ngClass]="{'custom': isCustom}" #uList>
+          <div class="list_content" (scroll)="onScroll($event)">
+            <ng-container *ngFor="let option of options">
+              <li class="list_item list_action {{option?.color || ''}}" [ngClass]="{'list_item_disabled': option.isDisabled}" (click)="onActionClicked(option)">
+                <i *ngIf="option?.startIcon" [class]="option?.startIcon"></i>
+                <p class="txt txt-sm">{{ option?.title }}</p>
+                <i *ngIf="option?.iconClass" class="icon_after {{option?.iconClass}}"></i>
+                  <sr-tooltip (click)="stopPropagation($event)" *ngIf="option.tooltip && option.isDisabled" class="select-tooltip" [iconClass]="option.tooltip.iconClass" [text]="option.tooltip.text" [boundary]="option.tooltip.boundary ? option.tooltip.boundary : ''" [maxWidth]="option.tooltip.maxWidth ? option.tooltip.maxWidth : ''"></sr-tooltip>
+              </li>
+              <label *ngIf="option?.label" class="txt txt-body font-w-600">{{option.label}}</label>
+            </ng-container>
+            <label *ngIf="isLoading || !options || !options?.length" class="txt txt-sm font-w-600">{{ loadingText }}</label>
+          </div>
+        </ul>
+      </ng-container>
+
+      <!-- List -->
+      <ng-container *ngIf="isOpen && !actions">
+        <div class="overflow" (click)="toggleDropdown()"></div>
+        <ul class="list" [ngClass]="{'custom': isCustom}" #uList>
+          <div class="list_content" (scroll)="onScroll($event)">
+            <div *ngIf="isSearchable && !togglerSearch" class="search_section">
+              <input type="text" [(ngModel)]="searchText" (ngModelChange)="search()" [placeholder]="searchPlaceholder">
+              <hr>
+            </div>
+            <ng-container *ngIf="value && selectionOnTop">
+              <li class="list_item item_selected">
+                <sr-radio *ngIf="!isIndicatorDisabled" [disableControl]="true" state="checked"></sr-radio>
+                <ng-container *ngIf="!value?.custom; else custom">
+                  <p class="txt txt-sm">{{ value?.title }}</p>
+                  <span *ngIf="value?.isDefault" class="lite">{{defaultOptionText}}</span>
+                  <i *ngIf="value?.iconClass" [class]="value?.iconClass"></i>
+                </ng-container>
+                <ng-template #custom>
+                  <sr-dynamic-renderer [data]="value?.custom"></sr-dynamic-renderer>
+                </ng-template>
+              </li>
+              <hr>
+            </ng-container>
+            <ng-container *ngFor="let option of !isParentSearchEnabled ? (options | search:searchText) : options">
+              <li *ngIf="(!isSelected(option) && !option.label) || (!selectionOnTop && !option.label)" class="list_item"
+                (click)="onOptionSelected(option)" [ngClass]="{'item_selected': isSelected(option), 'list_item_disabled': option.isDisabled}">
+                <sr-radio *ngIf="!isIndicatorDisabled" [disableControl]="true" [disabled]="option.isDisabled" [state]="isSelected(option) ? 'checked' : ''"></sr-radio>
+                <ng-container *ngIf="!option.custom; else custom">
+                  <p class="txt txt-sm">{{ option?.title }}</p>
+                  <span *ngIf="option?.isDefault" class="lite">{{defaultOptionText}}</span>
+                  <i *ngIf="option?.iconClass" [class]="option?.iconClass"></i>
+                </ng-container>
+                <ng-template #custom>
+                  <sr-dynamic-renderer [data]="option.custom"></sr-dynamic-renderer>
+                </ng-template>
+              </li>
+              <label *ngIf="option?.label" class="txt txt-sm font-w-600">{{option.label}}</label>
+            </ng-container>
+            <ng-container *ngIf="isLoading || !options || !options?.length || !(options | search:searchText).length">
+              <label *ngIf="isLoading || !options || (!options?.length && !searchText)" class="txt txt-sm font-w-600">{{ loadingText }}</label>
+              <label *ngIf="searchText && (!options?.length || !(options | search:searchText).length)" class="txt txt-sm font-w-600">{{ noResultText }}</label>
+            </ng-container>
+          </div>
+        </ul>
+      </ng-container>
+    </ng-container>
+
+    <!-- ------------------------------------------------------ -->
+    <!-- ---- [ ↑ Single select ↑ ] - [ ↓ Multi select ↓ ] ---- -->
+    <!-- ------------------------------------------------------ -->
+
+    <ng-container *ngIf="isMulti">
+      <!-- Toggler -->
+      <button type="button" class="toggler {{sizeInGroup}} {{orderInGroup}}"
+        (click)="toggleDropdown()" [disabled]="isDisabled" #toggler
+        [ngClass]="{'has-badges': !isPlaceholderFixed && !badgesNumberOnly && setCount(), 'focus': isOpen, isSearchable}">
+        <span *ngIf="leadingIcon" class="icon_before {{leadingIcon}}"></span>
+        <span class="placeholder txt txt-sm" [ngClass]="{'black': setCount()}"
+          *ngIf="(isPlaceholderFixed || !setCount())">{{ placeholder }}
+        </span>
+        <ng-container *ngIf="(togglerSearch && !isOpen) || !togglerSearch">
+          <div class="badges" *ngIf="isMulti && !isPlaceholderFixed && setCount()">
+            <ng-container *ngIf="!badgesNumberOnly">
+              <ng-container *ngFor="let option of value; let i = index">
+                <sr-tag
+                  *ngIf="i < badgesLimit"
+                  [title]="option?.title"
+                  (onClose)="onBadgeDeselect($event, option)">
+                </sr-tag>
+              </ng-container>
+              <p class="txt-sm" *ngIf="setCount() > badgesLimit">+{{ setCount() - badgesLimit }}</p>
+            </ng-container>
+            <p class="txt-sm" *ngIf="setCount() && badgesNumberOnly">{{placeholder}} ({{ setCount() }})</p>
+          </div>
+        </ng-container>
+        <i class="icon_after {{trailingIcon || 'si-down'}}" [ngClass]="{'flip-v': isOpen}"></i>
+        <input #searchbar *ngIf="isSearchable && togglerSearch && isOpen" type="text" [(ngModel)]="searchText"
+        (keyup.space)="$event.preventDefault()" (click)="$event.stopPropagation()" (ngModelChange)="search()" [placeholder]="searchPlaceholder">
+      </button>
+
+      <!-- List -->
+      <ng-container *ngIf="isOpen">
+        <div  class="overflow" (click)="toggleDropdown()"></div>
+        <ul  class="list" [ngClass]="{'custom': isCustom}" #uList>
+          <div class="list_content" (scroll)="onScroll($event)">
+            <div *ngIf="isSearchable && !togglerSearch" class="search_section">
+              <input type="text" [(ngModel)]="searchText" (ngModelChange)="search()" [placeholder]="searchPlaceholder">
+              <hr>
+            </div>
+            <li *ngIf="isSelectAllEnabled && !searchText" class="list_item" [ngClass]="{'item_selected': isAllSelected}"
+              (click)="toggleSelectAll()">
+              <sr-checkbox *ngIf="!isIndicatorDisabled" [state]="isAllSelected ? 'checked' : ''"></sr-checkbox>
+              <p class="txt txt-sm">{{ selectAllText }}</p>
+            </li>
+            <ng-container *ngIf="value?.length && selectionOnTop">
+              <li *ngFor="let option of value" class="list_item item_selected" (click)="onOptionSelected(option)" [ngClass]="{'list_item_disabled': option.isDisabled}">
+                <sr-checkbox *ngIf="!isIndicatorDisabled" state="checked"></sr-checkbox>
+                <ng-container *ngIf="!option.custom; else custom">
+                  <p class="txt txt-sm">{{ option?.title }}</p>
+                  <i *ngIf="option?.iconClass" [class]="option?.iconClass"></i>
+                </ng-container>
+                <ng-template #custom>
+                  <sr-dynamic-renderer [data]="value?.custom"></sr-dynamic-renderer>
+                </ng-template>
+              </li>
+              <hr *ngIf="!(value?.length == options?.length)">
+            </ng-container>
+            <ng-container *ngFor="let option of !isParentSearchEnabled ? (options | search:searchText) : options">
+              <ng-container *ngIf="(!isSelected(option) && !option.label) || (!selectionOnTop && !option.label)">
+                <li class="list_item"
+                [ngClass]="{'item_selected': isSelected(option), 'list_item_disabled': option.isDisabled}" (click)="onOptionSelected(option)">
+                <sr-checkbox *ngIf="!isIndicatorDisabled" [state]="isSelected(option) ? 'checked' : ''" [isDisabled]="option.isDisabled"></sr-checkbox>
+                  <div class="sr-d-flex sr-justify-content-between sr-align-items-center" [style]="isOptNested(option?.children) ? 'width:100%' : ''">
+                    <ng-container *ngIf="!option.custom; else custom">
+                      <div class="sr-d-flex">
+                        <p class="txt txt-sm">{{ option?.title }}</p>
+                        <i *ngIf="option?.iconClass" [class]="option?.iconClass"></i>
+                      </div>
+                    </ng-container>
+                    <ng-template #custom>
+                      <sr-dynamic-renderer [data]="option.custom"></sr-dynamic-renderer>
+                    </ng-template>
+                    <i *ngIf="isOptNested(option?.children)" [ngClass]="{'si-up': isNestedListSelected(option),'si-down': !isNestedListSelected(option)}" class="icon-arrow"></i>
+                  </div>
+
+              </li>
+              <label *ngIf="option?.label" class="txt txt-sm font-w-600">{{option.label}}</label>
+              <!-- start nested select -->
+              <ng-container *ngIf="isNestedListSelected(option)">
+                <label *ngIf="isOptNested(option?.children) && option?.children.length===0" class="txt txt-sm font-w-600">{{ loadingText }}</label>
+                <ng-container *ngFor="let subOption of isOptNested(option?.children) ? option.children:[]">
+                  <li class="list_item nested-list"
+                  [ngClass]="{'item_selected': isSelected(option,subOption), 'list_item_disabled': subOption.isDisabled}" (click)="onOptionSelected(option,subOption)">
+                    <sr-checkbox *ngIf="!isIndicatorDisabled" [state]="isSelected(option,subOption) ? 'checked' : ''" [isDisabled]="subOption.isDisabled"></sr-checkbox>
+                    <ng-container *ngIf="!option.custom; else custom">
+                      <p class="txt txt-sm">{{ subOption?.title }}</p>
+                      <i *ngIf="subOption?.iconClass" [class]="subOption?.iconClass"></i>
+                    </ng-container>
+                    <ng-template #custom>
+                      <sr-dynamic-renderer [data]="subOption.custom"></sr-dynamic-renderer>
+                    </ng-template>
+                  </li>
+                </ng-container>
+              </ng-container>
+              <!-- end nested select -->
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="isLoading || !options || !options?.length || !(options | search:searchText).length">
+              <label *ngIf="isLoading || !options || (!options?.length && !searchText)" class="txt txt-sm font-w-600">{{ loadingText }}</label>
+              <label *ngIf="searchText && (!options?.length || !(options | search:searchText).length)" class="txt txt-sm font-w-600">{{ noResultText }}</label>
+            </ng-container>
+          </div>
+        </ul>
+      </ng-container>
+    </ng-container>
+    <div *ngIf="description" class="description" [ngClass]="{'error': isError}">
+      <i class="si-info"></i>
+      <p class="txt txt-xl">{{ description }}</p>
+    </div>
+  </div>
+
+</section>
+
+
