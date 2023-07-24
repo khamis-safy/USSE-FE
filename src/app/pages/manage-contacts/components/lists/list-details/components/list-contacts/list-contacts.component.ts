@@ -162,7 +162,8 @@ console.log("isCanceled",this.isCanceled)
       dialogConfig.maxHeight='85vh';
       dialogConfig.data= {contacts:data,listDetails:true};
       const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
-
+      this.checks._results=[]
+      this.selection.clear();
       dialogRef.afterClosed().subscribe(result => {
         if(result){
           this.getContacts();

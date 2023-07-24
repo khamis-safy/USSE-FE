@@ -210,11 +210,13 @@ this.subscribtions.push(sub2)
     dialogConfig.maxHeight='85vh';
     dialogConfig.data= {contacts:data,listDetails:false};
     const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
-
+    this.checks._results=[]
+    this.selection.clear();
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.getContacts();
             }
+
 
     });
 

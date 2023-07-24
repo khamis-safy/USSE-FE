@@ -261,7 +261,8 @@ console.log("from get api",this.dataSource)
     dialogConfig.maxHeight='85vh';
     dialogConfig.data= data;
     const dialogRef = this.dialog.open(AddListComponent,dialogConfig);
-
+    this.checks._results=[]
+    this.selection.clear();
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.getListsCount();
