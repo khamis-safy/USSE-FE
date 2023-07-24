@@ -22,7 +22,6 @@ interface CheckedCont{
 })
 export class AddContactComponent implements OnInit{
 // isChanged:boolean=false;
-  isListDetails:boolean=false;
 
   lists: ListData[] ;
   listsArr:SelectOption[]
@@ -60,12 +59,7 @@ oldData;
 
   ngOnInit() {
     this.getLists();
-    if(this.data.listDetails){
-      this.isListDetails=true;
-    }
-    else{
-      this.isListDetails=false
-    }
+    console.log(this.data)
     if(this.data){
 
       this.isEdit = true
@@ -89,10 +83,10 @@ oldData;
 
   fillingData(){
     this.form.patchValue({
-      name: this.data.name,
-      mobile:`+${this.data.mobileNumber}`,
-      cnName:this.data.companyName,
-      note:this.data.note,
+      name: this.data.contacts.name,
+      mobile:`+${this.data.contacts.mobileNumber}`,
+      cnName:this.data.contacts.companyName,
+      note:this.data.contacts.note,
     });
 
 // this.oldData=this.form.value;
@@ -127,7 +121,7 @@ oldData;
         }
       })
       this.form.patchValue({
-        selectedLists: this.data?.lists.map(res=>{
+        selectedLists: this.data.contacts?.lists.map(res=>{
           return {
             title:res.name,
             value:res.id
