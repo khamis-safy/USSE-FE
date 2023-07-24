@@ -57,26 +57,28 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
 
         if(res.source.selected.length){
           console.log("selected",res.source.selected);
-          if(this.data.listDetails){
-            this.contacts=true;
-            this.contactsIds=res.source.selected.map((e)=>e.id);
-            console.log("selected contactes",this.contactsIds)
-          }
-          else{
-            this.listIds=res.source.selected.map((e)=>e.id);
-          }
+          this.contacts=true;
+
+            if(this.data.listDetails){
+              this.contactsIds=res.source.selected.map((e)=>e.id);
+              console.log("selected contactes",this.contactsIds)
+            }
+            else{
+              this.listIds=res.source.selected.map((e)=>e.id);
+            }
 
           console.log("list ids",this.listIds)
         }
         else{
           if(this.data.listDetails){
             this.contactsIds=[];
-            this.contacts=false;
 
           }
           else{
             this.listIds=[];
           }
+          this.contacts=false;
+
         }
       });
 

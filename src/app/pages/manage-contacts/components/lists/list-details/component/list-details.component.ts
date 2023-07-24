@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -27,7 +27,7 @@ import { TotalContacts } from '../totalContacts';
   templateUrl: './list-details.component.html',
   styleUrls: ['./list-details.component.scss']
 })
-export class ListDetailsComponent implements OnInit {
+export class ListDetailsComponent implements OnInit ,AfterViewInit{
   listId:string;
   isChecked: boolean;
   list:ListData;
@@ -46,6 +46,10 @@ export class ListDetailsComponent implements OnInit {
 
     })
   }
+  ngAfterViewInit() {
+    this.listContacts.count=this.count;
+    this.listContacts.getContacts();
+        console.log("listcont length",this.listContacts.count)  }
 
   ngOnInit() {
     this.getListData();
@@ -57,7 +61,9 @@ export class ListDetailsComponent implements OnInit {
       this.listService.getListById(this.listId).subscribe(
         (res)=>{
         this.list=res;
-        this.count={totalContacts:this.list.totalContacts,totalCancelContacts:this.list.totalCancelContacts}
+        this.count={totalContacts:this.list.totalContacts,totalCancelContacts:this.list.totalCancelContacts};
+
+
         console.log("list data",this.list)
         },
 
@@ -94,7 +100,8 @@ this.router.navigateByUrl('contacts')
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-this.listContacts.getContacts();
+        this.getListData();
+        this.listContacts.getContacts();
 
       }
       this.listContacts.checks._results=[]
@@ -117,6 +124,8 @@ this.listContacts.getContacts();
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
+        this.getListData();
+
         this.listContacts.getContacts();
 
       }
@@ -137,6 +146,7 @@ this.listContacts.getContacts();
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
+        this.getListData();
         this.listContacts.getContacts();
 
       }
