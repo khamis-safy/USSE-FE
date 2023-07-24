@@ -51,8 +51,8 @@ unDeleteList(email:string,ids:string[]):Observable<ErrSucc>{
 }
 
 // contacts methods
-getContacts(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Contacts[]>{
-  return this.http.get<Contacts[]>(`${env.api}Contacts/listContacts?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+getContacts(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string,isCanceled):Observable<Contacts[]>{
+  return this.http.get<Contacts[]>(`${env.api}Contacts/listContacts?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}&isCanceled=${isCanceled}`)
 }
 
 addContact(name:string,mobileNumber:string,companyName:string,note:string,email:string,listId:string[]):Observable<Contacts>{

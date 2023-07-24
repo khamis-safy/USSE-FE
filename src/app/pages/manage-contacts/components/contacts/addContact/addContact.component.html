@@ -1,4 +1,5 @@
-<section class="d-flex flex-column p-5 gap-3 h-100">
+<section class="d-flex flex-column p-3 gap-3 h-100">
+
   <!-- modal header -->
   <div class="d-flex justify-content-between align-items-center mb-4 " style="height: 10%;">
     <div *ngIf="!isEdit" class="txt-lg" style="font-weight: 800;">Add Contact</div>
@@ -16,18 +17,21 @@
   <div class="modal-body overflow-auto px-1"  style="height: 80%;">
     <form [formGroup]="form" class="w-100 m-auto ">
 
-   <div class="d-flex gap-4 flex-column">
-    <div class="form-group d-flex justify-content-between  w-100">
-      <label for="name" class="mb-2 ">Name <em class="text-danger">*</em> </label>
 
-      <input
-        type="text"
-        class="txt-input p-2"
-        id="name"
-        placeholder="Enter Your Name"
-        formControlName="name"
-      />
-    </div>
+   <div class="d-flex gap-4 flex-column py-3">
+    <us-input
+    [isDisabled]="false"
+    value=""
+    placeholder="Enter Your Name"
+    [optional]="false"
+    type="text"
+    [error]="false"
+    [fullWidth]="true"
+    formControlName="name"
+    label="Name"
+    [error]=" (name.touched && name.errors?.required)"
+    [hintText]=" name.touched && name.errors?.required ? 'This filed is required':'' "
+  ></us-input>
     <!-- <span  *ngIf="name.invalid && name.touched" class="animate__animated anime-duration-800 animate__fadeInUp text-danger d-flex gap-1 rounded-2  bg-opacity-10 p-2">
       <mat-icon class="text-danger" style="height: 20px;width: 20px; font-size: 20px;">error</mat-icon>
       <span class="text-danger text-wrap d-flex flex-column">
@@ -35,12 +39,15 @@
       </span>
     </span> -->
 
-    <div class="form-group d-flex justify-content-between  w-100">
-      <label for="mobile" class="mb-2 ">Mobile Number <em class="text-danger">*</em> </label>
-
+    <div class="form-group d-flex gap-lg-3 flex-column flex-lg-row flex-nowrap">
+      <label for="mobile" class="w-25 d-none d-lg-block text-nowrap"><span class="txt txt-sm text-black text-wrap">Mobile Number</span> <em class="text-danger">*</em> </label>
+      <label for="mobile" class="w-100 d-block d-lg-none">Mobile Number <em class="text-danger">*</em> </label>
+      <div class="w-100">
         <ngx-intl-tel-input
-        [cssClass]="'txt-input'"
+        class="w-100 rounded-pill"
+        [cssClass]="(mobile?.touched && mobile.invalid ? 'error' :'') + ' rounded-pill border border-1py-2 txt-input w-100'"
         [enableAutoCountrySelect]="true"
+        [preferredCountries]="[CountryISO.UnitedArabEmirates]"
         [enablePlaceholder]="true"
         [searchCountryFlag]="true"
         [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
@@ -52,39 +59,63 @@
         [numberFormat]="PhoneNumberFormat.National"
         name="phone"
         formControlName="mobile"
-
-      >
+        (ngModelChange)="test($event)"
+        >
       </ngx-intl-tel-input>
-
+      <div *ngIf="mobile?.touched &&(  mobile?.errors?.required || !mobile?.errors?.validatePhoneNumber?.valid )" class="hint error d-flex flex-wrap" >
+        <i class="si-info"></i>
+        <p *ngIf="mobile?.errors?.required || !mobile?.errors?.validatePhoneNumber?.valid" class="txt txt-xs">
+          {{mobile?.errors?.required ? 'This field is required' :''}}
+          {{mobile?.errors?.required && !mobile?.errors?.validatePhoneNumber?.valid ? ' - ': ''}}
+          {{!mobile?.errors?.validatePhoneNumber?.valid ? 'Incorrect phone number' : ''}}
+        </p>
+      </div>
+      </div>
     </div>
 
-    <div class="form-group d-flex justify-content-between w-100">
-      <label for="cnName" class="mb-2 ">Company Name </label>
+    <us-input
+    [isDisabled]="false"
+    value=""
+    placeholder="Enter Your Name"
+    [optional]="true"
+    type="text"
+    [error]="false"
+    [fullWidth]="true"
+    formControlName="cnName"
+    label="Company Name"
+  ></us-input>
 
-      <input
-        type="text"
-        class="txt-input p-2"
-        id="cnName"
-        formControlName="cnName"
-      />
-    </div>
-
-
-    <div class="form-group d-flex justify-content-between  w-100">
-      <label for="list">Lists</label>
+      <!-- <label for="list">Lists</label>
       <mat-form-field>
         <mat-select multiple [formControl]="selectedLists" (selectionChange)="changeLists($event.value)">
 
           <mat-option *ngFor="let li of lists" [value]="li">{{li.name}}</mat-option>
         </mat-select>
-      </mat-form-field>
-    </div>
+      </mat-form-field> -->
+      <us-select
+      [data]="listsArr"
+      formControlName="selectedLists"
+      [multiSelect]="true"
+      [label]="'Lists'"
+      [placeholder]="'Select Lists'"
+      [isDisabled]="false"
+      [enableSearch]="true"
+      [searchbarOnToggler]="true"
+      [searchNoResultText]="'there is no result'"
+      [maxListItemsWithoutSearch]="5"
+    ></us-select>
 
-    <div class="form-group d-flex justify-content-between  w-100">
-      <label for="note">Notes </label>
-
-      <textarea class="form-control txt-area" id="note" rows="3"  formControlName="note"></textarea>
-    </div>
+    <us-input
+    [isDisabled]="false"
+    placeholder="Enter Your Notes..."
+    [optional]="true"
+    type="text"
+    [error]="false"
+    [fullWidth]="true"
+    formControlName="note"
+    label="Notes"
+    [isTextArea]="true"
+  ></us-input>
 
   </div>
 

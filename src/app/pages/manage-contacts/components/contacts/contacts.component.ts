@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewChildren, Input } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../manage-contacts.service';
@@ -51,6 +51,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit ,OnDestroy{
     WrapperScrollLeft =0
     WrapperOffsetWidth =250
     @Output() isChecked = new EventEmitter<ListData[]>;
+    @Input('isUnsubscribe') isUnsubscribe = false;
 
   ngOnInit() {
 
@@ -104,6 +105,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit ,OnDestroy{
     console.log("Deleted contacts",this.deletedContacts)
   }
   getContacts(){
+    console.log('isCanceled', this.isUnsubscribe)
 //     let shows=this.listService.display;
 //     let pageNum=this.listService.pageNum;
 //     let email=this.listService.email;
@@ -185,8 +187,10 @@ this.contactsCount();
   let email=this.listService.email;
   let orderedBy=this.listService.orderedBy;
   let search=this.listService.search;
+  let isCanceled=this.isUnsubscribe;
+  console.log('isCanceled', this.isUnsubscribe)
   this.loading = true;
-   let sub1= this.listService.getContacts(email,shows,pageNum,orderedBy,search).subscribe(
+   let sub1= this.listService.getContacts(email,shows,pageNum,orderedBy,search,isCanceled).subscribe(
       (res)=>{
         this.numRows=res.length;
         this.loading = false;
@@ -267,11 +271,10 @@ this.subscribtions.push(sub2)
 
   openEditModal(data?){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='70vh';
+    dialogConfig.height='90vh';
     dialogConfig.width='40vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.maxHeight='85vh';
     dialogConfig.data= data;
     const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
 

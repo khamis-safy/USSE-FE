@@ -89,6 +89,7 @@
         <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
 
       </ng-template>
+        <app-contacts [isUnsubscribe]="true" (isChecked)="onChecked($event)"></app-contacts>
     </mat-tab>
   </mat-tab-group>
 </section>

@@ -1,0 +1,22 @@
+<div #parent class="sr-tooltip-parent">
+  <div class="icon-container" *ngIf="!truncate; else showTruncate">
+    <i
+      class="icon"
+      [ngClass]="iconClass"
+      (mouseenter)="onMouseenter()"
+      (mouseleave)="onMouseleave()"
+    ></i>
+  </div>
+
+  <ng-template #showTruncate>
+    <div class="truncated-text-container">
+      <span
+        class="text"
+        (mouseenter)="onMouseenter()"
+        (mouseleave)="onMouseleave()"
+      >
+        {{ text }}
+      </span>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,106 @@
+@import "./../../../../styles.scss";
+
+.tag {
+  background: $clr_primary_50;
+  border-radius: $radius_sm;
+  border: 1px solid $clr_primary_200;
+  color: $clr_primary_700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 32px;
+  cursor: default;
+  column-gap: 4px;
+  width: fit-content;
+
+  &_text {
+    display: initial !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    /* max-width: 90px; */
+    color: $clr_primary_700;
+    transition: 0.1s ease-in;
+
+    &:hover {
+      color: $clr_primary_400;
+      transition: 0.1s ease-in;
+    }
+  }
+
+  &_close {
+    cursor: pointer;
+    line-height: unset;
+    font-size: 16px;
+    font-weight: bold;
+    color: $clr_neutral_900;
+    line-height: 20px;
+  }
+
+  .vertical-line {
+    height: 16px;
+    width: 1px;
+    border-radius: 2px;
+    background-color: $clr_primary_200;
+    margin-inline-start: 2px;
+  }
+  &.danger {
+    border: 1px solid $clr_danger_200;
+    color: $clr_danger_700;
+    background: $clr_danger_50;
+    .tag_text {
+      color: $clr_danger_700;
+      &:hover {
+        color: $clr_danger_400;
+      }
+    }
+    .vertical-line {
+      background-color: $clr_danger_200;
+    }
+  }
+
+  &.warning {
+    border: 1px solid $clr_warning_200;
+    color: $clr_warning_700;
+    background: $clr_warning_50;
+    .tag_text {
+      color: $clr_warning_700;
+      &:hover {
+        color: $clr_warning_400;
+      }
+    }
+    .vertical-line {
+      background-color: $clr_warning_200;
+    }
+  }
+
+  &.success {
+    border: 1px solid $clr_success_200;
+    color: $clr_success_700;
+    background: $clr_success_50;
+    .tag_text {
+      color: $clr_success_700;
+      &:hover {
+        color: $clr_success_400;
+      }
+    }
+    .vertical-line {
+      background-color: $clr_success_200;
+    }
+  }
+
+  &.neutral {
+    border: 1px solid $clr_neutral_200;
+    color: $clr_neutral_700;
+    background: $clr_neutral_50;
+    .tag_text {
+      color: $clr_neutral_700;
+      &:hover {
+        color: $clr_neutral_400;
+      }
+    }
+    .vertical-line {
+      background-color: $clr_neutral_200;
+    }
+  }
+}
