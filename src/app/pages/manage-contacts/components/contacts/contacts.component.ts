@@ -54,6 +54,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   ) {
     }
 
+    @Input('isUnsubscribe') isUnsubscribe = false;
 
   ngOnInit() {
     this.getContacts();
@@ -111,6 +112,8 @@ this.contactsCount();
   let email=this.listService.email;
   let orderedBy=this.listService.orderedBy;
   let search=this.listService.search;
+  let isCanceled=this.isUnsubscribe;
+  console.log('isCanceled', this.isUnsubscribe)
   this.loading = true;
 
 console.log("is canceled" ,this.isCanceled)
@@ -202,11 +205,10 @@ this.subscribtions.push(sub2)
 
   openEditModal(data?){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='70vh';
+    dialogConfig.height='90vh';
     dialogConfig.width='40vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.maxHeight='85vh';
     dialogConfig.data= {contacts:data,listDetails:false};
     const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
     this.checks._results=[]

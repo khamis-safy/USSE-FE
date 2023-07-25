@@ -1,4 +1,4 @@
-::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+:host ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
   border-radius: 25px;
 }
 .icon{
@@ -31,14 +31,7 @@
 // }
 :host .mdc-text-field--filled:not(.mdc-text-field--disabled) {
 
-  height: unset !important;}
-::ng-deep .dropdown-toggle{
+  height: unset !important;
+}
 
-  margin-inline: 8px !important;
-}
-::ng-deep .dropdown-menu.country-dropdown.show.ng-star-inserted {
-  width: 397px !important;
-  border-radius: 8px !important;
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15) !important;
-}
 

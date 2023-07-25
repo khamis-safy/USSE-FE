@@ -1,0 +1,29 @@
+:host {
+  .sr-tooltip-parent {
+    max-width: 100%;
+    width: fit-content;
+  }
+
+  .icon-container {
+    .icon {
+      display: block;
+      cursor: help;
+    }
+  }
+
+  .truncated-text-container {
+    width: 100%;
+
+    .text {
+      width: 100%;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: help;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}

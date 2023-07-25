@@ -1,0 +1,10 @@
+<span class="tag py-1 px-2 {{ state }}" [title]="title">
+  <span class="tag_text txt txt-xs" [ngStyle]="{'max-width': maxWidth}">{{ title }}</span>
+  <ng-container *ngIf="!readonly">
+    <div class="vertical-line"></div>
+    <i
+      class="si-close tag_close"
+      (click)="onTagClose($event)"
+    ></i>
+  </ng-container>
+</span>

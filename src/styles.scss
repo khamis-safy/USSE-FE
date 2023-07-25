@@ -1,3 +1,78 @@
+@import "assets/icons/sary-icons.scss";
+
+
+/* Border_Radius */
+$radius_sm: 4px;
+$radius_md: 8px;
+$radius_lg: 12px;
+$radius_xl: 20px;
+
+/* Line Height */
+$LH_caption: 17px;
+$LH_body: 22px;
+$LH_subtitle: 23px;
+$LH_display_sm: 24px;
+$LH_display_md: 28px;
+$LH_display_lg: 35px;
+
+/* Depth / Shadows */
+$depth_1: 0px 1px 0px rgba(0, 0, 0, 0.05);
+$depth_2: 0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25);
+$depth_3: 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1);
+$depth_4: 0px 0px 3px rgba(0, 0, 0, 0.1), 0px 4px 20px rgba(0, 0, 0, 0.15);
+$depth_5: 0px 0px 4px rgba(0, 0, 0, 0.1), 0px 8px 40px rgba(0, 0, 0, 0.2);
+
+// Primary
+$clr_primary_900: #152979;
+$clr_primary_700: #2140BA;
+$clr_primary_400: #4060DD;
+$clr_primary_200: #B7C5FA;
+$clr_primary_50: #E2E7FD;
+
+
+// Secondary
+$clr_secondary_900: #006096;
+$clr_secondary_700: #0C75AF;
+$clr_secondary_400: #66B7F1;
+$clr_secondary_200: #B8E1FF;
+$clr_secondary_50: #EAF5FF;
+
+// Neutral
+$clr_neutral_900: #212121;
+$clr_neutral_800: #424242;
+$clr_neutral_700: #616161;
+$clr_neutral_600: #757575;
+$clr_neutral_500: #9E9E9E;
+$clr_neutral_400: #BDBDBD;
+$clr_neutral_300: #E0E0E0;
+$clr_neutral_200: #EEEEEE;
+$clr_neutral_100: #F5F5F5;
+$clr_neutral_50: #FAFAFA;
+$clr_neutral_0: #FFFFFF;
+
+// Danger
+$clr_danger_max: #990000;
+$clr_danger_900: #B72B1A;
+$clr_danger_700: #D02B20;
+$clr_danger_400: #EE5E52;
+$clr_danger_200: #F5C0B8;
+$clr_danger_50: #FCECEA;
+
+// Success
+$clr_success_900: #2F6846;
+$clr_success_700: #328048;
+$clr_success_400: #5CB176;
+$clr_success_200: #C6F0C2;
+$clr_success_50: #EAFBE7;
+
+// Warning
+$clr_warning_900: #BE5D01;
+$clr_warning_700: #D9822F;
+$clr_warning_400: #F29D41;
+$clr_warning_200: #FAE7B9;
+$clr_warning_50: #FDF4DC;
+
+
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 *:not(i,mat-icon){
@@ -160,7 +235,10 @@
 /* Handle on hover */
 // ::-webkit-scrollbar-thumb:hover {
 // }
-
+.txt{
+  margin: 0 !important;
+  padding: 0;
+}
 // main classes
 body {
   height: 100vh;
@@ -754,15 +832,32 @@ section.table-wrapper {
 }
 // end table override
 // input
-.txt-input{
-  width: 397px;
-  height: 42px;
-  border-radius: 40px;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
-  border: 0.5px solid rgba(160, 160, 160, 1);
-
+.dropdown-menu.country-dropdown.show.ng-star-inserted {
+  width: 250% !important;
+  max-width: 250% !important;
+  border-radius: 8px !important;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15) !important;
+  .iti__flag-box, .iti__country-name, .iti__dial-code{
+    white-space: break-spaces;
+  }
+#country-search-box{
+      padding: 0.5rem !important;
+  }
 }
+ngx-intl-tel-input .iti{
 
+  .txt-input{
+  transition: 0.2s ease-in;
+  height: 42px;
+    &:focus-within {
+      box-shadow: 0 0 0 2px $clr_neutral_0, 0 0 0 4px $clr_primary_400;
+    }
+    &:focus-visible {
+      outline: unset !important;
+    }
+  }
+  width: 100% !important;
+}
 .us-select{
   box-shadow: 0px 1px 4px 0px #0000001A;
   border-radius:10px ;
@@ -863,6 +958,25 @@ section.table-wrapper {
   background-color: var(--clr-neutral-0);
   .spinner_0XTQ {
     filter: invert(24%) sepia(66%) saturate(1894%) hue-rotate(171deg) brightness(100%) contrast(100%);
+}
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: $clr_neutral_600;
+
+  &.error {
+    color: $clr_danger_700;
+  }
+}
+ngx-intl-tel-input .error {
+  background: $clr_danger_50;
+  border-color: $clr_danger_700 !important;
+  .prefix,
+  .suffix {
+    background: $clr_danger_50;
+    border-color: $clr_danger_700 !important;
+  }
 }
 }
 // mat tabs

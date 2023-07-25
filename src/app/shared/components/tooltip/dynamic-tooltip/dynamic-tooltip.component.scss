@@ -1,0 +1,23 @@
+@import "./../../../../../styles.scss";
+
+:host {
+  display: block;
+  .sr-tooltip {
+    background-color: $clr_neutral_900;
+    color: $clr_neutral_0;
+    padding: 8px 16px;
+    border-radius: 4px;
+    width: max-content;
+
+    p {
+      color: $clr_neutral_0;
+      word-break: break-word;
+    }
+  }
+
+  .sr-tooltip-beak {
+    path {
+      fill: $clr_neutral_900;
+    }
+  }
+}

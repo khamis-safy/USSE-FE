@@ -1,0 +1,24 @@
+<div
+  class="sr-tooltip"
+  #tooltip
+  [ngStyle]="tooltipStyle"
+  (mouseenter)="onMouseenter($event)"
+  (mouseleave)="onMouseleave($event)"
+>
+  <p class="txt txt-caption">{{ text }}</p>
+</div>
+
+<svg
+  #beak
+  class="sr-tooltip-beak"
+  [ngStyle]="beakStyle"
+  xmlns="http://www.w3.org/2000/svg"
+  width="12"
+  height="6"
+  viewBox="0 0 12 6"
+  fill="none"
+>
+  <path
+    d="M5.81744 -4.72285L11.4743 0.934L7.23166 5.17664C6.45061 5.95769 5.18428 5.95769 4.40323 5.17664L0.16059 0.934L5.81744 -4.72285Z"
+  />
+</svg>

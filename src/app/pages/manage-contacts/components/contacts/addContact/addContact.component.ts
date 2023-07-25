@@ -8,6 +8,7 @@ import { ManageContactsService } from '../../../manage-contacts.service';
 import { AddListComponent } from '../../lists/addList/addList.component';
 import { Contacts } from '../../../contacts';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
+import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 
 interface CheckedCont{
   contacts:Contacts,
@@ -21,18 +22,18 @@ interface CheckedCont{
 })
 export class AddContactComponent implements OnInit{
 // isChanged:boolean=false;
-  isListDetails:boolean=false;
-  lists: ListData[] ;
-  selectedLists:FormControl;
 
+  lists: ListData[] ;
+  listsArr:SelectOption[]
   // ngx-intl-tel
-  separateDialCode = false;
+  separateDialCode = true;
 	SearchCountryField = SearchCountryField;
 	CountryISO = CountryISO;
   PhoneNumberFormat = PhoneNumberFormat;
 
   isLoading = false;
 
+  selectedLists = new FormControl([]);
   name:any = new FormControl('',[Validators.required]);
   mobile:any = new FormControl('',[Validators.required]);
   cnName:any = new FormControl('');
@@ -42,7 +43,7 @@ export class AddContactComponent implements OnInit{
     mobile:this.mobile,
     cnName:this.cnName,
     note:this.note,
-
+    selectedLists:this.selectedLists
   });
   isEdit:boolean =false
 
@@ -53,21 +54,17 @@ oldData;
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<AddContactComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:CheckedCont,
+    @Inject(MAT_DIALOG_DATA) public data:any,
   ) { }
 
   ngOnInit() {
     this.getLists();
-    if(this.data.listDetails){
-      this.isListDetails=true;
-    }
-    else{
-      this.isListDetails=false
-    }
+    console.log(this.data)
     if(this.data){
 
       this.isEdit = true
       this.fillingData();
+      // this.listsIds=this.data.lists.map((e)=>e.id)
       this.listsIds=this.data.contacts.lists.map((e)=>e.id);
 
       this.selectedLists=new FormControl(this.data.contacts.lists)
@@ -76,10 +73,7 @@ oldData;
       console.log("contacts data",this.data)
     }else{
       this.isEdit = false;
-
-
     }
-
   }
 
   // ngx-intl-tel
@@ -88,12 +82,13 @@ oldData;
 	// }
 
   fillingData(){
-    this.form.setValue({
+    this.form.patchValue({
       name: this.data.contacts.name,
       mobile:`+${this.data.contacts.mobileNumber}`,
       cnName:this.data.contacts.companyName,
       note:this.data.contacts.note,
     });
+
 // this.oldData=this.form.value;
 // console.log("old data",this.oldData)
 
@@ -117,17 +112,37 @@ oldData;
         }
       })
       let allLists=[]
-
       listsMap.forEach(list => allLists.push(list));
       this.lists=allLists
-
+      this.listsArr = allLists.map(res=>{
+        return {
+          title:res.name,
+          value:res.id
+        }
+      })
+      this.form.patchValue({
+        selectedLists: this.data.contacts?.lists.map(res=>{
+          return {
+            title:res.name,
+            value:res.id
+          }
+        })
+      })
       }
       else{
         this.lists=res;
+        this.listsArr = res.map(res=>{
+          return {
+            title:res.name,
+            value:res.id
+          }
+        })
       }
-
+      console.log(this.selectedLists.value)
+      console.log(this.listsArr)
       },
       (err)=>{
+
         console.log(err);
       })
   }
@@ -138,17 +153,16 @@ oldData;
     let cnNName=this.form.value.cnName;
     let mobile=this.form.value.mobile.e164Number;
     let note = this.form.value.note;
+    let listsIds:any = this.form.value.selectedLists;
 
-    this.listService.addContact(name,mobile,cnNName,note,email,this.listsIds).subscribe(
+    this.listService.addContact(name,mobile,cnNName,note,email,listsIds).subscribe(
       (res)=>{
         this.isLoading = false
-        console.log(res)
         this.onClose(true);
         this.toaster.success("Success")
                   },
       (err)=>{
         this.isLoading = false
-        console.log(err)
         this.onClose(false);
         this.toaster.error("Error")
             }
@@ -161,6 +175,9 @@ oldData;
     let cnName=this.form.value.cnName;
     let mobile=this.form.value.mobile.e164Number
     let note = this.form.value.note;
+    let listsIds:any = this.form.value.selectedLists;
+    this.isLoading = true
+
     this.isLoading = true;
 
     if(this.data.listDetails){
@@ -208,5 +225,9 @@ oldData;
 
     this.listsIds=event.map((e)=>e.id)
     console.log("selected lists",this.listsIds)
+  }
+  test(e){
+    console.log(e)
+    console.log(this.mobile)
   }
 }
