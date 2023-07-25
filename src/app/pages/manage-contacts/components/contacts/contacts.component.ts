@@ -23,13 +23,9 @@ import { Subscription } from 'rxjs';
 export class ContactsComponent  implements OnInit ,AfterViewInit {
   length:number;
   active:boolean=false;
-  testListContacts:Contacts[]=[]
   numRows;
   loading;
-  subscribtions:Subscription[]=[];
 
-  WrapperScrollLeft =0;
-  WrapperOffsetWidth =250;
   @Input() isCanceled:boolean;
   @Output() isDelete = new EventEmitter<ListData[]>;
   @Output() isChecked = new EventEmitter<ListData[]>;
@@ -44,9 +40,12 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   displayed: string[] = ['Name','Mobile','Notes','Lists','Company Name','Create At'];
   displayedColumns: string[] = ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At","action"];
   dataSource:MatTableDataSource<Contacts>;
-  @Input() listId:string="";
-  // dataSource = new MatTableDataSource<any>(this.listTableData);
   selection = new SelectionModel<any>(true, []);
+  subscribtions:Subscription[]=[];
+  @Input() listId:string="";
+
+  WrapperScrollLeft =0;
+  WrapperOffsetWidth =250;
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
