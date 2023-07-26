@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
@@ -7,4 +6,7 @@ import { Component } from '@angular/core';
 })
 export class MessageComponent {
 
+
+
 }
+
