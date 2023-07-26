@@ -31,4 +31,14 @@ CheckWhatsappBisuness(sessionName:string,token:string):Observable<CheckCon>{
   return this.http.post<CheckCon>(`${env.api}Device/CheckWhatsappBisunessSession`,data)
 
 }
+getDevicesCount(email:string):Observable<number>{
+  return this.http.get<number>(`${env.api}Device/listDevicesCount?email=${email}`)
+}
+
+deletDevice(email:string,id:string):Observable<any>{
+  return this.http.put<any>(`${env.api}Device/deleteWPPDevice?email=${email}&id=${id}`,"")
+}
+econnectWPPDevice(email:string,id:string):Observable<any>{
+  return this.http.put<any>(`${env.api}Device/deleteWPPDevice?email=${email}&id=${id}`,"")
+}
 }

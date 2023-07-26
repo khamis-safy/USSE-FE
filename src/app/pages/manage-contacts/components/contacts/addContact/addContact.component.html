@@ -44,7 +44,6 @@
       <label for="mobile" class="w-100 d-block d-lg-none">Mobile Number <em class="text-danger">*</em> </label>
       <div class="w-100">
         <ngx-intl-tel-input
-        class="w-100 rounded-pill"
         [cssClass]="(mobile?.touched && mobile.invalid ? 'error' :'') + ' rounded-pill border border-1py-2 txt-input w-100'"
         [enableAutoCountrySelect]="true"
         [preferredCountries]="[CountryISO.UnitedArabEmirates]"
@@ -62,14 +61,23 @@
         (ngModelChange)="test($event)"
         >
       </ngx-intl-tel-input>
-      <div *ngIf="mobile?.touched &&(  mobile?.errors?.required || !mobile?.errors?.validatePhoneNumber?.valid )" class="hint error d-flex flex-wrap" >
-        <i class="si-info"></i>
-        <p *ngIf="mobile?.errors?.required || !mobile?.errors?.validatePhoneNumber?.valid" class="txt txt-xs">
-          {{mobile?.errors?.required ? 'This field is required' :''}}
-          {{mobile?.errors?.required && !mobile?.errors?.validatePhoneNumber?.valid ? ' - ': ''}}
-          {{!mobile?.errors?.validatePhoneNumber?.valid ? 'Incorrect phone number' : ''}}
-        </p>
-      </div>
+
+      <ng-container *ngIf="mobile?.touched  && mobile?.errors?.required">
+        <div class="hint error" >
+          <i class="si-info"></i>
+          <p class="txt txt-xs ">
+            This filed is required
+          </p>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="mobile?.touched && mobile.invalid && !mobile?.errors?.required">
+        <div class="hint error" >
+          <i class="si-info"></i>
+          <p class="txt txt-xs ">
+            Incorrect phone number
+          </p>
+        </div>
+      </ng-container>
       </div>
     </div>
 
@@ -99,6 +107,7 @@
       [label]="'Lists'"
       [placeholder]="'Select Lists'"
       [isDisabled]="false"
+      [optional]="true"
       [enableSearch]="true"
       [searchbarOnToggler]="true"
       [searchNoResultText]="'there is no result'"

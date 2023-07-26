@@ -153,7 +153,8 @@ oldData;
     let cnNName=this.form.value.cnName;
     let mobile=this.form.value.mobile.e164Number;
     let note = this.form.value.note;
-    let listsIds:any = this.form.value.selectedLists;
+    let listsIds = this.form.value.selectedLists.map((e)=>e.value);
+    console.log("list ids",listsIds)
 
     this.listService.addContact(name,mobile,cnNName,note,email,listsIds).subscribe(
       (res)=>{
@@ -169,17 +170,17 @@ oldData;
     )
 
   }
+
+
   submitEdit(){
     let email="khamis.safy@gmail.com";
     let name =this.form.value.name;
     let cnName=this.form.value.cnName;
     let mobile=this.form.value.mobile.e164Number
     let note = this.form.value.note;
-    let listsIds:any = this.form.value.selectedLists;
+    let listsIds = this.form.value.selectedLists.map((e)=>e.value);
     this.isLoading = true
-
-    this.isLoading = true;
-
+    console.log("list ids",listsIds)
     if(this.data.listDetails){
       this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email).subscribe(
 
@@ -198,7 +199,7 @@ oldData;
       )
     }
     else{
-      this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email,this.listsIds).subscribe(
+      this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email,listsIds).subscribe(
 
         (res)=>{
           this.isLoading = false

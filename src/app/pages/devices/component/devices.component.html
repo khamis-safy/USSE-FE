@@ -4,7 +4,7 @@
       <img src="assets/icons/devices.svg" alt="" class="px-2 pe-3">
 
       <!-- <mat-icon class="tab-icon">recent_actors</mat-icon> -->
-   <span class="txt-lg main-heading"> Devices</span>
+   <span class="txt-lg main-heading" style="font-weight:500"> Devices</span>
     </div>
     <div class="menu">
       <button mat-button [matMenuTriggerFor]="menu" class="text-neutral-0 bg-primary-800 rounded-3 p-4">
@@ -48,7 +48,6 @@
         </mat-select>
       </mat-form-field>
     </div>
-
     <ng-container *ngIf="length>0">
     <section class="table-wrapper ">
       <table matSort mat-table [dataSource]="dataSource" (matSortChange)="onSortChange($event)">
@@ -99,7 +98,18 @@
          <!-- Status Column -->
          <ng-container matColumnDef="Status">
           <th mat-header-cell *matHeaderCellDef > Status </th>
-          <td mat-cell *matCellDef="let element"> </td>
+          <td mat-cell *matCellDef="let element">
+            <ng-container [ngSwitch]="element.isConnected">
+              <div *ngSwitchCase="true" class="d-flex gap-2 align-items-center">
+                <span class="status active"></span>
+                <p class="mb-0">Active</p>
+              </div>
+              <div *ngSwitchCase="false" class="d-flex gap-2 align-items-center">
+                <span class="status inactive"></span>
+                <p lass="mb-0">Inactive</p>
+              </div>
+            </ng-container>
+          </td>
         </ng-container>
 
 
@@ -109,10 +119,15 @@
           <th mat-header-cell *matHeaderCellDef> Action </th>
           <td mat-cell *matCellDef="let element">
 
-              <div class="d-flex align-items-center pointer text-primary-800" (click)="openEditModal(element)">
+              <div class="d-flex align-items-center gap-4" >
 
-                  <mat-icon class="mat-icon" color="primary" >edit</mat-icon>
-                  <span class="txt-sm edit">Edit</span>
+                  <div class="delete pointer" >
+                    <img src="assets/icons/delDev.svg" alt="" (click)="deleteDevice()">
+                  </div>
+                  <div class="retry pointer" (click)="reconnect()">
+                    <img src="assets/icons/reload.svg" alt="" >
+                  </div>
+
               </div>
             </td>
         </ng-container>

@@ -89,6 +89,7 @@ export class DevicesComponent implements OnInit{
 
   }
   getDevices(){
+    this.getDevicesCount();
     let shows=this.devicesService.display;
     let pageNum=this.devicesService.pageNum;
     let email=this.devicesService.email;
@@ -104,6 +105,17 @@ export class DevicesComponent implements OnInit{
        },
        (err)=>{
         this.loading = false;
+        this.length=0;
+         console.log(err);
+       })
+  }
+
+  getDevicesCount(){
+    this.devicesService.getDevicesCount(this.devicesService.email).subscribe(
+      (res)=>{
+       this.length=res
+       },
+       (err)=>{
         this.length=0;
          console.log(err);
        })
