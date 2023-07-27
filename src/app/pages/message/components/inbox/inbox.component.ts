@@ -1,109 +1,66 @@
-// import { Component } from '@angular/core';
-// @Component({
-//   selector: 'app-inbox',
-//   templateUrl: './inbox.component.html',
-//   styleUrls: ['./inbox.component.scss']
-// })
-// export class InboxComponent {
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {SelectionModel} from '@angular/cdk/collections';
 
+export interface PeriodicElement {
+  deviceName: string;
+  sender: string;
+  messages: string;
+  receivedAt: string;
+}
 
+const ELEMENT_DATA: PeriodicElement[] = [
+  {deviceName: 'John Smith', sender: '0121000', messages: 'Lorem Ipsum is a dummy text for the...', receivedAt: '16/6/23, 8.00pm'},
+  {deviceName: 'John Smith', sender: '0121000', messages: 'Lorem Ipsum is a dummy text for the...', receivedAt: '16/6/23, 8.00pm'},
+  {deviceName: 'John Smith', sender: '0121000', messages: 'Lorem Ipsum is a dummy text for the...', receivedAt: '16/6/23, 8.00pm'},
+  {deviceName: 'John Smith', sender: '0121000', messages: 'Lorem Ipsum is a dummy text for the...', receivedAt: '16/6/23, 8.00pm'},
+  {deviceName: 'John Smith', sender: '0121000', messages: 'Lorem Ipsum is a dummy text for the...', receivedAt: '16/6/23, 8.00pm'},
+  {deviceName: 'John Smith', sender: '0121000', messages: 'Lorem Ipsum is a dummy text for the...', receivedAt: '16/6/23, 8.00pm'},
+  {deviceName: 'John Smith', sender: '0121000', messages: 'Lorem Ipsum is a dummy text for the...', receivedAt: '16/6/23, 8.00pm'},
+  {deviceName: 'John Smith', sender: '0121000', messages: 'Lorem Ipsum is a dummy text for the...', receivedAt: '16/6/23, 8.00pm'},
+  {deviceName: 'John Smith', sender: '0121000', messages: 'Lorem Ipsum is a dummy text for the...', receivedAt: '16/6/23, 8.00pm'},
 
-// }
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
-import { MessageService } from '../../message.service';
-import { MatPaginator } from '@angular/material/paginator';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-
-
-import { FormControl } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription } from 'rxjs';
+];
 
 @Component({
   selector: 'app-inbox',
   templateUrl: './inbox.component.html',
   styleUrls: ['./inbox.component.scss']
 })
-export class InboxComponent   {
+export class InboxComponent implements AfterViewInit  {
+  displayedColumns: string[] = ['select' ,'deviceName', 'sender', 'messages', 'receivedAt'];
+  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  selection = new SelectionModel<PeriodicElement>(true, []);
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor() {}
-
-
-
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
   }
 
-  openSnackBar(){
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
 
-  }
-  undoDelete(){
-
-
-  }
-
-  getContacts(){
-
-
-
-
-  }
-
-
-
-
-  contactsCount(){
-
+    this.selection.select(...this.dataSource.data);
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(){
-
+  checkboxLabel(row?: PeriodicElement): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row `;
   }
-  onSortChange(){
-
-
-  }
-  onRowClick(){}
-
-  openEditModal(){
- }
-
-
-
-  onPageChange(){
-
-
-  }
-  onSearch(){
-
-  }
-  toggleActive(){
-
-  }
-  selectedRow(){
-
-  }
-  scrollRight(){
-
-
-  }
-  scrollLeft(){
-
-
-
-}
-changeColumns(){
-
-
-}
-
-destroy() {
-
-}
 }
 

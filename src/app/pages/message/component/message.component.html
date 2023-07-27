@@ -7,18 +7,39 @@
    <span class="txt-lg main-heading"> Message</span>
     </div>
 
+  <div class="buttons_ ">
 
-      <us-button
+    <us-button
+    *ngIf="isDelete == true "
+      class="m-2"
+      label="Delete"
+      img="assets/icons/delete.svg"
+      [iconClass]="'material-symbols-outlined'"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'danger'"
+
+    ></us-button>
+
+   <us-button
       class="m-2"
       label="New Message"
-      [matIcon]="'message'"
+      img="assets/icons/new-message-icon.svg"
       [fill]="true"
       [size]="'md'"
       [loading]="false"
       [disabled]="false"
       [appearance]="'primary'">
-    <!-- <i class="fa-duotone fa-message-pen"></i> -->
+
   </us-button>
+
+
+
+    </div>
+
+
   </div>
 
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" >
@@ -44,7 +65,7 @@
 
     <mat-tab>
       <ng-template mat-tab-label >
-        <img src="assets/icons/Frame 1171275397.svg" alt="" class="px-2">
+        <img src="assets/icons/outbox.svg" alt="" class="px-2">
           Outbox
         <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
 
