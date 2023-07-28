@@ -1,1 +1,121 @@
-<p>outbox work</p>
+<section class="py-3 d-flex flex-column gap-3 table-wrapper">
+
+  <div class="d-flex justify-content-between align-items-center ">
+    <div class="d-flex position-relative row m-0">
+      <div class=" col-12 col-lg-4 p-0">
+        <input #search type="text" class="form-control ps-5  txt-xs" id="search" placeholder="Search">
+      </div>
+      <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
+        <img src="assets/icons/search.svg" alt="" width="14">
+      </div>
+      <!-- <mat-icon class="w-fit text-neutral-500 position-absolute start-0 top-50 translate-middle-y">search</mat-icon> -->
+    </div>
+    <mat-form-field class="us-select">
+      <mat-label class="txt-caption"> <img src="assets/icons/display.svg" alt="" class="m-2" width="15"> <span
+          class="txt-caption" style="font-size: 12px !important;">Display</span></mat-label>
+      <mat-select multiple>
+        <mat-option>Device Name</mat-option>
+        <mat-option>Sender</mat-option>
+        <mat-option>Message</mat-option>
+        <mat-option>Created At</mat-option>
+        <mat-option>Updated At</mat-option>
+        <mat-option> Status</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+    <section class="table-wrapper ">
+      <table mat-table [dataSource]="dataSource">
+
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select" class="text-center">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+          </th>
+          <td class="text-center" mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <!-- deviceName Column -->
+        <ng-container matColumnDef="deviceName">
+          <th class="text-center" mat-header-cell *matHeaderCellDef> Device Name </th>
+          <td class="text-center" mat-cell *matCellDef="let element"> {{element.deviceName}} </td>
+        </ng-container>
+
+        <!-- Sender Column -->
+        <ng-container matColumnDef="sender">
+          <th class="text-center" mat-header-cell *matHeaderCellDef> Sender </th>
+          <td class="text-center" mat-cell *matCellDef="let element"> {{element.sender}} </td>
+        </ng-container>
+
+        <!-- Messages Column -->
+        <ng-container matColumnDef="messages">
+          <th class="text-center" mat-header-cell *matHeaderCellDef> Messages </th>
+          <td class="text-center pt-2" mat-cell *matCellDef="let element"> {{element.messages[0]}}
+            <div *ngIf="element.messages[1]=='image'" class="text-start ms-4  pt-2 pb-3">
+              <img src="assets/images/image.svg" alt="">
+            </div>
+            <div *ngIf="element.messages[1]=='document'" class="text-start ms-4  pt-2 pb-3">
+              <img src="assets/images/document.svg" alt="">
+            </div>
+
+          </td>
+        </ng-container>
+
+        <!-- created At at Column -->
+        <ng-container matColumnDef="createdAt">
+          <th class="text-center" mat-header-cell *matHeaderCellDef> Created At </th>
+          <td class="text-center" mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
+        </ng-container>
+
+        <!-- Updated At at Column -->
+        <ng-container matColumnDef="updatedAt">
+          <th class="text-center" mat-header-cell *matHeaderCellDef> Updated At </th>
+          <td class="text-center" mat-cell *matCellDef="let element"> {{element.updatedAt}} </td>
+        </ng-container>
+
+        <!-- Status at Column -->
+        <ng-container matColumnDef="status">
+          <th class="text-center" mat-header-cell *matHeaderCellDef> Status </th>
+          <td class="text-center" mat-cell *matCellDef="let element">
+            <div *ngIf="element.status=='read'">
+              <img src="assets/images/read.svg" alt="">
+            </div>
+
+            <div *ngIf="element.status=='sent'">
+              <img src="assets/images/sent.svg" alt="">
+            </div>
+
+            <div *ngIf="element.status=='delivered'">
+              <img src="assets/images/delivered.svg" alt="">
+            </div>
+
+            <div *ngIf="element.status=='pending'">
+              <img src="assets/images/pending.svg" alt="">
+            </div>
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </section>
+
+  
+
+
+
+
+
+
+
+</section>

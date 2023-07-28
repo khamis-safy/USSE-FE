@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class MessageService {
+export class CompaignsService {
 
   constructor(private http:HttpClient) {
 
