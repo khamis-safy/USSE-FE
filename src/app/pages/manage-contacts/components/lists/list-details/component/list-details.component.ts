@@ -76,8 +76,11 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit{
     this.tab=this.tabs[ev.index];
     this.listService.display=10;
     this.listService.pageNum=0;
-    this.listContacts.paginator.pageSize=this.listService.display;
-    this.listContacts.paginator.pageIndex=this.listService.pageNum;
+    if(this.listContacts.length){
+
+      this.listContacts.paginator.pageSize=this.listService.display;
+      this.listContacts.paginator.pageIndex=this.listService.pageNum;
+    }
   }
   backTolists(){
 this.router.navigateByUrl('contacts')
