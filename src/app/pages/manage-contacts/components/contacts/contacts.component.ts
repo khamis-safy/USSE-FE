@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../manage-contacts.service';
@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss']
 })
-export class ContactsComponent  implements OnInit ,AfterViewInit {
+export class ContactsComponent  implements OnInit  {
   length:number;
   active:boolean=false;
   numRows;
@@ -33,7 +33,7 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  @ViewChildren("check") checks:any;
+
   listTableData:ListData[]=[]
   deletedContacts:string[]=[];
   columns :FormControl;
@@ -64,7 +64,6 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
       (res) => {
 
         if(res.source.selected.length){
-          console.log("selected",res.source.selected)
 
           this.isChecked.emit(res.source.selected)
         }
@@ -88,7 +87,6 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
     this.listService.unDeleteContact(email,this.deletedContacts).subscribe(
       (res)=>{
 
-        console.log(res)
         this.toaster.success('Success');
         this.getContacts();
         this.deletedContacts=[];
@@ -96,13 +94,12 @@ export class ContactsComponent  implements OnInit ,AfterViewInit {
 
       },
       (err)=>{
-        console.log(err)
+
         this.toaster.error("Error")
 
       }
     )
 
-    console.log("Deleted contacts",this.deletedContacts)
   }
 
   getContacts(){
@@ -113,10 +110,8 @@ this.contactsCount();
   let orderedBy=this.listService.orderedBy;
   let search=this.listService.search;
   let isCanceled=this.isUnsubscribe;
-  console.log('isCanceled', this.isUnsubscribe)
   this.loading = true;
 
-console.log("is canceled" ,this.isCanceled)
    let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNum,orderedBy,search,this.listId).subscribe(
       (res)=>{
         this.numRows=res.length;
@@ -127,12 +122,12 @@ if(this.isCanceled){
 }
 
         this.dataSource=new MatTableDataSource<Contacts>(res)
-      console.log("all contacts",res);
+
        },
        (err)=>{
         this.loading = false;
         this.length=0;
-         console.log(err);
+
        })
        this.subscribtions.push(sub1)
   }
@@ -149,19 +144,17 @@ if(this.isCanceled){
         this.length=res;
         // this.length=0;
 
-        console.log("pages count contacts",res);
-        console.log("length",this.length)
+
 
       }
-      ,(err)=>{console.log(err);
+      ,(err)=>{
         this.length=0;}
     )
 this.subscribtions.push(sub2)
 
   }
 
-  ngAfterViewInit(): void {
-  }
+
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -196,7 +189,6 @@ this.subscribtions.push(sub2)
                   event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
                   '';
     this.listService.orderedBy=sorting;
-    console.log("sorting from onSortChange function ",this.listService.orderedBy);
     this.getContacts();
 
 
@@ -210,9 +202,10 @@ this.subscribtions.push(sub2)
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
+    dialogConfig.disableClose = true;
+
     dialogConfig.data= {contacts:data,listDetails:false};
     const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
-    this.checks._results=[]
     this.selection.clear();
     dialogRef.afterClosed().subscribe(result => {
       if(result){
@@ -227,29 +220,22 @@ this.subscribtions.push(sub2)
     this.listService.display=event.pageSize;
     this.listService.pageNum=event.pageIndex;
     this.getContacts();
-    // console.log("onPageChange",this.listService.display,event);
 
   }
   onSearch(event:any){
     this.listService.search=event.value;
-    console.log(this.listService.search);
     this.getContacts();
   }
   toggleActive(data?){
     if(data){
-      console.log("row data",data)
     }
-    console.log("active before",this.active)
     this.active=!this.active;
-    console.log("active after",this.active)
   }
   selectedRow(event){
-    console.log("selected row",event)
   }
   scrollRight(wrapper){
     this.WrapperOffsetWidth = wrapper.offsetWidth
     this.WrapperScrollLeft =wrapper.scrollLeft+100
-    console.log(this.WrapperOffsetWidth )
 
     wrapper.scrollTo({
       left: this.WrapperScrollLeft,
@@ -258,10 +244,8 @@ this.subscribtions.push(sub2)
 
   }
   scrollLeft(wrapper){
-    console.log(wrapper)
     this.WrapperScrollLeft =wrapper.scrollLeft-100
     if(this.WrapperScrollLeft<0)this.WrapperScrollLeft =0;
-    console.log(this.WrapperScrollLeft )
     wrapper.scrollTo({
       left: this.WrapperScrollLeft,
       behavior: "smooth",
@@ -283,7 +267,6 @@ changeColumns(event){
 destroy() {
   this.subscribtions.map(e=>e.unsubscribe());
   this.dataSource.data=[];
-  console.log("contacts Destroyed success")
 
 }
 }

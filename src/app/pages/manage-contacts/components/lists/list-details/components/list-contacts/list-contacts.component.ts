@@ -38,7 +38,6 @@ WrapperOffsetWidth =250;
 @ViewChild(MatPaginator)  paginator!: MatPaginator;
 @ViewChild(MatSort) sort: MatSort;
 
-@ViewChildren("check") checks:any;
 listTableData:ListData[]=[]
 deletedContacts:string[]=[];
 columns :FormControl;
@@ -67,7 +66,6 @@ this.selection.changed.subscribe(
   (res) => {
 
     if(res.source.selected.length){
-      console.log("selected",res.source.selected)
 
       this.isChecked.emit(res.source.selected)
     }
@@ -78,14 +76,12 @@ this.selection.changed.subscribe(
 }
 getContacts(){
 
-  console.log("length",this.length)
   let shows=this.listService.display;
     let pageNum=this.listService.pageNum;
     let email=this.listService.email;
     let orderedBy=this.listService.orderedBy;
     let search=this.listService.search;
     this.loading = true;
-console.log("isCanceled",this.isCanceled)
     let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNum,orderedBy,search,this.listId).subscribe(
         (res)=>{
           if(this.isCanceled){
@@ -99,12 +95,10 @@ console.log("isCanceled",this.isCanceled)
           this.loading = false;
           this.ListContacts=res;
           this.dataSource=new MatTableDataSource<Contacts>(res)
-        console.log("all contacts",res);
           },
           (err)=>{
           this.loading = false;
 
-            console.log(err);
             this.length=0;
           })
           this.subscribtions.push(sub1)
@@ -146,7 +140,6 @@ console.log("isCanceled",this.isCanceled)
                     event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
                     '';
       this.listService.orderedBy=sorting;
-      console.log("sorting from onSortChange function ",event);
       this.getContacts();
 
 
@@ -155,6 +148,8 @@ console.log("isCanceled",this.isCanceled)
 
     openEditModal(data?){
       const dialogConfig=new MatDialogConfig();
+      dialogConfig.disableClose = true;
+
       dialogConfig.height='70vh';
       dialogConfig.width='40vw';
       dialogConfig.maxWidth='100%';
@@ -162,7 +157,6 @@ console.log("isCanceled",this.isCanceled)
       dialogConfig.maxHeight='85vh';
       dialogConfig.data= {contacts:data,listDetails:true};
       const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
-      this.checks._results=[]
       this.selection.clear();
       dialogRef.afterClosed().subscribe(result => {
         if(result){
@@ -176,21 +170,16 @@ console.log("isCanceled",this.isCanceled)
       this.listService.display=event.pageSize;
       this.listService.pageNum=event.pageIndex;
       this.getContacts();
-      // console.log("onPageChange",this.listService.display,event);
 
     }
     onSearch(event:any){
       this.listService.search=event.value;
-      console.log(this.listService.search);
       this.getContacts();
     }
     toggleActive(data?){
       if(data){
-        console.log("row data",data)
       }
-      console.log("active before",this.active)
       this.active=!this.active;
-      console.log("active after",this.active)
     }
     changeColumns(event){
 

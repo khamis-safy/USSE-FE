@@ -29,7 +29,6 @@ export class DeleteListComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log(this.data)
     let body;
     if(this.data.list){
       this.removeCon=true;
@@ -43,7 +42,6 @@ export class DeleteListComponent implements OnInit {
     body = this.data.lists.map(res=>res.id);
     this.numOfItems=body.length;
     }
-    console.log(body)
   }
 deleteList(){
   this.isLoading = true
@@ -69,7 +67,6 @@ deleteList(){
     },
     (err)=>{
       this.isLoading = false
-      console.log(err)
       this.onClose();
       this.toaster.error("Error")
 
@@ -98,7 +95,6 @@ removeContacts(){
     },
     (err)=>{
       this.isLoading = false
-      console.log(err)
       this.onClose();
       this.toaster.error("Error")
 
@@ -117,7 +113,6 @@ removeContacts(){
   onClose(data?): void {
     this.dialogRef.close(data);
 
-    console.log("onClose",data)
 
   }
 }

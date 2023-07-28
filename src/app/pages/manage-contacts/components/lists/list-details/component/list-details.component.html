@@ -3,10 +3,10 @@
   <div class="d-flex justify-content-between pt-2 align-items-center">
     <div class="d-flex gap-3 flex-column ">
       <div >
-        <span class="text-primary-800 pointer "(click)="backTolists()" >Lists</span> / <span style="color:rgba(134, 134, 134, 1)">{{list.name}}</span>
+        <span class="text-primary-800 pointer "(click)="backTolists()" >Lists</span> / <span style="color:rgba(134, 134, 134, 1)">{{list?.name}}</span>
       </div>
 
-      <div class="mb-3 d-flex gap-2 align-items-center w-100"><p class="txt-lg" style="font-weight: 500;">{{list.name}}</p> <p class="txt-xs mb-2" style="font-weight: 500; color:rgba(134, 134, 134, 1)">{{list.createdAt | date: 'h:mm a , M/d/y '}}</p></div>
+      <div class="mb-3 d-flex gap-2 align-items-center w-100"><p class="txt-lg" style="font-weight: 500;">{{list?.name}}</p> <p class="txt-xs mb-2" style="font-weight: 500; color:rgba(134, 134, 134, 1)">{{list?.createdAt | date: 'h:mm a , M/d/y '}}</p></div>
 
     </div>
     <div class="buttons_ ">
@@ -66,7 +66,7 @@
 
     <mat-tab>
       <ng-template mat-tab-label>
-        <span class="text-primary-800 me-2" style="font-weight: 800;">{{list.totalContacts}}</span>
+        <span class="text-primary-800 me-2" style="font-weight: 800;">{{list?.totalContacts}}</span>
           Contacts
 
       </ng-template>

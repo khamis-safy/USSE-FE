@@ -4,7 +4,8 @@
   <app-side-bar class="d-none d-md-block bg-1 p-4 pe-3 h-100 "></app-side-bar>
   <div class="d-flex justify-content-space-between flex-column w-100  vh-92">
     <!-- <app-header class="navbar-comp d-flex align-items-center rounded-3" (toggleSidebar)="sidebarTogg()"></app-header> -->
-    <div class="vh-92 overflow-auto" [@routeAnimations]="prepareRoute(outlet)">
+    <div class="vh-92 overflow-auto" >
+      <!-- [@routeAnimations]="prepareRoute(outlet)" -->
       <router-outlet #outlet="outlet"></router-outlet>
     </div>
     <!-- <app-footer></app-footer> -->

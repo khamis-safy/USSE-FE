@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DevicesService } from '../../devices.service';
+import { Subscription, interval, switchMap, takeUntil, timer } from 'rxjs';
+import { MatDialogRef } from '@angular/material/dialog';
+import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 
 
 @Component({
@@ -7,72 +10,107 @@ import { DevicesService } from '../../devices.service';
   templateUrl: './steps.component.html',
   styleUrls: ['./steps.component.scss']
 })
-export class StepsComponent implements OnInit {
+export class StepsComponent implements OnInit ,OnDestroy {
 
 steps:boolean=true;
 isLoading:boolean=false;
-
-checkWBstatus:boolean=false;
+scann:boolean=false;
+wBstatus:boolean=false;
 initSuccB:boolean=false;
-sessionNB:string;
-tokenB:string;
-  constructor(private devicesService:DevicesService) { }
+sessionNB:string="";
+tokenB:string="";
+qrCode:string="";
+check;
+private initSessionSubscription: Subscription;
+private checkStatusSubscription: Subscription;
+retryCounter:number = 0;
+
+  constructor(private devicesService:DevicesService,
+    private  toaster: ToasterServices,
+    public dialogRef: MatDialogRef<StepsComponent>,
+    ) { }
 
   ngOnInit() {
 
   }
 
 scannCode(){
-  this.steps=false;
-  this.isLoading=true
-  this.initWhatsB("");
-  let every60Seconds;
-  let test = setTimeout(()=>{
+this.isLoading=true;
+this.scann=false;
+this.steps=false;
+this.initSessionAndCheckStatus();
+
+
+}
+
+
+initSessionAndCheckStatus(){
+  this.initSessionSubscription= this.devicesService.initWhatsAppB(this.sessionNB).subscribe(
+  (res)=>{
+          this.isLoading=false;
+          this.scann=false;
+          this.steps=false;
+
+          this.sessionNB=res.sessionName;
+          this.tokenB=res.token;
+          this.initSuccB=res.isSuccess;
+
+          let data='data:image/png;base64,';
+          let code=res.base64.includes(data)? res.base64.replace(data,""):res.base64;
+
+          this.qrCode=`${data}${code}`;
+
+        this.checkStatus();
+
+
+  },
+  (err)=>{
+    this.onClose()
+    this.toaster.error("Error")
+
+  }
+)
+}
+checkWhatsappB(){
+  if(this.wBstatus ){
+    clearInterval(this.check);
+    this.retryCounter=0;
     this.isLoading=false;
+    this.scann=true;
     this.steps=false;
-  },2000)
-  // if(!this.checkWBstatus && !this.isLoading){
-  //   every60Seconds = setInterval(this.initWhatsB,60*1000)
-  // }
-  // else{
-  //   clearInterval(every60Seconds)
-  // }
-
-}
-
-initWhatsB(sessionName:string){
-  console.log("init whatsapp buzziness")
-  this.devicesService.initWhatsAppB(sessionName).subscribe(
-    (res)=>{
-      this.isLoading=false;
-      this.sessionNB=res.sessionName;
-      this.tokenB=res.token;
-      this.initSuccB=res.isSuccess;
-
-      this.checkWBSession();
-      // this.checkWBSession(this.sessionNB,this.tokenB)
-    },
-    (err)=>{
-      this.isLoading=false;
-      console.log(err);}
-  )
-}
-
-checkWBSession(){
-  let  checkSucc=setInterval(this.checkWBSession,2000);
-  if(!this.checkWBstatus){
-    this.devicesService.CheckWhatsappBisuness(this.sessionNB,this.tokenB).subscribe(
-      (res)=>{console.log("works",res.status);
-              this.checkWBstatus=res.status;
-    },
-      (err)=>{console.log(err)}
-    )
   }
-  else{
-    clearInterval(checkSucc)
-  }
+  else if(!this.wBstatus&& this.retryCounter>=30){
+    clearInterval(this.check);
+    this.retryCounter=0;
 
+    this.initSessionAndCheckStatus();
+
+  }
+}
+checkStatus(){
+    this.check=setInterval(()=>{
+
+    this.checkStatusSubscription = this.devicesService.CheckWhatsappBisuness(this.sessionNB,this.tokenB).subscribe(
+        (res)=>{
+          this.wBstatus=res.status;
+          this.retryCounter++;
+          this.checkWhatsappB();
+        },
+        (err)=>{
+          this.onClose()
+          this.toaster.error("Error")
+        }
+      )
+    },2000) ;
+}
+onClose() {
+  this.dialogRef.close();
 }
 
-
+ngOnDestroy(): void {
+  clearInterval(this.check);
+  // Unsubscribe to avoid memory leaks
+  this.initSessionSubscription?.unsubscribe();
+  this.checkStatusSubscription?.unsubscribe();
+}
 }

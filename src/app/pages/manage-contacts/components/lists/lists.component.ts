@@ -24,7 +24,6 @@ import { ListDetailsService } from './list-details/list-details.service';
 export class ListsComponent implements OnInit ,AfterViewInit  {
 length:number=0;
 active:boolean=false;
-@ViewChildren("check") checks:any;
 numRows;
 loading;
 subscribtions:Subscription[]=[];
@@ -56,9 +55,7 @@ subscribtions:Subscription[]=[];
     this.columns=new FormControl(this.displayedColumns)
     this.selection.changed.subscribe(
       (res) => {
-        console.log("selected data",res)
         if(res.source.selected.length){
-          console.log("selected",res.source.selected)
           this.isDelete.emit(res.source.selected)
         }
         else{
@@ -77,10 +74,9 @@ getListsCount(){
       this.length=res;
       // this.length=0;
 
-      console.log("pages count",res);
 
     }
-    ,(err)=>{console.log(err);
+    ,(err)=>{
       this.length=0;}
   );
   this.subscribtions.push(sub1)
@@ -97,81 +93,18 @@ getListData(){
 
   this.loading = true;
 
-  console.log(`from git list data inside list component number of shows is:${shows} page number is ${pageNum} orderBy is ${orderedBy} search is ${search}`)
-  // this.listTableData=[
-  //   {
-  //       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-  //       name: "Carbon",
-  //       totalContacts: 0,
-  //       totalCancelContacts: 0,
-  //       createdAt: "2023-06-19T22:41:50.2533008Z",
-  //       isDeleted: false,
-  //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-  //     },
-  //     {
-  //       id: "sjfksjdflksjdlkjsdlkgj-4a50-49f9-9f3c-fd54b8b273ca",
-  //       name: "Nitrogen",
-  //       totalContacts: 0,
-  //       totalCancelContacts: 0,
-  //       createdAt: "2023-05-19T22:41:50.2533008Z",
-  //       isDeleted: false,
-  //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-  //     },
-  //   {
-  //       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-  //       name: "Carbon",
-  //       totalContacts: 0,
-  //       totalCancelContacts: 0,
-  //       createdAt: "2023-06-19T22:41:50.2533008Z",
-  //       isDeleted: false,
-  //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-  //     },
-  //     {
-  //       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-  //       name: "Nitrogen",
-  //       totalContacts: 0,
-  //       totalCancelContacts: 0,
-  //       createdAt: "2023-06-19T22:41:50.2533008Z",
-  //       isDeleted: false,
-  //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-  //     },
-  //     {
-  //       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-  //       name: "Carbon",
-  //       totalContacts: 0,
-  //       totalCancelContacts: 0,
-  //       createdAt: "2023-06-19T22:41:50.2533008Z",
-  //       isDeleted: false,
-  //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-  //     },
-  //     {
-  //       id: "ls_1edde628-4a50-49f9-9f3c-fd54b8b273ca",
-  //       name: "Nitrogen",
-  //       totalContacts: 0,
-  //       totalCancelContacts: 0,
-  //       createdAt: "2023-06-19T22:41:50.2533008Z",
-  //       isDeleted: false,
-  //       applicationUserId: "7ff2e9b7-be58-46e0-bea2-e3a200ff5ff0"
-  //     }
 
-  // ]
-
-
-  // this.dataSource=new MatTableDataSource<ListData>(this.listTableData)
 
  let sub2= this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
      (res)=>{
       this.loading = false;
 
-        console.log(res);
         this.numRows=res.length;
   this.dataSource=new MatTableDataSource<ListData>(res)
-console.log("from get api",this.dataSource)
       },
       (err)=>{
         this.loading = false;
         this.length=0
-        console.log(err);
 
       })
       this.subscribtions.push(sub2)
@@ -199,7 +132,6 @@ console.log("from get api",this.dataSource)
     this.listService.unDeleteList(email,this.deletedLists).subscribe(
       (res)=>{
 
-        console.log(res)
         this.toaster.success('Success');
         this.getListData();
         this.deletedLists=[];
@@ -207,13 +139,11 @@ console.log("from get api",this.dataSource)
 
       },
       (err)=>{
-        console.log(err)
         this.toaster.error("Error")
 
       }
     )
 
-    console.log("Deleted contacts",this.deletedLists)
   }
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
@@ -246,7 +176,6 @@ console.log("from get api",this.dataSource)
                   event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
                   '';
     this.listService.orderedBy=sorting;
-    console.log("sorting from onSortChange function ",this.listService.orderedBy)
     this.getListData();
 
   }
@@ -260,8 +189,9 @@ console.log("from get api",this.dataSource)
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
     dialogConfig.data= data;
+    dialogConfig.disableClose = true;
+
     const dialogRef = this.dialog.open(AddListComponent,dialogConfig);
-    this.checks._results=[]
     this.selection.clear();
     dialogRef.afterClosed().subscribe(result => {
       if(result){
@@ -281,23 +211,17 @@ console.log("from get api",this.dataSource)
   }
   onSearch(event:any){
     this.listService.search=event.value;
-    console.log(this.listService.search);
     this.getListData();
   }
   toggleActive(data?){
     if(data){
-      console.log("row data",data)
     }
-    console.log("active before",this.active)
     this.active=!this.active;
-    console.log("active after",this.active)
   }
   selectedRow(event){
-    console.log("selected row",event)
   }
 
   changeColumns(event){
-    console.log(event);
     this.displayedColumns=['select',...event,'edit']
 
 
@@ -305,7 +229,6 @@ console.log("from get api",this.dataSource)
   destroy() {
     this.subscribtions.map(e=>e.unsubscribe());
     this.dataSource.data=[];
-    console.log("lists Destroyed success")
   }
 
   navigateTo(id:string){

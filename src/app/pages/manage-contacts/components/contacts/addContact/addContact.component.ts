@@ -59,7 +59,6 @@ oldData;
 
   ngOnInit() {
     this.getLists();
-    console.log(this.data)
     if(this.data){
 
       this.isEdit = true
@@ -70,7 +69,6 @@ oldData;
       this.selectedLists=new FormControl(this.data.contacts.lists)
 
 
-      console.log("contacts data",this.data)
     }else{
       this.isEdit = false;
     }
@@ -89,8 +87,7 @@ oldData;
       note:this.data.contacts.note,
     });
 
-// this.oldData=this.form.value;
-// console.log("old data",this.oldData)
+
 
   }
 
@@ -138,12 +135,12 @@ oldData;
           }
         })
       }
-      console.log(this.selectedLists.value)
-      console.log(this.listsArr)
+
       },
       (err)=>{
+        // this.onClose(false);
+        // this.toaster.error("Error")
 
-        console.log(err);
       })
   }
   submitAdd(){
@@ -154,7 +151,6 @@ oldData;
     let mobile=this.form.value.mobile.e164Number;
     let note = this.form.value.note;
     let listsIds = this.form.value.selectedLists.map((e)=>e.value);
-    console.log("list ids",listsIds)
 
     this.listService.addContact(name,mobile,cnNName,note,email,listsIds).subscribe(
       (res)=>{
@@ -165,8 +161,8 @@ oldData;
       (err)=>{
         this.isLoading = false
         this.onClose(false);
-        this.toaster.error("Error")
-            }
+        this.toaster.error(`Error: ${err.message}`)
+      }
     )
 
   }
@@ -180,21 +176,18 @@ oldData;
     let note = this.form.value.note;
     let listsIds = this.form.value.selectedLists.map((e)=>e.value);
     this.isLoading = true
-    console.log("list ids",listsIds)
     if(this.data.listDetails){
       this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email).subscribe(
 
         (res)=>{
           this.isLoading = false
-          console.log(res)
           this.onClose(true);
           this.toaster.success("Success")
         },
         (err)=>{
           this.isLoading = false
-          console.log(err)
           this.onClose(false);
-          this.toaster.error("Error")
+          this.toaster.error(`Error: ${err.message}`)
         }
       )
     }
@@ -203,15 +196,13 @@ oldData;
 
         (res)=>{
           this.isLoading = false
-          console.log(res)
           this.onClose(true);
           this.toaster.success("Success")
         },
         (err)=>{
           this.isLoading = false
-          console.log(err)
           this.onClose(false);
-          this.toaster.error("Error")
+          this.toaster.error(`Error: ${err.message}`)
         }
       )
     }
@@ -219,16 +210,11 @@ oldData;
   }
   onClose(data?): void {
     this.dialogRef.close(data);
-    console.log("onClose",data)
 
   }
   changeLists(event){
 
     this.listsIds=event.map((e)=>e.id)
-    console.log("selected lists",this.listsIds)
   }
-  test(e){
-    console.log(e)
-    console.log(this.mobile)
-  }
+
 }
