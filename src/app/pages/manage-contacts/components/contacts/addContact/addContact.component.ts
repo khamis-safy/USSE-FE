@@ -138,8 +138,8 @@ oldData;
 
       },
       (err)=>{
-        // this.onClose(false);
-        // this.toaster.error("Error")
+        this.onClose(false);
+        this.toaster.error("Error")
 
       })
   }
@@ -161,7 +161,7 @@ oldData;
       (err)=>{
         this.isLoading = false
         this.onClose(false);
-        this.toaster.error(`Error: ${err.message}`)
+        this.toaster.error(`Error: ${err}`)
       }
     )
 
