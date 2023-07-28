@@ -11,6 +11,7 @@ const routes: Routes = [
         loadChildren: () =>
           import("./../../pages/messages/messages.module").then((m) => m.MessagesModule),
       },
+
       {
         path: "contacts",
         loadChildren: () =>
@@ -35,7 +36,8 @@ const routes: Routes = [
         path: "compaigns",
         loadChildren: () =>
           import("./../../pages/compaigns/compaigns.module").then((m) => m.CompaignsModule),
-      }
+      } ,
+
 
     ]
   }
