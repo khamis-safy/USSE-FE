@@ -753,8 +753,7 @@ section.table-wrapper {
     .right-arrow{
 
 
-
-      background-image: linear-gradient(90deg,#eef4f9c2 33%,transparent) !important;
+      background-image: linear-gradient(90deg, transparent, rgb(238, 244, 249) 90%)!important;
     }    position:relative;
     background-color: transparent !important;
     z-index: 2;

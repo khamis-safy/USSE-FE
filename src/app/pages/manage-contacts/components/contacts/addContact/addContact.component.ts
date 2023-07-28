@@ -161,7 +161,7 @@ oldData;
       (err)=>{
         this.isLoading = false
         this.onClose(false);
-        this.toaster.error(`Error: ${err}`)
+        this.toaster.error(`Error`)
       }
     )
 
