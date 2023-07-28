@@ -1,0 +1,87 @@
+<section class="p-3">
+  <div class="d-flex justify-content-between mb-4 align-items-center">
+    <div class="d-flex justify-content-center ">
+      <img src="assets/icons/Vector (1).svg" alt="" class="px-2">
+
+      <!-- <mat-icon class="tab-icon">recent_actors</mat-icon> -->
+   <span class="txt-lg main-heading"> Message</span>
+    </div>
+
+  <div class="buttons_ ">
+
+    <us-button
+    *ngIf="isDelete == true "
+      class="m-2"
+      label="Delete"
+      img="assets/icons/delete.svg"
+      [iconClass]="'material-symbols-outlined'"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'danger'"
+
+    ></us-button>
+
+   <us-button
+      class="m-2"
+      label="New Message"
+      img="assets/icons/new-message-icon.svg"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'primary'">
+
+  </us-button>
+
+
+
+    </div>
+
+
+  </div>
+
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" >
+
+    <mat-tab>
+      <ng-template mat-tab-label class="txt-md">
+        <img src="assets/icons/Frame 1171275397.svg" alt="" class="px-2">
+        <!-- <mat-icon class="tab-icon">contacts</mat-icon> -->
+          Inbox
+      </ng-template>
+      <app-inbox ></app-inbox>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <img src="assets/icons/Vector.svg" alt="" class="px-2">
+          Scheduled
+        <!-- <mat-icon class="tab-icon">format_list_bulleted</mat-icon> -->
+
+      </ng-template>
+      <app-scheduled ></app-scheduled>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label >
+        <img src="assets/icons/outbox.svg" alt="" class="px-2">
+          Outbox
+        <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
+
+      </ng-template>
+      <app-outbox ></app-outbox>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label >
+        <img src="assets/icons/Group 1171276390.svg" alt="" class="px-2">
+          Undelivered
+        <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
+
+      </ng-template>
+      <app-undelivered ></app-undelivered>
+    </mat-tab>
+  </mat-tab-group>
+</section>
+

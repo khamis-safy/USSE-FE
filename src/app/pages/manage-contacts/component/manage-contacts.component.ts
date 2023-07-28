@@ -43,6 +43,8 @@ export class ManageContactsComponent implements AfterViewInit{
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
+    dialogConfig.disableClose = true;
+
     const dialogRef = this.dialog.open(AddListComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -51,7 +53,6 @@ export class ManageContactsComponent implements AfterViewInit{
       }
 
     });
-    console.log("add-list-modal")
 
   }
   openAddContactModal(){
@@ -61,6 +62,8 @@ export class ManageContactsComponent implements AfterViewInit{
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
+    dialogConfig.disableClose = true;
+
     const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -71,7 +74,6 @@ export class ManageContactsComponent implements AfterViewInit{
   }
   onDeleteChange(e){
     this.isDelete = e;
-    console.log("onDeleteChange",e)
   }
   onChecked(e){
     this.isChecked=e;
@@ -86,7 +88,9 @@ export class ManageContactsComponent implements AfterViewInit{
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.data = {lists:this.isDelete}
+    dialogConfig.data = {lists:this.isDelete};
+    dialogConfig.disableClose = true;
+
     const dialogRef = this.dialog.open(DeleteListComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -96,8 +100,6 @@ export class ManageContactsComponent implements AfterViewInit{
         this.lists.getListData();
       }
       this.lists.selection.clear();
-      this.lists.checks._results=[]
-      console.log("delete afterClosed",this.lists.selection)
 
     });
   }
@@ -107,7 +109,14 @@ export class ManageContactsComponent implements AfterViewInit{
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.data =  {contacts:this.isChecked,remove:false};
+    dialogConfig.disableClose = true;
+
+    dialogConfig.data =
+    {
+      contactsData: {contacts:this.isChecked,remove:false}
+    }
+
+
     const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
 
 
@@ -118,12 +127,10 @@ export class ManageContactsComponent implements AfterViewInit{
         this.contacts.getContacts();
 
       }
-      this.contacts.checks._results=[]
 
       this.contacts.selection.clear();
 
     });
-    console.log("delete contact")
   }
 
 
@@ -133,14 +140,17 @@ export class ManageContactsComponent implements AfterViewInit{
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.data = {contacts:this.isChecked,remove:true};
+    dialogConfig.disableClose = true;
+    dialogConfig.data =
+    {
+      contactsData: {contacts:this.isChecked,remove:true}
+    }
     const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.contacts.getContacts();
       }
-      this.contacts.checks._results=[]
 
       this.contacts.selection.clear();
 
@@ -153,6 +163,8 @@ export class ManageContactsComponent implements AfterViewInit{
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
+    dialogConfig.disableClose = true;
+
     dialogConfig.data = {contacts:this.isChecked , listDetails:false};
     const dialogRef = this.dialog.open(ContactListsComponent,dialogConfig);
 
@@ -162,16 +174,12 @@ export class ManageContactsComponent implements AfterViewInit{
 
       }
       this.contacts.selection.clear();
-      this.contacts.checks._results=[]
-      console.log("delete afterClosed",this.lists.selection)
 
     });
 
   }
 
-  openunsubscribeModal(){
-    console.log("add-unsubscribe-modal")
-  }
+
 
   changeModal(ev){
     this.listService.display=10;
@@ -188,27 +196,40 @@ export class ManageContactsComponent implements AfterViewInit{
       this.isCanceled=false
       this.contacts.isCanceled=this.isCanceled;
       this.contacts.getContacts();
-      this.contacts.paginator.pageSize=this.listService.display;
+      if(this.contacts.length){
+            this.contacts.paginator.pageSize=this.listService.display;
       this.contacts.paginator.pageIndex=this.listService.pageNum;
+      }
 
-      this.lists.paginator.pageSize=this.listService.display;
-      this.lists.paginator.pageIndex=this.listService.pageNum;
+      if(this.lists.length){
+        this.lists.paginator.pageSize=this.listService.display;
+        this.lists.paginator.pageIndex=this.listService.pageNum;
+      }
+
     }
     else if(this.tab=='lists'){
       this.lists.getListData();
-      this.contacts.paginator.pageSize=this.listService.display;
-      this.contacts.paginator.pageIndex=this.listService.pageNum;
-
+      if(this.contacts.length){
+        this.contacts.paginator.pageSize=this.listService.display;
+  this.contacts.paginator.pageIndex=this.listService.pageNum;
+  }
     }
     else if(this.tab=='cancel'){
       this.isCanceled=true
       this.contacts.isCanceled=this.isCanceled;
-      this.contacts.paginator.pageSize=this.listService.display;
-      this.contacts.paginator.pageIndex=this.listService.pageNum;
-      this.lists.paginator.pageSize=this.listService.display;
-      this.lists.paginator.pageIndex=this.listService.pageNum;
+
+      if(this.contacts.length){
+        console.log(this.contacts.length)
+        this.contacts.paginator.pageSize=this.listService.display;
+  this.contacts.paginator.pageIndex=this.listService.pageNum;
+  }
+
+  if(this.lists.length){
+    this.lists.paginator.pageSize=this.listService.display;
+    this.lists.paginator.pageIndex=this.listService.pageNum;
+  }
+
       this.contacts.getContacts();
      }
-    console.log("tab name: ",this.tab)
   }
 }

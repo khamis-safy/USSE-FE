@@ -11,15 +11,22 @@
 
   <div class="content d-flex justify-content-center align-items-center flex-column gap-4">
     <div class="txt-lg">
-      <span style="font-weight: 700;">{{numOfItems}} item(s)</span>
+    <ng-container *ngIf="isContacts" >
+
+      <span   style="font-weight: 700;">{{numOfItems}} item(s)</span>
       Selected
-    </div>
-
-    <ng-container [ngSwitch]="isRemoveL">
-    <p *ngSwitchCase="false" class="txt-sm text-center">Are you sure you want to delete selected items ?</p>
-    <p *ngSwitchCase="true" class="txt-sm text-center">Clear lists from this contacts ?</p>
     </ng-container>
+    </div>
+    <ng-container *ngIf="isDevices">
+      <p  class="txt-lg my-2 text-center" style="line-height: 1.3;">Are you sure you want to delete this device ?</p>
 
+    </ng-container>
+    <ng-container *ngIf="isContacts">
+        <ng-container [ngSwitch]="isRemoveL">
+        <p *ngSwitchCase="false" class="txt-sm text-center">Are you sure you want to delete selected items ?</p>
+        <p *ngSwitchCase="true" class="txt-sm text-center">Clear lists from this contacts ?</p>
+        </ng-container>
+  </ng-container>
   </div>
 </div>
 

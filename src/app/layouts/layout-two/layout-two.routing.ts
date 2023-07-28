@@ -11,6 +11,7 @@ const routes: Routes = [
         loadChildren: () =>
           import("./../../pages/messages/messages.module").then((m) => m.MessagesModule),
       },
+
       {
         path: "contacts",
         loadChildren: () =>
@@ -25,7 +26,18 @@ const routes: Routes = [
         path: "devices",
         loadChildren: () =>
           import("./../../pages/devices/devices.module").then((m) => m.DevicesModule),
-      }
+      },
+      {
+        path: "message",
+        loadChildren: () =>
+          import("./../../pages/message/message.module").then((m) => m.MessageModule),
+      },
+      {
+        path: "compaigns",
+        loadChildren: () =>
+          import("./../../pages/compaigns/compaigns.module").then((m) => m.CompaignsModule),
+      } ,
+
 
     ]
   }

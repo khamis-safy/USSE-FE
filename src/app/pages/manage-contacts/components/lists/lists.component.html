@@ -35,7 +35,6 @@
           <mat-checkbox color="ch-color" (click)="$event.stopPropagation() && selectedRow($event) "
             (change)="$event ? selection.toggle(row) : null"
             [checked]="selection.isSelected(row)"
-            #check
             [aria-label]="checkboxLabel(row)">
           </mat-checkbox>
         </td>
@@ -75,7 +74,8 @@
       <ng-container *ngIf="!loading">
 
       <tr  mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
-        [ngClass]="{'active-row':checks?._results[i]?.checked}"
+        [ngClass]="{'active-row':selection.isSelected(row)}"
+
         >
       </tr>
     </ng-container>

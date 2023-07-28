@@ -38,7 +38,7 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit{
   constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private listService:ManageContactsService,
-
+    private toaster: ToasterServices,
     private router:Router) {
     activeRoute.paramMap.subscribe((data)=>
     {
@@ -49,7 +49,7 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit{
   ngAfterViewInit() {
     this.listContacts.count=this.count;
     this.listContacts.getContacts();
-        console.log("listcont length",this.listContacts.count)  }
+        }
 
   ngOnInit() {
     this.getListData();
@@ -64,11 +64,10 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit{
         this.count={totalContacts:this.list.totalContacts,totalCancelContacts:this.list.totalCancelContacts};
 
 
-        console.log("list data",this.list)
         },
 
         (err)=>{
-        console.log(err);
+        this.toaster.error("Error")
         })
 
 
@@ -77,8 +76,11 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit{
     this.tab=this.tabs[ev.index];
     this.listService.display=10;
     this.listService.pageNum=0;
-    this.listContacts.paginator.pageSize=this.listService.display;
-    this.listContacts.paginator.pageIndex=this.listService.pageNum;
+    if(this.listContacts.length){
+
+      this.listContacts.paginator.pageSize=this.listService.display;
+      this.listContacts.paginator.pageIndex=this.listService.pageNum;
+    }
   }
   backTolists(){
 this.router.navigateByUrl('contacts')
@@ -90,11 +92,16 @@ this.router.navigateByUrl('contacts')
   }
   openDeleteConModal(){
     const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.data =  {contacts:this.isChecked,remove:false};
+    dialogConfig.data =
+    {
+      contactsData: {contacts:this.isChecked,remove:false}
+    }
+
     const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
 
 
@@ -104,12 +111,10 @@ this.router.navigateByUrl('contacts')
         this.listContacts.getContacts();
 
       }
-      this.listContacts.checks._results=[]
 
       this.listContacts.selection.clear();
 
     });
-    console.log("delete contact")
   }
 
   openContactLists(){
@@ -119,6 +124,8 @@ this.router.navigateByUrl('contacts')
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
+    dialogConfig.disableClose = true;
+
     dialogConfig.data = {list:[this.listContacts.listId],contacts:this.listContacts.ListContacts, listDetails:true};
     const dialogRef = this.dialog.open(ContactListsComponent,dialogConfig);
 
@@ -130,7 +137,6 @@ this.router.navigateByUrl('contacts')
 
       }
       this.listContacts.selection.clear();
-      this.listContacts.checks._results=[]
 
     });
 
@@ -141,6 +147,8 @@ this.router.navigateByUrl('contacts')
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
+    dialogConfig.disableClose = true;
+
     dialogConfig.data = {contacts:this.isChecked,list:[this.listId]};
     const dialogRef = this.dialog.open(DeleteListComponent,dialogConfig);
 
@@ -151,7 +159,6 @@ this.router.navigateByUrl('contacts')
 
       }
       this.listContacts.selection.clear();
-      this.listContacts.checks._results=[]
 
     });
   }

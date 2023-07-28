@@ -1,3 +1,68 @@
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
   border-radius: 25px;
 }
+
+.div-content{
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  margin-left: -50px;
+}
+@media  (min-width : 0px) and (max-width:1200px) {
+  .div-content{
+    margin-left: 0px;
+    overflow: auto;
+  }
+}
+
+.images-steps-img{
+  width:9.6rem;
+
+}
+
+.images-steps-arrows{
+width: 5.93rem;
+
+}
+
+.hand-img{
+width:14rem;
+}
+
+ol li{
+color: #292D32;
+}
+
+ol.circles {
+list-style-type: none;
+padding: 0;
+counter-reset: item 0;
+}
+
+ol.circles > li {
+position: relative;
+margin: 10px 0 10px 2rem;
+padding: 0 0 0 1.5rem;
+
+counter-increment: item 1;
+}
+
+ol.circles > li::before {
+content: counter(item);
+position: absolute;
+top: 0.2rem;
+left: -1.2rem;
+width: 1.5rem;
+height: 1.5rem;
+border-radius: 50%;
+background-color: #00A783;
+color: white;
+text-align: center;
+padding: 4px;
+line-height: 1rem;
+}
+
+
+
+
+
