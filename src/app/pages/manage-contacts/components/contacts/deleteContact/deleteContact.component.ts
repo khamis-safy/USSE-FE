@@ -4,9 +4,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../../manage-contacts.service';
 import { DeleteListComponent } from '../../lists/delete-list/delete-list.component';
+import { DevicesService } from 'src/app/pages/devices/devices.service';
 interface CheckedCont{
-  contacts:Contacts[],
-  remove:boolean
+ contactsData:
+  { contacts?:Contacts[],
+    remove?:boolean
+  },
+  device?:{deviceId:string}
 
 }
 @Component({
@@ -19,28 +23,39 @@ export class DeleteContactComponent implements OnInit {
   numOfItems:number=0;
   isRemoveL:boolean;
   body:string[];
-
+  isContacts:boolean=false;
+  isDevices:boolean=false;
   constructor(
+    private devicesService:DevicesService,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<DeleteContactComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CheckedCont,
   ) {
-    this.body = this.data.contacts.map(res=>res.id);
+    this.body = this.data.contactsData?.contacts?.map(res=>res.id);
    }
 
   ngOnInit() {
-    console.log("from delete contacts",this.data)
-    if(this.data.remove){
+    if(this.data.contactsData){
+      this.isContacts=true;
+      this.isDevices=false;
+      let body = this.data.contactsData.contacts.map(res=>res.id)
+      this.numOfItems=body.length;
+
+    if(this.data.contactsData.remove){
       this.isRemoveL=true;
     }
     else{
       this.isRemoveL=false;
 
+    }}
+    else{
+      this.isContacts=false;
+      this.isDevices=true;
+
     }
-    let body = this.data.contacts.map(res=>res.id)
-    this.numOfItems=body.length;
-    console.log(body)
+
+
   }
 
   deleteCon(){
@@ -48,7 +63,6 @@ export class DeleteContactComponent implements OnInit {
     this.listService.deleteContact('khamis.safy@gmail.com',this.body).subscribe(
       (res)=>{
         this.isLoading = false
-        console.log(res)
 
         this.onClose(this.body);
         let succ=res.numberOfSuccess;
@@ -68,7 +82,6 @@ export class DeleteContactComponent implements OnInit {
       },
       (err)=>{
         this.isLoading = false
-        console.log(err)
         this.onClose();
         this.toaster.error("Error")
 
@@ -98,7 +111,6 @@ export class DeleteContactComponent implements OnInit {
       },
       (err)=>{
         this.isLoading = false
-        console.log(err)
         this.onClose();
         this.toaster.error("Error")
 
@@ -106,13 +118,42 @@ export class DeleteContactComponent implements OnInit {
     )
 
   }
+
+  deleteDevice(){
+this.devicesService.deleteWPPDevice(this.devicesService.email,this.data.device.deviceId).subscribe(
+  (res)=>{
+    this.isLoading = false
+
+    this.onClose(true);
+
+    this.toaster.success(`Deleted Successfully`)
+
+
+  },
+  (err)=>{
+    this.isLoading = false
+    this.onClose();
+    this.toaster.error("Error")
+
+  }
+)
+
+  }
   submit(){
     this.isLoading = true;
-    if(this.isRemoveL){
-      this.removeLists();
+    if(this.isContacts){
+      if(this.isRemoveL){
+        this.removeLists();
+      }
+      else{
+        this.deleteCon();
+
+      }
+
     }
-    else{
-      this.deleteCon();
+    if(this.isDevices){
+
+      this.deleteDevice();
     }
 
 
@@ -120,7 +161,6 @@ export class DeleteContactComponent implements OnInit {
    onClose(data?): void {
     this.dialogRef.close(data);
 
-    console.log("onClose",data)
 
   }
 

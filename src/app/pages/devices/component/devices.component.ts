@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { DeleteContactComponent } from '../../manage-contacts/components/contacts/deleteContact/deleteContact.component';
 
 @Component({
   selector: 'app-devices',
@@ -22,73 +23,25 @@ export class DevicesComponent implements OnInit{
   loading;
 
   @Input() isCanceled:boolean;
-  @Output() isDelete = new EventEmitter<DeviceData[]>;
-  @Output() isChecked = new EventEmitter<DeviceData[]>;
+
 
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  @ViewChildren("check") checks:any;
   deletedContacts:string[]=[];
   columns :FormControl;
   displayed: string[] = ['Device Name', 'Device Type', 'Number',"Create At", "Status"];
-  displayedColumns: string[] = ['select','Device Name', 'Device Type', 'Number',"Create At", "Status","action"];
+  displayedColumns: string[] = ['Device Name', 'Device Type', 'Number',"Create At", "Status","action"];
   dataSource:MatTableDataSource<DeviceData>;
-  selection = new SelectionModel<any>(true, []);
   constructor(public dialog: MatDialog,private  toaster: ToasterServices,private devicesService:DevicesService){
   }
   ngOnInit() {
     this.getDevices();
     this.columns=new FormControl(this.displayedColumns)
 
-    this.selection.changed.subscribe(
-      (res) => {
-
-        if(res.source.selected.length){
-          console.log("selected",res.source.selected)
-
-          this.isChecked.emit(res.source.selected)
-        }
-        else{
-          this.isChecked.emit()
-        }
-      });
-  }
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-
-    const numRows =  this.numRows;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-
-      this.selection.clear();
-      return;
-    }
-
-    this.selection.select(...this.dataSource.data);
-  }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-  }
-  onSortChange(event){
-    let sorting = event.active=='Name' && event.direction=='asc'?'nameASC':
-                  event.active=='Name' && event.direction=='desc'?'nameDEC':
-                  '';
-
-    // this.getDevices();
-
-
   }
   getDevices(){
+    this.getDevicesCount();
     let shows=this.devicesService.display;
     let pageNum=this.devicesService.pageNum;
     let email=this.devicesService.email;
@@ -100,12 +53,33 @@ export class DevicesComponent implements OnInit{
         this.numRows=res.length;
         this.loading = false;
         this.dataSource=new MatTableDataSource<DeviceData>(res)
-      console.log("all contacts",res);
        },
        (err)=>{
         this.loading = false;
         this.length=0;
-         console.log(err);
+       })
+  }
+
+  onSortChange(event){
+    let sorting = event.active=='Device Name' && event.direction=='asc'?'nameASC':
+                  event.active=='Device Name' && event.direction=='desc'?'nameDEC':
+
+                  event.active=='Create At' && event.direction=='asc'?'createdAtASC':
+                  event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
+                  '';
+    this.devicesService.orderedBy=sorting;
+    this.getDevices();
+  }
+
+
+
+  getDevicesCount(){
+    this.devicesService.getDevicesCount(this.devicesService.email).subscribe(
+      (res)=>{
+       this.length=res
+       },
+       (err)=>{
+        this.length=0;
        })
   }
   openStepsModal(){
@@ -115,6 +89,8 @@ export class DevicesComponent implements OnInit{
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
+    dialogConfig.disableClose = true;
+
     const dialogRef = this.dialog.open(StepsComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -125,53 +101,58 @@ export class DevicesComponent implements OnInit{
 
 
   }
-  openEditModal(data?){
-    const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='70vh';
-    dialogConfig.width='40vw';
-    dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
-    dialogConfig.maxHeight='85vh';
-    // dialogConfig.data= {contacts:data,listDetails:false};
-    // const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
-    // this.checks._results=[]
-    // this.selection.clear();
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if(result){
-    //         }
 
-
-    // });
-
-  }
   changeColumns(event){
-    if(this.isCanceled){
-      this.displayedColumns=['select',...event]
 
-    }
-    else{
-      this.displayedColumns=['select',...event,'action']
-    }
+      this.displayedColumns=[...event,'action']
+
 
   }
 
   onPageChange(event){
-    // this.listService.display=event.pageSize;
-    // this.listService.pageNum=event.pageIndex;
-    // this.getDevices();
+    this.devicesService.display=event.pageSize;
+    this.devicesService.pageNum=event.pageIndex;
+    this.getDevices();
 
   }
   onSearch(event:any){
-    // this.listService.search=event.value;
-    // console.log(this.listService.search);
-    // // this.getDevices();
+    this.devicesService.search=event.value;
+    this.getDevices();
   }
-  toggleActive(data?){
-    if(data){
-      console.log("row data",data)
+
+  reconnect(id:string){
+    this.devicesService.reconnectWPPDevice(this.devicesService.email,id).subscribe(
+      (res)=>{
+        this.getDevices();
+      },
+      (err)=>{
+        this.toaster.error("Error")
+
+      }
+    )
+  }
+
+  openDeleteModal(id:string){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.data =
+    {
+      device:{deviceId:id}
     }
-    console.log("active before",this.active)
-    this.active=!this.active;
-    console.log("active after",this.active)
+
+    const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.getDevices();
+
+      }
+
+    });
   }
 }

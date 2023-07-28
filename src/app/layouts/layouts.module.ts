@@ -9,7 +9,7 @@ import { LayoutTwoModule } from './layout-two/layout-two.module';
 
 @NgModule({
   imports: [
-    CommonModule,
+    CommonModule
   ],
   declarations: [
   ],

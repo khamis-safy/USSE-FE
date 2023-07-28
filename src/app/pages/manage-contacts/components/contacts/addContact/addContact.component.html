@@ -1,4 +1,4 @@
-<section class="d-flex flex-column p-3 gap-3 h-100">
+<section class="d-flex flex-column p-4 gap-3 h-100">
 
   <!-- modal header -->
   <div class="d-flex justify-content-between align-items-center mb-4 " style="height: 10%;">
@@ -39,12 +39,11 @@
       </span>
     </span> -->
 
-    <div class="form-group d-flex gap-lg-3 flex-column flex-lg-row flex-nowrap">
+    <div class="form-group d-flex gap-lg-5 flex-column flex-lg-row flex-nowrap">
       <label for="mobile" class="w-25 d-none d-lg-block text-nowrap"><span class="txt txt-sm text-black text-wrap">Mobile Number</span> <em class="text-danger">*</em> </label>
       <label for="mobile" class="w-100 d-block d-lg-none">Mobile Number <em class="text-danger">*</em> </label>
       <div class="w-100">
         <ngx-intl-tel-input
-        class="w-100 rounded-pill"
         [cssClass]="(mobile?.touched && mobile.invalid ? 'error' :'') + ' rounded-pill border border-1py-2 txt-input w-100'"
         [enableAutoCountrySelect]="true"
         [preferredCountries]="[CountryISO.UnitedArabEmirates]"
@@ -59,24 +58,32 @@
         [numberFormat]="PhoneNumberFormat.National"
         name="phone"
         formControlName="mobile"
-        (ngModelChange)="test($event)"
         >
       </ngx-intl-tel-input>
-      <div *ngIf="mobile?.touched &&(  mobile?.errors?.required || !mobile?.errors?.validatePhoneNumber?.valid )" class="hint error d-flex flex-wrap" >
-        <i class="si-info"></i>
-        <p *ngIf="mobile?.errors?.required || !mobile?.errors?.validatePhoneNumber?.valid" class="txt txt-xs">
-          {{mobile?.errors?.required ? 'This field is required' :''}}
-          {{mobile?.errors?.required && !mobile?.errors?.validatePhoneNumber?.valid ? ' - ': ''}}
-          {{!mobile?.errors?.validatePhoneNumber?.valid ? 'Incorrect phone number' : ''}}
-        </p>
-      </div>
+
+      <ng-container *ngIf="mobile?.touched  && mobile?.errors?.required">
+        <div class="hint error" >
+          <i class="si-info"></i>
+          <p class="txt txt-xs ">
+            This filed is required
+          </p>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="mobile?.touched && mobile.invalid && !mobile?.errors?.required">
+        <div class="hint error" >
+          <i class="si-info"></i>
+          <p class="txt txt-xs ">
+            Incorrect phone number
+          </p>
+        </div>
+      </ng-container>
       </div>
     </div>
 
     <us-input
     [isDisabled]="false"
     value=""
-    placeholder="Enter Your Name"
+    placeholder="Enter Company Name"
     [optional]="true"
     type="text"
     [error]="false"
@@ -99,6 +106,7 @@
       [label]="'Lists'"
       [placeholder]="'Select Lists'"
       [isDisabled]="false"
+      [optional]="true"
       [enableSearch]="true"
       [searchbarOnToggler]="true"
       [searchNoResultText]="'there is no result'"

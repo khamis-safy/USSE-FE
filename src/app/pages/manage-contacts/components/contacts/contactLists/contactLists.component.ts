@@ -46,28 +46,23 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
   ngAfterViewInit() {
   }
   ngOnInit() {
-    console.log("from contactlists",this.data)
     this.contactsIds=this.data.contacts.map(res=>res.id);
 
-    console.log("contacts ids",this.contactsIds)
 
     // get selected data from table
     this.selection.changed.subscribe(
       (res) => {
 
         if(res.source.selected.length){
-          console.log("selected",res.source.selected);
           this.contacts=true;
 
             if(this.data.listDetails){
               this.contactsIds=res.source.selected.map((e)=>e.id);
-              console.log("selected contactes",this.contactsIds)
             }
             else{
               this.listIds=res.source.selected.map((e)=>e.id);
             }
 
-          console.log("list ids",this.listIds)
         }
         else{
           if(this.data.listDetails){
@@ -107,14 +102,12 @@ getListData(){
   let search="";
   this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
       (res)=>{
-        console.log(res);
         this.numRows=res.length;
-        console.log("num of rows",this.numRows)
   this.dataSource=new MatTableDataSource<ListData>(res)
-console.log("from get api",this.dataSource)
       },
       (err)=>{
-        console.log(err);
+        this.onClose();
+        this.toaster.error("Error")
       })
 }
 getContactsData(){
@@ -129,8 +122,7 @@ getContactsData(){
         const filterdContacts = res.filter((obj) => !this.contactsIds.includes(obj.id));
         this.contactsIds=filterdContacts.map((e)=>e.id);
 
-        console.log("filterd ids",this.contactsIds)
-        console.log(res);
+
         if(this.data.listDetails){
           this.numRows=this.contactsIds.length;
 
@@ -139,18 +131,16 @@ getContactsData(){
           this.numRows=res.length;
 
         }
-        console.log("num of rows",this.numRows)
   this.dataSource=new MatTableDataSource<Contacts>(filterdContacts)
-console.log("from get api",this.dataSource)
       },
       (err)=>{
-        console.log(err);
+        this.onClose();
+        this.toaster.error("Error")
       })
 }
   onClose(data?): void {
 
     this.dialogRef.close(data);
-    console.log("onClose",data)
 
   }
   isAllSelected() {
@@ -188,16 +178,14 @@ console.log("from get api",this.dataSource)
     this.listService.addOrMoveContacts(this.contactsIds,this.listIds).subscribe(
       (res)=>{
         this.isLoading = false
-        console.log(res)
         this.onClose(true);
         this.toaster.success(`${res.numberOfSuccess} Added Successfully ${res.numberOfErrors} failed`)
                   },
       (err)=>{
         this.isLoading = false
-        console.log(err)
         this.onClose(false);
-        this.toaster.error("Error")
-            }
+        this.toaster.error(`Error: ${err.message}`)
+      }
     )
   }
 }
