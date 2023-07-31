@@ -27,11 +27,7 @@ const routes: Routes = [
         loadChildren: () =>
           import("./../../pages/devices/devices.module").then((m) => m.DevicesModule),
       },
-      {
-        path: "message",
-        loadChildren: () =>
-          import("./../../pages/message/message.module").then((m) => m.MessageModule),
-      },
+
       {
         path: "compaigns",
         loadChildren: () =>

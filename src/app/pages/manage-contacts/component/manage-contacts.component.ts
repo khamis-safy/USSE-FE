@@ -9,6 +9,7 @@ import { ManageContactsService } from '../manage-contacts.service';
 import { AddContactComponent } from '../components/contacts/addContact/addContact.component';
 import { DeleteContactComponent } from '../components/contacts/deleteContact/deleteContact.component';
 import { ContactListsComponent } from '../components/contacts/contactLists/contactLists.component';
+import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-manage-contacts',
@@ -33,9 +34,7 @@ export class ManageContactsComponent implements AfterViewInit{
     this.isCanceled=false;
   }
 
-  test(){
-    this.toaster.warning('hello')
-  }
+
   openAddListModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='85vh';
@@ -88,10 +87,12 @@ export class ManageContactsComponent implements AfterViewInit{
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
-    dialogConfig.data = {lists:this.isDelete};
+    dialogConfig.data = {
+      listsData:{lists:this.isDelete}
+    };
     dialogConfig.disableClose = true;
 
-    const dialogRef = this.dialog.open(DeleteListComponent,dialogConfig);
+    const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
@@ -117,7 +118,7 @@ export class ManageContactsComponent implements AfterViewInit{
     }
 
 
-    const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
+    const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
 
 
     dialogRef.afterClosed().subscribe(result => {
@@ -143,9 +144,9 @@ export class ManageContactsComponent implements AfterViewInit{
     dialogConfig.disableClose = true;
     dialogConfig.data =
     {
-      contactsData: {contacts:this.isChecked,remove:true}
+      contactsData:{contacts:this.isChecked,remove:true}
     }
-    const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
+    const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
@@ -198,7 +199,7 @@ export class ManageContactsComponent implements AfterViewInit{
       this.contacts.getContacts();
       if(this.contacts.length){
             this.contacts.paginator.pageSize=this.listService.display;
-      this.contacts.paginator.pageIndex=this.listService.pageNum;
+            this.contacts.paginator.pageIndex=this.listService.pageNum;
       }
 
       if(this.lists.length){
@@ -211,7 +212,7 @@ export class ManageContactsComponent implements AfterViewInit{
       this.lists.getListData();
       if(this.contacts.length){
         this.contacts.paginator.pageSize=this.listService.display;
-  this.contacts.paginator.pageIndex=this.listService.pageNum;
+        this.contacts.paginator.pageIndex=this.listService.pageNum;
   }
     }
     else if(this.tab=='cancel'){
@@ -221,7 +222,7 @@ export class ManageContactsComponent implements AfterViewInit{
       if(this.contacts.length){
         console.log(this.contacts.length)
         this.contacts.paginator.pageSize=this.listService.display;
-  this.contacts.paginator.pageIndex=this.listService.pageNum;
+        this.contacts.paginator.pageIndex=this.listService.pageNum;
   }
 
   if(this.lists.length){

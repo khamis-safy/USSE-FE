@@ -7,6 +7,7 @@ import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NavComponent } from './components/nav/nav.component';
+import {MatStepperModule} from '@angular/material/stepper';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -34,6 +35,7 @@ import { CheckboxModule } from './components/checkbox/checkbox.module';
 import { TagModule } from './components/tag/tag.module';
 import { SelectModule } from './components/select/select.module';
 import { HttpClientModule } from '@angular/common/http';
+import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -56,6 +58,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatProgressBarModule,
     MatSnackBarModule,
     MatSortModule,
+    MatStepperModule,
     FormsModule,
     NgxIntlTelInputModule,
     MatProgressSpinnerModule,
@@ -76,6 +79,7 @@ import { HttpClientModule } from '@angular/common/http';
     NavComponent,
     ToasterServices,
     UsButtonDirective,
+    DeleteModalComponent
 
   ],
   exports:[
@@ -91,6 +95,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatDialogModule,
     MatButtonModule,
     MatTableModule,
+    MatStepperModule,
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
@@ -106,7 +111,9 @@ import { HttpClientModule } from '@angular/common/http';
     NgxIntlTelInputModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CheckboxModule,
+    TagModule
   ],
   providers:[ToasterServices]
 })

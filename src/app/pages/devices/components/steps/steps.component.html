@@ -68,8 +68,8 @@
       <!-- ---------------------->
 
     <div class="modal-footer justify-content-center gap-3" style="height: 10%;">
-      <us-button class="m-2" label="Scann Now" [fill]="true" [size]="'sm'" [loading]="false" [disabled]="false"
-        [appearance]="'primary'" (clicked)="scannCode()"></us-button>
+      <us-button class="m-2" label="Scan Now" [fill]="true" [size]="'sm'" [loading]="false" [disabled]="false"
+        [appearance]="'primary'" (clicked)="scanCode()"></us-button>
     </div>
     <div style="position: absolute; bottom: 0px; right: 5rem; " class="hand-img">
       <img src="../../../../../assets/images/Group 1171276337.svg" alt="" width="100%">
@@ -126,6 +126,8 @@
 </ng-container>
 
 <ng-container *ngIf="!isLoading && !steps && scann">
-  <app-addDevice [sessionName]="sessionNB" [token]="tokenB" (isClose)="onClose()"></app-addDevice>
+  <div class="p-5 h-100">
+    <app-addDevice [sessionName]="sessionNB" [token]="tokenB" (isClose)="onAddClose($event)"></app-addDevice>
+  </div>
 </ng-container>
 </section>

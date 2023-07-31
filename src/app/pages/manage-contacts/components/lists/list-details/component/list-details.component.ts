@@ -20,6 +20,7 @@ import { ListContactsComponent } from '../components/list-contacts/list-contacts
 import { ContactListsComponent } from '../../../contacts/contactLists/contactLists.component';
 import { DeleteListComponent } from '../../delete-list/delete-list.component';
 import { TotalContacts } from '../totalContacts';
+import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 
 
 @Component({
@@ -102,7 +103,7 @@ this.router.navigateByUrl('contacts')
       contactsData: {contacts:this.isChecked,remove:false}
     }
 
-    const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
+    const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
 
 
     dialogRef.afterClosed().subscribe(result => {
@@ -149,8 +150,10 @@ this.router.navigateByUrl('contacts')
     dialogConfig.minWidth='300px';
     dialogConfig.disableClose = true;
 
-    dialogConfig.data = {contacts:this.isChecked,list:[this.listId]};
-    const dialogRef = this.dialog.open(DeleteListComponent,dialogConfig);
+    dialogConfig.data = {
+      listsData:{contacts:this.isChecked,list:[this.listId]}
+    };
+    const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
