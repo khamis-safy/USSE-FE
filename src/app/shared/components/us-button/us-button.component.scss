@@ -16,23 +16,25 @@ button{
     min-height: 44px;
   }
 
-  &.no-fill{
-    &.bg-danger-700{
-      background: var( --clr-neutral-0) !important;
-      color:var(--clr-danger-700) !important;
-      border: 1px solid var(--clr-danger-700) !important;
+  &.no-fill-primary{
+    background: var( --clr-neutral-0) !important;
+        color:var(--clr-primary-700) !important;
+        border: 1px solid var(--clr-primary-700) !important;
     }
-    &.bg-primary-700{
-      background: var( --clr-neutral-0) !important;
-      color:var(--clr-primary-700) !important;
-      border: 1px solid var(--clr-primary-700) !important;
+  &.no-fill-danger{
+       background: var( --clr-neutral-0) !important;
+        color:var(--clr-danger-700) !important;
+        border: 1px solid var(--clr-danger-700) !important;
     }
-  }
+
   &:hover{
     filter: brightness(0.95);
     -webkit-filter: brightness(0.95);
 }
 }
+
+
+
 
 .label,.icon,.content{
   font-size: inherit;

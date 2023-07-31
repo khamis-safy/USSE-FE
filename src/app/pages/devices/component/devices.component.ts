@@ -10,6 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DeleteContactComponent } from '../../manage-contacts/components/contacts/deleteContact/deleteContact.component';
+import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-devices',
@@ -95,6 +96,7 @@ export class DevicesComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
+        this.getDevices();
       }
 
     });
@@ -141,18 +143,13 @@ export class DevicesComponent implements OnInit{
     dialogConfig.minWidth='300px';
     dialogConfig.data =
     {
-      device:{deviceId:id}
+      deviceData:{deviceId:id}
     }
-
-    const dialogRef = this.dialog.open(DeleteContactComponent,dialogConfig);
-
-
+    const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.getDevices();
-
       }
-
     });
   }
 }

@@ -1,0 +1,14 @@
+.close-icon{
+  background-color: #065574;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  mat-icon{
+    height: 74%;
+    width: 76%;
+    font-size: 69px;
+  }
+}

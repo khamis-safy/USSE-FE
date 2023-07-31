@@ -1,11 +1,92 @@
-<!-- <form [formGroup]="form" action="">
-  <us-input [placeholder]="'Enter email'"  [formControlName]="email"></us-input>
+<section class="p-3">
+  <div class="d-flex justify-content-between mb-4 align-items-center">
+    <div class="d-flex justify-content-center ">
+      <img src="assets/icons/Vector (1).svg" alt="" class="px-2">
 
-</form> -->
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-  <mat-tab label="First">
+   <span class="txt-lg main-heading"> Message</span>
+    </div>
 
-  </mat-tab>
-  <mat-tab label="Second">Content 2</mat-tab>
-  <mat-tab label="Third">Content 3</mat-tab>
-</mat-tab-group>
+  <div class="buttons_ ">
+
+    <us-button
+    *ngIf="isChecked && isMessages"
+      class="m-2"
+      label="Delete"
+      img="assets/icons/delete.svg"
+      [iconClass]="'material-symbols-outlined'"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'danger'"
+      (clicked)="openDeleteModal()"
+
+    ></us-button>
+
+   <us-button
+   *ngIf="isMessages"
+      class="m-2"
+      label="New Message"
+      img="assets/icons/new-message-icon.svg"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'primary'"
+      (clicked)="openNewMessage()"
+      >
+
+  </us-button>
+
+
+
+    </div>
+
+
+  </div>
+
+  <ng-container *ngIf="isMessages">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" >
+
+      <mat-tab>
+        <ng-template mat-tab-label class="txt-md">
+          <img src="assets/icons/Frame 1171275397.svg" alt="" class="px-2">
+            Inbox
+        </ng-template>
+        <app-inbox (isChecked)="onChecked($event)"></app-inbox>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <img src="assets/icons/Vector.svg" alt="" class="px-2">
+            Scheduled
+
+        </ng-template>
+        <app-scheduled (isChecked)="onChecked($event)"></app-scheduled>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label >
+          <img src="assets/icons/outbox.svg" alt="" class="px-2">
+            Outbox
+
+        </ng-template>
+        <app-outbox (isChecked)="onChecked($event)"></app-outbox>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label >
+          <img src="assets/icons/Group 1171276390.svg" alt="" class="px-2">
+            Undelivered
+
+        </ng-template>
+        <app-undelivered (isChecked)="onChecked($event)"></app-undelivered>
+      </mat-tab>
+    </mat-tab-group>
+  </ng-container>
+
+  <ng-container *ngIf="!isMessages">
+    <app-new-message></app-new-message>
+  </ng-container>
+</section>
+

@@ -15,6 +15,7 @@ export class StepsComponent implements OnInit ,OnDestroy {
 steps:boolean=true;
 isLoading:boolean=false;
 scann:boolean=false;
+
 wBstatus:boolean=false;
 initSuccB:boolean=false;
 sessionNB:string="";
@@ -34,7 +35,7 @@ retryCounter:number = 0;
 
   }
 
-scannCode(){
+scanCode(){
 this.isLoading=true;
 this.scann=false;
 this.steps=false;
@@ -42,7 +43,14 @@ this.initSessionAndCheckStatus();
 
 
 }
-
+onAddClose(event){
+  if(event){
+    this.onClose(true)
+  }
+  else{
+    this.onClose(false)
+  }
+}
 
 initSessionAndCheckStatus(){
   this.initSessionSubscription= this.devicesService.initWhatsAppB(this.sessionNB).subscribe(
@@ -65,8 +73,9 @@ initSessionAndCheckStatus(){
 
   },
   (err)=>{
-    this.onClose()
     this.toaster.error("Error")
+
+    this.onClose()
 
   }
 )
@@ -103,8 +112,8 @@ checkStatus(){
       )
     },2000) ;
 }
-onClose() {
-  this.dialogRef.close();
+onClose(data?) {
+  this.dialogRef.close(data);
 }
 
 ngOnDestroy(): void {
@@ -113,4 +122,5 @@ ngOnDestroy(): void {
   this.initSessionSubscription?.unsubscribe();
   this.checkStatusSubscription?.unsubscribe();
 }
+
 }

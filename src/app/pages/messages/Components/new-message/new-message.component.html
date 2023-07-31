@@ -1,0 +1,236 @@
+<section>
+  <mat-stepper [linear]="true" #stepper>
+    <ng-template matStepperIcon="edit">
+      <mat-icon>check</mat-icon>
+    </ng-template>
+
+    <mat-step >
+      <ng-template matStepLabel>Select Contacts</ng-template>
+      <div class="d-flex align-items-between flex-column " style="max-height: 909px;">
+      <div class="row  w-100 my-5 "  style="height: 70%; place-content: space-around;" >
+        <!-- lists and contacts with search -->
+        <div class="col-5 d-flex gap-5 flex-column me-2">
+
+          <div class="d-flex position-relative w-100 m-0">
+            <div class=" w-100">
+              <input #search type="text" class="form-control ps-5 py-4 w-100 txt-xs" id="search" placeholder="Search" >
+            </div>
+            <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
+              <img src="assets/icons/search.svg" alt="" width="14">
+            </div>
+
+          </div>
+          <div class="lists py-3" >
+            <div class="d-flex justify-content-between align-items-center w-100 p-3 lists-top">
+                <sr-checkbox label="Select all" ></sr-checkbox>
+              <div class="sort-by bg-neutral-0 ">
+                <button mat-button [matMenuTriggerFor]="menu" class="text-neutral-0">
+                  <div class="d-flex align-items-center gap-2" >
+
+                    <span>Sort By</span>
+                    <mat-icon>expand_more</mat-icon>
+                  </div>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item >Ascending</button>
+                  <button mat-menu-item >Descending</button>
+                </mat-menu>
+              </div>
+
+            </div>
+            <div class="line"></div>
+
+              <div class="lists-body ">
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <ng-container *ngFor="let list of lists; let i=index" >
+
+                    <div
+                    class="accordion-item">
+                      <h2 class="accordion-header" [id]="'flush-heading'+i">
+                        <button (click)="getContacts(i,list.id) " class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [data-bs-target]="'#flush-collaps'+i" aria-expanded="false" [aria-controls]="'flush-collaps'+i">
+                          <sr-checkbox [label]="list?.name" ></sr-checkbox>
+                        </button>
+                      </h2>
+                      <div
+                      [ngClass]="{'show':cardNum.i===i && cardNum.isOpen}"
+                      [id]="'flush-collaps'+i" class="accordion-collapse collapse" [aria-labelledby]="'flush-heading'+i" data-bs-parent="#accordionFlushExample">
+                        <div  class="d-flex gap-3 align-items-center flex-wrap p-3" >
+                          <ng-container *ngFor="let contact of contacts">
+
+                            <sr-checkbox [label]="contact?.name" (changed)="selected($event,contact)"></sr-checkbox>
+                          </ng-container>
+
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                </div>
+
+              </div>
+          </div>
+        </div>
+
+        <!-- added contacts and mobile input -->
+        <div class="col-6 d-flex gap-4 flex-column">
+          <div class="contacts p-4 ">
+              <div class="contacts-heading d-flex justify-content-between align-items-center ">
+                <span class="txt-md ">Contacts</span>
+                <span class="d-flex align-items-center gap-2 pointer">
+                  <img src="assets/icons/clear.svg" alt="">
+                  <span class="txt-md text-primary-800">Clear</span>
+                </span>
+              </div>
+              <div class="contacts-body d-flex flex-wrap gap-3">
+
+                <ng-container *ngIf="addedContacts.length!=0">
+                  <!-- <ng-container *ngFor="let item of addedContacts" >
+
+                    <sr-tag
+                    [title]="item?.name"
+                    (onClose)="onBadgeDeselect($event, item)">
+                  </sr-tag>
+                  </ng-container> -->
+                </ng-container>
+              </div>
+          </div>
+          <div class="mobile-num p-4">
+            <p class="txt-md">Addhoc Numbers</p>
+            <div class="d-flex  align-items-center gap-3">
+
+              <div class="w-100">
+                <form [formGroup]="form">
+                <ngx-intl-tel-input
+                [cssClass]="(mobile?.touched && mobile.invalid ? 'error' :'') + ' rounded-pill border border-1py-2 txt-input w-100'"
+                [enableAutoCountrySelect]="true"
+                [preferredCountries]="[CountryISO.UnitedArabEmirates]"
+                [enablePlaceholder]="true"
+                [searchCountryFlag]="true"
+                [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                [selectFirstCountry]="false"
+                [selectedCountryISO]="CountryISO.Egypt"
+                [maxLength]="15"
+                [phoneValidation]="true"
+                [separateDialCode]="separateDialCode"
+                [numberFormat]="PhoneNumberFormat.National"
+                name="phone"
+                formControlName="mobile"
+                >
+              </ngx-intl-tel-input>
+            </form>
+              <ng-container *ngIf="mobile?.touched  && mobile?.errors?.required">
+                <div class="hint error" >
+                  <i class="si-info"></i>
+                  <p class="txt txt-xs ">
+                    This filed is required
+                  </p>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="mobile?.touched && mobile.invalid && !mobile?.errors?.required">
+                <div class="hint error" >
+                  <i class="si-info"></i>
+                  <p class="txt txt-xs ">
+                    Incorrect phone number
+                  </p>
+                </div>
+              </ng-container>
+              </div>
+              <us-button
+              class="m-2"
+              label="Add"
+              [fill]="true"
+              [size]="'md'"
+              [loading]="false"
+              [disabled]="false"
+              [appearance]="'primary'"
+              >
+           </us-button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
+        <button class="rest-style " matStepperNext>   <us-button
+          class="m-2"
+          label="Next"
+          [fill]="true"
+          [size]="'md'"
+          [loading]="false"
+          [disabled]="false"
+          [appearance]="'primary'"
+          >
+       </us-button>
+      </button>
+      </div>
+    </div>
+    </mat-step>
+
+    <mat-step  >
+      <ng-template matStepLabel>Write Message</ng-template>
+
+      <p>second step</p>
+
+<div class="steps-buttons d-flex justify-content-end align-items-center mt-3 w-100">
+  <button class="rest-style" matStepperPrevious>   <us-button
+    class="m-2"
+    label="Back"
+    [fill]="false"
+    [size]="'md'"
+    [loading]="false"
+    [disabled]="false"
+    [appearance]="'primary'"
+    >
+  </us-button>
+  </button>
+
+  <button class="rest-style" matStepperNext>   <us-button
+  class="m-2"
+  label="Next"
+  [fill]="true"
+  [size]="'md'"
+  [loading]="false"
+  [disabled]="false"
+  [appearance]="'primary'"
+  >
+  </us-button>
+  </button>
+</div>
+
+
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Send Message</ng-template>
+      <p>You are now done.</p>
+      <div class="steps-buttons d-flex justify-content-end align-items-center mt-3 w-100">
+        <button class="rest-style" matStepperPrevious>   <us-button
+          class="m-2"
+          label="Back"
+          [fill]="false"
+          [size]="'md'"
+          [loading]="false"
+          [disabled]="false"
+          [appearance]="'primary'"
+          >
+        </us-button>
+        </button>
+
+        <button class="rest-style" matStepperNext>   <us-button
+        class="m-2"
+        label="Next"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+        >
+        </us-button>
+        </button>
+      </div>
+    </mat-step>
+
+  </mat-stepper>
+</section>

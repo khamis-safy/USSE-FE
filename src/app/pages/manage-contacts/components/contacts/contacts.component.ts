@@ -7,7 +7,6 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ListData } from '../../list-data';
-import { AddListComponent } from '../lists/addList/addList.component';
 import { Contacts } from '../../contacts';
 import { AddContactComponent } from './addContact/addContact.component';
 import { FormControl } from '@angular/forms';
@@ -20,15 +19,14 @@ import { Subscription } from 'rxjs';
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss']
 })
-export class ContactsComponent  implements OnInit  {
+export class ContactsComponent  implements OnInit ,OnDestroy {
   length:number;
-  active:boolean=false;
   numRows;
   loading;
 
   @Input() isCanceled:boolean;
-  @Output() isDelete = new EventEmitter<ListData[]>;
-  @Output() isChecked = new EventEmitter<ListData[]>;
+  @Output() isDelete = new EventEmitter<Contacts[]>;
+  @Output() isChecked = new EventEmitter<Contacts[]>;
 
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -40,7 +38,7 @@ export class ContactsComponent  implements OnInit  {
   displayed: string[] = ['Name','Mobile','Notes','Lists','Company Name','Create At'];
   displayedColumns: string[] = ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At","action"];
   dataSource:MatTableDataSource<Contacts>;
-  selection = new SelectionModel<any>(true, []);
+  selection = new SelectionModel<Contacts>(true, []);
   subscribtions:Subscription[]=[];
   @Input() listId:string="";
 
@@ -53,6 +51,7 @@ export class ContactsComponent  implements OnInit  {
 
   ) {
     }
+
 
     @Input('isUnsubscribe') isUnsubscribe = false;
 
@@ -116,10 +115,10 @@ this.contactsCount();
       (res)=>{
         this.numRows=res.length;
         this.loading = false;
-if(this.isCanceled){
-  this.displayedColumns= ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At"];
+        if(this.isCanceled){
+          this.displayedColumns= ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At"];
 
-}
+        }
 
         this.dataSource=new MatTableDataSource<Contacts>(res)
 
@@ -142,13 +141,10 @@ if(this.isCanceled){
 
       (res)=>{
         this.length=res;
-        // this.length=0;
-
-
-
       }
       ,(err)=>{
-        this.length=0;}
+        this.length=0;
+      }
     )
 this.subscribtions.push(sub2)
 
@@ -181,6 +177,7 @@ this.subscribtions.push(sub2)
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
+
   onSortChange(event){
     let sorting = event.active=='Name' && event.direction=='asc'?'nameASC':
                   event.active=='Name' && event.direction=='desc'?'nameDEC':
@@ -226,11 +223,7 @@ this.subscribtions.push(sub2)
     this.listService.search=event.value;
     this.getContacts();
   }
-  toggleActive(data?){
-    if(data){
-    }
-    this.active=!this.active;
-  }
+
   selectedRow(event){
   }
   scrollRight(wrapper){
@@ -263,10 +256,8 @@ changeColumns(event){
   }
 
 }
-
-destroy() {
+ngOnDestroy(){
   this.subscribtions.map(e=>e.unsubscribe());
-  this.dataSource.data=[];
-
 }
+
 }

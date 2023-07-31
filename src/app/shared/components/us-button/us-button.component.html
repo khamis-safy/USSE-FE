@@ -3,14 +3,15 @@
   UsButton
   [isDark]="!fill"
   [isLoading]="loading"
-  [class]=" fill?' text-tra btn rounded-3 ':'no-fill btn rounded-3 '"
+  [class]=" appearance == 'primary' && fill?'bg-primary-800 btn rounded-3':'bg-danger-700 btn rounded-3'"
   (click)="setClick($event)"
   [ngClass]="{
     'button-size-sm txt-xs': size == 'sm',
     'button-size-md txt-sm': size == 'md',
     'button-size-lg txt-md': size == 'lg',
-    'bg-primary-800': appearance == 'primary',
-    'bg-danger-700': appearance == 'danger'
+    'no-fill-primary':appearance == 'primary' && !fill,
+    'no-fill-danger':appearance == 'danger' && !fill
+
   }
   "
 >
