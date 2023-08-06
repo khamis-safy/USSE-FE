@@ -1,0 +1,30 @@
+<form [formGroup]="form" class="w-100 h-100 p-4 mt-5">
+
+<div class="d-flex gap-4 flex-column">
+  <us-select
+[data]="templates"
+formControlName="templatesData"
+[multiSelect]="true"
+[label]="'Templates'"
+[placeholder]="'Select Templates'"
+[isDisabled]="false"
+[optional]="true"
+[enableSearch]="true"
+[searchbarOnToggler]="true"
+[searchNoResultText]="'there is no result'"
+[maxListItemsWithoutSearch]="5"
+></us-select>
+
+<us-input
+    [isDisabled]="false"
+    placeholder="Enter Your Message..."
+    [optional]="true"
+    type="text"
+    [error]="false"
+    [fullWidth]="true"
+    formControlName="message"
+    label="Message Contacts"
+    [isTextArea]="true"
+  ></us-input>
+</div>
+</form>

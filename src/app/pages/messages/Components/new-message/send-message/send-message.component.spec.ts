@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { UndeliveredComponent } from './undelivered.component';
+import { SendMessageComponent } from './send-message.component';
 
-describe('UndeliveredComponent', () => {
-  let component: UndeliveredComponent;
-  let fixture: ComponentFixture<UndeliveredComponent>;
+describe('SendMessageComponent', () => {
+  let component: SendMessageComponent;
+  let fixture: ComponentFixture<SendMessageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UndeliveredComponent ]
+      declarations: [ SendMessageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UndeliveredComponent);
+    fixture = TestBed.createComponent(SendMessageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

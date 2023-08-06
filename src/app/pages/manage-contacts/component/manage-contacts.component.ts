@@ -141,6 +141,7 @@ export class ManageContactsComponent implements AfterViewInit{
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
+
     dialogConfig.disableClose = true;
     dialogConfig.data =
     {
@@ -191,6 +192,8 @@ export class ManageContactsComponent implements AfterViewInit{
     this.contacts.selection.clear();
     this.lists.selection.clear();
 
+this.contacts.search.nativeElement.value="";
+this.lists.search.nativeElement.value="";
 
     this.tab=this.tabs[ev.index]
     if(this.tab=='contacts'){
@@ -210,12 +213,15 @@ export class ManageContactsComponent implements AfterViewInit{
     }
     else if(this.tab=='lists'){
       this.lists.getListData();
+      this.lists.selection.clear();
+
       if(this.contacts.length){
         this.contacts.paginator.pageSize=this.listService.display;
         this.contacts.paginator.pageIndex=this.listService.pageNum;
   }
     }
     else if(this.tab=='cancel'){
+
       this.isCanceled=true
       this.contacts.isCanceled=this.isCanceled;
 

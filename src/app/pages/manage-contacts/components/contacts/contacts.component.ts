@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../manage-contacts.service';
@@ -29,6 +29,7 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
   @Output() isChecked = new EventEmitter<Contacts[]>;
 
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
+  @ViewChild("search") search!:ElementRef
   @ViewChild(MatSort) sort: MatSort;
 
 
@@ -186,6 +187,8 @@ this.subscribtions.push(sub2)
                   event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
                   '';
     this.listService.orderedBy=sorting;
+    this.selection.clear();
+
     this.getContacts();
 
 
@@ -216,11 +219,15 @@ this.subscribtions.push(sub2)
   onPageChange(event){
     this.listService.display=event.pageSize;
     this.listService.pageNum=event.pageIndex;
+    this.selection.clear();
+
     this.getContacts();
 
   }
   onSearch(event:any){
     this.listService.search=event.value;
+    this.selection.clear();
+
     this.getContacts();
   }
 

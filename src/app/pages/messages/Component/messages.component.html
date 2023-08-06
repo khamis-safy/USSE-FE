@@ -46,14 +46,14 @@
   </div>
 
   <ng-container *ngIf="isMessages">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" >
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent"  (selectedTabChange)="changeModal()">
 
       <mat-tab>
         <ng-template mat-tab-label class="txt-md">
           <img src="assets/icons/Frame 1171275397.svg" alt="" class="px-2">
             Inbox
         </ng-template>
-        <app-inbox (isChecked)="onChecked($event)"></app-inbox>
+        <app-message-type (isChecked)="onChecked($event)" [msgCategory]="'inbox'"></app-message-type>
       </mat-tab>
 
       <mat-tab>
@@ -71,7 +71,7 @@
             Outbox
 
         </ng-template>
-        <app-outbox (isChecked)="onChecked($event)"></app-outbox>
+        <app-message-type (isChecked)="onChecked($event)" [msgCategory]="'outbox'"></app-message-type>
       </mat-tab>
 
       <mat-tab>
@@ -80,7 +80,7 @@
             Undelivered
 
         </ng-template>
-        <app-undelivered (isChecked)="onChecked($event)"></app-undelivered>
+        <app-message-type (isChecked)="onChecked($event)" [msgCategory]="'failed'"></app-message-type>
       </mat-tab>
     </mat-tab-group>
   </ng-container>

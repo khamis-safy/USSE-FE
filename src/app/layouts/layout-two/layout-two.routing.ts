@@ -33,6 +33,11 @@ const routes: Routes = [
         loadChildren: () =>
           import("./../../pages/compaigns/compaigns.module").then((m) => m.CompaignsModule),
       } ,
+      {
+        path: "templates",
+        loadChildren:()=>
+        import("./../../pages/templates/templates.module").then((m)=>m.TemplatesModule)
+      }
 
 
     ]

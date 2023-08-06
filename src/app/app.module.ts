@@ -8,6 +8,8 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NbThemeModule, NbLayoutModule, NbDatepickerModule, NbTimepickerModule } from '@nebular/theme';
+import { NbEvaIconsModule } from '@nebular/eva-icons';
 
 
 @NgModule({
@@ -18,6 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     MatProgressBarModule,
+    NbDatepickerModule.forRoot(),
+    NbTimepickerModule.forRoot(),
     HttpClientModule,
     TranslateModule.forRoot({
       defaultLanguage:'en',
@@ -27,7 +31,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         deps:[HttpClient]
       }
     }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NbThemeModule.forRoot({ name: 'default' }),
+    NbLayoutModule,
+    NbEvaIconsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

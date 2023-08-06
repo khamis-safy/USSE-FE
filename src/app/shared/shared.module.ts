@@ -36,6 +36,7 @@ import { TagModule } from './components/tag/tag.module';
 import { SelectModule } from './components/select/select.module';
 import { HttpClientModule } from '@angular/common/http';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -67,7 +68,8 @@ import { DeleteModalComponent } from './components/delete-modal/delete-modal.com
     RadioButtonModule,
     TooltipModule,
     SelectModule,
-    HttpClientModule
+    HttpClientModule,
+    MatExpansionModule
 
   ],
   declarations: [
@@ -113,7 +115,8 @@ import { DeleteModalComponent } from './components/delete-modal/delete-modal.com
     ReactiveFormsModule,
     HttpClientModule,
     CheckboxModule,
-    TagModule
+    TagModule,
+    MatExpansionModule
   ],
   providers:[ToasterServices]
 })

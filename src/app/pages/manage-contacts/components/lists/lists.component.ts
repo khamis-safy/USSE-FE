@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { SelectionModel} from '@angular/cdk/collections';
 import { MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -28,6 +28,8 @@ numRows;
 loading;
 subscribtions:Subscription[]=[];
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
+  @ViewChild("search") search!:ElementRef;
+
   columns :FormControl;
   @ViewChild(MatSort) sort: MatSort;
   displayed: string[] = ['Name','Create At', 'Total Contacts'];
@@ -176,6 +178,7 @@ getListData(){
                   event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
                   '';
     this.listService.orderedBy=sorting;
+    this.selection.clear();
     this.getListData();
 
   }
@@ -205,12 +208,15 @@ getListData(){
 
     this.listService.display=event.pageSize;
     this.listService.pageNum=event.pageIndex;
+    this.selection.clear();
 
 
     this.getListData();
   }
   onSearch(event:any){
     this.listService.search=event.value;
+    this.selection.clear();
+
     this.getListData();
   }
   toggleActive(data?){

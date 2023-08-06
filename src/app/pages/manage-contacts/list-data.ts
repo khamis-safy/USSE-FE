@@ -5,7 +5,10 @@ export interface ListData {
   totalCancelContacts: number,
   createdAt: string,
   isDeleted: boolean,
-  applicationUserId: string
+  applicationUserId: string,
+  isChecked:string,
+  selectionState:number
+
 }
 export interface ErrSucc{
   numberOfSuccess:number,

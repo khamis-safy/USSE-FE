@@ -1,0 +1,41 @@
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+    border-radius: 25px;
+  }
+._image{
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--clr-neutral-400);
+}
+.message{
+  line-height: 34px;
+  max-width: 80%;
+
+}
+.message-container{
+  ::after{
+    content: "";
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: -20px;
+    height: 1px;
+    background-color: var(--clr-neutral-400);
+  }
+}
+.status{
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  &.sent{
+
+  }
+  &.pending{
+
+  }
+  &.delevered{
+
+  }
+
+  border: 1px solid var(--clr-primary-800);
+}

@@ -77,6 +77,7 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit{
     this.tab=this.tabs[ev.index];
     this.listService.display=10;
     this.listService.pageNum=0;
+    this.listContacts.selection.clear();
     if(this.listContacts.length){
 
       this.listContacts.paginator.pageSize=this.listService.display;

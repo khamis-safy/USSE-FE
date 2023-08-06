@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -37,6 +37,7 @@ WrapperOffsetWidth =250;
 
 @ViewChild(MatPaginator)  paginator!: MatPaginator;
 @ViewChild(MatSort) sort: MatSort;
+@ViewChild("search") search!:ElementRef;
 
 listTableData:ListData[]=[]
 deletedContacts:string[]=[];
@@ -140,6 +141,8 @@ getContacts(){
                     event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
                     '';
       this.listService.orderedBy=sorting;
+      this.selection.clear();
+
       this.getContacts();
 
 
@@ -169,11 +172,15 @@ getContacts(){
     onPageChange(event){
       this.listService.display=event.pageSize;
       this.listService.pageNum=event.pageIndex;
+      this.selection.clear();
+
       this.getContacts();
 
     }
     onSearch(event:any){
       this.listService.search=event.value;
+      this.selection.clear();
+
       this.getContacts();
     }
     toggleActive(data?){
