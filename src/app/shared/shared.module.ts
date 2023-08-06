@@ -37,6 +37,7 @@ import { SelectModule } from './components/select/select.module';
 import { HttpClientModule } from '@angular/common/http';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { DragZoneModule } from './components/drag-zone/drag-zone.module';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -69,26 +70,24 @@ import {MatExpansionModule} from '@angular/material/expansion';
     TooltipModule,
     SelectModule,
     HttpClientModule,
-    MatExpansionModule
+    MatExpansionModule,
+    DragZoneModule
 
   ],
   declarations: [
     SideBarComponent,
     FooterComponent,
     HeaderComponent,
-    UsButtonComponent,
     InputComponent,
     NavComponent,
     ToasterServices,
-    UsButtonDirective,
-    DeleteModalComponent
+    DeleteModalComponent,
 
   ],
   exports:[
     SideBarComponent,
     FooterComponent,
     HeaderComponent,
-    UsButtonComponent,
     InputComponent,
     SelectModule,
     ToasterServices,
@@ -108,7 +107,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatSnackBarModule,
     MatSortModule,
     MatIconModule,
-    UsButtonDirective,
     FormsModule,
     NgxIntlTelInputModule,
     MatProgressSpinnerModule,
@@ -116,7 +114,9 @@ import {MatExpansionModule} from '@angular/material/expansion';
     HttpClientModule,
     CheckboxModule,
     TagModule,
-    MatExpansionModule
+    MatExpansionModule,
+    DragZoneModule,
+    TagModule
   ],
   providers:[ToasterServices]
 })
