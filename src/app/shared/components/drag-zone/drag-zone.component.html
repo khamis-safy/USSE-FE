@@ -1,0 +1,35 @@
+<label class="rounded-5 bg-white px-2 py-4 w-100" for="fileInput" (drop)="onChangeFile($event)" (dragover)="test($event)">
+  <div class="row m-0 gap-2 gap-md-0">
+    <div class="col-12 col-md-7 d-flex flex-column flex-md-row align-items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 28 23" fill="none">
+        <path d="M18.5038 16.1621L13.8379 11.4961L9.17188 16.1621" stroke="black" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M13.8398 11.4961V21.9946" stroke="black" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M23.6246 18.9495C24.7623 18.3293 25.6611 17.3478 26.1791 16.16C26.697 14.9722 26.8047 13.6457 26.4851 12.3899C26.1654 11.1342 25.4367 10.0206 24.4139 9.22496C23.3911 8.42933 22.1325 7.99697 20.8367 7.99611H19.3669C19.0138 6.63043 18.3557 5.36255 17.4421 4.28781C16.5285 3.21307 15.3831 2.35943 14.0921 1.79106C12.8011 1.22269 11.398 0.954392 9.98838 1.00633C8.57875 1.05826 7.19923 1.42909 5.95354 2.09092C4.70785 2.75275 3.6284 3.68836 2.79635 4.82742C1.9643 5.96648 1.4013 7.27934 1.14967 8.66731C0.898049 10.0553 0.964348 11.4822 1.34359 12.8409C1.72282 14.1995 2.40513 15.4545 3.33921 16.5115" stroke="black" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M18.5038 16.1621L13.8379 11.4961L9.17188 16.1621" stroke="black" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="d-flex flex-column justify-content-between">
+          <p class="txt txt-sm text-wrap m-0">{{label}}</p>
+          <p class="txt txt-xs text-neutral-500 m-0">file size no more than {{fileSize}}MB</p>
+        </div>
+    </div>
+    <div class="col-12 col-md-5 d-flex justify-content-center  justify-content-md-end align-items-center">
+      <span *ngIf="!isLoading" mat-button-raised type="button" class="btn bg-primary-400 txt-xs">Select File</span>
+      <us-spinner *ngIf="isLoading" ></us-spinner>
+    </div>
+  </div>
+</label>
+<div class="w-100 d-flex flex-column gap-2 p-3">
+  <div *ngFor="let item of filesList;let i = index" class="w-100 row ">
+    <div class="col-7 d-flex align-items-center gap-2">
+      <mat-icon class="material-symbols-outlined text-primary-800">{{item.type | iconFromType}}</mat-icon>
+      <span class="txt-xs w-100 d-flex flex-column flex-sm-row gap-sm-2">
+        <span class=" overflow-line-1 txt-xs">{{item?.name ? item?.name : ('file '+(1+1))}}</span>
+        <span *ngIf="item?.type?.includes('image')" (click)="item?.url ? openPreviewModal(item?.url) : '' " class="text-primary-800 txt-xs pointer">Preview</span>
+      </span>
+    </div>
+    <div class="col-5 d-flex justify-content-end txt-xs">
+      {{item?.size ? (item?.size | calcSize) : '--' }}
+    </div>
+  </div>
+</div>
+<input [(ngModel)]="value" [disabled]="isLoading || isDisabled" (change)="onChangeFile($event)" id="fileInput" class="d-none" type="file" accept="{{fileType}}">
