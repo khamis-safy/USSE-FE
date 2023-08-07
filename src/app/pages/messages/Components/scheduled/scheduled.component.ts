@@ -6,6 +6,8 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import {  Shceduled } from '../../message';
 import { MessagesService } from '../../messages.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DisplayMessageComponent } from '../display-message/display-message.component';
 
 
 
@@ -28,7 +30,7 @@ export class ScheduledComponent implements OnInit  {
   selection = new SelectionModel<Shceduled>(true, []);
 
   subscribtions:Subscription[]=[];
-  constructor(private messageService:MessagesService){}
+  constructor(private messageService:MessagesService,public dialog: MatDialog){}
   ngOnInit() {
     this.getMessages();
 
@@ -119,7 +121,25 @@ export class ScheduledComponent implements OnInit  {
         this.getMessages();
 
       }
+      displayMessage(row){
+        // const dialogConfig=new MatDialogConfig();
+        // dialogConfig.height='100vh';
+        // dialogConfig.width='25vw';
+        // dialogConfig.maxWidth='100%';
+        // // dialogConfig.minWidth='200px';
+        // dialogConfig.disableClose = true;
+        // dialogConfig.position = { right: '2px'};
+        // dialogConfig.direction ="ltr";
+        // dialogConfig.data=row;
+        // const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
 
+        // dialogRef.afterClosed().subscribe(result => {
+        //   if(result){
+        //   }
+
+        // });
+
+      }
 
 }
 

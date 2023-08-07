@@ -9,13 +9,16 @@ import { Message } from '../../message';
 })
 export class DisplayMessageComponent implements OnInit {
 message:Message;
+lastTwoNums:string;
 test:string= "6781dde0-7946-4d49-ad27-a95421f19ff8.jpg";
   constructor( public dialogRef: MatDialogRef<DisplayMessageComponent>
             ,@Inject(MAT_DIALOG_DATA) public data:Message) { }
 
   ngOnInit() {
+    this.lastTwoNums=this.data.targetPhoneNumber.substring(this.data.targetPhoneNumber.length-2);
+    // console.log("last nums",this.lastTwoNums)
     this.message=this.data;
-    console.log(this.test.split(".").pop())
+    // console.log(this.test.split(".").pop())
 
   }
   onClose(data?) {

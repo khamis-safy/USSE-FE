@@ -126,8 +126,21 @@ getAllContacts(){
 
   }
 
-  onSearch(event:any){
-}
+// onSearch(event:any){
+//     console.log(event)
+// }
+// onSelect(event:any){
+//   console.log(event)
+// }
+// onDeSelect(event:any){
+//   console.log(event)
+// }
+// onSelectAll(event:any){
+//   console.log(event)
+// }
+// onDeSelectAll(event:any){
+//   console.log(event)
+// }
 
 
   selectedContact(e, contact: Contacts) {

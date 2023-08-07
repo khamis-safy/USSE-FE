@@ -6,13 +6,13 @@
 
 
         <div class=" w-100">   <form [formGroup]="searchForm">
-          <!-- (onSearch)="onSearch()"
-          (onSelect)="onSelect()"
-          (onDeSelect)="onDeSelect()"
-          (onSelectAll)="onSelectAll()"
-          (onDeSelectAll)="onDeSelectAll()" -->
-          <us-select
 
+          <us-select
+          (onSearch)="onSearch($event)"
+          (onSelect)="onSelect($event)"
+          (onDeSelect)="onDeSelect($event)"
+          (onSelectAll)="onSelectAll($event)"
+          (onDeSelectAll)="onDeSelectAll($event)"
           [data]="allContacts"
           formControlName="contactsData"
           placeholder="Select Contacts"
@@ -59,7 +59,7 @@
               class="custom-panel" (opened)="getContacts(list,true)">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    <div class="d-flex gap-2">
+                    <div class="d-flex gap-4">
                       <sr-checkbox [label]="list?.name" [state]=" list.isChecked=='checked'?'checked':''" (changed)="selectedList($event,list,false);selectOneList($event)" [(ngModel)]="list.isChecked"></sr-checkbox>
                       <span class="txt-sm  total">{{list.totalContacts}}</span>
                     </div>

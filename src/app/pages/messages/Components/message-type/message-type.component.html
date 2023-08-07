@@ -137,7 +137,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
       <ng-container *ngIf="!loading">
 
-      <tr (click)="displayMessage(row)" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
+      <tr class="pointer" (click)="displayMessage(row)" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
         [ngClass]="{'active-row':selection.isSelected(row)}"
         >
       </tr>
