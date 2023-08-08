@@ -10,6 +10,7 @@ import { CalcSizePipe } from './calcSize.pipe';
 import { PreviewComponent } from './modals/preview/preview.component';
 import { SafeURLPipe } from '../safeURL.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [		DragZoneComponent,UsButtonComponent,
@@ -24,7 +25,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     MatIconModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatButtonModule
   ],
   exports: [DragZoneComponent,UsButtonComponent,
     UsButtonDirective,SpinnerComponent

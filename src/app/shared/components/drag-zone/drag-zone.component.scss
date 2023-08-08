@@ -12,3 +12,12 @@ label{
   'GRAD' 0,
   'opsz' 48
 }
+.file-item{
+
+  &:hover{
+    background-color: #6b6b6b17;
+  }
+}
+.context-cursor{
+  cursor: context-menu;
+}

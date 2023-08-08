@@ -1,4 +1,4 @@
-<label class="rounded-5 bg-white px-2 py-4 w-100" for="fileInput" (drop)="onChangeFile($event)" (dragover)="test($event)">
+<label [ngClass]="{'opacity-50 context-cursor': isDisabled}" class=" rounded-5 bg-white px-2 py-4 w-100" for="fileInput" (drop)="onChangeFile($event)" (dragover)="test($event)">
   <div class="row m-0 gap-2 gap-md-0">
     <div class="col-12 col-md-7 d-flex flex-column flex-md-row align-items-center gap-2">
       <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 28 23" fill="none">
@@ -18,8 +18,8 @@
     </div>
   </div>
 </label>
-<div class="w-100 d-flex flex-column gap-2 p-3">
-  <div *ngFor="let item of filesList;let i = index" class="w-100 row ">
+<div class="w-100 d-flex flex-column px-3 py-2">
+  <div *ngFor="let item of filesList;let i = index" class="w-100 row file-item rounded-5 py-1">
     <div class="col-7 d-flex align-items-center gap-2">
       <mat-icon class="material-symbols-outlined text-primary-800">{{item.type | iconFromType}}</mat-icon>
       <span class="txt-xs w-100 d-flex flex-column flex-sm-row gap-sm-2">
@@ -27,9 +27,12 @@
         <span *ngIf="item?.type?.includes('image')" (click)="item?.url ? openPreviewModal(item?.url) : '' " class="text-primary-800 txt-xs pointer">Preview</span>
       </span>
     </div>
-    <div class="col-5 d-flex justify-content-end txt-xs">
+    <div class="col-5 d-flex justify-content-end align-items-center txt-xs gap-2">
       {{item?.size ? (item?.size | calcSize) : '--' }}
+      <button (click)="deleteFile(item)" mat-icon-button color="warn"  (click)="onClick">
+        <mat-icon >delete</mat-icon>
+      </button>
     </div>
   </div>
 </div>
-<input [(ngModel)]="value" [disabled]="isLoading || isDisabled" (change)="onChangeFile($event)" id="fileInput" class="d-none" type="file" accept="{{fileType}}">
+<input [(ngModel)]="value" multiple [disabled]="isLoading || isDisabled" (change)="onChangeFile($event)" id="fileInput" class="d-none" type="file" accept="{{fileType}}">
