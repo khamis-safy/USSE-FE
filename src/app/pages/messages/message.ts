@@ -29,3 +29,11 @@ export interface Shceduled{
   createdAt: string,
   device: DeviceData
 }
+export interface SendData{
+  deviceid: string,
+  targetPhoneNumber: string[],
+  attachments:string[],
+  msgBody: string,
+  scheduledAt:string,
+  email: string
+}

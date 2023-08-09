@@ -22,7 +22,7 @@ export class ScheduledComponent implements OnInit  {
   loading:boolean=false;
   @Output() isChecked = new EventEmitter<Shceduled[]>;
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
-
+  cellClick:boolean=false;
   columns :FormControl;
   displayed: string[] = ['Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
   displayedColumns: string[] = ['select' ,'Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
@@ -121,23 +121,52 @@ export class ScheduledComponent implements OnInit  {
         this.getMessages();
 
       }
+
+      onCellClick(recipient){
+        const dialogConfig=new MatDialogConfig();
+        dialogConfig.height='100vh';
+        dialogConfig.width='25vw';
+        dialogConfig.maxWidth='100%';
+        // dialogConfig.minWidth='200px';
+        dialogConfig.disableClose = true;
+        dialogConfig.position = { right: '2px'};
+        dialogConfig.direction ="ltr";
+        dialogConfig.data={
+          recipients:recipient,
+          isScheduleN:true
+        };
+        const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
+
+        dialogRef.afterClosed().subscribe(result => {
+          if(result){
+          }
+
+        });        // isScheduleN:boolean,
+        // recepients:{number:string} []
+      }
+
       displayMessage(row){
-        // const dialogConfig=new MatDialogConfig();
-        // dialogConfig.height='100vh';
-        // dialogConfig.width='25vw';
-        // dialogConfig.maxWidth='100%';
-        // // dialogConfig.minWidth='200px';
-        // dialogConfig.disableClose = true;
-        // dialogConfig.position = { right: '2px'};
-        // dialogConfig.direction ="ltr";
-        // dialogConfig.data=row;
-        // const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
+        if(!this.cellClick){
+          const dialogConfig=new MatDialogConfig();
+          dialogConfig.height='100vh';
+          dialogConfig.width='25vw';
+          dialogConfig.maxWidth='100%';
+          // dialogConfig.minWidth='200px';
+          dialogConfig.disableClose = true;
+          dialogConfig.position = { right: '2px'};
+          dialogConfig.direction ="ltr";
+          dialogConfig.data={
+            schedule:row,
+            isScheduleM:true
+          };
+          const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
 
-        // dialogRef.afterClosed().subscribe(result => {
-        //   if(result){
-        //   }
+          dialogRef.afterClosed().subscribe(result => {
+            if(result){
+            }
 
-        // });
+          });
+        }
 
       }
 

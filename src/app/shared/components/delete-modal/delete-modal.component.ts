@@ -166,7 +166,7 @@ export class DeleteModalComponent implements OnInit {
   }
 
   deleteDevice(){
-this.devicesService.deleteWPPDevice(this.devicesService.email,this.data.deviceData.deviceId).subscribe(
+this.devicesService.deleteDevice(this.devicesService.email,this.data.deviceData.deviceId).subscribe(
   (res)=>{
     this.isLoading = false
 

@@ -72,7 +72,9 @@ $clr_warning_400: #F29D41;
 $clr_warning_200: #FAE7B9;
 $clr_warning_50: #FDF4DC;
 
-
+.nb-theme-default .label{
+  font-weight: normal !important;
+}
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 *:not(i,mat-icon){
@@ -1141,4 +1143,16 @@ ngx-intl-tel-input .error {
   }
 }
   }
+
+
 }
+  .total{
+    width: 40px;
+    height: 32px;
+    background: var(--clr-primary-400);
+    color:var(--clr-primary-800);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

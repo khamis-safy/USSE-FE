@@ -11,7 +11,7 @@ import {  MessageTypeComponent } from '../Components/message-type/message-type.c
 })
 export class MessagesComponent implements OnInit {
   isChecked;
-  isMessages:boolean=false;
+  isMessages:boolean=true;
   @ViewChild(MessageTypeComponent) messageType:MessageTypeComponent;
 
   constructor(public dialog: MatDialog,private  toaster: ToasterServices) { }

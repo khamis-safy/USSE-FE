@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
@@ -9,10 +9,11 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
   styleUrls: ['./send-message.component.scss']
 })
 export class SendMessageComponent implements OnInit {
-
+  @ViewChild("dateTime") dateTime!: ElementRef;
   devices:SelectOption[];
   selectedDevices:string[]=[];
   devicesData = new FormControl([]);
+  deviceId:string;
   form = new FormGroup({
     devicesData:this.devicesData
   });
@@ -37,8 +38,9 @@ export class SendMessageComponent implements OnInit {
 
        })
   }
-  next(){
-    this.selectedDevices = this.form.value.devicesData.map((e)=>e.value);
 
+  onSelect(event){
+    this.deviceId=event.value;
   }
+
 }

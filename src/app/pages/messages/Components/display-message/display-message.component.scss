@@ -19,7 +19,9 @@
 
 }
 .message-container{
-  ::after{
+  position: relative;
+
+  ::before{
     content: "";
     position: absolute;
     width: 100%;

@@ -1,6 +1,6 @@
 <section class="h-100 position-relative d-flex px-3 flex-column">
 
-  <div class="position-absolute end-0 pointer ranslate-middle-y mx-3 zi-3 " style="height: 5%; top:12px ">
+  <div class="position-absolute end-0 pointer ranslate-middle-y mx-3 zi-3 " style="height: 5%; top:14px ">
     <img
       src="assets/icons/close-circle.svg"
       (click)="onClose()"
@@ -8,48 +8,80 @@
       style="cursor: pointer; width: 20px;"
     />
   </div>
-  <div class="d-flex gap-4 mt-4 flex-column">
-      <div class="devData-container d-flex w-100 justify-content-between">
-        <div class="device-data d-flex gap-3">
-          <div class="_image d-flex justify-content-center align-items-center">
-              <span class="text-neutral-0 txt-sm">{{lastTwoNums}}</span>
-          </div>
-          <div class="d-flex justify-content-center align-items-center flex-column">
-            <h2 class="mb-0">{{message?.targetPhoneNumber}}</h2>
-            <span class="txt-xs text-neutral-500">{{message?.device?.deviceName}}</span>
-          </div>
-        </div>
+  <div *ngIf="!isScheduleN" class="d-flex gap-4 mt-4 flex-column">
+      <div class="devData-container d-flex w-100 justify-content-between mt-2 px-4">
+        <ng-container [ngSwitch]="isScheduleM">
+
+          <ng-container *ngSwitchCase="false" >
+            <div class="device-data d-flex gap-3">
+              <div class="_image d-flex justify-content-center align-items-center">
+                  <span class="text-neutral-0 txt-sm">{{lastTwoNums}}</span>
+              </div>
+              <div class="d-flex justify-content-center  flex-column">
+                <h2 class="mb-0">{{message?.targetPhoneNumber}}</h2>
+                <span class="txt-xs text-neutral-500">{{message?.device?.deviceName}}</span>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container  *ngSwitchCase="true">
+            <h2 class="mb-0">{{schedule?.device?.deviceName}}</h2>
+          </ng-container>
+        </ng-container>
+
+
         <div class="date-time d-flex justify-content-center align-items-center">
           <span class="txt-sm text-neutral-500">{{message?.createdAt | date: ' d/M/yy , h:mm a '}}</span>
         </div>
       </div>
-      <div class="message-container position-relative ms-5">
-        <p class="txt-md ms-3 text-neutral-900 message">{{message?.msgBody}}</p>
+      <div class="message-container">
 
-       <ng-container *ngIf="message?.status!=null">
-        <ng-container *ngIf="message.status!=3 && message.status!=4">
+        <div class="ms-5">
 
-          <mat-icon
-          [ngClass]="{'pending':message.status==0,
-                      'sent':message.status==1,
-                      'delevered':message.status==2}"
-          class="status position-absolute end-0 bottom-0 d-flex justify-content-center align-items-center  txt-xs">check</mat-icon>
+          <ng-container [ngSwitch]="isScheduleM">
 
-        </ng-container>
+            <p *ngSwitchCase="true" class="txt-md ms-3 text-neutral-900 message">{{schedule?.msgBody}}</p>
 
-        <ng-container *ngIf="message.status==3">
+            <ng-container *ngSwitchCase="false">
 
-          <div class="_image seen d-flex justify-content-center position-absolute end-0 bottom-0 align-items-center">
-            <span class="text-neutral-0 ">{{lastTwoNums}}</span>
+              <p  class="txt-md ms-3 text-neutral-900 message">{{message?.msgBody}}</p>
+
+              <ng-container *ngIf="message?.status!=null ">
+              <ng-container *ngIf="message.status!=3 && message.status!=4">
+
+                <mat-icon
+                [ngClass]="{'pending':message.status==0,
+                            'sent':message.status==1,
+                            'delevered':message.status==2}"
+                class="status position-absolute end-0 bottom-0 d-flex justify-content-center align-items-center  txt-xs">check</mat-icon>
+
+              </ng-container>
+
+              <ng-container *ngIf="message.status==3">
+
+                <div class="_image seen d-flex justify-content-center position-absolute end-0 bottom-0 align-items-center">
+                  <span class="text-neutral-0 ">{{lastTwoNums}}</span>
+              </div>
+              </ng-container>
+
+              <ng-container *ngIf="message.status==4">
+
+
+              </ng-container>
+              </ng-container>
+            </ng-container>
+          </ng-container>
         </div>
-        </ng-container>
-
-        <ng-container *ngIf="message.status==4">
-
-
-        </ng-container>
-       </ng-container>
       </div>
   </div>
 
+  <div *ngIf="isScheduleN" class="mt-4">
+    <h2 class="ms-4 mb-5 txt-lg">Recepients</h2>
+    <ng-container *ngFor="let item of recipients">
+
+        <div class="d-flex justify-content-between gap-3 px-5  mb-4">
+          <span class="txt-md ">device name</span>
+          <span class="txt-md "> {{item}}</span>
+        </div>
+    </ng-container>
+  </div>
 </section>

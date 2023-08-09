@@ -5,6 +5,9 @@ import { Contacts } from 'src/app/pages/manage-contacts/contacts';
 import { ListData } from 'src/app/pages/manage-contacts/list-data';
 import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-contacts.service';
 import { SelectContactsComponent } from './select-contacts/select-contacts.component';
+import { WriteMessageComponent } from './write-message/write-message.component';
+import { SendMessageComponent } from './send-message/send-message.component';
+import { MessagesService } from '../../messages.service';
 interface ListContacts {
   listId: string,
   contacts: Contacts[]
@@ -17,17 +20,51 @@ interface ListContacts {
 })
 export class NewMessageComponent implements OnInit,AfterViewInit {
   @ViewChild(SelectContactsComponent) selectContacts:SelectContactsComponent;
-  addHocs:string[]=[];
-  addedContacts: Contacts[] = [];
+  @ViewChild(WriteMessageComponent) writeMessage:WriteMessageComponent;
+  @ViewChild(SendMessageComponent) sendMessage:SendMessageComponent;
 
-  constructor() { }
+contacts:Contacts[]=[];
+  addedContacts: string[] = [];
+  deviceId:string;
+  message:string;
+  dateTime:string;
+  fileUrl:string;
+  attachments:string[]=[];
+
+  constructor(private messageService:MessagesService) { }
   ngAfterViewInit() {
-    this.addHocs=this.selectContacts.addHocs;
-    this.addedContacts=this.selectContacts.addedContacts;
+    this.contacts=this.selectContacts.addedContacts
+
   }
 
   ngOnInit() {
 
   }
+  messageData(e){
+    this.message=e;
+  }
+  toWriteMessage(){
+    this.addedContacts=[...this.selectContacts.addedContacts.map((e)=>e.mobileNumber),...this.selectContacts.addHocs]
+    this.writeMessage.getTemplates();
+  }
+  toSendMessage(){
+    // this.message=this.writeMessage.messageBody;
+    console.log(this.message)
 
+  }
+  toLastStep(){
+    this.deviceId=this.sendMessage.deviceId;
+    this.dateTime=this.sendMessage.dateTime.nativeElement.value;
+    // this.messageService.sendWhatsappBusinessMessage(this.deviceId,this.addedContacts,this.attachments,this.message,this.dateTime,this.messageService.email).subscribe(
+    //   (res)=>{
+
+    //   },
+    //   (err)=>{
+
+    //   }
+    // )
+
+
+
+  }
 }
