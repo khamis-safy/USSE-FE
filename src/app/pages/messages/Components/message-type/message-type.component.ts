@@ -39,8 +39,8 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
       this.displayedColumns = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At'];
     }
     else if(this.msgCategory=='outbox'){
-      this.displayed = ['Device Name', 'Sender', 'Messages', 'Received At','Updated At','Status'];
-      this.displayedColumns = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At','Updated At','Status'];
+      this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
+      this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
     }
     else if(this.msgCategory=='failed'){
       this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At'];
@@ -158,7 +158,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
     dialogConfig.disableClose = true;
     dialogConfig.position = { right: '2px'};
     dialogConfig.direction ="ltr";
-    dialogConfig.data=row;
+    dialogConfig.data={message:row};
     const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {

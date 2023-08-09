@@ -6,6 +6,8 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import {  Shceduled } from '../../message';
 import { MessagesService } from '../../messages.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DisplayMessageComponent } from '../display-message/display-message.component';
 
 
 
@@ -20,7 +22,7 @@ export class ScheduledComponent implements OnInit  {
   loading:boolean=false;
   @Output() isChecked = new EventEmitter<Shceduled[]>;
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
-
+  cellClick:boolean=false;
   columns :FormControl;
   displayed: string[] = ['Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
   displayedColumns: string[] = ['select' ,'Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
@@ -28,7 +30,7 @@ export class ScheduledComponent implements OnInit  {
   selection = new SelectionModel<Shceduled>(true, []);
 
   subscribtions:Subscription[]=[];
-  constructor(private messageService:MessagesService){}
+  constructor(private messageService:MessagesService,public dialog: MatDialog){}
   ngOnInit() {
     this.getMessages();
 
@@ -120,6 +122,53 @@ export class ScheduledComponent implements OnInit  {
 
       }
 
+      onCellClick(recipient){
+        const dialogConfig=new MatDialogConfig();
+        dialogConfig.height='100vh';
+        dialogConfig.width='25vw';
+        dialogConfig.maxWidth='100%';
+        // dialogConfig.minWidth='200px';
+        dialogConfig.disableClose = true;
+        dialogConfig.position = { right: '2px'};
+        dialogConfig.direction ="ltr";
+        dialogConfig.data={
+          recipients:recipient,
+          isScheduleN:true
+        };
+        const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
+
+        dialogRef.afterClosed().subscribe(result => {
+          if(result){
+          }
+
+        });        // isScheduleN:boolean,
+        // recepients:{number:string} []
+      }
+
+      displayMessage(row){
+        if(!this.cellClick){
+          const dialogConfig=new MatDialogConfig();
+          dialogConfig.height='100vh';
+          dialogConfig.width='25vw';
+          dialogConfig.maxWidth='100%';
+          // dialogConfig.minWidth='200px';
+          dialogConfig.disableClose = true;
+          dialogConfig.position = { right: '2px'};
+          dialogConfig.direction ="ltr";
+          dialogConfig.data={
+            schedule:row,
+            isScheduleM:true
+          };
+          const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
+
+          dialogRef.afterClosed().subscribe(result => {
+            if(result){
+            }
+
+          });
+        }
+
+      }
 
 }
 

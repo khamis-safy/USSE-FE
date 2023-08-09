@@ -6,14 +6,22 @@
   height: 48px;
   border-radius: 50%;
   background-color: var(--clr-neutral-400);
+  &.seen{
+    width: 25px !important;
+    height: 25px !important;
+    font-size: 10px;
+  }
 }
+
 .message{
   line-height: 34px;
   max-width: 80%;
 
 }
 .message-container{
-  ::after{
+  position: relative;
+
+  ::before{
     content: "";
     position: absolute;
     width: 100%;
@@ -28,14 +36,19 @@
   width: 20px;
   height: 20px;
   &.sent{
-
+    border: 1px solid var(--clr-primary-800);
+    color: var(--clr-primary-800);
   }
   &.pending{
-
+    color: var(--clr-neutral-0);
+    background-color: var(--clr-neutral-0);
+    border: 1px solid var(--clr-primary-800);
   }
   &.delevered{
+    background-color:var(--clr-primary-800) ;
+    color: var(--clr-neutral-0);
 
   }
 
-  border: 1px solid var(--clr-primary-800);
+
 }

@@ -60,10 +60,10 @@
         </ng-container>
 
         <!-- Sender Column -->
-        <ng-container [matColumnDef]="msgCategory=='failed'?'Recipient':'Sender'">
+        <ng-container [matColumnDef]="msgCategory=='inbox'?'Sender':'Recipient'">
           <th class="text-center" mat-header-cell *matHeaderCellDef>
-            <ng-container *ngIf="msgCategory=='failed'">Recipient</ng-container>
-            <ng-container *ngIf="msgCategory!='failed'">Sender</ng-container>
+            <ng-container *ngIf="msgCategory=='inbox'">Sender</ng-container>
+            <ng-container *ngIf="msgCategory!='inbox'">Recipient</ng-container>
 
             </th>
           <td class="text-center" mat-cell *matCellDef="let element">
@@ -137,7 +137,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
       <ng-container *ngIf="!loading">
 
-      <tr (click)="displayMessage(row)" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
+      <tr class="pointer" (click)="displayMessage(row)" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
         [ngClass]="{'active-row':selection.isSelected(row)}"
         >
       </tr>

@@ -36,8 +36,8 @@ getDevicesCount(email:string):Observable<number>{
   return this.http.get<number>(`${env.api}Device/listDevicesCount?email=${email}`)
 }
 
-deleteWPPDevice(email:string,id:string):Observable<DeviceData>{
-  return this.http.put<DeviceData>(`${env.api}Device/deleteWPPDevice?email=${email}&id=${id}`,"")
+deleteDevice(email:string,id:string):Observable<DeviceData>{
+  return this.http.put<DeviceData>(`${env.api}Device/deleteDevice?email=${email}&id=${id}`,"")
 }
 reconnectWPPDevice(email:string,id:string):Observable<any>{
   return this.http.put<any>(`${env.api}Device/reconnectWPPDevice?email=${email}&id=${id}`,"")

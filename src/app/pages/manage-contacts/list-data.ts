@@ -6,7 +6,7 @@ export interface ListData {
   createdAt: string,
   isDeleted: boolean,
   applicationUserId: string,
-  isChecked:string,
+  isChecked:boolean,
   selectionState:number
 
 }

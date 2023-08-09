@@ -40,14 +40,12 @@
 
       <!-- Sender Column -->
       <ng-container matColumnDef="Recipient">
-        <th class="text-center" mat-header-cell *matHeaderCellDef>Recipient</th>
+        <th class="text-center" mat-header-cell *matHeaderCellDef >Recipient</th>
         <td class="text-center" mat-cell *matCellDef="let element" style="width: 250px;">
-          <div class="d-flex gap-2 " style="width: 220px; overflow-x: auto;">
-          <ng-container *ngFor="let num of element.targetPhoneNumber"  >
+          <div class="d-flex justify-content-center align-items-center w-100 zi-4"  (click)="onCellClick(element?.targetPhoneNumber) ;cellClick=true">
 
-              <span >{{ num.number}}</span>
+              <span class="txt-sm total">{{ element?.targetPhoneNumber?.length}}</span>
 
-            </ng-container>
           </div>
 
         </td>
@@ -92,7 +90,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
       <ng-container *ngIf="!loading">
 
-      <tr  mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
+      <tr class="pointer" (click)="displayMessage(row) ; cellClick=false"  mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
         [ngClass]="{'active-row':selection.isSelected(row)}"
         >
       </tr>

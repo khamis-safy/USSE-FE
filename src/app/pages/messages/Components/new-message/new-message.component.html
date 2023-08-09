@@ -16,9 +16,11 @@
             [size]="'md'"
             [loading]="false"
             [appearance]="'primary'"
-
+            (clicked)="toWriteMessage()"
             >
-   <!-- [disabled]="addedContacts.length==0" -->
+
+            <!--             [disabled]="contacts.length==0"
+ -->
         </us-button>
         </button>
         </div>
@@ -28,7 +30,7 @@
     <mat-step  >
       <ng-template matStepLabel>Write Message</ng-template>
       <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-          <app-write-message  style=" height: 80%;"></app-write-message>
+          <app-write-message  (messageBody)="messageData($event)" style=" height: 80%;"></app-write-message>
           <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
             <button class="rest-style" matStepperPrevious>   <us-button
               class="m-2"
@@ -50,7 +52,10 @@
             [loading]="false"
             [disabled]="false"
             [appearance]="'primary'"
+            (clicked)="toSendMessage()"
             >
+            <!--             [disabled]="message!='' || attachments.length!=0"
+ -->
             </us-button>
             </button>
           </div>
@@ -85,6 +90,8 @@
           [loading]="false"
           [disabled]="false"
           [appearance]="'primary'"
+          (clicked)="toLastStep()"
+
           >
           </us-button>
           </button>
