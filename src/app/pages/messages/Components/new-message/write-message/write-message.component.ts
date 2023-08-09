@@ -18,7 +18,7 @@ export interface Filse{
 export class WriteMessageComponent implements OnInit {
   templates:SelectOption[];
   allTemplates:Templates[]=[];
-  fileData:Filse;
+  fileData:Filse[]=[];
   @Output() messageBody = new EventEmitter<string>;
   @Output() attachments = new EventEmitter<Attatchment[]>;
 
@@ -40,6 +40,7 @@ export class WriteMessageComponent implements OnInit {
     this.templateService.getTemplates("khamis.safy@gmail.com",10,0,"","").subscribe(
       (res)=>{
         this.allTemplates=res;
+        console.log(this.allTemplates)
         this.templates = this.allTemplates.map(res=>{
           return {
             title:res.templateName,
@@ -56,21 +57,31 @@ export class WriteMessageComponent implements OnInit {
 
   // }
   onSelect(event){
+
+
     let template=this.allTemplates.find((t)=>t.id==event.value);
     this.form.patchValue({
       message:template.messageBody
     });
+    let attachment=template.attachments.map((e)=>{
+      return {
+          size:0,
+          name:e.fileName,
+          url:e.fileUrl,
+          type:""
+      }
+    });
+
+
+     this.fileData=attachment;
+
     this.messageBody.emit(this.form.value.message)
-    let attachment=template.attachments.map((e)=>e.fileUrl);
 
-    // this.fileData= { size:0,
-    //   name:"",
-    //   url:"",
-    //   type:""}
 
-    console.log(this.messageBody)
+
+
   }
   onFileChange(e){
-    console.log(e)
+    console.log(this.fileData)
   }
 }
