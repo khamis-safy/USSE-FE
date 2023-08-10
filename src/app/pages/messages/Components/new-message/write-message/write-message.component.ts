@@ -19,9 +19,9 @@ export class WriteMessageComponent implements OnInit {
   templates:SelectOption[];
   allTemplates:Templates[]=[];
   fileData:Filse[]=[];
-  @Output() messageBody = new EventEmitter<string>;
-  @Output() attachments = new EventEmitter<Attatchment[]>;
-
+  // @Output() messageBody = new EventEmitter<string>;
+  @Output() attachments = new EventEmitter<string[]>;
+  messageBody:string="";
 
   templatesData = new FormControl([]);
   message = new FormControl('',[Validators.required]);
@@ -73,15 +73,17 @@ export class WriteMessageComponent implements OnInit {
     });
 
 
-     this.fileData=attachment;
+    this.fileData=attachment;
 
-    this.messageBody.emit(this.form.value.message)
+    this.messageBody=(this.form.value.message)
 
 
 
 
   }
   onFileChange(e){
-    console.log(this.fileData)
+    console.log(this.fileData);
+    let files=this.fileData.map((file)=>file.url);
+    this.attachments.emit(files)
   }
 }

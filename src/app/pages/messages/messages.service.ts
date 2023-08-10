@@ -35,6 +35,7 @@ deleteMessage(ids:string[]):Observable<any>{
 }
 
 sendWhatsappBusinessMessage( deviceid: string,targetPhoneNumber: string[],attachments:string[],msgBody: string,scheduledAt:string,email: string):Observable<any>{
+
   const data={
     deviceid: deviceid,
     targetPhoneNumber: targetPhoneNumber,
@@ -43,6 +44,7 @@ sendWhatsappBusinessMessage( deviceid: string,targetPhoneNumber: string[],attach
     scheduledAt:scheduledAt,
     email: email
   }
+  console.log(data)
   return this.http.post<any>(`${env.api}Message/sendWhatsappBusinessMessage`,data)
 
 }

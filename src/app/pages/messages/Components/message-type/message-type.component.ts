@@ -73,6 +73,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
       let messagesSub=this.messageService.getMessages(email,msgCategory,shows,pageNum,search).subscribe(
         (res)=>{
           this.numRows=res.length;
+
           this.loading = false;
           this.dataSource=new MatTableDataSource<Message>(res)
 

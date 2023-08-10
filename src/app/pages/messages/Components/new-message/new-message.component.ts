@@ -8,6 +8,7 @@ import { SelectContactsComponent } from './select-contacts/select-contacts.compo
 import { WriteMessageComponent } from './write-message/write-message.component';
 import { SendMessageComponent } from './send-message/send-message.component';
 import { MessagesService } from '../../messages.service';
+import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 interface ListContacts {
   listId: string,
   contacts: Contacts[]
@@ -31,38 +32,55 @@ contacts:Contacts[]=[];
   fileUrl:string;
   attachments:string[]=[];
 
-  constructor(private messageService:MessagesService) { }
+  constructor(private messageService:MessagesService,private toasterService:ToasterServices) { }
   ngAfterViewInit() {
     this.contacts=this.selectContacts.addedContacts
+    this.message=this.writeMessage.messageBody;
 
   }
 
   ngOnInit() {
 
   }
-  messageData(e){
-    this.message=e;
+  // messageData(e){
+  //   console.log("message",this.message)
+  //   this.message=e;
+  // }
+  filesUrls(e){
+    this.attachments=e;
   }
   toWriteMessage(){
     this.addedContacts=[...this.selectContacts.addedContacts.map((e)=>e.mobileNumber),...this.selectContacts.addHocs]
     this.writeMessage.getTemplates();
   }
   toSendMessage(){
-    // this.message=this.writeMessage.messageBody;
-    console.log(this.message)
+    this.message=this.writeMessage.form.value.message
 
   }
   toLastStep(){
     this.deviceId=this.sendMessage.deviceId;
-    this.dateTime=this.sendMessage.dateTime.nativeElement.value;
-    // this.messageService.sendWhatsappBusinessMessage(this.deviceId,this.addedContacts,this.attachments,this.message,this.dateTime,this.messageService.email).subscribe(
-    //   (res)=>{
+    this.dateTime=this.sendMessage.dateTime.nativeElement.value.replace(" ","T");
+    console.log("date time",this.dateTime)
+    // console.log({
+    //   deviceId:this.deviceId,
+    //   addedContacts:this.addedContacts,
+    //   dateTime:this.dateTime,
+    //   attachements:this.attachments,
+    //   message:this.message
 
-    //   },
-    //   (err)=>{
+    // })
+    // console.log("file data " , this.deviceId, this.dateTime)
 
-    //   }
-    // )
+    this.messageService.sendWhatsappBusinessMessage(this.deviceId,this.addedContacts,this.attachments,this.message,this.dateTime,this.messageService.email).subscribe(
+      (res)=>{
+        this.toasterService.success("Success")
+
+      },
+      (err)=>{
+
+        this.toasterService.error("Error")
+      }
+    )
 
 
 
