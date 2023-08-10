@@ -1,102 +1,88 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
 import { Contacts } from 'src/app/pages/manage-contacts/contacts';
 import { ListData } from 'src/app/pages/manage-contacts/list-data';
 import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-contacts.service';
-interface ListContacts{
-  listId:string,
-  contacts:Contacts[]
-}
+import { SelectContactsComponent } from './select-contacts/select-contacts.component';
+import { WriteMessageComponent } from './write-message/write-message.component';
+import { SendMessageComponent } from './send-message/send-message.component';
+import { MessagesService } from '../../messages.service';
+import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+interface ListContacts {
+  listId: string,
+  contacts: Contacts[]
+};
+
 @Component({
   selector: 'app-new-message',
   templateUrl: './new-message.component.html',
   styleUrls: ['./new-message.component.scss']
 })
-export class NewMessageComponent implements OnInit {
-lists:ListData[]=[];
+export class NewMessageComponent implements OnInit,AfterViewInit {
+  @ViewChild(SelectContactsComponent) selectContacts:SelectContactsComponent;
+  @ViewChild(WriteMessageComponent) writeMessage:WriteMessageComponent;
+  @ViewChild(SendMessageComponent) sendMessage:SendMessageComponent;
+
 contacts:Contacts[]=[];
-listContacts:ListContacts[]=[];
-addedContacts:Contacts[]=[];
+  addedContacts: string[] = [];
+  deviceId:string;
+  message:string;
+  dateTime:string;
+  fileUrl:string;
+  attachments:string[]=[];
 
-cardNum:{i:number,isOpen:boolean}={i:-1,isOpen:false};
-  // ngx-intl-tel
-  separateDialCode = true;
-	SearchCountryField = SearchCountryField;
-	CountryISO = CountryISO;
-  PhoneNumberFormat = PhoneNumberFormat;
+  constructor(private messageService:MessagesService,private toasterService:ToasterServices) { }
+  ngAfterViewInit() {
+    this.contacts=this.selectContacts.addedContacts
+    this.message=this.writeMessage.messageBody;
 
-mobile:any = new FormControl('',[Validators.required]);
-
-form = new FormGroup({
-  mobile:this.mobile
-});
-  constructor(private listService:ManageContactsService) { }
+  }
 
   ngOnInit() {
-    this.getLists();
 
   }
-getLists(){
-  this.listService.getList(this.listService.email,100,0,"","").subscribe(
-    (res)=>{
-      let filterLlist =res.filter((e)=>e.totalContacts!=0)
-      this.lists=filterLlist;
-    },
-    (err)=>{
-
-
-    }
-  )
-
-
-}
-onBadgeDeselect(e,contact:Contacts){
-  // this.addedContacts.splice(this.addedContacts.indexOf(contact),1)
-
-}
-selected(e,contact:Contacts){
-//   let found= this.addedContacts.find((e)=>e.id==contact.id);
-
-//   if(e=='checked'){
-//     if(!found){
-//       this.addedContacts.push(found);
-//     }
-//   }
-// else{
-//   if(found){
-//     this.addedContacts.splice(this.addedContacts.indexOf(contact),1)
-//   }
-// }
-  // console.log(this.addedContacts)
-}
-getContacts(index:number,id:string){
-  this.contacts=[];
-  if(this.cardNum.i==index){
-    this.cardNum.isOpen=!this.cardNum.isOpen;
+  // messageData(e){
+  //   console.log("message",this.message)
+  //   this.message=e;
+  // }
+  filesUrls(e){
+    this.attachments=e;
   }
-  else{
-    this.cardNum.i=index;
-
-    this.cardNum.isOpen=true;
+  toWriteMessage(){
+    this.addedContacts=[...this.selectContacts.addedContacts.map((e)=>e.mobileNumber),...this.selectContacts.addHocs]
+    this.writeMessage.getTemplates();
+  }
+  toSendMessage(){
+    this.message=this.writeMessage.form.value.message
 
   }
+  toLastStep(){
+    this.deviceId=this.sendMessage.deviceId;
+    this.dateTime=this.sendMessage.dateTime.nativeElement.value.replace(" ","T");
+    console.log("date time",this.dateTime)
+    // console.log({
+    //   deviceId:this.deviceId,
+    //   addedContacts:this.addedContacts,
+    //   dateTime:this.dateTime,
+    //   attachements:this.attachments,
+    //   message:this.message
 
-let findContact=this.listContacts.find((e)=>e.listId==id);
-if(findContact){
-  this.contacts=findContact.contacts;
-  console.log("list id",id)
-}
-else{
-  this.listService.getContacts(this.listService.email,false,50,0,"","",id).subscribe(
-    (res)=>{
-      this.contacts=res;
-      this.listContacts.push({listId:id,contacts:this.contacts});
-    },
-    (err)=>{}
-  )
-}
+    // })
+    // console.log("file data " , this.deviceId, this.dateTime)
+
+    this.messageService.sendWhatsappBusinessMessage(this.deviceId,this.addedContacts,this.attachments,this.message,this.dateTime,this.messageService.email).subscribe(
+      (res)=>{
+        this.toasterService.success("Success")
+
+      },
+      (err)=>{
+
+        this.toasterService.error("Error")
+      }
+    )
 
 
-}
+
+  }
 }

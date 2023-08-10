@@ -1,0 +1,10 @@
+<div class="d-flex justify-content-end w-100 position-relative">
+  <img
+  class="position-absolute top-0 end-0 m-3"
+  src="assets/icons/close-circle.svg"
+  (click)="onClose()"
+  alt="close-icon"
+  style="cursor: pointer;"
+/>
+</div>
+<img class="w-100 h-100" style="object-fit: contain;" [src]="data |safeURL" alt="">

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { OutboxComponent } from './outbox.component';
+import { MessageTypeComponent } from './message-type.component';
 
-describe('OutboxComponent', () => {
-  let component: OutboxComponent;
-  let fixture: ComponentFixture<OutboxComponent>;
+describe('MessageTypeComponent', () => {
+  let component: MessageTypeComponent;
+  let fixture: ComponentFixture<MessageTypeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OutboxComponent ]
+      declarations: [ MessageTypeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OutboxComponent);
+    fixture = TestBed.createComponent(MessageTypeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

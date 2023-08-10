@@ -60,8 +60,12 @@
         </ng-container>
 
         <!-- Sender Column -->
-        <ng-container matColumnDef="Sender">
-          <th class="text-center" mat-header-cell *matHeaderCellDef>Sender</th>
+        <ng-container [matColumnDef]="msgCategory=='inbox'?'Sender':'Recipient'">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>
+            <ng-container *ngIf="msgCategory=='inbox'">Sender</ng-container>
+            <ng-container *ngIf="msgCategory!='inbox'">Recipient</ng-container>
+
+            </th>
           <td class="text-center" mat-cell *matCellDef="let element">
             {{ element.targetPhoneNumber }}
           </td>
@@ -75,12 +79,12 @@
 
           <td class="text-center" mat-cell *matCellDef="let element">
               {{ element.msgBody }}
-            <div *ngIf="element?.fileName=='image'" class="text-start ms-4  pt-2 pb-3">
-              <img src="assets/images/image.svg" alt="">
+            <div *ngIf="element?.fileName" class="text-start ms-4  pt-2 pb-3">
+              <img [src]="(element.fileName | type) " alt="">
             </div>
-            <div *ngIf="element?.fileName=='document'" class="text-start ms-4  pt-2 pb-3">
+            <!-- <div *ngIf="element?.fileName=='document'" class="text-start ms-4  pt-2 pb-3">
               <img src="assets/images/document.svg" alt="">
-            </div>
+            </div> -->
           </td>
         </ng-container>
 
@@ -93,11 +97,47 @@
             {{ element.createdAt | date: 'h:mm a , M/d/y '}}
           </td>
         </ng-container>
+  <!-- Updated At at Column -->
+  <ng-container matColumnDef="Updated At">
+    <th class="text-center" mat-header-cell *matHeaderCellDef> Updated At </th>
+    <td class="text-center" mat-cell *matCellDef="let element"> {{element.updatedAt | date: 'h:mm a , M/d/y '}} </td>
+  </ng-container>
 
+  <!-- Status at Column -->
+  <ng-container matColumnDef="Status">
+    <th class="text-center" mat-header-cell *matHeaderCellDef> Status </th>
+    <td class="text-center" mat-cell *matCellDef="let element">
+      <ng-container [ngSwitch]="element.status">
+        <div *ngSwitchCase=3>
+          <img src="assets/images/read.svg" alt="">
+        </div>
+
+        <div *ngSwitchCase=1>
+          <img src="assets/images/sent.svg" alt="">
+        </div>
+
+        <div *ngSwitchCase=2>
+          <img src="assets/images/delivered.svg" alt="">
+        </div>
+
+        <div *ngSwitchCase=0>
+          <img src="assets/images/pending.svg" alt="">
+        </div>
+      </ng-container>
+
+
+    </td>
+  </ng-container>
+ <!-- Action at Column -->
+ <ng-container matColumnDef="Ation">
+  <th class="text-center" mat-header-cell *matHeaderCellDef> Action </th>
+  <td class="text-center" mat-cell *matCellDef="let element"><img src="assets/icons/action.svg" alt="" width="14"> </td>
+
+</ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
       <ng-container *ngIf="!loading">
 
-      <tr  mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
+      <tr class="pointer" (click)="displayMessage(row)" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
         [ngClass]="{'active-row':selection.isSelected(row)}"
         >
       </tr>

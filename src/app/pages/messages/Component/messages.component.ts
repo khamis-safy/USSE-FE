@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
-import { Message } from '../message';
-import { InboxComponent } from '../Components/inbox/inbox.component';
+import {  MessageTypeComponent } from '../Components/message-type/message-type.component';
 
 @Component({
   selector: 'app-messages',
@@ -14,7 +12,7 @@ import { InboxComponent } from '../Components/inbox/inbox.component';
 export class MessagesComponent implements OnInit {
   isChecked;
   isMessages:boolean=true;
-  @ViewChild(InboxComponent) inbox:InboxComponent;
+  @ViewChild(MessageTypeComponent) messageType:MessageTypeComponent;
 
   constructor(public dialog: MatDialog,private  toaster: ToasterServices) { }
 
@@ -34,13 +32,17 @@ export class MessagesComponent implements OnInit {
     }
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      this.inbox.selection.clear();
+      this.messageType.selection.clear();
 
     });
   }
   onChecked(e){
     this.isChecked=e;
 
+  }
+
+  changeModal(){
+    this.messageType.selection.clear();
   }
   openNewMessage(){
     this.isMessages=false;

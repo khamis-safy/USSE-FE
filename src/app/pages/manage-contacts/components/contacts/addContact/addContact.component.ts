@@ -23,7 +23,7 @@ interface CheckedCont{
 export class AddContactComponent implements OnInit{
 // isChanged:boolean=false;
 
-  lists: ListData[] ;
+  // lists: ListData[] ;
   listsArr:SelectOption[]
   // ngx-intl-tel
   separateDialCode = true;
@@ -49,7 +49,7 @@ export class AddContactComponent implements OnInit{
 
 oldData;
 
-  listsIds:string[]=[""];
+  // listsIds:string[]=[""];
   constructor(
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -64,7 +64,7 @@ oldData;
       this.isEdit = true
       this.fillingData();
       // this.listsIds=this.data.lists.map((e)=>e.id)
-      this.listsIds=this.data.contacts.lists.map((e)=>e.id);
+      // this.listsIds=this.data.contacts.lists.map((e)=>e.id);
 
       this.selectedLists=new FormControl(this.data.contacts.lists)
 
@@ -110,7 +110,7 @@ oldData;
       })
       let allLists=[]
       listsMap.forEach(list => allLists.push(list));
-      this.lists=allLists
+      // this.lists=allLists
       this.listsArr = allLists.map(res=>{
         return {
           title:res.name,
@@ -127,7 +127,7 @@ oldData;
       })
       }
       else{
-        this.lists=res;
+        // this.lists=res;
         this.listsArr = res.map(res=>{
           return {
             title:res.name,
@@ -214,7 +214,7 @@ oldData;
   }
   changeLists(event){
 
-    this.listsIds=event.map((e)=>e.id)
+    // this.listsIds=event.map((e)=>e.id)
   }
 
 }

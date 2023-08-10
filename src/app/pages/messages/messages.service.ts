@@ -20,15 +20,33 @@ getMessages(email:string,msgCategory:string,showsNum:number,pageNum:number,searc
   return this.http.get<Message[]>(`${env.api}Message/listMessages?email=${email}&msgCategory=${msgCategory}&take=${showsNum}&scroll=${pageNum}&search=${search}`)
 }
 getScheduledMessages(email:string,showsNum:number,pageNum:number):Observable<Shceduled[]>{
-  return this.http.get<Shceduled[]>(`${env.api}Message/listMessages?email=${email}&take=${showsNum}&scroll=${pageNum}`)
+  return this.http.get<Shceduled[]>(`${env.api}Message/listScheduledMessages?email=${email}&take=${showsNum}&scroll=${pageNum}`)
 }
 getMessagesCount(email:string,msgCategory:string):Observable<number>{
   return this.http.get<number>(`${env.api}Message/listMessagesCount?email=${email}&msgCategory=${msgCategory}`)
 }
-
+listScheduledMessagesCount(email:string):Observable<number>{
+  return this.http.get<number>(`${env.api}Message/listScheduledMessagesCount?email=${email}`)
+}
 deleteMessage(ids:string[]):Observable<any>{
 
   return this.http.put<number>(`${env.api}Message/deleteMessage`,ids)
 
 }
+
+sendWhatsappBusinessMessage( deviceid: string,targetPhoneNumber: string[],attachments:string[],msgBody: string,scheduledAt:string,email: string):Observable<any>{
+
+  const data={
+    deviceid: deviceid,
+    targetPhoneNumber: targetPhoneNumber,
+    attachments:attachments,
+    msgBody: msgBody,
+    scheduledAt:scheduledAt,
+    email: email
+  }
+  console.log(data)
+  return this.http.post<any>(`${env.api}Message/sendWhatsappBusinessMessage`,data)
+
+}
+
 }

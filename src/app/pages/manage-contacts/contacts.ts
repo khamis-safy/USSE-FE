@@ -7,9 +7,9 @@ export interface Contacts {
   companyName: string,
   note: string,
   isCanceled: boolean,
-
-  // isDeleted: boolean,
+  isDeleted: boolean,
   createdAt: string,
+  isChecked:string,
   // applicationUser: object,
   // applicationUserId:string,
   lists:ListData[]

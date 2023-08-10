@@ -1,72 +1,174 @@
-// import { Component } from '@angular/core';
-// @Component({
-//   selector: 'app-scheduled',
-//   templateUrl: './scheduled.component.html',
-//   styleUrls: ['./scheduled.component.scss']
-// })
-// export class ScheduledComponent {
-
-
-
-// }
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
+import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import {  Shceduled } from '../../message';
+import { MessagesService } from '../../messages.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DisplayMessageComponent } from '../display-message/display-message.component';
 
-export interface PeriodicElement {
-  deviceName: string;
-  sender: string;
-  messages: string;
-  receivedAt: string;
-}
 
-const ELEMENT_DATA: PeriodicElement[] = [
-
-];
 
 @Component({
   selector: 'app-scheduled',
   templateUrl: './scheduled.component.html',
   styleUrls: ['./scheduled.component.scss']
 })
-export class ScheduledComponent implements AfterViewInit  {
-  displayedColumns: string[] = ['select' ,'deviceName', 'sender', 'messages', 'receivedAt'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  selection = new SelectionModel<PeriodicElement>(true, []);
+export class ScheduledComponent implements OnInit  {
+  length:number=0;
+  numRows;
+  loading:boolean=false;
+  @Output() isChecked = new EventEmitter<Shceduled[]>;
+  @ViewChild(MatPaginator)  paginator!: MatPaginator;
+  cellClick:boolean=false;
+  columns :FormControl;
+  displayed: string[] = ['Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
+  displayedColumns: string[] = ['select' ,'Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
+  dataSource:MatTableDataSource<Shceduled>;
+  selection = new SelectionModel<Shceduled>(true, []);
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  subscribtions:Subscription[]=[];
+  constructor(private messageService:MessagesService,public dialog: MatDialog){}
+  ngOnInit() {
+    this.getMessages();
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
+    this.columns=new FormControl(this.displayedColumns)
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
+    this.selection.changed.subscribe(
+      (res) => {
+
+        if(res.source.selected.length){
+
+          this.isChecked.emit(res.source.selected)
+        }
+        else{
+          this.isChecked.emit()
+        }
+      });
     }
 
-    this.selection.select(...this.dataSource.data);
-  }
+    getMessages(){
+      this.getMessagesCount();
+      let shows=this.messageService.display;
+      let pageNum=this.messageService.pageNum;
+      let email=this.messageService.email;
+      this.loading=true;
+      let messagesSub=this.messageService.getScheduledMessages(email,shows,pageNum).subscribe(
+        (res)=>{
+          this.numRows=res.length;
+          this.loading = false;
+          this.dataSource=new MatTableDataSource<Shceduled>(res)
 
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+        },
+        (err)=>{
+         this.loading = false;
+         this.length=0;
+
+        }
+      )
+      this.subscribtions.push(messagesSub)
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row `;
-  }
 
+    getMessagesCount(){
+      let email=this.messageService.email;
+      let countSub=this.messageService.listScheduledMessagesCount(email).subscribe(
+        (res)=>{
+          this.length=res;
+        }
+        ,(err)=>{
+          this.length=0;
+        }
+      )
 
-  isData:boolean=false;
+    }
+    isAllSelected() {
+      const numSelected = this.selection.selected.length;
+
+      const numRows =  this.numRows;
+      return numSelected === numRows;
+    }
+
+    /** Selects all rows if they are not all selected; otherwise clear selection. */
+    toggleAllRows() {
+      if (this.isAllSelected()) {
+        this.selection.clear();
+        return;
+      }
+
+      this.selection.select(...this.dataSource.data);
+    }
+
+    checkboxLabel(row?): string {
+      if (!row) {
+        return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      }
+      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    }
+
+    changeColumns(event){
+      //  change displayed column based on component type
+      this.displayedColumns=['select',...event]
+
+      }
+
+      onPageChange(event){
+        this.messageService.display=event.pageSize;
+        this.messageService.pageNum=event.pageIndex;
+        this.selection.clear();
+
+        this.getMessages();
+
+      }
+
+      onCellClick(recipient){
+        const dialogConfig=new MatDialogConfig();
+        dialogConfig.height='100vh';
+        dialogConfig.width='25vw';
+        dialogConfig.maxWidth='100%';
+        // dialogConfig.minWidth='200px';
+        dialogConfig.disableClose = true;
+        dialogConfig.position = { right: '2px'};
+        dialogConfig.direction ="ltr";
+        dialogConfig.data={
+          recipients:recipient,
+          isScheduleN:true
+        };
+        const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
+
+        dialogRef.afterClosed().subscribe(result => {
+          if(result){
+          }
+
+        });        // isScheduleN:boolean,
+        // recepients:{number:string} []
+      }
+
+      displayMessage(row){
+        if(!this.cellClick){
+          const dialogConfig=new MatDialogConfig();
+          dialogConfig.height='100vh';
+          dialogConfig.width='25vw';
+          dialogConfig.maxWidth='100%';
+          // dialogConfig.minWidth='200px';
+          dialogConfig.disableClose = true;
+          dialogConfig.position = { right: '2px'};
+          dialogConfig.direction ="ltr";
+          dialogConfig.data={
+            schedule:row,
+            isScheduleM:true
+          };
+          const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
+
+          dialogRef.afterClosed().subscribe(result => {
+            if(result){
+            }
+
+          });
+        }
+
+      }
 
 }
 

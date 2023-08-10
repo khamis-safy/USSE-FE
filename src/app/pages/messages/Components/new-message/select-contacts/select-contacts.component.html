@@ -1,0 +1,235 @@
+<div class="row w-100 my-5" style="height: 70%; place-content: space-around">
+  <!-- lists and contacts with search -->
+  <div class="col-5 d-flex gap-4 flex-column me-2">
+    <div class="d-flex position-relative w-100 m-0">
+      <div class="w-100">
+        <form [formGroup]="searchForm">
+          <us-select
+            (onSearch)="onSearch($event)"
+            (onSelect)="onSelect($event)"
+            (onDeSelect)="onDeSelect($event)"
+            (onSelectAll)="onSelectAll($event)"
+            (onDeSelectAll)="onDeSelectAll($event)"
+            [data]="allContacts"
+            formControlName="contactsData"
+            placeholder="Select Contacts"
+            [multiSelect]="true"
+            [isDisabled]="false"
+            [enableSearch]="true"
+            [enableSelectAll]="true"
+            [searchbarOnToggler]="true"
+            [showSelectedItemsNumberOnly]="true"
+            [enableParentSearch]="true"
+            [searchNoResultText]="'there is no result'"
+            [maxListItemsWithoutSearch]="5"
+          ></us-select>
+          <!-- <input #search type="text" class="form-control ps-5 py-4 w-100 txt-xs" id="search" (keyup)="onSearch(search)" placeholder="Search" > -->
+        </form>
+      </div>
+    </div>
+    <div class="lists py-3">
+      <div
+        class="d-flex justify-content-between align-items-center w-100 px-4 pb-2 txt-sm lists-top"
+      >
+        <sr-checkbox
+          label="Select all"
+          [state]="
+          selectAllStatus === 1 ? 'mid' : selectAllStatus === 2 || selectedLists? 'checked' : ''
+          "
+          (changed)="selectAllLists($event)"
+          style="font-weight: 500"
+        ></sr-checkbox>
+        <div class="sort-by bg-neutral-0">
+          <button mat-button [matMenuTriggerFor]="menu" class="text-neutral-0">
+            <div
+              class="d-flex align-items-center gap-2 txt-sm"
+              style="font-weight: 500"
+            >
+              <span>Sort By</span>
+              <mat-icon>expand_more</mat-icon>
+            </div>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="getLists('nameASC')">
+              Ascending
+            </button>
+            <button mat-menu-item (click)="getLists('nameDEC')">
+              Descending
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+      <div class="line"></div>
+
+      <div class="lists-body">
+        <ng-container>
+          <mat-accordion>
+
+            <mat-expansion-panel
+            *ngFor="let list of lists; let i = index"
+            class="custom-panel"
+            (opened)="getContacts(list,true)"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <div class="d-flex gap-4">
+                  <sr-checkbox
+                    [label]="list?.name"
+                    [state]="list.selectionState==2 ? 'checked' :
+                    list.selectionState==1 ? 'mid'
+                    : ''"
+                    (changed)="
+                    onSelectList($event, list)
+                    "
+                  ></sr-checkbox>
+                  <span class="txt-sm total">{{ list.totalContacts }}</span>
+                </div>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="d-flex gap-4 align-items-center flex-wrap p-3">
+              <ng-container *ngFor="let contact of contacts">
+                <sr-checkbox
+                  class="txt-sm"
+                  [label]="contact?.name"
+                  [state]="contact.isChecked"
+                  (changed)="onSelectContact($event, contact,list)"
+                  [(ngModel)]="contact.isChecked"
+                ></sr-checkbox>
+              </ng-container>
+
+            </div>
+          </mat-expansion-panel>
+            <!-- <mat-expansion-panel
+              *ngFor="let list of lists; let i = index"
+              class="custom-panel"
+              (opened)="getContacts(list, true)"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <div class="d-flex gap-4">
+                    <sr-checkbox
+                      [label]="list?.name"
+                      [state]="list.selectionState==2 ? 'checked' :
+                      list.selectionState==1 ? 'mid'
+                      : ''"
+                      (changed)="
+                        selectedList($event, list, false); selectOneList($event,list)
+                      "
+                    ></sr-checkbox>
+                    <span class="txt-sm total">{{ list.totalContacts }}</span>
+                  </div>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="d-flex gap-4 align-items-center flex-wrap p-3">
+                <ng-container *ngFor="let contact of contacts">
+                  <sr-checkbox
+                    class="txt-sm"
+                    [label]="contact?.name"
+                    [state]="contact.isChecked"
+                    (changed)="selectedContact($event, contact,list)"
+                    [(ngModel)]="contact.isChecked"
+                  ></sr-checkbox>
+                </ng-container>
+
+              </div>
+            </mat-expansion-panel> -->
+          </mat-accordion>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- added contacts and mobile input -->
+  <div class="col-6 d-flex gap-4 flex-column">
+    <div class="contacts py-4">
+      <div
+        class="contacts-heading px-4 d-flex justify-content-between align-items-center"
+      >
+        <span class="txt-md">Contacts</span>
+        <span class="d-flex align-items-center gap-2 pointer">
+          <img src="assets/icons/clear.svg" alt="" />
+          <span class="txt-md text-primary-800" (click)="clearContacts()"
+            >Clear</span
+          >
+        </span>
+      </div>
+      <div class="contacts-body px-4">
+        <div class="d-flex flex-wrap mt-4 gap-3">
+          <ng-container *ngIf="addedContacts.length != 0">
+            <ng-container *ngFor="let contact of addedContacts">
+              <sr-tag
+                maxWidth="120px"
+                [title]="contact?.name"
+                (onClose)="onDeslectContact(contact)"
+              >
+              </sr-tag>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="addHocs.length != 0">
+            <ng-container *ngFor="let addHoc of addHocs">
+              <sr-tag
+                maxWidth="120px"
+                [title]="addHoc"
+                (onClose)="removeNum(addHoc)"
+              >
+              </sr-tag>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-num p-4">
+      <p class="txt-md">Addhoc Numbers</p>
+      <div class="d-flex align-items-center gap-3">
+        <div class="w-100">
+          <form [formGroup]="form">
+            <ngx-intl-tel-input
+              [cssClass]="
+                (mobile?.touched && mobile.invalid ? 'error' : '') +
+                ' rounded-pill border border-1py-2 txt-input w-100'
+              "
+              [enableAutoCountrySelect]="true"
+              [preferredCountries]="[CountryISO.UnitedArabEmirates]"
+              [enablePlaceholder]="true"
+              [searchCountryFlag]="true"
+              [searchCountryField]="[
+                SearchCountryField.Iso2,
+                SearchCountryField.Name
+              ]"
+              [selectFirstCountry]="false"
+              [selectedCountryISO]="CountryISO.Egypt"
+              [maxLength]="15"
+              [phoneValidation]="true"
+              [separateDialCode]="separateDialCode"
+              [numberFormat]="PhoneNumberFormat.National"
+              name="phone"
+              formControlName="mobile"
+            >
+            </ngx-intl-tel-input>
+          </form>
+          <ng-container
+            *ngIf="
+              mobile?.touched && mobile.invalid && !mobile?.errors?.required
+            "
+          >
+            <div class="hint error">
+              <i class="si-info"></i>
+              <p class="txt txt-xs">Incorrect phone number</p>
+            </div>
+          </ng-container>
+        </div>
+        <us-button
+          class="m-2"
+          label="Add"
+          [fill]="true"
+          [size]="'md'"
+          [loading]="false"
+          [disabled]="form.invalid"
+          [appearance]="'primary'"
+          (clicked)="addNumber()"
+        >
+        </us-button>
+      </div>
+    </div>
+  </div>
+</div>

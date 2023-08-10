@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { DevicesService } from '../devices.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
@@ -28,6 +28,7 @@ export class DevicesComponent implements OnInit{
 
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild("search") search!:ElementRef
 
   deletedContacts:string[]=[];
   columns :FormControl;
@@ -69,6 +70,7 @@ export class DevicesComponent implements OnInit{
                   event.active=='Create At' && event.direction=='desc'?'createdAtDEC':
                   '';
     this.devicesService.orderedBy=sorting;
+
     this.getDevices();
   }
 
