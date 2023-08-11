@@ -21,7 +21,7 @@ test:string= "6781dde0-7946-4d49-ad27-a95421f19ff8.jpg";
 isScheduleN:boolean=false;
 isScheduleM:boolean=false;
 
-recipients:string[]=[];
+recipients:any;
   constructor( public dialogRef: MatDialogRef<DisplayMessageComponent>
             ,@Inject(MAT_DIALOG_DATA) public data:Display) { }
 
@@ -29,11 +29,11 @@ recipients:string[]=[];
     this.isScheduleM=this.data?.isScheduleM?true:false;
     this.isScheduleN=this.data?.isScheduleN?true:false;
     if(this.isScheduleN){
-      this.recipients=this.data.recipients.map((e)=>e.number);
+      this.recipients=this.data.recipients;
     }
     if(this.data.message){
 
-      this.lastTwoNums=this.data.message.targetPhoneNumber.substring(this.data.message.targetPhoneNumber.length-2);
+      this.lastTwoNums=this.data.message.chat.chatName.substring(this.data.message.targetPhoneNumber.length-2);
       this.message=this.data.message;
     }
     if(this.data.schedule){

@@ -7,7 +7,8 @@ export interface ListData {
   isDeleted: boolean,
   applicationUserId: string,
   isChecked:boolean,
-  selectionState:number
+  selectionState:number,
+  contactsNum:number
 
 }
 export interface ErrSucc{

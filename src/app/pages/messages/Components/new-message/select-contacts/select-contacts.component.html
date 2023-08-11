@@ -4,7 +4,7 @@
     <div class="d-flex position-relative w-100 m-0">
       <div class="w-100">
         <form [formGroup]="searchForm">
-          <us-select
+          <us-select (click)="shouldCloseAccordion=false"
             (onSearch)="onSearch($event)"
             (onSelect)="onSelect($event)"
             (onDeSelect)="onDeSelect($event)"
@@ -68,18 +68,20 @@
             <mat-expansion-panel
             *ngFor="let list of lists; let i = index"
             class="custom-panel"
-            (opened)="getContacts(list,true)"
+            [expanded]="shouldCloseAccordion"
+
           >
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header (click)="getContacts(list)">
               <mat-panel-title>
                 <div class="d-flex gap-4">
                   <sr-checkbox
+
                     [label]="list?.name"
                     [state]="list.selectionState==2 ? 'checked' :
                     list.selectionState==1 ? 'mid'
                     : ''"
                     (changed)="
-                    onSelectList($event, list)
+                    onSelectList($event, list);checked=true;
                     "
                   ></sr-checkbox>
                   <span class="txt-sm total">{{ list.totalContacts }}</span>
@@ -160,7 +162,7 @@
               <sr-tag
                 maxWidth="120px"
                 [title]="contact?.name"
-                (onClose)="onDeslectContact(contact)"
+                (onClose)="removeContact(contact)"
               >
               </sr-tag>
             </ng-container>

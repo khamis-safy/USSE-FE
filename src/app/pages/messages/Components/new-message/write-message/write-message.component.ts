@@ -82,8 +82,8 @@ export class WriteMessageComponent implements OnInit {
 
   }
   onFileChange(e){
-    console.log(this.fileData);
-    let files=this.fileData.map((file)=>file.url);
-    this.attachments.emit(files)
+    // console.log(this.fileData);
+    // let files=this.fileData.map((file)=>file.url);
+    // this.attachments.emit(files)
   }
 }

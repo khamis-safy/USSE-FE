@@ -77,14 +77,23 @@
             Messages
           </th>
 
-          <td class="text-center" mat-cell *matCellDef="let element">
-              {{ element.msgBody }}
-            <div *ngIf="element?.fileName" class="text-start ms-4  pt-2 pb-3">
-              <img [src]="(element.fileName | type) " alt="">
+          <td  mat-cell *matCellDef="let element"  style="max-width:135px ; " >
+          <div class="py-2">
+            <div class="d-flex justify-content-center align-items-center flex-column ">
+
+              <p  style="max-width:100% ; " class=" overflow-line-4"> {{ element.msgBody }}</p>
             </div>
-            <!-- <div *ngIf="element?.fileName=='document'" class="text-start ms-4  pt-2 pb-3">
-              <img src="assets/images/document.svg" alt="">
-            </div> -->
+            <ng-container *ngIf="element?.fileName">
+
+              <ng-container [ngSwitch]="(element.fileName | type)">
+                <img *ngSwitchCase="'image'"  class="ms-1" src="assets/images/image.svg" alt="">
+                <img *ngSwitchCase="'document'"  class="ms-1" src="assets/images/document.svg" alt="">
+
+              </ng-container>
+            </ng-container>
+
+          </div>
+
           </td>
         </ng-container>
 

@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { resetFakeAsyncZone } from '@angular/core/testing';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
@@ -9,7 +10,6 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 interface ListContacts {
   list: ListData,
   contacts: Contacts[],
-  contactsNum:number
 };
 @Component({
   selector: 'app-select-contacts',
@@ -18,21 +18,25 @@ interface ListContacts {
 })
 export class SelectContactsComponent implements OnInit {
 // lists variables
+
+@Output() hocsNum = new EventEmitter<string[]>;
 @ViewChild(MatAccordion) accordion!: MatAccordion;
   lists: ListData[] = [];
   selectedLists:number=0;
   isAllListsSelected:boolean=false;
-
+  checked:boolean=false;
   contacts: Contacts[] = [];
   listContacts: ListContacts[] = [];
   addedContacts: Contacts[] = [];
   allContactsData:Contacts[] = [];
-
+  shouldCloseAccordion: boolean;
+  selectedList:ListContacts;
+  contactsNum:number=0;
   duplicatedContacts:ListContacts[]=[];
   selectAllStatus:number=0;
 
   selectedContacts:number=0;
-
+  allNumbers:string[]=[];
   allContacts:SelectOption[];
   contactsData = new FormControl([]);
 
@@ -85,52 +89,104 @@ export class SelectContactsComponent implements OnInit {
   }
 
   // get list contacts
-  getContacts( list:ListData,opened:boolean) {
+  // getContacts( list:ListData,opened:boolean) {
+
+  //   this.contacts = [];
+  //   console.log("from get contacts")
+
+  //   let findlistContacts = this.listContacts.find((e) => e.list.id == list.id);
+
+  //   if (findlistContacts) {
+  //     this.contacts = findlistContacts.contacts;
+  //       // change contacts status if list checked or if all contacts checked
+  //       if(list.isChecked && opened){
+  //         console.log("is checked ")
+  //         this.contacts.map((con)=>{
+  //           this.addContact(con)
+  //           con.isChecked="checked";});
+
+  //       }
+  //       else if(!list.isChecked && findlistContacts.contactsNum==0){
+  //         this.contacts.map((con)=>{ this.removeContact(con,list);con.isChecked=""})
+
+  //       }
+  //     }
+  //   else {
+  //     this.listService.getContacts(this.listService.email, false, 50, 0, "", "", list.id).subscribe(
+  //       (res) => {
+  //         this.contacts = res;
+  //         this.listContacts.push({ list: list, contacts: this.contacts,contactsNum:0 });
+  //         let findList=this.listContacts.find((listContact)=>listContact.list.id==list.id);
+
+  //           if(list.isChecked && opened){
+  //             // console.log("is checked",list.isChecked)
+  //             this.contacts.map((con)=>{
+  //               this.addContact(con)
+  //               con.isChecked="checked"});
+  //               console.log("added contacts",this.addedContacts)
+  //             // findList.contacts.map((e)=>this.addContact(e))
+  //             ////////
+  //           }
+
+  //           else {
+
+  //             this.contacts.map((con)=>con.isChecked="")
+  //           }
+
+  //             ////////
+
+
+  //       },
+  //       (err) => { }
+  //     )
+  //   }
+
+
+  // }
+  getContacts( list:ListData) {
 
     this.contacts = [];
-    console.log("from get contacts")
-
-    let findlistContacts = this.listContacts.find((e) => e.list.id == list.id);
-
-    if (findlistContacts) {
-      this.contacts = findlistContacts.contacts;
-        // change contacts status if list checked or if all contacts checked
-        if(list.isChecked && opened){
-          console.log("is checked ")
-          this.contacts.map((con)=>{
-            this.addContact(con)
-            con.isChecked="checked";});
-
-        }
-        else if(!list.isChecked && findlistContacts.contactsNum==0){
-          this.contacts.map((con)=>{ this.removeContact(con,list);con.isChecked=""})
-
-        }
-      }
-    else {
+    list.contactsNum=0;
       this.listService.getContacts(this.listService.email, false, 50, 0, "", "", list.id).subscribe(
         (res) => {
-          this.contacts = res;
-          this.listContacts.push({ list: list, contacts: this.contacts,contactsNum:0 });
-          let findList=this.listContacts.find((listContact)=>listContact.list.id==list.id);
-
-            if(list.isChecked && opened){
-              // console.log("is checked",list.isChecked)
+          this.contacts=res;
+          this.selectedList={list:list,contacts:this.contacts}
+          list.contactsNum=this.contacts.length;
+          if(this.checked ){
+            if(list.isChecked){
               this.contacts.map((con)=>{
-                this.addContact(con)
-                con.isChecked="checked"});
-                console.log("added contacts",this.addedContacts)
-              // findList.contacts.map((e)=>this.addContact(e))
-              ////////
+                con.isChecked="checked";
+                this.addedContacts.push(con)});
+              list.contactsNum=this.contacts.length;
+
             }
-
-            else {
-
-              this.contacts.map((con)=>con.isChecked="")
+            else{
+              this.contacts.map((con)=>{
+                con.isChecked="";
+                this.addedContacts.splice(this.addedContacts.indexOf(con),1)
+              })
+              list.contactsNum=0;
+              list.selectionState=0
             }
+            this.filterContacts(this.addedContacts);
 
-              ////////
+          }
 
+          else{
+            this.contacts.map((con)=>{
+              if(this.addedContacts.find((contact)=>contact.id==con.id)){
+                con.isChecked="checked";
+                list.contactsNum++;
+                list.selectionState=2;
+              }
+              else{
+                con.isChecked="";
+                list.contactsNum--;
+                list.selectionState=list.contactsNum==0?0:2
+              }
+            })
+
+          }
 
         },
         (err) => { }
@@ -138,7 +194,7 @@ export class SelectContactsComponent implements OnInit {
     }
 
 
-  }
+
 
 // get contacts data to be displayed in search input
 getAllContacts(search?:string){
@@ -146,24 +202,65 @@ getAllContacts(search?:string){
   this.listService.getContacts(this.listService.email,false,50,0,"",searchVal,"").subscribe(
     (res)=>{
       this.allContactsData=res;
-      this.allContacts=this.allContactsData.map(res=>{
-        return {
-          title:res.name,
-          value:res.id
-        }
-      })
+      if(search){
+
+        this.allContacts=this.allContactsData.map(res=>{
+          return {
+            title:res.name,
+            value:res.id
+          }
+        })
+      }
+      else{
+        this.allContacts=[];
+      }
 },
       (err)=>{
 
       })
 }
+filterContacts(contacts:Contacts[]){
+  this.addedContacts=Array.from(new Set(contacts.map(obj => JSON.stringify(obj)))).map(str => JSON.parse(str));
 
+}
+rescetSelected(){
+
+  let contacts =this.addedContacts.map(res=>{
+    return {
+      title:res.name,
+      value:res.id
+    }
+  })
+  this.searchForm.patchValue({
+    contactsData:contacts
+  })
+  console.log("search result",this.searchForm.value.contactsData)
+}
+selectAllContacts(){
+
+  this.addedContacts=[];
+  this.lists.map((list)=>{
+    this.listService.getContacts(this.listService.email, false, 50, 0, "", "", list.id).subscribe(
+      (res)=>{
+
+          res.map((con)=>this.addedContacts.push(con));
+          this.filterContacts(this.addedContacts)
+      }
+
+    )
+  })
+  this.rescetSelected()
+
+}
 // on select list
 onSelectList(state,list:ListData){
 
   if(state=="checked"){
     // change list status to checked
     list.isChecked=true;
+
+    this.getContacts(list)
+
     list.selectionState=2;
     // incerease lists selection number
     this.selectedLists++
@@ -190,11 +287,19 @@ onSelectList(state,list:ListData){
 else{
   this.onDeslectList(list);
 }
+this.rescetSelected()
 
 }
 
 // on deselect list
 onDeslectList(list:ListData){
+  // change list status
+  list.isChecked=false;
+  this.getContacts(list)
+
+  this.selectedList.contacts.map((con)=>con.isChecked="");
+  this.contacts=this.selectedList.contacts;
+  this.contacts.map((con)=>this.addedContacts.splice(this.addedContacts.indexOf(con),1))
 
   // decerease lists selection number
   this.selectedLists--;
@@ -211,12 +316,6 @@ onDeslectList(list:ListData){
 
     }
 
-    // change list status
-    list.isChecked=false;
-
-
-    // change contacts status
-    this.getContacts(list,false)
 
 
 
@@ -225,17 +324,9 @@ onDeslectList(list:ListData){
 // on select all lists
 selectAllLists(state){
   if(state=="checked"){
-    if(this.listContacts.length!=0){
-      this.listContacts.map((listCont)=>listCont.contacts.map((c)=>c.isChecked="checked"));
-
-    }
-
-
-    this.addedContacts=[];
-    this.lists.map((list)=>this.onSelectList("checked",list))
-
-
-
+   this.selectedList.contacts.map((con)=>con.isChecked="checked");
+   this.contacts=this.selectedList.contacts;
+    this.selectAllContacts();
 
 
     this.selectedLists=this.lists.length;
@@ -253,14 +344,16 @@ selectAllLists(state){
   else{
     this.onDeselectAllLists()
   }
+  this.rescetSelected()
 
 }
 
 // on deselect all lists
 onDeselectAllLists(){
-  if(this.listContacts.length!=0){
-    this.listContacts.map((e)=>e.contacts.map((c)=>c.isChecked=""))
-  }
+if(this.selectedList){
+  this.selectedList.contacts.map((con)=>con.isChecked="");
+  this.contacts=this.selectedList.contacts;
+}
   this.selectedContacts=0;
   this.selectedLists=0;
   this.isAllListsSelected=false;
@@ -270,153 +363,122 @@ onDeselectAllLists(){
     list.isChecked=false;
 
   });
+  this.addedContacts=[];
 
 }
 
 // on select contact
 onSelectContact(state,contact:Contacts,list:ListData){
-  let finList=this.listContacts.find((listContact)=>listContact.list.id==list.id);
-  let contactsNum=finList.contactsNum;
+
 
       if(state=="checked"){
+        list.contactsNum++;
         this.selectedContacts++;
           // change contact state to be checked
           contact.isChecked="checked"
           // incerease selected contact number
+          this.addedContacts.push(contact);
+          this.filterContacts(this.addedContacts);
 
-          let length=this.contacts.length;
-          contactsNum++;
+          if(list.contactsNum==this.selectedList.contacts.length){
 
-          this.listContacts.map((listCont)=>{
-            if(listCont.list.id==list.id){
-              listCont.contactsNum=contactsNum
+            this.selectedLists++;
+              list.selectionState=2;
+              list.isChecked=true;
+            if(this.selectedLists==this.lists.length){
+              // change state of select all checkbox
+              this.selectAllStatus=2;
+              this.isAllListsSelected=true;
+
+
             }
-          })
-          this.addContact(contact)
+
+            else{
+              this.selectAllStatus=1
+            }
 
 
-          if(contactsNum==length){
-            list.isChecked=true;
-            // change list check status to be checked
-            this.onSelectList("checked",list)
 
-
+            console.log("seclecion state",)
           }
-          else if(contactsNum<length && contactsNum!=length){
-            list.selectionState=1;
-          }
+
+
 
   }
   else{
-    this.onDeslectContact(contact,list,contactsNum)
+    this.onDeslectContact(contact,list)
   }
+  this.rescetSelected()
 
 }
 // on deselect contact
-onDeslectContact(contact:Contacts,list:ListData,contactsNum:number,fromRemov?){
+onDeslectContact(contact:Contacts,list:ListData,fromRemov?){
   contact.isChecked="";
-
-  contactsNum--;
-  this.selectedContacts--;
-
-    this.listContacts.map((listCont)=>{
-      if(listCont.list.id==list.id){
-        listCont.contactsNum=contactsNum
-      }
-    })
-  let length=this.contacts.length;
-
-
-  if(contactsNum!=0 &&  contactsNum<length){
-    list.selectionState=1;
-
-
-  }
-  else if(contactsNum==0 && list.isChecked){
-    this.onDeslectList(list);
-    console.log("from deselect")
-
-
-  }
-  else{
-    list.selectionState=0
-  }
-  if(!fromRemov){
-
-    this.removeContact(contact,list)
+ this.selectedContacts--;
+  this.addedContacts.splice(this.addedContacts.indexOf(contact),1);
+  list.contactsNum--;
+  if(this.contactsNum==0){
+    this.selectedLists--;
+    if(this.selectedLists<=0){
+      this.selectAllStatus=0;
+      this.selectedLists=0;
+    }
+    else{
+      this.selectAllStatus=1;
+    }
   }
 
+  list.selectionState=0;
+  list.isChecked=false;
 
 
 }
-
-
-// on select contact from search input
-searchedContacts(){
-
-}
-
-
-
 
 
 // on clear all data
 clearContacts(){
+    this.addedContacts=[];
+    this.addHocs=[];
+    this.selectAllStatus=0;
+    this.selectedLists=0;
+    this.selectedContacts=0;
+    if(this.selectedList){
+      this.selectedList?.contacts?.map((con)=>con.isChecked="");
+
+      this.selectedList.list.contactsNum=0;
+      this.selectedList.list.selectionState=0;
+    }
+
+    this.lists.map((e)=>{e.selectionState=0;e.contactsNum=0})
+    this.contacts?.map((e)=>e.isChecked="");
+    this.rescetSelected();
+    this.hocsNum.emit(this.addHocs)
+
 
 }
 
-// on remove contact not duplicated
-removeContact(contact:Contacts,list:ListData){
-
-  let duplicatedContacts=this.listContacts.filter((liCn)=>liCn.contacts.find((con)=>con.id==contact.id));
-  console.log("duplicated",duplicatedContacts);
-
-  duplicatedContacts.map((listCont)=>listCont.contacts.map((c)=>{
-
-    if(listCont.list.id!=list.id){
-      c.isChecked="";
-       this.onDeslectContact(c,listCont.list,listCont.contactsNum,true)
-
-    }
-    else{
-      if(c.id==contact.id){
-
-        c.isChecked="";
-       }
-    }
-  }))
-
+removeContact(contact:Contacts){
   this.addedContacts.splice(this.addedContacts.indexOf(contact),1);
+  let found =this.selectedList.contacts.find((con)=>con.id==contact.id);
+  found.isChecked="";
+  this.selectedList.list.contactsNum--;
+  this.selectedList.list.selectionState=0;
+  this.selectedLists--;
+  // change state of list check to be unchecked
 
 
-}
+  // change state of select all checkbox
 
-// on remove contact duplicated
-// isDuplicated(contact:Contacts,list:ListData):boolean{
 
-//   return duplicatedContacts?true:false
-// }
-// get duplicated contacts ==> contacts added from more than list or added from list and search input
-getDuplicatedContacts(){
+    if(this.selectedLists==0 ){
+      this.selectAllStatus=0;
+      this.isAllListsSelected=false;
 
-}
-
-addContact(contact:Contacts){
-  if(this.addedContacts.length==0){
-        setTimeout(()=>this.addedContacts.push(contact),300)
-      }
-      else{
-        // console.log("checkt if contact",contact.name,"is found or not")
-
-        let found=this.addedContacts.find((e)=>e.id==contact.id);
-
-        if(!found){
-          setTimeout(()=>this.addedContacts.push(contact),300)
-
-        }
-  }
+    }
+  this.rescetSelected();
 
 }
+
 
 
 onSearch(event:string){
@@ -424,17 +486,20 @@ onSearch(event:string){
   this.getAllContacts(event)
 }
 onSelect(event:any){
-  let addContact=this.allContactsData.find((e)=>e.id==event.value)
-  console.log(addContact)
+  let addContact=this.allContactsData.find((e)=>e.id==event.value);
+  this.addedContacts.push(addContact);
+  this.filterContacts(this.addedContacts);
+
 }
 onDeSelect(event:any){
-  console.log(event)
-}
+  let addContact=this.allContactsData.find((e)=>e.id==event.value);
+  this.addedContacts.splice(this.addedContacts.indexOf(addContact),1);
+  this.filterContacts(this.addedContacts);}
 onSelectAll(event:any){
-  console.log(event)
+  this.addedContacts=this.allContactsData;
 }
 onDeSelectAll(event:any){
-  console.log(event)
+  this.addedContacts=[]
 }
 
 addNumber(){
@@ -442,212 +507,14 @@ addNumber(){
   this.form.patchValue({
     mobile:''
   })
+  this.hocsNum.emit(this.addHocs)
 }
 
 removeNum(num:string){
-  this.addHocs.splice(this.addHocs.indexOf(num),1)
+  this.addHocs.splice(this.addHocs.indexOf(num),1);
+  this.hocsNum.emit(this.addHocs)
+
 }
 
-//   selectedContact(e, contact: Contacts,list:ListData) {
-//     if (e == 'checked') {
-//       let length=this.contacts.length;
-//       this.contactsNum++;
-//       if(this.contactsNum==length){
-//         list.selectionState=2;
 
-//  this.selectNum++;
-//       if(this.selectNum==this.lists.length){
-//         this.selectStatus=2
-//       }
-//       else{
-//         this.selectStatus=1;
-
-//       }
-//       }
-//       else {
-
-//         list.selectionState=1;
-//       }
-
-
-//       contact.isChecked="checked";
-//       if(this.addedContacts.length==0){
-//         setTimeout(()=>this.addedContacts.push(contact),300)
-//       }
-//       else{
-//         // console.log("checkt if contact",contact.name,"is found or not")
-
-//         let found=this.addedContacts.find((e)=>e.id==contact.id);
-
-//         if(!found){
-//           setTimeout(()=>this.addedContacts.push(contact),300)
-
-//         }
-//         else{
-//           console.log("found")
-//         }
-
-
-
-//       }
-
-//     }
-
-//     else {
-//       this.contactsNum--;
-//       if(this.contactsNum==0){
-//         list.selectionState=0;
-
-//       }
-//       else {
-//         list.selectionState=1;
-//       }
-
-//       contact.isChecked=""
-//       this.addedContacts.splice(this.addedContacts.indexOf(contact), 1)
-//     }
-//   }
-//   sellectAll(e){
-//     if (e == 'checked') {
-//       if(this.selectNum>0){
-//         this.addedContacts=[];
-//       }
-//       this.lists.map((list)=>{
-//         this.selectedList("checked",list,true)});
-//     }
-//     else{
-//       this.selectStatus=0
-//       this.selectNum=0;
-//       this.addedContacts.map((con)=>con.isChecked="")
-//       this.addedContacts=[];
-//       this.lists.map((e)=>e.selectionState=0)
-//       this.contacts.map((e)=>e.isChecked="")
-//     }
-//   }
-//   selectedList(e,list:ListData,selectAll:boolean){
-
-//     if (e == 'checked') {
-//       list.isChecked='checked'
-//       list.selectionState=2;
-//       if(selectAll || this.selectNum==this.lists.length){
-//         this.isAllSelected=true;
-//         this.selectStatus=2;
-//         this.lists.map((list)=>list.selectionState=2)
-
-
-//       }
-//       else{
-//         this.isAllSelected=false;
-//         this.selectStatus=1
-
-//       }
-
-//       this.getContacts(list,false);
-
-//     }
-//     else{
-//       list.isChecked=''
-
-//      this.deslectContacts(list)
-//     }
-
-
-//   }
-//   selectOneList(e,list:ListData){
-//     if (e == 'checked') {
-//       this.selectNum++;
-//       if(this.selectNum==this.lists.length){
-//         this.selectStatus=2;
-//         list.selectionState=2;
-//       }
-//       else{
-//         this.selectStatus=1;
-//         list.selectionState=0;
-
-
-//       }
-//     }
-//     else{
-//       this.selectNum--;
-//       if(this.selectNum==0){
-//         this.selectStatus=0
-
-
-//       }
-//       else{
-//         this.selectStatus=1;
-
-//       }
-//     }
-//   }
-
-//   clearContacts(){
-//     this.addedContacts=[];
-//     this.addHocs=[];
-//     this.selectNum=0;
-//     this.isAllSelected=false;
-//     this.selectStatus=0;
-//     this.lists.map((e)=>e.isChecked="")
-//     this.contacts.map((e)=>e.isChecked="")
-
-//   }
-// deslectContacts(list:ListData){
-//   this.contacts.map((e)=>e.isChecked="")
-//   let foundList =this.listContacts.find((li)=>li.listId==list.id);
-//   foundList.contacts.map((con)=>this.addedContacts.splice(this.addedContacts.indexOf(con),1))
-
-// }
-
-
-//   onBadgeDeselect( contact: Contacts) {
-
-//     this.addedContacts.splice(this.addedContacts.indexOf(contact),1);
-//     this.contacts[this.contacts.indexOf(contact)].isChecked="";
-
-//   }
-
-  // getContacts( list:ListData,displayContacts:boolean) {
-  //   this.contacts = [];
-
-  //   let findlistContacts = this.listContacts.find((e) => e.listId == list.id);
-
-  //   if (findlistContacts) {
-
-
-  //     this.contacts = findlistContacts.contacts;
-
-  //     if(list.selectionState==2 && !displayContacts){
-
-
-  //       this.contacts.map((con)=> this.selectedContact("checked",con,list));
-  //     }
-
-
-  //   }
-  //   else {
-
-  //     this.listService.getContacts(this.listService.email, false, 50, 0, "", "", list.id).subscribe(
-  //       (res) => {
-  //         this.contacts = res;
-  //         // this.contacts.map((e)=>e.isChecked="")
-
-  //         if((list.isChecked=="checked" && displayContacts) || this.isAllSelected ){
-  //           this.contacts.map((e)=>e.isChecked="checked")
-  //           this.contacts.map((con)=>setTimeout(()=>{ this.selectedContact("checked",con,list)},2000));
-  //           console.log("select all");
-  //           this.dnum=this.addedContacts.length;
-
-
-  //         }
-
-
-  //         this.listContacts.push({ listId: list.id, contacts: this.contacts });
-
-  //       },
-  //       (err) => { }
-  //     )
-  //   }
-
-
-  // }
 }

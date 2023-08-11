@@ -17,7 +17,8 @@ export interface Message {
     msgType:string,
     fileName: string | null,
     fileUrl: string | null,
-    campaignId: string | null
+    campaignId: string | null,
+    chat:ChatData
 }
 export interface Shceduled{
   id:string,
@@ -27,13 +28,27 @@ export interface Shceduled{
   msgBody: string,
   scheduledAt: string,
   createdAt: string,
-  device: DeviceData
+  device: DeviceData,
+  chat:ChatData
+
 }
 export interface SendData{
   deviceid: string,
-  targetPhoneNumber: string[],
+  targetPhoneNumber:   {
+    number: string,
+    name: string
+  }[],
   attachments:string[],
   msgBody: string,
   scheduledAt:string,
   email: string
+}
+export interface ChatData{
+
+    id: string,
+    chatName: string,
+    targetPhoneNumber: string,
+    createdAt: string,
+    isDeleted: boolean
+
 }

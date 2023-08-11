@@ -1,8 +1,10 @@
 <section class="p-3">
   <div class="d-flex justify-content-between mb-4 align-items-center">
-    <div class="d-flex justify-content-center ">
-      <img src="assets/icons/Vector (1).svg" alt="" class="px-2">
 
+    <div class="d-flex justify-content-center ">
+      <mat-icon *ngIf="!isMessages" class="me-2 pointer" (click)="isMessages=true">keyboard_backspace</mat-icon>
+
+      <img *ngIf="isMessages"  src="assets/icons/Vector (1).svg" alt="" class="px-2">
    <span class="txt-lg main-heading"> Message</span>
     </div>
 
@@ -86,7 +88,7 @@
   </ng-container>
 
   <ng-container *ngIf="!isMessages">
-    <app-new-message></app-new-message>
+    <app-new-message (back)="isMessages=$event"></app-new-message>
   </ng-container>
 </section>
 

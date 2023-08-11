@@ -30,10 +30,10 @@ export class TypePipe implements PipeTransform {
       "3gp",
       "mpeg"
     ];
-    return imageTypes.filter((type:any)=>type==value.split(".")[1].toLowerCase()).length ? "assets/images/image.svg":
+    return imageTypes.filter((type:any)=>type==value.split(".")[1].toLowerCase()).length ? 'image':
 
-    videoTypes.filter((type:any)=>type==value.split(".")[1].toLowerCase()).length ? "assets/images/document.svg":
-    "assets/images/document.svg"
+    videoTypes.filter((type:any)=>type==value.split(".")[1].toLowerCase()).length ? 'video':
+    "document"
     ;
   }
 
