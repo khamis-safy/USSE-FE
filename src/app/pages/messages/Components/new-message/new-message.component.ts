@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
 import { Contacts } from 'src/app/pages/manage-contacts/contacts';
@@ -23,7 +23,9 @@ export class NewMessageComponent implements OnInit,AfterViewInit {
   @ViewChild(SelectContactsComponent) selectContacts:SelectContactsComponent;
   @ViewChild(WriteMessageComponent) writeMessage:WriteMessageComponent;
   @ViewChild(SendMessageComponent) sendMessage:SendMessageComponent;
+  @Output() back = new EventEmitter<boolean>;
 
+hocsNum:string[]=[]
 contacts:Contacts[]=[];
   addedContacts: string[] = [];
   deviceId:string;
@@ -34,13 +36,16 @@ contacts:Contacts[]=[];
 
   constructor(private messageService:MessagesService,private toasterService:ToasterServices) { }
   ngAfterViewInit() {
-    this.contacts=this.selectContacts.addedContacts
+    this.contacts=this.selectContacts.addedContacts;
+
     this.message=this.writeMessage.messageBody;
 
+
   }
-
+  hocs(e){
+    this.hocsNum=e
+  }
   ngOnInit() {
-
   }
   // messageData(e){
   //   console.log("message",this.message)
@@ -54,31 +59,35 @@ contacts:Contacts[]=[];
     this.writeMessage.getTemplates();
   }
   toSendMessage(){
-    this.message=this.writeMessage.form.value.message
+    this.message=this.writeMessage.form.value.message;
+
+    this.attachments=this.writeMessage.fileData.map((file)=>file.url);
 
   }
   toLastStep(){
     this.deviceId=this.sendMessage.deviceId;
     this.dateTime=this.sendMessage.dateTime.nativeElement.value.replace(" ","T");
-    console.log("date time",this.dateTime)
-    // console.log({
-    //   deviceId:this.deviceId,
-    //   addedContacts:this.addedContacts,
-    //   dateTime:this.dateTime,
-    //   attachements:this.attachments,
-    //   message:this.message
+    console.log("date time",this.dateTime);
+    console.log({
+      deviceId:this.deviceId,
+      addedContacts:this.addedContacts,
+      dateTime:this.dateTime,
+      attachements:this.attachments,
+      message:this.message
 
-    // })
-    // console.log("file data " , this.deviceId, this.dateTime)
+    })
 
-    this.messageService.sendWhatsappBusinessMessage(this.deviceId,this.addedContacts,this.attachments,this.message,this.dateTime,this.messageService.email).subscribe(
+    this.messageService.sendWhatsappBusinessMessage(this.deviceId,this.addedContacts,this.message,this.dateTime,this.messageService.email,this.attachments).subscribe(
       (res)=>{
-        this.toasterService.success("Success")
+        this.toasterService.success("Success");
+        this.back.emit(true)
 
       },
       (err)=>{
 
-        this.toasterService.error("Error")
+        this.toasterService.error("Error");
+        this.back.emit(false)
+
       }
     )
 

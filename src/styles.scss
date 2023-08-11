@@ -287,6 +287,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .anime-duration-200 {
   animation-duration: 200ms;
 }
@@ -1156,3 +1157,7 @@ ngx-intl-tel-input .error {
     justify-content: center;
     align-items: center;
   }
+.message{
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

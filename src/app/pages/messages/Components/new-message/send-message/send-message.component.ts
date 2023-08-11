@@ -27,7 +27,8 @@ export class SendMessageComponent implements OnInit {
 
     this.devicesService.getDevices("khamis.safy@gmail.com",10,0,"","").subscribe(
       (res)=>{
-        this.devices = res.map(res=>{
+        let activeDevices=res.filter((r)=>r.isConnected)
+        this.devices = activeDevices.map(res=>{
           return {
             title:res.deviceName,
             value:res.id

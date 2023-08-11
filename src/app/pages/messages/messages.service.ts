@@ -34,17 +34,22 @@ deleteMessage(ids:string[]):Observable<any>{
 
 }
 
-sendWhatsappBusinessMessage( deviceid: string,targetPhoneNumber: string[],attachments:string[],msgBody: string,scheduledAt:string,email: string):Observable<any>{
+sendWhatsappBusinessMessage( deviceid: string,targetPhoneNumber: string[],msgBody: string,scheduledAt:string,email: string,attachments?:string[]):Observable<any>{
 
-  const data={
+  const data=attachments?{
     deviceid: deviceid,
     targetPhoneNumber: targetPhoneNumber,
     attachments:attachments,
     msgBody: msgBody,
     scheduledAt:scheduledAt,
     email: email
+  }:{
+    deviceid: deviceid,
+    targetPhoneNumber: targetPhoneNumber,
+    msgBody: msgBody,
+    scheduledAt:scheduledAt,
+    email: email
   }
-  console.log(data)
   return this.http.post<any>(`${env.api}Message/sendWhatsappBusinessMessage`,data)
 
 }
