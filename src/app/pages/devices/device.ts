@@ -6,6 +6,7 @@ export interface DeviceData {
     createdAt: string,
     isConnected: boolean,
     instanceId:string,
+    delayIntervalInSeconds:number,
     isDeleted: boolean,
     applicationUserId: string,
     host: string,

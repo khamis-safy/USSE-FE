@@ -53,4 +53,8 @@ addNewWhatsappBisunessDevice( email: string,deviceName: string,phoneNumber: stri
   }
   return this.http.post<any>(`${env.api}Device/addNewWhatsappBisunessDevice`,data)
 }
+
+updateDeviceDelay(email:string,id:string ,delayIntervalInSeconds:number):Observable<DeviceData>{
+  return this.http.put<DeviceData>(`${env.api}Device/updateDeviceDelay?email=${email}&id=${id}&delay=${delayIntervalInSeconds}`,"")
+}
 }

@@ -1,7 +1,7 @@
 export interface Templates {
     id:string,
     templateName: string,
-    messageBody: string[],
+    messageBody: string,
     createdAt: string,
     attachments:string[]
 

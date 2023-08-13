@@ -22,7 +22,7 @@ export class DevicesComponent implements OnInit{
   active:boolean=false;
   numRows;
   loading;
-
+  delay:number=5;
   @Input() isCanceled:boolean;
 
 
@@ -32,8 +32,8 @@ export class DevicesComponent implements OnInit{
 
   deletedContacts:string[]=[];
   columns :FormControl;
-  displayed: string[] = ['Device Name', 'Device Type', 'Number',"Create At", "Status"];
-  displayedColumns: string[] = ['Device Name', 'Device Type', 'Number',"Create At", "Status","action"];
+  displayed: string[] = ['Device Name', 'Device Type', 'Number',"Create At", "Status","Delay Interval(s)"];
+  displayedColumns: string[] = ['Device Name', 'Device Type', 'Number',"Create At", "Status","Delay Interval(s)","action"];
   dataSource:MatTableDataSource<DeviceData>;
   constructor(public dialog: MatDialog,private  toaster: ToasterServices,private devicesService:DevicesService){
   }
@@ -135,7 +135,19 @@ export class DevicesComponent implements OnInit{
       }
     )
   }
+  updateDeviceDelay(id: string) {
 
+    this.devicesService.updateDeviceDelay(this.devicesService.email, id, this.delay).subscribe(
+      (res) => {
+
+          res.delayIntervalInSeconds = this.delay;
+          console.log(res);
+        }
+
+
+
+    )
+  }
   openDeleteModal(id:string){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.disableClose = true;

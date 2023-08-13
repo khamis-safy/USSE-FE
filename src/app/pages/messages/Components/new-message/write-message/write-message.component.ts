@@ -63,17 +63,17 @@ export class WriteMessageComponent implements OnInit {
     this.form.patchValue({
       message:template.messageBody
     });
-    let attachment=template.attachments.map((e)=>{
-      return {
-          size:0,
-          name:e.fileName,
-          url:e.fileUrl,
-          type:""
-      }
-    });
+    // let attachment=template.attachments.map((e)=>{
+    //   return {
+    //       size:0,
+    //       name:e.fileName,
+    //       url:e.fileUrl,
+    //       type:""
+    //   }
+    // });
 
 
-    this.fileData=attachment;
+    // this.fileData=attachment;
 
     this.messageBody=(this.form.value.message)
 
