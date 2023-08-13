@@ -68,15 +68,18 @@ export class InnerTemplatesComponent implements OnInit {
     let search = this.templatesService.search;
     this.loading = true;
     this.templatesService
-      .getTemplates('khamis.safy@gmail.com' , 10 , 0 , 'messageASC' , 's')
+      .getTemplates('khamis.safy@gmail.com' , 10 , 0 , '' , '')
       .subscribe(
         (res) => {
 
-          console.log(res);
+          this.numRows=res.length;
+
+          this.loading = false;
+          this.dataSource=new MatTableDataSource<Templates>(res)
         },
         (err) => {
-
-          console.log(err);
+          this.loading = false;
+          this.length=0;
         }
       );
   }
