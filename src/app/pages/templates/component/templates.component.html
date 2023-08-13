@@ -1,0 +1,48 @@
+<section class="p-3">
+  <div class="d-flex justify-content-between mb-4 align-items-center">
+    <div class="d-flex justify-content-center">
+      <img src="assets/icons/templates-icon.svg" alt="" class="px-2" />
+
+      <!-- <mat-icon class="tab-icon">recent_actors</mat-icon> -->
+      <span class="txt-lg main-heading"> Templates</span>
+    </div>
+
+    <div class="buttons_">
+      <us-button
+        class="m-2"
+        label="Add Template"
+        (click)="openDialog()"
+        img="assets/icons/new-message-icon.svg"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+      >
+      </us-button>
+    </div>
+  </div>
+
+  <mat-tab-group
+    mat-stretch-tabs="false"
+    mat-align-tabs="start"
+    color="transparent"
+  >
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <img src="assets/icons/templates-icon.svg" alt="" class="px-2" />
+        Templates
+        <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
+      </ng-template>
+      <app-innerTemplates></app-innerTemplates>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        OWA Templates
+        <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
+      </ng-template>
+      <app-owaTemplates></app-owaTemplates>
+    </mat-tab>
+  </mat-tab-group>
+</section>

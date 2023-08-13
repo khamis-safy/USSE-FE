@@ -4,7 +4,10 @@ import { CompaignsRoutes } from './compaigns.routing';
 import { CompaignsService } from './compaigns.service';
 
 import { CompaignsComponent } from './component/compaigns.component';
- import { SharedModule } from 'src/app/shared/shared.module';
+
+import { AddCompaignsComponent } from './components/addCompaigns/addCompaigns.component';
+
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -14,7 +17,10 @@ import { CompaignsComponent } from './component/compaigns.component';
     SharedModule
   ],
   declarations: [
-    CompaignsComponent
+    CompaignsComponent ,
+
+    AddCompaignsComponent ,
+
 
 
 
