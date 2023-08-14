@@ -136,7 +136,7 @@ export class DevicesComponent implements OnInit{
     )
   }
   updateDeviceDelay(id: string) {
-
+    // console.log(this.delay)
     this.devicesService.updateDeviceDelay(this.devicesService.email, id, this.delay).subscribe(
       (res) => {
 
