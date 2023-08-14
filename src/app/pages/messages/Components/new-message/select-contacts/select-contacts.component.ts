@@ -390,7 +390,6 @@ onSelectContact(state,contact:Contacts,list:ListData){
               this.selectAllStatus=2;
               this.isAllListsSelected=true;
 
-
             }
 
             else{
@@ -503,7 +502,7 @@ onDeSelectAll(event:any){
 }
 
 addNumber(){
-  this.addHocs.push(this.form.value.mobile.number);
+  this.addHocs.push(this.form.value.mobile.e164Number);
   this.form.patchValue({
     mobile:''
   })

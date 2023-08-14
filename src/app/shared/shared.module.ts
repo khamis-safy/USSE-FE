@@ -38,6 +38,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { DragZoneModule } from './components/drag-zone/drag-zone.module';
+import { WriteMessageComponent } from '../pages/messages/Components/new-message/write-message/write-message.component';
+import { NbTimepickerModule, NbDatepickerModule } from '@nebular/theme';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -71,7 +73,9 @@ import { DragZoneModule } from './components/drag-zone/drag-zone.module';
     SelectModule,
     HttpClientModule,
     MatExpansionModule,
-    DragZoneModule
+    DragZoneModule,
+    NbTimepickerModule,
+    NbDatepickerModule
 
   ],
   declarations: [
@@ -82,7 +86,7 @@ import { DragZoneModule } from './components/drag-zone/drag-zone.module';
     NavComponent,
     ToasterServices,
     DeleteModalComponent,
-
+    WriteMessageComponent,
   ],
   exports:[
     SideBarComponent,
@@ -116,7 +120,10 @@ import { DragZoneModule } from './components/drag-zone/drag-zone.module';
     TagModule,
     MatExpansionModule,
     DragZoneModule,
-    TagModule
+    WriteMessageComponent,
+    TagModule,
+    NbTimepickerModule,
+    NbDatepickerModule
   ],
   providers:[ToasterServices]
 })

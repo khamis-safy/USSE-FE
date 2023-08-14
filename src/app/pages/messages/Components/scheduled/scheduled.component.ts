@@ -25,7 +25,7 @@ export class ScheduledComponent implements OnInit  {
   cellClick:boolean=false;
   columns :FormControl;
   displayed: string[] = ['Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
-  displayedColumns: string[] = ['select' ,'Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
+  displayedColumns: string[] = ['Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
   dataSource:MatTableDataSource<Shceduled>;
   selection = new SelectionModel<Shceduled>(true, []);
 
@@ -109,7 +109,7 @@ export class ScheduledComponent implements OnInit  {
 
     changeColumns(event){
       //  change displayed column based on component type
-      this.displayedColumns=['select',...event]
+      this.displayedColumns=[...event]
 
       }
 
@@ -127,7 +127,6 @@ export class ScheduledComponent implements OnInit  {
         dialogConfig.height='100vh';
         dialogConfig.width='25vw';
         dialogConfig.maxWidth='100%';
-        // dialogConfig.minWidth='200px';
         dialogConfig.disableClose = true;
         dialogConfig.position = { right: '2px'};
         dialogConfig.direction ="ltr";
@@ -141,8 +140,7 @@ export class ScheduledComponent implements OnInit  {
           if(result){
           }
 
-        });        // isScheduleN:boolean,
-        // recepients:{number:string} []
+        });
       }
 
       displayMessage(row){

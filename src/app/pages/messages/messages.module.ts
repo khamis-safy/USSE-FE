@@ -18,19 +18,21 @@ import { TypePipe } from './type.pipe';
     CommonModule,
     MessagesRoutes,
     SharedModule,
-    NbTimepickerModule,
-    NbDatepickerModule
+
   ],
-  declarations: [	
+  declarations: [
     MessagesComponent,
     DisplayMessageComponent,
     ScheduledComponent,
     NewMessageComponent,
     SelectContactsComponent,
-    WriteMessageComponent,
+    // WriteMessageComponent,
     SendMessageComponent,
     MessageTypeComponent,
       TypePipe
+   ],
+   exports:[
+    // WriteMessageComponent
    ]
 })
 export class MessagesModule { }

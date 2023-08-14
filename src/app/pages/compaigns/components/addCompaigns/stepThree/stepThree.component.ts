@@ -1,28 +1,26 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { NbDateService } from '@nebular/theme';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 
 @Component({
-  selector: 'app-send-message',
-  templateUrl: './send-message.component.html',
-  styleUrls: ['./send-message.component.scss']
+  selector: 'app-stepThree',
+  templateUrl: './stepThree.component.html',
+  styleUrls: ['./stepThree.component.scss']
 })
-export class SendMessageComponent implements OnInit {
-  @ViewChild("dateTime") dateTime!: ElementRef;
+export class StepThreeComponent implements OnInit {
   devices:SelectOption[];
   selectedDevices:string[]=[];
   devicesData = new FormControl([]);
+  compainName:any = new FormControl('',[Validators.required]);
   deviceId:string;
   form = new FormGroup({
-    devicesData:this.devicesData
+    devicesData:this.devicesData,
+    compainName:this.compainName
   });
   dateFormControl = new FormControl(new Date());
+  constructor(private devicesService:DevicesService) { }
 
-  constructor(private devicesService:DevicesService,private dateService:NbDateService<Date>) {
-    // this.selectedDate=dateService.today();
-   }
 
   ngOnInit() {
     this.getDevices();

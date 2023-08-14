@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment as env } from '@env/environment.development';
+import { Observable } from 'rxjs';
 
 
 
@@ -11,7 +13,5 @@ export class CompaignsDetailsService {
   constructor(private http:HttpClient) {
 
   }
-  display:number=10;
-    pageNum:number=0;
 
 }
