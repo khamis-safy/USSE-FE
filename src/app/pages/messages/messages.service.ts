@@ -34,9 +34,9 @@ deleteMessage(ids:string[]):Observable<any>{
 
 }
 
-sendWhatsappBusinessMessage( deviceid: string,targetPhoneNumber: string[],msgBody: string,scheduledAt:string,email: string,attachments?:string[]):Observable<any>{
+sendWhatsappBusinessMessage( deviceid: string,targetPhoneNumber: string[],msgBody: string,scheduledAt:string,email: string,attachments:string[]):Observable<any>{
 
-  const data=attachments?{
+  const data=attachments.length!=0?{
     deviceid: deviceid,
     targetPhoneNumber: targetPhoneNumber,
     attachments:attachments,

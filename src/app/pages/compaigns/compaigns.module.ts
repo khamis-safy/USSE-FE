@@ -4,7 +4,14 @@ import { CompaignsRoutes } from './compaigns.routing';
 import { CompaignsService } from './compaigns.service';
 
 import { CompaignsComponent } from './component/compaigns.component';
- import { SharedModule } from 'src/app/shared/shared.module';
+
+import { AddCompaignsComponent } from './components/addCompaigns/addCompaigns.component';
+
+import { SharedModule } from 'src/app/shared/shared.module';
+import { StepOneComponent } from './components/addCompaigns/stepOne/stepOne.component';
+import { StepTwoComponent } from './components/addCompaigns/stepTwo/stepTwo.component';
+import { StepThreeComponent } from './components/addCompaigns/stepThree/stepThree.component';
+import { StepFourComponent } from './components/addCompaigns/stepFour/stepFour.component';
 
 
 @NgModule({
@@ -14,7 +21,13 @@ import { CompaignsComponent } from './component/compaigns.component';
     SharedModule
   ],
   declarations: [
-    CompaignsComponent
+    CompaignsComponent ,
+    StepOneComponent,
+    StepTwoComponent,
+    StepThreeComponent,
+    StepFourComponent,
+    AddCompaignsComponent ,
+
 
 
 

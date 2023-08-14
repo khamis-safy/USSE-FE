@@ -1,0 +1,51 @@
+<div class="  p-4  " style="position: relative ; border-radius:25px; " >
+  <h3 class="pt-3 text-center">Add Templete</h3>
+  <div class="pt-3" style="width: 20px; position: absolute; top: 18px; right: 40px" mat-dialog-close>
+    <img src="/assets/icons/close-circle.svg" />
+  </div>
+
+  <div class="d-flex flex-column align-content-center p-4 mt-3">
+    <div class="mb-5">
+      <us-input
+        class="my-3 "
+        [label]="'Template Name'"
+        [type]="'text'"
+      ></us-input>
+    </div>
+    <div class="mb-5">
+      <us-input class="my-3" [label]="' Message'" [type]="'text'"></us-input>
+    </div>
+    <div class="mb-3 mb-5">
+      <us-input
+        class="my-3 mb-4"
+        [label]="' Attachments'"
+        [type]="'text'"
+      ></us-input>
+    </div>
+    <div>
+      <div class="d-flex justify-content-center mt-5">
+        <us-button
+          class="me-2"
+          label="Save"
+          [fill]="true"
+          [size]="'sm'"
+          [loading]="false"
+          [disabled]="false"
+          [appearance]="'primary'"
+        >
+        </us-button>
+
+        <us-button
+        mat-dialog-close
+          label="Cancel"
+          [fill]="true"
+          [size]="'sm'"
+          [loading]="false"
+          [disabled]="false"
+          [appearance]="'primary'"
+        >
+        </us-button>
+      </div>
+    </div>
+  </div>
+</div>

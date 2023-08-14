@@ -1,67 +1,90 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
+import { FormControl } from '@angular/forms';
+import { CompaignsService } from '../compaigns.service';
+import { Router } from '@angular/router';
 
-export interface PeriodicElement {
-  name: string;
-  status: string;
-  creatorName: string;
-  startDate: string;
-  action:string[];
-}
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {name: 'John Smith', status: 'ended', creatorName: 'John Smith', startDate: 'May 4, 2024, 10:35 AM' , action:['','']},
-  {name: 'John Smith', status: 'active', creatorName: 'John Smith', startDate: 'May 4, 2024, 10:35 AM' , action:['','']},
-  {name: 'John Smith', status: 'ended', creatorName: 'John Smith', startDate: 'May 4, 2024, 10:35 AM' , action:['','']},
-  {name: 'John Smith', status: 'active', creatorName: 'John Smith', startDate: 'May 4, 2024, 10:35 AM' , action:['','']},
-  {name: 'John Smith', status: 'ended', creatorName: 'John Smith', startDate: 'May 4, 2024, 10:35 AM' , action:['','']},
-  {name: 'John Smith', status: 'active', creatorName: 'John Smith', startDate: 'May 4, 2024, 10:35 AM' , action:['','']},
-  {name: 'John Smith', status: 'active', creatorName: 'John Smith', startDate: 'May 4, 2024, 10:35 AM' , action:['','']},
-  {name: 'John Smith', status: 'ended', creatorName: 'John Smith', startDate: 'May 4, 2024, 10:35 AM' , action:['','']},
-  {name: 'John Smith', status: 'active', creatorName: 'John Smith', startDate: 'May 4, 2024, 10:35 AM' , action:['','']},
-
-];
 
 @Component({
   selector: 'app-compaigns',
   templateUrl: './compaigns.component.html',
   styleUrls: ['./compaigns.component.scss']
 })
-export class CompaignsComponent implements AfterViewInit  {
-  displayedColumns: string[] = ['name', 'status', 'creatorName', 'startDate' , 'action'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  selection = new SelectionModel<PeriodicElement>(true, []);
+export class CompaignsComponent implements AfterViewInit ,OnInit {
 
+  length:number=0;
+  loading:boolean=false;
+
+  isCompagins:boolean=true;
+
+  columns :FormControl;
+  displayed: string[] = ['Name', 'Status', 'Creator Name', 'Start Date'];
+  displayedColumns: string[] = ['Name', 'Status', 'Creator Name', 'Start Date','Action'];
+  dataSource:MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  constructor(private compaignsService:CompaignsService, private router:Router){}
+
+
+  ngOnInit() {
+    this.getCompaigns();
+  }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
+  getCompaigns(){
+    this.compaignsCount();
+    let shows=this.compaignsService.display;
+    let pageNum=this.compaignsService.pageNum;
+    let email=this.compaignsService.email;
+    let search=this.compaignsService.search;
+    this.loading = true;
+    this.compaignsService.getCampaigns(email,shows,pageNum,search).subscribe(
+      (res)=>{
+        this.loading = false;
+        this.dataSource=new MatTableDataSource<any>(res)
+
+      },
+      (err)=>{
+       this.loading = false;
+       this.length=0;
+
+      }
+    )
+  }
+compaignsCount(){
+  let email=this.compaignsService.email;
+  this.compaignsService.compaignsCount(email).subscribe(
+    (res)=>{
+      this.length=res;
+    }
+    ,(err)=>{
+      this.length=0;
+    }
+  )
+
+}
+  changeColumns(event){
+    this.displayedColumns=[...event]
     }
 
-    this.selection.select(...this.dataSource.data);
+  addCampaigns(){
+    this.isCompagins=false;
   }
 
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row `;
+  onPageChange(event){
+    this.compaignsService.display=event.pageSize;
+    this.compaignsService.pageNum=event.pageIndex;
+
+    this.getCompaigns();
+
+  }
+
+  compaignDetails(com){
+    this.router.navigateByUrl(`compaign`)
   }
 }
 

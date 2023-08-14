@@ -13,20 +13,6 @@
   <ng-container *ngIf="length>0">
   <section class="table-wrapper " >
     <table mat-table [dataSource]="dataSource" class="table-wrapper   " >
-      <!-- Checkbox Column  -->
-      <ng-container matColumnDef="select" class="">
-        <th class="text-center" mat-header-cell *matHeaderCellDef>
-          <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
-            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-          </mat-checkbox>
-        </th>
-        <td class="text-center" mat-cell *matCellDef="let row">
-          <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-            [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
-          </mat-checkbox>
-        </td>
-      </ng-container>
-
 
       <!-- deviceName Column -->
       <ng-container matColumnDef="Device Name">

@@ -32,12 +32,19 @@ const routes: Routes = [
         path: "compaigns",
         loadChildren: () =>
           import("./../../pages/compaigns/compaigns.module").then((m) => m.CompaignsModule),
-      } ,
+      },
+      {
+        path: "compaign",
+        loadChildren:()=>
+        import("./../../pages/compaigns/components/compaignsDetails/compaignsDetails.module").then((m)=>m.CompaignsDetailsModule)
+      },
       {
         path: "templates",
         loadChildren:()=>
         import("./../../pages/templates/templates.module").then((m)=>m.TemplatesModule)
       }
+
+
 
 
     ]

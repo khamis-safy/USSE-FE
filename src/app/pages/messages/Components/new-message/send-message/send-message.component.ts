@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { NbDateService } from '@nebular/theme';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 
@@ -17,7 +18,11 @@ export class SendMessageComponent implements OnInit {
   form = new FormGroup({
     devicesData:this.devicesData
   });
-  constructor(private devicesService:DevicesService) { }
+  dateFormControl = new FormControl(new Date());
+
+  constructor(private devicesService:DevicesService,private dateService:NbDateService<Date>) {
+    // this.selectedDate=dateService.today();
+   }
 
   ngOnInit() {
     this.getDevices();

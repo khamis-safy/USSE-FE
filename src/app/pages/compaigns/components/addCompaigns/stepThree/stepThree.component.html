@@ -1,0 +1,51 @@
+<form [formGroup]="form" class="w-100 h-100 p-5 mt-5 d-flex justify-content-center">
+  <div class="d-flex gap-5 flex-column" style="width:60%">
+    <div class="form-group d-flex gap-lg-5 flex-column flex-lg-row flex-nowrap">
+      <label for="devicesData" class="w-25 d-none d-lg-block text-nowrap"
+        ><span class="txt txt-sm text-black text-wrap">Start Time</span>
+      </label>
+
+      <div class="w-100">
+
+        <input #dateTime
+        class="rounded-pill border border-1py-2 txt-input w-100 date" style="padding: 0 12px;"
+          nbInput
+          placeholder="Pick Date"
+          [nbDatepicker]="datepicker"
+          [formControl]="dateFormControl "
+        />
+        <nb-datepicker #datepicker ></nb-datepicker>
+      </div>
+    </div>
+
+    <us-select
+      [data]="devices"
+      formControlName="devicesData"
+      [multiSelect]="false"
+      [label]="'Devices'"
+      (onSelect)="onSelect($event)"
+
+      [placeholder]="'Select Devices'"
+      [isDisabled]="false"
+      [optional]="true"
+      [enableSearch]="true"
+      [searchbarOnToggler]="true"
+      [searchNoResultText]="'there is no result'"
+      [maxListItemsWithoutSearch]="5"
+    ></us-select>
+
+    <us-input
+    [isDisabled]="false"
+    value=""
+    placeholder="Enter Compain Name"
+    [optional]="true"
+    type="text"
+    [error]="false"
+    [fullWidth]="true"
+    formControlName="compainName"
+    label="Compain Name"
+    [error]=" (compainName.touched && compainName.errors?.required)"
+    [hintText]=" compainName.touched && compainName.errors?.required ? 'This filed is required':'' "
+    ></us-input>
+  </div>
+</form>

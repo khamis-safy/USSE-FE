@@ -30,7 +30,8 @@ export class DragZoneComponent implements OnInit {
   @Input("fileType") fileType ="";
   @Input('data') set value(value) {
     this._value = value;
-
+    console.log(value)
+    this.filesList=value;
   }
   get value() {
     return this._value;

@@ -16,3 +16,17 @@
   background: rgba(255, 181, 37, 1);
 
 }
+.delay {
+  ::ng-deep{
+    .mat-mdc-button, .mat-mdc-outlined-button {
+      --mat-mdc-button-persistent-ripple-color: white !important;
+      --mat-mdc-button-ripple-color:  white !important;
+
+  }
+  }}
+span{
+  color: rgba(51,50,61 ,1)!important ;
+}
+mat-icon{
+  color: rgba(51,50,61 ,1)!important;
+}

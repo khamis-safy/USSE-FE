@@ -63,26 +63,34 @@ export class WriteMessageComponent implements OnInit {
     this.form.patchValue({
       message:template.messageBody
     });
-    let attachment=template.attachments.map((e)=>{
-      return {
-          size:0,
-          name:e.fileName,
-          url:e.fileUrl,
-          type:""
+
+    console.log(template)
+    // template.attachments.map((attach)=>{
+    //   this.fileData.push({
+    //     name:"",
+    //     type:"",
+    //     url:attach,
+    //     size:0
+    //   });
+
+    // })
+    this.fileData=template.attachments.map((temp)=>{
+      return{
+        name:"",
+        type:"",
+        url:temp,
+        size:0
       }
-    });
-
-
-    this.fileData=attachment;
+    })
 
     this.messageBody=(this.form.value.message)
 
-
+ console.log(this.fileData);
 
 
   }
   onFileChange(e){
-    // console.log(this.fileData);
+    console.log(this.fileData);
     // let files=this.fileData.map((file)=>file.url);
     // this.attachments.emit(files)
   }

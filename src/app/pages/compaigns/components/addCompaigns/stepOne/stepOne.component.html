@@ -1,0 +1,81 @@
+<div class="row w-100 my-5" style="height: 70%; place-content: space-around">
+  <!-- lists and contacts with search -->
+  <div class="col-5 d-flex gap-4 flex-column me-2">
+    <div class="d-flex position-relative w-100 m-0">
+
+          <input #search type="text" class="form-control ps-5 w-100 txt-xs" id="search" placeholder="Search" (keyup)="onSearch(search)">
+        <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
+          <img src="assets/icons/search.svg" alt="" width="14">
+        </div>
+
+    </div>
+    <div class="lists py-3">
+      <div
+        class="d-flex justify-content-between align-items-center w-100 px-4 pb-2 txt-sm lists-top"
+      >
+        <sr-checkbox
+          label="Select all"
+          [state]="
+          selectAllStatus === 1 ? 'mid' : selectAllStatus === 2 || selectedLists? 'checked' : ''
+          "
+          (changed)="selectAllLists($event)"
+          style="font-weight: 500"
+        ></sr-checkbox>
+
+      </div>
+      <div class="line"></div>
+
+      <div class="lists-body mt-3">
+        <ng-container *ngFor="let list of lists; let i = index">
+
+          <div class="d-flex gap-4 px-4 py-3" >
+            <sr-checkbox
+
+              [label]="list?.name"
+              [state]="list.selectionState==2 ? 'checked' :
+              list.selectionState==1 ? 'mid'
+              : ''"
+              (changed)="
+              onSelectList($event, list);checked=true;
+              "
+            ></sr-checkbox>
+            <span class="txt-sm total">{{ list.totalContacts }}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- added contacts and mobile input -->
+  <div class="col-6 d-flex gap-4 flex-column">
+    <div class="contacts py-4">
+      <div
+        class="contacts-heading px-4 d-flex justify-content-between align-items-center"
+      >
+        <span class="txt-md">Lists</span>
+        <span class="d-flex align-items-center gap-2 pointer">
+          <img src="assets/icons/clear.svg" alt="" />
+          <span class="txt-md text-primary-800" (click)="clearLists()"
+            >Clear</span
+          >
+        </span>
+      </div>
+      <div class="contacts-body px-4">
+        <div class="d-flex flex-wrap mt-4 gap-3">
+          <ng-container *ngIf="addedLists.length != 0">
+            <ng-container *ngFor="let list of addedLists">
+              <sr-tag
+                maxWidth="120px"
+                [title]="list?.name"
+                (onClose)="removeList(list)"
+              >
+              </sr-tag>
+            </ng-container>
+          </ng-container>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

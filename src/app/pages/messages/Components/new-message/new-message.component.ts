@@ -24,7 +24,7 @@ export class NewMessageComponent implements OnInit,AfterViewInit {
   @ViewChild(WriteMessageComponent) writeMessage:WriteMessageComponent;
   @ViewChild(SendMessageComponent) sendMessage:SendMessageComponent;
   @Output() back = new EventEmitter<boolean>;
-
+  isLoading = false;
 hocsNum:string[]=[]
 contacts:Contacts[]=[];
   addedContacts: string[] = [];
@@ -56,6 +56,7 @@ contacts:Contacts[]=[];
   }
   toWriteMessage(){
     this.addedContacts=[...this.selectContacts.addedContacts.map((e)=>e.mobileNumber),...this.selectContacts.addHocs]
+   console.log(this.selectContacts.addHocs)
     this.writeMessage.getTemplates();
   }
   toSendMessage(){
@@ -67,6 +68,8 @@ contacts:Contacts[]=[];
   toLastStep(){
     this.deviceId=this.sendMessage.deviceId;
     this.dateTime=this.sendMessage.dateTime.nativeElement.value.replace(" ","T");
+    this.isLoading = true
+
     console.log("date time",this.dateTime);
     console.log({
       deviceId:this.deviceId,
@@ -81,12 +84,14 @@ contacts:Contacts[]=[];
       (res)=>{
         this.toasterService.success("Success");
         this.back.emit(true)
+        this.isLoading = false
 
       },
       (err)=>{
 
         this.toasterService.error("Error");
         this.back.emit(false)
+        this.isLoading = false
 
       }
     )

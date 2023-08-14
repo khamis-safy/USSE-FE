@@ -76,6 +76,7 @@
           <td mat-cell *matCellDef="let element"> {{element.createdAt | date: 'h:mm a , M/d/y '}} </td>
         </ng-container>
 
+
          <!-- Status Column -->
          <ng-container matColumnDef="Status">
           <th mat-header-cell *matHeaderCellDef > Status </th>
@@ -93,7 +94,50 @@
           </td>
         </ng-container>
 
+<!-- Delay Interval(s) Column -->
+<ng-container matColumnDef="Delay Interval(s)">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+    Delay Interval(s)
+  </th>
+  <td mat-cell *matCellDef="let element" class="ps-5">
+    <div class="delay">
 
+      <button mat-button [matMenuTriggerFor]="menu" class="text-neutral-0 text-center shadow-sm rounded-2">
+        <div class="d-flex justify-content-center align-items-center gap-2 txt-sm" style="font-weight: 500">
+          <!-- <mat-icon class="tab-icon">recent_actors</mat-icon> -->
+          <span *ngIf="delay == 5 ">5</span>
+          <span *ngIf="delay == 10">10</span>
+          <span *ngIf="delay == 15">15</span>
+          <span *ngIf="delay == 30">30</span>
+          <span *ngIf="delay == 50">50</span>
+          <span *ngIf="delay == 60">60</span>
+
+          <mat-icon>expand_more</mat-icon>
+        </div>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)=" delay = 5 ; updateDeviceDelay(element.id);">
+          5
+        </button>
+        <button mat-menu-item (click)=" delay = 10; updateDeviceDelay(element.id);">
+          10
+        </button>
+        <button mat-menu-item (click)=" delay = 15; updateDeviceDelay(element.id);">
+          15
+        </button>
+        <button mat-menu-item (click)=" delay = 30; updateDeviceDelay(element.id);">
+          30
+        </button>
+        <button mat-menu-item (click)=" delay = 50; updateDeviceDelay(element.id);">
+          50
+        </button>
+        <button mat-menu-item (click)=" delay = 60; updateDeviceDelay(element.id);">
+          60
+        </button>
+      </mat-menu>
+    </div>
+  </td>
+</ng-container>
 
          <!-- Action Column -->
          <ng-container matColumnDef="action">
