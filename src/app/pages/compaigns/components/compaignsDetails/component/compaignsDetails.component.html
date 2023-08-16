@@ -1,15 +1,15 @@
 <section class="m-4">
-  <div class="d-flex justify-content-between  align-items-center">
+  <div class="d-flex justify-content-between mb-5 align-items-center">
     <div class="d-flex justify-content-center">
 
 
       <!-- <mat-icon class="tab-icon">recent_actors</mat-icon> -->
-      <span  class="txt-lg main-heading"> Campaign Name</span>
+      <span  class="txt-lg main-heading">{{compaign?.campaignName}}</span>
       <!-- <span  class="txt-lg main-heading"> List Name</span> -->
 
     </div>
 
-    <us-button
+    <!-- <us-button
       class="m-2"
       label="New Compaign"
       img="assets/icons/compagins-icon.svg"
@@ -19,11 +19,11 @@
       [disabled]="false"
       [appearance]="'primary'"
     >
-    </us-button>
+    </us-button> -->
 
   </div>
 
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" >
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" (selectedTabChange)="resetTableData()">
     <mat-tab>
       <ng-template mat-tab-label>
         <img src="assets/icons/report-icon.svg" alt="" class="px-2">
@@ -31,7 +31,7 @@
         <!-- <mat-icon class="tab-icon">format_list_bulleted</mat-icon> -->
 
       </ng-template>
-      <app-reportSummary></app-reportSummary>
+      <app-reportSummary  [compaignId]="compaignId" [compaign]="compaign"></app-reportSummary>
     </mat-tab>
 
     <mat-tab>
@@ -40,7 +40,7 @@
         <!-- <mat-icon class="tab-icon">contacts</mat-icon> -->
         Recipient Activities
       </ng-template>
-      <app-recipientActivities></app-recipientActivities>
+      <app-recipientActivities [compaignId]="compaignId" [compaign]="compaign"></app-recipientActivities>
     </mat-tab>
 
 

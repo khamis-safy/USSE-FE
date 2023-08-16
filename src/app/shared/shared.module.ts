@@ -39,7 +39,7 @@ import { DeleteModalComponent } from './components/delete-modal/delete-modal.com
 import {MatExpansionModule} from '@angular/material/expansion';
 import { DragZoneModule } from './components/drag-zone/drag-zone.module';
 import { WriteMessageComponent } from '../pages/messages/Components/new-message/write-message/write-message.component';
-import { NbTimepickerModule, NbDatepickerModule } from '@nebular/theme';
+import { NbTimepickerModule, NbDatepickerModule, NbToggleModule } from '@nebular/theme';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -123,7 +123,8 @@ import { NbTimepickerModule, NbDatepickerModule } from '@nebular/theme';
     WriteMessageComponent,
     TagModule,
     NbTimepickerModule,
-    NbDatepickerModule
+    NbDatepickerModule,
+    NbToggleModule
   ],
   providers:[ToasterServices]
 })

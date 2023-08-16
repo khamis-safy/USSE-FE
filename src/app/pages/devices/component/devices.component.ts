@@ -22,7 +22,7 @@ export class DevicesComponent implements OnInit{
   active:boolean=false;
   numRows;
   loading;
-  delay:number=5;
+  delay:number;
   @Input() isCanceled:boolean;
 
 
@@ -136,13 +136,14 @@ export class DevicesComponent implements OnInit{
     )
   }
   updateDeviceDelay(id: string) {
-    // console.log(this.delay)
-    this.devicesService.updateDeviceDelay(this.devicesService.email, id, this.delay).subscribe(
-      (res) => {
+    //console.log(this.delay)
+   this.devicesService.updateDeviceDelay(this.devicesService.email, id, this.delay).subscribe(
+     (res) => {
 
-          res.delayIntervalInSeconds = this.delay;
-          console.log(res);
-        }
+       this.delay=  res.delayIntervalInSeconds ;
+       this.getDevices()
+        // console.log(res);
+       }
 
 
 

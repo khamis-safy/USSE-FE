@@ -11,10 +11,11 @@
         class="rounded-pill border border-1py-2 txt-input w-100 date" style="padding: 0 12px;"
           nbInput
           placeholder="Pick Date"
-          [nbDatepicker]="datepicker"
-          [formControl]="dateFormControl "
+          [nbDatepicker]="dateTimePicker"
+          [formControl]="dateFormControl"
         />
-        <nb-datepicker #datepicker ></nb-datepicker>
+        <nb-date-timepicker withSeconds #dateTimePicker> </nb-date-timepicker>
+
       </div>
     </div>
 

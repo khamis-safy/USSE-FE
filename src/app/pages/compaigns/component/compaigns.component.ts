@@ -5,6 +5,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import { FormControl } from '@angular/forms';
 import { CompaignsService } from '../compaigns.service';
 import { Router } from '@angular/router';
+import { compaignDetails } from '../campaigns';
 
 
 
@@ -17,7 +18,7 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
 
   length:number=0;
   loading:boolean=false;
-
+  cellClick:boolean=false;
   isCompagins:boolean=true;
 
   columns :FormControl;
@@ -30,6 +31,8 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
 
 
   ngOnInit() {
+    this.columns=new FormControl(this.displayedColumns)
+
     this.getCompaigns();
   }
   ngAfterViewInit() {
@@ -46,6 +49,7 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
       (res)=>{
         this.loading = false;
         this.dataSource=new MatTableDataSource<any>(res)
+        console.log(res)
 
       },
       (err)=>{
@@ -83,8 +87,26 @@ compaignsCount(){
 
   }
 
-  compaignDetails(com){
-    this.router.navigateByUrl(`compaign`)
+  compaignDetails(com:compaignDetails){
+    if(!this.cellClick){
+      let id=com.id;
+      this.router.navigateByUrl(`compaign/${id}`)
+    }
+  }
+  stopComaign(element){
+    // console.log("stop compaign")
+    this.compaignsService.stopWhatsappBusinessCampaign(element.id,this.compaignsService.email).subscribe(
+      (res)=>{
+        this.getCompaigns();
+
+      },
+      (err)=>{
+
+      }
+    )
+  }
+  test(element){
+    console.log("test")
   }
 }
 

@@ -10,7 +10,7 @@
 }
 
 .input-wrapper {
-  height: 40px;
+  height: 47px;
   min-width: 210px;
   border: 1px solid $clr_neutral_300;
   border-radius: $radius_xl;
@@ -26,6 +26,14 @@
   -moz-border-radius: $radius_xl;
   -ms-border-radius: $radius_xl;
   -o-border-radius: $radius_xl;
+  &:hover{
+    .steppers {
+     display: flex;
+      flex-direction: column;
+      inset-inline-end: 0;
+
+    }
+  }
   &.fullWidth
 {
     min-width: auto;
@@ -106,35 +114,29 @@
 
   .steppers {
     position: absolute;
-    display: flex;
-    flex-direction: column;
-    inset-inline-end: 0;
+    display: none;
+    // display: flex;
+    // flex-direction: column;
+    // inset-inline-end: 0;
 
     button {
       border: none;
-      border-bottom: 1px solid $clr_neutral_300;
-      border-inline-start: 1px solid $clr_neutral_300;
-      background-color: $clr_neutral_50;
-      color: $clr_neutral_600;
-      font-size: 16px;
+      background-color: white;
+      color: var(--clr-primary-600);
+      font-size: 20px;
+      padding: -3px;
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 24px;
-      height: 20.5px;
+      width: 38px;
+      height: 14.5px;
 
       &:last-of-type {
-        height: 19.5px;
+        height: 14.5px;
         border-bottom: none;
       }
 
-      &:hover {
-        background-color: $clr_neutral_100;
-      }
 
-      &:active {
-        background-color: $clr_neutral_200;
-      }
     }
   }
 

@@ -16,7 +16,7 @@
       [loading]="false"
       [disabled]="false"
       [appearance]="'primary'"
-      (clicked)="addCampaigns()"
+      (clicked)="addCampaigns() ;isCampagins=true"
     >
     </us-button>
 
@@ -69,10 +69,10 @@
           <ng-container matColumnDef="Status">
             <th class="text-center" mat-header-cell *matHeaderCellDef>Status</th>
             <td class="text-center" mat-cell *matCellDef="let element">
-              <div *ngIf="element.status == 'ended'">
+              <div *ngIf="element.isStopped ==true">
                 <img src="assets/icons/ended-compagins.svg" alt="" />
               </div>
-              <div *ngIf="element?.status == 'active'">
+              <div *ngIf="element.isStopped ==false">
                 <img src="assets/icons/active-compaigns.svg" alt="" />
               </div>
             </td>
@@ -84,7 +84,7 @@
               Creator Name
             </th>
             <td class="text-center" mat-cell *matCellDef="let element">
-              {{ element?.creatorName }}
+              {{ element?.device.deviceName }}
             </td>
           </ng-container>
 
@@ -101,13 +101,13 @@
           <!-- Action at Column -->
           <ng-container matColumnDef="Action">
             <th class="text-center" mat-header-cell *matHeaderCellDef>Action</th>
-            <td class="text-center" mat-cell *matCellDef="let element">
+            <td class="text-center" mat-cell *matCellDef="let element"  (click)=" cellClick=true;">
               <div class="d-flex justify-content-center align-items-center">
-                <div *ngIf="element.status == 'active'" class="me-2">
-                  <img src="assets/icons/stop-compaigns.svg" alt="" />
+                <div *ngIf="element.isStopped ==true"  class="me-2">
+                  <img (click)="test(element);" src="assets/icons/stop-compaigns.svg" alt="" />
                 </div>
-                <div *ngIf="element.status == 'ended'" class="me-4"> </div>
-                <img src="assets/icons/Actionsc.svg" alt="" />
+                <div *ngIf="element.isStopped==false "  class="me-4"> </div>
+                <img (click)="stopComaign(element);" src="assets/icons/Actionsc.svg" alt="" />
               </div>
             </td>
           </ng-container>
@@ -115,7 +115,7 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
           <ng-container *ngIf="!loading">
 
-          <tr class="pointer" (click)="compaignDetails(row)" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
+          <tr class="pointer" (click)="compaignDetails(row); cellClick=false" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
 
             >
           </tr>
