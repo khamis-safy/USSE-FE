@@ -60,7 +60,7 @@
             Created At
           </th>
           <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element.createdAt | date: 'h:mm a , M/d/y '}}
+            {{ element.createdAt | toLocalTime | date: 'h:mm a , M/d/y '}}
           </td>
         </ng-container>
 
@@ -70,7 +70,7 @@
           Scheduled At
         </th>
         <td class="text-center" mat-cell *matCellDef="let element">
-          {{ element.scheduledAt | date: 'h:mm a , M/d/y '}}
+          {{ element.scheduledAt | toLocalTime | date: 'h:mm a , M/d/y '}}
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
