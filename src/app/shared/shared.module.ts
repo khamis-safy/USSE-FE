@@ -41,6 +41,8 @@ import { DragZoneModule } from './components/drag-zone/drag-zone.module';
 import { WriteMessageComponent } from '../pages/messages/Components/new-message/write-message/write-message.component';
 import { NbTimepickerModule, NbDatepickerModule, NbToggleModule } from '@nebular/theme';
 
+import { ToLocalTimePipe } from './pipes/toLocalTime.pipe';
+
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
 @NgModule({
@@ -81,6 +83,7 @@ import { NbTimepickerModule, NbDatepickerModule, NbToggleModule } from '@nebular
   declarations: [
     SideBarComponent,
     FooterComponent,
+    ToLocalTimePipe,
     HeaderComponent,
     InputComponent,
     NavComponent,
@@ -92,6 +95,7 @@ import { NbTimepickerModule, NbDatepickerModule, NbToggleModule } from '@nebular
     SideBarComponent,
     FooterComponent,
     HeaderComponent,
+    ToLocalTimePipe,
     InputComponent,
     SelectModule,
     ToasterServices,
