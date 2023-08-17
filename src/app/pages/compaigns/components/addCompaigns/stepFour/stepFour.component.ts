@@ -7,33 +7,38 @@ import { InputComponent } from 'src/app/shared/components/text-input/text-input.
   templateUrl: './stepFour.component.html',
   styleUrls: ['./stepFour.component.scss']
 })
-export class StepFourComponent implements OnInit ,AfterViewInit, OnChanges{
+export class StepFourComponent implements OnInit ,AfterViewInit{
+
+  maxNum = 1000
+  minNum = 0
+
   disableInterval:boolean=true;
 disableRepeate:boolean=true;
 disable:boolean=true;
-timeDisabled:boolean=true;
+isSendingOutTimeChecked:boolean=false;
+isIntervalChecked:boolean=true;
 // @ViewChild(InputComponent) inputCom1:InputComponent;
 // @ViewChild(InputComponent) inputCom1:InputComponent;
 // @ViewChild(InputComponent) inputCom1:InputComponent;
+time1Sub$
 
 time1 = new FormControl({value: new Date(), disabled: true});
 time2= new FormControl({value: new Date(), disabled: true});
 toggleTime:boolean=false;
-intFrom:any=new FormControl(15);
-intTo:any=new FormControl(30);
-rNum:any=new FormControl(100);
-repeate:any=new FormControl(0);
+intFrom:any=new FormControl({value:15,disabled:false});
+intTo:any=new FormControl({value:30,disabled:false});
+rNum:any=new FormControl({value:100,disabled:true});
+repeate:any=new FormControl({value:0,disabled:true});
 
 form = new FormGroup({
   intFrom:this.intFrom,
   intTo:this.intTo,
   rNum:this.rNum,
-  repeate:this.repeate
-
-
-
+  repeate:this.repeate,
+  time1:this.time1,
+  time2:this.time2
 });
-  constructor(private cdRef: ChangeDetectorRef) { }
+  constructor() { }
   ngAfterViewInit() {
     // this.disableInterval=true;
     // this.disableRepeate=true;
@@ -41,28 +46,32 @@ form = new FormGroup({
     // this.cdRef.detectChanges();
 
   }
-  ngOnChanges() {
-    // this.input.isDisabled=true;
 
-    // Manually trigger change detection when input changes
-  }
 
   ngOnInit() {
+    this.time1Sub$ =  this.time1.valueChanges.subscribe(res=>{
+      console.log(res)
+    })
   }
-  toggleTimeSwitch(){
-this.timeDisabled=!this.timeDisabled;
-this.cdRef.detectChanges();
+  onSwitcherChange(e,data){
+      for(let item of data){
+        e.target.checked ? item.enable() : item.disable()
+      }
   }
+
   toggleInterval(){
     this.disableInterval=!this.disableInterval;
-    this.cdRef.detectChanges();
   }
   toggleRepeate(){
     this.disableRepeate=!this.disableRepeate;
-    this.cdRef.detectChanges();
 
   }
   test(e){
-    console.log(e)
+    console.log("here",e)
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.time1Sub$.unsubscribe()
   }
 }
