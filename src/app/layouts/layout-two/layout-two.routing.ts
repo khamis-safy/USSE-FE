@@ -34,7 +34,7 @@ const routes: Routes = [
           import("./../../pages/compaigns/compaigns.module").then((m) => m.CompaignsModule),
       },
       {
-        path: "compaign",
+        path: "compaign/:id",
         loadChildren:()=>
         import("./../../pages/compaigns/components/compaignsDetails/compaignsDetails.module").then((m)=>m.CompaignsDetailsModule)
       },

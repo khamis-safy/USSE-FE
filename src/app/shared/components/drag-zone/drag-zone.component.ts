@@ -30,8 +30,6 @@ export class DragZoneComponent implements OnInit {
   @Input("fileType") fileType ="";
   @Input('data') set value(value) {
     this._value = value;
-    console.log(value)
-    this.filesList=value;
   }
   get value() {
     return this._value;
@@ -42,6 +40,7 @@ export class DragZoneComponent implements OnInit {
   onTouched = () => {}; // to register value accessor method onTouched
   // Value Accessor Methods
   writeValue(value: any): void {
+    this.filesList=value;
     if (!value) this._value = null
     else this._value = value
   }
