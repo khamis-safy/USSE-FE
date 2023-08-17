@@ -22,8 +22,8 @@ const VALUE_ACCESSOR_CONFIG = {
 export class InputComponent {
   // VALUE_ACCESSOR Methods & Properties
   private val: any = null;
-  @Input() isDisabled!: boolean;
-
+  @Input() isDisabled: boolean;
+z
   onChange: any = () => {};
   onTouched: any = () => {};
 

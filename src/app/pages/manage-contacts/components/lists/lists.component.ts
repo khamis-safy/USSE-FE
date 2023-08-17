@@ -108,7 +108,8 @@ getListData(){
         this.loading = false;
         this.length=0
 
-      })
+      }
+      )
       this.subscribtions.push(sub2)
 }
 

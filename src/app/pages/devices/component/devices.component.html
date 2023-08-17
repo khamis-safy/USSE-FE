@@ -84,11 +84,11 @@
             <ng-container [ngSwitch]="element.isConnected">
               <div *ngSwitchCase="true" class="d-flex gap-2 align-items-center">
                 <span class="status active"></span>
-                <p class="mb-0">Active</p>
+                <p  style="margin:0 0 0 0;">Active</p>
               </div>
               <div *ngSwitchCase="false" class="d-flex gap-2 align-items-center">
                 <span class="status inactive"></span>
-                <p lass="mb-0">Inactive</p>
+                <p  style="margin:0 0 0 0;">Inactive</p>
               </div>
             </ng-container>
           </td>
@@ -105,12 +105,12 @@
       <button mat-button [matMenuTriggerFor]="menu" class="text-neutral-0 text-center shadow-sm rounded-2">
         <div class="d-flex justify-content-center align-items-center gap-2 txt-sm" style="font-weight: 500">
           <!-- <mat-icon class="tab-icon">recent_actors</mat-icon> -->
-          <span *ngIf="delay == 5 ">5</span>
-          <span *ngIf="delay == 10">10</span>
-          <span *ngIf="delay == 15">15</span>
-          <span *ngIf="delay == 30">30</span>
-          <span *ngIf="delay == 50">50</span>
-          <span *ngIf="delay == 60">60</span>
+          <span *ngIf="element.delayIntervalInSeconds == 5 ">5</span>
+          <span *ngIf="element.delayIntervalInSeconds == 10">10</span>
+          <span *ngIf="element.delayIntervalInSeconds == 15">15</span>
+          <span *ngIf="element.delayIntervalInSeconds == 30">30</span>
+          <span *ngIf="element.delayIntervalInSeconds == 50">50</span>
+          <span *ngIf="element.delayIntervalInSeconds == 60">60</span>
 
           <mat-icon>expand_more</mat-icon>
         </div>

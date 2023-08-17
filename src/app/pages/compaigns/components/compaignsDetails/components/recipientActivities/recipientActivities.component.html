@@ -1,88 +1,97 @@
-<section class="p-3">
   <section class="py-3 d-flex flex-column gap-3">
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex position-relative row m-0">
-        <div class="col-12 col-lg-4 p-0">
-          <input
-            #search
-            type="text"
-            class="form-control ps-5 txt-xs"
-            id="search"
-            placeholder="Search"
-          />
-        </div>
-        <div
-          class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y"
-        >
-          <img src="assets/icons/search.svg" alt="" width="14" />
-        </div>
-        <!-- <mat-icon class="w-fit text-neutral-500 position-absolute start-0 top-50 translate-middle-y">search</mat-icon> -->
-      </div>
-      <mat-form-field class="us-select">
-        <mat-label class="txt-caption">
-          <img src="assets/icons/display.svg" alt="" class="m-2" width="15" />
-          <span class="txt-caption" style="font-size: 12px !important"
-            >Display</span
-          ></mat-label
-        >
-        <mat-select multiple>
-          <mat-option>Mobile Number</mat-option>
-          <mat-option>Name</mat-option>
-          <mat-option>Replies</mat-option>
-          <mat-option> Response Time</mat-option>
+    <div class="d-flex justify-content-end align-items-center ">
+
+      <mat-form-field class="us-select ">
+        <mat-label class="txt-caption"> <img src="assets/icons/display.svg" alt="" class="m-2" width="15"> <span class="txt-caption" style="font-size: 12px !important;">Display</span></mat-label>
+        <mat-select [formControl]="columns"  (selectionChange)="changeColumns($event.value)" multiple>
+          <mat-option *ngFor="let topping of displayed" [value]="topping">{{topping}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-
+    <ng-container *ngIf="length>0">
     <section class="table-wrapper">
       <table mat-table [dataSource]="dataSource" class="table-wrapper">
         <!-- Mobile Number Column -->
-        <ng-container matColumnDef="mobileNumber">
+        <ng-container matColumnDef="Mobile Number">
           <th class="text-center" mat-header-cell *matHeaderCellDef>Mobile Number</th>
           <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element.mobileNumber }}
+            {{ element?.targetPhoneNumber }}
           </td>
         </ng-container>
 
         <!-- Name Column -->
-        <ng-container matColumnDef="name">
+        <ng-container matColumnDef="Name">
           <th class="text-center" mat-header-cell *matHeaderCellDef>Name</th>
           <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element.name }}
+            {{ element?.chat.chatName  }}
           </td>
         </ng-container>
 
         <!--  Replies Column -->
-        <ng-container matColumnDef="replies">
-          <th class="text-center" mat-header-cell *matHeaderCellDef>Replies</th>
+        <ng-container matColumnDef="Updated At">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>Updated At</th>
           <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element.replies }}
+            {{  element?.updatedAt | date: 'h:mm a , M/d/y ' }}
           </td>
         </ng-container>
 
 
            <!--   Response Time Column -->
-           <ng-container matColumnDef="responseTime">
-            <th class="text-center" mat-header-cell *matHeaderCellDef> Response Time</th>
+           <ng-container matColumnDef="Status">
+            <th class="text-center" mat-header-cell *matHeaderCellDef> Status</th>
             <td class="text-center" mat-cell *matCellDef="let element">
-              {{ element.responseTime }}
+              <ng-container [ngSwitch]="element.status">
+                <div *ngSwitchCase=3>
+                  <img src="assets/images/read.svg" alt="">
+                </div>
+
+                <div *ngSwitchCase=1>
+                  <img src="assets/images/sent.svg" alt="">
+                </div>
+
+                <div *ngSwitchCase=2>
+                  <img src="assets/images/delivered.svg" alt="">
+                </div>
+
+                <div *ngSwitchCase=0>
+                  <img src="assets/images/pending.svg" alt="">
+                </div>
+              </ng-container>
+
             </td>
           </ng-container>
 
 
+          <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
+          <ng-container *ngIf="!loading">
 
+          <tr class="pointer"  mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
+            >
+          </tr>
+        </ng-container>
+        </table>
+        <div *ngIf="loading" class="spinner-container p-3">
+          <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
+        </div>
 
-
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
-      <mat-paginator
-        [pageSizeOptions]="[5, 10, 20]"
-        showFirstLastButtons
-        aria-label="Select page of periodic elements"
-      >
-      </mat-paginator>
+        <mat-paginator
+        (page)="onPageChange($event)"
+        [pageSizeOptions]="[10, 50, 100]"
+        [length]="length"
+            showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
     </section>
+  </ng-container>
+
+    <ng-container *ngIf="length==0 && !loading">
+
+      <div class="d-flex justify-content-center align-items-center flex-column gap-3  w-100" style="height: 500px;">
+        <img src="assets/images/files.svg" alt="">
+        <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">No data to show</span>
+      </div>
+
+    </ng-container>
   </section>
-</section>
+
+

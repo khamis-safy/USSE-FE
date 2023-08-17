@@ -33,6 +33,7 @@ export class MessagesComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       this.messageType.selection.clear();
+      this.messageType.getMessages();
 
     });
   }
