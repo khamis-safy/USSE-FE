@@ -102,7 +102,9 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
 
   }
 
-  getContacts(){
+
+
+getContacts(){
 this.contactsCount();
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
@@ -131,6 +133,8 @@ this.contactsCount();
        })
        this.subscribtions.push(sub1)
   }
+
+
 
 
 

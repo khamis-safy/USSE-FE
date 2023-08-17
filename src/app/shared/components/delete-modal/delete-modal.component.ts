@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { UsButtonComponent } from '../us-button/us-button.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
+import { TemplatesService } from 'src/app/pages/templates/templates.service';
 import { DeleteContactComponent } from 'src/app/pages/manage-contacts/components/contacts/deleteContact/deleteContact.component';
 import { Contacts } from 'src/app/pages/manage-contacts/contacts';
 import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-contacts.service';
@@ -12,6 +13,7 @@ import { MessagesService } from 'src/app/pages/messages/messages.service';
 interface ComponentData{
   contactsData?: { contacts:Contacts[] , remove:boolean},
   deviceData?:   {deviceId:string},
+  templatesData?:   {templatesId:string},
   listsData?:    {contacts:Contacts[] , list:string[] , lists:ListData[]},
   messagesData?: {messages:Message[]}
 
@@ -34,10 +36,12 @@ export class DeleteModalComponent implements OnInit {
 
   isContacts:boolean=false;
   isDevices:boolean=false;
+  isTemplates:boolean=false;
   isLists:boolean=false;
   isMessages:boolean=false;
   constructor(
     private devicesService:DevicesService,
+    private templatesService:TemplatesService,
     private listService:ManageContactsService,
     private messageService:MessagesService,
     private toaster: ToasterServices,
@@ -50,6 +54,7 @@ export class DeleteModalComponent implements OnInit {
     if(this.data.contactsData){
       this.isContacts=true;
       this.isDevices=false;
+      this.isTemplates=false;
       this.isLists=false;
       this.isMessages=false
       this.body = this.data.contactsData.contacts.map(res=>res.id)
@@ -81,6 +86,7 @@ export class DeleteModalComponent implements OnInit {
 
       this.isContacts=false;
       this.isDevices=false;
+      this.isTemplates=false;
       this.isLists=true;
       this.isMessages=false;
 
@@ -88,15 +94,26 @@ export class DeleteModalComponent implements OnInit {
     else if(this.data.messagesData){
       this.isContacts=false;
       this.isDevices=false;
+      this.isTemplates=false;
       this.isLists=false;
       this.isMessages=true;
 
       this.body = this.data.messagesData.messages.map(res=>res.id);
       this.numOfItems=this.body.length;
     }
+    else if(this.data.templatesData){
+      this.isContacts=false;
+      this.isDevices=false;
+      this.isTemplates=true;
+      this.isLists=false;
+      this.isMessages=false;
+
+    }
+
     else{
       this.isContacts=false;
       this.isDevices=true;
+      this.isTemplates=false;
       this.isLists=false;
       this.isMessages=false;
     }
@@ -185,6 +202,28 @@ this.devicesService.deleteDevice(this.devicesService.email,this.data.deviceData.
 )
 
   }
+
+
+  deleteTemplates(){
+    this.templatesService.deleteTemplates(this.templatesService.email,this.data.templatesData.templatesId).subscribe(
+      (res)=>{
+        this.isLoading = false
+
+        this.onClose(true);
+
+        this.toaster.success(`Deleted Successfully`)
+
+
+      },
+      (err)=>{
+        this.isLoading = false
+        this.onClose();
+        this.toaster.error("Error")
+
+      }
+    )
+
+      }
 
   deleteList(){
     this.isLoading = true
@@ -298,7 +337,9 @@ deleteMessages(){
     else if(this.isMessages){
       this.deleteMessages();
     }
-    else{
+    else if (this.isTemplates){
+      this.deleteTemplates();
+    } else{
       this.deleteDevice();
 
     }

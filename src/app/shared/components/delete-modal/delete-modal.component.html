@@ -10,7 +10,7 @@
   <!-- modal body  -->
 
   <div class="content d-flex justify-content-center align-items-center flex-column gap-4">
-    <div class="txt-lg">
+    <div class="txt-lg" *ngIf="!isTemplates">
       <!-- number of selected items -->
       <ng-container *ngIf="!isDevices" >
 
@@ -23,7 +23,10 @@
 
     <ng-container *ngIf="isDevices">
       <p  class="txt-lg my-2 text-center" style="line-height: 1.3;">Are you sure you want to delete this device ?</p>
+    </ng-container>
 
+    <ng-container *ngIf="isTemplates">
+      <p  class="txt-lg my-2 text-center" style="line-height: 1.3;">Are you sure you want to delete this template ?</p>
     </ng-container>
 
     <ng-container *ngIf="isContacts">

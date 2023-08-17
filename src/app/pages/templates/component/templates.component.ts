@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component , ViewChild } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddTemplateComponent } from '../components/addTemplate/addTemplate.component';
-import {
-  MatDialog,
-  MatDialogModule,
-  MatDialogConfig,
-} from '@angular/material/dialog';
+import { InnerTemplatesComponent } from '../components/innerTemplates/innerTemplates.component';
+
+import { MatDialogModule} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-templates',
@@ -12,19 +11,33 @@ import {
   styleUrls: ['./templates.component.scss'],
 })
 export class TemplatesComponent {
-  constructor(private matDialog: MatDialog) {}
-  openDialog() {
-    this.matDialog.open(AddTemplateComponent, {
-      height:'70vh' ,
-      width: '30vw',
 
+  @ViewChild(InnerTemplatesComponent) templates:InnerTemplatesComponent;
+
+  constructor(public dialog: MatDialog) {}
+
+  openAddTemplateModal(){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='70vh';
+    dialogConfig.width='37vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.maxHeight='85vh';
+    dialogConfig.disableClose = true;
+
+    const dialogRef = this.dialog.open(AddTemplateComponent,dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.templates.getTemplates();
+      }
     });
-
-
-
   }
+
+
+
+
+
+
 }
-
-
-
 

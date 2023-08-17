@@ -57,23 +57,13 @@ export class WriteMessageComponent implements OnInit {
 
   // }
   onSelect(event){
-
-
     let template=this.allTemplates.find((t)=>t.id==event.value);
     this.form.patchValue({
       message:template.messageBody
     });
 
     console.log(template)
-    // template.attachments.map((attach)=>{
-    //   this.fileData.push({
-    //     name:"",
-    //     type:"",
-    //     url:attach,
-    //     size:0
-    //   });
 
-    // })
     this.fileData=template.attachments.map((temp)=>{
       return{
         name:"",
@@ -86,12 +76,10 @@ export class WriteMessageComponent implements OnInit {
     this.messageBody=(this.form.value.message)
 
  console.log(this.fileData);
-
-
   }
+
+
   onFileChange(e){
     console.log(this.fileData);
-    // let files=this.fileData.map((file)=>file.url);
-    // this.attachments.emit(files)
   }
 }
