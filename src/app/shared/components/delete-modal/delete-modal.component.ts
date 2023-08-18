@@ -9,11 +9,14 @@ import { ToasterServices } from '../us-toaster/us-toaster.component';
 import { ListData } from 'src/app/pages/manage-contacts/list-data';
 import { Message } from 'src/app/pages/messages/message';
 import { MessagesService } from 'src/app/pages/messages/messages.service';
+import { compaignDetails } from 'src/app/pages/compaigns/campaigns';
+import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
 interface ComponentData{
   contactsData?: { contacts:Contacts[] , remove:boolean},
   deviceData?:   {deviceId:string},
   listsData?:    {contacts:Contacts[] , list:string[] , lists:ListData[]},
-  messagesData?: {messages:Message[]}
+  messagesData?: {messages:Message[]},
+  compaignData?: {compaignId:string}
 
 
  }
@@ -36,11 +39,13 @@ export class DeleteModalComponent implements OnInit {
   isDevices:boolean=false;
   isLists:boolean=false;
   isMessages:boolean=false;
+  isCompaigns:boolean=false;
   constructor(
     private devicesService:DevicesService,
     private listService:ManageContactsService,
     private messageService:MessagesService,
     private toaster: ToasterServices,
+    private compaignsService:CompaignsService,
     public dialogRef: MatDialogRef<DeleteContactComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ComponentData,
   ) {
@@ -93,6 +98,15 @@ export class DeleteModalComponent implements OnInit {
 
       this.body = this.data.messagesData.messages.map(res=>res.id);
       this.numOfItems=this.body.length;
+    }
+    else if(this.data.compaignData){
+      this.isContacts=false;
+      this.isDevices=false;
+      this.isLists=false;
+      this.isMessages=false;
+      this.isCompaigns=true;
+      console.log("is compaigns", this.isCompaigns)
+
     }
     else{
       this.isContacts=false;
@@ -185,6 +199,28 @@ this.devicesService.deleteDevice(this.devicesService.email,this.data.deviceData.
 )
 
   }
+
+
+  deleteCompaign(){
+    this.compaignsService.deleteWhatsappBusinessCampaign(this.data.compaignData.compaignId,this.compaignsService.email).subscribe(
+      (res)=>{
+        this.isLoading = false
+
+        this.onClose(true);
+
+        this.toaster.success(`Deleted Successfully`)
+
+
+      },
+      (err)=>{
+        this.isLoading = false
+        this.onClose();
+        this.toaster.error("Error")
+
+      }
+    )
+
+      }
 
   deleteList(){
     this.isLoading = true
@@ -297,6 +333,9 @@ deleteMessages(){
 
     else if(this.isMessages){
       this.deleteMessages();
+    }
+    else if(this.isCompaigns){
+      this.deleteCompaign()
     }
     else{
       this.deleteDevice();

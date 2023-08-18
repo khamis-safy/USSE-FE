@@ -9,7 +9,7 @@
       <div class="d-flex align-items-between flex-column justify-content-between " style="min-height: 700px;">
         <app-stepOne (allSelected)="getLists($event)"></app-stepOne>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
-          <button class="rest-style " matStepperNext
+          <button class="rest-style " matStepperNext [disabled]="lists.length==0"
           >
             <us-button
             class="m-2"
@@ -19,10 +19,9 @@
             [loading]="false"
             [appearance]="'primary'"
             (clicked)="toSecondStep()"
-
+            [disabled]="lists.length==0"
             >
-<!--             [disabled]="lists.length==0 "
- -->
+
         </us-button>
         </button>
         </div>
@@ -88,6 +87,7 @@
             [loading]="false"
             [disabled]="false"
             [appearance]="'primary'"
+            (clicked)="toLastStep()"
             >
             </us-button>
             </button>
@@ -99,7 +99,7 @@
     <mat-step  >
       <ng-template matStepLabel>Setting</ng-template>
       <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-          <app-stepFour></app-stepFour>
+          <app-stepFour  (formValidityChange)="updateChildFormValidity($event)"></app-stepFour>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
             <button class="rest-style" matStepperPrevious>   <us-button
               class="m-2"
@@ -109,18 +109,20 @@
               [loading]="false"
               [disabled]="false"
               [appearance]="'primary'"
+
               >
             </us-button>
             </button>
 
             <button class="rest-style" matStepperNext>   <us-button
             class="m-2"
-            label="Next"
+            label="Add"
             [fill]="true"
             [size]="'md'"
-            [loading]="false"
-            [disabled]="false"
+            [loading]="isLoading"
+            [disabled]=" isLoading || !childFormValidity"
             [appearance]="'primary'"
+            (clicked)="addCompaign()"
             >
             </us-button>
             </button>
