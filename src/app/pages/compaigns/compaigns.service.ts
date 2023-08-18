@@ -22,47 +22,51 @@ getCampaigns(email:string,showsNum:number,pageNum:number,search:string):Observab
 compaignsCount(email:string):Observable<number>{
   return this.http.get<number>(`${env.api}Message/listCampaignsCount?email=${email}`)
 }
-addMewCampain(
-  campaignName: string,
-  scheduledAt: string,
-  isRepeatable: true,
-  repeatedDays: number,
-  intervalFrom: number,
-  intervalTo: number,
-  blackoutFrom: string,
-  blackoutTo: string,
-  maxPerDay: number,
-  attachments:string[],
-  lists:string[],
-  email: string,
-  msgBody: string,
-  deviceId: string
-):Observable<any>{
-  const data={
-    campaignName: campaignName,
-    scheduledAt: scheduledAt,
-    isRepeatable: isRepeatable,
-    repeatedDays: repeatedDays,
-    intervalFrom: intervalFrom,
-    intervalTo: intervalTo,
-    blackoutFrom: blackoutFrom,
-    blackoutTo: blackoutTo,
-    maxPerDay: maxPerDay,
-    attachments:attachments,
-    lists:lists,
-    email: email,
-    msgBody: msgBody,
-    deviceId: deviceId
-  }
-  return this.http.post<any>(`${env.api}Message/createWhatsappBusinessCampaign?email=${email}`,data)
+// addMewCampain(
+//   campaignName: string,
+//   scheduledAt: string,
+//   isRepeatable: true,
+//   repeatedDays: number,
+//   intervalFrom: number,
+//   intervalTo: number,
+//   blackoutFrom: string,
+//   blackoutTo: string,
+//   maxPerDay: number,
+//   attachments:string[],
+//   lists:string[],
+//   email: string,
+//   msgBody: string,
+//   deviceId: string
+// ):Observable<any>{
+//   const data={
+//     campaignName: campaignName,
+//     scheduledAt: scheduledAt,
+//     isRepeatable: isRepeatable,
+//     repeatedDays: repeatedDays,
+//     intervalFrom: intervalFrom,
+//     intervalTo: intervalTo,
+//     blackoutFrom: blackoutFrom,
+//     blackoutTo: blackoutTo,
+//     maxPerDay: maxPerDay,
+//     attachments:attachments,
+//     lists:lists,
+//     email: email,
+//     msgBody: msgBody,
+//     deviceId: deviceId
+//   }
+//   return this.http.post<any>(`${env.api}Message/createWhatsappBusinessCampaign?email=${email}`,data)
+// }
+addMewCampain(data:any):Observable<any>{
+  return this.http.post<any>(`${env.api}Message/createWhatsappBusinessCampaign?email=${data.email}`,data)
 }
-
 stopWhatsappBusinessCampaign(id:string,email:string):Observable<any>{
-  return this.http.put<any>(`${env.api}Message/createWhatsappBusinessCampaign?id=${id}&email=${email}`,'')
+  return this.http.put<any>(`${env.api}Message/stopWhatsappBusinessCampaign?id=${id}&email=${email}`,'')
 }
 getCampaignById(id:string):Observable<compaignDetails>{
   return this.http.get<compaignDetails>(`${env.api}Message/getCampaignById?id=${id}`);
 }
 
-
+deleteWhatsappBusinessCampaign(id:string,email:string):Observable<any>{
+  return this.http.put<any>(`${env.api}Message/deleteWhatsappBusinessCampaign?id=${id}&email=${email}`,'')
+}
 }

@@ -6,6 +6,8 @@ import { FormControl } from '@angular/forms';
 import { CompaignsService } from '../compaigns.service';
 import { Router } from '@angular/router';
 import { compaignDetails } from '../campaigns';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 
 
 
@@ -24,10 +26,10 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   columns :FormControl;
   displayed: string[] = ['Name', 'Status', 'Creator Name', 'Start Date'];
   displayedColumns: string[] = ['Name', 'Status', 'Creator Name', 'Start Date','Action'];
-  dataSource:MatTableDataSource<any>;
+  dataSource:MatTableDataSource<compaignDetails>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private compaignsService:CompaignsService, private router:Router){}
+  constructor(private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router){}
 
 
   ngOnInit() {
@@ -39,16 +41,24 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   }
 
   getCompaigns(){
-    this.compaignsCount();
+
     let shows=this.compaignsService.display;
     let pageNum=this.compaignsService.pageNum;
     let email=this.compaignsService.email;
     let search=this.compaignsService.search;
     this.loading = true;
+
     this.compaignsService.getCampaigns(email,shows,pageNum,search).subscribe(
       (res)=>{
         this.loading = false;
-        this.dataSource=new MatTableDataSource<any>(res)
+        this.dataSource=new MatTableDataSource<compaignDetails>(res);
+        if(search!=""){
+            this.length=res.length
+        }
+        else{
+          this.compaignsCount();
+
+        }
         console.log(res)
 
       },
@@ -63,6 +73,7 @@ compaignsCount(){
   let email=this.compaignsService.email;
   this.compaignsService.compaignsCount(email).subscribe(
     (res)=>{
+
       this.length=res;
     }
     ,(err)=>{
@@ -94,7 +105,7 @@ compaignsCount(){
     }
   }
   stopComaign(element){
-    // console.log("stop compaign")
+    console.log("stop compaign")
     this.compaignsService.stopWhatsappBusinessCampaign(element.id,this.compaignsService.email).subscribe(
       (res)=>{
         this.getCompaigns();
@@ -105,8 +116,30 @@ compaignsCount(){
       }
     )
   }
-  test(element){
-    console.log("test")
+  deleteCompaign(element){
+    console.log("delete compaign")
+
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.data =
+    {
+      compaignData:{compaignId:element.id}
+    }
+    const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.getCompaigns();
+      }
+    });
+  }
+
+  onSearch(event:any){
+    this.compaignsService.search=event.value;
+    this.getCompaigns();
   }
 }
 

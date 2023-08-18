@@ -86,7 +86,6 @@ getListsCount(){
 
 getListData(){
 
-  this.getListsCount();
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
   let email=this.listService.email;
@@ -102,7 +101,14 @@ getListData(){
       this.loading = false;
 
         this.numRows=res.length;
-  this.dataSource=new MatTableDataSource<ListData>(res)
+  this.dataSource=new MatTableDataSource<ListData>(res);
+        if(search!=""){
+          this.length=res.length
+      }
+      else{
+        this.getListsCount();
+
+      }
       },
       (err)=>{
         this.loading = false;

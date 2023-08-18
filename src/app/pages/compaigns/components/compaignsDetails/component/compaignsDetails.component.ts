@@ -57,5 +57,9 @@ export class CompaignsDetailsComponent implements OnInit ,AfterViewInit{
       }
       )
     }
+
+    backToCompaigns(){
+      this.router.navigateByUrl('compaigns')
+        }
   }
 

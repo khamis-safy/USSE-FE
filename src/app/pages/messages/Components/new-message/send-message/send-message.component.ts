@@ -1,17 +1,19 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NbDateService } from '@nebular/theme';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-send-message',
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.scss']
 })
-export class SendMessageComponent implements OnInit {
+export class SendMessageComponent implements OnInit ,OnDestroy{
   @ViewChild("dateTime") dateTime!: ElementRef;
   devices:SelectOption[];
+  deviceLoadingText:string='Loading ...';
   selectedDevices:string[]=[];
   devicesData = new FormControl([]);
   deviceId:string;
@@ -19,15 +21,36 @@ export class SendMessageComponent implements OnInit {
     devicesData:this.devicesData
   });
   dateFormControl = new FormControl(new Date());
+utcDateTime;
+timeSub$;
 
-  constructor(private devicesService:DevicesService,private dateService:NbDateService<Date>) {
+  constructor(private devicesService:DevicesService,private dateService:NbDateService<Date>,private datePipe: DatePipe) {
+
     // this.selectedDate=dateService.today();
    }
 
   ngOnInit() {
     this.getDevices();
-  }
+    this.convertToUTC(this.dateFormControl)
+    this.timeSub$ = this.dateFormControl.valueChanges.subscribe(res=>{
+     this.convertToUTC(this.dateFormControl);
 
+
+    });
+  }
+  ngOnDestroy(): void {
+    this.timeSub$.unsubscribe()
+  }
+  convertToUTC(timecontrol) {
+    const selectedTime =timecontrol.value;
+    if (selectedTime) {
+      this.utcDateTime = this.datePipe.transform(selectedTime, 'yyyy-MM-ddTHH:mm:ss.sssZ', 'UTC');
+      console.log('UTC Time:', this.utcDateTime);
+    }
+    else {
+      console.error('Selected time is null or undefined');
+    }
+  }
   getDevices(){
 
     this.devicesService.getDevices("khamis.safy@gmail.com",10,0,"","").subscribe(
@@ -39,6 +62,9 @@ export class SendMessageComponent implements OnInit {
             value:res.id
           }
         })
+        if(res.length==0){
+          this.deviceLoadingText='No Results'
+        }
        },
        (err)=>{
 
