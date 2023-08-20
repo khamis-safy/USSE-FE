@@ -19,6 +19,7 @@ export class WriteMessageComponent implements OnInit {
   templates:SelectOption[];
   allTemplates:Templates[]=[];
   fileData:Filse[]=[];
+  templateLoadingText:string='Loading ...';
   // @Output() messageBody = new EventEmitter<string>;
   @Output() attachments = new EventEmitter<string[]>;
   messageBody:string="";
@@ -46,7 +47,10 @@ export class WriteMessageComponent implements OnInit {
             title:res.templateName,
             value:res.id
           }
-        })
+        });
+        if(res.length==0){
+          this.templateLoadingText='No Results'
+        }
        },
        (err)=>{
 

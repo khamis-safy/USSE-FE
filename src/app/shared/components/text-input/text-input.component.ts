@@ -73,6 +73,7 @@ z
   // Native Events
   @Output() keyup = new EventEmitter();
   @Output() keydown = new EventEmitter();
+  @Output() input = new EventEmitter();
   @Output() copy = new EventEmitter();
   @Output() paste = new EventEmitter();
   @Output() change = new EventEmitter();
@@ -99,11 +100,11 @@ z
     // decrease the value of the number input
     if (typeof this.min == 'number' && this.value <= this.min) {
       this.value = this.min;
-      return;
+    return;
     }
     if (typeof this.max == 'number' && +this.value >= this.max) {
       this.value = +this.max - 1;
-      return;
+    return;
     }
     this.value = +this.value - 1;
     this.onChange(this.value);

@@ -1,3 +1,5 @@
+@import "./../../../../../../styles.scss";
+
 .form-switch .form-check-input {
   width: 55px !important;
 }
@@ -12,4 +14,24 @@
 .form-check-input:focus {
   border-color: none !important;
   box-shadow:none !important;
+}
+.error {
+  background: $clr_danger_50;
+  border-color: $clr_danger_700;
+  .prefix,
+  .suffix {
+    background: $clr_danger_50;
+    border-color: $clr_danger_700;
+  }
+
+}
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: $clr_neutral_600;
+
+  &.error {
+    color: $clr_danger_700;
+  }
 }

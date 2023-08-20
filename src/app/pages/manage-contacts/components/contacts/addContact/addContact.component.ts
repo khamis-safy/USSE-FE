@@ -22,7 +22,7 @@ interface CheckedCont{
 })
 export class AddContactComponent implements OnInit{
 // isChanged:boolean=false;
-
+listsLoadingText:string='Loading ...';
   // lists: ListData[] ;
   listsArr:SelectOption[]
   // ngx-intl-tel
@@ -135,7 +135,9 @@ oldData;
           }
         })
       }
-
+      if(res.length==0){
+        this.listsLoadingText='No Results'
+      }
       },
       (err)=>{
         // this.onClose(false);

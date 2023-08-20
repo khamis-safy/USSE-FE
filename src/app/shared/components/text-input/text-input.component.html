@@ -20,7 +20,7 @@
     [placeholder]="placeholder" [required]="!optional" [disabled]="isDisabled" [min]="min" [max]="max"
     [pattern]="pattern" (blur)="onTouched()" (ngModelChange)="onValueChange(srInputEl)" (change)="change.emit(value)"
     (keyup)="keyup.emit(value)" (keydown)="keydown.emit(value)" (keyup.enter)="submit.emit(value)"
-    (oncopy)="copy.emit(value)" (onpaste)="paste.emit(value)" (click)="clicked.emit($event)" />
+    (oncopy)="copy.emit(value)" (onpaste)="paste.emit(value)" (click)="clicked.emit($event)" (input)="input.emit($event)" />
 
   <div *ngIf="suffix" class="suffix">
     <p class="txt txt-sm">{{ suffix }}</p>
@@ -48,7 +48,7 @@
     [placeholder]="placeholder" [required]="!optional" [disabled]="isDisabled" [pattern]="pattern" (blur)="onTouched()"
     (ngModelChange)="onValueChange(srInputEl)" (change)="change.emit(value)" (keyup)="keyup.emit(value)"
     (keydown)="keydown.emit(value)" (keyup.enter)="submit.emit(value)" (oncopy)="copy.emit(value)"
-    (onpaste)="paste.emit(value)" (click)="clicked.emit($event)">
+    (onpaste)="paste.emit(value)" (click)="clicked.emit($event)" (input)="input.emit($event)">
 
   </textarea>
 

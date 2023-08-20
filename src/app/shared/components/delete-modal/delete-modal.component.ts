@@ -10,12 +10,15 @@ import { ToasterServices } from '../us-toaster/us-toaster.component';
 import { ListData } from 'src/app/pages/manage-contacts/list-data';
 import { Message } from 'src/app/pages/messages/message';
 import { MessagesService } from 'src/app/pages/messages/messages.service';
+import { compaignDetails } from 'src/app/pages/compaigns/campaigns';
+import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
 interface ComponentData{
   contactsData?: { contacts:Contacts[] , remove:boolean},
   deviceData?:   {deviceId:string},
   templatesData?:   {templatesId:string},
   listsData?:    {contacts:Contacts[] , list:string[] , lists:ListData[]},
-  messagesData?: {messages:Message[]}
+  messagesData?: {messages:Message[]},
+  compaignData?: {compaignId:string}
 
 
  }
@@ -39,12 +42,14 @@ export class DeleteModalComponent implements OnInit {
   isTemplates:boolean=false;
   isLists:boolean=false;
   isMessages:boolean=false;
+  isCompaigns:boolean=false;
   constructor(
     private devicesService:DevicesService,
     private templatesService:TemplatesService,
     private listService:ManageContactsService,
     private messageService:MessagesService,
     private toaster: ToasterServices,
+    private compaignsService:CompaignsService,
     public dialogRef: MatDialogRef<DeleteContactComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ComponentData,
   ) {
@@ -101,6 +106,7 @@ export class DeleteModalComponent implements OnInit {
       this.body = this.data.messagesData.messages.map(res=>res.id);
       this.numOfItems=this.body.length;
     }
+<<<<<<< HEAD
     else if(this.data.templatesData){
       this.isContacts=false;
       this.isDevices=false;
@@ -110,6 +116,17 @@ export class DeleteModalComponent implements OnInit {
 
     }
 
+=======
+    else if(this.data.compaignData){
+      this.isContacts=false;
+      this.isDevices=false;
+      this.isLists=false;
+      this.isMessages=false;
+      this.isCompaigns=true;
+      console.log("is compaigns", this.isCompaigns)
+
+    }
+>>>>>>> 7beb9cedfc55f3f7518b1cb28486c2f0edc7aff2
     else{
       this.isContacts=false;
       this.isDevices=true;
@@ -204,8 +221,13 @@ this.devicesService.deleteDevice(this.devicesService.email,this.data.deviceData.
   }
 
 
+<<<<<<< HEAD
   deleteTemplates(){
     this.templatesService.deleteTemplates(this.templatesService.email,this.data.templatesData.templatesId).subscribe(
+=======
+  deleteCompaign(){
+    this.compaignsService.deleteWhatsappBusinessCampaign(this.data.compaignData.compaignId,this.compaignsService.email).subscribe(
+>>>>>>> 7beb9cedfc55f3f7518b1cb28486c2f0edc7aff2
       (res)=>{
         this.isLoading = false
 
@@ -337,9 +359,16 @@ deleteMessages(){
     else if(this.isMessages){
       this.deleteMessages();
     }
+<<<<<<< HEAD
     else if (this.isTemplates){
       this.deleteTemplates();
     } else{
+=======
+    else if(this.isCompaigns){
+      this.deleteCompaign()
+    }
+    else{
+>>>>>>> 7beb9cedfc55f3f7518b1cb28486c2f0edc7aff2
       this.deleteDevice();
 
     }

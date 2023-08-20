@@ -22,7 +22,7 @@
 
   </div>
 <ng-container *ngIf="!isCompagins">
-<app-addCompaigns></app-addCompaigns>
+<app-addCompaigns (back)="isCompagins=$event"></app-addCompaigns>
 </ng-container>
 
 <ng-container *ngIf="isCompagins">
@@ -33,12 +33,13 @@
         <div class="d-flex position-relative row m-0">
           <div class="col-12 col-lg-4 p-0">
             <input
-              #search
-              type="text"
-              class="form-control ps-5 txt-xs"
-              id="search"
-              placeholder="Search"
-            />
+          #search
+          type="text"
+          class="form-control ps-5 txt-xs"
+          id="search"
+          placeholder="Search"
+          (keyup)="onSearch(search)"
+        />
           </div>
           <div
             class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y"
@@ -102,13 +103,14 @@
           <ng-container matColumnDef="Action">
             <th class="text-center" mat-header-cell *matHeaderCellDef>Action</th>
             <td class="text-center" mat-cell *matCellDef="let element"  (click)=" cellClick=true;">
-              <div class="d-flex justify-content-center align-items-center">
-                <div *ngIf="element.isStopped ==true"  class="me-2">
-                  <img (click)="test(element);" src="assets/icons/stop-compaigns.svg" alt="" />
-                </div>
-                <div *ngIf="element.isStopped==false "  class="me-4"> </div>
-                <img (click)="stopComaign(element);" src="assets/icons/Actionsc.svg" alt="" />
-              </div>
+
+                 <div class="d-flex justify-content-center w-100">
+                  <div class="d-flex flex-row-reverse gap-2 justify-content-between "style="
+                  width: 25%;">
+                    <img (click)="deleteCompaign(element)" src="assets/icons/Actionsc.svg" alt="" />
+                    <img *ngIf="element.isStopped ==false" (click)="stopComaign(element);" src="assets/icons/stop-compaigns.svg" alt="" />
+                  </div>
+                 </div>
             </td>
           </ng-container>
 

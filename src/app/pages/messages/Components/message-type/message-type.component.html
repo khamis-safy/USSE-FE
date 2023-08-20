@@ -103,13 +103,13 @@
             Received At
           </th>
           <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element.createdAt | date: 'h:mm a , M/d/y '}}
+            {{ element.createdAt | toLocalTime  | date: 'h:mm a , M/d/y '}}
           </td>
         </ng-container>
   <!-- Updated At at Column -->
   <ng-container matColumnDef="Updated At">
     <th class="text-center" mat-header-cell *matHeaderCellDef> Updated At </th>
-    <td class="text-center" mat-cell *matCellDef="let element"> {{element.updatedAt | date: 'h:mm a , M/d/y '}} </td>
+    <td class="text-center" mat-cell *matCellDef="let element"> {{element.updatedAt | toLocalTime  | date: 'h:mm a , M/d/y '}} </td>
   </ng-container>
 
   <!-- Status at Column -->

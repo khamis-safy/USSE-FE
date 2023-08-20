@@ -6,20 +6,7 @@ import { CompainMessages, compaignDetails } from 'src/app/pages/compaigns/campai
 import { FormControl } from '@angular/forms';
 import { CompaignsDetailsService } from '../../compaignsDetails.service';
 
-export interface PeriodicElement {
-  mobileNumber: string;
-  name: string;
-  replies: string;
-  responseTime: string;
-}
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { mobileNumber: '24 May 2023', name: 'John Smith', replies: 'Lorem Ipsum', responseTime: 'N/A' },
-  { mobileNumber: '24 May 2023', name: 'John Smith', replies: 'Lorem Ipsum', responseTime: 'N/A' },
-  { mobileNumber: '24 May 2023', name: 'John Smith', replies: 'Lorem Ipsum', responseTime: 'N/A' },
-  { mobileNumber: '24 May 2023', name: 'John Smith', replies: 'Lorem Ipsum', responseTime: 'N/A' },
-
-];
 
 @Component({
   selector: 'app-recipientActivities',

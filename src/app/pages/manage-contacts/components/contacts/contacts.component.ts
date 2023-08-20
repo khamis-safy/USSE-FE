@@ -102,10 +102,14 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
 
   }
 
+<<<<<<< HEAD
 
 
 getContacts(){
 this.contactsCount();
+=======
+  getContacts(){
+>>>>>>> 7beb9cedfc55f3f7518b1cb28486c2f0edc7aff2
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
   let email=this.listService.email;
@@ -123,7 +127,14 @@ this.contactsCount();
 
         }
 
-        this.dataSource=new MatTableDataSource<Contacts>(res)
+        this.dataSource=new MatTableDataSource<Contacts>(res);
+        if(search!=""){
+          this.length=res.length
+      }
+      else{
+        this.contactsCount();
+
+      }
 
        },
        (err)=>{

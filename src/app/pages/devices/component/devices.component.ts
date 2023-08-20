@@ -43,7 +43,6 @@ export class DevicesComponent implements OnInit{
 
   }
   getDevices(){
-    this.getDevicesCount();
     let shows=this.devicesService.display;
     let pageNum=this.devicesService.pageNum;
     let email=this.devicesService.email;
@@ -54,7 +53,14 @@ export class DevicesComponent implements OnInit{
       (res)=>{
         this.numRows=res.length;
         this.loading = false;
-        this.dataSource=new MatTableDataSource<DeviceData>(res)
+        this.dataSource=new MatTableDataSource<DeviceData>(res);
+        if(search!=""){
+          this.length=res.length
+      }
+      else{
+        this.getDevicesCount();
+
+      }
        },
        (err)=>{
         this.loading = false;
@@ -136,15 +142,15 @@ export class DevicesComponent implements OnInit{
     )
   }
   updateDeviceDelay(id: string) {
-    //console.log(this.delay)
-   this.devicesService.updateDeviceDelay(this.devicesService.email, id, this.delay).subscribe(
-     (res) => {
 
-       this.delay=  res.delayIntervalInSeconds ;
-       this.getDevices()
-        // console.log(res);
-       }
+     //console.log(this.delay)
+    this.devicesService.updateDeviceDelay(this.devicesService.email, id, this.delay).subscribe(
+      (res) => {
 
+        this.delay=  res.delayIntervalInSeconds ;
+        this.getDevices()
+         // console.log(res);
+        }
 
 
     )

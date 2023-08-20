@@ -1,25 +1,13 @@
 <section class="m-4">
-  <div class="d-flex justify-content-between mb-5 align-items-center">
-    <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-between pt-2 align-items-center">
+    <div class="d-flex gap-3 flex-column ">
+      <div >
+        <span class="text-primary-800 pointer "(click)="backToCompaigns()" >Compaigns</span> / <span style="color:rgba(134, 134, 134, 1)">{{compaign?.campaignName}}</span>
+      </div>
 
-
-      <!-- <mat-icon class="tab-icon">recent_actors</mat-icon> -->
-      <span  class="txt-lg main-heading">{{compaign?.campaignName}}</span>
-      <!-- <span  class="txt-lg main-heading"> List Name</span> -->
+      <div class="mb-3 d-flex gap-2 align-items-center w-100"><p class="txt-lg" style="font-weight: 500;">{{compaign?.campaignName}}</p> <p class="txt-xs mb-2" style="font-weight: 500; color:rgba(134, 134, 134, 1)">{{compaign?.createdAt | toLocalTime  | date: 'h:mm a , M/d/y '}}</p></div>
 
     </div>
-
-    <!-- <us-button
-      class="m-2"
-      label="New Compaign"
-      img="assets/icons/compagins-icon.svg"
-      [fill]="true"
-      [size]="'md'"
-      [loading]="false"
-      [disabled]="false"
-      [appearance]="'primary'"
-    >
-    </us-button> -->
 
   </div>
 

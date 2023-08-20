@@ -67,7 +67,7 @@ contacts:Contacts[]=[];
   }
   toLastStep(){
     this.deviceId=this.sendMessage.deviceId;
-    this.dateTime=this.sendMessage.dateTime.nativeElement.value.replace(" ","T");
+    this.dateTime=this.sendMessage.utcDateTime;
     this.isLoading = true
 
     console.log("date time",this.dateTime);
