@@ -42,7 +42,13 @@ const routes: Routes = [
         path: "templates",
         loadChildren:()=>
         import("./../../pages/templates/templates.module").then((m)=>m.TemplatesModule)
-      }
+      } ,
+      {
+        path: "users",
+        loadChildren:()=>
+        import("./../../pages/users/users.module").then((m)=>m.UsersModule)
+      }  
+     
 
 
 

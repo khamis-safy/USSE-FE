@@ -25,7 +25,12 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-
+export interface Filse{
+  name:string,
+  type:string,
+  url:string,
+  size:number
+}
 
 @Component({
   selector: 'app-addTemplate',
@@ -34,6 +39,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 })
 export class AddTemplateComponent implements OnInit {
   isLoading = false;
+  fileData:Filse[]=[];
 
   templateName: any = new FormControl('', [Validators.required]);
   messageBody: any = new FormControl('', [Validators.required]);
@@ -67,7 +73,7 @@ export class AddTemplateComponent implements OnInit {
     let email = 'khamis.safy@gmail.com';
     let templateName = this.form.value.templateName;
     let messageBody = this.form.value.messageBody;
-    let attachments = [];
+    let attachments = this.fileData.map((file)=>file.url);
 
 
     console.log('add');
@@ -117,8 +123,6 @@ export class AddTemplateComponent implements OnInit {
         );
 
 
-
-
     }
 
 
@@ -129,6 +133,14 @@ export class AddTemplateComponent implements OnInit {
         messageBody: this.data.messageBody,
         attachments: this.data.attachments,
       });
+      this.fileData=this.data.attachments.map((temp)=>{
+        return{
+          name:"",
+          type:"",
+          url:temp,
+          size:0
+        }
+      })
     }
 
     onClose(data?): void {

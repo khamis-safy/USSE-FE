@@ -18,8 +18,8 @@ export class TemplatesComponent {
 
   openAddTemplateModal(){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='70vh';
-    dialogConfig.width='37vw';
+    dialogConfig.height='77vh';
+    dialogConfig.width='40vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';

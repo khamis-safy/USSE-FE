@@ -4,7 +4,7 @@ export interface Templates {
     messageBody: string,
     createdAt: string,
     attachments:string[] ,
-    
+
 
 }
 export interface Attatchment{

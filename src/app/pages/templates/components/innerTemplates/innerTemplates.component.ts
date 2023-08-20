@@ -91,8 +91,8 @@ export class InnerTemplatesComponent implements OnInit {
 
   openEditModal(data?){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='70vh';
-    dialogConfig.width='37vw';
+    dialogConfig.height='77vh';
+    dialogConfig.width='40vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
@@ -157,9 +157,17 @@ export class InnerTemplatesComponent implements OnInit {
 
 
   changeColumns(event) {
-    this.displayedColumns = ['select', ...event, 'action'];
+    this.displayedColumns = [ ...event, 'Action'];
   }
 
 
+  onPageChange(event){
+    this.templatesService.showsNum=event.pageSize;
+    this.templatesService.pageNum=event.pageIndex;
+
+
+    this.getTemplates();
+
+  }
 
 }
