@@ -3,7 +3,7 @@ import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { LayoutsModule } from './layouts/layouts.module';
 
 export const routes: Routes = [
-	{ path: '', pathMatch: 'full', redirectTo: 'messages' },
+	{ path: '', pathMatch: 'full', redirectTo: 'login' },
   {
     path: "",
     loadChildren: () =>

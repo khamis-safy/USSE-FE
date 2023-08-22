@@ -33,7 +33,7 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
 
 
   ngOnInit() {
-    this.getDevices();
+    // this.getDevices();
     this.convertToUTC(this.dateFormControl)
     this.timeSub$ = this.dateFormControl.valueChanges.subscribe(res=>{
     this.convertToUTC(this.dateFormControl);
@@ -44,7 +44,7 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   convertToUTC(timecontrol) {
     const selectedTime =timecontrol.value;
     if (selectedTime) {
-      this.utcDateTime = this.datePipe.transform(selectedTime, 'yyyy-MM-ddTHH:mm:ss.sssZ', 'UTC');
+      this.utcDateTime = this.datePipe.transform(selectedTime,`yyyy-MM-ddTHH:mm:ss`, 'UTC');
       console.log('UTC Time:', this.utcDateTime);
     }
     else {
@@ -62,7 +62,8 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
             value:res.id
           }
         });
-        if(res.length==0){
+        console.log(this.devices)
+        if(activeDevices.length==0){
           this.deviceLoadingText='No Results'
         }
        },

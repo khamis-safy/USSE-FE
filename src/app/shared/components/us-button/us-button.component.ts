@@ -16,6 +16,7 @@ export class UsButtonComponent implements OnInit {
   @Input() disabled:boolean = false;
   @Input() fill:boolean =true
   @Input() appearance:string ='primary'
+  @Input() fullWidth?: boolean; // take full width of the parent
 
   @Output() clicked = new EventEmitter<any>();
   setClick(clickInfo:Event) {

@@ -7,17 +7,21 @@ const routes: Routes = [
     path:"",
     component:LayoutOneComponent,
     children:[
-      // {
-      //   path: "auth",
-      //   loadChildren: () =>
-      //     import("./../../pages/auth/auth.module").then((m) => m.AuthModule),
-      // },
-      // {
-      //   path: "signup",
-      //   loadChildren: () =>
-      //     import("./../../pages/signup/signup.module").then((m) => m.SignupModule),
-      // }
-
+      {
+        path: "login",
+        loadChildren:()=>
+        import("./../../pages/login/login.module").then((m)=>m.LoginModule)
+      },
+      {
+        path: "signup",
+        loadChildren:()=>
+        import("./../../pages/signup/signup.module").then((m)=>m.SignupModule)
+      },
+      {
+        path: "verification",
+        loadChildren:()=>
+        import("./../../pages/login/components/verify/verify.module").then((m)=>m.VerifyModule)
+      }
     ]
   }
 ];

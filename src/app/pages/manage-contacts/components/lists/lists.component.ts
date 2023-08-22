@@ -29,7 +29,8 @@ loading;
 subscribtions:Subscription[]=[];
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef;
-
+  noData: boolean=false;
+  notFound: boolean=false;
   columns :FormControl;
   @ViewChild(MatSort) sort: MatSort;
   displayed: string[] = ['Name','Create At', 'Total Contacts'];
@@ -75,7 +76,12 @@ getListsCount(){
     (res)=>{
       this.length=res;
       // this.length=0;
-
+      if(this.length==0){
+        this.noData=true
+      }
+      else{
+        this.noData=false
+      }
 
     }
     ,(err)=>{
@@ -103,7 +109,13 @@ getListData(){
         this.numRows=res.length;
   this.dataSource=new MatTableDataSource<ListData>(res);
         if(search!=""){
-          this.length=res.length
+          this.length=res.length;
+          if(this.length==0){
+            this.notFound=true;
+          }
+          else{
+            this.notFound=false;
+          }
       }
       else{
         this.getListsCount();

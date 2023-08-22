@@ -25,7 +25,7 @@ export class NewMessageComponent implements OnInit,AfterViewInit {
   @ViewChild(SendMessageComponent) sendMessage:SendMessageComponent;
   @Output() back = new EventEmitter<boolean>;
   isLoading = false;
-hocsNum:string[]=[]
+count:number=0;
 contacts:Contacts[]=[];
   addedContacts: string[] = [];
   deviceId:string;
@@ -42,8 +42,8 @@ contacts:Contacts[]=[];
 
 
   }
-  hocs(e){
-    this.hocsNum=e
+  contactsCount(e){
+    this.count=e
   }
   ngOnInit() {
   }
@@ -59,7 +59,8 @@ contacts:Contacts[]=[];
    console.log(this.selectContacts.addHocs)
     this.writeMessage.getTemplates();
   }
-  toSendMessage(){
+  toSendMessage(){this.sendMessage.getDevices();
+
     this.message=this.writeMessage.form.value.message;
 
     this.attachments=this.writeMessage.fileData.map((file)=>file.url);
@@ -67,7 +68,8 @@ contacts:Contacts[]=[];
   }
   toLastStep(){
     this.deviceId=this.sendMessage.deviceId;
-    this.dateTime=this.sendMessage.utcDateTime;
+    this.dateTime=`${this.sendMessage.utcDateTime}Z`;
+
     this.isLoading = true
 
     console.log("date time",this.dateTime);

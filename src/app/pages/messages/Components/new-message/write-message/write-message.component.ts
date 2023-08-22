@@ -82,7 +82,7 @@ export class WriteMessageComponent implements OnInit {
       return{
         name:"",
         type:"",
-        url:temp,
+        url:temp.fileUrl,
         size:0
       }
     })
