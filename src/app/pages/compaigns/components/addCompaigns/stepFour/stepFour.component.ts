@@ -1,5 +1,5 @@
 import { Component, OnInit,ChangeDetectorRef, AfterViewInit, ViewChild, OnChanges, ElementRef, OnDestroy, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { InputComponent } from 'src/app/shared/components/text-input/text-input.component';
 import { DatePipe } from '@angular/common';
 
@@ -16,6 +16,7 @@ export class StepFourComponent implements OnInit ,AfterViewInit,OnDestroy{
   @ViewChild("timePicker2") timePicker2!: ElementRef;
 
   isRepeatable:boolean=false;
+  isInterval:boolean=false;
   disableInterval:boolean=true;
 disableRepeate:boolean=true;
 disable:boolean=true;
@@ -30,13 +31,13 @@ time2Sub$
 utcTime1;
 utcTime2;
 
-time1 = new FormControl({value: new Date(), disabled: true});
-time2= new FormControl({value: new Date(), disabled: true});
 toggleTime:boolean=false;
-intFrom:any=new FormControl({value:15,disabled:false});
-intTo:any=new FormControl({value:30,disabled:false});
-rNum:any=new FormControl({value:100,disabled:false});
-repeate:any=new FormControl({value:0,disabled:true});
+time1 = new FormControl({value: new Date(),  disabled: true}, [Validators.required]);
+time2= new FormControl({value: new Date(),  disabled: true}, [Validators.required]);
+intFrom:any=new FormControl({value:15, disabled:false}, [Validators.required]);
+intTo:any=new FormControl({value:30, disabled:false}, [Validators.required]);
+rNum:any=new FormControl({value:100, disabled:false}, [Validators.required]);
+repeate:any=new FormControl({value:0, disabled:true}, [Validators.required]);
 selectedTime: Date= new Date();
 form: FormGroup;
 @Output() formValidityChange = new EventEmitter<boolean>(true);
@@ -51,7 +52,7 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
       time1: this.time1,
       time2: this.time2,
     },
-    { validators: [this.timeValidator,this.intervalInvalid] }
+    { validators: [this.timeValidator,this.intervalInvalid,this.notEmptyData] }
   );
 }
   ngAfterViewInit() {
@@ -99,7 +100,9 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
     return null; // No comparison if values are not set
 
   }
+  notEmptyData(){
 
+  }
   ngOnInit() {
     this.form.valueChanges.subscribe(() => {
       this.formValidityChange.emit(this.form.valid);

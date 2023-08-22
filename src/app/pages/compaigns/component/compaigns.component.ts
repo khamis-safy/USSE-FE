@@ -22,12 +22,14 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   loading:boolean=false;
   cellClick:boolean=false;
   isCompagins:boolean=true;
-
+  isSearch:boolean=false;
   columns :FormControl;
   displayed: string[] = ['Name', 'Status', 'Creator Name', 'Start Date'];
   displayedColumns: string[] = ['Name', 'Status', 'Creator Name', 'Start Date','Action'];
   dataSource:MatTableDataSource<compaignDetails>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  noData: boolean=false;
+  notFound: boolean=false;
 
   constructor(private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router){}
 
@@ -53,10 +55,18 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
         this.loading = false;
         this.dataSource=new MatTableDataSource<compaignDetails>(res);
         if(search!=""){
-            this.length=res.length
+            this.length=res.length;
+            if(this.length==0){
+              this.notFound=true;
+            }
+            else{
+              this.notFound=false;
+            }
         }
         else{
           this.compaignsCount();
+          this.isSearch=false;
+
 
         }
         console.log(res)
@@ -75,6 +85,12 @@ compaignsCount(){
     (res)=>{
 
       this.length=res;
+      if(this.length==0){
+        this.noData=true
+      }
+      else{
+        this.noData=false
+      }
     }
     ,(err)=>{
       this.length=0;
@@ -139,6 +155,7 @@ compaignsCount(){
 
   onSearch(event:any){
     this.compaignsService.search=event.value;
+
     this.getCompaigns();
   }
 }

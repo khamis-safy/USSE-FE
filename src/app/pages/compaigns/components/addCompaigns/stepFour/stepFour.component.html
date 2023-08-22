@@ -1,135 +1,15 @@
 <div class=" d-flex align-items-center justify-content-center mt-3 w-100" style="width: 100%;">
   <form [formGroup]="form" class="d-flex gap-5 flex-column align-items-center justify-content-center " style="width:50%;height: 480px;">
-    <!-- <div class="d-flex gap-5 flex-column align-items-center justify-content-center" style="height: 480px;">
-
-      <div class="w-100 d-flex justify-content-center align-items-center">
-        <label style="width: 220px;"for="">Randomize interval</label>
-        <div style="width: 470px" class="d-flex justify-content-between align-items-center">
-
-          <div class="form-check form-switch">
-            <input [checked]="isIntervalChecked"  (change)="onSwitcherChange($event,[intFrom,intTo])" class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-          </div>
-          <div class="d-flex flex-column">
-            <div class="d-flex align-items-center gap-2">
-              <div class="" style="width:136px">
-                <us-input
-                value=""
-                type="number"
-                [error]="false"
-                [fullWidth]="true"
-                [min]="minNum"
-                [max]="maxNum"
-                formControlName="intFrom"
-
-              ></us-input>
-            </div>
-            <span>To</span>
-            <div class="" style="width:136px">
-              <us-input
-
-              value=""
-              type="number"
-              [error]="false"
-              [fullWidth]="true"
-              [min]="minNum"
-              [max]="maxNum"
-              formControlName="intTo"
-
-            ></us-input>
-            </div>
-            </div>
-
-            <div *ngIf="
-              intFrom.value > maxNum ||
-              intTo.value > maxNum ||
-              intFrom.value > intTo.value
-              " class="hint error"
-            >
-              <i class="si-info"></i>
-              <p class="txt txt-xs">error message</p>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="d-flex gap-5 " style="
-      align-items: center;
-      width: 44%;" >
-        <label for="">Max recepients per day</label>
-
-
-        <div class="" style="width: 136px;margin-left: 104px;">
-            <us-input
-            value=""
-            type="number"
-            [error]="false"
-            [fullWidth]="true"
-            [min]="minNum"
-            [max]="maxNum"
-            formControlName="rNum"
-
-          ></us-input>
-        </div>
-
-      </div>
-
-      <div class="w-100 d-flex justify-content-center align-items-center">
-        <label style="width: 220px;"for="">Repeate every</label>
-        <div style="width: 470px" class="d-flex gap-2 align-items-center">
-
-          <div class="form-check form-switch" >
-            <input  (change)="onSwitcherChange($event,[repeate])"  class="form-check-input me-5" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-          </div>
-          <div class="d-flex gap-3 align-items-center ">
-
-            <div class="" style="width:136px">
-              <us-input
-              value=""
-              type="number"
-              [error]="false"
-              [fullWidth]="true"
-              [min]="minNum"
-              [max]="maxNum"
-              formControlName="repeate"
-
-            ></us-input>
-          </div>
-          <span>days</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="w-100 d-flex justify-content-center align-items-center">
-        <label style="width: 220px;"for="">Sending out time</label>
-        <div style="width: 470px" class="d-flex justify-content-between align-items-center">
-
-          <div class="form-check form-switch" >
-            <input  [checked]="isSendingOutTimeChecked" (change)="onSwitcherChange($event,[time1,time2])"   class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-          </div>
-          <div class="" style="width:136px">
-            <input formControlName="time1" [nbTimepicker]="timepicker1" class="rounded-pill border border-1py-2 txt-input w-100 date" style="padding: 0 12px;">
-            <nb-timepicker #timepicker1></nb-timepicker>
-              </div>
-              <span>To</span>
-              <div class="" style="width:136px">
-                <input  formControlName="time2" [nbTimepicker]="timepicker2" class="rounded-pill border border-1py-2 txt-input w-100 date" style="padding: 0 12px;">
-                <nb-timepicker   #timepicker2></nb-timepicker>
-              </div>
-        </div>
-      </div>
-    </div> -->
-
 
         <!-- first line -->
           <div class="w-100  d-flex justify-content-between align-items-center">
             <label style="width:30%" >Randomize interval</label>
 
             <div  style="width:20%" class="form-check form-switch">
-              <input [checked]="isIntervalChecked"  (change)="onSwitcherChange($event,[intFrom,intTo])" class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <input [checked]="isIntervalChecked"  (change)="isInterval=!isInterval; onSwitcherChange($event,[intFrom,intTo])" class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
             </div>
 
-            <div  style="width:40%" class="d-flex align-items-center justify-content-between">
+            <div  style="width:42%" class="d-flex align-items-center justify-content-between">
               <div class="d-flex  flex-column" style="    width: 136px;
               position: relative;
           ">
@@ -155,7 +35,7 @@
               <p class="txt txt-xs">invalid number</p>
             </div>
             </div>
-            <span>To</span>
+            <span style="margin-inline: 10px">To</span>
             <div class="" style="width:136px">
               <us-input
 
@@ -179,7 +59,7 @@
           <div class="w-100  d-flex justify-content-between align-items-center">
 
             <label style="width:30%"  for="">Max recepients per day</label>
-            <div  style="width:40%" class="d-flex align-items-center justify-content-between">
+            <div  style="width:42%" class="d-flex align-items-center justify-content-between">
               <div  class="d-flex  flex-column" style="    width: 136px;
               position: relative;
           ">
@@ -214,7 +94,7 @@
               <input  (change)="isRepeatable=!isRepeatable; changeValue() ;onSwitcherChange($event,[repeate])"  class="form-check-input me-5" type="checkbox" role="switch" id="flexSwitchCheckDefault">
             </div>
 
-            <div  style="width:40%" class="d-flex align-items-center gap-4">
+            <div  style="width:42%" class="d-flex align-items-center gap-4">
 
               <div class="d-flex  flex-column" style="    width: 136px;
               position: relative;
@@ -250,7 +130,7 @@
             <div style="width:20%"  class="form-check form-switch" >
               <input  [checked]="isSendingOutTimeChecked" (change)="onSwitcherChange($event,[time1,time2])"   class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
             </div>
-            <div  class="d-flex  flex-column" style=" width:40%;
+            <div  class="d-flex  flex-column" style=" width:42%;
             position: relative;" >
 
 
@@ -260,7 +140,7 @@
                   <input #timePicker1 formControlName="time1" [nbTimepicker]="timepicker1" class="rounded-pill border border-1py-2 txt-input w-100 date" style="padding: 0 12px;">
                   <nb-timepicker #timepicker1></nb-timepicker>
                     </div>
-                      <span>To</span>
+                      <span style="margin-inline: 10px">To</span>
                       <div class="" style="width:136px">
                         <input  #timePicker2 formControlName="time2" [nbTimepicker]="timepicker2" class="rounded-pill border border-1py-2 txt-input w-100 date" style="padding: 0 12px;">
                         <nb-timepicker  #timepicker2></nb-timepicker>

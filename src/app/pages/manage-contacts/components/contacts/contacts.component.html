@@ -1,5 +1,6 @@
 <section class="py-3 d-flex flex-column gap-3">
-  <div class="d-flex justify-content-between align-items-center ">
+  <ng-container *ngIf="!noData">
+    <div class="d-flex justify-content-between align-items-center ">
     <div class="d-flex position-relative row m-0">
       <div class=" col-12 col-lg-4 p-0">
         <input #search type="text" class="form-control ps-5  txt-xs" id="search" placeholder="Search" (keyup)="onSearch(search)">
@@ -16,9 +17,10 @@
       </mat-select>
     </mat-form-field>
   </div>
+</ng-container>
 
-  <ng-container *ngIf="length>0">
-  <section class="table-wrapper ">
+  <ng-container *ngIf="length>0 && !noData">
+    <section class="table-wrapper ">
     <table matSort mat-table [dataSource]="dataSource" (matSortChange)="onSortChange($event)">
       <!-- Checkbox Column -->
       <ng-container matColumnDef="select">

@@ -8,19 +8,17 @@ import {MatIconModule} from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatRippleModule} from '@angular/material/core';
+import { SignupService } from './signup.service';
 
 @NgModule({
   imports: [
     CommonModule,
     SignupRoutingModule,
-    ReactiveFormsModule,
-    MatIconModule,
-    TranslateModule,
-    MatButtonModule,
-    MatRippleModule,
-    FormsModule,
+
     SharedModule
   ],
   declarations: [SignupComponent]
+  ,
+  providers:[SignupService]
 })
 export class SignupModule { }
