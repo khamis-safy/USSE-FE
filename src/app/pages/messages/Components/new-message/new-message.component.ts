@@ -60,7 +60,7 @@ contacts:Contacts[]=[];
     this.writeMessage.getTemplates();
   }
   toSendMessage(){this.sendMessage.getDevices();
-
+    this.sendMessage.setDefaultTime();
     this.message=this.writeMessage.form.value.message;
 
     this.attachments=this.writeMessage.fileData.map((file)=>file.url);

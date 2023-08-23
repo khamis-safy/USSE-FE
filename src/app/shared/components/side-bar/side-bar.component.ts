@@ -1,5 +1,7 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { PluginsService } from 'src/app/services/plugins.service';
+import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-side-bar',
@@ -11,7 +13,7 @@ export class SideBarComponent implements OnInit {
   chars:string=this.userName.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
   show:boolean=false
 
-  constructor(public plugin:PluginsService,private render:Renderer2) {
+  constructor(public dialog: MatDialog,public plugin:PluginsService,private render:Renderer2) {
   }
   ngOnInit(): void {
   }

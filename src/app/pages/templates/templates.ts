@@ -23,3 +23,22 @@ export interface CheckCon {
   isSuccess:boolean,
   errorMessage:string | null
 }
+export interface TemplateData{
+  result:ResultsData,
+  id: number,
+  exception:string | null,
+  status: number,
+  isCanceled: boolean,
+  isCompleted: boolean,
+  isCompletedSuccessfully: boolean,
+  creationOptions: number,
+  asyncState: string | null,
+  isFaulted: boolean
+}
+export interface ResultsData{
+  id: string,
+  templateName:string,
+  messageBody:string,
+  createdAt: string,
+  attachments:string []
+}

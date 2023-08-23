@@ -63,9 +63,9 @@
 
 </div>
 <!-- Hint / caption -->
-<div *ngIf="hintText" class="hint" [ngClass]="{ error }">
+<div *ngIf="hintText" class="hint mt-2" [ngClass]="{ error }">
   <i [class]="hintIcon"></i>
-  <p class="txt txt-xs">{{ hintText }}</p>
+  <p class="txt txt-xs hint mt-2" [ngClass]="{ error }">{{ hintText }}</p>
 </div>
 </div>
 

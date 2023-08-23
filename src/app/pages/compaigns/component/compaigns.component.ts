@@ -41,7 +41,12 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   }
   ngAfterViewInit() {
   }
-
+backToCompaigns(event){
+this.isCompagins=event;
+if(this.isCompagins){
+  this.getCompaigns();
+}
+}
   getCompaigns(){
 
     let shows=this.compaignsService.display;
@@ -49,7 +54,6 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
     let email=this.compaignsService.email;
     let search=this.compaignsService.search;
     this.loading = true;
-
     this.compaignsService.getCampaigns(email,shows,pageNum,search).subscribe(
       (res)=>{
         this.loading = false;
@@ -121,16 +125,25 @@ compaignsCount(){
     }
   }
   stopComaign(element){
-    console.log("stop compaign")
-    this.compaignsService.stopWhatsappBusinessCampaign(element.id,this.compaignsService.email).subscribe(
-      (res)=>{
+
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.data =
+    {
+      compaignData:{compaignId:element.id,action:"stop"}
+    }
+    const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
         this.getCompaigns();
-
-      },
-      (err)=>{
-
       }
-    )
+    });
+
+
   }
   deleteCompaign(element){
     console.log("delete compaign")
@@ -143,7 +156,7 @@ compaignsCount(){
     dialogConfig.minWidth='300px';
     dialogConfig.data =
     {
-      compaignData:{compaignId:element.id}
+      compaignData:{compaignId:element.id,action:"delete"}
     }
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {

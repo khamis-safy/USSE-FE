@@ -22,7 +22,7 @@
 
   </div>
 <ng-container *ngIf="!isCompagins">
-<app-addCompaigns (back)="isCompagins=$event"></app-addCompaigns>
+<app-addCompaigns (back)="backToCompaigns($event)"></app-addCompaigns>
 </ng-container>
 
 <ng-container *ngIf="isCompagins">

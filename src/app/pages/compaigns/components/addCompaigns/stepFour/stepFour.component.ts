@@ -16,12 +16,13 @@ export class StepFourComponent implements OnInit ,AfterViewInit,OnDestroy{
   @ViewChild("timePicker2") timePicker2!: ElementRef;
 
   isRepeatable:boolean=false;
-  isInterval:boolean=false;
+  isInterval:boolean=true;
+
   disableInterval:boolean=true;
-disableRepeate:boolean=true;
-disable:boolean=true;
-isSendingOutTimeChecked:boolean=false;
-isIntervalChecked:boolean=true;
+  disableRepeate:boolean=true;
+  disable:boolean=true;
+  isSendingOutTimeChecked:boolean=false;
+  isIntervalChecked:boolean=true;
 // @ViewChild(InputComponent) inputCom1:InputComponent;
 // @ViewChild(InputComponent) inputCom1:InputComponent;
 // @ViewChild(InputComponent) inputCom1:InputComponent;
@@ -32,8 +33,8 @@ utcTime1;
 utcTime2;
 
 toggleTime:boolean=false;
-time1 = new FormControl({value: new Date(),  disabled: true}, [Validators.required]);
-time2= new FormControl({value: new Date(),  disabled: true}, [Validators.required]);
+time1:any = new FormControl({value:'',  disabled: true}, [Validators.required]);
+time2:any= new FormControl({value: '',  disabled: true}, [Validators.required]);
 intFrom:any=new FormControl({value:15, disabled:false}, [Validators.required]);
 intTo:any=new FormControl({value:30, disabled:false}, [Validators.required]);
 rNum:any=new FormControl({value:100, disabled:false}, [Validators.required]);
@@ -52,7 +53,7 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
       time1: this.time1,
       time2: this.time2,
     },
-    { validators: [this.timeValidator,this.intervalInvalid,this.notEmptyData] }
+    { validators: [this.timeValidator,this.intervalInvalid] }
   );
 }
   ngAfterViewInit() {
@@ -100,15 +101,18 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
     return null; // No comparison if values are not set
 
   }
-  notEmptyData(){
-
+  setDefaultTime(){
+    this.time1.setValue(new Date());
+    this.time2.setValue(new Date());
   }
   ngOnInit() {
     this.form.valueChanges.subscribe(() => {
       this.formValidityChange.emit(this.form.valid);
     });
+
     this.utcTime1=this.convertToUTC(this.time1);
-    this.utcTime2=this.convertToUTC(this.time2)
+    this.utcTime2=this.convertToUTC(this.time2);
+ console.log("uts time",this.utcTime1);
     this.time1Sub$ =  this.time1.valueChanges.subscribe(res=>{
       this.utcTime1=this.convertToUTC(this.time1);
 
@@ -154,17 +158,19 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
   }
 // for date time
 
-  convertToUTC(timecontrol) :any{
-    const selectedTime =timecontrol.value;
-    if (selectedTime) {
-      // Create a new Date object with the selected time's time portion
-      const timeOnly = new Date(0); // Date at epoch (0 milliseconds)
-      timeOnly.setHours(selectedTime.getHours());
-      timeOnly.setMinutes(selectedTime.getMinutes());
-      timeOnly.setSeconds(selectedTime.getSeconds());
+convertToUTC(timecontrol: any): any {
+  const selectedTime = timecontrol.value;
 
-      const utcTime = this.datePipe.transform(timeOnly, 'HH:mm:ss', 'UTC');
-      return utcTime
-    }
+  if (selectedTime) {
+    const timeOnly = new Date();
+    timeOnly.setHours(selectedTime.getHours());
+    timeOnly.setMinutes(selectedTime.getMinutes());
+    timeOnly.setSeconds(selectedTime.getSeconds());
+
+
+    const utcTime = this.datePipe.transform(timeOnly, 'HH:mm:ss', 'UTC');
+
+    return utcTime;
   }
+}
 }

@@ -5,7 +5,8 @@ export interface Login {
   isAuthenticated: boolean,
   email: string,
   roles:string[],
-  token: string
+  token: string,
+  refreshToken:string,
   refreshTokenExpiration: string,
   contactName: string,
   organisationName: string,

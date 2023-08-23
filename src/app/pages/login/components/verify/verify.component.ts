@@ -48,11 +48,38 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
     this.checkVerificationCode();
   }
 
+  getCookieValue(cookieName: string): string {
+    const cookies = document.cookie.split(';');
+    console.log("cookie value",document.cookie)
+    for (const cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === cookieName) {
+        console.log("cookie valu",decodeURIComponent(value))
+        return decodeURIComponent(value);
+      }
+    }
+    return '';
+  }
   setFocus(digitIndex: number) {
     const inputId = `digitInput${digitIndex}`;
     const inputElement = document.getElementById(inputId) as HTMLInputElement;
     if (inputElement) {
       inputElement.focus();
+    }
+  }
+  onKeyDown(event: KeyboardEvent, digitIndex: number) {
+    if (event.key === 'Backspace') {
+      this.onDeleteKey(digitIndex);
+    }
+  }
+
+  onDeleteKey(digitIndex: number) {
+    const prevDigitIndex = digitIndex - 1;
+
+    if (prevDigitIndex >= 0) {
+      this.verificationForm.controls[`digit${digitIndex}`].setValue('');
+
+      this.setFocus(prevDigitIndex);
     }
   }
 
@@ -63,7 +90,10 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
 
     if (code.length === 6) {
       // Send verification request using code
-      const token=localStorage.getItem("token");
+      const token =this.getCookieValue('refreshToken');
+
+      // const token=localStorage.getItem("token");
+      console.log(code)
       this.verificatioinService.confirmEmail(code,token).subscribe(
         (res)=>{
           console.log(res);
@@ -74,7 +104,6 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
         }
       )
 
-      // this.verificatioinService.confirmEmail()
       // console.log('Sending verification request with code:', code,"token",token);
     }
   }

@@ -27,7 +27,10 @@
     </ng-container>
 
     <ng-container *ngIf="isCompaigns">
-      <p  class="txt-lg my-2 text-center" style="line-height: 1.3;">Are you sure you want to delete this compaign ?</p>
+      <ng-container [ngSwitch]="action">
+        <p *ngSwitchCase="'delete'" class="txt-lg my-2 text-center" style="line-height: 1.3;">Are you sure you want to delete this compaign ?</p>
+        <p *ngSwitchCase="'stop'" class="txt-lg my-2 text-center" style="line-height: 1.3;">Are you sure you want to stop this compaign ?</p>
+      </ng-container>
 
     </ng-container>
     <ng-container *ngIf="isContacts">

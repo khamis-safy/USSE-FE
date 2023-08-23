@@ -16,7 +16,8 @@ interface ComponentData{
   deviceData?:   {deviceId:string},
   listsData?:    {contacts:Contacts[] , list:string[] , lists:ListData[]},
   messagesData?: {messages:Message[]},
-  compaignData?: {compaignId:string}
+  compaignData?: {compaignId:string,action:string},
+
 
 
  }
@@ -28,7 +29,7 @@ interface ComponentData{
 export class DeleteModalComponent implements OnInit {
   contacts:string[];
   list:string[];
-
+  action;
   isLoading = false;
   numOfItems:number=0;
   isRemoveL:boolean;
@@ -56,7 +57,9 @@ export class DeleteModalComponent implements OnInit {
       this.isContacts=true;
       this.isDevices=false;
       this.isLists=false;
-      this.isMessages=false
+      this.isMessages=false;
+      this.isCompaigns=false;
+
       this.body = this.data.contactsData.contacts.map(res=>res.id)
       this.numOfItems=this.body.length;
 
@@ -88,6 +91,7 @@ export class DeleteModalComponent implements OnInit {
       this.isDevices=false;
       this.isLists=true;
       this.isMessages=false;
+      this.isCompaigns=false;
 
     }
     else if(this.data.messagesData){
@@ -95,11 +99,13 @@ export class DeleteModalComponent implements OnInit {
       this.isDevices=false;
       this.isLists=false;
       this.isMessages=true;
+      this.isCompaigns=false;
 
       this.body = this.data.messagesData.messages.map(res=>res.id);
       this.numOfItems=this.body.length;
     }
     else if(this.data.compaignData){
+      this.action=this.data.compaignData.action;
       this.isContacts=false;
       this.isDevices=false;
       this.isLists=false;
@@ -113,6 +119,7 @@ export class DeleteModalComponent implements OnInit {
       this.isDevices=true;
       this.isLists=false;
       this.isMessages=false;
+      this.isCompaigns=false;
     }
 
 
@@ -201,26 +208,46 @@ this.devicesService.deleteDevice(this.devicesService.email,this.data.deviceData.
   }
 
 
-  deleteCompaign(){
-    this.compaignsService.deleteWhatsappBusinessCampaign(this.data.compaignData.compaignId,this.compaignsService.email).subscribe(
-      (res)=>{
-        this.isLoading = false
+deleteCompaign(){
+  this.compaignsService.deleteWhatsappBusinessCampaign(this.data.compaignData.compaignId,this.compaignsService.email).subscribe(
+    (res)=>{
+      this.isLoading = false
 
-        this.onClose(true);
+      this.onClose(true);
 
-        this.toaster.success(`Deleted Successfully`)
+      this.toaster.success(`Deleted Successfully`)
 
 
-      },
-      (err)=>{
-        this.isLoading = false
-        this.onClose();
-        this.toaster.error("Error")
+    },
+    (err)=>{
+      this.isLoading = false
+      this.onClose();
+      this.toaster.error("Error")
 
-      }
-    )
+    }
+  )
 
-      }
+    }
+stopComaign(){
+  this.compaignsService.stopWhatsappBusinessCampaign(this.data.compaignData.compaignId,this.compaignsService.email).subscribe(
+    (res)=>{
+      this.isLoading = false
+
+      this.onClose(true);
+
+      this.toaster.success(`Deleted Successfully`)
+
+
+    },
+    (err)=>{
+      this.isLoading = false
+      this.onClose();
+      this.toaster.error("Error")
+
+    }
+  )
+
+}
 
   deleteList(){
     this.isLoading = true
@@ -306,7 +333,9 @@ deleteMessages(){
       this.toaster.error("Error")
 
     }
-  )}
+  )
+}
+
 
   submit(){
     this.isLoading = true;
@@ -335,7 +364,13 @@ deleteMessages(){
       this.deleteMessages();
     }
     else if(this.isCompaigns){
-      this.deleteCompaign()
+      if(this.data.compaignData.action=="delete"){
+
+        this.deleteCompaign()
+      }
+      else{
+        this.stopComaign()
+      }
     }
     else{
       this.deleteDevice();

@@ -16,11 +16,13 @@ export class SendMessageComponent implements OnInit ,OnDestroy{
   deviceLoadingText:string='Loading ...';
   selectedDevices:string[]=[];
   devicesData = new FormControl([]);
+  dateFormControl:any = new FormControl('');
+
   deviceId:string;
   form = new FormGroup({
-    devicesData:this.devicesData
+    devicesData:this.devicesData,
+    dateFormControl:this.dateFormControl
   });
-  dateFormControl = new FormControl(new Date());
 utcDateTime;
 timeSub$;
 
@@ -71,7 +73,10 @@ timeSub$;
 
        })
   }
+  setDefaultTime(){
+    this.dateFormControl.setValue(new Date());
 
+  }
   onSelect(event){
     this.deviceId=event.value;
   }
