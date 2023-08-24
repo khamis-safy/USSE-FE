@@ -10,105 +10,105 @@
     </div>
 
     <!-- modal body  -->
-    <div class="modal-body overflow-auto px-1 px-4 mx-auto  ps-4 text-center container" style="height: 80%;">
+    <div class="modal-body overflow-auto px-1 px-4 mx-auto   ps-4 text-center container" style="height: 80%;">
         <div class="row">
             <form class="w-100 ">
                 <!-- device -->
-                 <div class="mb-4 mt-3 txt-lg  text-start col-10">
-                  
-
-                <us-select
-                [data]="listsArr"
-                
-                [multiSelect]="true"
-                [label]="'Device'"
-                [placeholder]="'Device_02'"
-                [isDisabled]="false"
-                [optional]="true"
-                [enableSearch]="true"
-                [searchbarOnToggler]="true"
-                [searchNoResultText]="'there is no result'"
-                [maxListItemsWithoutSearch]="5"
-              ></us-select>
-
-                 </div>
+                <div class="mb-4 mt-3 txt-lg  text-start col-10">
 
 
-                <!-- messages -->
-                <div class="py-3 txt-md row  text-center mx-3">
-                    <div class="d-flex justify-content-center">
-                        <div class="col-3 d-flex justify-content-start mx-2">
+                    <us-select [data]="listsArr" [multiSelect]="true" [label]="'Device'" [placeholder]="'Device_02'"
+                        [isDisabled]="false" [optional]="true" [enableSearch]="true" [searchbarOnToggler]="true"
+                        [searchNoResultText]="'there is no result'" [maxListItemsWithoutSearch]="5"></us-select>
+
+                </div>
+
+
+             
+                  <!-- messages -->
+                  <div class="pt-4  row   mx-3">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="col-3 d-flex justify-content-start mx-2 me-4 ">
                             <img src="assets/icons/me-icon.svg" alt="" class="me-2">
-                            <span class=" main-heading"> Messages</span>
+                            <span class=" txt-sm"> Messages</span>
                         </div>
 
                         <div class="col-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="child" name="messages" value="readOnly">
-                            <label class="me-4" for="child">Read Only</label>
+                            <input class="mx-2 p-5" type="radio" id="
+                            " name="messages" value="readOnly">
+                            <label class="me-4" for="
+                            ">Read Only</label>
                         </div>
 
-                        <div class="col-3 mx-2">
-                            <input class="mx-2" type="radio" id="adult" name="messages" value="fullAccess">
-                            <label class="me-4" for="adult">Full Access</label>
+                        <div class="col-4 mx-2 ">
+                            <input class="mx-2" type="radio" id="
+                            " name="messages" value="fullAccess">
+                            <label class="me-4" for="
+                            ">Full Access</label>
                         </div>
 
-                        <div class="col-3 mx-2">
-                            <input class="mx-2" type="radio" id="senior" name="messages" value="none">
-                            <label for="senior">None</label>
+                        <div class="col-2 mx-2 text-start">
+                            <input class="mx-2" type="radio" id="" name="messages" value="none">
+                            <label for="">None</label>
                         </div>
 
                     </div>
                 </div>
+                
 
                 <!-- Campaigns -->
-                <div class="py-3 txt-md row  text-center mx-3">
-                    <div class="d-flex justify-content-center">
-                        <div class="col-3 d-flex justify-content-start mx-2">
+                <div class="py-4  row   mx-3">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="col-3 d-flex justify-content-start mx-2  me-4  ">
                             <img src="assets/icons/users-compagns-icon.svg" alt="" class="me-2">
-                            <span class=" main-heading"> Campaigns</span>
+                            <span class=" txt-sm"> Campaigns</span>
                         </div>
 
                         <div class="col-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="child" name="Ccampaigns" value="readOnly">
-                            <label class="me-4" for="child">Read Only</label>
+                            <input class="mx-2 p-5" type="radio" id="
+                            " name="Ccampaigns" value="readOnly">
+                            <label class="me-4" for="
+                            ">Read Only</label>
                         </div>
 
-                        <div class="col-3 mx-2">
-                            <input class="mx-2" type="radio" id="adult" name="campaigns" value="fullAccess">
-                            <label class="me-4" for="adult">Full Access</label>
+                        <div class="col-4 mx-2 ">
+                            <input class="mx-2" type="radio" id="
+                            " name="campaigns" value="fullAccess">
+                            <label class="me-4" for="
+                            ">Full Access</label>
                         </div>
 
-                        <div class="col-3 mx-2">
-                            <input class="mx-2" type="radio" id="senior" name="campaigns" value="none">
-                            <label for="senior">None</label>
+                        <div class="col-2 mx-2  text-start">
+                            <input class="mx-2" type="radio" id="" name="campaigns" value="none">
+                            <label for="">None</label>
                         </div>
 
                     </div>
                 </div>
 
-                <hr>
+                <hr class="">
 
 
 
                 <!-- templates -->
-                <div class="py-3 txt-md row  text-center mx-3">
+                <div class="pt-4 row  text-center mx-3">
                     <div class="d-flex justify-content-center">
-                        <div class="col-3 d-flex justify-content-start mx-2">
+                        <div class="col-3 d-flex justify-content-start me-4 mx-2">
                             <img src="assets/icons/users-temp.svg" alt="" class="px-2">
-                            <span class=" main-heading"> Templates</span>
+                            <span class=" txt-sm"> Templates</span>
                         </div>
 
                         <div class="col-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="child" name="templates" value="readOnly">
-                            <label class="me-4" for="child">Read Only</label>
+                            <input class="mx-2 p-5" type="radio" id="" name="templates" value="readOnly">
+                            <label class="me-4" for="">Read Only</label>
                         </div>
 
-                        <div class="col-3 mx-2">
+                        <div class="col-4 mx-2">
                             <input class="mx-2" type="radio" id="adult" name="templates" value="fullAccess">
                             <label class="me-4" for="adult">Full Access</label>
                         </div>
 
-                        <div class="col-3 mx-2">
+                        <div class="col-2 mx-2 text-start">
                             <input class="mx-2" type="radio" id="senior" name="templates" value="none">
                             <label for="senior">None</label>
                         </div>
@@ -118,26 +118,26 @@
 
 
                 <!-- Bots -->
-                <div class="py-3 txt-md row  text-center mx-3">
+                <div class="pt-4 row  text-center mx-3">
                     <div class="d-flex justify-content-center">
-                        <div class="col-3 d-flex justify-content-start mx-2">
+                        <div class="col-3 d-flex justify-content-start mx-2 me-4">
                             <img src="assets/icons/users-bots.svg" alt="" class="px-2">
-                            <span class=" main-heading"> Bots</span>
+                            <span class="txt-sm"> Bots</span>
                         </div>
 
                         <div class="col-md-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="child" name="bots" value="readOnly">
-                            <label class="me-4" for="child">Read Only</label>
+                            <input class="mx-2 p-5" type="radio" id="" name="bots" value="readOnly">
+                            <label class="me-4" for="">Read Only</label>
                         </div>
 
-                        <div class="col-md-3 mx-2">
-                            <input class="mx-2" type="radio" id="adult" name="bots" value="fullAccess">
-                            <label class="me-4" for="adult">Full Access</label>
+                        <div class="col-md-4 mx-2">
+                            <input class="mx-2" type="radio" id="" name="bots" value="fullAccess">
+                            <label class="me-4" for="">Full Access</label>
                         </div>
 
-                        <div class="col-md-3 mx-2">
-                            <input class="mx-2" type="radio" id="senior" name="bots" value="none">
-                            <label for="senior">None</label>
+                        <div class="col-md-2 mx-2 text-start">
+                            <input class="mx-2" type="radio" id="" name="bots" value="none">
+                            <label for="">None</label>
                         </div>
 
                     </div>
@@ -145,26 +145,26 @@
 
 
                 <!-- Devices -->
-                <div class="py-3 txt-md row  text-center mx-3">
+                <div class="pt-4  row  text-center mx-3">
                     <div class="d-flex justify-content-center">
-                        <div class="col-md-3 d-flex justify-content-start mx-2">
+                        <div class="col-md-3 d-flex justify-content-start mx-2 me-4">
                             <img src="assets/icons/users-devices.svg" alt="" class="px-2">
-                            <span class=" main-heading"> Devices</span>
+                            <span class="txt-sm"> Devices</span>
                         </div>
 
                         <div class="col-md-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="child" name="devices" value="readOnly">
-                            <label class="me-4" for="child">Read Only</label>
+                            <input class="mx-2 p-5" type="radio" id="" name="devices" value="readOnly">
+                            <label class="me-4" for="">Read Only</label>
                         </div>
 
-                        <div class="col-md-3 mx-2">
-                            <input class="mx-2" type="radio" id="adult" name="devices" value="fullAccess">
-                            <label class="me-4" for="adult">Full Access</label>
+                        <div class="col-md-4 mx-2">
+                            <input class="mx-2" type="radio" id="" name="devices" value="fullAccess">
+                            <label class="me-4" for="">Full Access</label>
                         </div>
 
-                        <div class="col-md-3 mx-2">
-                            <input class="mx-2" type="radio" id="senior" name="devices" value="none">
-                            <label for="senior">None</label>
+                        <div class="col-md-2 mx-2 text-start">
+                            <input class="mx-2" type="radio" id="" name="devices" value="none">
+                            <label for="">None</label>
                         </div>
 
                     </div>
@@ -173,26 +173,26 @@
 
 
                 <!-- Contacts -->
-                <div class="py-3 txt-md row  text-center mx-3">
-                    <div class="d-flex justify-content-center">
-                        <div class="col-md-3 d-flex justify-content-start mx-2">
+                <div class="pt-4  row  text-center mx-3">
+                    <div class="d-flex justify-content-center ">
+                        <div class="col-md-3 d-flex justify-content-start mx-2 me-4">
                             <img src="assets/icons/users-contacts.svg" alt="" class="px-2">
-                            <span class=" main-heading"> Contacts</span>
+                            <span class="txt-sm"> Contacts</span>
                         </div>
 
                         <div class="col-md-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="child" name="contacts" value="readOnly">
-                            <label class="me-4" for="child">Read Only</label>
+                            <input class="mx-2 p-5" type="radio" id="" name="contacts"  value="readOnly">
+                            <label class="me-4 " for="">Read Only</label>
                         </div>
 
-                        <div class="col-md-3 mx-2">
-                            <input class="mx-2" type="radio" id="adult" name="contacts" value="fullAccess">
-                            <label class="me-4" for="adult">Full Access</label>
+                        <div class="col-md-4 mx-2">
+                            <input class="mx-2" type="radio" id="" name="contacts" value="fullAccess">
+                            <label class="me-4" for="">Full Access</label>
                         </div>
 
-                        <div class="col-md-3 mx-2">
-                            <input class="mx-2" type="radio" id="senior" name="contacts" value="none">
-                            <label for="senior">None</label>
+                        <div class="col-md-2 mx-2 text-start">
+                            <input class="mx-2" type="radio" id="" name="contacts" value="none">
+                            <label for="">None</label>
                         </div>
 
                     </div>
@@ -204,7 +204,7 @@
     </div>
     <!-- modal footer -->
     <div class="modal-footer justify-content-center gap-3" style="height: 10%;">
-        <us-button [loading]="false" label="Save" size="sm" [fill]="true" (clicked)="submitEdit()"></us-button>
+        <us-button [loading]="false" label="Save" size="sm" [fill]="true" (clicked)="submitSave()"></us-button>
         <us-button label="Cancel" size="sm" appearance="primary" [fill]="false" (clicked)="onClose()"
             [loading]="false"></us-button>
     </div>

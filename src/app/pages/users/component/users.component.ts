@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit ,ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatSelectModule } from '@angular/material/select';
+import { AddUserComponent } from '../components/addUser/addUser.component';
 import { ActionComponent } from '../components/action/action.component';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface PeriodicElement {
     userIDEmail: string;
@@ -31,19 +30,22 @@ const ELEMENT_DATA: PeriodicElement[] = [
     selector: 'app-users',
     templateUrl: './users.component.html',
     styleUrls: ['./users.component.scss'],
-    standalone: true,
-    imports: [MatTableModule,MatPaginatorModule, MatCheckboxModule, MatSelectModule],
+
+
 })
-export class UsersComponent {
+
+export class UsersComponent implements OnInit ,OnDestroy{
+    ngOnInit() {};
+    
     length: number;
     numRows;
-    loading; 
+    loading;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
-    
 
-    constructor(public dialog: MatDialog){};
 
-    displayedColumns: string[] = ['select', 'userIDEmail', 'userName', 'createdAt', 'action'];
+    constructor(public dialog: MatDialog ) { };
+
+    displayedColumns: string[] = ['userIDEmail', 'userName', 'createdAt', 'action'];
     dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
     selection = new SelectionModel<PeriodicElement>(true, []);
 
@@ -72,17 +74,17 @@ export class UsersComponent {
     }
 
 
-    openEditModal(data?) {
+    openActionModal(data?) {
         const dialogConfig = new MatDialogConfig();
-        dialogConfig.height = '78vh';
-        dialogConfig.width = '42vw';
+        dialogConfig.height = '81vh';
+        dialogConfig.width = '45vw';
         dialogConfig.maxWidth = '100%';
         dialogConfig.minWidth = '300px';
-        dialogConfig.maxHeight = '85vh';
+        dialogConfig.maxHeight = '87vh';
         dialogConfig.disableClose = true;
 
         //  dialogConfig.data= {contacts:data,listDetails:false};
-        const dialogRef = this.dialog.open(ActionComponent,dialogConfig);
+        const dialogRef = this.dialog.open(ActionComponent, dialogConfig);
         //this.selection.clear();
         //dialogRef.afterClosed().subscribe(result => {
         //if(result){
@@ -122,4 +124,27 @@ export class UsersComponent {
         // this.getContacts();
 
     }
+
+
+    openAddUserModal(data?) {
+            const dialogConfig=new MatDialogConfig();
+            dialogConfig.height = '81vh';
+            dialogConfig.width = '45vw';
+            dialogConfig.maxWidth = '100%';
+            dialogConfig.minWidth = '300px';
+            dialogConfig.maxHeight = '87vh';
+            dialogConfig.disableClose = true;
+        
+            const dialogRef = this.dialog.open(AddUserComponent,dialogConfig);
+        
+            // dialogRef.afterClosed().subscribe(result => {
+            //   if(result){
+            //     this.contacts.getContacts();
+            //   }
+            // });
+          
+
+    }
+
+    ngOnDestroy(){};
 }

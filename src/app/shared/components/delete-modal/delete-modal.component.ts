@@ -12,155 +12,152 @@ import { Message } from 'src/app/pages/messages/message';
 import { MessagesService } from 'src/app/pages/messages/messages.service';
 import { compaignDetails } from 'src/app/pages/compaigns/campaigns';
 import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
-interface ComponentData{
-  contactsData?: { contacts:Contacts[] , remove:boolean},
-  deviceData?:   {deviceId:string},
-  templatesData?:   {templatesId:string},
-  listsData?:    {contacts:Contacts[] , list:string[] , lists:ListData[]},
-  messagesData?: {messages:Message[]},
-  compaignData?: {compaignId:string}
+interface ComponentData {
+  contactsData?: { contacts: Contacts[], remove: boolean },
+  deviceData?: { deviceId: string },
+  templatesData?: { templatesId: string },
+  listsData?: { contacts: Contacts[], list: string[], lists: ListData[] },
+  messagesData?: { messages: Message[] },
+  compaignData?: { compaignId: string }
 
 
- }
+}
 @Component({
   selector: 'app-delete-modal',
   templateUrl: './delete-modal.component.html',
   styleUrls: ['./delete-modal.component.scss']
 })
 export class DeleteModalComponent implements OnInit {
-  contacts:string[];
-  list:string[];
+  contacts: string[];
+  list: string[];
 
   isLoading = false;
-  numOfItems:number=0;
-  isRemoveL:boolean;
-  body:string[];
-  removeCon:boolean=false;
+  numOfItems: number = 0;
+  isRemoveL: boolean;
+  body: string[];
+  removeCon: boolean = false;
 
-  isContacts:boolean=false;
-  isDevices:boolean=false;
-  isTemplates:boolean=false;
-  isLists:boolean=false;
-  isMessages:boolean=false;
-  isCompaigns:boolean=false;
+  isContacts: boolean = false;
+  isDevices: boolean = false;
+  isTemplates: boolean = false;
+  isLists: boolean = false;
+  isMessages: boolean = false;
+  isCompaigns: boolean = false;
   constructor(
-    private devicesService:DevicesService,
-    private templatesService:TemplatesService,
-    private listService:ManageContactsService,
-    private messageService:MessagesService,
+    private devicesService: DevicesService,
+    private templatesService: TemplatesService,
+    private listService: ManageContactsService,
+    private messageService: MessagesService,
     private toaster: ToasterServices,
-    private compaignsService:CompaignsService,
+    private compaignsService: CompaignsService,
     public dialogRef: MatDialogRef<DeleteContactComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ComponentData,
   ) {
-   }
+  }
 
   ngOnInit() {
-    if(this.data.contactsData){
-      this.isContacts=true;
-      this.isDevices=false;
-      this.isTemplates=false;
-      this.isLists=false;
-      this.isMessages=false
-      this.body = this.data.contactsData.contacts.map(res=>res.id)
-      this.numOfItems=this.body.length;
+    if (this.data.contactsData) {
+      this.isContacts = true;
+      this.isDevices = false;
+      this.isTemplates = false;
+      this.isLists = false;
+      this.isMessages = false
+      this.body = this.data.contactsData.contacts.map(res => res.id)
+      this.numOfItems = this.body.length;
 
-    if(this.data.contactsData.remove){
-      this.isRemoveL=true;
+      if (this.data.contactsData.remove) {
+        this.isRemoveL = true;
+      }
+      else {
+        this.isRemoveL = false;
+
+      }
     }
-    else{
-      this.isRemoveL=false;
+    else if (this.data.listsData) {
 
-    }}
-    else if(this.data.listsData)
-    {
-
-      if(this.data.listsData.list){
-        this.removeCon=true;
-        this.contacts=this.data.listsData.contacts.map((e)=>e.id);
-        this.list=this.data.listsData.list;
+      if (this.data.listsData.list) {
+        this.removeCon = true;
+        this.contacts = this.data.listsData.contacts.map((e) => e.id);
+        this.list = this.data.listsData.list;
         this.body = this.contacts
-        this.numOfItems=this.body.length;
+        this.numOfItems = this.body.length;
       }
-      else{
-      this.removeCon=false;
-      this.body = this.data.listsData.lists.map(res=>res.id);
-      this.numOfItems=this.body.length;
+      else {
+        this.removeCon = false;
+        this.body = this.data.listsData.lists.map(res => res.id);
+        this.numOfItems = this.body.length;
       }
 
 
-      this.isContacts=false;
-      this.isDevices=false;
-      this.isTemplates=false;
-      this.isLists=true;
-      this.isMessages=false;
+      this.isContacts = false;
+      this.isDevices = false;
+      this.isTemplates = false;
+      this.isLists = true;
+      this.isMessages = false;
 
     }
-    else if(this.data.messagesData){
-      this.isContacts=false;
-      this.isDevices=false;
-      this.isTemplates=false;
-      this.isLists=false;
-      this.isMessages=true;
+    else if (this.data.messagesData) {
+      this.isContacts = false;
+      this.isDevices = false;
+      this.isTemplates = false;
+      this.isLists = false;
+      this.isMessages = true;
 
-      this.body = this.data.messagesData.messages.map(res=>res.id);
-      this.numOfItems=this.body.length;
-    }
-<<<<<<< HEAD
-    else if(this.data.templatesData){
-      this.isContacts=false;
-      this.isDevices=false;
-      this.isTemplates=true;
-      this.isLists=false;
-      this.isMessages=false;
-
+      this.body = this.data.messagesData.messages.map(res => res.id);
+      this.numOfItems = this.body.length;
     }
 
-=======
-    else if(this.data.compaignData){
-      this.isContacts=false;
-      this.isDevices=false;
-      this.isLists=false;
-      this.isMessages=false;
-      this.isCompaigns=true;
+    else if (this.data.templatesData) {
+      this.isContacts = false;
+      this.isDevices = false;
+      this.isTemplates = true;
+      this.isLists = false;
+      this.isMessages = false;
+
+    }
+    else if (this.data.compaignData) {
+      this.isContacts = false;
+      this.isDevices = false;
+      this.isLists = false;
+      this.isMessages = false;
+      this.isCompaigns = true;
       console.log("is compaigns", this.isCompaigns)
 
     }
->>>>>>> 7beb9cedfc55f3f7518b1cb28486c2f0edc7aff2
-    else{
-      this.isContacts=false;
-      this.isDevices=true;
-      this.isTemplates=false;
-      this.isLists=false;
-      this.isMessages=false;
+    else {
+      this.isContacts = false;
+      this.isDevices = true;
+      this.isTemplates = false;
+      this.isLists = false;
+      this.isMessages = false;
     }
 
 
   }
 
-  deleteCon(){
+  deleteCon() {
 
-    this.listService.deleteContact('khamis.safy@gmail.com',this.body).subscribe(
-      (res)=>{
+    this.listService.deleteContact('khamis.safy@gmail.com', this.body).subscribe(
+      (res) => {
         this.isLoading = false
 
         this.onClose(this.body);
-        let succ=res.numberOfSuccess;
-        let err =res.numberOfErrors;
-        if(succ==0 && err>0){
+        let succ = res.numberOfSuccess;
+        let err = res.numberOfErrors;
+        if (succ == 0 && err > 0) {
           this.toaster.error(`Error - ${err}`)
         }
 
-        else if(succ>0 && err >0){
+        else if (succ > 0 && err > 0) {
           this.toaster.warning(`${succ} Success ${err} Failed`)
         }
-        else if(succ>0 && err ==0){
+        else if (succ > 0 && err == 0) {
           this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
 
         }
 
       },
-      (err)=>{
+      (err) => {
         this.isLoading = false
         this.onClose();
         this.toaster.error("Error")
@@ -168,28 +165,28 @@ export class DeleteModalComponent implements OnInit {
       }
     )
   }
-  removeLists(){
+  removeLists() {
     this.listService.removeContactsFromLists(this.body).subscribe(
-      (res)=>{
+      (res) => {
         this.isLoading = false
         this.onClose(this.body);
 
-        let succ=res.numberOfSuccess;
-        let err =res.numberOfErrors;
-        if(succ==0 && err>0){
+        let succ = res.numberOfSuccess;
+        let err = res.numberOfErrors;
+        if (succ == 0 && err > 0) {
           this.toaster.error(`Error - ${err}`)
         }
 
-        else if(succ>0 && err >0){
+        else if (succ > 0 && err > 0) {
           this.toaster.warning(`${succ} Success ${err} Failed`)
         }
-        else if(succ>0 && err ==0){
+        else if (succ > 0 && err == 0) {
           this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
 
         }
 
       },
-      (err)=>{
+      (err) => {
         this.isLoading = false
         this.onClose();
         this.toaster.error("Error")
@@ -199,36 +196,9 @@ export class DeleteModalComponent implements OnInit {
 
   }
 
-  deleteDevice(){
-this.devicesService.deleteDevice(this.devicesService.email,this.data.deviceData.deviceId).subscribe(
-  (res)=>{
-    this.isLoading = false
-
-    this.onClose(true);
-
-    this.toaster.success(`Deleted Successfully`)
-
-
-  },
-  (err)=>{
-    this.isLoading = false
-    this.onClose();
-    this.toaster.error("Error")
-
-  }
-)
-
-  }
-
-
-<<<<<<< HEAD
-  deleteTemplates(){
-    this.templatesService.deleteTemplates(this.templatesService.email,this.data.templatesData.templatesId).subscribe(
-=======
-  deleteCompaign(){
-    this.compaignsService.deleteWhatsappBusinessCampaign(this.data.compaignData.compaignId,this.compaignsService.email).subscribe(
->>>>>>> 7beb9cedfc55f3f7518b1cb28486c2f0edc7aff2
-      (res)=>{
+  deleteDevice() {
+    this.devicesService.deleteDevice(this.devicesService.email, this.data.deviceData.deviceId).subscribe(
+      (res) => {
         this.isLoading = false
 
         this.onClose(true);
@@ -237,7 +207,7 @@ this.devicesService.deleteDevice(this.devicesService.email,this.data.deviceData.
 
 
       },
-      (err)=>{
+      (err) => {
         this.isLoading = false
         this.onClose();
         this.toaster.error("Error")
@@ -245,59 +215,71 @@ this.devicesService.deleteDevice(this.devicesService.email,this.data.deviceData.
       }
     )
 
-      }
+  }
 
-  deleteList(){
-    this.isLoading = true
-    let body = this.data.listsData.lists.map(res=>res.id)
-    this.listService.deleteList('khamis.safy@gmail.com',body).subscribe(
-      (res)=>{
+
+
+  deleteTemplates() {
+    this.templatesService.deleteTemplates(this.templatesService.email, this.data.templatesData.templatesId).subscribe(
+      (res) => {
         this.isLoading = false
-        this.onClose(body);
-        let succ=res.numberOfSuccess;
-        let err =res.numberOfErrors;
-        if(succ==0 && err>0){
-          this.toaster.error(`Error - ${err}`)
-        }
 
-        else if(succ>0 && err >0){
-          this.toaster.warning(`${succ} Success ${err} Failed`)
-        }
-        else if(succ>0 && err ==0){
-          this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
+        this.onClose(true);
 
-        }
+        this.toaster.success(`Deleted Successfully`)
+
 
       },
-      (err)=>{
+      (err) => {
         this.isLoading = false
         this.onClose();
         this.toaster.error("Error")
 
       }
     )
+
   }
-  removeContacts(){
-    this.listService.removeContactsFromOneList(this.contacts,this.list).subscribe(
-      (res)=>{
+
+  deleteCompaign() {
+    this.compaignsService.deleteWhatsappBusinessCampaign(this.data.compaignData.compaignId, this.compaignsService.email).subscribe(
+      (res) => {
         this.isLoading = false
         this.onClose(true);
-        let succ=res.numberOfSuccess;
-        let err =res.numberOfErrors;
-        if(succ==0 && err>0){
+        this.toaster.success(`Deleted Successfully`)
+      },
+      (err) => {
+        this.isLoading = false
+        this.onClose();
+        this.toaster.error("Error")
+
+      }
+    )
+
+  }
+
+  deleteList() {
+    this.isLoading = true
+    let body = this.data.listsData.lists.map(res => res.id)
+    this.listService.deleteList('khamis.safy@gmail.com', body).subscribe(
+      (res) => {
+        this.isLoading = false
+        this.onClose(body);
+        let succ = res.numberOfSuccess;
+        let err = res.numberOfErrors;
+        if (succ == 0 && err > 0) {
           this.toaster.error(`Error - ${err}`)
         }
 
-        else if(succ>0 && err >0){
+        else if (succ > 0 && err > 0) {
           this.toaster.warning(`${succ} Success ${err} Failed`)
         }
-        else if(succ>0 && err ==0){
+        else if (succ > 0 && err == 0) {
           this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
 
         }
 
       },
-      (err)=>{
+      (err) => {
         this.isLoading = false
         this.onClose();
         this.toaster.error("Error")
@@ -305,82 +287,101 @@ this.devicesService.deleteDevice(this.devicesService.email,this.data.deviceData.
       }
     )
   }
-deleteMessages(){
-  this.messageService.deleteMessage(this.body).subscribe(
-    (res)=>{
-      this.isLoading = false
-      this.onClose(this.body);
-      let succ=res.numberOfSuccess;
-      let err =res.numberOfErrors;
-      if(succ==0 && err>0){
-        this.toaster.error(`Error - ${err}`)
+  removeContacts() {
+    this.listService.removeContactsFromOneList(this.contacts, this.list).subscribe(
+      (res) => {
+        this.isLoading = false
+        this.onClose(true);
+        let succ = res.numberOfSuccess;
+        let err = res.numberOfErrors;
+        if (succ == 0 && err > 0) {
+          this.toaster.error(`Error - ${err}`)
+        }
+
+        else if (succ > 0 && err > 0) {
+          this.toaster.warning(`${succ} Success ${err} Failed`)
+        }
+        else if (succ > 0 && err == 0) {
+          this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
+
+        }
+
+      },
+      (err) => {
+        this.isLoading = false
+        this.onClose();
+        this.toaster.error("Error")
+
       }
+    )
+  }
+  deleteMessages() {
+    this.messageService.deleteMessage(this.body).subscribe(
+      (res) => {
+        this.isLoading = false
+        this.onClose(this.body);
+        let succ = res.numberOfSuccess;
+        let err = res.numberOfErrors;
+        if (succ == 0 && err > 0) {
+          this.toaster.error(`Error - ${err}`)
+        }
 
-      else if(succ>0 && err >0){
-        this.toaster.warning(`${succ} Success ${err} Failed`)
+        else if (succ > 0 && err > 0) {
+          this.toaster.warning(`${succ} Success ${err} Failed`)
+        }
+        else if (succ > 0 && err == 0) {
+          this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
+
+        }
+
+      },
+      (err) => {
+        this.isLoading = false
+        this.onClose();
+        this.toaster.error("Error")
+
       }
-      else if(succ>0 && err ==0){
-        this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
+    )
+  }
 
-      }
-
-    },
-    (err)=>{
-      this.isLoading = false
-      this.onClose();
-      this.toaster.error("Error")
-
-    }
-  )}
-
-  submit(){
+  submit() {
     this.isLoading = true;
-    if(this.isContacts){
-      if(this.isRemoveL){
+    if (this.isContacts) {
+      if (this.isRemoveL) {
         // remove lists from contacts
         this.removeLists();
       }
-      else{
+      else {
         this.deleteCon();
 
       }
 
     }
-    else if(this.isLists){
-      if(this.data.listsData.list){
+    else if (this.isLists) {
+      if (this.data.listsData.list) {
         // from list details, remove contacts from list
-            this.removeContacts();
+        this.removeContacts();
       }
-      else{
-          this.deleteList()
+      else {
+        this.deleteList()
       }
     }
 
-    else if(this.isMessages){
+    else if (this.isMessages) {
       this.deleteMessages();
-    }
-<<<<<<< HEAD
-    else if (this.isTemplates){
+    } else if (this.isTemplates) {
       this.deleteTemplates();
-    } else{
-=======
-    else if(this.isCompaigns){
+    } else if (this.isCompaigns) {
       this.deleteCompaign()
     }
-    else{
->>>>>>> 7beb9cedfc55f3f7518b1cb28486c2f0edc7aff2
+    else {
       this.deleteDevice();
-
     }
 
-
-
-
   }
-   onClose(data?): void {
+
+  onClose(data?): void {
     this.dialogRef.close(data);
-
-
   }
 
 }

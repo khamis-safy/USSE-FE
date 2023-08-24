@@ -6,19 +6,18 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 
 @Component({
 
-    selector: 'app-action',
-    templateUrl: './action.component.html',
-    styleUrls: ['./action.component.scss'],
+    selector: 'app-addUser',
+    templateUrl: './addUser.component.html',
+    styleUrls: ['./addUser.component.scss'],
    // standalone: true,
     //imports: [MatCardModule, MatCheckboxModule, FormsModule, MatRadioModule ,MatSelectModule]
 
 })
-export class ActionComponent {
-    constructor(public dialogRef: MatDialogRef<ActionComponent>) { }
+export class AddUserComponent {
+    constructor(public dialogRef: MatDialogRef<AddUserComponent>) { }
     listsArr:SelectOption[]
-
-
-
+    next=false;
+   
 
 
     submitSave() {
@@ -30,6 +29,17 @@ export class ActionComponent {
     onClose(data?): void {
         this.dialogRef.close(data);
     }
+
+    openNext(){
+        this.next=true;
+    }
+    openPrevious(){
+        this.next=false;
+    }
+
+
+
+  
 
 
 

@@ -18,9 +18,9 @@
 
   <ng-container *ngIf="show">
     <ng-container>
-      <ul class="user-options d-flex p-4 bg-neutral-0 flex-column">
-        <li class="opt">
-          <a href="" class="text-neutral-600 d-flex">
+      <ul style="cursor: pointer;" class="user-options d-flex p-4 bg-neutral-0 flex-column">
+        <li class="opt" (click)="openSettingModal()">
+          <a  routerLinkActive="active"  class="text-neutral-600 d-flex">
             <div class="icon">
               <img src="assets/icons/settings.svg" alt="" />
             </div>
@@ -44,11 +44,7 @@
   <div class="all-options-container d-flex justify-content-between  flex-column h-100 overflow-auto px-3">
     <ul class="d-flex flex-column">
       <li class="">
-        <a
-          routerLinkActive="active"
-          routerLink="/dashboard"
-          class="text-neutral-600 d-flex"
-        >
+        <a routerLinkActive="active" routerLink="/dashboard" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/dashboard-1.svg" alt="" />
           </div>
@@ -56,11 +52,7 @@
         </a>
       </li>
       <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/messages"
-          class="text-neutral-600 d-flex"
-        >
+        <a routerLinkActive="active" routerLink="/messages" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/message-1.svg" alt="" />
           </div>
@@ -68,11 +60,7 @@
         </a>
       </li>
       <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/chats"
-          class="text-neutral-600 d-flex"
-        >
+        <a routerLinkActive="active" routerLink="/chats" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/chats-1.svg" alt="" />
           </div>
@@ -80,11 +68,7 @@
         </a>
       </li>
       <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/compaigns"
-          class="text-neutral-600 d-flex"
-        >
+        <a routerLinkActive="active" routerLink="/compaigns" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/campaign-1.svg" alt="" />
           </div>
@@ -92,11 +76,7 @@
         </a>
       </li>
       <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/templates"
-          class="text-neutral-600 d-flex"
-        >
+        <a routerLinkActive="active" routerLink="/templates" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/templates-1.svg" alt="" />
           </div>
@@ -104,11 +84,7 @@
         </a>
       </li>
       <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/contacts"
-          class="text-neutral-600 d-flex"
-        >
+        <a routerLinkActive="active" routerLink="/contacts" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/manage-contacts-1.svg" alt="" />
           </div>
@@ -116,11 +92,7 @@
         </a>
       </li>
       <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/users"
-          class="text-neutral-600 d-flex pe-4"
-        >
+        <a routerLinkActive="active" routerLink="/users" class="text-neutral-600 d-flex pe-4">
           <div class="icon">
             <img src="assets/icons/users-1.svg" alt="" />
           </div>
@@ -128,11 +100,7 @@
         </a>
       </li>
       <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/devices"
-          class="text-neutral-600 d-flex pe-3"
-        >
+        <a routerLinkActive="active" routerLink="/devices" class="text-neutral-600 d-flex pe-3">
           <div class="icon">
             <img src="assets/icons/devices-1.svg" alt="" />
           </div>
@@ -140,11 +108,7 @@
         </a>
       </li>
       <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/bot"
-          class="text-neutral-600 d-flex pe-4"
-        >
+        <a routerLinkActive="active" routerLink="/bot" class="text-neutral-600 d-flex pe-4">
           <div class="icon">
             <img src="assets/icons/bot-1.svg" alt="" />
           </div>
@@ -152,11 +116,7 @@
         </a>
       </li>
       <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/billing"
-          class="text-neutral-600 d-flex"
-        >
+        <a routerLinkActive="active" routerLink="/billing" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/billing-1.svg" alt="" />
           </div>
@@ -164,11 +124,7 @@
         </a>
       </li>
       <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/videos"
-          class="text-neutral-600 d-flex"
-        >
+        <a routerLinkActive="active" routerLink="/videos" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/video-1.svg" alt="" />
           </div>
@@ -176,11 +132,7 @@
         </a>
       </li>
       <li class="mb-3">
-        <a
-          routerLinkActive="active"
-          routerLink="/notes"
-          class="text-neutral-600 d-flex"
-        >
+        <a routerLinkActive="active" routerLink="/notes" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/notes-1.svg" alt="" />
           </div>
@@ -189,11 +141,7 @@
       </li>
     </ul>
     <div class="i-help">
-      <a
-        routerLinkActive="active"
-        routerLink="/help"
-        class="text-neutral-600 d-flex"
-      >
+      <a routerLinkActive="active" routerLink="/help" class="text-neutral-600 d-flex">
         <div class="icon">
           <img src="assets/icons/help-1.svg" alt="" />
         </div>
@@ -201,4 +149,8 @@
       </a>
     </div>
   </div>
+
+
 </div>
+
+

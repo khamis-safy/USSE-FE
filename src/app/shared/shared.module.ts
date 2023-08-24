@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { SideBarComponent } from './components/side-bar/side-bar.component';
+import { SideBarComponent } from './components/side-bar/component/side-bar.component';
+import { SettingComponent } from './components/side-bar/components/setting/setting.component';
+
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NavComponent } from './components/nav/nav.component';
@@ -82,6 +84,7 @@ import { ToLocalTimePipe } from './pipes/toLocalTime.pipe';
   ],
   declarations: [
     SideBarComponent,
+    SettingComponent ,
     FooterComponent,
     ToLocalTimePipe,
     HeaderComponent,

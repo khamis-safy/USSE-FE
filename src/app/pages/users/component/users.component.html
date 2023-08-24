@@ -4,6 +4,19 @@
             <img src="assets/icons/users-icon.svg" alt="" class="px-2">
             <span class="txt-lg main-heading"> Users</span>
         </div>
+        <us-button
+        class="m-2"
+        label="New User"
+        img="assets/icons/new-user-icon.svg"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+        (click)="openAddUserModal()"
+      ></us-button>
+   
+
     </div>
     <section class="py-3 d-flex flex-column gap-3">
         <div class="d-flex justify-content-between align-items-center my-2">
@@ -31,21 +44,7 @@
         <section class="table-wrapper  ">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-                <!-- Checkbox Column -->
-                <ng-container matColumnDef="select">
-                    <th mat-header-cell *matHeaderCellDef>
-                        <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                            [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-                        </mat-checkbox>
-                    </th>
-                    <td mat-cell *matCellDef="let row">
-                        <mat-checkbox (click)="$event.stopPropagation()"
-                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
-                            [aria-label]="checkboxLabel(row)">
-                        </mat-checkbox>
-                    </td>
-                </ng-container>
+              
 
                 <!-- userIDEmail Column -->
                 <ng-container matColumnDef="userIDEmail">
@@ -70,7 +69,7 @@
                     <th mat-header-cell *matHeaderCellDef> Action </th>
                     <td mat-cell *matCellDef="let element">
                         <div class="edit pointer mx-2">
-                            <img src="assets/icons/action-users-icon.svg" alt="" (click)="openEditModal(element)">
+                            <img src="assets/icons/action-users-icon.svg" alt="" (click)="openActionModal(element)">
                         </div>
                     </td>
                 </ng-container>

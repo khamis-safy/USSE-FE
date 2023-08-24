@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+
 import { ListData } from '../../list-data';
 import { Contacts } from '../../contacts';
 import { AddContactComponent } from './addContact/addContact.component';
@@ -102,14 +103,12 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
 
   }
 
-<<<<<<< HEAD
 
 
-getContacts(){
-this.contactsCount();
-=======
+
+
   getContacts(){
->>>>>>> 7beb9cedfc55f3f7518b1cb28486c2f0edc7aff2
+    this.contactsCount();
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
   let email=this.listService.email;

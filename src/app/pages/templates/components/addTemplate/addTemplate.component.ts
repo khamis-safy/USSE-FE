@@ -25,11 +25,11 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-export interface Filse{
-  name:string,
-  type:string,
-  url:string,
-  size:number
+export interface Filse {
+  name: string;
+  type: string;
+  url: string;
+  size: number;
 }
 
 @Component({
@@ -39,7 +39,7 @@ export interface Filse{
 })
 export class AddTemplateComponent implements OnInit {
   isLoading = false;
-  fileData:Filse[]=[];
+  fileData: Filse[] = [];
 
   templateName: any = new FormControl('', [Validators.required]);
   messageBody: any = new FormControl('', [Validators.required]);
@@ -73,12 +73,11 @@ export class AddTemplateComponent implements OnInit {
     let email = 'khamis.safy@gmail.com';
     let templateName = this.form.value.templateName;
     let messageBody = this.form.value.messageBody;
-    let attachments = this.fileData.map((file)=>file.url);
-
+    let attachments = this.fileData.map((file) => file.url);
 
     console.log('add');
     this.templatesService
-      .addTemplate(templateName, messageBody, email , attachments)
+      .addTemplate(templateName, messageBody, email, attachments)
       .subscribe(
         (res) => {
           this.isLoading = false;
@@ -101,53 +100,45 @@ export class AddTemplateComponent implements OnInit {
     this.isLoading = true;
 
     console.log(templateName);
-      this.templatesService
-        .updateTemplate(
-          this.data.id,
-          templateName,
-          messageBody,
-          email,
-          attachments
-        )
-        .subscribe(
-          (res) => {
-            this.isLoading = false;
-            this.onClose(true);
-            this.toaster.success('Success');
-          },
-          (err) => {
-            this.isLoading = false;
-            this.onClose(false);
-            this.toaster.error(`Error`);
-          }
-        );
-
-
-    }
-
-
-
-    fillingData() {
-      this.form.patchValue({
-        templateName: this.data.templateName,
-        messageBody: this.data.messageBody,
-        attachments: this.data.attachments,
-      });
-      this.fileData=this.data.attachments.map((temp)=>{
-        return{
-          name:"",
-          type:"",
-          url:temp,
-          size:0
+    this.templatesService
+      .updateTemplate(
+        this.data.id,
+        templateName,
+        messageBody,
+        email,
+        attachments
+      )
+      .subscribe(
+        (res) => {
+          this.isLoading = false;
+          this.onClose(true);
+          this.toaster.success('Success');
+        },
+        (err) => {
+          this.isLoading = false;
+          this.onClose(false);
+          this.toaster.error(`Error`);
         }
-      })
-    }
-
-    onClose(data?): void {
-      this.dialogRef.close(data);
-    }
+      );
   }
 
+  fillingData() {
+    this.form.patchValue({
+      templateName: this.data.templateName,
+      messageBody: this.data.messageBody,
+      attachments: this.data.attachments,
+    });
+    this.fileData = this.data.attachments.map((temp) => {
+      return {
+        name: '',
+        type: '',
+        url: temp,
+        size: 0,
+      };
+    });
+  }
 
-
-
+  onClose(data?): void {
+    this.dialogRef.close(data);
+  }
+}
