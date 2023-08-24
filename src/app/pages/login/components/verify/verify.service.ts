@@ -12,8 +12,15 @@ export class VerifyService {
 
   constructor(private http:HttpClient) { }
 
+  // confirmEmail(code:string,token:string):Observable<any>{
+  //   const refreshToken = localStorage.getItem("token")
+  //   const headers = new HttpHeaders({
+  //     'Authorization': `Bearer ${refreshToken}`
+  //   });
 
+  //   return this.http.put(`${env.api}Auth/confirmEmail?code=${code}&token=${token}`,"",{headers})
+  // }
   confirmEmail(code:string,token:string):Observable<any>{
-    return this.http.put(`${env.api}Auth/confirmEmail?code=${code}&token=${token}`,"")
+    return this.http.put(`${env.api}Auth/confirmEmail?code=${code}`,token)
   }
 }

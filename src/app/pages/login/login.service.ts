@@ -23,27 +23,31 @@ export class LoginService {
   //   return this.http.get<Login>(`${env.api}Auth/refreshToken`, { headers })
   // }
 
+  storeRefreshTokenInCookie(token: string) {
+    const expirationDate = new Date();
+    expirationDate.setHours(expirationDate.getHours() + 1); // Cookie will expire in 1 hour
 
+    const encodedToken = encodeURIComponent(token); // Encode the token
+    const cookieValue = `refreshToken=${encodedToken}; expires=${expirationDate.toUTCString()}; path=/`;
+    document.cookie = cookieValue;
+  }
 
   private getCookieValue(cookieName: string): string {
-    const cookies = document.cookie.split(';');
+    const cookies = document.cookie.split('; ');
     for (const cookie of cookies) {
-      const [name, value] = cookie.trim().split('=');
+      const [name, encodedValue] = cookie.trim().split('=');
       if (name === cookieName) {
-        console.log("cookie valu",decodeURIComponent(value))
-        return decodeURIComponent(value);
+        const decodedValue = decodeURIComponent(encodedValue); // Decode the value
+        console.log("cookie value", decodedValue);
+        return decodedValue;
       }
     }
-    return '';
+    return null;
   }
 
   refreshToken(): Observable<any> {
     const refreshToken = this.getCookieValue('refreshToken');
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${refreshToken}`
-      });
-
-      return this.http.get<any>(`${env.api}Auth/refreshToken`, { headers })
+    return this.http.post<any>(`${env.api}Auth/refreshToken`, refreshToken)
   }
 
 

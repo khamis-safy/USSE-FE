@@ -38,8 +38,8 @@ invalid:boolean=false;
 localStorage.setItem("token",res.token)
 
    // Store the refresh token in a cookie
-   this.storeRefreshTokenInCookie(res.refreshToken);
-   this.refreshToken(res.refreshToken);
+   this.loginService.storeRefreshTokenInCookie(res.refreshToken);
+   this.refreshToken();
 
    // Refresh the token every 1 hour
 
@@ -53,17 +53,15 @@ localStorage.setItem("token",res.token)
       this.router.navigateByUrl('verification')
 
     }
-    else{
-      if(!res.isActive && !res.isTrial){
-        this.invalid=true
+    if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
 
-      }
-      else{
-        this.invalid=false;
-      }
-      this.loading=false;
+      this.router.navigateByUrl('messages')
 
     }
+    this.invalid=(!res.isActive && !res.isTrial)?true:false
+
+
+
 
 
 
@@ -76,71 +74,19 @@ localStorage.setItem("token",res.token)
 )
 
   }
-  storeRefreshTokenInCookie(token: string) {
-    const expirationDate = new Date();
-    expirationDate.setHours(expirationDate.getHours() + 1); // Cookie will expire in 1 hour
 
-    const cookieValue = `refreshToken=${token}; expires=${expirationDate.toUTCString()}; path=/`;
-    document.cookie = cookieValue;
-  }
 
-  refreshToken(refreshToken:string) {
+  refreshToken() {
     this.loginService.refreshToken().subscribe(
       (res) => {
         // Update the refresh token in the cookie
-        this.storeRefreshTokenInCookie(res.refreshToken);
+        this.loginService.storeRefreshTokenInCookie(res.refreshToken);
       },
       (err) => {
         console.log(err);
       }
     );
   }
-
-
-
-//   login(){
-//     this.loading=true
-//     this.loginService.login(this.form.value).subscribe(
-//   (res)=>{
-//     console.log(res);
-//     this.authService.userData=res;
-// this.refreshToken()
-//     // check autheraization
-//     if(!res.isEmailAuthonticated){
-//       this.router.navigateByUrl('verification')
-
-//         this.sendCode();
-//     }
-//     else{
-//       this.loading=false;
-
-//     }
-
-//     this.refreshToken()
-
-//   },
-//   (err)=>{
-//     console.log(err);
-//     this.loading=false
-
-//   }
-// )
-
-//   }
-
-//   refreshToken(){
-//     this.loginService.refreshToken().subscribe(
-//             (res)=>{
-
-//             },
-//             (err)=>{
-//               console.log(err);
-
-//             }
-//           )
-
-//   }
-
 
   sendCode(){
     this.loginService.sendEmailCode(this.form.value.email).subscribe(
@@ -157,22 +103,7 @@ localStorage.setItem("token",res.token)
 
   }
 
-  // refreshToken(){
-  //   setInterval(()=>{
-  //     this.loginService.refreshToken().subscribe(
-  //       (res)=>{
-  // // store token in cookiel
-  // console.log("working")
-  //       },
-  //       (err)=>{
-  //         console.log(err);
 
-  //       }
-  //     )
-  //   },5000)
-
-
-  // }
 
 
 }

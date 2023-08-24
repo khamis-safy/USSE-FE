@@ -15,7 +15,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
 
   digitIndexes: number[] = [0, 1, 2, 3, 4, 5];
   loading: boolean;
-
+  invalid:boolean=false;
   constructor(private loginService:LoginService,private authService:AuthService,private router:Router,private formBuilder: FormBuilder,private verificatioinService:VerifyService) {
     this.verificationForm = this.formBuilder.group({
       digit0: ['', Validators.required],
@@ -96,10 +96,12 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
       console.log(code)
       this.verificatioinService.confirmEmail(code,token).subscribe(
         (res)=>{
+          this.invalid=false;
           console.log(res);
-          this.router.navigateByUrl("messages");
+          this.router.navigateByUrl("login");
         },
         (err)=>{
+          this.invalid=true;
           console.log(err)
         }
       )
@@ -107,9 +109,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
       // console.log('Sending verification request with code:', code,"token",token);
     }
   }
-  reSendCode(){
-    const email=this.authService.userData.email;
-    this.loading=true;
+  resetData(){
     this.verificationForm.setValue({
       digit0: '',
       digit1: '',
@@ -118,6 +118,11 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
       digit4: '',
       digit5: ''
     });
+  }
+  reSendCode(){
+    const email=this.authService.userData.email;
+    this.loading=true;
+  this.resetData();
     this.loginService.sendEmailCode(email).subscribe(
 
       (res)=>{

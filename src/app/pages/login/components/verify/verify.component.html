@@ -91,6 +91,9 @@
       <div
         class="d-flex flex-column align-items-center w-100 gap-3 p-2"
       >
+      <div *ngIf="invalid" class="hint error mt-2" > <i class="si-info"></i>
+        <p class="txt hint error  txt-xs">Wrong code</p></div>
+
       <div class="w-100">
 
         <us-button
