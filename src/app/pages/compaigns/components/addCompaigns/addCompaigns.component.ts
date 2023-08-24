@@ -20,6 +20,7 @@ export class AddCompaignsComponent implements OnInit {
   @Output() back = new EventEmitter<boolean>;
   isLoading = false;
   isRepeatable: boolean;
+  isInterval:boolean;
   repeatedDays: number;
   intervalFrom: number;
   intervalTo: number;
@@ -51,58 +52,91 @@ toSecondStep(){
 
 }
 toThirdStep(){
+  this.stepThreeComponent.getDevices();
   this.message=this.writeMessage.form.value.message;
+  this.stepThreeComponent.setDefaultTime();
 
   this.attachments=this.writeMessage.fileData.map((file)=>file.url);
 
 }
 toLastStep(){
   this.deviceId=this.stepThreeComponent.deviceId?this.stepThreeComponent.deviceId:"";
-  this.dateTime=this.stepThreeComponent.utcDateTime;
+  this.dateTime=`${this.stepThreeComponent.utcDateTime}Z`;
   this.compaignName=this.stepThreeComponent.form.value.compainName;
+  this.stepFourComponent.setDefaultTime();
 
 }
 addCompaign(){
 this.isRepeatable=this.stepFourComponent.isRepeatable;
+this.isInterval=this.stepFourComponent.isInterval;
+
 this.repeatedDays=this.stepFourComponent.form.get("repeate").value;
 this.intervalFrom=this.stepFourComponent.form.get("intFrom").value;
 this.intervalTo=this.stepFourComponent.form.get("intTo").value;
 this.blackoutFrom=this.stepFourComponent.utcTime1;
 this.blackoutTo=this.stepFourComponent.utcTime2;
 this.maxPerDay=this.stepFourComponent.form.get("rNum").value;
-this.stepFourComponent.convertToUTC(this.blackoutFrom)
-let data={
+this.stepFourComponent.convertToUTC(this.blackoutFrom);
+let data;
+if(this.attachments.length==0){
+  data={
+    campaignName: this.compaignName,
+    scheduledAt: this.dateTime,
+    isRepeatable: this.isRepeatable,
+    repeatedDays: this.repeatedDays,
+    intervalFrom: this.intervalFrom,
+    intervalTo: this.intervalTo,
+    sendingoutFrom: this.blackoutFrom,
+    sendingoutTo: this.blackoutTo,
+    maxPerDay: this.maxPerDay,
+    lists: this.lists,
+    email: this.compaignsService.email,
+    msgBody: this.message,
+    deviceId: this.deviceId,
+    isInterval: this.isInterval
+  }
+}
+else{
+
+data={
   campaignName: this.compaignName,
   scheduledAt: this.dateTime,
   isRepeatable: this.isRepeatable,
   repeatedDays: this.repeatedDays,
   intervalFrom: this.intervalFrom,
   intervalTo: this.intervalTo,
-  blackoutFrom: this.blackoutFrom,
-  blackoutTo: this.blackoutTo,
+  sendingoutFrom: this.blackoutFrom,
+  sendingoutTo: this.blackoutTo,
   maxPerDay: this.maxPerDay,
-  attachments:this.attachments,
-  lists:this.lists,
+  attachments: this.attachments,
+  lists: this.lists,
   email: this.compaignsService.email,
   msgBody: this.message,
-  deviceId: this.deviceId
+  deviceId: this.deviceId,
+  isInterval: this.isInterval
 }
 
+
+}
+
+
 console.log(data);
-this.compaignsService.addMewCampain(data).subscribe(
-  (res)=>{
-    this.toasterService.success("Success");
-    this.back.emit(true)
-    this.isLoading = false
-    console.log(res)},
-  (err)=>{
-    this.toasterService.error("Error");
-    this.back.emit(false)
-    this.isLoading = false;
-    console.log(err)}
+this.back.emit(true)
+
+// this.compaignsService.addMewCampain(data).subscribe(
+//   (res)=>{
+//     this.toasterService.success("Success");
+//     this.back.emit(true)
+//     this.isLoading = false
+//     console.log(res)},
+//   (err)=>{
+//     this.toasterService.error("Error");
+//     this.back.emit(false)
+//     this.isLoading = false;
+//     console.log(err)}
 
 
-)
+// )
 
 }
 

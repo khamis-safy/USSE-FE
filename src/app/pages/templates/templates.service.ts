@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment as env } from '@env/environment.development';
 
 import { Observable } from 'rxjs';
-import { CheckCon, Templates, Init } from './templates';
+import { CheckCon, Templates, Init, TemplateData } from './templates';
 @Injectable({
   providedIn: 'root',
 })
@@ -80,8 +80,9 @@ updateTemplate(id:string,templateName:string,messageBody:string,email:string, at
 
 
 
-
-
+getTemplateById(id:string):Observable<TemplateData>{
+  return this.http.get<TemplateData>(`${env.api}Template/getTemplateById?id=${id}`)
+}
 
 
 }

@@ -22,12 +22,14 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   loading:boolean=false;
   cellClick:boolean=false;
   isCompagins:boolean=true;
-
+  isSearch:boolean=false;
   columns :FormControl;
   displayed: string[] = ['Name', 'Status', 'Creator Name', 'Start Date'];
   displayedColumns: string[] = ['Name', 'Status', 'Creator Name', 'Start Date','Action'];
   dataSource:MatTableDataSource<compaignDetails>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  noData: boolean=false;
+  notFound: boolean=false;
 
   constructor(private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router){}
 
@@ -39,7 +41,12 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   }
   ngAfterViewInit() {
   }
-
+backToCompaigns(event){
+this.isCompagins=event;
+if(this.isCompagins){
+  this.getCompaigns();
+}
+}
   getCompaigns(){
 
     let shows=this.compaignsService.display;
@@ -47,16 +54,23 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
     let email=this.compaignsService.email;
     let search=this.compaignsService.search;
     this.loading = true;
-
     this.compaignsService.getCampaigns(email,shows,pageNum,search).subscribe(
       (res)=>{
         this.loading = false;
         this.dataSource=new MatTableDataSource<compaignDetails>(res);
         if(search!=""){
-            this.length=res.length
+            this.length=res.length;
+            if(this.length==0){
+              this.notFound=true;
+            }
+            else{
+              this.notFound=false;
+            }
         }
         else{
           this.compaignsCount();
+          this.isSearch=false;
+
 
         }
         console.log(res)
@@ -75,6 +89,12 @@ compaignsCount(){
     (res)=>{
 
       this.length=res;
+      if(this.length==0){
+        this.noData=true
+      }
+      else{
+        this.noData=false
+      }
     }
     ,(err)=>{
       this.length=0;
@@ -105,16 +125,25 @@ compaignsCount(){
     }
   }
   stopComaign(element){
-    console.log("stop compaign")
-    this.compaignsService.stopWhatsappBusinessCampaign(element.id,this.compaignsService.email).subscribe(
-      (res)=>{
+
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.data =
+    {
+      compaignData:{compaignId:element.id,action:"stop"}
+    }
+    const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
         this.getCompaigns();
-
-      },
-      (err)=>{
-
       }
-    )
+    });
+
+
   }
   deleteCompaign(element){
     console.log("delete compaign")
@@ -127,7 +156,7 @@ compaignsCount(){
     dialogConfig.minWidth='300px';
     dialogConfig.data =
     {
-      compaignData:{compaignId:element.id}
+      compaignData:{compaignId:element.id,action:"delete"}
     }
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
@@ -139,6 +168,7 @@ compaignsCount(){
 
   onSearch(event:any){
     this.compaignsService.search=event.value;
+
     this.getCompaigns();
   }
 }

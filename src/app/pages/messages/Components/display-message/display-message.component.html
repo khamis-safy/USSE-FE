@@ -15,12 +15,15 @@
           <ng-container *ngSwitchCase="false" >
             <div class="device-data d-flex gap-3">
               <div class="_image d-flex justify-content-center align-items-center">
-                  <span class="text-neutral-0 txt-sm">{{lastTwoNums}}</span>
+                  <span class="text-neutral-0 txt-sm">{{userName}}</span>
               </div>
               <div class="d-flex justify-content-center  flex-column">
-                <h2 class="mb-0">{{message?.targetPhoneNumber}}</h2>
+                <h2 class="mb-0">{{message?.chat.chatName}}</h2>
 
-                <span class="txt-xs text-neutral-500">{{message?.device?.deviceName}}</span>
+                <span class="txt-xs text-neutral-500">{{message?.chat.targetPhoneNumber}}</span>
+                <!-- <h2 class="mb-0">{{message?.targetPhoneNumber}}</h2>
+
+                <span class="txt-xs text-neutral-500">{{message?.device?.deviceName}}</span> -->
               </div>
             </div>
           </ng-container>

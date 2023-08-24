@@ -20,6 +20,7 @@ export class PluginsService {
   }
   ngOnInit(): void {
   }
+  // ahlam.ragab2000@gmail.com
   StartProgressBar(){
     let progBar = this.renderer.selectRootElement("#progress-bar",true);
     this.renderer.removeClass(progBar,"d-none")

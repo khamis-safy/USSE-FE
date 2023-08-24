@@ -18,9 +18,13 @@
 
   <ng-container *ngIf="show">
     <ng-container>
+
       <ul style="cursor: pointer;" class="user-options d-flex p-4 bg-neutral-0 flex-column">
         <li class="opt" (click)="openSettingModal()">
           <a  routerLinkActive="active"  class="text-neutral-600 d-flex">
+
+     
+
             <div class="icon">
               <img src="assets/icons/settings.svg" alt="" />
             </div>
@@ -59,8 +63,14 @@
           <span class="txt-xs">Message</span>
         </a>
       </li>
+  
+
       <li>
-        <a routerLinkActive="active" routerLink="/chats" class="text-neutral-600 d-flex">
+        <a
+          routerLinkActive="active"
+          routerLink="/chats"
+          class="text-neutral-600 d-flex"
+        >
           <div class="icon">
             <img src="assets/icons/chats-1.svg" alt="" />
           </div>
@@ -107,22 +117,41 @@
           <span class="txt-xs">Devices</span>
         </a>
       </li>
-      <li>
-        <a routerLinkActive="active" routerLink="/bot" class="text-neutral-600 d-flex pe-4">
+
+      <!-- <li>
+        <a
+          routerLinkActive="active"
+          routerLink="/bot"
+          class="text-neutral-600 d-flex pe-4"
+        >
+
           <div class="icon">
             <img src="assets/icons/bot-1.svg" alt="" />
           </div>
           <span class="txt-xs">Bot</span>
         </a>
+
       </li>
       <li>
         <a routerLinkActive="active" routerLink="/billing" class="text-neutral-600 d-flex">
+
+      </li> -->
+
+
+      <!-- <li>
+        <a
+          routerLinkActive="active"
+          routerLink="/billing"
+          class="text-neutral-600 d-flex"
+        >
+
           <div class="icon">
             <img src="assets/icons/billing-1.svg" alt="" />
           </div>
           <span class="txt-xs">Billing</span>
         </a>
       </li>
+
       <li>
         <a routerLinkActive="active" routerLink="/videos" class="text-neutral-600 d-flex">
           <div class="icon">
@@ -131,6 +160,8 @@
           <span class="txt-xs">Videos</span>
         </a>
       </li>
+
+
       <li class="mb-3">
         <a routerLinkActive="active" routerLink="/notes" class="text-neutral-600 d-flex">
           <div class="icon">
@@ -138,7 +169,9 @@
           </div>
           <span class="txt-xs">Notes</span>
         </a>
-      </li>
+      </li> -->
+
+
     </ul>
     <div class="i-help">
       <a routerLinkActive="active" routerLink="/help" class="text-neutral-600 d-flex">

@@ -12,14 +12,14 @@ import { Message } from 'src/app/pages/messages/message';
 import { MessagesService } from 'src/app/pages/messages/messages.service';
 import { compaignDetails } from 'src/app/pages/compaigns/campaigns';
 import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
+
 interface ComponentData {
   contactsData?: { contacts: Contacts[], remove: boolean },
   deviceData?: { deviceId: string },
   templatesData?: { templatesId: string },
   listsData?: { contacts: Contacts[], list: string[], lists: ListData[] },
   messagesData?: { messages: Message[] },
-  compaignData?: { compaignId: string }
-
+  compaignData?: { compaignId: string, action: string },
 
 }
 @Component({
@@ -28,8 +28,10 @@ interface ComponentData {
   styleUrls: ['./delete-modal.component.scss']
 })
 export class DeleteModalComponent implements OnInit {
+
   contacts: string[];
   list: string[];
+  action;
 
   isLoading = false;
   numOfItems: number = 0;
@@ -56,6 +58,7 @@ export class DeleteModalComponent implements OnInit {
   }
 
   ngOnInit() {
+
     if (this.data.contactsData) {
       this.isContacts = true;
       this.isDevices = false;
@@ -64,6 +67,9 @@ export class DeleteModalComponent implements OnInit {
       this.isMessages = false
       this.body = this.data.contactsData.contacts.map(res => res.id)
       this.numOfItems = this.body.length;
+
+
+
 
       if (this.data.contactsData.remove) {
         this.isRemoveL = true;
@@ -89,6 +95,7 @@ export class DeleteModalComponent implements OnInit {
       }
 
 
+
       this.isContacts = false;
       this.isDevices = false;
       this.isTemplates = false;
@@ -103,9 +110,11 @@ export class DeleteModalComponent implements OnInit {
       this.isLists = false;
       this.isMessages = true;
 
+
       this.body = this.data.messagesData.messages.map(res => res.id);
       this.numOfItems = this.body.length;
     }
+
 
     else if (this.data.templatesData) {
       this.isContacts = false;
@@ -116,6 +125,7 @@ export class DeleteModalComponent implements OnInit {
 
     }
     else if (this.data.compaignData) {
+      this.action = this.data.compaignData.action;
       this.isContacts = false;
       this.isDevices = false;
       this.isLists = false;
@@ -130,6 +140,8 @@ export class DeleteModalComponent implements OnInit {
       this.isTemplates = false;
       this.isLists = false;
       this.isMessages = false;
+      this.isCompaigns = false;
+
     }
 
 
@@ -165,6 +177,7 @@ export class DeleteModalComponent implements OnInit {
       }
     )
   }
+
   removeLists() {
     this.listService.removeContactsFromLists(this.body).subscribe(
       (res) => {
@@ -196,6 +209,7 @@ export class DeleteModalComponent implements OnInit {
 
   }
 
+
   deleteDevice() {
     this.devicesService.deleteDevice(this.devicesService.email, this.data.deviceData.deviceId).subscribe(
       (res) => {
@@ -216,6 +230,53 @@ export class DeleteModalComponent implements OnInit {
     )
 
   }
+
+
+  deleteCompaign() {
+    this.compaignsService.deleteWhatsappBusinessCampaign(this.data.compaignData.compaignId, this.compaignsService.email).subscribe(
+      (res) => {
+        this.isLoading = false
+
+
+        this.onClose(true);
+
+        this.toaster.success(`Deleted Successfully`)
+
+
+
+      },
+      (err) => {
+        this.isLoading = false
+        this.onClose();
+        this.toaster.error("Error")
+
+
+      }
+    )
+
+
+  }
+  stopComaign() {
+    this.compaignsService.stopWhatsappBusinessCampaign(this.data.compaignData.compaignId, this.compaignsService.email).subscribe(
+      (res) => {
+        this.isLoading = false
+
+        this.onClose(true);
+
+        this.toaster.success(`Deleted Successfully`)
+
+
+      },
+      (err) => {
+        this.isLoading = false
+        this.onClose();
+        this.toaster.error("Error")
+
+      }
+    )
+
+  }
+
 
 
 
@@ -240,22 +301,7 @@ export class DeleteModalComponent implements OnInit {
 
   }
 
-  deleteCompaign() {
-    this.compaignsService.deleteWhatsappBusinessCampaign(this.data.compaignData.compaignId, this.compaignsService.email).subscribe(
-      (res) => {
-        this.isLoading = false
-        this.onClose(true);
-        this.toaster.success(`Deleted Successfully`)
-      },
-      (err) => {
-        this.isLoading = false
-        this.onClose();
-        this.toaster.error("Error")
 
-      }
-    )
-
-  }
 
   deleteList() {
     this.isLoading = true
@@ -332,55 +378,63 @@ export class DeleteModalComponent implements OnInit {
         else if (succ > 0 && err == 0) {
           this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
 
+
         }
-
-      },
-      (err) => {
-        this.isLoading = false
-        this.onClose();
-        this.toaster.error("Error")
-
-      }
-    )
+      })
   }
 
-  submit() {
-    this.isLoading = true;
-    if (this.isContacts) {
-      if (this.isRemoveL) {
-        // remove lists from contacts
-        this.removeLists();
-      }
-      else {
-        this.deleteCon();
 
-      }
+
+
+
+submit() {
+  this.isLoading = true;
+  if (this.isContacts) {
+    if (this.isRemoveL) {
+      // remove lists from contacts
+      this.removeLists();
+    }
+    else {
+      this.deleteCon();
 
     }
-    else if (this.isLists) {
-      if (this.data.listsData.list) {
-        // from list details, remove contacts from list
-        this.removeContacts();
-      }
-      else {
-        this.deleteList()
-      }
-    }
 
-    else if (this.isMessages) {
-      this.deleteMessages();
-    } else if (this.isTemplates) {
-      this.deleteTemplates();
-    } else if (this.isCompaigns) {
+  }
+  else if (this.isLists) {
+    if (this.data.listsData.list) {
+      // from list details, remove contacts from list
+      this.removeContacts();
+    }
+    else {
+      this.deleteList()
+    }
+  }
+
+  else if (this.isMessages) {
+    this.deleteMessages();
+
+  } else if (this.isTemplates) {
+    this.deleteTemplates();
+  }
+  else if (this.isCompaigns) {
+    if (this.data.compaignData.action == "delete") {
+
       this.deleteCompaign()
     }
+    else {
+      this.stopComaign()
+    }}
+
+
+    
     else {
       this.deleteDevice();
     }
 
   }
 
-  onClose(data?): void {
+
+  onClose(data ?): void {
     this.dialogRef.close(data);
   }
 

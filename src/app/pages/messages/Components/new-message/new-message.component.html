@@ -7,9 +7,9 @@
     <mat-step >
       <ng-template matStepLabel>Select Contacts</ng-template>
       <div class="d-flex align-items-between flex-column justify-content-between " style="min-height: 700px;">
-        <app-select-contacts (hocsNum)="hocs($event)" style=" height: 80%;"></app-select-contacts>
+        <app-select-contacts (displayedContactsCount)="contactsCount($event)" style=" height: 80%;"></app-select-contacts>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
-          <button class="rest-style " matStepperNext  [disabled]="contacts.length==0 && hocsNum.length==0">
+          <button class="rest-style " matStepperNext  [disabled]="count==0">
             <us-button
             class="m-2"
             label="Next"
@@ -18,7 +18,7 @@
             [loading]="false"
             [appearance]="'primary'"
             (clicked)="toWriteMessage()"
-            [disabled]="contacts.length==0 && hocsNum.length==0"
+            [disabled]="count==0"
             >
 
 

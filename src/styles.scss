@@ -146,6 +146,8 @@ $clr_warning_50: #FDF4DC;
   --clr-primary-500: #bfdeea ;
   --clr-primary-400: linear-gradient(90deg, rgba(8, 131, 149, 0.16) 0%, rgba(8, 131, 149, 0.24) 100%), #FFFFFF;
   --clr-primary-200: rgba(244, 248, 251, 1);
+  --clr-primary-100: rgba(255, 255, 255, 1);
+
   --clr-neutral-900: rgba(41, 42, 50, 1);
   --clr-neutral-600: rgb(110, 110, 110);
   --clr-neutral-500: rgb(134, 134, 134,1);
@@ -207,6 +209,8 @@ $clr_warning_50: #FDF4DC;
 .bg-primary-700{ background-color: var(--clr-primary-700) !important;}
 .bg-primary-400{ background: var(--clr-primary-400) !important;}
 .bg-primary-200{ background: var(--clr-primary-200) !important;}
+.bg-primary-100{ background: var(--clr-primary-100) !important;}
+
 .bg-danger-700{ background: var(--clr-danger-700) !important;}
 .bg-neutral-900{ background-color: var(--clr-neutral-900) !important;}
 .bg-neutral-600{ background-color: var(--clr-neutral-600) !important;}
@@ -424,6 +428,9 @@ cursor: pointer;
   }
 }
 
+a{
+  text-decoration: none;
+}
 /*handle form floating*/
 // .input-group-icon {
 //   display: flex;

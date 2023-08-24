@@ -128,14 +128,7 @@ export class AddTemplateComponent implements OnInit {
       messageBody: this.data.messageBody,
       attachments: this.data.attachments,
     });
-    this.fileData = this.data.attachments.map((temp) => {
-      return {
-        name: '',
-        type: '',
-        url: temp,
-        size: 0,
-      };
-    });
+ // attachment
   }
 
   onClose(data?): void {

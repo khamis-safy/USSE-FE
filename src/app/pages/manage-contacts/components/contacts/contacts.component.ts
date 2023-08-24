@@ -46,6 +46,9 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
 
   WrapperScrollLeft =0;
   WrapperOffsetWidth =250;
+  isSearch: boolean;
+  noData: boolean=false;
+  notFound: boolean=false;
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -128,9 +131,19 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
 
         this.dataSource=new MatTableDataSource<Contacts>(res);
         if(search!=""){
-          this.length=res.length
+          this.length=res.length;
+          if(this.length==0){
+            this.notFound=true;
+          }
+          else{
+            this.notFound=false;
+          }
+          this.isSearch=true;
+
       }
       else{
+        this.isSearch=false;
+
         this.contactsCount();
 
       }
@@ -147,8 +160,6 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
 
 
 
-
-
   contactsCount(){
     let email=this.listService.email;
 
@@ -156,6 +167,12 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
 
       (res)=>{
         this.length=res;
+        if(this.length==0){
+          this.noData=true
+        }
+        else{
+          this.noData=false
+        }
       }
       ,(err)=>{
         this.length=0;

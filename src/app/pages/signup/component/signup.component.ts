@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PluginsService } from 'src/app/services/plugins.service';
+import { LoginService } from '../../login/login.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -13,15 +15,19 @@ export class SignupComponent implements OnInit {
   isVisiblePass =false;
   isLoading = false
 
-  es_form:any;
+  form:any;
   contactName:any;
   organisationName:any;
   email:any;
   password:any;
+  confirm:any;
+  loading;
 
   constructor(private plugin:PluginsService,
-    private myService:SignupService,
-    private router:Router
+    private signupService:SignupService,
+    private router:Router,
+    private authService:AuthService,
+    private loginService:LoginService
     ) { }
 
   ngOnInit(): void {
@@ -31,81 +37,89 @@ export class SignupComponent implements OnInit {
     this.createForm();
   }
   initFormControles(){
-    this.contactName = new FormControl('',[Validators.required,Validators.pattern(this.plugin.textReg)]);
-    this.organisationName = new FormControl('',[Validators.required,Validators.pattern(this.plugin.textReg)]);
-    this.email = new FormControl('',[Validators.required,Validators.pattern(this.plugin.emailReg)]);
+    this.contactName = new FormControl('',[Validators.required]);
+    this.organisationName = new FormControl('');
+    this.email=new FormControl('',[Validators.required,Validators.pattern(this.plugin.emailReg)]);
     this.password = new FormControl('',[Validators.required,Validators.pattern(this.plugin.passReg)]);
+    this.confirm = new FormControl('',[Validators.required,Validators.pattern(this.plugin.passReg)]);
+
   }
   createForm(){
-    this.es_form = new FormGroup({
+    this.form = new FormGroup({
       contactName: this.contactName ,
       organisationName: this.organisationName ,
       email: this.email ,
-      password: this.password
+      password: this.password,
+      confirm: this.confirm
+
     })
   }
-  submit(){
+  signUp(){
     this.isLoading =true;
-    this.es_form.value.permissions = [
-      {
-        name: "",
-        value: ""
-      }
-    ]
-    this.myService.register(this.es_form.value).subscribe(
-      (res:any)=>{
-        this.isLoading =false;
-        console.log(res)
-        this.router.navigate(['/login'])
+
+    const data={
+      contactName: this.contactName.value ,
+      organisationName: this.contactName.value ,
+      email: this.email.value ,
+      password: this.password.value
+    }
+    this.signupService.register(data).subscribe(
+      (res)=>{
+        this.authService.userData=res;
+        localStorage.setItem("token",res.token)
+
+           // Store the refresh token in a cookie
+           this.loginService.storeRefreshTokenInCookie(res.refreshToken);
+           this.refreshToken();
+
+           // Refresh the token every 1 hour
+
+            setInterval(() => {
+            this.refreshToken();
+           }, 60 * 60 * 1000); // 1 hour in milliseconds
+
+      this.sendCode();
+      this.router.navigateByUrl('verification')
+
+
       },
-      (err:any)=>{
-        this.isLoading =false;
-        console.log(err)
-        this.router.navigate(['/messages'])
+      (err)=>{
+        this.loading=false
+
       }
     )
   }
+
+
+  refreshToken() {
+    let token=this.loginService.getCookieValue('refreshToken')
+    this.loginService.refreshToken(token).subscribe(
+      (res) => {
+        // Update the refresh token in the cookie
+        this.loginService.storeRefreshTokenInCookie(res.refreshToken);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  sendCode(){
+    this.loginService.sendEmailCode(this.form.value.email).subscribe(
+
+      (res)=>{
+
+        this.loading=false;
+
+      },
+      (err)=>{
+        this.loading=false;
+      }
+    )
+
+  }
+
 }
-// pass ["dsfdsDD@dsfd23"],
-// [
-//   {
-//     "message": null,
-//     "isAuthenticated": true,
-//     "email": "sda@fff.com",
-//     "roles": [
-//       "Customer"
-//     ],
-//     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzZGFAZmZmLmNvbSIsImp0aSI6ImZkMjliZmUxLTc0ZGYtNDZhNi1hY2NlLTM2NzNhMzAwNmQ1YyIsImVtYWlsIjoic2RhQGZmZi5jb20iLCJ1aWQiOiJjNGFkMmEwOS02MDNlLTRjYzktYTMzMi03NWM0NGFiMjdiNDEiLCJyb2xlcyI6IkN1c3RvbWVyIiwiZXhwIjoxNjgxNjA2NjY3LCJpc3MiOiJTZWN1cmVBcGkiLCJhdWQiOiJTZWN1cmVBcGlVc2VyIn0.JGgEvFWLrPT5DCXSg7K51nCzbnOp2erbWcMRcd24x1o",
-//     "refreshTokenExpiration": "2023-04-16T00:57:47.1521939Z",
-//     "contactName": "string",
-//     "organisationName": "string",
-//     "trialEndDate": "2023-06-15T22:57:45.7362185Z",
-//     "isActive": false,
-//     "isTrial": true,
-//     "customerId": "",
-//     "partnerId": null,
-//     "users": null,
-//     "devices": null,
-//     "apiToken": "121609a4-11c0-4964-8526-46d41036c516",
-//     "apiId": "758c7093-3635-435d-b23b-884ed5cc0ccf",
-//     "isEmailAuthonticated": false,
-//     "subscriptions": [
-//       {
-//         "name": "SUBSCRIPTION",
-//         "value": "S1"
-//       },
-//       {
-//         "name": "USERS",
-//         "value": "0"
-//       },
-//       {
-//         "name": "DEVICES",
-//         "value": "1"
-//       },
-//       {
-//         "name": "BOTS",
-//         "value": "0"
-//       }
-//     ]
-//   }
-// ]
+
+// pass ["aaddsDD@dsfd23"],
+

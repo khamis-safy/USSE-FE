@@ -17,22 +17,6 @@ const routes: Routes = [
           import("./../../pages/chats/chats.module").then((m) => m.ChatsModule)
       },
       {
-        path: "compaigns",
-        loadChildren: () =>
-          import("./../../pages/compaigns/compaigns.module").then((m) => m.CompaignsModule),
-      },
-      {
-        path: "compaign/:id",
-        loadChildren: () =>
-          import("./../../pages/compaigns/components/compaignsDetails/compaignsDetails.module").then((m) => m.CompaignsDetailsModule)
-      },
-      {
-        path: "templates",
-        loadChildren: () =>
-          import("./../../pages/templates/templates.module").then((m) => m.TemplatesModule)
-      },
-
-      {
         path: "contacts",
         loadChildren: () =>
           import("./../../pages/manage-contacts/manage-contacts.module").then((m) => m.ManageContactsModule),
@@ -54,8 +38,21 @@ const routes: Routes = [
       },
 
 
-
-
+      {
+        path: "compaigns",
+        loadChildren: () =>
+          import("./../../pages/compaigns/compaigns.module").then((m) => m.CompaignsModule),
+      },
+      {
+        path: "compaign/:id",
+        loadChildren:()=>
+        import("./../../pages/compaigns/components/compaignsDetails/compaignsDetails.module").then((m)=>m.CompaignsDetailsModule)
+      },
+      {
+        path: "templates",
+        loadChildren:()=>
+        import("./../../pages/templates/templates.module").then((m)=>m.TemplatesModule)
+      },
 
 
 
