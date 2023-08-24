@@ -1,4 +1,4 @@
-<div class="bg-primary-200">
+<div class="bg-primary-200 h-100">
     <a class="d-flex justify-content-start align-items-center ps-3 p-4" style="text-decoration: none;" [routerLink]="['/login']" routerLinkActive="router-link-active"
       ><img src="/assets/icons/eva_arrow-ios-back-outline.svg" alt=""
     />
@@ -70,12 +70,13 @@
             style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
           >
             <input
-              class="input-digit"
+              class="input-digit text-center txt-lg"
               type="text"
               style="width: 100%; height: 100%; border: none"
               [maxlength]="1"
               [formControlName]="'digit' + digitIndex"
               (input)="onDigitInput($event, digitIndex)"
+              (keydown)="onKeyDown($event, digitIndex)"
               [attr.id]="'digitInput' + digitIndex"
               [attr.tabindex]="digitIndex + 1"
             />
@@ -90,6 +91,9 @@
       <div
         class="d-flex flex-column align-items-center w-100 gap-3 p-2"
       >
+      <div *ngIf="invalid" class="hint error mt-2" > <i class="si-info"></i>
+        <p class="txt hint error  txt-xs">Wrong code</p></div>
+
       <div class="w-100">
 
         <us-button

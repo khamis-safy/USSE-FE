@@ -45,15 +45,15 @@
               class="d-flex align-items-center gap-2 txt-sm"
               style="font-weight: 500"
             >
-              <span>Sort By</span>
+              <span >{{sortBy?sortBy:'Sort By'}}</span>
               <mat-icon>expand_more</mat-icon>
             </div>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="getLists('nameASC')">
+            <button mat-menu-item (click)="sortBy='Ascending';getLists('nameASC')">
               Ascending
             </button>
-            <button mat-menu-item (click)="getLists('nameDEC')">
+            <button mat-menu-item (click)="sortBy='Descending';getLists('nameDEC')">
               Descending
             </button>
           </mat-menu>
@@ -148,9 +148,9 @@
         class="contacts-heading px-4 d-flex justify-content-between align-items-center"
       >
         <span class="txt-md">Contacts</span>
-        <span class="d-flex align-items-center gap-2 pointer">
+        <span class="d-flex align-items-center gap-2 pointer" (click)="clearContacts()">
           <img src="assets/icons/clear.svg" alt="" />
-          <span class="txt-md text-primary-800" (click)="clearContacts()"
+          <span class="txt-md text-primary-800"
             >Clear</span
           >
         </span>
@@ -181,7 +181,7 @@
       </div>
     </div>
     <div class="mobile-num p-4">
-      <p class="txt-md">Addhoc Numbers</p>
+      <p class="txt-md">Addhoc Number</p>
       <div class="d-flex align-items-center gap-3">
         <div class="w-100">
           <form [formGroup]="form">

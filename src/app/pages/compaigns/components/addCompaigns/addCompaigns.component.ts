@@ -54,6 +54,7 @@ toSecondStep(){
 toThirdStep(){
   this.stepThreeComponent.getDevices();
   this.message=this.writeMessage.form.value.message;
+  this.stepThreeComponent.setDefaultTime();
 
   this.attachments=this.writeMessage.fileData.map((file)=>file.url);
 
@@ -62,6 +63,7 @@ toLastStep(){
   this.deviceId=this.stepThreeComponent.deviceId?this.stepThreeComponent.deviceId:"";
   this.dateTime=`${this.stepThreeComponent.utcDateTime}Z`;
   this.compaignName=this.stepThreeComponent.form.value.compainName;
+  this.stepFourComponent.setDefaultTime();
 
 }
 addCompaign(){
@@ -119,20 +121,22 @@ data={
 
 
 console.log(data);
-this.compaignsService.addMewCampain(data).subscribe(
-  (res)=>{
-    this.toasterService.success("Success");
-    this.back.emit(true)
-    this.isLoading = false
-    console.log(res)},
-  (err)=>{
-    this.toasterService.error("Error");
-    this.back.emit(false)
-    this.isLoading = false;
-    console.log(err)}
+this.back.emit(true)
+
+// this.compaignsService.addMewCampain(data).subscribe(
+//   (res)=>{
+//     this.toasterService.success("Success");
+//     this.back.emit(true)
+//     this.isLoading = false
+//     console.log(res)},
+//   (err)=>{
+//     this.toasterService.error("Error");
+//     this.back.emit(false)
+//     this.isLoading = false;
+//     console.log(err)}
 
 
-)
+// )
 
 }
 

@@ -45,8 +45,9 @@
       [fullWidth]="true"
       formControlName="email"
       label="Email"
-      [error]=" (email.touched && email.errors?.required)"
-      [hintText]=" email.touched && email.errors?.required ? 'This filed is required':'' "
+      [error]=" (email.touched && email.errors?.required || email.dirty && email.errors?.pattern)"
+      [hintText]=" email.touched && email.errors?.required ? 'This filed is required':email.dirty && email.errors?.pattern?'invalid email':'' "
+
       ></us-input>
       </div>
 
@@ -72,13 +73,16 @@
             [fill]="true"
             [size]="'xl'"
             [loading]="loading"
-            [disabled]="false"
+            [disabled]="loading || form.invalid"
             [appearance]="'primary'"
             (clicked)="login()"
             [fullWidth]="true"
           >
           </us-button>
         </div>
+       <div *ngIf="invalid" class="hint error mt-2" > <i class="si-info"></i>
+        <p class="txt hint error  txt-xs">We can't logged you in</p></div>
+
       </form>
 
       <div class="col-md-12">

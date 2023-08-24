@@ -15,7 +15,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
 
   digitIndexes: number[] = [0, 1, 2, 3, 4, 5];
   loading: boolean;
-
+  invalid:boolean=false;
   constructor(private loginService:LoginService,private authService:AuthService,private router:Router,private formBuilder: FormBuilder,private verificatioinService:VerifyService) {
     this.verificationForm = this.formBuilder.group({
       digit0: ['', Validators.required],
@@ -48,11 +48,27 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
     this.checkVerificationCode();
   }
 
+
   setFocus(digitIndex: number) {
     const inputId = `digitInput${digitIndex}`;
     const inputElement = document.getElementById(inputId) as HTMLInputElement;
     if (inputElement) {
       inputElement.focus();
+    }
+  }
+  onKeyDown(event: KeyboardEvent, digitIndex: number) {
+    if (event.key === 'Backspace') {
+      this.onDeleteKey(digitIndex);
+    }
+  }
+
+  onDeleteKey(digitIndex: number) {
+    const prevDigitIndex = digitIndex - 1;
+
+    if (prevDigitIndex >= 0) {
+      this.verificationForm.controls[`digit${digitIndex}`].setValue('');
+
+      this.setFocus(prevDigitIndex);
     }
   }
 
@@ -63,24 +79,26 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
 
     if (code.length === 6) {
       // Send verification request using code
-      const token=localStorage.getItem("token");
+      let token=this.loginService.getCookieValue('refreshToken')
+
+      // const token=localStorage.getItem("token");
+      console.log(code)
       this.verificatioinService.confirmEmail(code,token).subscribe(
         (res)=>{
+          this.invalid=false;
           console.log(res);
-          this.router.navigateByUrl("messages");
+          this.router.navigateByUrl('messages')
         },
         (err)=>{
+          this.invalid=true;
           console.log(err)
         }
       )
 
-      // this.verificatioinService.confirmEmail()
       // console.log('Sending verification request with code:', code,"token",token);
     }
   }
-  reSendCode(){
-    const email=this.authService.userData.email;
-    this.loading=true;
+  resetData(){
     this.verificationForm.setValue({
       digit0: '',
       digit1: '',
@@ -89,6 +107,11 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
       digit4: '',
       digit5: ''
     });
+  }
+  reSendCode(){
+    const email=this.authService.userData.email;
+    this.loading=true;
+  this.resetData();
     this.loginService.sendEmailCode(email).subscribe(
 
       (res)=>{

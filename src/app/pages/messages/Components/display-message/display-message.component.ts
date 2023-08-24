@@ -15,7 +15,7 @@ export interface Display{
 })
 export class DisplayMessageComponent implements OnInit {
 message:Message;
-lastTwoNums:string;
+userName:any;
 schedule:Shceduled;
 test:string= "6781dde0-7946-4d49-ad27-a95421f19ff8.jpg";
 isScheduleN:boolean=false;
@@ -32,8 +32,14 @@ recipients:any;
       this.recipients=this.data.recipients;
     }
     if(this.data.message){
+      if(parseInt(this.data.message.chat.chatName)){
 
-      this.lastTwoNums=this.data.message.chat.chatName.substring(this.data.message.targetPhoneNumber.length-2);
+        this.userName=this.data.message.chat.chatName.substring(this.data.message.targetPhoneNumber.length-2);
+      }
+      else{
+       this.userName= this.data.message.chat.chatName.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
+        console.log(this.data.message.chat.chatName.split(" ",2))
+      }
       this.message=this.data.message;
     }
     if(this.data.schedule){

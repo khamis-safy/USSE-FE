@@ -9,5 +9,8 @@ export class AuthService {
   userData!:Login;
 
 constructor() { }
+isLoggedIn(){
 
+  return this.userData? true:false;
+}
 }

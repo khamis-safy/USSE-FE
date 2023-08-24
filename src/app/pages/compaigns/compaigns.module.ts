@@ -9,7 +9,6 @@ import { AddCompaignsComponent } from './components/addCompaigns/addCompaigns.co
 
 import { SharedModule } from 'src/app/shared/shared.module';
 import { StepOneComponent } from './components/addCompaigns/stepOne/stepOne.component';
-import { StepTwoComponent } from './components/addCompaigns/stepTwo/stepTwo.component';
 import { StepThreeComponent } from './components/addCompaigns/stepThree/stepThree.component';
 import { StepFourComponent } from './components/addCompaigns/stepFour/stepFour.component';
 
@@ -23,7 +22,6 @@ import { StepFourComponent } from './components/addCompaigns/stepFour/stepFour.c
   declarations: [
     CompaignsComponent ,
     StepOneComponent,
-    StepTwoComponent,
     StepThreeComponent,
     StepFourComponent,
     AddCompaignsComponent ,

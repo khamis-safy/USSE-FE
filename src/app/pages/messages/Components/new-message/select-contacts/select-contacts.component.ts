@@ -18,7 +18,7 @@ interface ListContacts {
 })
 export class SelectContactsComponent implements OnInit {
 // lists variables
-
+sortBy;
 @Output() displayedContactsCount = new EventEmitter<number>;
 @ViewChild(MatAccordion) accordion!: MatAccordion;
   lists: ListData[] = [];
@@ -48,7 +48,7 @@ export class SelectContactsComponent implements OnInit {
   PhoneNumberFormat = PhoneNumberFormat;
 
   addHocs:string[]=[];
-  mobile: any = new FormControl('');
+  mobile: any = new FormControl('',[Validators.required]);
 
   searchForm=new FormGroup({
     contactsData:this.contactsData

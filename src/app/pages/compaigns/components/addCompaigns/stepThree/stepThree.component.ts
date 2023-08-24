@@ -19,11 +19,12 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   devicesData = new FormControl([]);
   compainName:any = new FormControl('',[Validators.required]);
   deviceId:string;
+  dateFormControl:any = new FormControl('');
   form = new FormGroup({
     devicesData:this.devicesData,
-    compainName:this.compainName
+    compainName:this.compainName,
+    dateFormControl:this.dateFormControl
   });
-  dateFormControl = new FormControl(new Date());
   utcDateTime;
   timeSub$;
   constructor(private devicesService:DevicesService,private datePipe: DatePipe) { }
@@ -45,11 +46,8 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
     const selectedTime =timecontrol.value;
     if (selectedTime) {
       this.utcDateTime = this.datePipe.transform(selectedTime,`yyyy-MM-ddTHH:mm:ss`, 'UTC');
-      console.log('UTC Time:', this.utcDateTime);
     }
-    else {
-      console.error('Selected time is null or undefined');
-    }
+
   }
   getDevices(){
 
@@ -71,7 +69,10 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
 
        })
   }
+  setDefaultTime(){
+    this.dateFormControl.setValue(new Date());
 
+  }
   onSelect(event){
     this.deviceId=event.value;
   }
