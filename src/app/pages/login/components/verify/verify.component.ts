@@ -48,18 +48,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
     this.checkVerificationCode();
   }
 
-  getCookieValue(cookieName: string): string {
-    const cookies = document.cookie.split(';');
-    console.log("cookie value",document.cookie)
-    for (const cookie of cookies) {
-      const [name, value] = cookie.trim().split('=');
-      if (name === cookieName) {
-        console.log("cookie valu",decodeURIComponent(value))
-        return decodeURIComponent(value);
-      }
-    }
-    return '';
-  }
+
   setFocus(digitIndex: number) {
     const inputId = `digitInput${digitIndex}`;
     const inputElement = document.getElementById(inputId) as HTMLInputElement;
@@ -90,7 +79,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
 
     if (code.length === 6) {
       // Send verification request using code
-      const token =this.getCookieValue('refreshToken');
+      let token=this.loginService.getCookieValue('refreshToken')
 
       // const token=localStorage.getItem("token");
       console.log(code)
@@ -98,7 +87,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
         (res)=>{
           this.invalid=false;
           console.log(res);
-          this.router.navigateByUrl("login");
+          this.router.navigateByUrl('messages')
         },
         (err)=>{
           this.invalid=true;

@@ -32,7 +32,7 @@ export class LoginService {
     document.cookie = cookieValue;
   }
 
-  private getCookieValue(cookieName: string): string {
+  public getCookieValue(cookieName: string): string {
     const cookies = document.cookie.split('; ');
     for (const cookie of cookies) {
       const [name, encodedValue] = cookie.trim().split('=');
@@ -45,8 +45,11 @@ export class LoginService {
     return null;
   }
 
-  refreshToken(): Observable<any> {
-    const refreshToken = this.getCookieValue('refreshToken');
+  refreshToken(token:string): Observable<any> {
+    const refreshToken ={
+      token:token
+    };
+
     return this.http.post<any>(`${env.api}Auth/refreshToken`, refreshToken)
   }
 

@@ -16,6 +16,7 @@ password:any;
 form: FormGroup;
 loading;
 invalid:boolean=false;
+
   constructor(private plugin:PluginsService,private authService:AuthService,private loginService:LoginService,private router:Router) {
 
   }
@@ -43,11 +44,12 @@ localStorage.setItem("token",res.token)
 
    // Refresh the token every 1 hour
 
-  //  setInterval(() => {
-  //    this.refreshToken();
-  //  }, 60 * 60 * 1000); // 1 hour in milliseconds
+   setInterval(() => {
+     this.refreshToken();
+   }, 60 * 60 * 1000); // 1 hour in milliseconds
 
     // check autheraization
+
     if(!res.isEmailAuthonticated){
       this.sendCode();
       this.router.navigateByUrl('verification')
@@ -60,15 +62,15 @@ localStorage.setItem("token",res.token)
     }
     this.invalid=(!res.isActive && !res.isTrial)?true:false
 
-
+this.invalid=false;
 
 
 
 
   },
   (err)=>{
-    console.log(err);
-    this.loading=false
+    this.loading=false;
+    this.invalid=true;
 
   }
 )
@@ -77,13 +79,13 @@ localStorage.setItem("token",res.token)
 
 
   refreshToken() {
-    this.loginService.refreshToken().subscribe(
+    let token=this.loginService.getCookieValue('refreshToken')
+    this.loginService.refreshToken(token).subscribe(
       (res) => {
         // Update the refresh token in the cookie
         this.loginService.storeRefreshTokenInCookie(res.refreshToken);
       },
       (err) => {
-        console.log(err);
       }
     );
   }

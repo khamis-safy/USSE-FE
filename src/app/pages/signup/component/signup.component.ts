@@ -65,6 +65,18 @@ export class SignupComponent implements OnInit {
     }
     this.signupService.register(data).subscribe(
       (res)=>{
+        this.authService.userData=res;
+        localStorage.setItem("token",res.token)
+
+           // Store the refresh token in a cookie
+           this.loginService.storeRefreshTokenInCookie(res.refreshToken);
+           this.refreshToken();
+
+           // Refresh the token every 1 hour
+
+            setInterval(() => {
+            this.refreshToken();
+           }, 60 * 60 * 1000); // 1 hour in milliseconds
 
       this.sendCode();
       this.router.navigateByUrl('verification')
@@ -72,13 +84,25 @@ export class SignupComponent implements OnInit {
 
       },
       (err)=>{
-        console.log(err);
         this.loading=false
 
       }
     )
   }
 
+
+  refreshToken() {
+    let token=this.loginService.getCookieValue('refreshToken')
+    this.loginService.refreshToken(token).subscribe(
+      (res) => {
+        // Update the refresh token in the cookie
+        this.loginService.storeRefreshTokenInCookie(res.refreshToken);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
 
   sendCode(){
     this.loginService.sendEmailCode(this.form.value.email).subscribe(
