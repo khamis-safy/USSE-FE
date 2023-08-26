@@ -61,8 +61,6 @@ export class WriteMessageComponent implements OnInit {
 
   // }
   onSelect(event){
-
-
     let template=this.allTemplates.find((t)=>t.id==event.value);
     this.form.patchValue({
       message:template.messageBody
@@ -85,13 +83,8 @@ export class WriteMessageComponent implements OnInit {
       }
     )
     console.log(template)
-    // template.attachments.map((attach)=>{
-    //   this.fileData.push({
-    //     name:"",
-    //     type:"",
-    //     url:attach,
-    //     size:0
-    //   });
+
+
 
     // })
 
@@ -104,9 +97,9 @@ export class WriteMessageComponent implements OnInit {
 
 
   }
+
+
   onFileChange(e){
     console.log(this.fileData);
-    // let files=this.fileData.map((file)=>file.url);
-    // this.attachments.emit(files)
   }
 }

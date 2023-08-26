@@ -145,6 +145,8 @@ oldData;
 
       })
   }
+
+
   submitAdd(){
     this.isLoading = true
     let email="khamis.safy@gmail.com";
@@ -210,9 +212,8 @@ oldData;
     }
 
   }
-  onClose(data?): void {
+  onClose(data?):void {
     this.dialogRef.close(data);
-
   }
   changeLists(event){
 

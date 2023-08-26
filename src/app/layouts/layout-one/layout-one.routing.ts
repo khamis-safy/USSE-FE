@@ -8,8 +8,10 @@ const routes: Routes = [
     path:"",
     component:LayoutOneComponent,
     children:[
+
       {
         path: "login",
+
 
         loadChildren:()=>
         import("./../../pages/login/login.module").then((m)=>m.LoginModule)

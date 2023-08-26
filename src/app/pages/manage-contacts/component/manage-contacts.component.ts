@@ -71,6 +71,8 @@ export class ManageContactsComponent implements AfterViewInit{
       }
     });
   }
+
+  
   onDeleteChange(e){
     this.isDelete = e;
   }
@@ -104,6 +106,8 @@ export class ManageContactsComponent implements AfterViewInit{
 
     });
   }
+
+
   openDeleteConModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='50vh';

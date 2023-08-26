@@ -46,9 +46,9 @@ export class CheckboxComponent {
 
   // these types are givin to shut the tslint up!
   private states: ['', 'mid', 'checked'] = ['', 'mid', 'checked'];
-  
+
   controlType: string = 'checkbox';
-  
+
   @Input() state: '' | 'checked' | 'mid' = ''
 
   @Input() label: string = '';

@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PluginsService } from 'src/app/services/plugins.service';
+import { UserData } from '../../users/users';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ password:any;
 form: FormGroup;
 loading;
 invalid:boolean=false;
-
+userInfo:any;
   constructor(private plugin:PluginsService,private authService:AuthService,private loginService:LoginService,private router:Router) {
 
   }
@@ -35,31 +36,37 @@ invalid:boolean=false;
     this.loginService.login(this.form.value).subscribe(
   (res)=>{
     console.log(res);
-    this.authService.userData=res;
-localStorage.setItem("token",res.token)
+    this.userInfo={userName:res.contactName,
+                  organizationName:res.organisationName,
+                  id:res.id,
+                  email:res.email
+                }
+    this.authService.saveDataToLocalStorage(this.userInfo);
+    localStorage.setItem("token",res.token)
 
    // Store the refresh token in a cookie
    this.loginService.storeRefreshTokenInCookie(res.refreshToken);
    this.refreshToken();
 
-   // Refresh the token every 1 hour
-
-   setInterval(() => {
-     this.refreshToken();
-   }, 60 * 60 * 1000); // 1 hour in milliseconds
-
     // check autheraization
 
     if(!res.isEmailAuthonticated){
+      console.log("navigate to verification")
       this.sendCode();
       this.router.navigateByUrl('verification')
 
     }
     if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
-
+      console.log("navigate to messages")
       this.router.navigateByUrl('messages')
 
     }
+       // Refresh the token every 1 hour
+
+   setInterval(() => {
+    this.refreshToken();
+  }, 60 * 60 * 1000); // 1 hour in milliseconds
+    console.log("invalid")
     this.invalid=(!res.isActive && !res.isTrial)?true:false
 
 this.invalid=false;
