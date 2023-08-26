@@ -124,6 +124,7 @@ import { ToLocalTimePipe } from './pipes/toLocalTime.pipe';
     ReactiveFormsModule,
     HttpClientModule,
     CheckboxModule,
+    RadioButtonModule,
     TagModule,
     MatExpansionModule,
     DragZoneModule,

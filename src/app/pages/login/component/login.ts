@@ -1,6 +1,7 @@
 import { DeviceData } from "../../devices/device"
 
 export interface Login {
+  id:string,
   message: string,
   isAuthenticated: boolean,
   email: string,

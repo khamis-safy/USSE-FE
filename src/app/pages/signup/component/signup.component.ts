@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class SignupComponent implements OnInit {
   isVisiblePass =false;
   isLoading = false
+  userInfo:any;
 
   form:any;
   contactName:any;
@@ -65,7 +66,12 @@ export class SignupComponent implements OnInit {
     }
     this.signupService.register(data).subscribe(
       (res)=>{
-        this.authService.userData=res;
+        this.userInfo={userName:res.contactName,
+          organizationName:res.organisationName,
+          id:res.id,
+          email:res.email
+        }
+this.authService.saveDataToLocalStorage(this.userInfo);
         localStorage.setItem("token",res.token)
 
            // Store the refresh token in a cookie

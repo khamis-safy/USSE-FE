@@ -35,135 +35,57 @@
 
 
         <div style="height: 85%; width: 100%;" *ngIf="next" class=" overflow-auto  mx-md-auto  text-center ">
-            <form class="w-100 mx-auto">
+            <div class="w-100 mx-auto">
                 <!-- device -->
-                <div class="my-2   txt-lg  text-start" style="width: 80%;">
-                    <us-select [data]="listsArr" [multiSelect]="true" [label]="'Device'" [placeholder]="'Device_02'"
-                        [isDisabled]="false" [optional]="true" [enableSearch]="true" [searchbarOnToggler]="true"
-                        [searchNoResultText]="'there is no result'" [maxListItemsWithoutSearch]="5"></us-select>
-                </div>
-                <!-- messages -->
-                <div class="d-flex justify-content-center align-items-center my-4" style="width: 100%;">
-                    <div style="width: 25%;" class=" d-flex justify-content-start">
-                        <img width="11%" src="assets/icons/me-icon.svg" alt="" class="me-md-2">
-                        <span width="70%" class=" txt-sm"> Messages</span>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class=" me-md-2" type="radio" id="" name="messages" value="readOnly">
-                        <label width="70%" for="">Read Only</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="messages" value="fullAccess">
-                        <label width="70%" for="">Full Access</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="messages" value="none">
-                        <label width="70%" for="">None</label>
-                    </div>
-                </div>
-                <!-- templates -->
-                <div class="d-flex justify-content-center align-items-center my-4" style="width: 100%;">
-                    <div style="width: 25%;" class=" d-flex justify-content-start">
-                        <img width="11%" src="assets/icons/users-compagns-icon.svg" alt="" class="me-md-2">
-                        <span width="70%" class=" txt-sm"> Campaigns</span>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class=" me-md-2" type="radio" id="" name="campaigns" value="readOnly">
-                        <label width="70%" for="">Read Only</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="campaigns" value="fullAccess">
-                        <label width="70%" for="">Full Access</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="campaigns" value="none">
-                        <label width="70%" for="">None</label>
-                    </div>
-                </div>
-                <hr class="">
-                <!-- templates -->
-                <div class="d-flex justify-content-center align-items-center my-4" style="width: 100%;">
-                    <div style="width: 25%;" class=" d-flex justify-content-start">
-                        <img width="11%" src="assets/icons/users-temp.svg" alt="" class="me-md-2">
-                        <span width="70%" class=" txt-sm"> Templates</span>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class=" me-md-2" type="radio" id="" name="templates" value="readOnly">
-                        <label width="70%" for="">Read Only</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="templates" value="fullAccess">
-                        <label width="70%" for="">Full Access</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="templates" value="none">
-                        <label width="70%" for="">None</label>
-                    </div>
-                </div>
-                <!-- Bots -->
-                <div class="d-flex justify-content-center align-items-center my-4" style="width: 100%;">
-                    <div style="width: 25%;" class=" d-flex justify-content-start">
-                        <img width="11%" src="assets/icons/users-bots.svg" alt="" class="me-md-2">
-                        <span width="70%" class=" txt-sm"> Bots</span>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class=" me-md-2" type="radio" id="" name="bots" value="readOnly">
-                        <label width="70%" for="">Read Only</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="bots" value="fullAccess">
-                        <label width="70%" for="">Full Access</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="bots" value="none">
-                        <label width="70%" for="">None</label>
-                    </div>
-                </div>
-                <!-- Devices -->
-                <div class="d-flex justify-content-center align-items-center my-4" style="width: 100%;">
-                    <div style="width: 25%;" class=" d-flex justify-content-start">
-                        <img width="11%" src="assets/icons/users-devices.svg" alt="" class="me-md-2">
-                        <span width="70%" class=" txt-sm"> Devices</span>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class=" me-md-2" type="radio" id="" name="devices" value="readOnly">
-                        <label width="70%" for="">Read Only</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="devices" value="fullAccess">
-                        <label width="70%" for="">Full Access</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="devices" value="none">
-                        <label width="70%" for="">None</label>
-                    </div>
-                </div>
-                <!-- Contacts -->
-                <div class="d-flex justify-content-center align-items-center mt-4" style="width: 100%;">
-                    <div style="width: 25%;" class=" d-flex justify-content-start">
-                        <img width="11%" src="assets/icons/users-contacts.svg" alt="" class="me-md-2">
-                        <span width="70%" class=" txt-sm"> Contacts</span>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class=" me-md-2" type="radio" id="" name="contacts" value="readOnly">
-                        <label width="70%" for="">Read Only</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="contacts" value="fullAccess">
-                        <label width="70%" for="">Full Access</label>
-                    </div>
-                    <div style="width: 25%;">
-                        <input width="15%" class="me-md-2" type="radio" id="" name="contacts" value="none">
-                        <label width="70%" for="">None</label>
-                    </div>
-                </div>
+                <form [formGroup]="form" class="my-2   txt-lg  text-start" style="width: 80%;">
+                  <us-select
+                  [data]="devices"
+                  formControlName="devicesData"
+                  [multiSelect]="false"
+                  [label]="'Devices'"
+                  (onSelect)="onSelect($event)"
 
-            </form>
+                  [placeholder]="'Select Devices'"
+                  [isDisabled]="false"
+                  [optional]="true"
+                  [enableSearch]="true"
+                  [searchbarOnToggler]="true"
+                  [searchNoResultText]="'there is no result'"
+                  [maxListItemsWithoutSearch]="5"
+                ></us-select>
+                </form>
+
+
+                <div *ngFor="let section of sections" class="d-flex justify-content-center align-items-center my-4" style="width: 100%;">
+                  <div style="width: 25%;" class="d-flex justify-content-start">
+                    <img width="11%" [src]="section.icon" alt="" class="me-md-2">
+                    <span width="70%" class="txt-sm">{{ section.label }}</span>
+                  </div>
+                  <div *ngFor="let accessLevel of section.accessLevels" style="width: 25%;">
+
+
+                  <input width="15%" [checked]="accessLevel.checked"   (change)="test(section,input)" class="me-md-2" type="radio" [id]="accessLevel.value + section.name" [name]="section.name" [value]="accessLevel.value" #input >
+                  <label width="70%" [for]="accessLevel.value + section.name">{{ accessLevel.value }}</label>
+
+
+                  </div>
+
+                </div>
+            </div>
         </div>
     </div>
 
 
+   <!-- <sr-radio
+                    [label]="accessLevel"
+                    (changed)="test($event)"
+                    style="font-weight: 500"
+                  ></sr-radio> -->
+<!--  [state]="
+                <sr-radio  [disableControl]="true" [label]="accessLevel"</sr-radio>
 
+                    "
+                   -->
 
 
     <!-- modal footer -->

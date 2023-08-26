@@ -5,6 +5,7 @@ import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 import { CheckCon, DeviceData, Init } from './device';
 import { ErrSucc } from '../manage-contacts/list-data';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,10 @@ import { ErrSucc } from '../manage-contacts/list-data';
 export class DevicesService {
   display:number=10;
   pageNum:number=0;
-  email:string="khamis.safy@gmail.com";
+  email:string=this.authService.userInfo().email;
   orderedBy:string="";
   search:string="";
-constructor(private http:HttpClient) { }
+constructor(private http:HttpClient,private authService:AuthService) { }
 getDevices(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<DeviceData[]>{
   return this.http.get<DeviceData[]>(`${env.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }

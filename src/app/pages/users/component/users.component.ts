@@ -5,6 +5,11 @@ import { AddUserComponent } from '../components/addUser/addUser.component';
 import { ActionComponent } from '../components/action/action.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { FormControl } from '@angular/forms';
+import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { UsersService } from '../users.service';
+import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 
 export interface PeriodicElement {
     userIDEmail: string;
@@ -12,6 +17,7 @@ export interface PeriodicElement {
     createdAt: string;
     action: string;
 }
+
 
 const ELEMENT_DATA: PeriodicElement[] = [
     { userIDEmail: 'John Smith@yahoo.com', userName: 'John Smith', createdAt: '24 May 2023', action: '' },
@@ -35,45 +41,92 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 
 export class UsersComponent implements OnInit ,OnDestroy{
-    ngOnInit() {};
-    
+
+    noData: boolean=false;
+    notFound: boolean=false;
     length: number;
     numRows;
     loading;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
+    columns :FormControl;
+    displayed: string[] = ['User Email','User Name', 'Created At'];
+    displayedColumns: string[] = ['User Email','User Name', 'Created At',"Action"];
+    dataSource:MatTableDataSource<any>;
+
+    constructor(public dialog: MatDialog ,
+      private toaster: ToasterServices,
+      private authService:AuthService,
+      private userService:UsersService
+      ) { };
 
 
-    constructor(public dialog: MatDialog ) { };
+    ngOnInit() {
 
-    displayedColumns: string[] = ['userIDEmail', 'userName', 'createdAt', 'action'];
-    dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-    selection = new SelectionModel<PeriodicElement>(true, []);
+      this.columns=new FormControl(this.displayedColumns)
+      let user=this.authService.userInfo();
+      const email=user.email;
+      console.log("email",email)
+    };
 
-    /** Whether the number of selected elements matches the total number of rows. */
-    isAllSelected() {
-        const numSelected = this.selection.selected.length;
-        const numRows = this.dataSource.data.length;
-        return numSelected === numRows;
+    getUsers(){
+      let shows=this.userService.display;
+      let pageNum=this.userService.pageNum;
+      let orderedBy=this.userService.orderedBy;
+      let search=this.userService.search;
+      let token=this.userService.token;
+
+      this.loading = true;
+
+
+
+      this.userService.listCustomersUsers(token,shows,pageNum,orderedBy,search).subscribe(
+         (res)=>{
+          this.loading = false;
+
+            this.numRows=res.length;
+      this.dataSource=new MatTableDataSource<any>(res);
+            if(search!=""){
+              this.length=res.length;
+              if(this.length==0){
+                this.notFound=true;
+              }
+              else{
+                this.notFound=false;
+              }
+          }
+          else{
+            this.UsersCount();
+
+          }
+          },
+          (err)=>{
+            this.loading = false;
+            this.length=0
+
+          }
+          )
+
     }
 
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
-    toggleAllRows() {
-        if (this.isAllSelected()) {
-            this.selection.clear();
-            return;
-        }
+    UsersCount(){
+      // let email=this.listService.email;
 
-        this.selection.select(...this.dataSource.data);
+      // let sub1= this.listService.ListsCount(email).subscribe(
+      //    (res)=>{
+      //      this.length=res;
+      //      // this.length=0;
+      //      if(this.length==0){
+      //        this.noData=true
+      //      }
+      //      else{
+      //        this.noData=false
+      //      }
+
+      //    }
+      //    ,(err)=>{
+      //      this.length=0;}
+      //  );
     }
-    /** The label for the checkbox on the passed row */
-    checkboxLabel(row?: PeriodicElement) {
-        //     if (!row) {
-        //         return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-        //     }
-        //    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-    }
-
-
     openActionModal(data?) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.height = '81vh';
@@ -134,17 +187,33 @@ export class UsersComponent implements OnInit ,OnDestroy{
             dialogConfig.minWidth = '300px';
             dialogConfig.maxHeight = '87vh';
             dialogConfig.disableClose = true;
-        
+
             const dialogRef = this.dialog.open(AddUserComponent,dialogConfig);
-        
+
             // dialogRef.afterClosed().subscribe(result => {
             //   if(result){
             //     this.contacts.getContacts();
             //   }
             // });
-          
+
 
     }
 
     ngOnDestroy(){};
 }
+
+// Messages_(DeviceID) | ReadOnly-FullAccess-None
+// Campaigns_(DeviceID) | ReadOnly-FullAccess-None
+
+// Templates | ReadOnly-FullAccess-None
+// Bots | ReadOnly-FullAccess-None
+// Devices | ReadOnly-FullAccess-None
+// Contacts | ReadOnly-FullAccess-None
+
+// Examples:
+
+// Messages_device1 | ReadOnly
+// Messages_device2 | FullAccess
+// Campaigns_device1| ReadOnly
+// Templates | ReadOnly
+// Devices | FullAccess
