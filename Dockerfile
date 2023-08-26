@@ -1,14 +1,10 @@
 # ----------------------------
 # build from source
 # ----------------------------
-FROM node:18 AS build
-
+FROM node:latest as node
 WORKDIR /app
-
-COPY package*.json .
-RUN npm install
-
 COPY . .
+RUN npm install
 RUN npm run build --prod
 
 # ----------------------------
