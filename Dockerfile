@@ -9,13 +9,10 @@ COPY package*.json .
 RUN npm install
 
 COPY . .
-RUN npm run build
+RUN npm run build --prod
 
 # ----------------------------
 # run with nginx
 # ----------------------------
-FROM nginx
-
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
-COPY --from=build /app/dist/pro2023 /usr/share/nginx/html
+FROM nginx:alpine
+COPY --from=node /app/dist/demo-app /usr/share/nginx/html
