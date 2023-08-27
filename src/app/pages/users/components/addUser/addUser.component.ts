@@ -23,7 +23,10 @@ export interface AccessLevels{
 
 })
 export class AddUserComponent {
-    listsArr:SelectOption[];
+
+  userPermisions;
+
+
     select=false
     next=false;
     devices:SelectOption[];
@@ -104,9 +107,9 @@ export class AddUserComponent {
       console.log(e)
     }
 
-    submitSave() {
-        console.log('edit work');
-        this.onClose()
+    submitAdd() {
+      console.log("permisions",this.userPermisions)
+        // this.onClose()
     }
 
 
@@ -123,7 +126,10 @@ export class AddUserComponent {
 
 
 
+    addPermissions(event){
+      this.userPermisions=event
 
+    }
 
 
 

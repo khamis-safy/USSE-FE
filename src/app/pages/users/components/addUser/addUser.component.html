@@ -10,7 +10,7 @@
     </div>
 
     <!-- modal body  -->
-    <div class=" modal-body overflow-auto px-1 px-4 mx-auto   ps-4 text-center container" style="height: 89%;">
+    <!-- <div class=" modal-body overflow-auto px-1 px-4 mx-auto   ps-4 text-center container" style="height: 89%;">
         <div style="height: 15%; width: 85%; position: relative;" class="mx-auto  d-flex justify-content-between align-items-start">
             <div class="d-flex flex-column justify-content-center align-content-center" style="width: 20%;">
                 <div class="divCircle bg-primary-800    mx-auto">1</div>
@@ -36,7 +36,6 @@
 
         <div style="height: 85%; width: 100%;" *ngIf="next" class=" overflow-auto  mx-md-auto  text-center ">
             <div class="w-100 mx-auto">
-                <!-- device -->
                 <form [formGroup]="form" class="my-2   txt-lg  text-start" style="width: 80%;">
                   <us-select
                   [data]="devices"
@@ -73,23 +72,102 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
-   <!-- <sr-radio
-                    [label]="accessLevel"
-                    (changed)="test($event)"
-                    style="font-weight: 500"
-                  ></sr-radio> -->
-<!--  [state]="
-                <sr-radio  [disableControl]="true" [label]="accessLevel"</sr-radio>
 
-                    "
-                   -->
+
+
+
+
+    <section>
+      <mat-stepper [linear]="true" #stepper>
+        <ng-template matStepperIcon="edit">
+          <mat-icon>check</mat-icon>
+        </ng-template>
+
+        <mat-step >
+          <ng-template matStepLabel>User Info</ng-template>
+          <div class="d-flex align-items-between flex-column justify-content-between gap-3" style=" min-height: 54vh;">
+            <div style=" height: 80%;" class="d-flex gap-4 flex-column py-5 text-start">
+              <us-input [isDisabled]="false" value="" [optional]="false" type="email" [label]=" 'Email'" [error]="false"
+                  [fullWidth]="true"></us-input>
+
+              <us-input [isDisabled]="false" value="" [optional]="false" type="password" [label]=" 'Password'"
+                  [error]="false" [fullWidth]="true"></us-input>
+
+              <us-input [isDisabled]="false" value="" [optional]="false" type="text" [label]=" 'Username'" [error]="false"
+                  [fullWidth]="true"></us-input>
+          </div>
+
+            <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
+              <button class="rest-style " matStepperNext >
+                <us-button
+                class="m-2"
+                label="Next"
+                [fill]="true"
+                [size]="'md'"
+                [loading]="false"
+                [appearance]="'primary'"
+
+                >
+
+
+            </us-button>
+            </button>
+            </div>
+          </div>
+        </mat-step>
+
+        <mat-step  >
+          <ng-template matStepLabel>Access Control</ng-template>
+          <div class="d-flex align-items-between flex-column justify-content-between gap-3" style=" min-height: 54vh;">
+              <app-action style=" height: 80%;" (permissions)="addPermissions($event)"></app-action>
+              <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
+                <button class="rest-style" matStepperPrevious>   <us-button
+                  class="m-2"
+                  label="Back"
+                  [fill]="false"
+                  [size]="'md'"
+                  [loading]="false"
+                  [disabled]="false"
+                  [appearance]="'primary'"
+                  >
+                </us-button>
+                </button>
+
+                <button class="rest-style" matStepperNext>   <us-button
+                class="m-2"
+                label="Add"
+                [fill]="true"
+                [size]="'md'"
+                [loading]="false"
+                [disabled]="false"
+                [appearance]="'primary'"
+                (clicked)="submitAdd()"
+                >
+                </us-button>
+                </button>
+              </div>
+          </div>
+
+        </mat-step>
+
+
+      </mat-stepper>
+    </section>
+
+
+
+
+
+
+
+
 
 
     <!-- modal footer -->
-    <div class="modal-footer justify-content-end gap-3" style="height: 6%;">
+    <!-- <div class="modal-footer justify-content-end gap-3" style="height: 6%;">
         <div *ngIf="!next">
             <us-button [loading]="false" label="Next" size="sm" [fill]="true" (clicked)="openNext()"></us-button>
 
@@ -102,5 +180,5 @@
 
         </div>
 
-    </div>
+    </div> -->
 </section>

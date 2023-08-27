@@ -4,6 +4,7 @@ import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 import { ErrSucc, ListData } from './list-data';
 import { Contacts } from './contacts';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,10 @@ export class ManageContactsService {
 
     display:number=10;
     pageNum:number=0;
-    email:string="khamis.safy@gmail.com";
+    email:string=this.authService.userInfo().email;
     orderedBy:string="";
     search:string="";
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,private authService:AuthService) { }
 
 // lists methods
 addList(name:string,email:string): Observable<ListData>{

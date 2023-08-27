@@ -55,7 +55,7 @@ timeSub$;
   }
   getDevices(){
 
-    this.devicesService.getDevices("khamis.safy@gmail.com",10,0,"","").subscribe(
+    this.devicesService.getDevices(this.devicesService.email,10,0,"","").subscribe(
       (res)=>{
         let activeDevices=res.filter((r)=>r.isConnected)
         this.devices = activeDevices.map(res=>{

@@ -149,7 +149,7 @@ getListData(){
     })
   }
   undoDelete(){
-    let email='khamis.safy@gmail.com';
+    let email=this.listService.email;
     this.listService.unDeleteList(email,this.deletedLists).subscribe(
       (res)=>{
 

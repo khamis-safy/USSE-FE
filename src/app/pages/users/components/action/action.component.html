@@ -1,211 +1,49 @@
-<section class="d-flex flex-column p-4 gap-3 h-100">
+<div class="w-100 mt-5 mx-auto">
+  <!-- device -->
+  <form [formGroup]="form" class="my-2" >
+    <us-select
+    [data]="devices"
+    formControlName="devicesData"
+    [multiSelect]="false"
+    [label]="'Devices'"
+    (onSelect)="onSelect($event)"
 
-    <!-- modal header -->
-    <div class="d-flex justify-content-center align-items-center position-relative   " style="height: 10%;">
+    [placeholder]="'Select Devices'"
+    [isDisabled]="false"
+    [optional]="true"
+    [enableSearch]="true"
+    [searchbarOnToggler]="true"
+    [searchNoResultText]="'there is no result'"
+    [maxListItemsWithoutSearch]="5"
+  ></us-select>
+  </form>
 
-        <div class="txt-lg">Access Control</div>
-        <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
-            <img src="assets/icons/close-circle.svg" (click)="onClose()" alt="close-icon" style="cursor: pointer;" />
-        </div>
+<div class="d-flex  flex-column">
+
+  <div *ngFor="let sectionLevel of selectedDevice.sectionsLevels" class="w-100 d-flex my-4" >
+    <div class="d-flex  align-content-center" style="width: 30%;">
+      <img width="11%" [src]="sectionLevel.section.icon" alt="" class="me-md-2">
+      <span width="70%" class="txt-sm">{{ sectionLevel.section.label }}</span>
     </div>
-
-    <!-- modal body  -->
-    <div class="modal-body overflow-auto px-1 px-4 mx-auto   ps-4 text-center container" style="height: 80%;">
-        <div class="row">
-            <form class="w-100 ">
-                <!-- device -->
-                <div class="mb-4 mt-3 txt-lg  text-start col-10">
+<div class="d-flex align-content-center justify-content-around" style="width: 70%;">
+  <div *ngFor="let accessLevel of sectionLevel.accessLevels" >
 
 
-                    <us-select [data]="listsArr" [multiSelect]="true" [label]="'Device'" [placeholder]="'Device_02'"
-                        [isDisabled]="false" [optional]="true" [enableSearch]="true" [searchbarOnToggler]="true"
-                        [searchNoResultText]="'there is no result'" [maxListItemsWithoutSearch]="5"></us-select>
-
-                </div>
-
-
-             
-                  <!-- messages -->
-                  <div class="pt-4  row   mx-3">
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div class="col-3 d-flex justify-content-start mx-2 me-4 ">
-                            <img src="assets/icons/me-icon.svg" alt="" class="me-2">
-                            <span class=" txt-sm"> Messages</span>
-                        </div>
-
-                        <div class="col-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="
-                            " name="messages" value="readOnly">
-                            <label class="me-4" for="
-                            ">Read Only</label>
-                        </div>
-
-                        <div class="col-4 mx-2 ">
-                            <input class="mx-2" type="radio" id="
-                            " name="messages" value="fullAccess">
-                            <label class="me-4" for="
-                            ">Full Access</label>
-                        </div>
-
-                        <div class="col-2 mx-2 text-start">
-                            <input class="mx-2" type="radio" id="" name="messages" value="none">
-                            <label for="">None</label>
-                        </div>
-
-                    </div>
-                </div>
-                
-
-                <!-- Campaigns -->
-                <div class="py-4  row   mx-3">
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div class="col-3 d-flex justify-content-start mx-2  me-4  ">
-                            <img src="assets/icons/users-compagns-icon.svg" alt="" class="me-2">
-                            <span class=" txt-sm"> Campaigns</span>
-                        </div>
-
-                        <div class="col-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="
-                            " name="Ccampaigns" value="readOnly">
-                            <label class="me-4" for="
-                            ">Read Only</label>
-                        </div>
-
-                        <div class="col-4 mx-2 ">
-                            <input class="mx-2" type="radio" id="
-                            " name="campaigns" value="fullAccess">
-                            <label class="me-4" for="
-                            ">Full Access</label>
-                        </div>
-
-                        <div class="col-2 mx-2  text-start">
-                            <input class="mx-2" type="radio" id="" name="campaigns" value="none">
-                            <label for="">None</label>
-                        </div>
-
-                    </div>
-                </div>
-
-                <hr class="">
+    <input width="15%"
+    [checked]="accessLevel.checked"
+    (change)="onAccessLevelChange(sectionLevel, accessLevel)"
+    class="me-md-2"
+    type="radio"
+    [id]="accessLevel.value + sectionLevel.section.name"
+    [name]="sectionLevel.section.name + accessLevel.value"
+    [value]="accessLevel.value"
+    #input>
+    <label width="70%" [for]="accessLevel.value +sectionLevel.section.name">{{ accessLevel.value }}</label>
 
 
+  </div>
+</div>
 
-                <!-- templates -->
-                <div class="pt-4 row  text-center mx-3">
-                    <div class="d-flex justify-content-center">
-                        <div class="col-3 d-flex justify-content-start me-4 mx-2">
-                            <img src="assets/icons/users-temp.svg" alt="" class="px-2">
-                            <span class=" txt-sm"> Templates</span>
-                        </div>
-
-                        <div class="col-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="" name="templates" value="readOnly">
-                            <label class="me-4" for="">Read Only</label>
-                        </div>
-
-                        <div class="col-4 mx-2">
-                            <input class="mx-2" type="radio" id="adult" name="templates" value="fullAccess">
-                            <label class="me-4" for="adult">Full Access</label>
-                        </div>
-
-                        <div class="col-2 mx-2 text-start">
-                            <input class="mx-2" type="radio" id="senior" name="templates" value="none">
-                            <label for="senior">None</label>
-                        </div>
-
-                    </div>
-                </div>
-
-
-                <!-- Bots -->
-                <div class="pt-4 row  text-center mx-3">
-                    <div class="d-flex justify-content-center">
-                        <div class="col-3 d-flex justify-content-start mx-2 me-4">
-                            <img src="assets/icons/users-bots.svg" alt="" class="px-2">
-                            <span class="txt-sm"> Bots</span>
-                        </div>
-
-                        <div class="col-md-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="" name="bots" value="readOnly">
-                            <label class="me-4" for="">Read Only</label>
-                        </div>
-
-                        <div class="col-md-4 mx-2">
-                            <input class="mx-2" type="radio" id="" name="bots" value="fullAccess">
-                            <label class="me-4" for="">Full Access</label>
-                        </div>
-
-                        <div class="col-md-2 mx-2 text-start">
-                            <input class="mx-2" type="radio" id="" name="bots" value="none">
-                            <label for="">None</label>
-                        </div>
-
-                    </div>
-                </div>
-
-
-                <!-- Devices -->
-                <div class="pt-4  row  text-center mx-3">
-                    <div class="d-flex justify-content-center">
-                        <div class="col-md-3 d-flex justify-content-start mx-2 me-4">
-                            <img src="assets/icons/users-devices.svg" alt="" class="px-2">
-                            <span class="txt-sm"> Devices</span>
-                        </div>
-
-                        <div class="col-md-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="" name="devices" value="readOnly">
-                            <label class="me-4" for="">Read Only</label>
-                        </div>
-
-                        <div class="col-md-4 mx-2">
-                            <input class="mx-2" type="radio" id="" name="devices" value="fullAccess">
-                            <label class="me-4" for="">Full Access</label>
-                        </div>
-
-                        <div class="col-md-2 mx-2 text-start">
-                            <input class="mx-2" type="radio" id="" name="devices" value="none">
-                            <label for="">None</label>
-                        </div>
-
-                    </div>
-                </div>
-
-
-
-                <!-- Contacts -->
-                <div class="pt-4  row  text-center mx-3">
-                    <div class="d-flex justify-content-center ">
-                        <div class="col-md-3 d-flex justify-content-start mx-2 me-4">
-                            <img src="assets/icons/users-contacts.svg" alt="" class="px-2">
-                            <span class="txt-sm"> Contacts</span>
-                        </div>
-
-                        <div class="col-md-3 mx-2">
-                            <input class="mx-2 p-5" type="radio" id="" name="contacts"  value="readOnly">
-                            <label class="me-4 " for="">Read Only</label>
-                        </div>
-
-                        <div class="col-md-4 mx-2">
-                            <input class="mx-2" type="radio" id="" name="contacts" value="fullAccess">
-                            <label class="me-4" for="">Full Access</label>
-                        </div>
-
-                        <div class="col-md-2 mx-2 text-start">
-                            <input class="mx-2" type="radio" id="" name="contacts" value="none">
-                            <label for="">None</label>
-                        </div>
-
-                    </div>
-                </div>
-
-
-            </form>
-        </div>
-    </div>
-    <!-- modal footer -->
-    <div class="modal-footer justify-content-center gap-3" style="height: 10%;">
-        <us-button [loading]="false" label="Save" size="sm" [fill]="true" (clicked)="submitSave()"></us-button>
-        <us-button label="Cancel" size="sm" appearance="primary" [fill]="false" (clicked)="onClose()"
-            [loading]="false"></us-button>
-    </div>
-</section>
+  </div>
+</div>
+</div>

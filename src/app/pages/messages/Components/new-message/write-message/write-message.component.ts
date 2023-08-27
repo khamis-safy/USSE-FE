@@ -82,7 +82,6 @@ export class WriteMessageComponent implements OnInit {
 
       }
     )
-    console.log(template)
 
 
 

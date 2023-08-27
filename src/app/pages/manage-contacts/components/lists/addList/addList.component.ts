@@ -11,6 +11,7 @@ import { ListData } from '../../../list-data';
   styleUrls: ['./addList.component.scss']
 })
 export class AddListComponent implements OnInit {
+  email:string=this.listService.email
   isLoading = false
   name:any = new FormControl('',[Validators.required]);
   form = new FormGroup({
@@ -41,9 +42,8 @@ export class AddListComponent implements OnInit {
   }
   submitAdd(){
     this.isLoading = true
-    let email="khamis.safy@gmail.com";
 
-    this.listService.addList(this.form.value.name,email).subscribe(
+    this.listService.addList(this.form.value.name,this.email).subscribe(
       (res)=>{
         this.isLoading = false
         this.onClose(true);
@@ -58,8 +58,7 @@ export class AddListComponent implements OnInit {
   }
   submitEdit(){
     this.isLoading = true
-    let email="khamis.safy@gmail.com";
-    this.listService.updateList(this.data.id,this.form.value.name,email).subscribe(
+    this.listService.updateList(this.data.id,this.form.value.name,this.email).subscribe(
       (res)=>{
         this.isLoading = false
         this.onClose(true);

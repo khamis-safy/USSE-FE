@@ -40,7 +40,7 @@ export interface Filse {
 export class AddTemplateComponent implements OnInit {
   isLoading = false;
   fileData: Filse[] = [];
-
+  email:string=this.templatesService.email;
   templateName: any = new FormControl('', [Validators.required]);
   messageBody: any = new FormControl('', [Validators.required]);
   attachments: any = new FormControl('');
@@ -70,7 +70,7 @@ export class AddTemplateComponent implements OnInit {
 
   submitAdd() {
     this.isLoading = true;
-    let email = 'khamis.safy@gmail.com';
+    let email = this.email;
     let templateName = this.form.value.templateName;
     let messageBody = this.form.value.messageBody;
     let attachments = this.fileData.map((file) => file.url);
@@ -93,7 +93,7 @@ export class AddTemplateComponent implements OnInit {
   }
 
   submitEdit() {
-    let email = 'khamis.safy@gmail.com';
+    let email = this.email;
     let templateName = this.form.value.templateName;
     let messageBody = this.form.value.messageBody;
     let attachments = this.form.value.attachments;
@@ -129,6 +129,23 @@ export class AddTemplateComponent implements OnInit {
       attachments: this.data.attachments,
     });
  // attachment
+ this.templatesService.getTemplateById(this.data.id).subscribe(
+  (res)=>{
+      let attachments=res.result.attachments;
+      // console.log("attachment",attachments)
+    this.fileData=attachments.map((attach)=>{
+      return{
+        name:"",
+        type:"",
+        url:attach,
+        size:0
+      }
+    })
+  },
+  (err)=>{
+
+  }
+)
   }
 
   onClose(data?): void {

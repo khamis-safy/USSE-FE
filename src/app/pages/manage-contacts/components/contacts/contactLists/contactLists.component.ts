@@ -174,7 +174,6 @@ getContactsData(){
 
   submitAdd(){
     this.isLoading = true
-    let email="khamis.safy@gmail.com";
     this.listService.addOrMoveContacts(this.contactsIds,this.listIds).subscribe(
       (res)=>{
         this.isLoading = false

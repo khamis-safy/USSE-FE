@@ -141,7 +141,7 @@ $clr_warning_50: #FDF4DC;
   --clr-primary-800: rgba(0, 101, 141, 1);
   --clr-primary-700: rgba(10, 77, 104, 1);
   --clr-primary-600: rgba(0, 113, 177, 1);
-  
+
 
   --clr-primary-500: #bfdeea ;
   --clr-primary-400: linear-gradient(90deg, rgba(8, 131, 149, 0.16) 0%, rgba(8, 131, 149, 0.24) 100%), #FFFFFF;
@@ -1093,9 +1093,11 @@ ngx-intl-tel-input .error {
 }
 
 // stepper
+
+// global styling
+
 .mat-stepper-horizontal{
-  border-radius: 24px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+
 
   button.rest-style{
     background: none;
@@ -1105,12 +1107,10 @@ ngx-intl-tel-input .error {
     margin: 0;
   }
   .mat-horizontal-stepper-wrapper {
-    padding: 20px;
-    min-height: 909px;
+
   .mat-horizontal-stepper-header-container {
     width: 80%;
     align-self: center;
-    padding: 30px 0px;
 
   .mat-step-header {
     display: flex;
@@ -1157,6 +1157,23 @@ ngx-intl-tel-input .error {
 
 
 }
+// special
+.stepper{
+  .mat-stepper-horizontal{
+    border-radius: 24px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+  }
+  .mat-horizontal-stepper-header-container {
+
+    padding: 30px 0px;
+  }
+  .mat-horizontal-stepper-wrapper {
+    padding: 20px;
+    max-height: 909px;
+  }
+}
+// end stepper styling
+
   .total{
     width: 40px;
     height: 32px;
