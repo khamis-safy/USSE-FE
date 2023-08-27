@@ -19,7 +19,7 @@
   </form>
 
 <div class="d-flex  flex-column">
-
+<!-- for each device -->
   <div *ngFor="let sectionLevel of selectedDevice.sectionsLevels" class="w-100 d-flex my-4" >
     <div class="d-flex  align-content-center" style="width: 30%;">
       <img width="11%" [src]="sectionLevel.section.icon" alt="" class="me-md-2">
@@ -39,6 +39,33 @@
     [value]="accessLevel.value"
     #input>
     <label width="70%" [for]="accessLevel.value +sectionLevel.section.name">{{ accessLevel.value }}</label>
+
+
+  </div>
+</div>
+
+  </div>
+
+  <!-- shared -->
+  <div *ngFor="let sharedSection of sharedPermisions" class="w-100 d-flex my-4" >
+    <div class="d-flex  align-content-center" style="width: 30%;">
+      <img width="11%" [src]="sharedSection.section.icon" alt="" class="me-md-2">
+      <span width="70%" class="txt-sm">{{ sharedSection.section.label }}</span>
+    </div>
+<div class="d-flex align-content-center justify-content-around" style="width: 70%;">
+  <div *ngFor="let accessLevel of sharedSection.accessLevels" >
+
+
+    <input width="15%"
+    [checked]="accessLevel.checked"
+    (change)="onAccessLevelChange(sharedSection, accessLevel)"
+    class="me-md-2"
+    type="radio"
+    [id]="accessLevel.value + sharedSection.section.name"
+    [name]="sharedSection.section.name + accessLevel.value"
+    [value]="accessLevel.value"
+    #input>
+    <label width="70%" [for]="accessLevel.value +sharedSection.section.name">{{ accessLevel.value }}</label>
 
 
   </div>

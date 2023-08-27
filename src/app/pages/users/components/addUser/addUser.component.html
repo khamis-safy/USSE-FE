@@ -122,7 +122,7 @@
         <mat-step  >
           <ng-template matStepLabel>Access Control</ng-template>
           <div class="d-flex align-items-between flex-column justify-content-between gap-3" style=" min-height: 54vh;">
-              <app-action style=" height: 80%;" (permissions)="addPermissions($event)"></app-action>
+              <app-action style=" height: 80%;" (sharedPermissions)="addSharedPermisions($event)" (permissions)="addPermissions($event)" ></app-action>
               <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
                 <button class="rest-style" matStepperPrevious>   <us-button
                   class="m-2"
