@@ -35,14 +35,14 @@ userInfo:any;
     this.loading=true
     this.loginService.login(this.form.value).subscribe(
   (res)=>{
-    console.log(res);
     this.userInfo={userName:res.contactName,
-                  organizationName:res.organisationName,
-                  id:res.id,
-                  email:res.email
-                }
-    this.authService.saveDataToLocalStorage(this.userInfo);
-    localStorage.setItem("token",res.token)
+      organizationName:res.organisationName,
+      id:res.id,
+      email:res.email,
+      token:res.token
+    }
+this.authService.saveDataToLocalStorage(this.userInfo);
+this.authService.updateUserInfo()
 
    // Store the refresh token in a cookie
    this.loginService.storeRefreshTokenInCookie(res.refreshToken);

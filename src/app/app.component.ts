@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { PluginsService } from './services/plugins.service';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +12,14 @@ export class AppComponent implements OnInit {
   title = 'pro2023';
   darkActive:boolean = false;
   currentLang:string;
-  constructor(private plugin:PluginsService,public translate:TranslateService){
+  constructor(private plugin:PluginsService,public translate:TranslateService,private authService:AuthService){
     this.currentLang = localStorage.getItem('currentLang') || 'en';
     this.translate.use(this.currentLang)
+    this.authService.updateUserInfo();
   }
   ngOnInit(): void {
-    this.initMode()
+    this.initMode();
+
   }
   initMode(){
     if (this.plugin.getData("dark") == true){

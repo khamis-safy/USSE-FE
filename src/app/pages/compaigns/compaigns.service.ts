@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 import { Campaigns, compaignDetails } from './campaigns';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 @Injectable({
@@ -11,9 +12,9 @@ import { Campaigns, compaignDetails } from './campaigns';
 export class CompaignsService {
   display:number=10;
   pageNum:number=0;
-  email:string="khamis.safy@gmail.com";
+  email:string=this.authService.userInfo.email;
   search:string="";
-constructor(private http:HttpClient) {
+constructor(private http:HttpClient,private authService:AuthService) {
 
 }
 getCampaigns(email:string,showsNum:number,pageNum:number,search:string):Observable<compaignDetails[]>{

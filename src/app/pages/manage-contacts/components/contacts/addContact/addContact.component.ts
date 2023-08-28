@@ -23,6 +23,7 @@ interface CheckedCont{
 export class AddContactComponent implements OnInit{
 // isChanged:boolean=false;
 listsLoadingText:string='Loading ...';
+email:string=this.listService.email;
   // lists: ListData[] ;
   listsArr:SelectOption[]
   // ngx-intl-tel
@@ -92,7 +93,7 @@ oldData;
   }
 
   getLists(){
-  this.listService.getList("khamis.safy@gmail.com",10,0,"","").subscribe(
+  this.listService.getList(this.email,10,0,"","").subscribe(
      (res)=>{
       if(this.data){
       let dataLists=this.data.contacts.lists;
@@ -149,7 +150,7 @@ oldData;
 
   submitAdd(){
     this.isLoading = true
-    let email="khamis.safy@gmail.com";
+    let email=this.email;
     let name =this.form.value.name;
     let cnNName=this.form.value.cnName;
     let mobile=this.form.value.mobile.e164Number;
@@ -173,7 +174,7 @@ oldData;
 
 
   submitEdit(){
-    let email="khamis.safy@gmail.com";
+    let email=this.email;
     let name =this.form.value.name;
     let cnName=this.form.value.cnName;
     let mobile=this.form.value.mobile.e164Number

@@ -1,0 +1,55 @@
+<section class="d-flex flex-column p-5 gap-3 h-100">
+  <!-- modal header -->
+  <div
+    class="d-flex justify-content-center align-items-center position-relative"
+    style="height: 5%"
+  >
+    <div class="txt-lg">Edit Permissions</div>
+    <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
+      <img
+        src="assets/icons/close-circle.svg"
+        (click)="onClose()"
+        alt="close-icon"
+        style="cursor: pointer"
+      />
+    </div>
+  </div>
+
+<!-- modal body -->
+<div>
+  <app-action
+[data]="data"
+(sharedPermissions)="addSharedPermisions($event)"
+(permissions)="addPermissions($event)"></app-action>
+
+</div>
+
+
+
+
+
+
+<!-- modal footer -->
+<div class="modal-footer justify-content-end gap-3 mb-3"  style="height: 10%;">
+
+  <us-button
+    label="Cancel"
+    size="sm"
+    appearance="primary"
+    [fill]="false"
+    (clicked)="onClose()"
+    [loading]="false"
+  ></us-button>
+
+<us-button
+
+label="Save"
+size="sm"
+[loading]="isLoading"
+[disabled]="isLoading"
+[fill]="true"
+(clicked)="submitEdit()"
+
+></us-button>
+</div>
+</section>

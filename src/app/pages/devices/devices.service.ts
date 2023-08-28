@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class DevicesService {
   display:number=10;
   pageNum:number=0;
-  email:string=this.authService.userInfo().email;
+  email:string=this.authService.userInfo.email;
   orderedBy:string="";
   search:string="";
 constructor(private http:HttpClient,private authService:AuthService) { }

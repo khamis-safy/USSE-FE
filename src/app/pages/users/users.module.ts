@@ -8,6 +8,7 @@ import { UsersComponent } from './component/users.component';
 import { ActionComponent } from './components/action/action.component';
 import { AddUserComponent } from './components/addUser/addUser.component';
 
+import { EditUserComponent } from './components/editUser/editUser.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 
@@ -16,9 +17,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
   declarations: [
     ActionComponent ,
     UsersComponent ,
-    AddUserComponent
-      
-  
+    AddUserComponent,
+    EditUserComponent
+
+
 
   ],
   imports: [
@@ -26,8 +28,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     UsersRoutes,
     SharedModule,
     MatSelectModule,
-    
-  
+
+
 
 
   ],
@@ -38,9 +40,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
   //   UsersComponent ,
   // ],
   // declarations: [
-    
+
   //   ActionComponent ,
-   
+
 
 
   // ],

@@ -123,20 +123,20 @@ data={
 console.log(data);
 this.back.emit(true)
 
-// this.compaignsService.addMewCampain(data).subscribe(
-//   (res)=>{
-//     this.toasterService.success("Success");
-//     this.back.emit(true)
-//     this.isLoading = false
-//     console.log(res)},
-//   (err)=>{
-//     this.toasterService.error("Error");
-//     this.back.emit(false)
-//     this.isLoading = false;
-//     console.log(err)}
+this.compaignsService.addMewCampain(data).subscribe(
+  (res)=>{
+    this.toasterService.success("Success");
+    this.back.emit(true)
+    this.isLoading = false
+    console.log(res)},
+  (err)=>{
+    this.toasterService.error("Error");
+    this.back.emit(false)
+    this.isLoading = false;
+    console.log(err)}
 
 
-// )
+)
 
 }
 

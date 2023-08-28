@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { SideBarComponent } from './components/side-bar/component/side-bar.component';
 import { SettingComponent } from './components/side-bar/components/setting/setting.component';
 
 import { FooterComponent } from './components/footer/footer.component';
@@ -44,6 +43,7 @@ import { WriteMessageComponent } from '../pages/messages/Components/new-message/
 import { NbTimepickerModule, NbDatepickerModule, NbToggleModule } from '@nebular/theme';
 
 import { ToLocalTimePipe } from './pipes/toLocalTime.pipe';
+import { SideBarComponent } from './components/side-bar/component/side-bar.component';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 

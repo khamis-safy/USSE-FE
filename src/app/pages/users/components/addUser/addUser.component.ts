@@ -1,8 +1,13 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
+import { DeviceSections, DevicesData } from '../../users';
+import { SignupService } from 'src/app/pages/signup/signup.service';
+import { PluginsService } from 'src/app/services/plugins.service';
+import { UsersService } from '../../users.service';
+import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 export interface TestData{
   deviceId:string,
   deviceValue:string
@@ -22,91 +27,69 @@ export interface AccessLevels{
     //imports: [MatCardModule, MatCheckboxModule, FormsModule, MatRadioModule ,MatSelectModule]
 
 })
-export class AddUserComponent {
-    listsArr:SelectOption[];
-    select=false
-    next=false;
-    devices:SelectOption[];
-    testData:TestData[]=[
-      {
-        deviceId:"lskjdlfkjsdfii443232",
-        deviceValue:"device1"
-      },
-      {
-        deviceId:"lklijefksnfngdglks",
-        deviceValue:"device2"
-      },
-      {
-        deviceId:"llkjnidflskdjfiee",
-        deviceValue:"device3"
+export class AddUserComponent implements OnInit {
+  form:any;
+  contactName:any;
+  email:any;
+  password:any;
+
+  userPermisions:DevicesData[];
+  userPermisions$:{name:string,value:string}[]=[]
+
+  sharedPermisions:DeviceSections[];
+  sharedPermisions$:{name:string,value:string}[]=[]
+  isLoading: boolean;
+
+    constructor(public dialogRef: MatDialogRef<AddUserComponent>,
+      private plugin:PluginsService,private toaster: ToasterServices,
+    private signupService:SignupService,private userService:UsersService) {
+    }
+  ngOnInit() {
+     // controls
+     this.initFormControles()
+     //form creation
+     this.createForm();
+  }
+  initFormControles(){
+    this.contactName = new FormControl('',[Validators.required]);
+    this.email=new FormControl('',[Validators.required,Validators.pattern(this.plugin.emailReg)]);
+    this.password = new FormControl('',[Validators.required,Validators.pattern(this.plugin.passReg)]);
+
+  }
+  createForm(){
+    this.form = new FormGroup({
+      contactName: this.contactName ,
+      email: this.email ,
+      password: this.password,
+
+    })
+  }
+
+    submitAdd() {
+      let allPermisions=this.preparePermisions();
+      const data={
+        contactName: this.contactName.value ,
+        organisationName:this.userService.organizationName  ,
+        email: this.email.value ,
+        password: this.password.value,
+        customerId:this.userService.id,
+        permissions:allPermisions
       }
+      this.isLoading = true;
 
-    ]
-    devicesData = new FormControl([]);
-    form = new FormGroup({
-      devicesData:this.devicesData,
-
-    });
-    selectedDevices:string[]=[];
-    // accessLevels :AccessLevels[]= [
-    //   {
-    //     value:"readOnly",
-    //     state:"checked"
-    //   },
-    //   {
-    //     value:"fullAccess",
-    //     state:""
-    //   },
-    //   {
-    //     value:"none",
-    //     state:""
-    //   }
-    // ]
-    accessLevels :AccessLevels[]= [
-      {
-        value:"readOnly",
-        checked:true
-      },
-      {
-        value:"fullAccess",
-        checked:false
-      },
-      {
-        value:"none",
-        checked:false
-      }
-    ]
-    sections = [
-      { icon: 'assets/icons/me-icon.svg', label: 'Messages', name: 'messages',accessLevels:this.accessLevels },
-      { icon: 'assets/icons/users-compagns-icon.svg', label: 'Campaigns', name: 'campaigns',accessLevels:this.accessLevels },
-      { icon: 'assets/icons/users-temp.svg', label: 'Templates', name: 'templates' ,accessLevels:this.accessLevels},
-      { icon: 'assets/icons/users-bots.svg', label: 'Bots', name: 'bots',accessLevels:this.accessLevels },
-      { icon: 'assets/icons/users-devices.svg', label: 'Devices', name: 'devices',accessLevels:this.accessLevels },
-      { icon: 'assets/icons/users-contacts.svg', label: 'Contacts', name: 'contacts',accessLevels:this.accessLevels }
-    ];
-
-    constructor(public dialogRef: MatDialogRef<AddUserComponent>) {
-      this.devices = this.testData.map(res=>{
-        return {
-          title:res.deviceValue,
-          value:res.deviceId
+      this.signupService.register(data).subscribe(
+        (res) => {
+          this.isLoading = false;
+          this.onClose(true);
+          this.toaster.success('Success');
+        },
+        (err) => {
+          this.isLoading = false;
+          this.onClose(false);
+          this.toaster.error(`Error`);
         }
-      });
-     }
-     onSelect(event){
-      this.accessLevels.map((level)=>{if(level.value=="readOnly"){
-        // level.state="checked";
-        level.checked=true
-      }})
-
-    }
-     test(e){
-      console.log(e)
-    }
-
-    submitSave() {
-        console.log('edit work');
-        this.onClose()
+      )
+      console.log("all permisions",data)
     }
 
 
@@ -114,17 +97,55 @@ export class AddUserComponent {
         this.dialogRef.close(data);
     }
 
-    openNext(){
-        this.next=true;
+
+    addPermissions(event){
+      this.userPermisions=event;
+
     }
-    openPrevious(){
-        this.next=false;
+    addSharedPermisions(event){
+        this.sharedPermisions=event;
     }
 
+    preparePermisions(){
 
+      this.userPermisions$=[];
+      if(this.userPermisions){
 
+        this.userPermisions.map((permission)=>{
+          let sectionName;
+          let deviceId=permission.deviceId;
+          let accessValue;
 
+          permission.sectionsLevels.map((level)=>{
+            sectionName=level.section.label
+            accessValue=level.accessLevels.find((l)=>l.checked).value;
+           this.userPermisions$.push(this.createAccessLevels(sectionName,accessValue,deviceId)) ;
 
+          })})
+          ;
+      }
+      this.sharedPermisions$=[];
+      this.sharedPermisions.map((permision)=>{
+        let sectionName = permision.section.label;
+        let accesValue = permision.accessLevels.find((l)=>l.checked).value;
+        this.sharedPermisions$.push(this.createAccessLevels(sectionName,accesValue))
+      });
+      return [...this.userPermisions$,...this.sharedPermisions$]
+    }
+    createAccessLevels(name:string,value:string,deviceId?:string){
+      if(deviceId){
+        return {
+          name:`${name}_${deviceId}`,
+          value:value
+        }
+      }
+      else{
+        return {
+          name:name,
+          value:value
+        }
+      }
 
+    }
 
 }

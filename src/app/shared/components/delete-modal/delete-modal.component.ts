@@ -149,7 +149,7 @@ export class DeleteModalComponent implements OnInit {
 
   deleteCon() {
 
-    this.listService.deleteContact('khamis.safy@gmail.com', this.body).subscribe(
+    this.listService.deleteContact(this.listService.email, this.body).subscribe(
       (res) => {
         this.isLoading = false
 
@@ -306,7 +306,7 @@ export class DeleteModalComponent implements OnInit {
   deleteList() {
     this.isLoading = true
     let body = this.data.listsData.lists.map(res => res.id)
-    this.listService.deleteList('khamis.safy@gmail.com', body).subscribe(
+    this.listService.deleteList(this.listService.email, body).subscribe(
       (res) => {
         this.isLoading = false
         this.onClose(body);
@@ -426,7 +426,7 @@ submit() {
     }}
 
 
-    
+
     else {
       this.deleteDevice();
     }

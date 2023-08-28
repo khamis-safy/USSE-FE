@@ -3,6 +3,7 @@ import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Message, Shceduled } from './message';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +11,11 @@ import { Message, Shceduled } from './message';
 export class MessagesService {
   display:number=10;
     pageNum:number=0;
-    email:string="khamis.safy@gmail.com";
+    email:string=this.authService.userInfo.email;
     orderedBy:string="";
     search:string="";
     msgCategory:string="inbox";
-constructor(private http:HttpClient) { }
+constructor(private http:HttpClient,private authService:AuthService) { }
 
 getMessages(email:string,msgCategory:string,showsNum:number,pageNum:number,search:string):Observable<Message[]>{
   return this.http.get<Message[]>(`${env.api}Message/listMessages?email=${email}&msgCategory=${msgCategory}&take=${showsNum}&scroll=${pageNum}&search=${search}`)
