@@ -15,17 +15,22 @@ export class UsersService {
   pageNum:number=0;
   orderedBy:string="";
   search:string="";
-  token:string=this.authService.userInfo().refreshToken;;
+  token:string=this.authService.userInfo.refreshToken;
+  organizationName:string=this.authService.userInfo.organizationName;
+  id:string=this.authService.userInfo.id;
   constructor(private http:HttpClient,private authService:AuthService) {
 
   }
 
-  listCustomersUsers(token:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<any>{
-    return this.http.get<any>(`${env.api}Auth/listCustomersUsers?token=${token}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+  listCustomersUsers(token:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Users[]>{
+    return this.http.get<Users[]>(`${env.api}Auth/listCustomersUsers?token=${token}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
   }
 
+  listCustomersUsersCount(token:string):Observable<number>{
+    return this.http.get<number>(`${env.api}Auth/listCustomersUsersCount?token=${token}`)
+  }
+  editUserPermissions(data):Observable<any>{
 
-// /api/Auth/listCustomersUsers
-
-
+    return this.http.patch<any>(`${env.api}Auth/editUserPermissions`,data)
+  }
 }

@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class MessagesService {
   display:number=10;
     pageNum:number=0;
-    email:string=this.authService.userInfo().email;
+    email:string=this.authService.userInfo.email;
     orderedBy:string="";
     search:string="";
     msgCategory:string="inbox";

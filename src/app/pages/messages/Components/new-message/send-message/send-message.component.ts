@@ -70,6 +70,7 @@ timeSub$;
         }
        },
        (err)=>{
+        this.deviceLoadingText='No Results'
 
        })
   }

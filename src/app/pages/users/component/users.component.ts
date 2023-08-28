@@ -9,28 +9,11 @@ import { FormControl } from '@angular/forms';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UsersService } from '../users.service';
-import { SelectOption } from 'src/app/shared/components/select/select-option.model';
-
-export interface PeriodicElement {
-    userIDEmail: string;
-    userName: string;
-    createdAt: string;
-    action: string;
-}
+import { Users } from '../users';
+import { EditUserComponent } from '../components/editUser/editUser.component';
 
 
-const ELEMENT_DATA: PeriodicElement[] = [
-    { userIDEmail: 'John Smith@yahoo.com', userName: 'John Smith', createdAt: '24 May 2023', action: '' },
-    { userIDEmail: 'John Smith@yahoo.com', userName: 'John Smith', createdAt: '24 May 2023', action: '' },
-    { userIDEmail: 'John Smith@yahoo.com', userName: 'John Smith', createdAt: '24 May 2023', action: '' },
-    { userIDEmail: 'John Smith@yahoo.com', userName: 'John Smith', createdAt: '24 May 2023', action: '' },
-    { userIDEmail: 'John Smith@yahoo.com', userName: 'John Smith', createdAt: '24 May 2023', action: '' },
-    { userIDEmail: 'John Smith@yahoo.com', userName: 'John Smith', createdAt: '24 May 2023', action: '' },
-    { userIDEmail: 'John Smith@yahoo.com', userName: 'John Smith', createdAt: '24 May 2023', action: '' },
-    { userIDEmail: 'John Smith@yahoo.com', userName: 'John Smith', createdAt: '24 May 2023', action: '' },
-    { userIDEmail: 'John Smith@yahoo.com', userName: 'John Smith', createdAt: '24 May 2023', action: '' }
 
-];
 @Component({
 
     selector: 'app-users',
@@ -41,17 +24,18 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 
 export class UsersComponent implements OnInit ,OnDestroy{
+  isSearch:boolean=false;
 
-    noData: boolean=false;
+    noData: boolean=true;
     notFound: boolean=false;
-    length: number;
+    length: number=0;
     numRows;
     loading;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     columns :FormControl;
     displayed: string[] = ['User Email','User Name', 'Created At'];
     displayedColumns: string[] = ['User Email','User Name', 'Created At',"Action"];
-    dataSource:MatTableDataSource<any>;
+    dataSource:MatTableDataSource<Users>;
 
     constructor(public dialog: MatDialog ,
       private toaster: ToasterServices,
@@ -63,9 +47,9 @@ export class UsersComponent implements OnInit ,OnDestroy{
     ngOnInit() {
 
       this.columns=new FormControl(this.displayedColumns)
-      let user=this.authService.userInfo();
-      const email=user.email;
-      console.log("email",email)
+     this.getUsers();
+
+
     };
 
     getUsers(){
@@ -80,12 +64,11 @@ export class UsersComponent implements OnInit ,OnDestroy{
 
 
       this.userService.listCustomersUsers(token,shows,pageNum,orderedBy,search).subscribe(
-         (res)=>{
+        (res)=>{
           this.loading = false;
+          this.dataSource=new MatTableDataSource<Users>(res);
 
-            this.numRows=res.length;
-      this.dataSource=new MatTableDataSource<any>(res);
-            if(search!=""){
+          if(search!=""){
               this.length=res.length;
               if(this.length==0){
                 this.notFound=true;
@@ -96,36 +79,42 @@ export class UsersComponent implements OnInit ,OnDestroy{
           }
           else{
             this.UsersCount();
+            this.isSearch=false;
+
 
           }
-          },
-          (err)=>{
-            this.loading = false;
-            this.length=0
+          console.log(res)
 
-          }
+        },
+        (err)=>{
+         this.loading = false;
+         this.length=0;
+
+        }
+
+
           )
 
     }
 
     UsersCount(){
-      // let email=this.listService.email;
+      let token=this.userService.token;
 
-      // let sub1= this.listService.ListsCount(email).subscribe(
-      //    (res)=>{
-      //      this.length=res;
-      //      // this.length=0;
-      //      if(this.length==0){
-      //        this.noData=true
-      //      }
-      //      else{
-      //        this.noData=false
-      //      }
+      this.userService.listCustomersUsersCount(token).subscribe(
+        (res)=>{
 
-      //    }
-      //    ,(err)=>{
-      //      this.length=0;}
-      //  );
+          this.length=res;
+          if(this.length==0){
+            this.noData=true
+          }
+          else{
+            this.noData=false
+          }
+        }
+        ,(err)=>{
+          this.length=0;
+        }
+       );
     }
     openActionModal(data?) {
         const dialogConfig = new MatDialogConfig();
@@ -135,9 +124,10 @@ export class UsersComponent implements OnInit ,OnDestroy{
         dialogConfig.minWidth = '300px';
         dialogConfig.maxHeight = '87vh';
         dialogConfig.disableClose = true;
+        dialogConfig.data=data;
 
         //  dialogConfig.data= {contacts:data,listDetails:false};
-        const dialogRef = this.dialog.open(ActionComponent, dialogConfig);
+        const dialogRef = this.dialog.open(EditUserComponent, dialogConfig);
         //this.selection.clear();
         //dialogRef.afterClosed().subscribe(result => {
         //if(result){
@@ -152,29 +142,21 @@ export class UsersComponent implements OnInit ,OnDestroy{
     }
 
     onSearch(event: any) {
-        // this.listService.search=event.value;
-        // this.selection.clear();
+        this.userService.search=event.value;
 
-        // this.getContacts();
+        this.getUsers();
     }
 
     changeColumns(event) {
-        // if(this.isCanceled){
-        //   this.displayedColumns=['select',...event]
-
-        // }
-        // else{
-        //   this.displayedColumns=['select',...event,'action']
-        // }
+      this.displayedColumns=[...event,'Action']
 
     }
 
     onPageChange(event) {
-        // this.listService.display=event.pageSize;
-        // this.listService.pageNum=event.pageIndex;
-        // this.selection.clear();
+        this.userService.display=event.pageSize;
+        this.userService.pageNum=event.pageIndex;
 
-        // this.getContacts();
+        this.getUsers();
 
     }
 
@@ -187,6 +169,7 @@ export class UsersComponent implements OnInit ,OnDestroy{
             dialogConfig.minWidth = '300px';
             dialogConfig.maxHeight = '87vh';
             dialogConfig.disableClose = true;
+
 
             const dialogRef = this.dialog.open(AddUserComponent,dialogConfig);
 

@@ -69,10 +69,12 @@ export class SignupComponent implements OnInit {
         this.userInfo={userName:res.contactName,
           organizationName:res.organisationName,
           id:res.id,
-          email:res.email
+          email:res.email,
+          token:res.token
         }
 this.authService.saveDataToLocalStorage(this.userInfo);
-        localStorage.setItem("token",res.token)
+this.authService.updateUserInfo()
+
 
            // Store the refresh token in a cookie
            this.loginService.storeRefreshTokenInCookie(res.refreshToken);

@@ -1,9 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
-import { AccessLevels, DeviceSections, DevicesData } from '../../users';
+import { AccessLevels, DeviceSections, DevicesData, Users } from '../../users';
+import { DevicesService } from 'src/app/pages/devices/devices.service';
 
 
 // interface DevicePermisions{
@@ -51,6 +52,8 @@ export class ActionComponent implements OnInit{
   // devicesPermisions:DevicePermisions[]=[];
   @Output() permissions=new EventEmitter<DevicesData[]>
   @Output() sharedPermissions=new EventEmitter<DeviceSections[]>
+  @Input() data:Users;
+  deviceLoadingText:string='Loading ...';
 
   devices:SelectOption[];
   testData:TestData[];
@@ -62,7 +65,8 @@ export class ActionComponent implements OnInit{
   selectedDevice!:DevicesData;
   allDevices:DevicesData[];
 updated:any;
-
+noDevices;
+permissionsData;
   // sections = [
   //   { icon: 'assets/icons/me-icon.svg', label: 'Messages', name: 'messages' , accessLevels : [
   //   {
@@ -161,33 +165,105 @@ updated:any;
     { icon: 'assets/icons/users-contacts.svg', label: 'Contacts', name: 'contacts'}
   ]
   sharedPermisions;
-    constructor(public dialogRef: MatDialogRef<ActionComponent>) {
+  isEdit: boolean;
+    constructor(private devicesService:DevicesService,public dialogRef: MatDialogRef<ActionComponent>) {
 
      }
   ngOnInit() {
+    if(this.data){
+
+      this.isEdit = true;
+      this.permissionsData=this.data.permissions;
+
+    }else{
+      this.isEdit = false;
+
+
+    }
+          this.sharedPermisions=this.isEdit?this.fillingSharedPermissions(this.data.permissions): this.setSharedSections();
+
+      // this.sharedPermisions= this.setSharedSections();
+      this.sharedPermissions.emit(this.sharedPermisions)
+
     this.getDevices();
-    this.sharedPermisions=this.setSharedSections();
-    this.sharedPermissions.emit(this.sharedPermisions)
-   this.form.patchValue({
-    devicesData:this.devices[0]
-   })
+
+
 
   }
+fillengDevicesPermissions(permission:any){
+  let devicesPermissions=permission.filter((permissoin)=>permissoin.name.split("_").length>=2);
+  let devicesP=devicesPermissions.map((devPer)=>{
+    let sectionName=devPer.name;
+    let section =this.sections.find((sec)=>sec.label==sectionName)
+    let accessLevel=devPer.value;
+
+    return{
+      section:section,
+      accessLevels: [
+        {
+          value: "ReadOnly",
+          checked: accessLevel === "ReadOnly"
+        },
+        {
+          value: "FullAccess",
+          checked: accessLevel === "FullAccess"
+        },
+        {
+          value: "None",
+          checked: accessLevel === "None"
+        }
+      ]
+
+
+    }
+  })
+return devicesP;
+}
+fillingSharedPermissions(permission:any){
+  let sharedPermissions=permission.filter((permissoin)=>permissoin.name.split("_").length<2);
+ let shared= sharedPermissions.map((shared)=>{
+    let sectionName=shared.name.split("_")[0];
+
+    let accessLevel=shared.value;
+    let section =this.sharedSections.find((sec)=>sec.label==sectionName)
+
+    return{
+      section:section,
+      accessLevels: [
+        {
+          value: "ReadOnly",
+          checked: accessLevel === "ReadOnly"
+        },
+        {
+          value: "FullAccess",
+          checked: accessLevel === "FullAccess"
+        },
+        {
+          value: "None",
+          checked: accessLevel === "None"
+        }
+      ]
+    }
+
+  })
+  return shared
+}
+
   setSharedSections(){
   let sharedPermisions= this.sharedSections.map((section)=>{
     return{
       section:section,
       accessLevels: [
         {
-          value:"readOnly",
+          value:"ReadOnly",
           checked:true
         },
         {
-          value:"fullAccess",
+          value:"FullAccess",
           checked:false
         },
         {
-          value:"none",
+          value:"None",
           checked:false
         }
       ]
@@ -205,15 +281,15 @@ let sectionsLevels=this.sections.filter((sec)=>sec.label=='Messages' || sec.labe
       section:sec,
       accessLevels: [
         {
-          value:"readOnly",
+          value:"ReadOnly",
           checked:true
         },
         {
-          value:"fullAccess",
+          value:"FullAccess",
           checked:false
         },
         {
-          value:"none",
+          value:"None",
           checked:false
         }
       ]
@@ -226,38 +302,78 @@ return sectionsLevels
 }
 
 getDevices(){
- this.testData=[
-    {
-      deviceId:"lskjdlfkjsdfii443232",
-      deviceValue:"device1"
-    },
-    {
-      deviceId:"lklijefksnfngdglks",
-      deviceValue:"device2"
-    },
-    {
-      deviceId:"llkjnidflskdjfiee",
-      deviceValue:"device3"
-    }
+  this.devicesService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+    (res)=>{
+      console.log(res)
+    let devicesData=res;
+      this.devices = res.map(res=>{
+        return {
+          title:res.deviceName,
+          value:res.id
+        }
+      });
+      console.log(this.devices)
+      if(this.devices.length==0){
+        this.noDevices=true;
+        this.deviceLoadingText='No Results'
+      }
+      else{
+        this.noDevices=false;
+          this.form.patchValue({
+            devicesData: {
+              title:devicesData[0]?.deviceName,
+              value:devicesData[0]?.id
+            }
 
-  ]
-  this.devices = this.testData.map(res=>{
-    return {
-      title:res.deviceValue,
-      value:res.deviceId
-    }
-  });
+   })
+    this.allDevices=res.map((device)=>{
 
-this.allDevices=this.testData.map((device)=>{
+      return{
+        deviceId:device.id,
+        sectionsLevels:this.isEdit?this.fillengDevicesPermissions(this.data.permissions): this.setDeviceSections(),
+      }
+    });
 
-  return{
-    deviceId:device.deviceId,
-    sectionsLevels:this.setDeviceSections(),
-  }
-});
 
-this.permissions.emit(this.allDevices);
-this.selectedDevice=this.allDevices[0];
+    this.permissions.emit(this.allDevices);
+    this.selectedDevice=this.allDevices[0];
+      }
+     },
+     (err)=>{
+      this.deviceLoadingText='No Results'
+
+     })
+//  this.testData=[
+//     {
+//       deviceId:"lskjdlfkjsdfii443232",
+//       deviceValue:"device1"
+//     },
+//     {
+//       deviceId:"lklijefksnfngdglks",
+//       deviceValue:"device2"
+//     },
+//     {
+//       deviceId:"llkjnidflskdjfiee",
+//       deviceValue:"device3"
+//     }
+
+//   ]
+//   this.devices = this.testData.map(res=>{
+//     return {
+//       title:res.deviceValue,
+//       value:res.deviceId
+//     }
+//   });
+
+// this.allDevices=this.testData.map((device)=>{
+
+//   return{
+//     deviceId:device.deviceId,
+//     sectionsLevels:this.setDeviceSections(),
+//   }
+// });
+
+
 // this.devicesPermisions= this.testData.map((device)=>{
 //   let sectionName=this.createSetions().map((e)=>e.label);
 //   let permisions=sectionName.map((section)=>{
@@ -401,8 +517,10 @@ onAccessLevelChange(section: any, changedAccessLevel: any) {
 section.accessLevels.forEach((accessLevel: any) => {
   accessLevel.checked = accessLevel === changedAccessLevel;
 });
+if(this.allDevices){
 
-this.permissions.emit(this.allDevices);
+  this.permissions.emit(this.allDevices);
+}
 this.sharedPermissions.emit(this.sharedPermisions)
 
 

@@ -8,22 +8,23 @@ import { UserData } from 'src/app/pages/users/users';
 })
 
 export class AuthService {
-
+userInfo!:UserData
 constructor(private loginService:LoginService) {
-
+this.updateUserInfo()
  }
 isLoggedIn(){
 
-  return this.userInfo()? true:false;
+  return this.userInfo? true:false;
 }
 saveDataToLocalStorage(data){
   localStorage.setItem('email',data.email);
   localStorage.setItem('organizationName',data.organizationName);
   localStorage.setItem('id',data.id);
   localStorage.setItem('userName',data.userName);
+  localStorage.setItem("token",data.token)
 
 }
-userInfo():UserData{
+updateUserInfo(){
  let userData$={
     userName:localStorage.getItem('userName'),
     organizationName:localStorage.getItem('organizationName'),
@@ -31,6 +32,6 @@ userInfo():UserData{
     email:localStorage.getItem('email'),
     refreshToken:this.loginService.getCookieValue("refreshToken")
   }
-return userData$;
+this.userInfo = userData$;
 }
 }

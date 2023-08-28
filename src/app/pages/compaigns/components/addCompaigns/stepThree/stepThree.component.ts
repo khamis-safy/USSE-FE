@@ -66,6 +66,7 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
         }
        },
        (err)=>{
+        this.deviceLoadingText='No Results'
 
        })
   }

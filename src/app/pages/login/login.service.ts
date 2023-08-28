@@ -38,7 +38,6 @@ export class LoginService {
       const [name, encodedValue] = cookie.trim().split('=');
       if (name === cookieName) {
         const decodedValue = decodeURIComponent(encodedValue); // Decode the value
-        console.log("cookie value", decodedValue);
         return decodedValue;
       }
     }

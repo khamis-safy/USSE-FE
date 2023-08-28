@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./side-bar.component.scss']
 })
 export class SideBarComponent implements OnInit {
-  userName:string=this.authService.userInfo().userName;
+  userName:string=this.authService.userInfo.userName;
   chars:string=this.userName.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
   show:boolean=false;
   listsArr:SelectOption[]

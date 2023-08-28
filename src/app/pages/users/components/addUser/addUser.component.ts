@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { DeviceSections, DevicesData } from '../../users';
+import { SignupService } from 'src/app/pages/signup/signup.service';
+import { PluginsService } from 'src/app/services/plugins.service';
+import { UsersService } from '../../users.service';
+import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 export interface TestData{
   deviceId:string,
   deviceValue:string
@@ -23,21 +27,69 @@ export interface AccessLevels{
     //imports: [MatCardModule, MatCheckboxModule, FormsModule, MatRadioModule ,MatSelectModule]
 
 })
-export class AddUserComponent {
+export class AddUserComponent implements OnInit {
+  form:any;
+  contactName:any;
+  email:any;
+  password:any;
 
   userPermisions:DevicesData[];
   userPermisions$:{name:string,value:string}[]=[]
 
   sharedPermisions:DeviceSections[];
   sharedPermisions$:{name:string,value:string}[]=[]
+  isLoading: boolean;
 
-    constructor(public dialogRef: MatDialogRef<AddUserComponent>) {
+    constructor(public dialogRef: MatDialogRef<AddUserComponent>,
+      private plugin:PluginsService,private toaster: ToasterServices,
+    private signupService:SignupService,private userService:UsersService) {
     }
+  ngOnInit() {
+     // controls
+     this.initFormControles()
+     //form creation
+     this.createForm();
+  }
+  initFormControles(){
+    this.contactName = new FormControl('',[Validators.required]);
+    this.email=new FormControl('',[Validators.required,Validators.pattern(this.plugin.emailReg)]);
+    this.password = new FormControl('',[Validators.required,Validators.pattern(this.plugin.passReg)]);
+
+  }
+  createForm(){
+    this.form = new FormGroup({
+      contactName: this.contactName ,
+      email: this.email ,
+      password: this.password,
+
+    })
+  }
 
     submitAdd() {
       let allPermisions=this.preparePermisions();
-      console.log("all permisions",allPermisions)
-        // this.onClose()
+      const data={
+        contactName: this.contactName.value ,
+        organisationName:this.userService.organizationName  ,
+        email: this.email.value ,
+        password: this.password.value,
+        customerId:this.userService.id,
+        permissions:allPermisions
+      }
+      this.isLoading = true;
+
+      this.signupService.register(data).subscribe(
+        (res) => {
+          this.isLoading = false;
+          this.onClose(true);
+          this.toaster.success('Success');
+        },
+        (err) => {
+          this.isLoading = false;
+          this.onClose(false);
+          this.toaster.error(`Error`);
+        }
+      )
+      console.log("all permisions",data)
     }
 
 
@@ -55,19 +107,23 @@ export class AddUserComponent {
     }
 
     preparePermisions(){
+
       this.userPermisions$=[];
-      this.userPermisions.map((permission)=>{
-        let sectionName;
-        let deviceId=permission.deviceId;
-        let accessValue;
+      if(this.userPermisions){
 
-        permission.sectionsLevels.map((level)=>{
-          sectionName=level.section.label
-          accessValue=level.accessLevels.find((l)=>l.checked).value;
-         this.userPermisions$.push(this.createAccessLevels(sectionName,accessValue,deviceId)) ;
+        this.userPermisions.map((permission)=>{
+          let sectionName;
+          let deviceId=permission.deviceId;
+          let accessValue;
 
-        })})
-        ;
+          permission.sectionsLevels.map((level)=>{
+            sectionName=level.section.label
+            accessValue=level.accessLevels.find((l)=>l.checked).value;
+           this.userPermisions$.push(this.createAccessLevels(sectionName,accessValue,deviceId)) ;
+
+          })})
+          ;
+      }
       this.sharedPermisions$=[];
       this.sharedPermisions.map((permision)=>{
         let sectionName = permision.section.label;

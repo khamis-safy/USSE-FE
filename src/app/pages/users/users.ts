@@ -1,4 +1,46 @@
-export interface Users {}
+export interface Users  {
+  contactName: string,
+  organisationName: string,
+  subscriptionStartDate: string,
+  lastLogin: string,
+  trialEndDate: string,
+  isActive: boolean,
+  isTrial: boolean,
+  customerId: string,
+  partnerId: string,
+  apiToken: string,
+  apiId: string,
+  timezone: string,
+  isDeleted: boolean,
+  maskType: string,
+  refreshTokens:
+      {
+          token:string,
+          expiresOn: string,
+          isExpired: boolean,
+          createdOn: string,
+          revokedOn: string,
+          isActive: boolean
+      } []
+ ,
+  subscriptions: [],
+  permissions: {name:string,value:string}[],
+  id: string,
+  userName: string,
+  normalizedUserName: string,
+  email:string,
+  normalizedEmail: string,
+  emailConfirmed: boolean,
+  passwordHash: string,
+  securityStamp: string,
+  concurrencyStamp: string,
+  phoneNumber: string,
+  phoneNumberConfirmed: boolean,
+  twoFactorEnabled: boolean,
+  lockoutEnd: string,
+  lockoutEnabled: boolean,
+  accessFailedCount: number
+}
 
 export interface UserData{
   email:string,

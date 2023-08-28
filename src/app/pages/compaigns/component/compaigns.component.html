@@ -99,7 +99,7 @@
               Start Date
             </th>
             <td class="text-center" mat-cell *matCellDef="let element">
-              {{ element?.scheduledAt | date: 'h:mm a , M/d/y '}}
+              {{ element?.scheduledAt | toLocalTime | date: 'h:mm a , M/d/y '}}
             </td>
           </ng-container>
 

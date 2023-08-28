@@ -73,7 +73,7 @@
         <!-- Create At Column -->
         <ng-container matColumnDef="Create At">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>  Create At </th>
-          <td mat-cell *matCellDef="let element"> {{element.createdAt | date: 'h:mm a , M/d/y '}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.createdAt| toLocalTime | date: 'h:mm a , M/d/y '}} </td>
         </ng-container>
 
 

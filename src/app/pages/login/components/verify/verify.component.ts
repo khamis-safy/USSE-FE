@@ -27,7 +27,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
     });
   }
   ngOnInit(): void {
-    console.log(this.authService.userInfo())
+    console.log(this.authService.userInfo)
   }
 
   ngAfterViewInit(): void {
@@ -111,7 +111,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
     this.invalid=false;
   }
   reSendCode(){
-    const email=this.authService.userInfo().email;
+    const email=this.authService.userInfo.email;
     this.loading=true;
   this.resetData();
     this.loginService.sendEmailCode(email).subscribe(
