@@ -8,7 +8,7 @@
     </div>
     <div class="buttons_ ">
       <us-button
-      *ngIf="isChecked && !isCanceled"
+      *ngIf="isChecked && !isCanceled && canEdit"
         class="m-2"
         label="Remove Lists"
         img="assets/icons/delete.svg"
@@ -22,7 +22,7 @@
       ></us-button>
 
       <us-button
-      *ngIf="isChecked || isDelete "
+      *ngIf="isChecked || isDelete  && canEdit"
         class="m-2"
         label="Delete"
         img="assets/icons/delete.svg"
@@ -35,7 +35,7 @@
         (clicked)="tab=='contacts'?openDeleteConModal():tab=='lists'?openDeleteModal():''"
       ></us-button>
       <us-button
-      *ngIf="isChecked && !isCanceled"
+      *ngIf="isChecked && !isCanceled && canEdit"
       class="m-2"
       label="Add To lists"
       [matIcon]="'add'"
@@ -47,7 +47,7 @@
       (clicked)="openContactLists()"
     ></us-button>
       <us-button
-      *ngIf="tab=='contacts' || tab=='lists'"
+      *ngIf="(tab=='contacts' || tab=='lists')  && canEdit"
         class="m-2"
         [label]="tab=='contacts'?'Add Contact':'Add list'"
         [matIcon]="'add'"
@@ -81,7 +81,7 @@
         <!-- <mat-icon class="tab-icon">contacts</mat-icon> -->
           Contacts
       </ng-template>
-      <app-contacts [isCanceled]="false" (isChecked)="onChecked($event)"></app-contacts>
+      <app-contacts [canEdit]="canEdit" [isCanceled]="false" (isChecked)="onChecked($event)"></app-contacts>
     </mat-tab>
 
     <mat-tab>
@@ -91,7 +91,7 @@
         <!-- <mat-icon class="tab-icon">format_list_bulleted</mat-icon> -->
 
       </ng-template>
-      <app-lists  (isDelete)="onDeleteChange($event)"></app-lists>
+      <app-lists [canEdit]="canEdit" (isDelete)="onDeleteChange($event)"></app-lists>
     </mat-tab>
 
     <mat-tab>
@@ -101,7 +101,7 @@
         <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
 
       </ng-template>
-      <app-contacts [isCanceled]="true" (isChecked)="onChecked($event)"></app-contacts>
+      <app-contacts [canEdit]="canEdit" [isCanceled]="true" (isChecked)="onChecked($event)"></app-contacts>
     </mat-tab>
   </mat-tab-group>
 </section>

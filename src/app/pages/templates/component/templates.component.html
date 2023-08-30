@@ -9,6 +9,7 @@
 
     <div class="buttons_">
       <us-button
+      *ngIf="canEdit"
         class="m-2"
         label="Add Template"
         (click)="openAddTemplateModal()"
@@ -34,7 +35,7 @@
         Templates
         <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
       </ng-template>
-      <app-innerTemplates></app-innerTemplates>
+      <app-innerTemplates [canEdit]="canEdit"></app-innerTemplates>
     </mat-tab>
 
     <mat-tab>

@@ -39,6 +39,7 @@ export class InnerTemplatesComponent implements OnInit {
     noData: boolean=true;
     notFound: boolean=false;
   @Input() isCanceled: boolean;
+  @Input() canEdit: boolean;
 
   subscribtions:Subscription[]=[];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -66,6 +67,13 @@ export class InnerTemplatesComponent implements OnInit {
   ngOnInit() {
     this.getTemplates();
     this.columns = new FormControl(this.displayedColumns);
+    this.displayedColumns=this.canEdit?[
+      'Template Name',
+      'Message',
+      'Created At',
+      'Action',
+    ]: ['Template Name', 'Message', 'Created At'];
+
   }
 
 
@@ -195,7 +203,14 @@ export class InnerTemplatesComponent implements OnInit {
 
 
   changeColumns(event) {
-    this.displayedColumns = [ ...event, 'Action'];
+    if(this.canEdit){
+      this.displayedColumns = [ ...event, 'Action'];
+
+    }
+    else{
+      this.displayedColumns = [ ...event];
+
+    }
   }
 
 

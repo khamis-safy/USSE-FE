@@ -11,7 +11,7 @@
     </div>
     <div class="buttons_ ">
       <us-button
-      *ngIf="isChecked  "
+      *ngIf="isChecked  && canEdit"
         class="m-2"
         label="Delete"
         img="assets/icons/delete.svg"
@@ -24,7 +24,7 @@
         (clicked)="openDeleteConModal()"
       ></us-button>
       <us-button
-      *ngIf="isChecked && tab=='contacts' "
+      *ngIf="isChecked && tab=='contacts'  && canEdit "
         class="m-2"
         label="Remove From List"
         img="assets/icons/delete.svg"
@@ -37,7 +37,7 @@
         (clicked)="removeContacts()"
       ></us-button>
       <us-button
-      *ngIf="tab=='contacts'"
+      *ngIf="tab=='contacts'  && canEdit"
       class="m-2"
       label="Add Contact"
       [matIcon]="'add'"

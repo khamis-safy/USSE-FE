@@ -84,7 +84,11 @@ export interface Permission{
 
 }
 export interface Access{
-  ReadOnly:true,
-  FullAccess:true,
-  None:false
+  ReadOnly:boolean,
+  FullAccess:boolean,
+  None:boolean
+}
+export interface PermissionData {
+  name: string;
+  value: string;
 }

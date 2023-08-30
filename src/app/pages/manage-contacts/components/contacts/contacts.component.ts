@@ -33,7 +33,7 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
   @ViewChild("search") search!:ElementRef
   @ViewChild(MatSort) sort: MatSort;
 
-
+@Input() canEdit:boolean;
   listTableData:ListData[]=[]
   deletedContacts:string[]=[];
   columns :FormControl;
@@ -61,6 +61,11 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
     @Input('isUnsubscribe') isUnsubscribe = false;
 
   ngOnInit() {
+    if(!this.canEdit){
+      this.displayedColumns = ['Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At"];
+
+    }
+
     this.getContacts();
     this.columns=new FormControl(this.displayedColumns)
 
@@ -285,14 +290,20 @@ this.subscribtions.push(sub2)
 
 }
 changeColumns(event){
-  if(this.isCanceled){
-    this.displayedColumns=['select',...event]
+  if(this.canEdit){
 
-  }
-  else{
-    this.displayedColumns=['select',...event,'action']
-  }
+    if(this.isCanceled){
+      this.displayedColumns=['select',...event]
 
+    }
+    else{
+      this.displayedColumns=['select',...event,'action']
+    }
+  }
+else{
+  this.displayedColumns=[...event]
+
+}
 }
 ngOnDestroy(){
   this.subscribtions.map(e=>e.unsubscribe());

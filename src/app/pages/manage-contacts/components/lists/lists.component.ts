@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { SelectionModel} from '@angular/cdk/collections';
 import { MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -40,6 +40,7 @@ subscribtions:Subscription[]=[];
   deletedLists:string[]=[];
   // dataSource = new MatTableDataSource<any>(this.listTableData);
   selection = new SelectionModel<any>(true, []);
+  @Input()canEdit:boolean;
 
 
   constructor(public dialog: MatDialog,
@@ -55,6 +56,11 @@ subscribtions:Subscription[]=[];
     // this.getListsCount();
     // this.getListData();
     // this.length=10
+    if(!this.canEdit){
+      this.displayedColumns = ['select', 'Name', 'Create At', 'Total Contacts'];
+
+    }
+
     this.columns=new FormControl(this.displayedColumns)
     this.selection.changed.subscribe(
       (res) => {

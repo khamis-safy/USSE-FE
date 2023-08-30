@@ -102,7 +102,7 @@
           <span class="txt-xs">Manage Contacts</span>
         </a>
       </li>
-      <li >
+      <li *ngIf="!isUser">
         <a routerLinkActive="active" routerLink="/users" class="text-neutral-600 d-flex pe-4">
           <div class="icon">
             <img src="assets/icons/users-1.svg" alt="" />

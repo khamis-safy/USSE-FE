@@ -11,7 +11,7 @@
   <div class="buttons_ ">
 
     <us-button
-    *ngIf="isChecked && isMessages"
+    *ngIf="isChecked && isMessages && canEdit"
       class="m-2"
       label="Delete"
       img="assets/icons/delete.svg"
@@ -26,7 +26,7 @@
     ></us-button>
 
    <us-button
-   *ngIf="isMessages"
+   *ngIf="isMessages && canEdit"
       class="m-2"
       label="New Message"
       img="assets/icons/new-message-icon.svg"
@@ -55,7 +55,7 @@
           <img src="assets/icons/Frame 1171275397.svg" alt="" class="px-2">
             Inbox
         </ng-template>
-        <app-message-type (isChecked)="onChecked($event)" [msgCategory]="'inbox'"></app-message-type>
+        <app-message-type [canEdit]="canEdit" (isChecked)="onChecked($event)" [msgCategory]="'inbox'"></app-message-type>
       </mat-tab>
 
       <mat-tab>
@@ -64,7 +64,7 @@
             Scheduled
 
         </ng-template>
-        <app-scheduled (isChecked)="onChecked($event)"></app-scheduled>
+        <app-scheduled [canEdit]="canEdit" (isChecked)="onChecked($event)"></app-scheduled>
       </mat-tab>
 
       <mat-tab>
@@ -73,7 +73,7 @@
             Outbox
 
         </ng-template>
-        <app-message-type (isChecked)="onChecked($event)" [msgCategory]="'outbox'"></app-message-type>
+        <app-message-type [canEdit]="canEdit" (isChecked)="onChecked($event)" [msgCategory]="'outbox'"></app-message-type>
       </mat-tab>
 
       <mat-tab>
@@ -82,7 +82,7 @@
             Undelivered
 
         </ng-template>
-        <app-message-type (isChecked)="onChecked($event)" [msgCategory]="'failed'"></app-message-type>
+        <app-message-type [canEdit]="canEdit" (isChecked)="onChecked($event)" [msgCategory]="'failed'"></app-message-type>
       </mat-tab>
     </mat-tab-group>
   </ng-container>
