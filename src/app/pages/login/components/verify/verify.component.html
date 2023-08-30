@@ -14,109 +14,124 @@
     class=" d-flex justify-content-center align-items-start mt-4 pt-4"
 
   >
-    <div
-      class="bg-white p-5 rounded-3"
-      style="box-shadow: 0px 8px 24px 0px #00000029"
-    >
-      <h3 style="font-family: Poppins; font-size: 24px; font-weight: 500">
-        Enter verification code
-      </h3>
-      <p style="font-family: Poppins; font-size: 20px; font-weight: 200">
-        Enter the code we sent to your email
-      </p>
-      <!-- <form [formGroup]="verificationForm" class="d-flex justify-content-center mb-2 p-4">
-        <div
-          class="mx-1"
-          style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
-        >
-          <input type="text" style="width: 100%; height: 100%; border: none"
-          maxlength="1"  formControlName="digit0"  (input)="onDigitInput($event, 0)" #digitInput0 />
-        </div>
-        <div
-          class="mx-1"
-          style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
-        >
-          <input maxlength="1" formControlName="digit1"  (input)="onDigitInput($event, 1)"  type="text" style="width: 100%; height: 100%; border: none" #digitInput1 />
-        </div>
-        <div
-          class="mx-1"
-          style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
-        >
-          <input maxlength="1" formControlName="digit2" (input)="onDigitInput($event, 2)" type="text" style="width: 100%; height: 100%; border: none" #digitInput2 />
-        </div>
-        <div
-          class="mx-1 ms-3"
-          style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
-        >
-          <input maxlength="1"  formControlName="digit3" (input)="onDigitInput($event, 3)"  type="text" style="width: 100%; height: 100%; border: none" #digitInput3 />
-        </div>
-        <div
-          class="mx-1"
-          style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
-        >
-          <input maxlength="1"  formControlName="digit4" (input)="onDigitInput($event, 4)"  type="text" style="width: 100%; height: 100%; border: none" #digitInput4  />
-        </div>
-        <div
-          class="mx-1"
-          style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
-        >
-          <input maxlength="1"  formControlName="digit5"  (input)="onDigitInput($event, 5)" type="text" style="width: 100%; height: 100%; border: none" #digitInput5 />
-        </div>
-      </form> -->
-      <form [formGroup]="verificationForm" class="d-flex justify-content-center mb-2 p-4">
-        <ng-container *ngFor="let digitIndex of digitIndexes; let last = last">
+
+
+      <div
+        class="bg-white p-5 rounded-3"
+        [ngClass]="{' d-flex justify-content-center align-items-center':isLoading}"
+        style="box-shadow: 0px 8px 24px 0px #00000029;min-width: 472px;
+        min-height: 374px;"
+      >  <ng-container *ngIf="!isLoading">
+        <h3 style="font-family: Poppins; font-size: 24px; font-weight: 500">
+          Enter verification code
+        </h3>
+        <p style="font-family: Poppins; font-size: 20px; font-weight: 200">
+          Enter the code we sent to your email
+        </p>
+        <!-- <form [formGroup]="verificationForm" class="d-flex justify-content-center mb-2 p-4">
           <div
             class="mx-1"
             style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
           >
-            <input
-              class="input-digit text-center txt-lg"
-              type="text"
-              style="width: 100%; height: 100%; border: none"
-              [maxlength]="1"
-              [formControlName]="'digit' + digitIndex"
-              (input)="onDigitInput($event, digitIndex)"
-              (keydown)="onKeyDown($event, digitIndex)"
-              [attr.id]="'digitInput' + digitIndex"
-              [attr.tabindex]="digitIndex + 1"
-            />
+            <input type="text" style="width: 100%; height: 100%; border: none"
+            maxlength="1"  formControlName="digit0"  (input)="onDigitInput($event, 0)" #digitInput0 />
           </div>
-          <div *ngIf="!last" class="mx-1"></div>
-        </ng-container>
-      </form>
+          <div
+            class="mx-1"
+            style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
+          >
+            <input maxlength="1" formControlName="digit1"  (input)="onDigitInput($event, 1)"  type="text" style="width: 100%; height: 100%; border: none" #digitInput1 />
+          </div>
+          <div
+            class="mx-1"
+            style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
+          >
+            <input maxlength="1" formControlName="digit2" (input)="onDigitInput($event, 2)" type="text" style="width: 100%; height: 100%; border: none" #digitInput2 />
+          </div>
+          <div
+            class="mx-1 ms-3"
+            style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
+          >
+            <input maxlength="1"  formControlName="digit3" (input)="onDigitInput($event, 3)"  type="text" style="width: 100%; height: 100%; border: none" #digitInput3 />
+          </div>
+          <div
+            class="mx-1"
+            style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
+          >
+            <input maxlength="1"  formControlName="digit4" (input)="onDigitInput($event, 4)"  type="text" style="width: 100%; height: 100%; border: none" #digitInput4  />
+          </div>
+          <div
+            class="mx-1"
+            style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
+          >
+            <input maxlength="1"  formControlName="digit5"  (input)="onDigitInput($event, 5)" type="text" style="width: 100%; height: 100%; border: none" #digitInput5 />
+          </div>
+        </form> -->
+        <form [formGroup]="verificationForm" class="d-flex justify-content-center mb-2 p-4">
+          <ng-container *ngFor="let digitIndex of digitIndexes; let last = last">
+            <div
+              class="mx-1"
+              style="width: 40px; height: 50px; border: 2px #c6c6c6 solid"
+            >
+              <input
+                class="input-digit text-center txt-lg"
+                type="text"
+                style="width: 100%; height: 100%; border: none"
+                [maxlength]="1"
+                [formControlName]="'digit' + digitIndex"
+                (input)="onDigitInput($event, digitIndex)"
+                (keydown)="onKeyDown($event, digitIndex)"
+                [attr.id]="'digitInput' + digitIndex"
+                [attr.tabindex]="digitIndex + 1"
+              />
+            </div>
+            <div *ngIf="!last" class="mx-1"></div>
+          </ng-container>
+        </form>
 
 
 
 
-      <div
-        class="d-flex flex-column align-items-center w-100 gap-3 p-2"
-      >
-      <div *ngIf="invalid" class="hint error mt-2" > <i class="si-info"></i>
-        <p class="txt hint error  txt-xs">Wrong code</p></div>
-
-      <div class="w-100">
-
-        <us-button
-          class="m-2"
-          label="Resend code"
-          [fill]="true"
-          [size]="'xl'"
-          [loading]="false"
-          [disabled]="false"
-          [appearance]="'primary'"
-          [fullWidth]="true"
-          (clicked)="reSendCode()"
+        <div
+          class="d-flex flex-column align-items-center w-100 gap-3 p-2"
         >
-        </us-button>
+        <div *ngIf="invalid" class="hint error mt-2" > <i class="si-info"></i>
+          <p class="txt hint error  txt-xs">Wrong code</p></div>
+
+        <div class="w-100">
+
+          <us-button
+            class="m-2"
+            label="Resend code"
+            [fill]="true"
+            [size]="'xl'"
+            [loading]="false"
+            [disabled]="false"
+            [appearance]="'primary'"
+            [fullWidth]="true"
+            (clicked)="reSendCode()"
+          >
+          </us-button>
+        </div>
+          <a
+            style="text-decoration: none; font-weight: 500"
+            routerLink="/"
+            class="mb-2"
+          >
+            Update my phone number</a
+          >
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isLoading">
+
+  <div  class="spinner-container p-3">
+    <svg width="90" height="90" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
+  </div>
+
+      </ng-container>
+
       </div>
-        <a
-          style="text-decoration: none; font-weight: 500"
-          routerLink="/"
-          class="mb-2"
-        >
-          Update my phone number</a
-        >
-      </div>
-    </div>
+
+
   </div>
 </div>

@@ -24,8 +24,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
-import { UsButtonComponent } from './components/us-button/us-button.component';
-import { UsButtonDirective } from '../directives/us-button.directive';
+
 import { ToasterServices } from './components/us-toaster/us-toaster.component';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';

@@ -47,7 +47,8 @@ export interface UserData{
   organizationName:string,
   id:string,
   refreshToken:string,
-  userName:string
+  userName:string,
+  customerId:string
 }
 
 export interface Section{
@@ -71,4 +72,19 @@ export interface DeviceSections{
 export interface DevicesData{
   deviceId:string,
   sectionsLevels:DeviceSections[];
+}
+export interface Permission{
+  Messages:boolean,
+  Templates:boolean,
+  Campaigns:boolean,
+  Bots:boolean,
+  Devices:boolean,
+  Contacts:boolean
+
+
+}
+export interface Access{
+  ReadOnly:true,
+  FullAccess:true,
+  None:false
 }

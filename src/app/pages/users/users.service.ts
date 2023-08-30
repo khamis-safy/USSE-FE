@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 
-import { Users } from './users';
+import { Access, Permission, Users } from './users';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Injectable({
@@ -15,12 +15,28 @@ export class UsersService {
   pageNum:number=0;
   orderedBy:string="";
   search:string="";
-  token:string=this.authService.userInfo.refreshToken;
+
+  token:string;
   organizationName:string=this.authService.userInfo.organizationName;
   id:string=this.authService.userInfo.id;
   constructor(private http:HttpClient,private authService:AuthService) {
+    this.token=this.getCookieValue("refreshToken")
+    console.log("refresh token",this.token);
+    authService.updateUserInfo()
 
   }
+   getCookieValue(cookieName: string): string {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, encodedValue] = cookie.trim().split('=');
+      if (name === cookieName) {
+
+        return encodedValue;
+      }
+    }
+    return null;
+  }
+
 
   listCustomersUsers(token:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Users[]>{
     return this.http.get<Users[]>(`${env.api}Auth/listCustomersUsers?token=${token}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
@@ -33,4 +49,22 @@ export class UsersService {
 
     return this.http.patch<any>(`${env.api}Auth/editUserPermissions`,data)
   }
+
+ getUserByEmail(email:string):Observable<Users>{
+  return this.http.get<Users>(`${env.api}Auth/getUserByEmail?Email=${email}`)
+}
+executePermissions(permissions:{name:string,value:string}[]):Permission{
+  const accessMap: { [key: string]: boolean } = {
+    ReadOnly: true,
+    FullAccess: true,
+    None: false,
+  };
+
+  const singlePermissionObject: Permission = permissions.reduce((accumulator, permission) => {
+    const permissionName = permission.name as keyof Permission;
+    accumulator[permissionName] = accessMap[permission.value];
+    return accumulator;
+  }, {} as Permission);
+return singlePermissionObject}
+
 }

@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ToLocalTimePipe implements PipeTransform {
 
-  transform(utcDate: any): any {
-    utcDate = utcDate.includes('Z') ? utcDate : (utcDate + 'Z')
+  transform(utcDate: string): any {
+    utcDate = utcDate.indexOf('Z') > -1 ? utcDate : (utcDate + 'Z')
     return new Date(new Date(utcDate).toLocaleString());
   }
 

@@ -70,7 +70,9 @@ export class SignupComponent implements OnInit {
           organizationName:res.organisationName,
           id:res.id,
           email:res.email,
-          token:res.token
+          token:res.token,
+          customerId:res.customerId
+
         }
 this.authService.saveDataToLocalStorage(this.userInfo);
 this.authService.updateUserInfo()

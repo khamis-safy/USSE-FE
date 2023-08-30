@@ -72,7 +72,7 @@ export class ManageContactsComponent implements AfterViewInit{
     });
   }
 
-  
+
   onDeleteChange(e){
     this.isDelete = e;
   }
@@ -190,14 +190,18 @@ export class ManageContactsComponent implements AfterViewInit{
   changeModal(ev){
     this.listService.display=10;
     this.listService.pageNum=0;
-    this.listService.email="khamis.safy@gmail.com";
     this.listService.orderedBy='';
     this.listService.search='';
     this.contacts.selection.clear();
     this.lists.selection.clear();
+    if(this.contacts.search){
 
-this.contacts.search.nativeElement.value="";
-this.lists.search.nativeElement.value="";
+      this.contacts.search.nativeElement.value ="";
+    }
+    if(this.lists.search){
+
+      this.lists.search.nativeElement.value="";
+    }
 
     this.tab=this.tabs[ev.index]
     if(this.tab=='contacts'){

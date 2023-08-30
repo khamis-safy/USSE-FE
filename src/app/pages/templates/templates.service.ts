@@ -24,7 +24,9 @@ getTemplates(email:string,showsNum:number,pageNum:number,orderedBy:string,search
 deleteTemplates(email:string,id:string):Observable<Templates>{
   return this.http.delete<Templates>(`${env.api}Template/deleteTemplate?email=${email}&id=${id}`)
 }
-
+listTemplatesCount(email:string):Observable<number>{
+  return this.http.get<number>(`${env.api}Template/listTemplatesCount?email=${email}`)
+}
 
 
 

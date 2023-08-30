@@ -38,7 +38,7 @@ export class WriteMessageComponent implements OnInit {
 
   getTemplates(){
 
-    this.templateService.getTemplates("khamis.safy@gmail.com",10,0,"","").subscribe(
+    this.templateService.getTemplates(this.templateService.email,10,0,"","").subscribe(
       (res)=>{
         this.allTemplates=res;
         console.log(this.allTemplates)

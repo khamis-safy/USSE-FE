@@ -34,7 +34,10 @@ export class InnerTemplatesComponent implements OnInit {
   active: boolean = false;
   numRows;
   loading;
+  isSearch:boolean=false;
 
+    noData: boolean=true;
+    notFound: boolean=false;
   @Input() isCanceled: boolean;
 
   subscribtions:Subscription[]=[];
@@ -128,13 +131,28 @@ export class InnerTemplatesComponent implements OnInit {
                 this.displayedColumns= ['Template Name', 'Message', "Create At" , 'Action'];
 
               }
+              if(search!=""){
+                this.length=res.length;
+                if(this.length==0){
+                  this.notFound=true;
+                }
+                else{
+                  this.notFound=false;
+                }
+            }
+            else{
+              this.templatesCount();
+              this.isSearch=false;
 
+
+            }
               this.dataSource=new MatTableDataSource<Templates>(res)
 
              },
              (err)=>{
               this.loading = false;
               this.length=0;
+              this.noData=true
 
              })
              this.subscribtions.push(sub1)
@@ -143,7 +161,27 @@ export class InnerTemplatesComponent implements OnInit {
 
 
 
+        templatesCount(){
+          let email=this.templatesService.email;
 
+          this.templatesService.listTemplatesCount(email).subscribe(
+            (res)=>{
+
+              this.length=res;
+              if(this.length==0){
+                this.noData=true
+              }
+              else{
+                this.noData=false
+              }
+            }
+            ,(err)=>{
+              this.noData=true
+
+              this.length=0;
+            }
+           );
+        }
 
 
 

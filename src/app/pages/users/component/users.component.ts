@@ -60,7 +60,7 @@ export class UsersComponent implements OnInit ,OnDestroy{
       let token=this.userService.token;
 
       this.loading = true;
-
+console.log("from user component",token)
 
 
       this.userService.listCustomersUsers(token,shows,pageNum,orderedBy,search).subscribe(
@@ -112,6 +112,8 @@ export class UsersComponent implements OnInit ,OnDestroy{
           }
         }
         ,(err)=>{
+          this.noData=true
+
           this.length=0;
         }
        );
@@ -126,16 +128,12 @@ export class UsersComponent implements OnInit ,OnDestroy{
         dialogConfig.disableClose = true;
         dialogConfig.data=data;
 
-        //  dialogConfig.data= {contacts:data,listDetails:false};
         const dialogRef = this.dialog.open(EditUserComponent, dialogConfig);
-        //this.selection.clear();
-        //dialogRef.afterClosed().subscribe(result => {
-        //if(result){
-        //this.getContacts();
-        //  }
-
-
-        //});
+        dialogRef.afterClosed().subscribe(result => {
+          if(result){
+            this.getUsers();
+          }
+        });
 
 
 
@@ -172,12 +170,12 @@ export class UsersComponent implements OnInit ,OnDestroy{
 
 
             const dialogRef = this.dialog.open(AddUserComponent,dialogConfig);
+            dialogRef.afterClosed().subscribe(result => {
+              if(result){
+                this.getUsers();
+              }
+            });
 
-            // dialogRef.afterClosed().subscribe(result => {
-            //   if(result){
-            //     this.contacts.getContacts();
-            //   }
-            // });
 
 
     }
