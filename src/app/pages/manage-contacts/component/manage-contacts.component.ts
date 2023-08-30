@@ -10,6 +10,7 @@ import { AddContactComponent } from '../components/contacts/addContact/addContac
 import { DeleteContactComponent } from '../components/contacts/deleteContact/deleteContact.component';
 import { ContactListsComponent } from '../components/contacts/contactLists/contactLists.component';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-manage-contacts',
@@ -17,7 +18,7 @@ import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/del
   styleUrls: ['./manage-contacts.component.scss'],
 
 })
-export class ManageContactsComponent implements AfterViewInit{
+export class ManageContactsComponent implements OnInit, AfterViewInit{
   tabs=["contacts","lists","cancel"];
   tab = this.tabs[0];
   added:boolean=false;
@@ -26,15 +27,33 @@ export class ManageContactsComponent implements AfterViewInit{
   @ViewChild(ListsComponent) lists:ListsComponent;
   @ViewChild(ContactsComponent) contacts:ContactsComponent;
   isCanceled:boolean;
+  canEdit: boolean;
 
-  constructor(public dialog: MatDialog,private  toaster: ToasterServices,private listService:ManageContactsService){
+  constructor(public dialog: MatDialog,private  toaster: ToasterServices,private listService:ManageContactsService,private authService:AuthService){
 
   }
   ngAfterViewInit(){
     this.isCanceled=false;
   }
 
+  ngOnInit() {
+    let permission =this.listService.contactsPermissions
+    let customerId=this.authService.userInfo.customerId;
 
+if(permission){
+  if(permission.value=="ReadOnly" || permission.value =="None"){
+    this.canEdit=false
+  }
+  else{
+    this.canEdit=true
+  }
+
+}
+else{
+
+  this.canEdit=true
+}
+  }
   openAddListModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='85vh';

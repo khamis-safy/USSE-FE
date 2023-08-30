@@ -2,13 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 
-import { SettingComponent } from './components/setting/setting.component';
+import { SharedModule } from '../../shared.module';
 
 
 @NgModule({
-  declarations: [ SettingComponent],
   imports: [
-    CommonModule
+    CommonModule,
 
   ],
   exports: [],

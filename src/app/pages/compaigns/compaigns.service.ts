@@ -4,6 +4,7 @@ import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 import { Campaigns, compaignDetails } from './campaigns';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { PermissionData } from '../users/users';
 
 
 @Injectable({
@@ -14,7 +15,24 @@ export class CompaignsService {
   pageNum:number=0;
   email:string=this.authService.userInfo.email;
   search:string="";
+  compaignssPermission:PermissionData;
+
 constructor(private http:HttpClient,private authService:AuthService) {
+  if(authService.userInfo.customerId!=""){
+    authService.getPermissionsObservable().subscribe(permissions => {
+      this.compaignssPermission=permissions.find((e)=>e.name=="Campaigns");
+      if(!this.compaignssPermission){
+        this.compaignssPermission={name:"Campaigns",value:"FullAccess"}
+      }
+      console.log(this.compaignssPermission)
+
+      // Update your sidebar links based on the updated permissions
+    });
+   }
+   else{
+     this.compaignssPermission={name:"Campaigns",value:"ReadOnly"}
+     console.log(this.compaignssPermission)
+   }
 
 }
 getCampaigns(email:string,showsNum:number,pageNum:number,search:string):Observable<compaignDetails[]>{

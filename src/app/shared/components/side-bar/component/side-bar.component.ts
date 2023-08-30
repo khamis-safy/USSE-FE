@@ -20,13 +20,16 @@ export class SideBarComponent implements OnInit {
   listsArr:SelectOption[]
   displaySetting:boolean=false;
   permissions:Permission;
+  isUser:boolean;
   constructor(public plugin:PluginsService,private render:Renderer2, private userServiece:UsersService,public dialog: MatDialog ,private authService:AuthService) {}
   ngOnInit(): void {
     if(this.authService.userInfo.customerId!=""){
+      this.isUser=true;
       let email=this.authService.userInfo.email;
       this.getUserPermisisons(email);
     }
     else{
+      this.isUser=false;
 this.permissions={  Messages:true,
   Templates:true,
   Campaigns:true,
@@ -39,7 +42,15 @@ this.permissions={  Messages:true,
   getUserPermisisons(email){
       this.userServiece.getUserByEmail(email).subscribe(
         (res)=>{
+
           this.permissions=this.userServiece.executePermissions(res.permissions);
+          if(!this.permissions.Messages){
+            this.permissions.Messages=true
+          }
+          if(!this.permissions.Campaigns){
+            this.permissions.Campaigns=true
+          }
+          this.authService.updateUserPermisisons(res.permissions)
           console.log(this.permissions)
         },
         (err)=>{}

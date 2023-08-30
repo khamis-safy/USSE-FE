@@ -6,6 +6,7 @@ import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 import { CheckCon, Templates, Init, TemplateData } from './templates';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { PermissionData } from '../users/users';
 @Injectable({
   providedIn: 'root',
 })
@@ -15,7 +16,25 @@ export class TemplatesService {
   email:string=this.authService.userInfo.email;
   orderedBy:string="";
   search:string="";
-constructor(private http:HttpClient,private authService:AuthService) { }
+  TemplatesPermission:PermissionData;
+
+constructor(private http:HttpClient,private authService:AuthService) {
+  if(authService.userInfo.customerId!=""){
+    authService.getPermissionsObservable().subscribe(permissions => {
+      this.TemplatesPermission=permissions.find((e)=>e.name=="Templates");
+      if(!this.TemplatesPermission){
+        this.TemplatesPermission={name:"Templates",value:"ReadOnly"}
+      }
+      console.log(this.TemplatesPermission)
+
+      // Update your sidebar links based on the updated permissions
+    });
+   }
+   else{
+     this.TemplatesPermission={name:"Templates",value:"FullAccess"}
+     console.log(this.TemplatesPermission)
+   }
+ }
 
 getTemplates(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Templates[]>{
   return this.http.get<Templates[]>(`${env.api}Template/listTemplates?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)

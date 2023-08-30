@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { CheckCon, DeviceData, Init } from './device';
 import { ErrSucc } from '../manage-contacts/list-data';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { PermissionData } from '../users/users';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,25 @@ export class DevicesService {
   email:string=this.authService.userInfo.email;
   orderedBy:string="";
   search:string="";
-constructor(private http:HttpClient,private authService:AuthService) { }
+  DevicesPermission:PermissionData;
+
+constructor(private http:HttpClient,private authService:AuthService) {
+  if(authService.userInfo.customerId!=""){
+    authService.getPermissionsObservable().subscribe(permissions => {
+      this.DevicesPermission=permissions.find((e)=>e.name=="Devices");
+      if(!this.DevicesPermission){
+        this.DevicesPermission={name:"Devices",value:"ReadOnly"}
+      }
+      console.log(this.DevicesPermission)
+
+      // Update your sidebar links based on the updated permissions
+    });
+   }
+   else{
+     this.DevicesPermission={name:"Devices",value:"FullAccess"}
+     console.log(this.DevicesPermission)
+   }
+}
 getDevices(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<DeviceData[]>{
   return this.http.get<DeviceData[]>(`${env.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }

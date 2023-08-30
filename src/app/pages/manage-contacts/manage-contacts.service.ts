@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ErrSucc, ListData } from './list-data';
 import { Contacts } from './contacts';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { PermissionData } from '../users/users';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,24 @@ export class ManageContactsService {
     email:string=this.authService.userInfo.email;
     orderedBy:string="";
     search:string="";
-  constructor(private http:HttpClient,private authService:AuthService) { }
+    contactsPermissions:PermissionData;
+  constructor(private http:HttpClient,private authService:AuthService) {
+    if(authService.userInfo.customerId!=""){
+      authService.getPermissionsObservable().subscribe(permissions => {
+        this.contactsPermissions=permissions.find((e)=>e.name=="Campaigns");
+        if(!this.contactsPermissions){
+          this.contactsPermissions={name:"Campaigns",value:"ReadOnly"}
+        }
+        console.log(this.contactsPermissions)
+
+        // Update your sidebar links based on the updated permissions
+      });
+     }
+     else{
+       this.contactsPermissions={name:"Campaigns",value:"FullAccess"}
+       console.log(this.contactsPermissions)
+     }
+   }
 
 // lists methods
 addList(name:string,email:string): Observable<ListData>{

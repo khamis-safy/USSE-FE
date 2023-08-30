@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { compaignDetails } from '../campaigns';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 
@@ -30,14 +31,32 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   noData: boolean=false;
   notFound: boolean=false;
+  canEdit: boolean;
 
-  constructor(private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router){}
+  constructor(private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router,private authService:AuthService){}
 
 
   ngOnInit() {
     this.columns=new FormControl(this.displayedColumns)
 
     this.getCompaigns();
+    let permission =this.compaignsService.compaignssPermission
+    let customerId=this.authService.userInfo.customerId;
+
+if(permission){
+  if(permission.value=="ReadOnly" || permission.value =="None"){
+    this.canEdit=false
+  }
+  else{
+    this.canEdit=true
+  }
+
+}
+else{
+
+  this.canEdit=true
+}
+this.displayedColumns=this.canEdit?['Name', 'Status', 'Creator Name', 'Start Date','Action']:['Name', 'Status', 'Creator Name', 'Start Date'];
   }
   ngAfterViewInit() {
   }

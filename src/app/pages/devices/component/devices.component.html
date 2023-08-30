@@ -6,7 +6,7 @@
       <!-- <mat-icon class="tab-icon">recent_actors</mat-icon> -->
    <span class="txt-lg main-heading" style="font-weight:500"> Devices</span>
     </div>
-    <div class="menu">
+    <div *ngIf="canEdit" class="menu">
       <button mat-button [matMenuTriggerFor]="menu" class="text-neutral-0 bg-primary-800 rounded-3 p-4">
         <div class="d-flex align-items-center gap-3">
           <div class="icon">

@@ -23,6 +23,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   @Output() isChecked = new EventEmitter<Message[]>;
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef
+  @Input() canEdit: boolean;
 
   columns :FormControl;
   displayed: string[] = ['Device Name', 'Sender', 'Messages', 'Received At'];
@@ -35,6 +36,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   constructor(public dialog: MatDialog,private messageService:MessagesService){}
   ngOnInit() {
     if(this.msgCategory=='inbox'){
+
       this.displayed = ['Device Name', 'Sender', 'Messages', 'Received At'];
       this.displayedColumns = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At'];
     }
@@ -43,8 +45,14 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
       this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
     }
     else if(this.msgCategory=='failed'){
+      if(this.canEdit){
+        this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Ation'];
+      }
+      else{
+        this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At'];
+      }
       this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At'];
-      this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Ation'];
+
     }
 
     this.getMessages();

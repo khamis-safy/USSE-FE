@@ -21,6 +21,7 @@ import { ContactListsComponent } from '../../../contacts/contactLists/contactLis
 import { DeleteListComponent } from '../../delete-list/delete-list.component';
 import { TotalContacts } from '../totalContacts';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 @Component({
@@ -36,11 +37,12 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit{
   @ViewChild(ListContactsComponent) listContacts:ListContactsComponent;
   tabs=["contacts","canceled"];
   tab = this.tabs[0];
+  canEdit: boolean;
   constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private listService:ManageContactsService,
     private toaster: ToasterServices,
-    private router:Router) {
+    private router:Router,private authService:AuthService) {
     activeRoute.paramMap.subscribe((data)=>
     {
     this.listId=data.get('id');
@@ -54,6 +56,21 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit{
 
   ngOnInit() {
     this.getListData();
+    let permission =this.listService.contactsPermissions
+
+if(permission){
+  if(permission.value=="ReadOnly" || permission.value =="None"){
+    this.canEdit=false
+  }
+  else{
+    this.canEdit=true
+  }
+
+}
+else{
+
+  this.canEdit=true
+}
 
     }
 

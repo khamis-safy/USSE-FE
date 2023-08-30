@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Message, Shceduled } from './message';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { PermissionData } from '../users/users';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,29 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class MessagesService {
   display:number=10;
     pageNum:number=0;
-
+    messageasPermission:PermissionData;
     email:string=this.authService.userInfo.email;
     orderedBy:string="";
     search:string="";
     msgCategory:string="inbox";
-constructor(private http:HttpClient,private authService:AuthService) { }
+constructor(private http:HttpClient,private authService:AuthService) {
+  if(authService.userInfo.customerId!=""){
+  authService.getPermissionsObservable().subscribe(permissions => {
+    this.messageasPermission=permissions.find((e)=>e.name=="Messages");
+    if(!this.messageasPermission){
+      this.messageasPermission={name:"Messages",value:"ReadOnly"}
+    }
+    console.log(this.messageasPermission)
+
+    // Update your sidebar links based on the updated permissions
+  });
+ }
+ else{
+   this.messageasPermission={name:"Messages",value:"FullAccess"}
+   console.log(this.messageasPermission)
+ }
+}
+
 
 getMessages(email:string,msgCategory:string,showsNum:number,pageNum:number,search:string):Observable<Message[]>{
   return this.http.get<Message[]>(`${env.api}Message/listMessages?email=${email}&msgCategory=${msgCategory}&take=${showsNum}&scroll=${pageNum}&search=${search}`)
