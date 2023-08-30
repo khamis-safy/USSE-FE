@@ -4,20 +4,48 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SettingComponent } from '../components/setting/setting.component';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { UsersService } from 'src/app/pages/users/users.service';
+import { Permission } from 'src/app/pages/users/users';
+
 @Component({
   selector: 'app-side-bar',
   templateUrl: './side-bar.component.html',
   styleUrls: ['./side-bar.component.scss']
 })
+
 export class SideBarComponent implements OnInit {
   userName:string=this.authService.userInfo.userName;
   chars:string=this.userName.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
   show:boolean=false;
   listsArr:SelectOption[]
   displaySetting:boolean=false;
+  permissions:Permission;
+  constructor(public plugin:PluginsService,private render:Renderer2, private userServiece:UsersService,public dialog: MatDialog ,private authService:AuthService) {}
+  ngOnInit(): void {
+    if(this.authService.userInfo.customerId!=""){
+      let email=this.authService.userInfo.email;
+      this.getUserPermisisons(email);
+    }
+    else{
+this.permissions={  Messages:true,
+  Templates:true,
+  Campaigns:true,
+  Bots:true,
+  Devices:true,
+  Contacts:true
+    }
 
-  constructor(public plugin:PluginsService,private render:Renderer2 ,public dialog: MatDialog ,private authService:AuthService) {}
-  ngOnInit(): void {}
+  }}
+  getUserPermisisons(email){
+      this.userServiece.getUserByEmail(email).subscribe(
+        (res)=>{
+          this.permissions=this.userServiece.executePermissions(res.permissions);
+          console.log(this.permissions)
+        },
+        (err)=>{}
+      )
+
+  }
   showOptions(){this.show=!this.show;}
   openSettingModal(){
 

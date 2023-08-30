@@ -46,7 +46,7 @@ export class DeleteListComponent implements OnInit {
 deleteList(){
   this.isLoading = true
   let body = this.data.lists.map(res=>res.id)
-  this.listService.deleteList('khamis.safy@gmail.com',body).subscribe(
+  this.listService.deleteList(this.listService.email,body).subscribe(
     (res)=>{
       this.isLoading = false
       this.onClose(body);

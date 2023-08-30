@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   constructor(private plugin:PluginsService,public translate:TranslateService,private authService:AuthService){
     this.currentLang = localStorage.getItem('currentLang') || 'en';
     this.translate.use(this.currentLang)
-    this.authService.updateUserInfo();
+
   }
   ngOnInit(): void {
     this.initMode();

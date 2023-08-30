@@ -59,25 +59,25 @@
 
 
           <!-- userIDEmail Column -->
-          <ng-container matColumnDef="User Email">
+          <ng-container matColumnDef="User Email"  class="text-center">
               <th mat-header-cell *matHeaderCellDef> User Email </th>
               <td mat-cell *matCellDef="let element"> {{element.email}} </td>
           </ng-container>
 
           <!-- userName Column -->
-          <ng-container matColumnDef="User Name">
+          <ng-container matColumnDef="User Name"  class="text-center">
               <th mat-header-cell *matHeaderCellDef> User Name </th>
               <td mat-cell *matCellDef="let element"> {{element.contactName}} </td>
           </ng-container>
 
           <!-- CreatedAt Column -->
-          <ng-container matColumnDef="Created At">
+          <ng-container matColumnDef="Created At"  class="text-center">
               <th mat-header-cell *matHeaderCellDef> Created At </th>
               <td mat-cell *matCellDef="let element"> {{element?.subscriptionStartDate | toLocalTime | date: 'h:mm a , M/d/y '}} </td>
           </ng-container>
 
           <!-- action Column -->
-          <ng-container matColumnDef="Action">
+          <ng-container matColumnDef="Action"  class="text-center">
               <th mat-header-cell *matHeaderCellDef> Action </th>
               <td mat-cell *matCellDef="let element">
                   <div class="edit pointer mx-2">

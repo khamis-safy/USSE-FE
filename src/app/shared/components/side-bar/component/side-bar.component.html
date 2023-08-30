@@ -55,7 +55,7 @@
           <span class="txt-xs">Dashboard</span>
         </a>
       </li>
-      <li>
+      <li *ngIf="permissions?.Messages">
         <a routerLinkActive="active" routerLink="/messages" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/message-1.svg" alt="" />
@@ -65,7 +65,7 @@
       </li>
 
 
-      <li>
+      <!-- <li>
         <a
           routerLinkActive="active"
           routerLink="/chats"
@@ -76,16 +76,17 @@
           </div>
           <span class="txt-xs">Chats</span>
         </a>
-      </li>
-      <li>
+      </li> -->
+
+      <li *ngIf="permissions?.Campaigns">
         <a routerLinkActive="active" routerLink="/compaigns" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/campaign-1.svg" alt="" />
           </div>
-          <span class="txt-xs">Compaigns</span>
+          <span class="txt-xs">Campaigns</span>
         </a>
       </li>
-      <li>
+      <li  *ngIf="permissions?.Templates">
         <a routerLinkActive="active" routerLink="/templates" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/templates-1.svg" alt="" />
@@ -93,7 +94,7 @@
           <span class="txt-xs">Templates</span>
         </a>
       </li>
-      <li>
+      <li  *ngIf="permissions?.Contacts">
         <a routerLinkActive="active" routerLink="/contacts" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/manage-contacts-1.svg" alt="" />
@@ -101,7 +102,7 @@
           <span class="txt-xs">Manage Contacts</span>
         </a>
       </li>
-      <li>
+      <li >
         <a routerLinkActive="active" routerLink="/users" class="text-neutral-600 d-flex pe-4">
           <div class="icon">
             <img src="assets/icons/users-1.svg" alt="" />
@@ -109,7 +110,7 @@
           <span class="txt-xs"> Users</span>
         </a>
       </li>
-      <li>
+      <li *ngIf="permissions?.Devices">
         <a routerLinkActive="active" routerLink="/devices" class="text-neutral-600 d-flex pe-3">
           <div class="icon">
             <img src="assets/icons/devices-1.svg" alt="" />

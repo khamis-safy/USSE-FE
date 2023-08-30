@@ -60,7 +60,7 @@ export class DeleteContactComponent implements OnInit {
 
   deleteCon(){
 
-    this.listService.deleteContact('khamis.safy@gmail.com',this.body).subscribe(
+    this.listService.deleteContact(this.listService.email,this.body).subscribe(
       (res)=>{
         this.isLoading = false
 

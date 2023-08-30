@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class VerifyComponent implements OnInit ,AfterViewInit{
   verificationForm: FormGroup;
-
+  isLoading:boolean=false;
   digitIndexes: number[] = [0, 1, 2, 3, 4, 5];
   loading: boolean;
   invalid:boolean=false;
@@ -77,20 +77,24 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
     const code = Object.keys(this.verificationForm.controls)
       .map(key => this.verificationForm.controls[key].value)
       .join('');
-
     if (code.length === 6) {
       // Send verification request using code
       let token=this.loginService.getCookieValue('refreshToken')
+      this.isLoading=true
 
       // const token=localStorage.getItem("token");
       console.log(code)
       this.verificatioinService.confirmEmail(code,token).subscribe(
         (res)=>{
+          this.isLoading=false
+
           this.invalid=false;
           console.log(res);
           this.router.navigateByUrl('messages')
         },
         (err)=>{
+          this.isLoading=false
+
           this.invalid=true;
           console.log(err)
         }
