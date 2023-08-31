@@ -174,7 +174,7 @@ getContactsData(){
 
   submitAdd(){
     this.isLoading = true
-    this.listService.addOrMoveContacts(this.contactsIds,this.listIds).subscribe(
+    this.listService.addOrMoveContacts(this.contactsIds,this.listIds,this.listService.email).subscribe(
       (res)=>{
         this.isLoading = false
         this.onClose(true);

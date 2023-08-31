@@ -89,7 +89,7 @@ export class DeleteContactComponent implements OnInit {
     )
   }
   removeLists(){
-    this.listService.removeContactsFromLists(this.body).subscribe(
+    this.listService.removeContactsFromLists(this.body,this.listService.email).subscribe(
       (res)=>{
         this.isLoading = false
         this.onClose(this.body);

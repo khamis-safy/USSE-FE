@@ -111,35 +111,41 @@ updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:
   return this.http.put(`${env.api}Contacts/updateContact`,data)
 }
 
-removeContactsFromOneList(contactsId:string[],listId:string[]): Observable<ErrSucc>{
+
+deleteContact(email:string,listIDs:string[]): Observable<ErrSucc>{
+  return this.http.put<ErrSucc>(`${env.api}Contacts/deleteContact?email=${email}`,listIDs)
+}
+
+removeContactsFromOneList(contactsId:string[],listId:string[],email:string): Observable<ErrSucc>{
   const data={
     id:contactsId,
-    newListId:listId
+    newListId:listId,
+    email:email
   }
     return this.http.put<ErrSucc>(`${env.api}Contacts/removeContactsFromOneList`,data)
 
 }
-deleteContact(email:string,listIDs:string[]): Observable<ErrSucc>{
-  return this.http.put<ErrSucc>(`${env.api}Contacts/deleteContact?email=${email}`,listIDs)
-}
-removeContactsFromLists(id:string[]): Observable<ErrSucc>{
+removeContactsFromLists(id:string[],email:string): Observable<ErrSucc>{
   const data={
-    id:id
+    id:id,
+    email:email
   }
   return this.http.put<ErrSucc>(`${env.api}Contacts/removeContactsFromLists`,data)
+}
+addOrMoveContacts(ids:string[],newListIds:string[],email:string): Observable<ErrSucc>{
+  const data ={
+  id:ids,
+  newListId:newListIds,
+  email:email
+}
+return this.http.put<ErrSucc>(`${env.api}Contacts/addOrMoveContactsFromLists`,data)
 }
 contactsCount(email:string,isCanceled:boolean):Observable<number>{
   return this.http.get<number>(`${env.api}Contacts/listContactsCount?email=${email}&isCanceled=${isCanceled}`)
 }
 
 
-addOrMoveContacts(ids:string[],newListIds:string[]): Observable<ErrSucc>{
-  const data ={
-  id:ids,
-  newListId:newListIds
-}
-return this.http.put<ErrSucc>(`${env.api}Contacts/addOrMoveContactsFromLists`,data)
-}
+
 
 unDeleteContact(email:string,ids:string[]):Observable<ErrSucc>{
   return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteContact?email=${email}`,ids)
