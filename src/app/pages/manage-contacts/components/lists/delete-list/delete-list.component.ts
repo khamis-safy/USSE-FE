@@ -74,7 +74,7 @@ deleteList(){
   )
 }
 removeContacts(){
-  this.listService.removeContactsFromOneList(this.contacts,this.list).subscribe(
+  this.listService.removeContactsFromOneList(this.contacts,this.list,this.listService.email).subscribe(
     (res)=>{
       this.isLoading = false
       this.onClose(true);
