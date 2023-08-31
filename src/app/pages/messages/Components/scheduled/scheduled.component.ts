@@ -2,12 +2,14 @@ import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild} from 
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import {  Shceduled } from '../../message';
 import { MessagesService } from '../../messages.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DisplayMessageComponent } from '../display-message/display-message.component';
+import { SelectOption } from 'src/app/shared/components/select/select-option.model';
+import { DevicesService } from 'src/app/pages/devices/devices.service';
 
 
 
@@ -29,10 +31,18 @@ export class ScheduledComponent implements OnInit  {
   dataSource:MatTableDataSource<Shceduled>;
   selection = new SelectionModel<Shceduled>(true, []);
 
+  // devices
+  devices:SelectOption[];
+  deviceLoadingText:string='Loading ...';
+  devicesData :any= new FormControl([]);
+  form = new FormGroup({
+    devicesData:this.devicesData,
+  });
+  deviceId:string;
   subscribtions:Subscription[]=[];
-  constructor(private messageService:MessagesService,public dialog: MatDialog){}
+  noData: boolean;
+  constructor(private messageService:MessagesService,public dialog: MatDialog,private devicesService:DevicesService){}
   ngOnInit() {
-    this.getMessages();
 
     this.columns=new FormControl(this.displayedColumns)
 
@@ -47,15 +57,63 @@ export class ScheduledComponent implements OnInit  {
           this.isChecked.emit()
         }
       });
-    }
 
-    getMessages(){
-      this.getMessagesCount();
+
+// set default device to be first one
+
+// get device's messages
+    this.getDevices();
+
+
+    }
+   // get devices data
+   getDevices(){
+    this.devicesService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+      (res)=>{
+
+        let devicesData=res;
+        this.devices = res.map(res=>{
+          return {
+            title:res.deviceName,
+            value:res.id
+          }
+        });
+        console.log(this.devices)
+        if(this.devices.length==0){
+          this.deviceLoadingText='No Results';
+          // set no data design
+          this.noData=true
+        }
+        else{
+          this.noData=false
+
+          this.deviceId=res[0].id;
+          this.getMessages(this.deviceId);
+            this.form.patchValue({
+              devicesData: {
+                title:devicesData[0]?.deviceName,
+                value:devicesData[0]?.id
+              }
+
+     })
+      }},
+      (err)=>{
+
+      }
+    )
+  }
+
+  onSelect(device){
+    this.deviceId=device.value;
+    this.getMessages(this.deviceId)
+        }
+    getMessages(deviceId:string){
+      this.getMessagesCount(deviceId);
       let shows=this.messageService.display;
       let pageNum=this.messageService.pageNum;
       let email=this.messageService.email;
       this.loading=true;
-      let messagesSub=this.messageService.getScheduledMessages(email,shows,pageNum).subscribe(
+      let messagesSub=this.messageService.getScheduledMessages(email,shows,pageNum,deviceId).subscribe(
         (res)=>{
           this.numRows=res.length;
           this.loading = false;
@@ -71,9 +129,9 @@ export class ScheduledComponent implements OnInit  {
       this.subscribtions.push(messagesSub)
     }
 
-    getMessagesCount(){
+    getMessagesCount(deviceId){
       let email=this.messageService.email;
-      let countSub=this.messageService.listScheduledMessagesCount(email).subscribe(
+      this.messageService.listScheduledMessagesCount(email,deviceId).subscribe(
         (res)=>{
           this.length=res;
         }
@@ -118,7 +176,7 @@ export class ScheduledComponent implements OnInit  {
         this.messageService.pageNum=event.pageIndex;
         this.selection.clear();
 
-        this.getMessages();
+        this.getMessages(this.deviceId);
 
       }
 

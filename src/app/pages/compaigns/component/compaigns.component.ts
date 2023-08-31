@@ -2,13 +2,15 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { CompaignsService } from '../compaigns.service';
 import { Router } from '@angular/router';
 import { compaignDetails } from '../campaigns';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { SelectOption } from 'src/app/shared/components/select/select-option.model';
+import { DevicesService } from '../../devices/devices.service';
 
 
 
@@ -32,14 +34,28 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   noData: boolean=false;
   notFound: boolean=false;
   canEdit: boolean;
-
-  constructor(private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router,private authService:AuthService){}
+  // devices
+  devices:SelectOption[];
+  deviceLoadingText:string='Loading ...';
+  devicesData :any= new FormControl([]);
+  form = new FormGroup({
+    devicesData:this.devicesData,
+  });
+  deviceId:string;
+  constructor(private devicesService:DevicesService,private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router,private authService:AuthService){}
 
 
   ngOnInit() {
+
+// set default device to be first one
+
+// get device's messages
+this.getDevices();
+
+
+
     this.columns=new FormControl(this.displayedColumns)
 
-    this.getCompaigns();
     let permission =this.compaignsService.compaignssPermission
     let customerId=this.authService.userInfo.customerId;
 
@@ -60,20 +76,64 @@ this.displayedColumns=this.canEdit?['Name', 'Status', 'Creator Name', 'Start Dat
   }
   ngAfterViewInit() {
   }
+
+
+
+ // get devices data
+ getDevices(){
+  this.devicesService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+    (res)=>{
+
+      let devicesData=res;
+      this.devices = res.map(res=>{
+        return {
+          title:res.deviceName,
+          value:res.id
+        }
+      });
+      console.log(this.devices)
+      if(this.devices.length==0){
+        this.deviceLoadingText='No Results';
+        // set no data design
+        this.noData=true
+      }
+      else{
+        this.noData=false
+
+        this.deviceId=res[0].id;
+        this.getCompaigns(this.deviceId);
+          this.form.patchValue({
+            devicesData: {
+              title:devicesData[0]?.deviceName,
+              value:devicesData[0]?.id
+            }
+
+   })
+    }},
+    (err)=>{
+
+    }
+  )
+}
+onSelect(device){
+  this.deviceId=device.value;
+  this.getCompaigns(this.deviceId)
+      }
+
 backToCompaigns(event){
 this.isCompagins=event;
 if(this.isCompagins){
-  this.getCompaigns();
+  this.getCompaigns(this.deviceId);
 }
 }
-  getCompaigns(){
+  getCompaigns(deviceId:string){
 
     let shows=this.compaignsService.display;
     let pageNum=this.compaignsService.pageNum;
     let email=this.compaignsService.email;
     let search=this.compaignsService.search;
     this.loading = true;
-    this.compaignsService.getCampaigns(email,shows,pageNum,search).subscribe(
+    this.compaignsService.getCampaigns(email,shows,pageNum,search,deviceId).subscribe(
       (res)=>{
         this.loading = false;
         this.dataSource=new MatTableDataSource<compaignDetails>(res);
@@ -87,7 +147,7 @@ if(this.isCompagins){
             }
         }
         else{
-          this.compaignsCount();
+          this.compaignsCount(deviceId);
           this.isSearch=false;
 
 
@@ -102,18 +162,11 @@ if(this.isCompagins){
       }
     )
   }
-compaignsCount(){
+compaignsCount(deviceId){
   let email=this.compaignsService.email;
-  this.compaignsService.compaignsCount(email).subscribe(
+  this.compaignsService.compaignsCount(email,deviceId).subscribe(
     (res)=>{
-
       this.length=res;
-      if(this.length==0){
-        this.noData=true
-      }
-      else{
-        this.noData=false
-      }
     }
     ,(err)=>{
       this.length=0;
@@ -133,7 +186,7 @@ compaignsCount(){
     this.compaignsService.display=event.pageSize;
     this.compaignsService.pageNum=event.pageIndex;
 
-    this.getCompaigns();
+    this.getCompaigns(this.deviceId);
 
   }
 
@@ -158,7 +211,7 @@ compaignsCount(){
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.getCompaigns();
+        this.getCompaigns(this.deviceId);
       }
     });
 
@@ -180,7 +233,7 @@ compaignsCount(){
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.getCompaigns();
+        this.getCompaigns(this.deviceId);
       }
     });
   }
@@ -188,7 +241,7 @@ compaignsCount(){
   onSearch(event:any){
     this.compaignsService.search=event.value;
 
-    this.getCompaigns();
+    this.getCompaigns(this.deviceId);
   }
 }
 

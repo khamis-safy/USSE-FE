@@ -3,11 +3,13 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import { MessagesService } from '../../messages.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Message } from '../../message';
 import { Subscription } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DisplayMessageComponent } from '../display-message/display-message.component';
+import { SelectOption } from 'src/app/shared/components/select/select-option.model';
+import { DevicesService } from 'src/app/pages/devices/devices.service';
 
 @Component({
   selector: 'app-message-type',
@@ -25,6 +27,15 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   @ViewChild("search") search!:ElementRef
   @Input() canEdit: boolean;
 
+  // devices
+  devices:SelectOption[];
+  deviceLoadingText:string='Loading ...';
+  devicesData :any= new FormControl([]);
+  form = new FormGroup({
+    devicesData:this.devicesData,
+  });
+  deviceId:string;
+
   columns :FormControl;
   displayed: string[] = ['Device Name', 'Sender', 'Messages', 'Received At'];
   displayedColumns: string[] = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At','Updated At','Status','Ation'];
@@ -32,30 +43,11 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   selection = new SelectionModel<Message>(true, []);
 
   subscribtions:Subscription[]=[];
+  noData: boolean;
+  notFound: boolean;
 
-  constructor(public dialog: MatDialog,private messageService:MessagesService){}
+  constructor(public dialog: MatDialog,private devicesService:DevicesService,private messageService:MessagesService){}
   ngOnInit() {
-    if(this.msgCategory=='inbox'){
-
-      this.displayed = ['Device Name', 'Sender', 'Messages', 'Received At'];
-      this.displayedColumns = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At'];
-    }
-    else if(this.msgCategory=='outbox'){
-      this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
-      this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
-    }
-    else if(this.msgCategory=='failed'){
-      if(this.canEdit){
-        this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Ation'];
-      }
-      else{
-        this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At'];
-      }
-      this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At'];
-
-    }
-
-    this.getMessages();
     this.columns=new FormControl(this.displayedColumns)
 
     this.selection.changed.subscribe(
@@ -69,22 +61,80 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
           this.isChecked.emit()
         }
       });
+this.tableData();
+
+// set default device to be first one
+
+// get device's messages
+    this.getDevices();
+
+
     }
-    getMessages(){
-      this.getMessagesCount();
+
+    // get devices data
+    getDevices(){
+      this.devicesService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+        (res)=>{
+
+          let devicesData=res;
+          this.devices = res.map(res=>{
+            return {
+              title:res.deviceName,
+              value:res.id
+            }
+          });
+          console.log(this.devices)
+          if(this.devices.length==0){
+            this.deviceLoadingText='No Results';
+            // set no data design
+            this.noData=true
+          }
+          else{
+            this.noData=false
+
+            this.deviceId=res[0].id;
+            this.getMessages(this.deviceId);
+              this.form.patchValue({
+                devicesData: {
+                  title:devicesData[0]?.deviceName,
+                  value:devicesData[0]?.id
+                }
+
+       })
+        }},
+        (err)=>{
+
+        }
+      )
+    }
+
+    getMessages(deviceId:string){
       let shows=this.messageService.display;
       let pageNum=this.messageService.pageNum;
       let email=this.messageService.email;
       let msgCategory=this.msgCategory;
       let search=this.messageService.search;
       this.loading = true;
-      let messagesSub=this.messageService.getMessages(email,msgCategory,shows,pageNum,search).subscribe(
+      let messagesSub=this.messageService.getMessages(email,msgCategory,shows,pageNum,search,deviceId).subscribe(
         (res)=>{
           this.numRows=res.length;
 
           this.loading = false;
           this.dataSource=new MatTableDataSource<Message>(res)
+          if(search!=""){
+            this.length=res.length;
+            if(this.length==0){
+              this.notFound=true;
+            }
+            else{
+              this.notFound=false;
+            }
+        }
+        else{
+          this.getMessagesCount(deviceId);
 
+
+        }
         },
         (err)=>{
          this.loading = false;
@@ -94,10 +144,10 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
       )
       this.subscribtions.push(messagesSub)
     }
-    getMessagesCount(){
+    getMessagesCount(deviceId){
       let email=this.messageService.email;
       let msgCategory=this.msgCategory;
-      let countSub=this.messageService.getMessagesCount(email,msgCategory).subscribe(
+      this.messageService.getMessagesCount(email,msgCategory,deviceId).subscribe(
         (res)=>{
           this.length=res;
         }
@@ -106,7 +156,10 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
         }
       )
     }
-
+    onSelect(device){
+      this.deviceId=device.value;
+      this.getMessages(this.deviceId)
+          }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -135,7 +188,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   onSearch(event:any){
     this.messageService.search=event.value;
     this.selection.clear();
-    this.getMessages();
+    this.getMessages(this.deviceId);
   }
 
   changeColumns(event){
@@ -155,7 +208,29 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
     this.messageService.pageNum=event.pageIndex;
     this.selection.clear();
 
-    this.getMessages();
+    this.getMessages(this.deviceId);
+
+  }
+  tableData(){
+    if(this.msgCategory=='inbox'){
+
+      this.displayed = ['Device Name', 'Sender', 'Messages', 'Received At'];
+      this.displayedColumns = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At'];
+    }
+    else if(this.msgCategory=='outbox'){
+      this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
+      this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
+    }
+    else if(this.msgCategory=='failed'){
+      if(this.canEdit){
+        this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Ation'];
+      }
+      else{
+        this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At'];
+      }
+      this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At'];
+
+    }
 
   }
   displayMessage(row){

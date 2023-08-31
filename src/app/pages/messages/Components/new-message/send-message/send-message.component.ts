@@ -14,10 +14,10 @@ export class SendMessageComponent implements OnInit ,OnDestroy{
   @ViewChild("dateTime") dateTime!: ElementRef;
   devices:SelectOption[];
   deviceLoadingText:string='Loading ...';
-  selectedDevices:string[]=[];
   devicesData = new FormControl([]);
   dateFormControl:any = new FormControl('');
 
+  // selectedDevices:string[]=[];
   deviceId:string;
   form = new FormGroup({
     devicesData:this.devicesData,

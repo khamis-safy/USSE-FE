@@ -51,7 +51,8 @@ else{
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       this.messageType.selection.clear();
-      this.messageType.getMessages();
+      let id=this.messageType.deviceId
+      this.messageType.getMessages(id);
 
     });
   }
