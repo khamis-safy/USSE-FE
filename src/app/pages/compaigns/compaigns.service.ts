@@ -35,11 +35,11 @@ constructor(private http:HttpClient,private authService:AuthService) {
    }
 
 }
-getCampaigns(email:string,showsNum:number,pageNum:number,search:string):Observable<compaignDetails[]>{
-  return this.http.get<compaignDetails[]>(`${env.api}Message/listCampaigns?email=${email}&take=${showsNum}&scroll=${pageNum}&search=${search}`)
+getCampaigns(email:string,showsNum:number,pageNum:number,search:string,deviceId:string):Observable<compaignDetails[]>{
+  return this.http.get<compaignDetails[]>(`${env.api}Message/listCampaigns?email=${email}&take=${showsNum}&scroll=${pageNum}&search=${search}&deviceId=${deviceId}`)
 }
-compaignsCount(email:string):Observable<number>{
-  return this.http.get<number>(`${env.api}Message/listCampaignsCount?email=${email}`)
+compaignsCount(email:string,deviceId:string):Observable<number>{
+  return this.http.get<number>(`${env.api}Message/listCampaignsCount?email=${email}&deviceId=${deviceId}`)
 }
 // addMewCampain(
 //   campaignName: string,

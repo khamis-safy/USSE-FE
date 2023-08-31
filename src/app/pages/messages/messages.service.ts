@@ -18,12 +18,16 @@ export class MessagesService {
     search:string="";
     msgCategory:string="inbox";
 constructor(private http:HttpClient,private authService:AuthService) {
+  // if no id , it will be user account else  , it will be customer account
   if(authService.userInfo.customerId!=""){
+    // if user acount check his permissions
   authService.getPermissionsObservable().subscribe(permissions => {
     this.messageasPermission=permissions.find((e)=>e.name=="Messages");
+    // in case that if no permissions given to this module
     if(!this.messageasPermission){
       this.messageasPermission={name:"Messages",value:"ReadOnly"}
     }
+
     console.log(this.messageasPermission)
 
     // Update your sidebar links based on the updated permissions
@@ -36,17 +40,17 @@ constructor(private http:HttpClient,private authService:AuthService) {
 }
 
 
-getMessages(email:string,msgCategory:string,showsNum:number,pageNum:number,search:string):Observable<Message[]>{
-  return this.http.get<Message[]>(`${env.api}Message/listMessages?email=${email}&msgCategory=${msgCategory}&take=${showsNum}&scroll=${pageNum}&search=${search}`)
+getMessages(email:string,msgCategory:string,showsNum:number,pageNum:number,search:string,deviceId:string):Observable<Message[]>{
+  return this.http.get<Message[]>(`${env.api}Message/listMessages?email=${email}&msgCategory=${msgCategory}&take=${showsNum}&scroll=${pageNum}&search=${search}&deviceId=${deviceId}`)
 }
-getScheduledMessages(email:string,showsNum:number,pageNum:number):Observable<Shceduled[]>{
-  return this.http.get<Shceduled[]>(`${env.api}Message/listScheduledMessages?email=${email}&take=${showsNum}&scroll=${pageNum}`)
+getScheduledMessages(email:string,showsNum:number,pageNum:number,deviceId:string):Observable<Shceduled[]>{
+  return this.http.get<Shceduled[]>(`${env.api}Message/listScheduledMessages?email=${email}&take=${showsNum}&scroll=${pageNum}&deviceId=${deviceId}`)
 }
-getMessagesCount(email:string,msgCategory:string):Observable<number>{
-  return this.http.get<number>(`${env.api}Message/listMessagesCount?email=${email}&msgCategory=${msgCategory}`)
+getMessagesCount(email:string,msgCategory:string,deviceId:string):Observable<number>{
+  return this.http.get<number>(`${env.api}Message/listMessagesCount?email=${email}&msgCategory=${msgCategory}&deviceId=${deviceId}`)
 }
-listScheduledMessagesCount(email:string):Observable<number>{
-  return this.http.get<number>(`${env.api}Message/listScheduledMessagesCount?email=${email}`)
+listScheduledMessagesCount(email:string,deviceId:string):Observable<number>{
+  return this.http.get<number>(`${env.api}Message/listScheduledMessagesCount?email=${email}&deviceId=${deviceId}`)
 }
 deleteMessage(ids:string[]):Observable<any>{
 

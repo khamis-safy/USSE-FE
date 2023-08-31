@@ -22,17 +22,18 @@ export class ManageContactsService {
   constructor(private http:HttpClient,private authService:AuthService) {
     if(authService.userInfo.customerId!=""){
       authService.getPermissionsObservable().subscribe(permissions => {
-        this.contactsPermissions=permissions.find((e)=>e.name=="Campaigns");
+        this.contactsPermissions=permissions.find((e)=>e.name=="Contacts");
         if(!this.contactsPermissions){
-          this.contactsPermissions={name:"Campaigns",value:"ReadOnly"}
+          this.contactsPermissions={name:"Contacts",value:"ReadOnly"}
         }
+
         console.log(this.contactsPermissions)
 
         // Update your sidebar links based on the updated permissions
       });
      }
      else{
-       this.contactsPermissions={name:"Campaigns",value:"FullAccess"}
+       this.contactsPermissions={name:"Contacts",value:"FullAccess"}
        console.log(this.contactsPermissions)
      }
    }

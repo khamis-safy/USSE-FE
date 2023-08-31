@@ -190,7 +190,7 @@ permissionsData;
 
 
   }
-fillengDevicesPermissions(permission:any){
+fillingDevicesPermissions(permission:any){
   let devicesPermissions=permission.filter((permissoin)=>permissoin.name.split("_").length>=2);
   let devicesP=devicesPermissions.map((devPer)=>{
     let sectionName=devPer.name;
@@ -330,7 +330,7 @@ getDevices(){
 
       return{
         deviceId:device.id,
-        sectionsLevels:this.isEdit?this.fillengDevicesPermissions(this.data.permissions): this.setDeviceSections(),
+        sectionsLevels:this.isEdit?this.fillingDevicesPermissions(this.data.permissions): this.setDeviceSections(),
       }
     });
 
@@ -391,94 +391,6 @@ getDevices(){
 }
 
 
-  // createSetions(){
-  //   return[
-  //     { icon: 'assets/icons/me-icon.svg', label: 'Messages', name: 'messages' , accessLevels : [
-  //     {
-  //       value:"readOnly",
-  //       checked:true
-  //     },
-  //     {
-  //       value:"fullAccess",
-  //       checked:false
-  //     },
-  //     {
-  //       value:"none",
-  //       checked:false
-  //     }
-  //   ]},
-  //     { icon: 'assets/icons/users-compagns-icon.svg', label: 'Campaigns', name: 'campaigns' , accessLevels : [
-  //     {
-  //       value:"readOnly",
-  //       checked:true
-  //     },
-  //     {
-  //       value:"fullAccess",
-  //       checked:false
-  //     },
-  //     {
-  //       value:"none",
-  //       checked:false
-  //     }
-  //   ]},
-  //     { icon: 'assets/icons/users-temp.svg', label: 'Templates', name: 'templates', accessLevels : [
-  //     {
-  //       value:"readOnly",
-  //       checked:true
-  //     },
-  //     {
-  //       value:"fullAccess",
-  //       checked:false
-  //     },
-  //     {
-  //       value:"none",
-  //       checked:false
-  //     }
-  //   ]},
-  //     { icon: 'assets/icons/users-bots.svg', label: 'Bots', name: 'bots', accessLevels : [
-  //     {
-  //       value:"readOnly",
-  //       checked:true
-  //     },
-  //     {
-  //       value:"fullAccess",
-  //       checked:false
-  //     },
-  //     {
-  //       value:"none",
-  //       checked:false
-  //     }
-  //   ]},
-  //     { icon: 'assets/icons/users-devices.svg', label: 'Devices', name: 'devices' , accessLevels : [
-  //     {
-  //       value:"readOnly",
-  //       checked:true
-  //     },
-  //     {
-  //       value:"fullAccess",
-  //       checked:false
-  //     },
-  //     {
-  //       value:"none",
-  //       checked:false
-  //     }
-  //   ]},
-  //     { icon: 'assets/icons/users-contacts.svg', label: 'Contacts', name: 'contacts', accessLevels : [
-  //     {
-  //       value:"readOnly",
-  //       checked:true
-  //     },
-  //     {
-  //       value:"fullAccess",
-  //       checked:false
-  //     },
-  //     {
-  //       value:"none",
-  //       checked:false
-  //     }
-  //   ]}
-  //   ]
-  // }
 
      onSelect(event){
       let prevDevice =this.selectedDevice;
