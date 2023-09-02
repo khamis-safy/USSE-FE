@@ -25,7 +25,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-export interface Filse {
+export interface files {
   name: string;
   type: string;
   url: string;
@@ -39,7 +39,8 @@ export interface Filse {
 })
 export class AddTemplateComponent implements OnInit {
   isLoading = false;
-  fileData: Filse[] = [];
+  fileData: files[] = [];
+  loading:boolean;
   email:string=this.templatesService.email;
   templateName: any = new FormControl('', [Validators.required]);
   messageBody: any = new FormControl('', [Validators.required]);
@@ -65,6 +66,7 @@ export class AddTemplateComponent implements OnInit {
       this.fillingData();
     } else {
       this.isEdit = false;
+      this.loading=false;
     }
   }
 
@@ -129,8 +131,10 @@ export class AddTemplateComponent implements OnInit {
       attachments: this.data.attachments,
     });
  // attachment
+ this.loading=true;
  this.templatesService.getTemplateById(this.data.id).subscribe(
   (res)=>{
+    this.loading=false;
       let attachments=res.result.attachments;
       // console.log("attachment",attachments)
     this.fileData=attachments.map((attach)=>{
@@ -143,6 +147,7 @@ export class AddTemplateComponent implements OnInit {
     })
   },
   (err)=>{
+    this.loading=false;
 
   }
 )
