@@ -9,9 +9,9 @@
               <input [checked]="isIntervalChecked"  (change)="isInterval=!isInterval; onSwitcherChange($event,[intFrom,intTo])" class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
             </div>
 
-            <div  style="width:42%" class="d-flex align-items-center justify-content-between">
+            <div  style="width:42%; position: relative;" class="d-flex align-items-center justify-content-between">
               <div class="d-flex  flex-column" style="    width: 136px;
-              position: relative;
+
           ">
                 <us-input
                 value=""
@@ -23,17 +23,7 @@
                 formControlName="intFrom"
 
               ></us-input>
-              <div *ngIf="
-              intFrom.value > maxNum ||
-              intTo.value > maxNum ||
-              intFrom.value > intTo.value
-              " class="hint error "
-              style="    position: absolute;
-              bottom: -31px;"
-            >
-              <i class="si-info"></i>
-              <p class="txt txt-xs">invalid number</p>
-            </div>
+
             </div>
             <span style="margin-inline: 10px">To</span>
             <div class="" style="width:136px">
@@ -49,6 +39,17 @@
 
             ></us-input>
             </div>
+            <div *ngIf="
+            intFrom.value > maxNum ||
+            intTo.value > maxNum ||
+            intFrom.value > intTo.value
+            " class="hint error "
+            style="    position: absolute;
+            bottom: -31px;"
+          >
+            <i class="si-info"></i>
+            <p class="txt txt-xs">invalid number</p>
+          </div>
             </div>
 
 

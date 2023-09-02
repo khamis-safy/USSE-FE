@@ -1,74 +1,134 @@
 <section class="d-flex flex-column flex-lg-row align-items-center gap-lg-5">
   <!-- Label & optional indicator -->
-<div class="label-widget text-start  w-25 d-none d-lg-block" *ngIf="optional || label">
-  <label class="label txt txt-sm text-nowrap" [for]="key"><span class="text-wrap text-black txt txt-sm">{{label}}</span> <span style="color: red;">{{optional ? '' :"*"}}</span></label>
-  <!-- <p class="optional txt txt-sm" *ngIf="optional">Optional</p> -->
-</div>
-<div class="label-widget text-start w-100 d-block d-lg-none" *ngIf="optional || label">
-  <label class="label  txt txt-sm text-nowrap" [for]="key"><span class="text-wrap text-black txt txt-sm">{{label}}</span> <span style="color: red;">{{optional ? '' :"*"}}</span></label>
-</div>
-<div class="w-100">
-<!-- Input container ( contains: prefix, input, suffix, icon, steppers ) -->
-<div *ngIf="!isTextArea" class="input-wrapper  {{ orderInGroup }}"
-  [ngClass]="{ fullWidth, error, 'disabled': isDisabled, grouped}">
-  <div *ngIf="prefix" class="prefix">
-    <p class="txt txt-sm">{{ prefix }}</p>
+  <div
+    class="label-widget text-start w-25 d-none d-lg-block"
+    *ngIf="optional || label"
+    style="min-width: 80px"
+  >
+    <label class="label txt txt-sm text-nowrap" [for]="key"
+      ><span class="text-wrap text-black txt txt-sm" style=" line-height: 1.3; display: inline-block">{{ label }}</span>
+      <span style="color: red;margin-left: 2px;">{{
+        optional ? "" : "*"
+      }}</span></label
+    >
+    <!-- <p class="optional txt txt-sm" *ngIf="optional">Optional</p> -->
   </div>
-
-  <input #srInputEl [(ngModel)]="value"
-    [ngClass]="{'has_icon': iconClass, 'has_icon_trailing': iconClass && trailingIcon}" [id]="key" [type]="type"
-    [placeholder]="placeholder" [required]="!optional" [disabled]="isDisabled" [min]="min" [max]="max"
-    [pattern]="pattern" (blur)="onTouched()" (ngModelChange)="onValueChange(srInputEl)" (change)="change.emit(value)"
-    (keyup)="keyup.emit(value)" (keydown)="keydown.emit(value)" (keyup.enter)="submit.emit(value)"
-    (oncopy)="copy.emit(value)" (onpaste)="paste.emit(value)" (click)="clicked.emit($event)" (input)="input.emit($event)" />
-
-  <div *ngIf="suffix" class="suffix">
-    <p class="txt txt-sm">{{ suffix }}</p>
+  <div
+    class="label-widget text-start w-100 d-block d-lg-none"
+    *ngIf="optional || label"
+  >
+    <label class="label txt txt-sm text-nowrap" [for]="key"
+      ><span class="text-wrap text-black txt txt-sm">{{ label }}</span>
+      <span style="color: red">{{ optional ? "" : "*" }}</span></label
+    >
   </div>
+  <div class="w-100">
+    <!-- Input container ( contains: prefix, input, suffix, icon, steppers ) -->
+    <div
+      *ngIf="!isTextArea"
+      class="input-wrapper  {{ orderInGroup }}"
+      [ngClass]="{ fullWidth, error, 'disabled': isDisabled, grouped}"
+    >
+      <div *ngIf="prefix" class="prefix">
+        <p class="txt txt-sm">{{ prefix }}</p>
+      </div>
 
-  <i *ngIf="iconClass" class="icon {{ iconClass }}" [ngStyle]="{'order': trailingIcon ? 1 : -1}"
-    (click)="onIconClick.emit()">
-  </i>
+      <input
+        #srInputEl
+        [(ngModel)]="value"
+        [ngClass]="{
+          has_icon: iconClass,
+          has_icon_trailing: iconClass && trailingIcon
+        }"
+        [id]="key"
+        [type]="type"
+        [placeholder]="placeholder"
+        [required]="!optional"
+        [disabled]="isDisabled"
+        [min]="min"
+        [max]="max"
+        [pattern]="pattern"
+        (blur)="onTouched()"
+        (ngModelChange)="onValueChange(srInputEl)"
+        (change)="change.emit(value)"
+        (keyup)="keyup.emit(value)"
+        (keydown)="keydown.emit(value)"
+        (keyup.enter)="submit.emit(value)"
+        (oncopy)="copy.emit(value)"
+        (onpaste)="paste.emit(value)"
+        (click)="clicked.emit($event)"
+        (input)="input.emit($event)"
+      />
 
-  <div *ngIf="type == 'number'" class="steppers">
-    <button (click)="increment()"><i class="si-up"></i></button>
-    <button (click)="decrement()"><i class="si-down"></i></button>
+      <div *ngIf="suffix" class="suffix">
+        <p class="txt txt-sm">{{ suffix }}</p>
+      </div>
+
+      <i
+        *ngIf="iconClass"
+        class="icon {{ iconClass }}"
+        [ngStyle]="{ order: trailingIcon ? 1 : -1 }"
+        (click)="onIconClick.emit()"
+      >
+      </i>
+
+      <div *ngIf="type == 'number'" class="steppers">
+        <button (click)="increment()"><i class="si-up"></i></button>
+        <button (click)="decrement()"><i class="si-down"></i></button>
+      </div>
+    </div>
+
+    <!-- textarea container ( contains: prefix, input, suffix, icon, steppers ) -->
+    <div
+      *ngIf="isTextArea"
+      class="input-wrapper {{ orderInGroup }}"
+      [ngClass]="{ fullWidth, error, 'disabled': isDisabled, grouped}"
+    >
+      <div *ngIf="prefix" class="prefix">
+        <p class="txt txt-sm">{{ prefix }}</p>
+      </div>
+
+      <textarea
+        #srInputEl
+        [(ngModel)]="value"
+        [ngClass]="{
+          has_icon: iconClass,
+          has_icon_trailing: iconClass && trailingIcon
+        }"
+        [id]="key"
+        [placeholder]="placeholder"
+        [required]="!optional"
+        [disabled]="isDisabled"
+        [pattern]="pattern"
+        (blur)="onTouched()"
+        (ngModelChange)="onValueChange(srInputEl)"
+        (change)="change.emit(value)"
+        (keyup)="keyup.emit(value)"
+        (keydown)="keydown.emit(value)"
+        (keyup.enter)="submit.emit(value)"
+        (oncopy)="copy.emit(value)"
+        (onpaste)="paste.emit(value)"
+        (click)="clicked.emit($event)"
+        (input)="input.emit($event)"
+      >
+      </textarea>
+
+      <div *ngIf="suffix" class="suffix">
+        <p class="txt txt-sm">{{ suffix }}</p>
+      </div>
+
+      <i
+        *ngIf="iconClass"
+        class="icon {{ iconClass }}"
+        [ngStyle]="{ order: trailingIcon ? 1 : -1 }"
+        (click)="onIconClick.emit()"
+      >
+      </i>
+    </div>
+    <!-- Hint / caption -->
+    <div *ngIf="hintText" class="hint mt-2" [ngClass]="{ error }">
+      <i [class]="hintIcon"></i>
+      <p class="txt txt-xs hint mt-2" [ngClass]="{ error }">{{ hintText }}</p>
+    </div>
   </div>
-</div>
-
-<!-- textarea container ( contains: prefix, input, suffix, icon, steppers ) -->
-<div *ngIf="isTextArea" class="input-wrapper {{ orderInGroup }}"
-  [ngClass]="{ fullWidth, error, 'disabled': isDisabled, grouped}">
-  <div *ngIf="prefix" class="prefix">
-    <p class="txt txt-sm">{{ prefix }}</p>
-  </div>
-
-  <textarea #srInputEl [(ngModel)]="value"
-    [ngClass]="{'has_icon': iconClass, 'has_icon_trailing': iconClass && trailingIcon}" [id]="key"
-    [placeholder]="placeholder" [required]="!optional" [disabled]="isDisabled" [pattern]="pattern" (blur)="onTouched()"
-    (ngModelChange)="onValueChange(srInputEl)" (change)="change.emit(value)" (keyup)="keyup.emit(value)"
-    (keydown)="keydown.emit(value)" (keyup.enter)="submit.emit(value)" (oncopy)="copy.emit(value)"
-    (onpaste)="paste.emit(value)" (click)="clicked.emit($event)" (input)="input.emit($event)">
-
-  </textarea>
-
-  <div *ngIf="suffix" class="suffix">
-    <p class="txt txt-sm">{{ suffix }}</p>
-  </div>
-
-  <i *ngIf="iconClass" class="icon {{ iconClass }}" [ngStyle]="{'order': trailingIcon ? 1 : -1}"
-    (click)="onIconClick.emit()">
-  </i>
-
-
-</div>
-<!-- Hint / caption -->
-<div *ngIf="hintText" class="hint mt-2" [ngClass]="{ error }">
-  <i [class]="hintIcon"></i>
-  <p class="txt txt-xs hint mt-2" [ngClass]="{ error }">{{ hintText }}</p>
-</div>
-</div>
-
 </section>
-
-

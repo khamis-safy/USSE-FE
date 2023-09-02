@@ -33,7 +33,7 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   noData: boolean=false;
   notFound: boolean=false;
-  canEdit: boolean;
+  canEdit: boolean=true;
   // devices
   devices:SelectOption[];
   deviceLoadingText:string='Loading ...';
