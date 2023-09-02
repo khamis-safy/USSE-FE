@@ -23,7 +23,7 @@ export class DragZoneComponent implements OnInit {
   private _value!: any;
    filesList: any = [];
    isTouched = false; // to handle on touched only once
-
+  @Input() isLoading = false;
   @Input() isDisabled?: boolean; // force disable dropdown
   @Input("label") label ="Select a file or drag and drop here";
   @Input("fileSize") fileSize =10;
@@ -62,7 +62,7 @@ export class DragZoneComponent implements OnInit {
   ngOnInit(): void {
 
   }
-  isLoading = false;
+
   toBase64(file){
     this.isLoading= true
     return new Promise((resolve, reject) => {

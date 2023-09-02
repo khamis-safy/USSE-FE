@@ -23,7 +23,7 @@ export class WriteMessageComponent implements OnInit {
   // @Output() messageBody = new EventEmitter<string>;
   @Output() attachments = new EventEmitter<string[]>;
   messageBody:string="";
-
+  loading:boolean=false;
   templatesData = new FormControl([]);
   message = new FormControl('',[Validators.required]);
 
@@ -65,8 +65,12 @@ export class WriteMessageComponent implements OnInit {
     this.form.patchValue({
       message:template.messageBody
     });
+    this.loading=true;
+
     this.templateService.getTemplateById(event.value).subscribe(
       (res)=>{
+        this.loading=false;
+
           let attachments=res.result.attachments;
           // console.log("attachment",attachments)
         this.fileData=attachments.map((attach)=>{
@@ -79,6 +83,7 @@ export class WriteMessageComponent implements OnInit {
         })
       },
       (err)=>{
+        this.loading=false;
 
       }
     )
