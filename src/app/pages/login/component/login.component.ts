@@ -17,7 +17,9 @@ password:any;
 form: FormGroup;
 loading;
 invalid:boolean=false;
+hintMessage:string;
 userInfo:any;
+
   constructor(private plugin:PluginsService,private authService:AuthService,private loginService:LoginService,private router:Router) {
 
   }
@@ -68,6 +70,7 @@ this.authService.updateUserInfo()
     this.refreshToken();
   }, 60 * 60 * 1000); // 1 hour in milliseconds
     console.log("invalid")
+    this.hintMessage="We can't logged you in "
     this.invalid=(!res.isActive && !res.isTrial)?true:false
 
 this.invalid=false;
@@ -79,6 +82,7 @@ this.invalid=false;
   (err)=>{
     this.loading=false;
     this.invalid=true;
+    this.hintMessage="Email or password is wrong"
 
   }
 )

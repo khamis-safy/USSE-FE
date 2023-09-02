@@ -34,7 +34,7 @@
 
 
         <div class="date-time d-flex justify-content-center ">
-          <span class="txt-sm text-neutral-500 p-2">{{message?.createdAt | date: ' d/M/yy , h:mm a '}}</span>
+          <span class="txt-sm text-neutral-500 p-2">{{message?.createdAt  | toLocalTime | date: ' d/M/yy , h:mm a '}}</span>
         </div>
       </div>
       <div class="message-container">

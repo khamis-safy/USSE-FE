@@ -9,32 +9,8 @@
         <h3 class="my-3" style="font-family: Poppins; font-weight: 500">
           Welcome back! Login into your account
         </h3>
-        <div class="w-100">
-        <us-button
-          label="Login with Google"
-          [size]="'xl'"
-          [loading]="false"
-          [disabled]="false"
-          img="assets/images/google logo.svg"
-          [appearance]="'primary'"
-          class="my-2"
-          [fill]="false"
-          [fullWidth]="true"
-
-        >
-      </us-button>
-    </div>
-        <div class="d-flex justify-content-center align-items-center my-3">
-          <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
-          <div class="mx-2">
-            <p style="color: #b5b3b3">Or</p>
-          </div>
-          <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
-        </div>
-      </div>
-
-      <form [formGroup]="form" style="width:90%">
-        <div class="col-md-12 mb-3">
+    <form [formGroup]="form" class="w-100">
+        <div class="col-md-12 mb-4">
 
         <us-input
       [isDisabled]="false"
@@ -81,10 +57,34 @@
           </us-button>
         </div>
        <div *ngIf="invalid" class="hint error mt-2" > <i class="si-info"></i>
-        <p class="txt hint error  txt-xs">We can't logged you in</p></div>
+        <p class="txt hint error  txt-xs">{{hintMessage}}</p></div>
 
       </form>
+        <div class="d-flex justify-content-center align-items-center my-3">
+          <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
+          <div class="mx-2">
+            <p style="color: #b5b3b3">Or</p>
+          </div>
+          <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
+        </div>
+      </div>
 
+
+      <div class="w-100">
+        <us-button
+          label="Login with Google"
+          [size]="'xl'"
+          [loading]="false"
+          [disabled]="false"
+          img="assets/images/google logo.svg"
+          [appearance]="'primary'"
+          class="my-2"
+          [fill]="false"
+          [fullWidth]="true"
+
+        >
+      </us-button>
+    </div>
       <div class="col-md-12">
 
         <div class="d-flex my-3 justify-content-center">

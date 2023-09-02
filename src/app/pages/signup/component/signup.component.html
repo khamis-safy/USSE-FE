@@ -9,7 +9,101 @@
         <h3 class="my-3" style="font-family: Poppins; font-weight: 500">
           Create your account
         </h3>
-        <div class="w-100">
+
+        <form [formGroup]="form" class="w-100">
+          <!-- Username -->
+     <div class="col-md-12 mb-4">
+       <us-input
+         class="my-3"
+         [label]="'Username'"
+         [type]="'text'"
+         [placeholder]="'Enter your name'"
+         formControlName="contactName"
+         [error]=" (contactName.touched && contactName.errors?.required)"
+         [hintText]=" contactName.touched && contactName.errors?.required ? 'This filed is required':'' "
+       ></us-input>
+     </div>
+
+     <!-- email -->
+     <div class="col-md-12 mb-4">
+       <us-input
+         class="my-3"
+         [label]="'Email'"
+         [type]="'email'"
+         [placeholder]="'Enter your email'"
+         formControlName="email"
+         [error]=" (email.touched && email.errors?.required || email.dirty && email.errors?.pattern)"
+         [hintText]=" email.touched && email.errors?.required ? 'This filed is required':email.dirty && email.errors?.pattern?'invalid email':'' "
+
+       ></us-input>
+     </div>
+     <!-- Password -->
+     <div class="col-md-12 mb-4">
+       <us-input
+         class="my-2"
+         [label]="'Password'"
+         [type]="'password'"
+         [placeholder]="'Enter your password'"
+         formControlName="password"
+         [error]=" (password.touched && password.errors?.required)"
+         [hintText]=" password.touched && password.errors?.required ? 'This filed is required':'' "
+       ></us-input>
+             <!-- Hint / caption -->
+<div *ngIf=" password.dirty && password.errors?.pattern" class="hint mt-2 error" >
+ <i class="si-info" style="align-self: start;
+ margin-top: 4px;"></i>
+ <p class="txt txt-xs hint mt-2 error" >the password must contains minimum eight characters, at least one letter, one number and one special character (@$!%#?&)</p>
+</div>
+
+     </div>
+     <!-- Confirm Password -->
+     <div class="col-md-12 mb-4">
+       <us-input
+         class="my-2"
+         [label]="'Confirm Password'"
+         [type]="'password'"
+         [placeholder]="'Enter your password'"
+         formControlName="confirm"
+         [error]=" (confirm.touched && confirm.errors?.required || confirm.touched &&  confirm.value != password.value )"
+         [hintText]=" confirm.touched && confirm.errors?.required ? 'This filed is required': confirm.touched &&  confirm.value != password.value?'Passwords Don\'t Match' :'' "
+       ></us-input>
+     </div>
+
+     <div class="col-md-12 mt-3">
+
+       <div class="w-100">
+
+         <us-button
+           label="signup"
+           [fill]="true"
+           [size]="'xl'"
+           [loading]="loading"
+           [disabled]="loading || form.invalid"
+           [appearance]="'primary'"
+           (clicked)="signUp()"
+           [fullWidth]="true"
+         >
+         </us-button>
+       </div>
+
+       <div class="d-flex my-3 justify-content-center">
+         <p style="font-weight: 500" class="mx-2">Already have an account?</p>
+         <a style="text-decoration: none; font-weight: 500" routerLink="/login"
+           >Login
+         </a>
+       </div>
+     </div>
+
+   </form>
+        <div class="d-flex justify-content-center align-items-center my-3">
+          <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
+          <div class="mx-2">
+            <p style="color: #b5b3b3">Or</p>
+          </div>
+          <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
+        </div>
+      </div>
+       <div class="w-100">
           <us-button
             label="Sign up with Google"
             [size]="'xl'"
@@ -23,87 +117,6 @@
           >
           </us-button>
         </div>
-
-        <div class="d-flex justify-content-center align-items-center my-3">
-          <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
-          <div class="mx-2">
-            <p style="color: #b5b3b3">Or</p>
-          </div>
-          <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
-        </div>
-      </div>
-      <form [formGroup]="form" style="width:90%">
-      <div class="col-md-12 mb-3">
-        <us-input
-          class="my-3"
-          [label]="'Email'"
-          [type]="'email'"
-          [placeholder]="'Enter your email'"
-          formControlName="email"
-          [error]=" (email.touched && email.errors?.required || email.dirty && email.errors?.pattern)"
-          [hintText]=" email.touched && email.errors?.required ? 'This filed is required':email.dirty && email.errors?.pattern?'invalid email':'' "
-
-        ></us-input>
-      </div>
-      <div class="col-md-12 mb-3">
-        <us-input
-          class="my-2"
-          [label]="'Password'"
-          [type]="'password'"
-          [placeholder]="'Enter your password'"
-          formControlName="password"
-          [error]=" (password.touched && password.errors?.required)"
-          [hintText]=" password.touched && password.errors?.required ? 'This filed is required':'' "
-        ></us-input>
-      </div>
-      <div class="col-md-12 mb-3">
-        <us-input
-          class="my-2"
-          [label]="'Confirm Password'"
-          [type]="'password'"
-          [placeholder]="'Enter your password'"
-          formControlName="confirm"
-          [error]=" (confirm.touched && confirm.errors?.required || confirm.touched &&  confirm.value != password.value )"
-          [hintText]=" confirm.touched && confirm.errors?.required ? 'This filed is required': confirm.touched &&  confirm.value != password.value?'Passwords Don\'t Match' :'' "
-        ></us-input>
-      </div>
-      <div class="col-md-12 mb-3">
-        <us-input
-          class="my-3"
-          [label]="'Username'"
-          [type]="'text'"
-          [placeholder]="'Enter your name'"
-          formControlName="contactName"
-          [error]=" (contactName.touched && contactName.errors?.required)"
-          [hintText]=" contactName.touched && contactName.errors?.required ? 'This filed is required':'' "
-        ></us-input>
-      </div>
-      <div class="col-md-12 mt-3">
-
-        <div class="w-100">
-
-          <us-button
-            label="signup"
-            [fill]="true"
-            [size]="'xl'"
-            [loading]="loading"
-            [disabled]="loading || form.invalid"
-            [appearance]="'primary'"
-            (clicked)="signUp()"
-            [fullWidth]="true"
-          >
-          </us-button>
-        </div>
-
-        <div class="d-flex my-3 justify-content-center">
-          <p style="font-weight: 500" class="mx-2">Already have an account?</p>
-          <a style="text-decoration: none; font-weight: 500" routerLink="/login"
-            >Login
-          </a>
-        </div>
-      </div>
-
-    </form>
     </div>
     <div
       class="col-md-8 p-5 pt-1 mx-auto d-flex flex-column align-items-center justify-content-center text-center mx-auto"

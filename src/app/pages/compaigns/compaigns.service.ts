@@ -22,7 +22,8 @@ constructor(private http:HttpClient,private authService:AuthService) {
     authService.getPermissionsObservable().subscribe(permissions => {
       this.compaignssPermission=permissions.find((e)=>e.name=="Campaigns");
       if(!this.compaignssPermission){
-        this.compaignssPermission={name:"Campaigns",value:"FullAccess"}
+        this.compaignssPermission={name:"Campaigns",value:"ReadOnly"}
+
       }
       console.log(this.compaignssPermission)
 
@@ -30,7 +31,8 @@ constructor(private http:HttpClient,private authService:AuthService) {
     });
    }
    else{
-     this.compaignssPermission={name:"Campaigns",value:"ReadOnly"}
+    this.compaignssPermission={name:"Campaigns",value:"FullAccess"}
+
      console.log(this.compaignssPermission)
    }
 
