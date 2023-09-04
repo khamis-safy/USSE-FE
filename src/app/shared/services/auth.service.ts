@@ -35,6 +35,12 @@ empty:number=0;
 userPermissions:Permission
 usersPermissions:PermissionData[]
 permissionsSubject = new BehaviorSubject<PermissionData[]>([]);
+permissionSubject = new BehaviorSubject<Permission>({
+  Templates:true,
+  Bots:true,
+  Devices:true,
+  Contacts:true
+    });
 
 constructor(private loginService:LoginService,private http:HttpClient) {
   this.userInfo= this.getUserInfo();
@@ -44,6 +50,9 @@ console.log("refresh token",this.userInfo.refreshToken)
   this.usersPermissions=permissions
   this.permissionsSubject.next(permissions);
 
+}
+updatePermissions(permisions:any){
+  this.userPermissions=permisions
 }
 getPermissionsObservable(): Observable<PermissionData[]> {
 return this.permissionsSubject.asObservable();

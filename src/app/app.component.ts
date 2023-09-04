@@ -28,8 +28,10 @@ export class AppComponent implements OnInit {
   getUserPermisisons(email){
     this.userServiece.getUserByEmail(email).subscribe(
       (res)=>{
-        this.authService.userPermissions=this.userServiece.executePermissions(res.permissions);
-        this.authService.updateUserPermisisons(res.permissions)
+        let userPermissions=this.userServiece.executePermissions(res.permissions);
+        this.authService.updateUserPermisisons(res.permissions);
+        this.authService.updatePermissions(userPermissions)
+console.log("from app",this.authService.userPermissions)
 
       },
       (err)=>{}

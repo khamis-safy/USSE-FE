@@ -262,14 +262,13 @@ getDevices(){
 
       return{
         deviceId:device.id,
-        sectionsLevels:this.isEdit && this.fillingDevicesPermissions(this.data.permissions,device.id)? this.fillingDevicesPermissions(this.data.permissions,device.id):this.setDeviceSections(),
+        sectionsLevels:this.isEdit && this.fillingDevicesPermissions(this.data.permissions,device.id).length>0? this.fillingDevicesPermissions(this.data.permissions,device.id):this.setDeviceSections(),
       }
     });
 
 
     this.permissions.emit(this.allDevices);
     this.selectedDevice=this.allDevices[0];
-    this.fillingDevicesPermissions(this.data.permissions,this.selectedDevice.deviceId)
         }
      },
      (err)=>{
@@ -310,6 +309,8 @@ getDevices(){
 
 onAccessLevelChange(section: any, changedAccessLevel: any) {
 section.accessLevels.forEach((accessLevel: any) => {
+  console.log("section name", section.section.name,"acces level",changedAccessLevel.value)
+  this.noDevices=section.section.name=="devices" && changedAccessLevel.value=="None"
   accessLevel.checked = accessLevel === changedAccessLevel;
 });
 if(this.allDevices){
