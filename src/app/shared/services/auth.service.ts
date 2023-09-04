@@ -3,7 +3,27 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Login } from 'src/app/pages/login/component/login';
 import { LoginService } from 'src/app/pages/login/login.service';
 import { Permission, PermissionData, UserData } from 'src/app/pages/users/users';
+import { HttpClient } from '@angular/common/http';
 
+import { environment as env } from '@env/environment.development';
+interface DeviceData {
+  id: string,
+  deviceName: string,
+  deviceType: string,
+  deviceNumber: string,
+  createdAt: string,
+  isConnected: boolean,
+  instanceId:string,
+  delayIntervalInSeconds:number,
+  isDeleted: boolean,
+  applicationUserId: string,
+  host: string,
+  password: string,
+  port: string,
+  systemID: string,
+  lastUpdate: string,
+  token: string
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -12,13 +32,16 @@ export class AuthService {
 userInfo!:UserData;
 unAuthorized:boolean=false;
 empty:number=0;
+userPermissions:Permission
+usersPermissions:PermissionData[]
 permissionsSubject = new BehaviorSubject<PermissionData[]>([]);
 
-constructor(private loginService:LoginService) {
+constructor(private loginService:LoginService,private http:HttpClient) {
   this.userInfo= this.getUserInfo();
 console.log("refresh token",this.userInfo.refreshToken)
  }
  updateUserPermisisons(permissions){
+  this.usersPermissions=permissions
   this.permissionsSubject.next(permissions);
 
 }
@@ -30,6 +53,18 @@ isLoggedIn(){
 return !this.checkData(this.userInfo)
 
 }
+getUserInfo(){
+  let userData$={
+     userName:localStorage.getItem('userName'),
+     organizationName:localStorage.getItem('organizationName'),
+     id:localStorage.getItem('id'),
+     email:localStorage.getItem('email'),
+     customerId:localStorage.getItem("customerId"),
+     refreshToken:this.loginService.getCookieValue("refreshToken")
+   }
+ return userData$;
+ }
+
 checkData(obj: any) {
   this.unAuthorized = false; // Reset the flag for each call
 
@@ -63,16 +98,23 @@ updateUserInfo(){
   console.log("updated user info",this.userInfo)
 
 }
-getUserInfo(){
- let userData$={
-    userName:localStorage.getItem('userName'),
-    organizationName:localStorage.getItem('organizationName'),
-    id:localStorage.getItem('id'),
-    email:localStorage.getItem('email'),
-    customerId:localStorage.getItem("customerId"),
-    refreshToken:this.loginService.getCookieValue("refreshToken")
-  }
-return userData$;
-}
 
-}
+devicesPermissions(permissions:PermissionData[],name:string){
+  let modulePermissions=permissions.filter((permission)=>permission.name.split("_")[0]==name)
+  return modulePermissions
+  }
+  hasPermission(routeName:string){
+    if(this.userInfo.customerId!="" ){
+
+     return routeName?this.userPermissions[routeName]:true
+
+    }
+  else{
+
+    return true
+  }
+  }
+  getDevices(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<DeviceData[]>{
+    return this.http.get<DeviceData[]>(`${env.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+  }
+  }

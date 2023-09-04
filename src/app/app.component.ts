@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { PluginsService } from './services/plugins.service';
 import { AuthService } from './shared/services/auth.service';
+import { UsersService } from './pages/users/users.service';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +13,29 @@ export class AppComponent implements OnInit {
   title = 'pro2023';
   darkActive:boolean = false;
   currentLang:string;
-  constructor(private plugin:PluginsService,public translate:TranslateService,private authService:AuthService){
+  constructor(private plugin:PluginsService,public translate:TranslateService,private authService:AuthService, private userServiece:UsersService){
     this.currentLang = localStorage.getItem('currentLang') || 'en';
     this.translate.use(this.currentLang)
 
   }
   ngOnInit(): void {
-    this.initMode();
+    if(this.authService.userInfo.customerId!=""){
+      let email=this.authService.userInfo.email;
+      this.getUserPermisisons(email);
+    }    this.initMode();
 
   }
+  getUserPermisisons(email){
+    this.userServiece.getUserByEmail(email).subscribe(
+      (res)=>{
+        this.authService.userPermissions=this.userServiece.executePermissions(res.permissions);
+        this.authService.updateUserPermisisons(res.permissions)
+
+      },
+      (err)=>{}
+    )
+
+}
   initMode(){
     if (this.plugin.getData("dark") == true){
       this.darkActive=true;

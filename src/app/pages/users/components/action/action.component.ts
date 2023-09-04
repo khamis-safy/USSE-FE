@@ -3,8 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
-import { AccessLevels, DeviceSections, DevicesData, Users } from '../../users';
+import { AccessLevels, DeviceSections, DevicesData, PermissionData, Users } from '../../users';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 // interface DevicePermisions{
@@ -67,92 +68,7 @@ export class ActionComponent implements OnInit{
 updated:any;
 noDevices;
 permissionsData;
-  // sections = [
-  //   { icon: 'assets/icons/me-icon.svg', label: 'Messages', name: 'messages' , accessLevels : [
-  //   {
-  //     value:"readOnly",
-  //     checked:true
-  //   },
-  //   {
-  //     value:"fullAccess",
-  //     checked:false
-  //   },
-  //   {
-  //     value:"none",
-  //     checked:false
-  //   }
-  // ]},
-  //   { icon: 'assets/icons/users-compagns-icon.svg', label: 'Campaigns', name: 'campaigns' , accessLevels : [
-  //   {
-  //     value:"readOnly",
-  //     checked:true
-  //   },
-  //   {
-  //     value:"fullAccess",
-  //     checked:false
-  //   },
-  //   {
-  //     value:"none",
-  //     checked:false
-  //   }
-  // ]},
-  //   { icon: 'assets/icons/users-temp.svg', label: 'Templates', name: 'templates', accessLevels : [
-  //   {
-  //     value:"readOnly",
-  //     checked:true
-  //   },
-  //   {
-  //     value:"fullAccess",
-  //     checked:false
-  //   },
-  //   {
-  //     value:"none",
-  //     checked:false
-  //   }
-  // ]},
-  //   { icon: 'assets/icons/users-bots.svg', label: 'Bots', name: 'bots', accessLevels : [
-  //   {
-  //     value:"readOnly",
-  //     checked:true
-  //   },
-  //   {
-  //     value:"fullAccess",
-  //     checked:false
-  //   },
-  //   {
-  //     value:"none",
-  //     checked:false
-  //   }
-  // ]},
-  //   { icon: 'assets/icons/users-devices.svg', label: 'Devices', name: 'devices' , accessLevels : [
-  //   {
-  //     value:"readOnly",
-  //     checked:true
-  //   },
-  //   {
-  //     value:"fullAccess",
-  //     checked:false
-  //   },
-  //   {
-  //     value:"none",
-  //     checked:false
-  //   }
-  // ]},
-  //   { icon: 'assets/icons/users-contacts.svg', label: 'Contacts', name: 'contacts', accessLevels : [
-  //   {
-  //     value:"readOnly",
-  //     checked:true
-  //   },
-  //   {
-  //     value:"fullAccess",
-  //     checked:false
-  //   },
-  //   {
-  //     value:"none",
-  //     checked:false
-  //   }
-  // ]}
-  // ];
+
   sections = [
     { icon: 'assets/icons/me-icon.svg', label: 'Messages', name: 'messages' },
     { icon: 'assets/icons/users-compagns-icon.svg', label: 'Campaigns', name: 'campaigns' },
@@ -166,7 +82,7 @@ permissionsData;
   ]
   sharedPermisions;
   isEdit: boolean;
-    constructor(private devicesService:DevicesService,public dialogRef: MatDialogRef<ActionComponent>) {
+    constructor(private devicesService:DevicesService,public dialogRef: MatDialogRef<ActionComponent>,private authService:AuthService) {
 
      }
   ngOnInit() {
@@ -190,9 +106,25 @@ permissionsData;
 
 
   }
-fillingDevicesPermissions(permission:any){
-  let devicesPermissions=permission.filter((permissoin)=>permissoin.name.split("_").length>=2);
-  let devicesP=devicesPermissions.map((devPer)=>{
+fillingDevicesPermissions(permission:PermissionData[],id:string){
+
+  let devicePermissions:any=[];
+  let permissions=permission.filter((p)=>p.name.split("_").length>1).map((deviceP)=>{
+    let pName:string=deviceP.name.split("_")[0];
+    const underscoreIndex = deviceP.name.indexOf("_");
+    let deviceId=deviceP.name.substring(underscoreIndex + 1);
+    if(deviceId==id){
+
+      devicePermissions.push( {
+        name:pName,
+        value:deviceP.value
+      })
+
+    }
+
+  })
+   console.log("device permissions",devicePermissions)
+  let devicesP=devicePermissions?devicePermissions.map((devPer)=>{
     let sectionName=devPer.name;
     let section =this.sections.find((sec)=>sec.label==sectionName)
     let accessLevel=devPer.value;
@@ -216,7 +148,7 @@ fillingDevicesPermissions(permission:any){
 
 
     }
-  })
+  }):null
 return devicesP;
 }
 fillingSharedPermissions(permission:any){
@@ -274,7 +206,7 @@ fillingSharedPermissions(permission:any){
   }
 setDeviceSections(){
 
-let sectionsLevels=this.sections.filter((sec)=>sec.label=='Messages' || sec.label== 'Campaigns').map((sec)=>{
+let sectionsLevels=this.sections.map((sec)=>{
 
 
     return{
@@ -302,7 +234,7 @@ return sectionsLevels
 }
 
 getDevices(){
-  this.devicesService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+  this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
     (res)=>{
       console.log(res)
     let devicesData=res;
@@ -330,63 +262,21 @@ getDevices(){
 
       return{
         deviceId:device.id,
-        sectionsLevels:this.isEdit?this.fillingDevicesPermissions(this.data.permissions): this.setDeviceSections(),
+        sectionsLevels:this.isEdit && this.fillingDevicesPermissions(this.data.permissions,device.id)? this.fillingDevicesPermissions(this.data.permissions,device.id):this.setDeviceSections(),
       }
     });
 
 
     this.permissions.emit(this.allDevices);
     this.selectedDevice=this.allDevices[0];
-      }
+    this.fillingDevicesPermissions(this.data.permissions,this.selectedDevice.deviceId)
+        }
      },
      (err)=>{
       this.deviceLoadingText='No Results'
 
      })
-//  this.testData=[
-//     {
-//       deviceId:"lskjdlfkjsdfii443232",
-//       deviceValue:"device1"
-//     },
-//     {
-//       deviceId:"lklijefksnfngdglks",
-//       deviceValue:"device2"
-//     },
-//     {
-//       deviceId:"llkjnidflskdjfiee",
-//       deviceValue:"device3"
-//     }
 
-//   ]
-//   this.devices = this.testData.map(res=>{
-//     return {
-//       title:res.deviceValue,
-//       value:res.deviceId
-//     }
-//   });
-
-// this.allDevices=this.testData.map((device)=>{
-
-//   return{
-//     deviceId:device.deviceId,
-//     sectionsLevels:this.setDeviceSections(),
-//   }
-// });
-
-
-// this.devicesPermisions= this.testData.map((device)=>{
-//   let sectionName=this.createSetions().map((e)=>e.label);
-//   let permisions=sectionName.map((section)=>{
-//     return this.createAccessLevels(device.deviceId,section);
-//   })
-//   return{
-//     deviceId:device.deviceId,
-//     permisions:permisions,
-//     sections:this.sections
-//   }
-// })
-// this.selectedDevice=this.devicesPermisions[0]
-// console.log(this.devicesPermisions)
 
 }
 
@@ -417,14 +307,7 @@ getDevices(){
       // console.log("selected ",this.selectedDevice)
       console.log("all devices data",this.allDevices)
     }
-//      test(e){
-//       console.log(e)
-//     }
-// defualtData(device:DevicePermisions){
-//   device.sections.map((e)=>e.accessLevels.map((level)=>level.checked=(level.value=="readOnly")));
-//   console.log("after",device)
 
-// }
 onAccessLevelChange(section: any, changedAccessLevel: any) {
 section.accessLevels.forEach((accessLevel: any) => {
   accessLevel.checked = accessLevel === changedAccessLevel;

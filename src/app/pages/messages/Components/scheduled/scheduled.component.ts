@@ -10,6 +10,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DisplayMessageComponent } from '../display-message/display-message.component';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
+import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 
@@ -41,7 +43,9 @@ export class ScheduledComponent implements OnInit  {
   deviceId:string;
   subscribtions:Subscription[]=[];
   noData: boolean;
-  constructor(private messageService:MessagesService,public dialog: MatDialog,private devicesService:DevicesService){}
+  isUser: boolean;
+  permission:DevicesPermissions[];
+  constructor(private messageService:MessagesService,public dialog: MatDialog,private devicesService:DevicesService,private authService:AuthService){}
   ngOnInit() {
 
     this.columns=new FormControl(this.displayedColumns)
@@ -59,50 +63,65 @@ export class ScheduledComponent implements OnInit  {
       });
 
 
-// set default device to be first one
-
+      this.permission =this.messageService.devicesPermissions;
+      if(this.authService.userInfo.customerId!=""){
+        this.isUser=true;
+      }
+      else{
+        this.isUser=false;
+      }
 // get device's messages
     this.getDevices();
 
 
     }
-   // get devices data
-   getDevices(){
-    this.devicesService.getDevices(this.devicesService.email,10,0,"","").subscribe(
-      (res)=>{
+ // get devices data
+ getDevices(){
+  this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+    (res)=>{
+      let alldevices=res;
+      if(this.permission){
 
-        let devicesData=res;
-        this.devices = res.map(res=>{
-          return {
-            title:res.deviceName,
-            value:res.id
+        alldevices.map((device)=>
+        {
+          let found =this.permission.find((devP)=>devP.deviceId==device.id && devP.value=="None");
+          if(found){
+            alldevices.splice(alldevices.indexOf(device),1)
           }
-        });
-        console.log(this.devices)
-        if(this.devices.length==0){
-          this.deviceLoadingText='No Results';
-          // set no data design
-          this.noData=true
         }
-        else{
-          this.noData=false
-
-          this.deviceId=res[0].id;
-          this.getMessages(this.deviceId);
-            this.form.patchValue({
-              devicesData: {
-                title:devicesData[0]?.deviceName,
-                value:devicesData[0]?.id
-              }
-
-     })
-      }},
-      (err)=>{
-
+        )
       }
-    )
-  }
 
+      console.log("devices",alldevices)
+      this.devices = alldevices.map(res=>{
+        return {
+          title:res.deviceName,
+          value:res.id
+        }
+      });
+      if(this.devices.length==0){
+        this.deviceLoadingText='No Results';
+        // set no data design
+        this.noData=true
+      }
+      else{
+        this.noData=false
+
+        this.deviceId=res[0].id;
+        this.getMessages(this.deviceId);
+          this.form.patchValue({
+            devicesData: {
+              title:alldevices[0]?.deviceName,
+              value:alldevices[0]?.id
+            }
+
+   })
+    }},
+    (err)=>{
+
+    }
+  )
+}
   onSelect(device){
     this.deviceId=device.value;
     this.getMessages(this.deviceId)

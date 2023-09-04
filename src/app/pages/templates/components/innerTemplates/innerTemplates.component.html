@@ -61,7 +61,7 @@
       <ng-container matColumnDef="Created At" style="width:25%" class="text-center">
         <th  mat-header-cell *matHeaderCellDef>Created At</th>
         <td  mat-cell *matCellDef="let element" >
-          {{element.createdAt | date: 'h:mm a , M/d/y '}}
+          {{element.createdAt | toLocalTime | date: 'h:mm a , M/d/y '}}
         </td>
       </ng-container>
 
