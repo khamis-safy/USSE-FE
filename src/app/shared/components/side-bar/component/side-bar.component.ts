@@ -25,38 +25,33 @@ export class SideBarComponent implements OnInit {
   ngOnInit(): void {
     if(this.authService.userInfo.customerId!=""){
       this.isUser=true;
-      let email=this.authService.userInfo.email;
-      this.getUserPermisisons(email);
+      this.permissions=this.authService.userPermissions
+      // let email=this.authService.userInfo.email;
+      // this.getUserPermisisons(email);
     }
     else{
       this.isUser=false;
-this.permissions={  Messages:true,
+this.permissions={
   Templates:true,
-  Campaigns:true,
   Bots:true,
   Devices:true,
   Contacts:true
     }
 
   }}
-  getUserPermisisons(email){
-      this.userServiece.getUserByEmail(email).subscribe(
-        (res)=>{
+//   getUserPermisisons(email){
+//       this.userServiece.getUserByEmail(email).subscribe(
+//         (res)=>{
+// this.authService.userPermissions=res;
+// console.log(res.permissions)
+//           this.permissions=this.userServiece.executePermissions(res.permissions);
 
-          this.permissions=this.userServiece.executePermissions(res.permissions);
-          if(!this.permissions.Messages){
-            this.permissions.Messages=true
-          }
-          if(!this.permissions.Campaigns){
-            this.permissions.Campaigns=true
-          }
-          this.authService.updateUserPermisisons(res.permissions)
-          console.log(this.permissions)
-        },
-        (err)=>{}
-      )
+//           console.log(this.permissions)
+//         },
+//         (err)=>{}
+//       )
 
-  }
+//   }
   showOptions(){this.show=!this.show;}
   openSettingModal(){
 

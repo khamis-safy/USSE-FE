@@ -64,6 +64,7 @@
       <us-upload  class="w-100"
       [isLoading]="loading"
       [(ngModel)]="fileData"
+      (onFileChange)="test($event)"
       ></us-upload>
     </div>
 </div>

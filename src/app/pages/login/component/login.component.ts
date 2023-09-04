@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PluginsService } from 'src/app/services/plugins.service';
 import { UserData } from '../../users/users';
+import { UsersService } from '../../users/users.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ invalid:boolean=false;
 hintMessage:string;
 userInfo:any;
 
-  constructor(private plugin:PluginsService,private authService:AuthService,private loginService:LoginService,private router:Router) {
+  constructor(private plugin:PluginsService,private authService:AuthService,private loginService:LoginService,private router:Router, private userServiece:UsersService) {
 
   }
   ngOnInit() {
@@ -37,6 +38,7 @@ userInfo:any;
     this.loading=true
     this.loginService.login(this.form.value).subscribe(
   (res)=>{
+    console.log(res)
     this.userInfo={userName:res.contactName,
       organizationName:res.organisationName,
       id:res.id,
@@ -61,7 +63,14 @@ this.authService.updateUserInfo()
     }
     if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
       console.log("navigate to messages")
-      this.router.navigateByUrl('messages')
+      if(this.authService.userInfo.customerId!=""){
+        let email=this.authService.userInfo.email;
+        this.getUserPermisisons(email);
+      }
+      else{
+        this.router.navigateByUrl('messages')
+      }
+
 
     }
        // Refresh the token every 1 hour
@@ -89,7 +98,19 @@ this.invalid=false;
 
   }
 
+  getUserPermisisons(email){
+    this.userServiece.getUserByEmail(email).subscribe(
+      (res)=>{
+        this.authService.userPermissions=this.userServiece.executePermissions(res.permissions);
+        this.authService.updateUserPermisisons(res.permissions);
+        this.router.navigateByUrl('messages')
 
+
+      },
+      (err)=>{}
+    )
+
+}
   refreshToken() {
     let token=this.loginService.getCookieValue('refreshToken')
     this.loginService.refreshToken(token).subscribe(

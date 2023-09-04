@@ -156,4 +156,7 @@ export class AddTemplateComponent implements OnInit {
   onClose(data?): void {
     this.dialogRef.close(data);
   }
+  test(event){
+console.log("file data",this.fileData)
+  }
 }

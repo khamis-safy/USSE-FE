@@ -23,7 +23,7 @@ const routes: Routes = [
       },
       {
         path: "contacts",
-        canActivate:[AuthGuard],
+        canActivate:[AuthGuard],data:{name:"Contacts"},
 
         loadChildren: () =>
           import("./../../pages/manage-contacts/manage-contacts.module").then((m) => m.ManageContactsModule),
@@ -37,14 +37,14 @@ const routes: Routes = [
       },
       {
         path: "users",
-        canActivate:[AuthGuard],
+        canActivate:[AuthGuard],data:{name:"Users"},
 
         loadChildren: () =>
           import("./../../pages/users/users.module").then((m) => m.UsersModule)
       },
       {
         path: "devices",
-        canActivate:[AuthGuard],
+        canActivate:[AuthGuard],data:{name:"Devices"},
 
         loadChildren: () =>
           import("./../../pages/devices/devices.module").then((m) => m.DevicesModule),
@@ -67,7 +67,7 @@ const routes: Routes = [
       },
       {
         path: "templates",
-        canActivate:[AuthGuard],
+        canActivate:[AuthGuard],data:{name:"Templates"},
 
         loadChildren:()=>
         import("./../../pages/templates/templates.module").then((m)=>m.TemplatesModule)

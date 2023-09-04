@@ -3,7 +3,7 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CompaignsService } from '../compaigns.service';
+import { CompaignsService, DevicesPermissions } from '../compaigns.service';
 import { Router } from '@angular/router';
 import { compaignDetails } from '../campaigns';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -20,7 +20,7 @@ import { DevicesService } from '../../devices/devices.service';
   styleUrls: ['./compaigns.component.scss']
 })
 export class CompaignsComponent implements AfterViewInit ,OnInit {
-
+  isUser:boolean;
   length:number=0;
   loading:boolean=false;
   cellClick:boolean=false;
@@ -36,12 +36,14 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   canEdit: boolean=true;
   // devices
   devices:SelectOption[];
+
   deviceLoadingText:string='Loading ...';
   devicesData :any= new FormControl([]);
   form = new FormGroup({
     devicesData:this.devicesData,
   });
   deviceId:string;
+  permission:DevicesPermissions[];
   constructor(private devicesService:DevicesService,private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router,private authService:AuthService){}
 
 
@@ -50,48 +52,70 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
 // set default device to be first one
 
 // get device's messages
+this.permission =this.compaignsService.devicesPermissions;
+if(this.authService.userInfo.customerId!=""){
+  this.isUser=true;
+}
+else{
+  this.isUser=false;
+}
 this.getDevices();
 
 
 
     this.columns=new FormControl(this.displayedColumns)
 
-    let permission =this.compaignsService.compaignssPermission
-    let customerId=this.authService.userInfo.customerId;
-
-if(permission){
-  if(permission.value=="ReadOnly" || permission.value =="None"){
-    this.canEdit=false
-  }
-  else{
-    this.canEdit=true
-  }
-
-}
-else{
-
-  this.canEdit=true
-}
-this.displayedColumns=this.canEdit?['Name', 'Status', 'Creator Name', 'Start Date','Action']:['Name', 'Status', 'Creator Name', 'Start Date'];
   }
   ngAfterViewInit() {
   }
 
+  getDevicePermission(deviceId:string){
+    if(this.permission && this.isUser){
 
+      let devicePermissions=this.permission.find((e)=>e.deviceId==deviceId);
+      if(devicePermissions){
+      let value=devicePermissions.value;
+      this.displayedColumns=value=="FullAccess"?['Name', 'Status', 'Creator Name', 'Start Date','Action']:['Name', 'Status', 'Creator Name', 'Start Date'];
+      this.canEdit=value=="ReadOnly"?false:true;
+      }
+      else{
+        this.displayedColumns=['Name', 'Status', 'Creator Name', 'Start Date'];
+        this.canEdit=false;
+      }
+
+    }
+    if(!this.permission && this.isUser){
+      this.displayedColumns=['Name', 'Status', 'Creator Name', 'Start Date'];
+      this.canEdit=false;
+    }
+
+  }
 
  // get devices data
  getDevices(){
-  this.devicesService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+  this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
     (res)=>{
+      let alldevices=res;
 
-      let devicesData=res;
-      this.devices = res.map(res=>{
+      if(this.permission){
+
+        alldevices.map((device)=>
+        {
+          let found =this.permission.find((devP)=>devP.deviceId==device.id && devP.value=="None");
+          if(found){
+            alldevices.splice(alldevices.indexOf(device),1)
+          }
+        }
+        )
+      }
+
+      console.log("devices",alldevices)
+      this.devices = alldevices.map(res=>{
         return {
           title:res.deviceName,
           value:res.id
         }
       });
-      console.log(this.devices)
       if(this.devices.length==0){
         this.deviceLoadingText='No Results';
         // set no data design
@@ -101,11 +125,14 @@ this.displayedColumns=this.canEdit?['Name', 'Status', 'Creator Name', 'Start Dat
         this.noData=false
 
         this.deviceId=res[0].id;
+
+      this.getDevicePermission(this.deviceId);
+
         this.getCompaigns(this.deviceId);
           this.form.patchValue({
             devicesData: {
-              title:devicesData[0]?.deviceName,
-              value:devicesData[0]?.id
+              title:alldevices[0]?.deviceName,
+              value:alldevices[0]?.id
             }
 
    })
@@ -118,6 +145,7 @@ this.displayedColumns=this.canEdit?['Name', 'Status', 'Creator Name', 'Start Dat
 onSelect(device){
   this.deviceId=device.value;
   this.getCompaigns(this.deviceId)
+  this.getDevicePermission(this.deviceId);
       }
 
 backToCompaigns(event){
@@ -175,7 +203,8 @@ compaignsCount(deviceId){
 
 }
   changeColumns(event){
-    this.displayedColumns=[...event]
+
+    this.displayedColumns=this.canEdit?[...event,"Action"]: [...event]
     }
 
   addCampaigns(){

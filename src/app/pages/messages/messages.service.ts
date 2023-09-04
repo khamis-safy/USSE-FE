@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Message, Shceduled } from './message';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PermissionData } from '../users/users';
+import { DevicesPermissions } from '../compaigns/compaigns.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,31 +13,53 @@ import { PermissionData } from '../users/users';
 export class MessagesService {
   display:number=10;
     pageNum:number=0;
-    messageasPermission:PermissionData;
+    messageasPermission:PermissionData[];
+    devicesPermissions:DevicesPermissions[];
     email:string=this.authService.userInfo.email;
     orderedBy:string="";
     search:string="";
     msgCategory:string="inbox";
 constructor(private http:HttpClient,private authService:AuthService) {
-  // if no id , it will be user account else  , it will be customer account
   if(authService.userInfo.customerId!=""){
-    // if user acount check his permissions
-  authService.getPermissionsObservable().subscribe(permissions => {
-    this.messageasPermission=permissions.find((e)=>e.name=="Messages");
-    // in case that if no permissions given to this module
-    if(!this.messageasPermission){
-      this.messageasPermission={name:"Messages",value:"ReadOnly"}
-    }
+  //   console.log("permissions from messages",authService.usersPermissions)
+  //   this.messageasPermission=authService.devicesPermissions(authService.usersPermissions,"Messages");
+  //   if(this.messageasPermission){
+  //     this.devicesPermissions=this.messageasPermission.map((permission)=>{
 
-    console.log(this.messageasPermission)
+  //       let name=permission.name
+  //       const underscoreIndex = permission.name.indexOf("_");
+  //       let deviceId=name.substring(underscoreIndex + 1)
 
-    // Update your sidebar links based on the updated permissions
-  });
- }
- else{
-   this.messageasPermission={name:"Messages",value:"FullAccess"}
-   console.log(this.messageasPermission)
- }
+  //       return {
+  //         deviceId:deviceId,
+  //         value:permission.value
+  //       }
+  //     })
+  //     console.log(this.devicesPermissions)
+  //   }
+
+    authService.getPermissionsObservable().subscribe(permissions => {
+      console.log("Messages permissions",permissions,)
+      this.messageasPermission=authService.devicesPermissions(permissions,"Messages");
+      if(this.messageasPermission){
+        this.devicesPermissions=this.messageasPermission.map((permission)=>{
+
+          let name=permission.name
+          const underscoreIndex = permission.name.indexOf("_");
+          let deviceId=name.substring(underscoreIndex + 1)
+
+          return {
+            deviceId:deviceId,
+            value:permission.value
+          }
+        })
+        console.log(this.devicesPermissions)
+      }
+
+
+    });
+   }
+
 }
 
 

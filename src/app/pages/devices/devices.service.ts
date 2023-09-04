@@ -21,15 +21,7 @@ export class DevicesService {
 
 constructor(private http:HttpClient,private authService:AuthService) {
   if(authService.userInfo.customerId!=""){
-    authService.getPermissionsObservable().subscribe(permissions => {
-      this.DevicesPermission=permissions.find((e)=>e.name=="Devices");
-      if(!this.DevicesPermission){
-        this.DevicesPermission={name:"Devices",value:"ReadOnly"}
-      }
-      console.log(this.DevicesPermission)
-
-      // Update your sidebar links based on the updated permissions
-    });
+    this.DevicesPermission=authService.usersPermissions.find((e)=>e.name=="Devices");
    }
    else{
      this.DevicesPermission={name:"Devices",value:"FullAccess"}

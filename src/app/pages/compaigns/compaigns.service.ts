@@ -6,35 +6,61 @@ import { Campaigns, compaignDetails } from './campaigns';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PermissionData } from '../users/users';
 
-
+export interface DevicesPermissions{deviceId:string,value:string}
 @Injectable({
   providedIn: 'root'
 })
-export class CompaignsService {
+export class CompaignsService  {
   display:number=10;
   pageNum:number=0;
   email:string=this.authService.userInfo.email;
   search:string="";
-  compaignssPermission:PermissionData;
-
+  compaignssPermission:PermissionData[];
+  devicesPermissions:DevicesPermissions[];
 constructor(private http:HttpClient,private authService:AuthService) {
+
   if(authService.userInfo.customerId!=""){
+    // this.compaignssPermission=authService.devicesPermissions(authService.usersPermissions,"Campaigns");
+    // if(this.compaignssPermission){
+    //   this.devicesPermissions=this.compaignssPermission.map((permission)=>{
+
+    //     let name=permission.name
+    //     const underscoreIndex = permission.name.indexOf("_");
+    //     let deviceId=name.substring(underscoreIndex + 1)
+
+    //     return {
+    //       deviceId:deviceId,
+    //       value:permission.value
+    //     }
+    //   })
+    //   console.log(this.devicesPermissions)
+    // }
     authService.getPermissionsObservable().subscribe(permissions => {
-      this.compaignssPermission=permissions.find((e)=>e.name=="Campaigns");
-      if(!this.compaignssPermission){
-        this.compaignssPermission={name:"Campaigns",value:"ReadOnly"}
+      console.log("campaigns permissions",permissions,)
+      this.compaignssPermission=authService.devicesPermissions(permissions,"Campaigns");
+      if(this.compaignssPermission){
+        this.devicesPermissions=this.compaignssPermission.map((permission)=>{
 
+          let name=permission.name
+          const underscoreIndex = permission.name.indexOf("_");
+          let deviceId=name.substring(underscoreIndex + 1)
+
+          return {
+            deviceId:deviceId,
+            value:permission.value
+          }
+        })
+        console.log(this.devicesPermissions)
       }
-      console.log(this.compaignssPermission)
 
-      // Update your sidebar links based on the updated permissions
+
+
+
+
+
     });
    }
-   else{
-    this.compaignssPermission={name:"Campaigns",value:"FullAccess"}
 
-     console.log(this.compaignssPermission)
-   }
 
 }
 getCampaigns(email:string,showsNum:number,pageNum:number,search:string,deviceId:string):Observable<compaignDetails[]>{

@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { DatePipe } from '@angular/common';
+import { CompaignsService, DevicesPermissions } from '../../../compaigns.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-stepThree',
@@ -13,6 +15,7 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   deviceLoadingText:string='Loading ...';
   @ViewChild("dateTime") dateTime!: ElementRef;
 
+  permission:DevicesPermissions[];
 
   devices:SelectOption[];
   selectedDevices:string[]=[];
@@ -27,13 +30,21 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   });
   utcDateTime;
   timeSub$;
-  constructor(private devicesService:DevicesService,private datePipe: DatePipe) { }
+  isUser: boolean;
+  constructor(private devicesService:DevicesService,private datePipe: DatePipe,private compaignsService:CompaignsService,private authService:AuthService) { }
   ngOnDestroy(): void {
     this.timeSub$.unsubscribe()
   }
 
 
   ngOnInit() {
+    this.permission =this.compaignsService.devicesPermissions;
+if(this.authService.userInfo.customerId!=""){
+  this.isUser=true;
+}
+else{
+  this.isUser=false;
+}
     // this.getDevices();
     this.convertToUTC(this.dateFormControl)
     this.timeSub$ = this.dateFormControl.valueChanges.subscribe(res=>{
@@ -51,9 +62,10 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   }
   getDevices(){
 
-    this.devicesService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+    this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
       (res)=>{
-        let activeDevices=res.filter((r)=>r.isConnected)
+        let filterdDevices=this.isUser && this.permission? res.filter((dev)=>this.permission.find((devP)=>devP.deviceId==dev.id && devP.value=="FullAccess")):res;
+        let activeDevices=filterdDevices.filter((r)=>r.isConnected)
         this.devices = activeDevices.map(res=>{
           return {
             title:res.deviceName,

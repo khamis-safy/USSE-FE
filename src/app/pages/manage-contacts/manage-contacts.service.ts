@@ -21,16 +21,7 @@ export class ManageContactsService {
     contactsPermissions:PermissionData;
   constructor(private http:HttpClient,private authService:AuthService) {
     if(authService.userInfo.customerId!=""){
-      authService.getPermissionsObservable().subscribe(permissions => {
-        this.contactsPermissions=permissions.find((e)=>e.name=="Contacts");
-        if(!this.contactsPermissions){
-          this.contactsPermissions={name:"Contacts",value:"ReadOnly"}
-        }
-
-        console.log(this.contactsPermissions)
-
-        // Update your sidebar links based on the updated permissions
-      });
+      this.contactsPermissions=authService.usersPermissions.find((e)=>e.name=="Contacts");
      }
      else{
        this.contactsPermissions={name:"Contacts",value:"FullAccess"}

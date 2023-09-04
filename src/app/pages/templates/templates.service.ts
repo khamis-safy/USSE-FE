@@ -20,15 +20,7 @@ export class TemplatesService {
 
 constructor(private http:HttpClient,private authService:AuthService) {
   if(authService.userInfo.customerId!=""){
-    authService.getPermissionsObservable().subscribe(permissions => {
-      this.TemplatesPermission=permissions.find((e)=>e.name=="Templates");
-      if(!this.TemplatesPermission){
-        this.TemplatesPermission={name:"Templates",value:"ReadOnly"}
-      }
-      console.log(this.TemplatesPermission)
-
-      // Update your sidebar links based on the updated permissions
-    });
+    this.TemplatesPermission=authService.usersPermissions.find((e)=>e.name=="Templates");
    }
    else{
      this.TemplatesPermission={name:"Templates",value:"FullAccess"}

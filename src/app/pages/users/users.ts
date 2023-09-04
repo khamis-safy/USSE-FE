@@ -74,9 +74,7 @@ export interface DevicesData{
   sectionsLevels:DeviceSections[];
 }
 export interface Permission{
-  Messages:boolean,
   Templates:boolean,
-  Campaigns:boolean,
   Bots:boolean,
   Devices:boolean,
   Contacts:boolean

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 
-import { Access, Permission, Users } from './users';
+import { Access, Permission, PermissionData, Users } from './users';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Injectable({
@@ -66,5 +66,6 @@ executePermissions(permissions:{name:string,value:string}[]):Permission{
     return accumulator;
   }, {} as Permission);
 return singlePermissionObject}
+
 
 }

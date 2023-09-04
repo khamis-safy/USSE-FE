@@ -10,6 +10,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DisplayMessageComponent } from '../display-message/display-message.component';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
+import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-message-type',
@@ -45,8 +47,9 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   subscribtions:Subscription[]=[];
   noData: boolean;
   notFound: boolean;
-
-  constructor(public dialog: MatDialog,private devicesService:DevicesService,private messageService:MessagesService){}
+  isUser: boolean;
+  permission:DevicesPermissions[];
+  constructor(public dialog: MatDialog,private devicesService:DevicesService,private messageService:MessagesService,private authService:AuthService){}
   ngOnInit() {
     this.columns=new FormControl(this.displayedColumns)
 
@@ -63,50 +66,122 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
       });
 this.tableData();
 
-// set default device to be first one
-
+this.permission =this.messageService.devicesPermissions;
+if(this.authService.userInfo.customerId!=""){
+  this.isUser=true;
+}
+else{
+  this.isUser=false;
+}
 // get device's messages
     this.getDevices();
 
 
     }
 
-    // get devices data
-    getDevices(){
-      this.devicesService.getDevices(this.devicesService.email,10,0,"","").subscribe(
-        (res)=>{
+    getDevicePermission(deviceId:string){
+      if(this.permission && this.isUser){
 
-          let devicesData=res;
-          this.devices = res.map(res=>{
-            return {
-              title:res.deviceName,
-              value:res.id
-            }
-          });
-          console.log(this.devices)
-          if(this.devices.length==0){
-            this.deviceLoadingText='No Results';
-            // set no data design
-            this.noData=true
-          }
-          else{
-            this.noData=false
+        let devicePermissions=this.permission.find((e)=>e.deviceId==deviceId);
+        if(devicePermissions){
 
-            this.deviceId=res[0].id;
-            this.getMessages(this.deviceId);
-              this.form.patchValue({
-                devicesData: {
-                  title:devicesData[0]?.deviceName,
-                  value:devicesData[0]?.id
-                }
-
-       })
-        }},
-        (err)=>{
-
+          let value=devicePermissions.value;
+          this.fillBasedOnPermissions(value);
+          this.canEdit=value=="ReadOnly"?false:true;
         }
-      )
+        else{
+          this.fillBasedOnPermissions("ReadOnly")
+          this.canEdit=false;
+        }
+
+
+      }
+      if(!this.permission && this.isUser){
+        this.fillBasedOnPermissions("ReadOnly")
+        this.canEdit=false;
+      }
+
     }
+  fillBasedOnPermissions(permission:string){
+    if(permission=="FullAccess"){
+      this.tableData()
+    }
+    else{
+      if(this.msgCategory=='inbox'){
+
+        this.displayed = ['Device Name', 'Sender', 'Messages', 'Received At'];
+        this.displayedColumns = ['Device Name', 'Sender', 'Messages', 'Received At'];
+      }
+      else if(this.msgCategory=='outbox'){
+        this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
+        this.displayedColumns = ['Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
+      }
+      else if(this.msgCategory=='failed'){
+        if(this.canEdit){
+          this.displayedColumns = ['Device Name', 'Recipient', 'Messages', 'Received At'];
+        }
+        else{
+          this.displayedColumns = ['Device Name', 'Recipient', 'Messages', 'Received At'];
+        }
+        this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At'];
+
+      }
+    }
+
+  }
+ // get devices data
+ getDevices(){
+  this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+    (res)=>{
+      let alldevices=res;
+      console.log("devices",alldevices)
+
+      if(this.permission){
+console.log("permissions",this.permission)
+        alldevices.map((device)=>
+        {
+          let found =this.permission.find((devP)=>devP.deviceId==device.id && devP.value=="None");
+          if(found){
+            console.log("found",found)
+            alldevices.splice(alldevices.indexOf(device),1)
+          }
+        }
+        )
+      }
+
+      console.log("devices",alldevices)
+      this.devices = alldevices.map(res=>{
+        return {
+          title:res.deviceName,
+          value:res.id
+        }
+      });
+      if(this.devices.length==0){
+        this.deviceLoadingText='No Results';
+        // set no data design
+        this.noData=true
+      }
+      else{
+        this.noData=false
+
+        this.deviceId=res[0].id;
+
+      this.getDevicePermission(this.deviceId);
+
+        this.getMessages(this.deviceId);
+          this.form.patchValue({
+            devicesData: {
+              title:alldevices[0]?.deviceName,
+              value:alldevices[0]?.id
+            }
+
+   })
+    }},
+    (err)=>{
+
+    }
+  )
+}
 
     getMessages(deviceId:string){
       let shows=this.messageService.display;
@@ -158,7 +233,8 @@ this.tableData();
     }
     onSelect(device){
       this.deviceId=device.value;
-      this.getMessages(this.deviceId)
+      this.getMessages(this.deviceId);
+      this.getDevicePermission(this.deviceId);
           }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -193,13 +269,17 @@ this.tableData();
 
   changeColumns(event){
   //  change displayed column based on component type
-  if(this.msgCategory=='failed'){
+
+  if(this.msgCategory=='failed' && this.canEdit){
     this.displayedColumns=['select',...event,'Ation']
   }
-  else{
-
+  else if(this.msgCategory!='failed' && this.canEdit){
     this.displayedColumns=['select',...event]
   }
+  else{
+    this.displayedColumns=[...event]
+  }
+
 
   }
 

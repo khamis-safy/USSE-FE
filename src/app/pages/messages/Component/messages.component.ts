@@ -23,19 +23,7 @@ export class MessagesComponent implements OnInit {
     let permission =this.messageService.messageasPermission
     let customerId=this.authService.userInfo.customerId;
 
-if(permission){
-  if(permission.value=="ReadOnly" || permission.value =="None"){
-    this.canEdit=false
-  }
-  else{
-    this.canEdit=true
-  }
 
-}
-else{
-
-  this.canEdit=true
-}
   }
   openDeleteModal(){
     const dialogConfig=new MatDialogConfig();
