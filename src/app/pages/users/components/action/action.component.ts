@@ -158,6 +158,7 @@ fillingSharedPermissions(permission:any){
 
     let accessLevel=shared.value;
     let section =this.sharedSections.find((sec)=>sec.label==sectionName)
+    this.noDevices=section.name=="devices" && accessLevel=="None"
 
     return{
       section:section,
