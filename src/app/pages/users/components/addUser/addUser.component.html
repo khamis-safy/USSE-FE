@@ -132,7 +132,7 @@
             class="d-flex justify-content-end align-items-center"
             style="width: 98%; height: 20%"
           >
-            <button class="rest-style" matStepperNext >
+            <button class="rest-style" matStepperNext [disabled]="form.invalid">
               <us-button
                 class="m-2"
                 label="Next"
@@ -140,10 +140,10 @@
                 [size]="'md'"
                 [loading]="false"
                 [appearance]="'primary'"
+                [disabled]="form.invalid"
               >
               </us-button>
             </button>
-            <!-- [disabled]="form.invalid" -->
           </div>
         </div>
       </mat-step>

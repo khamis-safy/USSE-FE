@@ -1,37 +1,5 @@
 <div class="w-100 mt-5 mx-auto">
-  <!-- device -->
-  <form [formGroup]="form" class="my-2" >
-    <us-select
-    [data]="devices"
-    formControlName="devicesData"
-    [multiSelect]="false"
-    [label]="'Devices'"
-    (onSelect)="onSelect($event)"
-    [loadingText]="deviceLoadingText"
-    [placeholder]="'Select Devices'"
-    [isDisabled]="false"
-    [optional]="true"
-    [enableSearch]="true"
-    [searchbarOnToggler]="true"
-    [searchNoResultText]="'there is no result'"
-    [maxListItemsWithoutSearch]="5"
-  ></us-select>
-    <!-- <us-select
-    [data]="devices"
-    formControlName="devicesData"
-    [multiSelect]="false"
-    [label]="'Devices'"
-    (onSelect)="onSelect($event)"
 
-    [placeholder]="'Select Devices'"
-    [isDisabled]="false"
-    [optional]="true"
-    [enableSearch]="true"
-    [searchbarOnToggler]="true"
-    [searchNoResultText]="'there is no result'"
-    [maxListItemsWithoutSearch]="5"
-  ></us-select> -->
-  </form>
 
 <div class="d-flex  flex-column">
     <!-- shared -->
@@ -69,6 +37,26 @@
 <span style="    font-size: 16px;
     font-weight: 500;
     margin-block: 20px 15px;">Device levels</span>
+  <!-- device -->
+  <form [formGroup]="form" class="my-2" >
+    <us-select
+    [data]="devices"
+    formControlName="devicesData"
+    [multiSelect]="false"
+    [label]="'Devices'"
+    (onSelect)="onSelect($event)"
+    [loadingText]="deviceLoadingText"
+    [placeholder]="'Select Devices'"
+    [isDisabled]="false"
+    [optional]="true"
+    [enableSearch]="true"
+    [searchbarOnToggler]="true"
+    [searchNoResultText]="'there is no result'"
+    [maxListItemsWithoutSearch]="5"
+  ></us-select>
+
+  </form>
+
   <div *ngFor="let sectionLevel of selectedDevice?.sectionsLevels" class="w-100 d-flex my-4" >
     <div class="d-flex  align-content-center" style="width: 30%;">
       <img width="8%" [src]="sectionLevel?.section?.icon" alt="" class="me-md-2">
