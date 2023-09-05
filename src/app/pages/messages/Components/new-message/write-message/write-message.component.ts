@@ -73,14 +73,16 @@ export class WriteMessageComponent implements OnInit {
 
           let attachments=res.result.attachments;
           // console.log("attachment",attachments)
-        this.fileData=attachments.map((attach)=>{
-          return{
-            name:"",
-            type:"",
-            url:attach,
-            size:0
-          }
-        })
+          this.fileData=attachments.map((attach)=>{
+            let size=this.templateService.calculateFileSizeInKB(attach.base64);
+            let type = this.templateService.extractTypeFromBase64(attach.base64)
+            return{
+              name:attach.fileName,
+              type:type,
+              url:attach.base64,
+              size:size
+            }
+          })
       },
       (err)=>{
         this.loading=false;

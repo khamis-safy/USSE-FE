@@ -77,7 +77,8 @@ listScheduledMessagesCount(email:string,deviceId:string):Observable<number>{
 }
 deleteMessage(ids:string[]):Observable<any>{
 
-  return this.http.put<number>(`${env.api}Message/deleteMessage`,ids)
+
+  return this.http.put<number>(`${env.api}Message/deleteMessage?email=${this.email}`,ids)
 
 }
 

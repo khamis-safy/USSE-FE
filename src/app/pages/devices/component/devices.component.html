@@ -149,7 +149,7 @@
                   <div class="delete pointer" >
                     <img src="assets/icons/delDev.svg" alt="" (click)="openDeleteModal(element.id)">
                   </div>
-                  <div *ngIf="!element.isConnected" class="retry pointer" (click)="reconnect(element.id)">
+                  <div *ngIf="!element.isConnected" class="retry pointer" (click)="reconnect(element)">
                     <img src="assets/icons/reload.svg" alt="" >
                   </div>
 

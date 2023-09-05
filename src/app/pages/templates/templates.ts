@@ -42,5 +42,5 @@ export interface ResultsData{
   templateName:string,
   messageBody:string,
   createdAt: string,
-  attachments:string []
+  attachments:{base64:string,fileName:string} []
 }

@@ -1,7 +1,7 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { DevicesService } from '../../devices.service';
 import { Subscription, interval, switchMap, takeUntil, timer } from 'rxjs';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 
 
@@ -14,8 +14,10 @@ export class StepsComponent implements OnInit ,OnDestroy {
 
 steps:boolean=true;
 isLoading:boolean=false;
-scann:boolean=false;
+addDevice:boolean=false;
+scanDevice:boolean=false;
 
+onlyScan:boolean;
 wBstatus:boolean=false;
 initSuccB:boolean=false;
 sessionNB:string="";
@@ -29,15 +31,32 @@ retryCounter:number = 0;
   constructor(private devicesService:DevicesService,
     private  toaster: ToasterServices,
     public dialogRef: MatDialogRef<StepsComponent>,
+    @Inject(MAT_DIALOG_DATA) public data:any
     ) { }
 
   ngOnInit() {
+    this.onlyScan=this.data?true:false;
+    this.sessionNB=this.data?this.data:"";
+
+    if(this.onlyScan){
+      this.steps=false;
+      this.isLoading=true;
+      this.addDevice=false;
+      this.scanDevice=false;
+      this.initSessionAndCheckStatus();
+    }
+    else{
+      this.steps=true;
+      this.isLoading=false;
+      this.addDevice=false;
+      this.scanDevice=false;
+    }
 
   }
 
 scanCode(){
 this.isLoading=true;
-this.scann=false;
+this.addDevice=false;
 this.steps=false;
 this.initSessionAndCheckStatus();
 
@@ -56,8 +75,9 @@ initSessionAndCheckStatus(){
   this.initSessionSubscription= this.devicesService.initWhatsAppB(this.sessionNB).subscribe(
   (res)=>{
           this.isLoading=false;
-          this.scann=false;
+          this.addDevice=false;
           this.steps=false;
+          this.scanDevice=true;
 
           this.sessionNB=res.sessionName;
           this.tokenB=res.token;
@@ -80,13 +100,19 @@ initSessionAndCheckStatus(){
   }
 )
 }
+
+
 checkWhatsappB(){
   if(this.wBstatus ){
     clearInterval(this.check);
     this.retryCounter=0;
     this.isLoading=false;
-    this.scann=true;
+    this.addDevice=!this.onlyScan;
     this.steps=false;
+    this.scanDevice=false;
+    if(!this.addDevice){
+      this.onClose(this.data)
+    }
   }
   else if(!this.wBstatus&& this.retryCounter>=30){
     clearInterval(this.check);

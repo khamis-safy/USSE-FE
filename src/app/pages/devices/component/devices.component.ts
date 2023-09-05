@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DeleteContactComponent } from '../../manage-contacts/components/contacts/deleteContact/deleteContact.component';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-devices',
@@ -110,7 +111,7 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
         this.length=0;
        })
   }
-  openStepsModal(){
+  openStepsModal(data?){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='95vh';
     dialogConfig.width='70vw';
@@ -118,12 +119,15 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
     dialogConfig.disableClose = true;
-
+    if(data){
+      dialogConfig.data=data
+    }
     const dialogRef = this.dialog.open(StepsComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.getDevices();
+        this.toaster.success("Success")
       }
 
     });
@@ -154,14 +158,23 @@ else{
     this.getDevices();
   }
 
-  reconnect(id:string){
-    this.devicesService.reconnectWPPDevice(this.devicesService.email,id).subscribe(
+  reconnect(device:DeviceData){
+    this.devicesService.reconnectWPPDevice(device.id,this.devicesService.email).subscribe(
       (res)=>{
         this.getDevices();
       },
-      (err)=>{
-        this.toaster.error("Error")
+      (error: HttpErrorResponse) => {
+        if (error.status === 400 && error.error) {
 
+
+          const sessionName = error.error.sessionName;
+          this.openStepsModal(sessionName)
+
+
+        } else {
+          // Handle other error scenarios
+          this.toaster.error("Error")
+        }
       }
     )
   }
