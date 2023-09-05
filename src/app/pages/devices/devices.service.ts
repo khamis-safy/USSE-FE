@@ -51,8 +51,8 @@ getDevicesCount(email:string):Observable<number>{
 deleteDevice(email:string,id:string):Observable<DeviceData>{
   return this.http.put<DeviceData>(`${env.api}Device/deleteDevice?email=${email}&id=${id}`,"")
 }
-reconnectWPPDevice(email:string,id:string):Observable<any>{
-  return this.http.put<any>(`${env.api}Device/reconnectWPPDevice?email=${email}&id=${id}`,"")
+reconnectWPPDevice(id:string,email:string):Observable<any>{
+  return this.http.put<any>(`${env.api}Device/reconnectWBSDevice?id=${id}&email=${email}`,"")
 }
 
 addNewWhatsappBisunessDevice( email: string,deviceName: string,phoneNumber: string,token: string,sessionName: string):Observable<any>{

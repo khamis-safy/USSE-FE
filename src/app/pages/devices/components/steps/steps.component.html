@@ -11,7 +11,7 @@
     </div>
 
 
-<ng-container *ngIf="!isLoading && steps && !scann">
+<ng-container *ngIf="!isLoading && steps && !addDevice && !scanDevice">
   <div class=" div-content" >
     <div class="d-flex justify-content-center    align-items-center position-relative  ">
       <div class="  images-steps-img mx-lg-4 ">
@@ -79,7 +79,7 @@
 </ng-container>
 
 
-<ng-container *ngIf="isLoading && !steps && !scann">
+<ng-container *ngIf="isLoading && !steps && !addDevice && !scanDevice">
   <div class="p-5 h-100" >
 
     <div class="p-3 d-flex justify-content-center align-items-center flex-column gap-5 h-100">
@@ -110,7 +110,7 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="!isLoading && !steps && !scann">
+<ng-container *ngIf="!isLoading && !steps && !addDevice && scanDevice">
   <div class="p-5 h-100" >
 
     <div class="p-3 d-flex justify-content-center align-items-center flex-column gap-5 h-100">
@@ -125,7 +125,7 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="!isLoading && !steps && scann">
+<ng-container *ngIf="!isLoading && !steps && addDevice && !scanDevice">
   <div class="p-5 h-100">
     <app-addDevice [sessionName]="sessionNB" [token]="tokenB" (isClose)="onAddClose($event)"></app-addDevice>
   </div>
