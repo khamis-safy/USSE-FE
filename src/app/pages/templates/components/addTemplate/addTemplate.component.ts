@@ -43,7 +43,7 @@ export class AddTemplateComponent implements OnInit {
   loading:boolean;
   email:string=this.templatesService.email;
   templateName: any = new FormControl('', [Validators.required]);
-  messageBody: any = new FormControl('', [Validators.required]);
+  messageBody: any = new FormControl('');
   attachments: any = new FormControl('');
   form = new FormGroup({
     templateName: this.templateName,
@@ -138,13 +138,16 @@ export class AddTemplateComponent implements OnInit {
       let attachments=res.result.attachments;
       // console.log("attachment",attachments)
     this.fileData=attachments.map((attach)=>{
+      let size=this.templatesService.calculateFileSizeInKB(attach.base64);
+      let type = this.templatesService.extractTypeFromBase64(attach.base64)
       return{
-        name:"",
-        type:"",
-        url:attach,
-        size:0
+        name:attach.fileName,
+        type:type,
+        url:attach.base64,
+        size:size
       }
     })
+    console.log(this.fileData)
   },
   (err)=>{
     this.loading=false;
@@ -152,6 +155,7 @@ export class AddTemplateComponent implements OnInit {
   }
 )
   }
+
 
   onClose(data?): void {
     this.dialogRef.close(data);
