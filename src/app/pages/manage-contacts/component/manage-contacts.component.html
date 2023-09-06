@@ -59,16 +59,17 @@
         (clicked)="tab=='contacts'?openAddContactModal():tab=='lists'?openAddListModal():openunsubscribeModal()"
       ></us-button>
 
-      <us-button
-        class="m-2"
-        label="Export All"
-        img="assets/icons/export.svg"
-        [fill]="true"
-        [size]="'md'"
-        [loading]="false"
-        [disabled]="false"
-        [appearance]="'primary'"
-      ></us-button>
+      <us-button *ngIf="tab=='contacts'"
+      class="m-2"
+      [label]="isChecked?'Export Selected':'Export All'"
+      img="assets/icons/export.svg"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'primary'"
+      (clicked)="isChecked ? exportSelectedContacts() : exportAllContacts()"
+    ></us-button>
     </div>
 
   </div>
