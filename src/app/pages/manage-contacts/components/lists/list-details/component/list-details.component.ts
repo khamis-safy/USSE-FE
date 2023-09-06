@@ -31,13 +31,14 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class ListDetailsComponent implements OnInit ,AfterViewInit{
   listId:string;
-  isChecked: boolean;
+  isChecked:Contacts[];
   list:ListData;
   count:TotalContacts;
   @ViewChild(ListContactsComponent) listContacts:ListContactsComponent;
   tabs=["contacts","canceled"];
   tab = this.tabs[0];
   canEdit: boolean;
+
   constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private listService:ManageContactsService,
@@ -183,5 +184,30 @@ this.router.navigateByUrl('contacts')
 
     });
   }
+exportAllContacts(){
+  this.listService.exportContactsInList(this.listId).subscribe(
+    (res)=>{this.listService.exportFileData(res)},
+    (err)=>{this.toaster.error("Error")}
+  )
+}
 
+exportSelectedContacts(){
+  let exporedContacts=this.isChecked.map((contact)=>{
+    return{
+      name: contact.name,
+      mobileNumber: contact.mobileNumber,
+      companyName:contact.companyName ,
+      note: contact.note
+    }
+  })
+  this.listService.exportSelectedContacts(exporedContacts).subscribe(
+    (res)=>{
+      this.listService.exportFileData(res);
+      this.listContacts.selection.clear();
+
+    },
+    (err)=>{this.toaster.error("Error");
+    }
+  )
+}
 }

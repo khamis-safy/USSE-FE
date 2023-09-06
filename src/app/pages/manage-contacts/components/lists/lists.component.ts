@@ -41,7 +41,7 @@ subscribtions:Subscription[]=[];
   // dataSource = new MatTableDataSource<any>(this.listTableData);
   selection = new SelectionModel<any>(true, []);
   @Input()canEdit:boolean;
-
+  cellClick:boolean;
 
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
@@ -263,6 +263,8 @@ getListData(){
   }
 
   navigateTo(id:string){
+    if(!this.cellClick){
     this.router.navigateByUrl(`list/${id}`)
+    }
   }
 }

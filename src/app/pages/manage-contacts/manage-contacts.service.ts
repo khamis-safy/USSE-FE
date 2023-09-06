@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
@@ -136,9 +136,54 @@ contactsCount(email:string,isCanceled:boolean):Observable<number>{
 }
 
 
-
-
 unDeleteContact(email:string,ids:string[]):Observable<ErrSucc>{
   return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteContact?email=${email}`,ids)
 }
+exportSelectedContacts(data): Observable<Blob> {
+  const url = `${env.api}Contacts/exportSelectedContacts`;
+
+  // Make the HTTP request and set responseType to 'blob' to expect a binary response
+  return this.http.post(url, data, { responseType: 'blob' });
+}
+exportAllContacts():Observable<Blob> {
+  const url = `${env.api}Contacts/exportAllContacts`;
+  const params = new HttpParams().set('email', this.email);
+
+  return this.http.post(url, {}, { responseType: 'blob', params });
+}
+
+exportContactsInList(listId: string): Observable<Blob> {
+  // Create a URL-encoded query parameter string
+  const queryParams = new HttpParams()
+    .set('listId', listId)
+    .set('email', this.email);
+
+  const url = `${env.api}Contacts/exportContactsInList`;
+
+  // Set responseType to 'blob' to expect a binary response
+  return this.http.post(url, null, {
+    responseType: 'blob',
+    params: queryParams
+  });
+}
+
+
+exportFileData(file){
+  const now = new Date(); // Create a new Date object representing the current date and time
+
+ // Extract date components (day, month, year)
+ const day = now.getDate().toString().padStart(2, '0');
+ const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-indexed, so add 1
+ const year = now.getFullYear();
+
+ // Create the formatted date string in "dd/mm/yyyy" format
+ const formattedDate = `${day}/${month}/${year}`;
+
+ var downloadURL = window.URL.createObjectURL(file);
+ var link = document.createElement('a');
+ link.href = downloadURL;
+ link.download = `Contacts-${formattedDate}.xlsx`;
+ link.click();
+
+   }
 }

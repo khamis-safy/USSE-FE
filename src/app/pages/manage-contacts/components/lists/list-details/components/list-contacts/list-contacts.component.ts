@@ -89,7 +89,7 @@ getContacts(){
             this.length=this.count.totalCancelContacts;
           }
           else{
-            this.length=this.count.totalContacts;
+            this.length=this.count?.totalContacts;
 
           }
           this.numRows=res.length;

@@ -266,4 +266,34 @@ else{
       this.contacts.getContacts();
      }
   }
+  exportAllContacts(){
+    this.listService.exportAllContacts().subscribe(
+      (res)=>{
+        this.listService.exportFileData(res);
+
+    },
+      (err)=>{this.toaster.error("Error");
+      console.log(err)}
+
+    )
+  }
+
+  exportSelectedContacts(){
+    let exporedContacts=this.isChecked.map((contact)=>{
+      return{
+        name: contact.name,
+        mobileNumber: contact.mobileNumber,
+        companyName:contact.companyName ,
+        note: contact.note
+      }
+    })
+    this.listService.exportSelectedContacts(exporedContacts).subscribe(
+      (res)=>{
+        this.listService.exportFileData(res);
+        this.contacts.selection.clear()
+      },
+      (err)=>{this.toaster.error("Error");
+      }
+    )
+  }
 }
