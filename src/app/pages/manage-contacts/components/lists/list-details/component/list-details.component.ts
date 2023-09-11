@@ -15,13 +15,12 @@ import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster
 import { ContactsComponent } from '../../../contacts/contacts.component';
 import { AddContactComponent } from '../../../contacts/addContact/addContact.component';
 import { ListDetailsService } from '../list-details.service';
-import { DeleteContactComponent } from '../../../contacts/deleteContact/deleteContact.component';
 import { ListContactsComponent } from '../components/list-contacts/list-contacts.component';
 import { ContactListsComponent } from '../../../contacts/contactLists/contactLists.component';
-import { DeleteListComponent } from '../../delete-list/delete-list.component';
 import { TotalContacts } from '../totalContacts';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { UploadSheetComponent } from '../../../importFiles/uploadSheet/uploadSheet.component';
 
 
 @Component({
@@ -161,6 +160,31 @@ this.router.navigateByUrl('contacts')
     });
 
   }
+
+
+  openImportModal(){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='80vh';
+    dialogConfig.width='60vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.disableClose = true;
+    dialogConfig.data=this.listId
+
+    const dialogRef = this.dialog.open(UploadSheetComponent,dialogConfig);
+
+    this.listContacts.selection.clear();
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+
+        this.listContacts.getContacts();
+
+      }
+
+
+    });
+  }
+
   removeContacts(){
  const dialogConfig=new MatDialogConfig();
     dialogConfig.height='50vh';

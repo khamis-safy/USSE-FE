@@ -49,6 +49,18 @@
       (clicked)="openContactLists()"
     ></us-button>
 
+    <us-button
+    class="m-2"
+    [label]="'Import File'"
+    img="assets/icons/import.svg"
+    [fill]="true"
+    [size]="'md'"
+    [loading]="false"
+    [disabled]="false"
+    [appearance]="'primary'"
+    (clicked)="openImportModal()"
+  ></us-button>
+
       <us-button
         class="m-2"
         [label]="isChecked?'Export Selected':'Export All'"

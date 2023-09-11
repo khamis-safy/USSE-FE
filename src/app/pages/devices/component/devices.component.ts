@@ -9,7 +9,6 @@ import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DeleteContactComponent } from '../../manage-contacts/components/contacts/deleteContact/deleteContact.component';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';

@@ -9,10 +9,10 @@ import { AddListComponent } from './components/lists/addList/addList.component';
 
 import { ManageContactsComponent } from './component/manage-contacts.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { DeleteListComponent } from './components/lists/delete-list/delete-list.component';
 import { AddContactComponent } from './components/contacts/addContact/addContact.component';
-import { DeleteContactComponent } from './components/contacts/deleteContact/deleteContact.component';
 import { ContactListsComponent } from './components/contacts/contactLists/contactLists.component';
+import { UploadSheetComponent } from './components/importFiles/uploadSheet/uploadSheet.component';
+import { FileFieldsComponent } from './components/importFiles/fileFields/fileFields.component';
 
 @NgModule({
   imports: [
@@ -24,10 +24,11 @@ import { ContactListsComponent } from './components/contacts/contactLists/contac
     ManageContactsComponent,
     ContactsComponent,
     ListsComponent,
-    DeleteListComponent,
+    UploadSheetComponent,
+    FileFieldsComponent,
     AddListComponent,
     AddContactComponent,
-    DeleteContactComponent,
+
     ContactListsComponent,
 
 

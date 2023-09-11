@@ -4,7 +4,8 @@
     <div class="d-flex position-relative w-100 m-0">
       <div class="w-100">
         <form [formGroup]="searchForm">
-          <us-select (click)="shouldCloseAccordion=false"
+          <us-select
+
             (onSearch)="onSearch($event)"
             (onSelect)="onSelect($event)"
             (onDeSelect)="onDeSelect($event)"
@@ -34,7 +35,7 @@
         <sr-checkbox
           label="Select all"
           [state]="
-          selectAllStatus === 1 ? 'mid' : selectAllStatus === 2 || selectedLists? 'checked' : ''
+          selectAllStatus === 1 ? 'mid' : selectAllStatus === 2 || selectedListsNum? 'checked' : ''
           "
           (changed)="selectAllLists($event)"
           style="font-weight: 500"
@@ -66,75 +67,42 @@
           <mat-accordion>
 
             <mat-expansion-panel
-            *ngFor="let list of lists; let i = index"
+            *ngFor="let listContact of allLists; let i = index"
             class="custom-panel"
-            [expanded]="shouldCloseAccordion"
 
+            (opened)="onAccordionOpened(listContact)"
           >
-            <mat-expansion-panel-header (click)="getContacts(list)">
+            <mat-expansion-panel-header   class="zi-2">
               <mat-panel-title>
                 <div class="d-flex gap-4">
                   <sr-checkbox
+                    class="zi-5"
+                    [label]="listContact.list?.name"
 
-                    [label]="list?.name"
-                    [state]="list.selectionState==2 ? 'checked' :
-                    list.selectionState==1 ? 'mid'
-                    : ''"
+                    [state]="listContact.list.isChecked"
+                    [(ngModel)]="listContact.list.isChecked"
                     (changed)="
-                    onSelectList($event, list);checked=true;
+                    onSelectList($event,listContact)
                     "
                   ></sr-checkbox>
-                  <span class="txt-sm total">{{ list.totalContacts }}</span>
+                  <span class="txt-sm total">{{ listContact.list.totalContacts }}</span>
                 </div>
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="d-flex gap-4 align-items-center flex-wrap p-3">
-              <ng-container *ngFor="let contact of contacts">
+              <ng-container *ngFor="let contact of listContact.contacts">
                 <sr-checkbox
                   class="txt-sm"
                   [label]="contact?.name"
+                  (changed)="onSelectContact($event, listContact,contact)"
                   [state]="contact.isChecked"
-                  (changed)="onSelectContact($event, contact,list)"
                   [(ngModel)]="contact.isChecked"
                 ></sr-checkbox>
               </ng-container>
 
             </div>
           </mat-expansion-panel>
-            <!-- <mat-expansion-panel
-              *ngFor="let list of lists; let i = index"
-              class="custom-panel"
-              (opened)="getContacts(list, true)"
-            >
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  <div class="d-flex gap-4">
-                    <sr-checkbox
-                      [label]="list?.name"
-                      [state]="list.selectionState==2 ? 'checked' :
-                      list.selectionState==1 ? 'mid'
-                      : ''"
-                      (changed)="
-                        selectedList($event, list, false); selectOneList($event,list)
-                      "
-                    ></sr-checkbox>
-                    <span class="txt-sm total">{{ list.totalContacts }}</span>
-                  </div>
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <div class="d-flex gap-4 align-items-center flex-wrap p-3">
-                <ng-container *ngFor="let contact of contacts">
-                  <sr-checkbox
-                    class="txt-sm"
-                    [label]="contact?.name"
-                    [state]="contact.isChecked"
-                    (changed)="selectedContact($event, contact,list)"
-                    [(ngModel)]="contact.isChecked"
-                  ></sr-checkbox>
-                </ng-container>
 
-              </div>
-            </mat-expansion-panel> -->
           </mat-accordion>
         </ng-container>
       </div>
@@ -146,9 +114,10 @@
     <div class="contacts py-4">
       <div
         class="contacts-heading px-4 d-flex justify-content-between align-items-center"
+        (click)="onDeselectAllLists()"
       >
         <span class="txt-md">Contacts</span>
-        <span class="d-flex align-items-center gap-2 pointer" (click)="clearContacts()">
+        <span class="d-flex align-items-center gap-2 pointer" >
           <img src="assets/icons/clear.svg" alt="" />
           <span class="txt-md text-primary-800"
             >Clear</span
@@ -228,7 +197,7 @@
           [loading]="false"
           [disabled]="form.invalid"
           [appearance]="'primary'"
-          (clicked)="addNumber()"
+          (clicked)="addHocNumber()"
         >
         </us-button>
       </div>

@@ -3,7 +3,6 @@ import { UsButtonComponent } from '../us-button/us-button.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { TemplatesService } from 'src/app/pages/templates/templates.service';
-import { DeleteContactComponent } from 'src/app/pages/manage-contacts/components/contacts/deleteContact/deleteContact.component';
 import { Contacts } from 'src/app/pages/manage-contacts/contacts';
 import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-contacts.service';
 import { ToasterServices } from '../us-toaster/us-toaster.component';
@@ -52,7 +51,7 @@ export class DeleteModalComponent implements OnInit {
     private messageService: MessagesService,
     private toaster: ToasterServices,
     private compaignsService: CompaignsService,
-    public dialogRef: MatDialogRef<DeleteContactComponent>,
+    public dialogRef: MatDialogRef<DeleteModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ComponentData,
   ) {
   }

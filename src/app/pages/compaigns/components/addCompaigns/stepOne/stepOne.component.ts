@@ -43,7 +43,7 @@ onSelectList(state,list:ListData){
 
   if(state=="checked"){
     // change list status to checked
-    list.isChecked=true;
+    list.isChecked="checked";
 
     list.selectionState=2;
     // incerease lists selection number
@@ -75,7 +75,7 @@ else{
 // on deselect list
 onDeslectList(list:ListData){
   // change list status
-  list.isChecked=false;
+  list.isChecked="";
 
   // decerease lists selection number
   this.selectedLists--;
@@ -108,7 +108,7 @@ selectAllLists(state){
     // change all lists and contacts state to be checked
       this.lists.map((list)=>{
         list.selectionState=2;
-        list.isChecked=true;
+        list.isChecked="checked";
         // this.getContacts(list,true)
       });
       this.addedLists=[];
@@ -129,7 +129,7 @@ onDeselectAllLists(){
   // change all lists and contacts state to be un checked
   this.lists.map((list)=>{
     list.selectionState=0;
-    list.isChecked=false;
+    list.isChecked="";
 
   });
   this.addedLists=[];

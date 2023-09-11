@@ -4,7 +4,7 @@ import { Attatchment, Templates } from 'src/app/pages/templates/templates';
 import { TemplatesService } from 'src/app/pages/templates/templates.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 
-export interface Filse{
+export interface files{
   name:string,
   type:string,
   url:string,
@@ -18,7 +18,7 @@ export interface Filse{
 export class WriteMessageComponent implements OnInit {
   templates:SelectOption[];
   allTemplates:Templates[]=[];
-  fileData:Filse[]=[];
+  fileData:files[]=[];
   templateLoadingText:string='Loading ...';
   // @Output() messageBody = new EventEmitter<string>;
   @Output() attachments = new EventEmitter<string[]>;

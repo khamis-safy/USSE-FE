@@ -167,6 +167,10 @@ exportContactsInList(listId: string): Observable<Blob> {
   });
 }
 
+importFile(data):Observable<any>{
+  return this.http.post<any>(`${env.api}Contacts/importFile`,data)
+
+}
 
 exportFileData(file){
   const now = new Date(); // Create a new Date object representing the current date and time

@@ -1,0 +1,130 @@
+<section class="d-flex flex-column py-4 mx-auto gap-3 h-100" style="width: 90%;">
+  <!-- modal header -->
+  <div class="d-flex justify-content-center align-items-center position-relative mb-4 " style="height: 10%;">
+    <div class="txt-lg">Upload Excel Sheet</div>
+    <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
+      <img
+        src="assets/icons/close-circle.svg"
+        (click)="onClose()"
+        alt="close-icon"
+        style="cursor: pointer;"
+      />
+    </div>
+  </div>
+  <!-- modal body  -->
+  <div class="modal-body overflow-auto p-4 w-100"  style="height: 80%;">
+    <p class="txt-sm mb-4" style="font-weight: 500;">Upload the lists you want to send messages to</p>
+    <us-upload  class="w-100 "
+    (onFileChange)="onFileChange($event)"
+    (onFileDelete)="onFileDelete($event)"
+    [(ngModel)]="fileData"
+    [multiple]="false"
+    [fileType]="'.xlsx, .xls'"
+    ></us-upload>
+
+    <ng-container *ngIf="showLists">
+
+      <form  [formGroup]="form"  class="d-flex flex-column px-2 my-3 w-100">
+        <div class="d-flex justify-content-between mb-3">
+        <div class="me-3 " style="width:80% ">
+
+          <us-select
+          [data]="listsArr"
+          formControlName="selectedLists"
+          [multiSelect]="false"
+          [label]="'Add To List'"
+          [placeholder]="'Choose From Lists'"
+          [isDisabled]="addNewList"
+          [optional]="true"
+          [loadingText]="listsLoadingText"
+          (onSelect)="onSelect($event)"
+          [enableSearch]="true"
+          [searchbarOnToggler]="true"
+          [searchNoResultText]="'there is no result'"
+          [maxListItemsWithoutSearch]="5"
+        ></us-select>
+        </div>
+        <us-button
+
+          label="Add New list"
+          [matIcon]="'add'"
+          [fill]="true"
+          [size]="'md'"
+          [loading]="false"
+          [disabled]="addNewList"
+          [appearance]="'primary'"
+          (clicked)="addNewList=true"
+        ></us-button>
+  </div>
+        <ng-container *ngIf="addNewList">
+          <div class="d-flex justify-content-end align-items-center">
+
+            <div class="new-list rounded-5 bg-white p-4  my-3 " style="width:80%">
+              <p class="txt-sm mb-3" style="font-weight: 500;">Add New List Name</p>
+              <div class="d-flex justify-content-between">
+                <div style="width: 50%;">
+                  <us-input
+                  [isDisabled]="false"
+                  value=""
+                  placeholder="Enter List Name"
+                  type="text"
+                  [error]="false"
+                  [fullWidth]="true"
+                  formControlName="listName"
+                  [error]=" (listName.touched && listName.errors?.required)"
+                  [hintText]=" listName.touched && listName.errors?.required ? 'This filed is required':'' "
+                ></us-input>
+                </div>
+
+                <div class="d-flex align-items-center " >
+                  <us-button
+                    class="me-3"
+                  label="Save"
+                  [fill]="true"
+                  [size]="'md'"
+                  [loading]="isLoading"
+                  [disabled]="isLoading || form.invalid"
+                  [appearance]="'primary'"
+                  (clicked)="submitAddList()"
+                ></us-button>
+
+                <us-button
+
+                label="Cancel"
+                [fill]="false"
+                [size]="'md'"
+                [loading]="false"
+                [disabled]="false"
+                [appearance]="'primary'"
+                (clicked)="addNewList=false"
+              ></us-button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </form>
+    </ng-container>
+    <sr-checkbox
+    class="zi-5 px-2"
+    [label]="'First row contains column header'"
+    state="checked"
+    (changed)="
+    onCheck($event)
+    "
+  ></sr-checkbox>
+  </div>
+  <!-- modal footer -->
+  <div class="modal-footer justify-content-end gap-3"  style="height: 10%;">
+    <us-button
+      label="Upload"
+      size="sm"
+      [loading]="false"
+      [fill]="true"
+      [disabled]="isDisabled"
+      (clicked)="uploadFile()"
+    ></us-button>
+
+  </div>
+</section>
