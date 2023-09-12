@@ -98,7 +98,7 @@ export class AddTemplateComponent implements OnInit {
     let email = this.email;
     let templateName = this.form.value.templateName;
     let messageBody = this.form.value.messageBody;
-    let attachments = this.form.value.attachments;
+    let attachments = this.fileData.map((file) => file.url);
     this.isLoading = true;
 
     console.log(templateName);

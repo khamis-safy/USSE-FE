@@ -1,0 +1,15 @@
+.form-switch .form-check-input {
+  width: 45px !important;
+}
+.form-check-input {
+  height: 23px !important;
+
+}
+.form-check-input:checked {
+  background-color: var(--clr-primary-800)!important;
+  border-color:var(--clr-primary-800)!important;
+}
+.form-check-input:focus {
+  border-color: none !important;
+  box-shadow:none !important;
+}

@@ -1,4 +1,3 @@
-import { DeleteListComponent } from './../components/lists/delete-list/delete-list.component';
 import { ToasterServices } from './../../../shared/components/us-toaster/us-toaster.component';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -7,10 +6,10 @@ import { ListsComponent } from '../components/lists/lists.component';
 import { ContactsComponent } from '../components/contacts/contacts.component';
 import { ManageContactsService } from '../manage-contacts.service';
 import { AddContactComponent } from '../components/contacts/addContact/addContact.component';
-import { DeleteContactComponent } from '../components/contacts/deleteContact/deleteContact.component';
 import { ContactListsComponent } from '../components/contacts/contactLists/contactLists.component';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { UploadSheetComponent } from '../components/importFiles/uploadSheet/uploadSheet.component';
 
 @Component({
   selector: 'app-manage-contacts',
@@ -126,7 +125,28 @@ else{
     });
   }
 
+  openImportModal(){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='80vh';
+    dialogConfig.width='60vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.disableClose = true;
 
+
+    const dialogRef = this.dialog.open(UploadSheetComponent,dialogConfig);
+
+    this.contacts.selection.clear();
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+
+        this.contacts.getContacts();
+
+      }
+
+
+    });
+  }
   openDeleteConModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='50vh';

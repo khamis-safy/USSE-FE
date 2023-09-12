@@ -86,7 +86,7 @@ getContacts(){
     let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNum,orderedBy,search,this.listId).subscribe(
         (res)=>{
           if(this.isCanceled){
-            this.length=this.count.totalCancelContacts;
+            this.length=this.count?.totalCancelContacts;
           }
           else{
             this.length=this.count?.totalContacts;

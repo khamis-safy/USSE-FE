@@ -6,9 +6,10 @@ export interface ListData {
   createdAt: string,
   isDeleted: boolean,
   applicationUserId: string,
-  isChecked:boolean,
+  isChecked:string,
   selectionState:number,
-  contactsNum:number
+  contactsNum:number,
+  isExpanded:boolean
 
 }
 export interface ErrSucc{

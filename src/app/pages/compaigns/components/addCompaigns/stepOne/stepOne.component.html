@@ -32,9 +32,8 @@
             <sr-checkbox
 
               [label]="list?.name"
-              [state]="list.selectionState==2 ? 'checked' :
-              list.selectionState==1 ? 'mid'
-              : ''"
+              [state]="list.isChecked"
+
               (changed)="
               onSelectList($event, list);checked=true;
               "

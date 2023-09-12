@@ -52,7 +52,7 @@ export class AddListComponent implements OnInit {
       (err)=>{
         this.isLoading = false
         this.onClose(false);
-        this.toaster.error(`Error: ${err.message}`)
+        this.toaster.error(`Error`)
       }
     )
   }
