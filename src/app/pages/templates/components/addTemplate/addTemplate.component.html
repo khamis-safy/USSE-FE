@@ -2,8 +2,8 @@
 
   <!-- modal header -->
   <div class="d-flex justify-content-center align-items-center position-relative mb-4 " style="height: 10%;">
-    <div *ngIf="!isEdit" class="txt-lg">Add Template</div>
-  <div *ngIf="isEdit" class="txt-lg">Edit Template</div>
+    <div *ngIf="!isEdit" class="txt-lg">{{ 'ADD_TEMPLATE' | translate }}</div>
+    <div *ngIf="isEdit" class="txt-lg">{{ 'EDIT_TEMPLATE' | translate }}</div>
     <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
       <img
         src="assets/icons/close-circle.svg"
@@ -18,47 +18,39 @@
   <div class="modal-body overflow-auto px-1"  style="height: 80%;">
     <form [formGroup]="form" class="w-100 m-auto ">
 
+      <div class="d-flex gap-4 flex-column py-3">
+        <us-input
+          [isDisabled]="false"
+          value=""
+          [optional]="false"
+          type="text"
+          [error]="false"
+          [fullWidth]="true"
+          formControlName="templateName"
+          label="{{ 'TEMPLATE_NAME' | translate }}"
+          [error]=" (templateName.touched && templateName.errors?.required)"
+          [hintText]=" templateName.touched && templateName.errors?.required ? ('REQUIRED_FIELD' | translate) :'' "
+        ></us-input>
 
-   <div class="d-flex gap-4 flex-column py-3">
-    <us-input
-    [isDisabled]="false"
-    value=""
-    [optional]="false"
-    type="text"
-    [error]="false"
-    [fullWidth]="true"
-    formControlName="templateName"
-    label="Template Name"
-    [error]=" (templateName.touched && templateName.errors?.required)"
-    [hintText]=" templateName.touched && templateName.errors?.required ? 'This filed is required':'' "
-  ></us-input>
-
-
-
-    <us-input
-    [isDisabled]="false"
-    value=""
-    placeholder="text..."
-    [optional]="true"
-    type="text"
-    [error]="false"
-    [fullWidth]="true"
-    formControlName="messageBody"
-    label="Message"
-    [isTextArea]="true"
-  ></us-input>
-
-
-
-
-
-  </div>
+        <us-input
+          [isDisabled]="false"
+          value=""
+          placeholder="text..."
+          [optional]="true"
+          type="text"
+          [error]="false"
+          [fullWidth]="true"
+          formControlName="messageBody"
+          label="{{ 'MESSAGE' | translate }}"
+          [isTextArea]="true"
+        ></us-input>
+      </div>
 
     </form>
 
     <div class="form-group d-flex gap-lg-5 flex-column  flex-lg-row flex-nowrap">
       <label for="devicesData" class="w-25 d-none d-lg-block text-nowrap"
-        ><span class="txt txt-sm text-black text-wrap">Attachments</span>
+        ><span class="txt txt-sm text-black text-wrap">{{ 'ATTACHMENTS' | translate }}</span>
       </label>
 
       <us-upload  class="w-100"
@@ -67,13 +59,12 @@
       (onFileChange)="test($event)"
       ></us-upload>
     </div>
-</div>
+  </div>
+
   <!-- modal footer -->
   <div class="modal-footer justify-content-center gap-3"  style="height: 10%;">
-
-
     <us-button  *ngIf="!isEdit"
-    label="Save"
+    label="{{ 'SAVE' | translate }}"
     size="sm"
     [loading]="isLoading"
     [fill]="true"
@@ -82,7 +73,7 @@
   ></us-button>
   <us-button
   *ngIf="isEdit"
-  label="Save"
+  label="{{ 'SAVE' | translate }}"
   size="sm"
   [loading]="isLoading"
   [fill]="true"
@@ -90,12 +81,12 @@
   [disabled]="form.invalid || isLoading"
   ></us-button>
   <us-button
-  label="Cancel"
+  label="{{ 'CANCEL' | translate }}"
   size="sm"
   appearance="primary"
   [fill]="false"
   (clicked)="onClose()"
   [loading]="false"
 ></us-button>
-  </div>
+</div>
 </section>

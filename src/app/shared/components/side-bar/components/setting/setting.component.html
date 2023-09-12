@@ -3,13 +3,13 @@
 
     <!-- header -->
     <div class="d-flex justify-content-center align-items-center position-relative   " style="height: 10%;">
-      <div class="txt-lg">Setting</div>
+      <div class="txt-lg">{{ "SETTING" | translate }}</div>
       <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
         <img (click)="onClose()" src="assets/icons/close-circle.svg" alt="close-icon" style="cursor: pointer;" />
       </div>
     </div>
 
-    <!-- bodey -->
+    <!-- body -->
     <div class="  mt-4 mb-5 modal-body overflow-auto px-1 px-4 mx-auto   ps-4 text-center container" style="height: 88%;">
       <div class="w-100 ">
         <!-- Token -->
@@ -18,7 +18,7 @@
             <us-input [isDisabled]="true" [placeholder]="'dsS51d809dsSA5D16A001'" value="" [optional]="true"
               type="text" [label]=" 'Token'" [error]="false" [fullWidth]="true"></us-input>
           </div>
-          <div class=" d-flex justify-content-center align-items-center ms-3  py-2" style="width: 8%; 
+          <div class=" d-flex justify-content-center align-items-center ms-3  py-2" style="width: 8%;
             box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
             border-radius: 11px;
             border: 1px solid rgba(160, 160, 160, 1) ;
@@ -28,7 +28,7 @@
             </a>
           </div>
         </div>
-        <!-- Time Zone -->  
+        <!-- Time Zone -->
           <div class=" py-auto my-4 " style="width: 80%;">
             <us-select [data]="timeZoneArr" [multiSelect]="true" [label]="'Time Zone'"
               [placeholder]="'(UTC -03:00) Salvador'" [isDisabled]="false" [optional]="true" [enableSearch]="true"
@@ -54,16 +54,11 @@
       </div>
     </div>
 
-
-
     <!-- footer -->
     <div class="modal-footer justify-content-end gap-3" style="height: 2%;">
-      <us-button (click)="onClose()" label="Cancel" size="sm" appearance="primary" [fill]="false" [loading]="false"></us-button>
-      <us-button [loading]="false" label="Save" size="sm" [fill]="true"></us-button>
-    
+      <us-button (click)="onClose()" label="{{ 'CANCEL' | translate }}" size="sm" appearance="primary" [fill]="false" [loading]="false"></us-button>
+      <us-button [loading]="false" label="{{ 'SAVE' | translate }}" size="sm" [fill]="true"></us-button>
     </div>
-
-
 
   </div>
 </div>

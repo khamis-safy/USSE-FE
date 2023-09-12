@@ -2,14 +2,14 @@
   <div class="d-flex gap-5 flex-column">
     <div class="form-group d-flex gap-lg-5 flex-column flex-lg-row flex-nowrap">
       <label for="devicesData" class="w-25 d-none d-lg-block text-nowrap"
-        ><span class="txt txt-sm text-black text-wrap">Schedule</span>
+        ><span class="txt txt-sm text-black text-wrap">{{ 'SCHEDULE' | translate }}</span>
       </label>
 
       <div class="w-100">
         <input #dateTime
-        class="rounded-pill border border-1py-2 txt-input w-100 date" style="padding: 0 12px;"
+        class="rounded-pill border border-1 py-2 txt-input w-100 date" style="padding: 0 12px;"
           nbInput
-          placeholder="Pick Date"
+          placeholder="{{ 'PICK_DATE' | translate }}"
           [nbDatepicker]="dateTimePicker"
           [formControl]="dateFormControl"
         />
@@ -21,15 +21,15 @@
       [data]="devices"
       formControlName="devicesData"
       [multiSelect]="false"
-      [label]="'Devices'"
+      [label]="'devicesLabel' | translate"
       (onSelect)="onSelect($event)"
       [loadingText]="deviceLoadingText"
-      [placeholder]="'Select Devices'"
+      [placeholder]="'SELECT_DEVICES' | translate"
       [isDisabled]="false"
       [optional]="true"
       [enableSearch]="true"
       [searchbarOnToggler]="true"
-      [searchNoResultText]="'there is no result'"
+      [searchNoResultText]="'NO_RESULT_FOUND' | translate"
       [maxListItemsWithoutSearch]="5"
     ></us-select>
   </div>

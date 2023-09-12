@@ -1,165 +1,120 @@
 <section class="d-flex flex-column p-4 gap-3 h-100">
-
   <!-- modal header -->
-  <div class="d-flex justify-content-between align-items-center mb-4 " style="height: 10%;">
-    <div *ngIf="!isEdit" class="txt-lg" style="font-weight: 800;">Add Contact</div>
-    <div *ngIf="isEdit" class="txt-lg" style="font-weight: 800;">Update Contact</div>
-
-      <img
-        src="assets/icons/close-circle.svg"
-        (click)="onClose()"
-        alt="close-icon"
-        style="cursor: pointer;"
-      />
-    </div>
-
-  <!-- modal body  -->
-  <div class="modal-body overflow-auto px-1"  style="height: 80%;">
-    <form [formGroup]="form" class="w-100 m-auto ">
-
-
-   <div class="d-flex gap-4 flex-column py-3">
-    <us-input
-    [isDisabled]="false"
-    value=""
-    placeholder="Enter Your Name"
-    [optional]="false"
-    type="text"
-    [error]="false"
-    [fullWidth]="true"
-    formControlName="name"
-    label="Name"
-    [error]=" (name.touched && name.errors?.required)"
-    [hintText]=" name.touched && name.errors?.required ? 'This filed is required':'' "
-  ></us-input>
-    <!-- <span  *ngIf="name.invalid && name.touched" class="animate__animated anime-duration-800 animate__fadeInUp text-danger d-flex gap-1 rounded-2  bg-opacity-10 p-2">
-      <mat-icon class="text-danger" style="height: 20px;width: 20px; font-size: 20px;">error</mat-icon>
-      <span class="text-danger text-wrap d-flex flex-column">
-        <span class="text-danger" *ngIf="name.errors.required">This filed is required</span>
-      </span>
-    </span> -->
-
-    <div class="form-group d-flex gap-lg-5 flex-column flex-lg-row flex-nowrap">
-      <label for="mobile" class="w-25 d-none d-lg-block text-nowrap"><span class="txt txt-sm text-black text-wrap">Mobile Number</span> <em class="text-danger">*</em> </label>
-
-
-      <div class="w-100">
-        <ngx-intl-tel-input
-        [cssClass]="(mobile?.touched && mobile.invalid ? 'error' :'') + ' rounded-pill border border-1py-2 txt-input w-100'"
-        [enableAutoCountrySelect]="true"
-        [preferredCountries]="[CountryISO.UnitedArabEmirates]"
-        [enablePlaceholder]="true"
-        [searchCountryFlag]="true"
-        [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
-        [selectFirstCountry]="false"
-        [selectedCountryISO]="CountryISO.Egypt"
-        [maxLength]="15"
-        [phoneValidation]="true"
-        [separateDialCode]="separateDialCode"
-        [numberFormat]="PhoneNumberFormat.National"
-        name="phone"
-        formControlName="mobile"
-        >
-      </ngx-intl-tel-input>
-
-      <ng-container *ngIf="mobile?.touched  && mobile?.errors?.required">
-        <div class="hint error" >
-          <i class="si-info"></i>
-          <p class="txt txt-xs ">
-            This filed is required
-          </p>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="mobile?.touched && mobile.invalid && !mobile?.errors?.required">
-        <div class="hint error" >
-          <i class="si-info"></i>
-          <p class="txt txt-xs ">
-            Incorrect phone number
-          </p>
-        </div>
-      </ng-container>
-      </div>
-    </div>
-
-    <us-input
-    [isDisabled]="false"
-    value=""
-    placeholder="Enter Company Name"
-    [optional]="true"
-    type="text"
-    [error]="false"
-    [fullWidth]="true"
-    formControlName="cnName"
-    label="Company Name"
-  ></us-input>
-
-      <!-- <label for="list">Lists</label>
-      <mat-form-field>
-        <mat-select multiple [formControl]="selectedLists" (selectionChange)="changeLists($event.value)">
-
-          <mat-option *ngFor="let li of lists" [value]="li">{{li.name}}</mat-option>
-        </mat-select>
-      </mat-form-field> -->
-      <us-select
-      [data]="listsArr"
-      formControlName="selectedLists"
-      [multiSelect]="true"
-      [label]="'Lists'"
-      [placeholder]="'Select Lists'"
-      [isDisabled]="false"
-      [optional]="true"
-      [loadingText]="listsLoadingText"
-
-      [enableSearch]="true"
-      [searchbarOnToggler]="true"
-      [searchNoResultText]="'there is no result'"
-      [maxListItemsWithoutSearch]="5"
-    ></us-select>
-
-    <us-input
-    [isDisabled]="false"
-    placeholder="Enter Your Notes..."
-    [optional]="true"
-    type="text"
-    [error]="false"
-    [fullWidth]="true"
-    formControlName="note"
-    label="Notes"
-    [isTextArea]="true"
-  ></us-input>
-
+  <div class="d-flex justify-content-between align-items-center mb-4" style="height: 10%;">
+    <div *ngIf="!isEdit" class="txt-lg" style="font-weight: 800;">{{ 'ADD_CONTACT' | translate }}</div>
+    <div *ngIf="isEdit" class="txt-lg" style="font-weight: 800;">{{ 'UPDATE_CONTACT' | translate }}</div>
+    <img src="assets/icons/close-circle.svg" (click)="onClose()" alt="{{ 'CLOSE_ICON_ALT_TEXT' | translate }}" style="cursor: pointer;">
   </div>
 
+  <!-- modal body -->
+  <div class="modal-body overflow-auto px-1" style="height: 80%;">
+    <form [formGroup]="form" class="w-100 m-auto ">
+      <div class="d-flex gap-4 flex-column py-3">
+        <us-input
+          [isDisabled]="false"
+          value=""
+          placeholder="{{ 'NAME' | translate }}"
+          [optional]="false"
+          type="text"
+          [error]="(name.touched && name.errors?.required)"
+          [fullWidth]="true"
+          formControlName="name"
+          label="{{ 'NAME' | translate }}"
+          [hintText]="name.touched && name.errors?.required ? ('REQUIRED_FIELD' | translate)  : ''"
+        ></us-input>
+
+        <div class="form-group d-flex gap-lg-5 flex-column flex-lg-row flex-nowrap">
+          <label for="mobile" class="w-25 d-none d-lg-block text-nowrap">
+            <span class="txt txt-sm text-black text-wrap">{{ 'MOBILE_NUMBER' | translate }}</span>
+            <em class="text-danger">*</em>
+          </label>
+
+          <div class="w-100">
+            <ngx-intl-tel-input
+              [cssClass]="(mobile?.touched && mobile.invalid ? 'error' : '') + ' rounded-pill border border-1py-2 txt-input w-100'"
+              [enableAutoCountrySelect]="true"
+              [preferredCountries]="[CountryISO.UnitedArabEmirates]"
+              [enablePlaceholder]="true"
+              [searchCountryFlag]="true"
+              [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+              [selectFirstCountry]="false"
+              [selectedCountryISO]="CountryISO.Egypt"
+              [maxLength]="15"
+              [phoneValidation]="true"
+              [separateDialCode]="separateDialCode"
+              [numberFormat]="PhoneNumberFormat.National"
+              name="phone"
+              formControlName="mobile"
+            ></ngx-intl-tel-input>
+
+            <ng-container *ngIf="mobile?.touched && mobile?.errors?.required">
+              <div class="hint error">
+                <i class="si-info"></i>
+                <p class="txt txt-xs ">{{ 'REQUIRED_FIELD' | translate }}</p>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="mobile?.touched && mobile.invalid && !mobile?.errors?.required">
+              <div class="hint error">
+                <i class="si-info"></i>
+                <p class="txt txt-xs ">{{ 'INCORRECT_PHONE_NUMBER' | translate }}</p>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <us-input
+          [isDisabled]="false"
+          value=""
+          placeholder="{{ 'COMPANY_NAME' | translate }}"
+          [optional]="true"
+          type="text"
+          [error]="false"
+          [fullWidth]="true"
+          formControlName="cnName"
+          label="{{ 'COMPANY_NAME' | translate }}"
+        ></us-input>
+
+        <us-select
+          [data]="listsArr"
+          formControlName="selectedLists"
+          [multiSelect]="true"
+          [label]="'Lists'"
+          [placeholder]="'SELECT_LISTS' | translate"
+          [isDisabled]="false"
+          [optional]="true"
+          [loadingText]="listsLoadingText"
+          [enableSearch]="true"
+          [searchbarOnToggler]="true"
+          [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
+          [maxListItemsWithoutSearch]="5"
+        ></us-select>
+
+        <us-input
+          [isDisabled]="false"
+          placeholder="{{ 'NOTES' | translate }}"
+          [optional]="true"
+          type="text"
+          [error]="false"
+          [fullWidth]="true"
+          formControlName="note"
+          label="{{ 'NOTES' | translate }}"
+          [isTextArea]="true"
+        ></us-input>
+      </div>
     </form>
   </div>
 
   <!-- modal footer -->
-  <div class="modal-footer justify-content-center gap-3"  style="height: 10%;">
-
+  <div class="modal-footer justify-content-center gap-3" style="height: 10%;">
     <us-button
-      label="Cancel"
+      label="{{ 'CANCEL' | translate }}"
       size="sm"
       appearance="primary"
       [fill]="false"
       (clicked)="onClose()"
       [loading]="false"
     ></us-button>
-    <us-button  *ngIf="!isEdit"
-    label="Save"
-    size="sm"
-    [loading]="isLoading"
-    [fill]="true"
-    (clicked)="submitAdd()"
-    [disabled]="form.invalid || isLoading"
-  ></us-button>
-  <us-button
-  *ngIf="isEdit"
-  label="Save"
-  size="sm"
-  [loading]="isLoading"
-  [fill]="true"
-  (clicked)="submitEdit()"
-  [disabled]="form.invalid || isLoading"
-  ></us-button>
+    <us-button *ngIf="!isEdit" label="{{ 'SAVE' | translate }}" size="sm" [loading]="isLoading" [fill]="true" (clicked)="submitAdd()" [disabled]="form.invalid || isLoading"></us-button>
+    <us-button *ngIf="isEdit" label="{{ 'SAVE' | translate }}" size="sm" [loading]="isLoading" [fill]="true" (clicked)="submitEdit()" [disabled]="form.invalid || isLoading"></us-button>
   </div>
 </section>

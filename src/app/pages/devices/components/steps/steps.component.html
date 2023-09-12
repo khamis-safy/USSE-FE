@@ -1,133 +1,111 @@
 <section class="h-100 position-relative d-flex  flex-column">
-
-    <div class="position-absolute end-0 pointer ranslate-middle-y mx-5 zi-3 " style="height: 5%; top:45px ">
-      <img
-        src="assets/icons/close-circle.svg"
-        (click)="onClose()"
-        alt="close-icon"
-        width="35px"
-        style="cursor: pointer;"
-      />
-    </div>
-
-
-<ng-container *ngIf="!isLoading && steps && !addDevice && !scanDevice">
-  <div class=" div-content" >
-    <div class="d-flex justify-content-center    align-items-center position-relative  ">
-      <div class="  images-steps-img mx-lg-4 ">
-        <img src="../../../../../assets/images/1.svg" alt="" class="w-100">
-      </div>
-      <div class="images-steps-arrows ">
-        <img src="../../../../../assets/images/path3035.svg" alt="" class="w-100">
-      </div>
-      <div class=" images-steps-img  mx-lg-4">
-        <img src="../../../../../assets/images/2.svg" alt="" class="w-100">
-      </div>
-      <div class="  images-steps-arrows  ">
-        <img src="../../../../../assets/images/path3035.svg" alt="" class="w-100">
-      </div>
-      <div class=" images-steps-img  mx-lg-4">
-        <img src="../../../../../assets/images/3.svg" alt="" class="w-100">
-      </div>
-       <div class="images-steps-arrows " style="position: absolute; bottom: -24%; right: 7%; ">
-      <img src="../../../../../assets/images/Group.svg" alt=""   class="w-75">
-    </div>
-    </div>
-    <!-- mt-0 mb-0 pb-0  pt-0  ms-5  ms-md-1-->
-    <div class="d-flex justify-content-center align-items-center flex-row-reverse">
-      <div class="images-steps-img " style="width: 37%;">
-        <img src="../../../../../assets/images/Rectangle 110863.svg" alt="" width="100%" height="100%">
-      </div>
-      <div style="width: 33%;">
-        <h3 style="color:  black;   " class="mb-0 mt-0 pt-0">Steps</h3>
-        <ol type="1" class="circles ">
-          <li class="pb-1">
-            Open WhatsApp on your phone.
-          </li>
-          <li class="pb-1">
-            Tap the three-dot menu.
-          </li>
-          <li class="pb-1">
-            Tap Linked devices.
-          </li>
-          <li class="pb-1">
-            Click on Link a device.
-          </li>
-          <li class="">
-            Point your camera to the screen
-            to scan the WhatsApp QR Code.
-          </li>
-        </ol>
-      </div> </div>
-      <!-- -------------------------- -->
-
-
-
-
-
-      <!-- ---------------------->
-
-    <div class="modal-footer justify-content-center gap-3" style="height: 10%;">
-      <us-button class="m-2" label="Scan Now" [fill]="true" [size]="'sm'" [loading]="false" [disabled]="false"
-        [appearance]="'primary'" (clicked)="scanCode()"></us-button>
-    </div>
-    <div style="position: absolute; bottom: 0px; right: 5rem; " class="hand-img">
-      <img src="../../../../../assets/images/Group 1171276337.svg" alt="" width="100%">
-    </div>
+  <div class="position-absolute end-0 pointer ranslate-middle-y mx-5 zi-3 " style="height: 5%; top:45px ">
+      <img src="assets/icons/close-circle.svg" (click)="onClose()" alt="close-icon" width="35px" style="cursor: pointer;" />
   </div>
 
-</ng-container>
+  <ng-container *ngIf="!isLoading && steps && !addDevice && !scanDevice">
+      <div class=" div-content">
+          <div class="d-flex justify-content-center    align-items-center position-relative  ">
+              <div class="  images-steps-img mx-lg-4 ">
+                  <img src="../../../../../assets/images/1.svg" alt="" class="w-100">
+              </div>
+              <div class="images-steps-arrows ">
+                  <img src="../../../../../assets/images/path3035.svg" alt="" class="w-100">
+              </div>
+              <div class=" images-steps-img  mx-lg-4">
+                  <img src="../../../../../assets/images/2.svg" alt="" class="w-100">
+              </div>
+              <div class="  images-steps-arrows  ">
+                  <img src="../../../../../assets/images/path3035.svg" alt="" class="w-100">
+              </div>
+              <div class=" images-steps-img  mx-lg-4">
+                  <img src="../../../../../assets/images/3.svg" alt="" class="w-100">
+              </div>
+              <div class="images-steps-arrows " style="position: absolute; bottom: -24%; right: 7%; ">
+                  <img src="../../../../../assets/images/Group.svg" alt="" class="w-75">
+              </div>
+          </div>
 
+          <div class="d-flex justify-content-center align-items-center flex-row-reverse">
+              <div class="images-steps-img " style="width: 37%;">
+                  <img src="../../../../../assets/images/Rectangle 110863.svg" alt="" width="100%" height="100%">
+              </div>
+              <div style="width: 33%;">
+                  <h3 style="color:  black;   " class="mb-0 mt-0 pt-0">{{ 'steps' | translate }}</h3>
+                  <ol type="1" class="circles">
+                      <li class="pb-1">
+                          {{ 'step_1' | translate }}
+                      </li>
+                      <li class="pb-1">
+                          {{ 'step_2' | translate }}
+                      </li>
+                      <li class="pb-1">
+                          {{ 'step_3' | translate }}
+                      </li>
+                      <li class="pb-1">
+                          {{ 'step_4' | translate }}
+                      </li>
+                      <li class="">
+                          {{ 'step_5' | translate }}
+                      </li>
+                  </ol>
+              </div>
+          </div>
 
-<ng-container *ngIf="isLoading && !steps && !addDevice && !scanDevice">
-  <div class="p-5 h-100" >
-
-    <div class="p-3 d-flex justify-content-center align-items-center flex-column gap-5 h-100">
-
-      <div class="spinner-container mb-5">
-        <svg width="120" height="120" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <style>
-            .spinner_0XTQ {
-              transform-origin: center;
-              animation: spinner_y6GP .75s linear infinite
-            }
-
-            @keyframes spinner_y6GP {
-              100% {
-                transform: rotate(360deg)
-              }
-            }
-          </style>
-          <path class="spinner_0XTQ"
-            d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z" />
-        </svg>
+          <div class="modal-footer justify-content-center gap-3" style="height: 10%;">
+              <us-button class="m-2" label="{{ 'scan_now' | translate }}" [fill]="true" [size]="'sm'" [loading]="false" [disabled]="false"
+                  [appearance]="'primary'" (clicked)="scanCode()"></us-button>
+          </div>
+          <div style="position: absolute; bottom: 0px; right: 5rem; " class="hand-img">
+              <img src="../../../../../assets/images/Group 1171276337.svg" alt="" width="100%">
+          </div>
       </div>
+  </ng-container>
 
-      <p style="font-size: 30px; color: rgba(0, 0, 0, 0.57);">
-        Please wait, QR code is loading...
-      </p>
-    </div>
-  </div>
-</ng-container>
+  <ng-container *ngIf="isLoading && !steps && !addDevice && !scanDevice">
+      <div class="p-5 h-100" >
+          <div class="p-3 d-flex justify-content-center align-items-center flex-column gap-5 h-100">
+              <div class="spinner-container mb-5">
+                  <svg width="120" height="120" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <style>
+                          .spinner_0XTQ {
+                              transform-origin: center;
+                              animation: spinner_y6GP .75s linear infinite
+                          }
 
-<ng-container *ngIf="!isLoading && !steps && !addDevice && scanDevice">
-  <div class="p-5 h-100" >
-
-    <div class="p-3 d-flex justify-content-center align-items-center flex-column gap-5 h-100">
-
-      <div class=" qr-code  p-5" style="border:1px solid rgba(0, 101, 141, 1); ">
-        <img [src]="qrCode" alt="">
+                          @keyframes spinner_y6GP {
+                              100% {
+                                  transform: rotate(360deg)
+                              }
+                          }
+                      </style>
+                      <path class="spinner_0XTQ"
+                          d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z" />
+                  </svg>
+              </div>
+              <p style="font-size: 30px; color: rgba(0, 0, 0, 0.57);">
+                  {{ 'please_wait_qr_code_loading' | translate }}
+              </p>
+          </div>
       </div>
-      <p style="font-size: 30px; color: rgba(0, 0, 0, 0.57);">
-        Scan this QR Code to preview
-      </p>
-    </div>
-  </div>
-</ng-container>
+  </ng-container>
 
-<ng-container *ngIf="!isLoading && !steps && addDevice && !scanDevice">
-  <div class="p-5 h-100">
-    <app-addDevice [sessionName]="sessionNB" [token]="tokenB" (isClose)="onAddClose($event)"></app-addDevice>
-  </div>
-</ng-container>
+  <ng-container *ngIf="!isLoading && !steps && !addDevice && scanDevice">
+      <div class="p-5 h-100" >
+          <div class="p-3 d-flex justify-content-center align-items-center flex-column gap-5 h-100">
+              <div class=" qr-code  p-5" style="border:1px solid rgba(0, 101, 141, 1); ">
+                  <img [src]="qrCode" alt="">
+              </div>
+              <p style="font-size: 30px; color: rgba(0, 0, 0, 0.57);">
+                  {{ 'scan_this_qr_code_to_preview' | translate }}
+              </p>
+          </div>
+      </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading && !steps && addDevice && !scanDevice">
+      <div class="p-5 h-100">
+          <app-addDevice [sessionName]="sessionNB" [token]="tokenB" (isClose)="onAddClose($event)"></app-addDevice>
+      </div>
+  </ng-container>
 </section>

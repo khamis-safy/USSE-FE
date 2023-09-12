@@ -2,114 +2,110 @@
   <div class="row">
     <div
       class="mx-auto bg-primary-200 text-center vh-100 col-md-4 p-5 d-flex flex-column justify-content-center align-items-center"
-      style=" box-shadow: 0px 11px 22px 0px #00000029"
+      style="box-shadow: 0px 11px 22px 0px #00000029"
     >
       <div class="col-md-11 mx-auto text-center">
-        <img src="/assets/images/logo.svg" alt="" class="my-3" />
+        <img src="/assets/images/logo.svg" alt="myLogo" class="my-3" />
         <h3 class="my-3" style="font-family: Poppins; font-weight: 500">
-          Welcome back! Login into your account
+          {{ 'WELCOME_BACK' | translate }}
         </h3>
-    <form [formGroup]="form" class="w-100">
-        <div class="col-md-12 mb-4">
+        <form [formGroup]="form" class="w-100">
+          <div class="col-md-12 mb-4">
+            <us-input
+              [isDisabled]="false"
+              value=""
+              [placeholder]="'ENTER_YOUR_EMAIL' | translate"
+              [optional]="false"
+              type="text"
+              [fullWidth]="true"
+              formControlName="email"
+              label="{{ 'EMAIL' | translate }}"
+              [error]="email.touched && (email.errors?.required || email.errors?.pattern)"
+              [hintText]="
+                email.touched && email.errors?.required
+                  ? ('THIS_FIELD_IS_REQUIRED' | translate)
+                  : email.dirty && email.errors?.pattern
+                  ? ('INVALID_EMAIL' | translate)
+                  : ''
+              "
+            ></us-input>
+          </div>
 
-        <us-input
-      [isDisabled]="false"
-      value=""
-      [placeholder]="'Enter your email'"
-      [optional]="false"
-      type="text"
-      [fullWidth]="true"
-      formControlName="email"
-      label="Email"
-      [error]=" (email.touched && email.errors?.required || email.dirty && email.errors?.pattern)"
-      [hintText]=" email.touched && email.errors?.required ? 'This filed is required':email.dirty && email.errors?.pattern?'invalid email':'' "
-
-      ></us-input>
-      </div>
-
-        <div class="col-md-12 my-2 mb-4 mb-5">
-
-          <us-input
-          [isDisabled]="false"
-          value=""
-          [placeholder]="'Enter your password'"
-          [optional]="false"
-          type="password"
-          [fullWidth]="true"
-          formControlName="password"
-          label="password"
-          [error]=" (password.touched && password.errors?.required)"
-          [hintText]=" password.touched && password.errors?.required ? 'This filed is required':'' "
-          ></us-input>
-        </div>
-        <div class="w-100">
-
-          <us-button
-            label="Login"
-            [fill]="true"
-            [size]="'xl'"
-            [loading]="loading"
-            [disabled]="loading || form.invalid"
-            [appearance]="'primary'"
-            (clicked)="login()"
-            [fullWidth]="true"
-          >
-          </us-button>
-        </div>
-       <div *ngIf="invalid" class="hint error mt-2" > <i class="si-info"></i>
-        <p class="txt hint error  txt-xs">{{hintMessage}}</p></div>
-
-      </form>
+          <div class="col-md-12 my-2 mb-4 mb-5">
+            <us-input
+              [isDisabled]="false"
+              value=""
+              [placeholder]="'ENTER_YOUR_PASSWORD' | translate"
+              [optional]="false"
+              type="password"
+              [fullWidth]="true"
+              formControlName="password"
+              label="{{ 'PASSWORD' | translate }}"
+              [error]="password.touched && password.errors?.required"
+              [hintText]="
+                password.touched && password.errors?.required
+                  ? ('THIS_FIELD_IS_REQUIRED' | translate)
+                  : ''
+              "
+            ></us-input>
+          </div>
+          <div class="w-100">
+            <us-button
+              label="{{ 'LOGIN' | translate }}"
+              [fill]="true"
+              [size]="'xl'"
+              [loading]="loading"
+              [disabled]="loading || form.invalid"
+              [appearance]="'primary'"
+              (clicked)="login()"
+              [fullWidth]="true"
+            ></us-button>
+          </div>
+          <div *ngIf="invalid" class="hint error mt-2">
+            <i class="si-info"></i>
+            <p class="txt hint error txt-xs">{{ hintMessage | translate }}</p>
+          </div>
+        </form>
         <div class="d-flex justify-content-center align-items-center my-3">
           <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
           <div class="mx-2">
-            <p style="color: #b5b3b3">Or</p>
+            <p style="color: #b5b3b3">{{ 'OR' | translate }}</p>
           </div>
           <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
         </div>
       </div>
 
-
       <div class="w-100">
         <us-button
-          label="Login with Google"
+          label="{{ 'LOGIN_WITH_GOOGLE' | translate }}"
           [size]="'xl'"
           [loading]="false"
           [disabled]="false"
-          img="assets/images/google logo.svg"
+          img="/assets/images/google logo.svg"
           [appearance]="'primary'"
           class="my-2"
           [fill]="false"
           [fullWidth]="true"
-
-        >
-      </us-button>
-    </div>
+        ></us-button>
+      </div>
       <div class="col-md-12">
-
         <div class="d-flex my-3 justify-content-center">
-          <p style="font-weight: 500" class="mx-2">Don’t have an account?</p>
+          <p style="font-weight: 500" class="mx-2">{{ 'DONT_HAVE_AN_ACCOUNT' | translate }}</p>
           <a
             style="text-decoration: none; font-weight: 500"
             routerLink="/signup"
-            >Signup
-          </a>
+            >{{ 'SIGNUP' | translate }}</a
+          >
         </div>
       </div>
     </div>
     <div
-      class="col-md-8 p-5 pt-1   mx-auto d-flex flex-column align-items-center justify-content-center text-center mx-auto"
+      class="col-md-8 p-5 pt-1 mx-auto d-flex flex-column align-items-center justify-content-center text-center mx-auto"
     >
       <div class="w-75 text-center mx-auto">
-        <img
-          src="assets/images/Connected-cuate 2.svg"
-          alt=""
-          class="w-100 text-center mx-auto"
-        />
+        <img src="/assets/images/Connected-cuate 2.svg" alt="connectedLogo" class="w-100 text-center mx-auto" />
         <p class="text-center mx-auto" style="color: #292a32">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum is simply dummy text of the printing and
-          typesetting industry.
+          {{ 'LOREM_IPSUM' | translate }}
         </p>
       </div>
     </div>

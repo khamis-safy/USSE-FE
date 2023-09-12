@@ -11,6 +11,7 @@ import { PreviewComponent } from './modals/preview/preview.component';
 import { SafeURLPipe } from '../safeURL.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [		DragZoneComponent,UsButtonComponent,
@@ -26,7 +27,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     ReactiveFormsModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    TranslateModule
   ],
   exports: [DragZoneComponent,UsButtonComponent,
     UsButtonDirective,SpinnerComponent

@@ -1,131 +1,109 @@
-<section class="py-3 d-flex flex-column gap-3 " >
+<section class="py-3 d-flex flex-column gap-3">
   <ng-container *ngIf="!noData">
 
-  <div class="d-flex justify-content-end mb-3 align-items-center ">
-    <div class="d-flex  align-items-center gap-3">
-      <form [formGroup]="form" style="width: 60%;">
-        <us-select
-        [data]="devices"
-        formControlName="devicesData"
-        [multiSelect]="false"
-        [label]="'Devices'"
-        (onSelect)="onSelect($event)"
-        [loadingText]="deviceLoadingText"
-        [placeholder]="'Select Devices'"
-        [isDisabled]="false"
-        [optional]="true"
-        [enableSearch]="true"
-        [searchbarOnToggler]="true"
-        [searchNoResultText]="'there is no result'"
-        [maxListItemsWithoutSearch]="5"
-      ></us-select>
-      </form>
-      <mat-form-field class="us-select ">
-        <mat-label class="txt-caption"> <img src="assets/icons/display.svg" alt="" class="m-2" width="15"> <span class="txt-caption" style="font-size: 12px !important;">Display</span></mat-label>
-        <mat-select [formControl]="columns"  (selectionChange)="changeColumns($event.value)" multiple>
-          <mat-option *ngFor="let topping of displayed" [value]="topping">{{topping}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
+    <div class="d-flex justify-content-end mb-3 align-items-center">
+      <div class="d-flex align-items-center gap-3">
+        <form [formGroup]="form" style="width: 60%;">
+          <us-select
+            [data]="devices"
+            formControlName="devicesData"
+            [multiSelect]="false"
+            [label]="'Devices' | translate"
+            (onSelect)="onSelect($event)"
+            [loadingText]="deviceLoadingText"
+            [placeholder]="'Select Devices' | translate"
+            [isDisabled]="false"
+            [optional]="true"
+            [enableSearch]="true"
+            [searchbarOnToggler]="true"
+            [searchNoResultText]="'there is no result' | translate"
+            [maxListItemsWithoutSearch]="5"
+          ></us-select>
+        </form>
+        <mat-form-field class="us-select">
+          <mat-label class="txt-caption">
+            <img src="assets/icons/display.svg" alt="" class="m-2" width="15">
+            <span class="txt-caption" style="font-size: 12px !important;">{{ 'Display' | translate }}</span>
+          </mat-label>
+          <mat-select [formControl]="columns" (selectionChange)="changeColumns($event.value)" multiple>
+            <mat-option *ngFor="let topping of displayed" [value]="topping">{{ topping }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-  </div>
-</ng-container>
-<ng-container *ngIf="length>0 && !noData">
-  <section class="table-wrapper " >
-    <table mat-table [dataSource]="dataSource" class="table-wrapper   " >
-
-      <!-- deviceName Column -->
-      <ng-container matColumnDef="Device Name">
-        <th class="text-center" mat-header-cell *matHeaderCellDef>
-          Device Name
-        </th>
-        <td class="text-center" mat-cell *matCellDef="let element">
-          {{ element.device?.deviceName}}
-        </td>
-      </ng-container>
-
-      <!-- Sender Column -->
-      <ng-container matColumnDef="Recipient">
-        <th class="text-center" mat-header-cell *matHeaderCellDef >Recipient</th>
-        <td class="text-center" mat-cell *matCellDef="let element" style="width: 250px;">
-          <div class="d-flex justify-content-center align-items-center w-100 zi-4"  (click)="onCellClick(element?.targetPhoneNumber) ;cellClick=true">
-
-              <span class="txt-sm total">{{ element?.targetPhoneNumber?.length}}</span>
-
-          </div>
-
-        </td>
-
-
-      </ng-container>
-
-      <!-- Messages Column -->
-      <ng-container matColumnDef="Messages">
-        <th class="text-center" mat-header-cell *matHeaderCellDef>
-          Messages
-        </th>
-        <td class="text-center" mat-cell *matCellDef="let element">
-          {{ element.msgBody }}
-        <div *ngIf="element?.fileName=='image'" class="text-start ms-4  pt-2 pb-3">
-          <img src="assets/images/image.svg" alt="">
-        </div>
-        <div *ngIf="element?.fileName=='document'" class="text-start ms-4  pt-2 pb-3">
-          <img src="assets/images/document.svg" alt="">
-        </div>
-      </ng-container>
-
-        <!-- Created at Column -->
-        <ng-container matColumnDef="Created At">
+    </div>
+  </ng-container>
+  <ng-container *ngIf="length > 0 && !noData">
+    <section class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" class="table-wrapper">
+        <!-- deviceName Column -->
+        <ng-container matColumnDef="Device Name">
           <th class="text-center" mat-header-cell *matHeaderCellDef>
-            Created At
+            {{ 'DEVICE_NAME' | translate }}
           </th>
           <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element.createdAt | toLocalTime | date: 'h:mm a , M/d/y '}}
+            {{ element.device?.deviceName }}
           </td>
         </ng-container>
 
-      <!-- Scheduled at Column -->
-      <ng-container matColumnDef="Scheduled At">
-        <th class="text-center" mat-header-cell *matHeaderCellDef>
-          Scheduled At
-        </th>
-        <td class="text-center" mat-cell *matCellDef="let element">
-          {{ element.scheduledAt | toLocalTime | date: 'h:mm a , M/d/y '}}
-        </td>
-      </ng-container>
+        <!-- Recipient Column -->
+        <ng-container matColumnDef="Recipient">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'RECIPIENT' | translate }}</th>
+          <td class="text-center" mat-cell *matCellDef="let element" style="width: 250px;">
+            <div class="d-flex justify-content-center align-items-center w-100 zi-4" (click)="onCellClick(element?.targetPhoneNumber); cellClick=true">
+              <span class="txt-sm total">{{ element?.targetPhoneNumber?.length }}</span>
+            </div>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
-      <ng-container *ngIf="!loading">
+        <!-- Messages Column -->
+        <ng-container matColumnDef="Messages">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'MESSAGES' | translate }}</th>
+          <td class="text-center" mat-cell *matCellDef="let element">
+            {{ element.msgBody }}
+            <div *ngIf="element?.fileName=='image'" class="text-start ms-4 pt-2 pb-3">
+              <img src="assets/images/image.svg" alt="">
+            </div>
+            <div *ngIf="element?.fileName=='document'" class="text-start ms-4 pt-2 pb-3">
+              <img src="assets/images/document.svg" alt="">
+            </div>
+          </td>
+        </ng-container>
 
-      <tr class="pointer" (click)="displayMessage(row) ; cellClick=false"  mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
-        [ngClass]="{'active-row':selection.isSelected(row)}"
-        >
-      </tr>
-    </ng-container>
-    </table>
-    <div *ngIf="loading" class="spinner-container p-3">
-      <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
+        <!-- Created at Column -->
+        <ng-container matColumnDef="Created At">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'CREATED_AT' | translate }}</th>
+          <td class="text-center" mat-cell *matCellDef="let element">
+            {{ element.createdAt | toLocalTime | date: 'h:mm a, M/d/y ' }}
+          </td>
+        </ng-container>
+
+        <!-- Scheduled at Column -->
+        <ng-container matColumnDef="Scheduled At">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'SCHEDULED_AT' | translate }}</th>
+          <td class="text-center" mat-cell *matCellDef="let element">
+            {{ element.scheduledAt | toLocalTime | date: 'h:mm a, M/d/y ' }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+        <ng-container *ngIf="!loading">
+          <tr class="pointer" (click)="displayMessage(row); cellClick=false" mat-row *matRowDef="let row; columns: displayedColumns; let i = index;" [ngClass]="{'active-row': selection.isSelected(row)}">
+          </tr>
+        </ng-container>
+      </table>
+      <div *ngIf="loading" class="spinner-container p-3">
+        <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
+      </div>
+
+      <mat-paginator (page)="onPageChange($event)" [pageSizeOptions]="[10, 50, 100]" [length]="length" showFirstLastButtons aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </section>
+  </ng-container>
+
+  <ng-container *ngIf="length == 0 && (!loading || noData)">
+    <div class="d-flex justify-content-center align-items-center flex-column gap-3 w-100" style="height: 500px;">
+      <img src="assets/images/files.svg" alt="">
+      <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA_TO_SHOW' | translate }}</span>
     </div>
-
-    <mat-paginator
-    (page)="onPageChange($event)"
-    [pageSizeOptions]="[10, 50, 100]"
-    [length]="length"
-        showFirstLastButtons
-        aria-label="Select page of periodic elements">
-    </mat-paginator>
-
-  </section>
-</ng-container>
-
-<ng-container *ngIf="length==0 && (!loading || noData)">
-
-  <div class="d-flex justify-content-center align-items-center flex-column gap-3  w-100" style="height: 500px;">
-    <img src="assets/images/files.svg" alt="">
-    <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">No data to show</span>
-  </div>
-
-</ng-container>
-
-
+  </ng-container>
 </section>

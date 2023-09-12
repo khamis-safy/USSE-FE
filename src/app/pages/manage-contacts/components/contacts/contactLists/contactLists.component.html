@@ -1,79 +1,73 @@
 <section class="d-flex flex-column p-5 gap-3 h-100">
   <!-- modal header -->
   <div class="d-flex justify-content-between align-items-center mb-4 " style="height: 10%;">
-
-    <div class="txt-lg" style="font-weight: 800;">Add Contacts to Lists</div>
-
-      <img
-        src="assets/icons/close-circle.svg"
-        (click)="onClose()"
-        alt="close-icon"
-        style="cursor: pointer;"
-      />
-    </div>
+    <div class="txt-lg" style="font-weight: 800;">{{ 'ADD_CONTACTS_TO_LISTS' | translate }}</div>
+    <img
+      src="assets/icons/close-circle.svg"
+      (click)="onClose()"
+      alt="{{ 'CLOSE_ICON_ALT_TEXT' | translate }}"
+      style="cursor: pointer;"
+    />
+  </div>
 
   <!-- modal body  -->
-  <div class="table-container px-3"  style="height: 80%;">
-    <table  mat-table [dataSource]="dataSource"  matSort (matSortChange)="onSortChange($event)" >
+  <div class="table-container px-3" style="height: 80%;">
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)">
       <!-- Checkbox Column -->
-        <!-- Checkbox Column -->
-  <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef>
-      <mat-checkbox color="bg-primary-400" (change)="$event ? toggleAllRows() : null"
-                    [checked]="selection.hasValue() && isAllSelected()"
-                    [indeterminate]="selection.hasValue() && !isAllSelected()"
-                    [aria-label]="checkboxLabel()">
-      </mat-checkbox>
-    </th>
-    <td mat-cell *matCellDef="let row">
-      <mat-checkbox color="ch-color" (click)="$event.stopPropagation()"
-                    (change)="$event ? selection.toggle(row) : null"
-                    [checked]="selection.isSelected(row)"
-                    [aria-label]="checkboxLabel(row)">
-      </mat-checkbox>
-    </td>
-  </ng-container>
- <!-- myLists Column -->
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            color="bg-primary-400"
+            (change)="$event ? toggleAllRows() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+            [aria-label]="checkboxLabel()"
+          ></mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            color="ch-color"
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)"
+            [aria-label]="checkboxLabel(row)"
+          ></mat-checkbox>
+        </td>
+      </ng-container>
+      <!-- My Lists Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> My Lists </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'MY_LISTS' | translate }}</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
       </ng-container>
 
       <!-- Contacts Column -->
       <ng-container matColumnDef="totalContacts">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Contacts </th>
-        <td mat-cell *matCellDef="let element"><span class="contacts"> {{element.totalContacts}}</span></td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'CONTACTS' | translate }}</th>
+        <td mat-cell *matCellDef="let element"><span class="contacts">{{ element.totalContacts }}</span></td>
       </ng-container>
 
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
-
-        >
-      </tr>
-
-
+      <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"></tr>
     </table>
   </div>
 
   <!-- modal footer -->
-  <div class="modal-footer justify-content-center gap-3"  style="height: 10%;">
-
+  <div class="modal-footer justify-content-center gap-3" style="height: 10%;">
     <us-button
-      label="Cancel"
+      label="{{ 'CANCEL' | translate }}"
       size="sm"
       [fill]="false"
       (clicked)="onClose()"
       [loading]="false"
     ></us-button>
     <us-button
-    label="Save"
-    size="sm"
-    [loading]="isLoading"
-    [fill]="true"
-    (clicked)="submitAdd()"
-    [disabled]="!contacts || isLoading"
-  ></us-button>
-
+      label="{{ 'SAVE' | translate }}"
+      size="sm"
+      [loading]="isLoading"
+      [fill]="true"
+      (clicked)="submitAdd()"
+      [disabled]="!contacts || isLoading"
+    ></us-button>
   </div>
 </section>

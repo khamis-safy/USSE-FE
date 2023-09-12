@@ -43,6 +43,7 @@ import { NbTimepickerModule, NbDatepickerModule, NbToggleModule } from '@nebular
 
 import { ToLocalTimePipe } from './pipes/toLocalTime.pipe';
 import { SideBarComponent } from './components/side-bar/component/side-bar.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -78,7 +79,8 @@ import { SideBarComponent } from './components/side-bar/component/side-bar.compo
     MatExpansionModule,
     DragZoneModule,
     NbTimepickerModule,
-    NbDatepickerModule
+    NbDatepickerModule,
+    TranslateModule
 
   ],
   declarations: [
@@ -131,7 +133,9 @@ import { SideBarComponent } from './components/side-bar/component/side-bar.compo
     TagModule,
     NbTimepickerModule,
     NbDatepickerModule,
-    NbToggleModule
+    NbToggleModule,
+    TranslateModule
+
   ],
   providers:[ToasterServices]
 })

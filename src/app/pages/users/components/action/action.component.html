@@ -1,91 +1,69 @@
 <div class="w-100 mt-5 mx-auto">
-
-
-<div class="d-flex  flex-column">
+  <div class="d-flex flex-column">
     <!-- shared -->
-    <span style="    font-size: 16px;
-    font-weight: 500;
-    margin-block: 20px 15px;">Application levels</span>
-    <div *ngFor="let sharedSection of sharedPermisions" class="w-100 d-flex my-4" >
-      <div class="d-flex  align-content-center" style="width: 30%;">
+    <span style="font-size: 16px; font-weight: 500; margin-block: 20px 15px;">{{ 'APPLICATION_LEVELS' | translate }}</span>
+    <div *ngFor="let sharedSection of sharedPermisions" class="w-100 d-flex my-4">
+      <div class="d-flex align-content-center" style="width: 30%;">
         <img width="8%" [src]="sharedSection.section.icon" alt="" class="me-md-2">
         <span width="70%" class="txt-sm">{{ sharedSection.section.label }}</span>
       </div>
-  <div class="d-flex align-content-center justify-content-around" style="width: 70%;">
-    <div *ngFor="let accessLevel of sharedSection.accessLevels" >
-
-
-      <input width="15%"
-      [checked]="accessLevel.checked"
-      (change)="onAccessLevelChange(sharedSection, accessLevel)"
-      class="me-md-2"
-      type="radio"
-      [id]="accessLevel.value + sharedSection.section.name"
-      [name]="sharedSection.section.name + accessLevel.value"
-      [value]="accessLevel.value"
-      #input>
-      <label width="70%" [for]="accessLevel.value +sharedSection.section.name">{{ accessLevel.value }}</label>
-
-
+      <div class="d-flex align-content-center justify-content-around" style="width: 70%;">
+        <div *ngFor="let accessLevel of sharedSection.accessLevels">
+          <input width="15%"
+            [checked]="accessLevel.checked"
+            (change)="onAccessLevelChange(sharedSection, accessLevel)"
+            class="me-md-2"
+            type="radio"
+            [id]="accessLevel.value + sharedSection.section.name"
+            [name]="sharedSection.section.name + accessLevel.value"
+            [value]="accessLevel.value"
+            #input>
+          <label width="70%" [for]="accessLevel.value + sharedSection.section.name">{{ accessLevel.value }}</label>
+        </div>
+      </div>
     </div>
+    <!-- for each device -->
+    <ng-container *ngIf="!noDevices">
+      <div class="line my-2"></div>
+      <span style="font-size: 16px; font-weight: 500; margin-block: 20px 15px;">{{ 'DEVICE_LEVELS' | translate }}</span>
+      <!-- device -->
+      <form [formGroup]="form" class="my-2">
+        <us-select
+          [data]="devices"
+          formControlName="devicesData"
+          [multiSelect]="false"
+          [label]="'devicesLabel' | translate"
+          (onSelect)="onSelect($event)"
+          [loadingText]="deviceLoadingText"
+          [placeholder]="'Select Devices'"
+          [isDisabled]="false"
+          [optional]="true"
+          [enableSearch]="true"
+          [searchbarOnToggler]="true"
+          [searchNoResultText]="'there is no result'"
+          [maxListItemsWithoutSearch]="5"
+        ></us-select>
+      </form>
+      <div *ngFor="let sectionLevel of selectedDevice?.sectionsLevels" class="w-100 d-flex my-4">
+        <div class="d-flex align-content-center" style="width: 30%;">
+          <img width="8%" [src]="sectionLevel?.section?.icon" alt="" class="me-md-2">
+          <span width="70%" class="txt-sm">{{ sectionLevel?.section?.label }}</span>
+        </div>
+        <div class="d-flex align-content-center justify-content-around" style="width: 70%;">
+          <div *ngFor="let accessLevel of sectionLevel?.accessLevels">
+            <input width="15%"
+              [checked]="accessLevel.checked"
+              (change)="onAccessLevelChange(sectionLevel, accessLevel)"
+              class="me-md-2"
+              type="radio"
+              [id]="accessLevel.value + sectionLevel.section.name"
+              [name]="sectionLevel.section.name + accessLevel.value"
+              [value]="accessLevel.value"
+              #input>
+            <label width="70%" [for]="accessLevel.value + sectionLevel.section.name">{{ accessLevel.value }}</label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </div>
-
-    </div>
-<!-- for each device -->
-<ng-container *ngIf="!noDevices">
-<div class="line my-2"></div>
-<span style="    font-size: 16px;
-    font-weight: 500;
-    margin-block: 20px 15px;">Device levels</span>
-  <!-- device -->
-  <form [formGroup]="form" class="my-2" >
-    <us-select
-    [data]="devices"
-    formControlName="devicesData"
-    [multiSelect]="false"
-    [label]="'Devices'"
-    (onSelect)="onSelect($event)"
-    [loadingText]="deviceLoadingText"
-    [placeholder]="'Select Devices'"
-    [isDisabled]="false"
-    [optional]="true"
-    [enableSearch]="true"
-    [searchbarOnToggler]="true"
-    [searchNoResultText]="'there is no result'"
-    [maxListItemsWithoutSearch]="5"
-  ></us-select>
-
-  </form>
-
-  <div *ngFor="let sectionLevel of selectedDevice?.sectionsLevels" class="w-100 d-flex my-4" >
-    <div class="d-flex  align-content-center" style="width: 30%;">
-      <img width="8%" [src]="sectionLevel?.section?.icon" alt="" class="me-md-2">
-      <span width="70%" class="txt-sm">{{ sectionLevel?.section?.label }}</span>
-    </div>
-<div class="d-flex align-content-center justify-content-around" style="width: 70%;">
-  <div *ngFor="let accessLevel of sectionLevel?.accessLevels" >
-
-
-    <input width="15%"
-    [checked]="accessLevel.checked"
-    (change)="onAccessLevelChange(sectionLevel, accessLevel)"
-    class="me-md-2"
-    type="radio"
-    [id]="accessLevel.value + sectionLevel.section.name"
-    [name]="sectionLevel.section.name + accessLevel.value"
-    [value]="accessLevel.value"
-    #input>
-    <label width="70%" [for]="accessLevel.value +sectionLevel.section.name">{{ accessLevel.value }}</label>
-
-
-  </div>
-</div>
-</div>
-</ng-container>
-
-
-
-
-
-</div>
 </div>

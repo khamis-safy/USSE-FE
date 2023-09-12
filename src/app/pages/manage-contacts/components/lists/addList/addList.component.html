@@ -1,13 +1,13 @@
 <section class="d-flex flex-column p-4 gap-3 h-100">
   <!-- modal header -->
   <div class="d-flex justify-content-center align-items-center position-relative mb-4 " style="height: 10%;">
-    <div *ngIf="!isEdit" class="txt-lg">Add List</div>
-    <div *ngIf="isEdit" class="txt-lg">Edit Data</div>
+    <div *ngIf="!isEdit" class="txt-lg">{{ 'ADD_LIST' | translate }}</div>
+    <div *ngIf="isEdit" class="txt-lg">{{ 'EDIT_DATA' | translate }}</div>
     <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
       <img
         src="assets/icons/close-circle.svg"
         (click)="onClose()"
-        alt="close-icon"
+        alt="{{ 'CLOSE_ICON_ALT_TEXT' | translate }}"
         style="cursor: pointer;"
       />
     </div>
@@ -16,19 +16,19 @@
   <div class="modal-body overflow-auto px-1"  style="height: 80%;">
     <form [formGroup]="form" class="w-100 m-auto">
       <div class="form-group">
-        <label for="name" class="mb-2 ">Name</label>
+        <label for="name" class="mb-2 ">{{ 'NAME_LABEL' | translate }}</label>
         <input
           type="text"
           class="form-control p-2"
           id="name"
-          placeholder="Enter Your Name"
+          placeholder="{{ 'ENTER_NAME_PLACEHOLDER' | translate }}"
           formControlName="name"
         />
       </div>
       <span  *ngIf="name.invalid && name.touched" class="animate__animated anime-duration-800 animate__fadeInUp text-danger d-flex gap-1 rounded-2  bg-opacity-10 p-2">
         <mat-icon class="text-danger" style="height: 20px;width: 20px; font-size: 20px;">error</mat-icon>
         <span class="text-danger text-wrap d-flex flex-column">
-          <span class="text-danger" *ngIf="name.errors.required">This filed is required</span>
+          <span class="text-danger" *ngIf="name.errors.required">{{ 'REQUIRED_FIELD_ERROR' | translate }}</span>
         </span>
       </span>
      <div class="row m-0 d-flex justify-content-center align-items-center my-4 ">
@@ -38,7 +38,6 @@
           src="assets/images/add-file.svg"
           alt=""
           style="object-fit: contain;opacity: .8;"
-
         />
 <ng-container *ngIf="isEdit">
   <div class="d-flex justify-content-center align-items-center flex-column edit"
@@ -63,7 +62,7 @@
   <!-- modal footer -->
   <div class="modal-footer justify-content-center gap-3"  style="height: 10%;">
     <us-button  *ngIf="!isEdit"
-      label="Add"
+      label="{{ 'ADD_LABEL' | translate }}"
       size="sm"
       [loading]="isLoading"
       [fill]="true"
@@ -72,7 +71,7 @@
     ></us-button>
     <us-button
     *ngIf="isEdit"
-    label="Update"
+    label="{{ 'UPDATE_LABEL' | translate }}"
     size="sm"
     [loading]="isLoading"
     [fill]="true"
@@ -80,7 +79,7 @@
     [disabled]="form.invalid || isLoading"
   ></us-button>
     <us-button
-      label="Cancel"
+      label="{{ 'CANCEL_LABEL' | translate }}"
       size="sm"
       [fill]="false"
       (clicked)="onClose()"

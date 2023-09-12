@@ -3,17 +3,17 @@
   <div class="d-flex justify-content-between pt-2 align-items-center">
     <div class="d-flex gap-3 flex-column ">
       <div >
-        <span class="text-primary-800 pointer "(click)="backTolists()" >Lists</span> / <span style="color:rgba(134, 134, 134, 1)">{{list?.name}}</span>
+        <span class="text-primary-800 pointer "(click)="backTolists()" >{{ 'LISTS' | translate }}</span> / <span style="color:rgba(134, 134, 134, 1)">{{ list?.name }}</span>
       </div>
 
-      <div *ngIf="list?.createdAt" class="mb-3 d-flex gap-2 align-items-center w-100"><p class="txt-lg" style="font-weight: 500;">{{list?.name}}</p> <p class="txt-xs mb-2" style="font-weight: 500; color:rgba(134, 134, 134, 1)">{{list?.createdAt | toLocalTime  | date: 'h:mm a , M/d/y '}}</p></div>
+      <div *ngIf="list?.createdAt" class="mb-3 d-flex gap-2 align-items-center w-100"><p class="txt-lg" style="font-weight: 500;">{{ list?.name }}</p> <p class="txt-xs mb-2" style="font-weight: 500; color:rgba(134, 134, 134, 1)">{{ list?.createdAt | toLocalTime  | date: 'h:mm a , M/d/y ' }}</p></div>
 
     </div>
     <div class="buttons_ ">
       <us-button
       *ngIf="isChecked  && canEdit"
         class="m-2"
-        label="Delete"
+        label="{{ 'DELETE' | translate }}"
         img="assets/icons/delete.svg"
         [iconClass]="'material-symbols-outlined'"
         [fill]="true"
@@ -26,7 +26,7 @@
       <us-button
       *ngIf="isChecked && tab=='contacts'  && canEdit "
         class="m-2"
-        label="Remove From List"
+        label="{{ 'REMOVE_FROM_LIST' | translate }}"
         img="assets/icons/delete.svg"
         [iconClass]="'material-symbols-outlined'"
         [fill]="true"
@@ -39,7 +39,7 @@
       <us-button
       *ngIf="tab=='contacts'  && canEdit"
       class="m-2"
-      label="Add Contact"
+      label="{{ 'ADD_CONTACT' | translate }}"
       [matIcon]="'add'"
       [fill]="true"
       [size]="'md'"
@@ -51,7 +51,7 @@
 
     <us-button
     class="m-2"
-    [label]="'Import File'"
+    [label]="'IMPORT_FILE' | translate"
     img="assets/icons/import.svg"
     [fill]="true"
     [size]="'md'"
@@ -63,7 +63,7 @@
 
       <us-button
         class="m-2"
-        [label]="isChecked?'Export Selected':'Export All'"
+        [label]="isChecked ? ('EXPORT_SELECTED'| translate) : 'EXPORT_ALL' | translate"
         img="assets/icons/export.svg"
         [fill]="true"
         [size]="'md'"
@@ -79,8 +79,8 @@
 
     <mat-tab>
       <ng-template mat-tab-label>
-        <span class="text-primary-800 me-2" style="font-weight: 800;">{{list?.totalContacts}}</span>
-          Contacts
+        <span class="text-primary-800 me-2" style="font-weight: 800;">{{ list?.totalContacts }}</span>
+          {{ 'CONTACTS' | translate }}
 
       </ng-template>
       <app-list-contacts [count]="count" [isCanceled]="false" (isChecked)="onChecked($event)"></app-list-contacts>
@@ -89,7 +89,7 @@
     <mat-tab>
       <ng-template mat-tab-label >
 
-          Canceled
+          {{ 'CANCELED' | translate }}
 
       </ng-template>
       <app-list-contacts [count]="count" [isCanceled]="true"></app-list-contacts>

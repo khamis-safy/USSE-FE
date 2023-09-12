@@ -5,7 +5,6 @@
       <div class="w-100">
         <form [formGroup]="searchForm">
           <us-select
-
             (onSearch)="onSearch($event)"
             (onSelect)="onSelect($event)"
             (onDeSelect)="onDeSelect($event)"
@@ -13,7 +12,7 @@
             (onDeSelectAll)="onDeSelectAll($event)"
             [data]="allContacts"
             formControlName="contactsData"
-            placeholder="Select Contacts"
+            placeholder="{{ 'SELECT_CONTACTS' | translate }}"
             [multiSelect]="true"
             [isDisabled]="false"
             [enableSearch]="true"
@@ -21,21 +20,18 @@
             [searchbarOnToggler]="true"
             [showSelectedItemsNumberOnly]="true"
             [enableParentSearch]="true"
-            [searchNoResultText]="'there is no result'"
+            [searchNoResultText]="'NO_RESULT_FOUND' | translate"
             [maxListItemsWithoutSearch]="5"
           ></us-select>
-          <!-- <input #search type="text" class="form-control ps-5 py-4 w-100 txt-xs" id="search" (keyup)="onSearch(search)" placeholder="Search" > -->
         </form>
       </div>
     </div>
     <div class="lists py-3">
-      <div
-        class="d-flex justify-content-between align-items-center w-100 px-4 pb-2 txt-sm lists-top"
-      >
+      <div class="d-flex justify-content-between align-items-center w-100 px-4 pb-2 txt-sm lists-top">
         <sr-checkbox
-          label="Select all"
+          label="{{ 'SELECT_ALL' | translate }}"
           [state]="
-          selectAllStatus === 1 ? 'mid' : selectAllStatus === 2 || selectedListsNum? 'checked' : ''
+          selectAllStatus === 1 ? 'mid' : selectAllStatus === 2 || selectedListsNum ? 'checked' : ''
           "
           (changed)="selectAllLists($event)"
           style="font-weight: 500"
@@ -46,16 +42,16 @@
               class="d-flex align-items-center gap-2 txt-sm"
               style="font-weight: 500"
             >
-              <span >{{sortBy?sortBy:'Sort By'}}</span>
+              <span>{{ sortBy ? sortBy : 'SORT_BY' | translate }}</span>
               <mat-icon>expand_more</mat-icon>
             </div>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="sortBy='Ascending';getLists('nameASC')">
-              Ascending
+            <button mat-menu-item (click)="sortBy='Ascending'; getLists('nameASC')">
+              {{ 'ASCENDING' | translate }}
             </button>
-            <button mat-menu-item (click)="sortBy='Descending';getLists('nameDEC')">
-              Descending
+            <button mat-menu-item (click)="sortBy='Descending'; getLists('nameDEC')">
+              {{ 'DESCENDING' | translate }}
             </button>
           </mat-menu>
         </div>
@@ -78,12 +74,9 @@
                   <sr-checkbox
                     class="zi-5"
                     [label]="listContact.list?.name"
-
                     [state]="listContact.list.isChecked"
                     [(ngModel)]="listContact.list.isChecked"
-                    (changed)="
-                    onSelectList($event,listContact)
-                    "
+                    (changed)="onSelectList($event,listContact)"
                   ></sr-checkbox>
                   <span class="txt-sm total">{{ listContact.list.totalContacts }}</span>
                 </div>
@@ -99,10 +92,8 @@
                   [(ngModel)]="contact.isChecked"
                 ></sr-checkbox>
               </ng-container>
-
             </div>
           </mat-expansion-panel>
-
           </mat-accordion>
         </ng-container>
       </div>
@@ -116,11 +107,11 @@
         class="contacts-heading px-4 d-flex justify-content-between align-items-center"
         (click)="onDeselectAllLists()"
       >
-        <span class="txt-md">Contacts</span>
+        <span class="txt-md">{{ 'CONTACTS' | translate }}</span>
         <span class="d-flex align-items-center gap-2 pointer" >
           <img src="assets/icons/clear.svg" alt="" />
           <span class="txt-md text-primary-800"
-            >Clear</span
+            >{{ 'CLEAR' | translate }}</span
           >
         </span>
       </div>
@@ -150,14 +141,14 @@
       </div>
     </div>
     <div class="mobile-num p-4">
-      <p class="txt-md">Addhoc Number</p>
+      <p class="txt-md">{{ 'ADDHOC_NUMBER' | translate }}</p>
       <div class="d-flex align-items-center gap-3">
         <div class="w-100">
           <form [formGroup]="form">
             <ngx-intl-tel-input
               [cssClass]="
                 (mobile?.touched && mobile.invalid ? 'error' : '') +
-                ' rounded-pill border border-1py-2 txt-input w-100'
+                ' rounded-pill border border-1 py-2 txt-input w-100'
               "
               [enableAutoCountrySelect]="true"
               [preferredCountries]="[CountryISO.UnitedArabEmirates]"
@@ -185,13 +176,13 @@
           >
             <div class="hint error">
               <i class="si-info"></i>
-              <p class="txt txt-xs">Incorrect phone number</p>
+              <p class="txt txt-xs">{{ 'INCORRECT_PHONE' | translate }}</p>
             </div>
           </ng-container>
         </div>
         <us-button
           class="m-2"
-          label="Add"
+          label="{{ 'ADD' | translate }}"
           [fill]="true"
           [size]="'md'"
           [loading]="false"

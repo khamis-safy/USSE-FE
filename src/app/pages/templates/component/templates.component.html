@@ -2,16 +2,14 @@
   <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="d-flex justify-content-center">
       <img src="assets/icons/templates-icon.svg" alt="" class="px-2" />
-
-      <!-- <mat-icon class="tab-icon">recent_actors</mat-icon> -->
-      <span class="txt-lg main-heading"> Templates</span>
+      <span class="txt-lg main-heading">{{ 'TEMPLATES' | translate }}</span>
     </div>
 
     <div class="buttons_">
       <us-button
-      *ngIf="canEdit"
+        *ngIf="canEdit"
         class="m-2"
-        label="Add Template"
+        label="{{ 'ADD_TEMPLATE' | translate }}"
         (click)="openAddTemplateModal()"
         img="assets/icons/new-message-icon.svg"
         [fill]="true"
@@ -32,16 +30,14 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <img src="assets/icons/templates-icon.svg" alt="" class="px-2" />
-        Templates
-        <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
+        {{ 'TEMPLATES' | translate }}
       </ng-template>
       <app-innerTemplates [canEdit]="canEdit"></app-innerTemplates>
     </mat-tab>
 
     <mat-tab>
       <ng-template mat-tab-label>
-        OWA Templates
-        <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
+        {{ 'OWA_TEMPLATES' | translate }}
       </ng-template>
       <app-owaTemplates></app-owaTemplates>
     </mat-tab>

@@ -1,7 +1,7 @@
-<section class="d-flex flex-column py-4 mx-auto gap-3 h-100" style="width: 90%;">
+<section class="d-flex flex-column py-4 px-3 mx-auto gap-3 h-100" style="width: 90%;">
   <!-- modal header -->
   <div class="d-flex justify-content-center align-items-center position-relative mb-4 " style="height: 10%;">
-    <div class="txt-lg">Upload Excel Sheet</div>
+    <p class="txt-lg ms-4">{{ 'UPLOAD_EXCEL_SHEET' | translate }}</p>
     <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
       <img
         src="assets/icons/close-circle.svg"
@@ -13,7 +13,7 @@
   </div>
   <!-- modal body  -->
   <div class="modal-body overflow-auto p-4 w-100"  style="height: 80%;">
-    <p class="txt-sm mb-4" style="font-weight: 500;">Upload the lists you want to send messages to</p>
+    <p class="txt-sm mb-4" style="font-weight: 500;">{{ 'UPLOAD_LISTS_MESSAGE' | translate }}</p>
     <us-upload  class="w-100 "
     (onFileChange)="onFileChange($event)"
     (onFileDelete)="onFileDelete($event)"
@@ -32,21 +32,21 @@
           [data]="listsArr"
           formControlName="selectedLists"
           [multiSelect]="false"
-          [label]="'Add To List'"
-          [placeholder]="'Choose From Lists'"
+          [label]="'ADD_TO_LIST_LABEL' | translate"
+          [placeholder]="'CHOOSE_FROM_LISTS_LABEL' | translate"
           [isDisabled]="addNewList"
           [optional]="true"
-          [loadingText]="listsLoadingText"
+          [loadingText]="'LISTS_LOADING_TEXT' | translate"
           (onSelect)="onSelect($event)"
           [enableSearch]="true"
           [searchbarOnToggler]="true"
-          [searchNoResultText]="'there is no result'"
+          [searchNoResultText]="'NO_RESULT_TEXT' | translate"
           [maxListItemsWithoutSearch]="5"
         ></us-select>
         </div>
         <us-button
 
-          label="Add New list"
+          label="{{ 'ADD_NEW_LIST_LABEL' | translate }}"
           [matIcon]="'add'"
           [fill]="true"
           [size]="'md'"
@@ -60,26 +60,26 @@
           <div class="d-flex justify-content-end align-items-center">
 
             <div class="new-list rounded-5 bg-white p-4  my-3 " style="width:80%">
-              <p class="txt-sm mb-3" style="font-weight: 500;">Add New List Name</p>
+              <p class="txt-sm mb-3" style="font-weight: 500;">{{ 'ADD_NEW_LIST_NAME_LABEL' | translate }}</p>
               <div class="d-flex justify-content-between">
                 <div style="width: 50%;">
                   <us-input
                   [isDisabled]="false"
                   value=""
-                  placeholder="Enter List Name"
+                  placeholder="{{ 'ENTER_LIST_NAME_PLACEHOLDER' | translate }}"
                   type="text"
                   [error]="false"
                   [fullWidth]="true"
                   formControlName="listName"
                   [error]=" (listName.touched && listName.errors?.required)"
-                  [hintText]=" listName.touched && listName.errors?.required ? 'This filed is required':'' "
+                  [hintText]=" listName.touched && listName.errors?.required ? ('REQUIRED_FIELD_HINT' | translate) : '' "
                 ></us-input>
                 </div>
 
                 <div class="d-flex align-items-center " >
                   <us-button
                     class="me-3"
-                  label="Save"
+                  label="{{ 'SAVE_LABEL' | translate }}"
                   [fill]="true"
                   [size]="'md'"
                   [loading]="isLoading"
@@ -90,7 +90,7 @@
 
                 <us-button
 
-                label="Cancel"
+                label="{{ 'CANCEL_LABEL' | translate }}"
                 [fill]="false"
                 [size]="'md'"
                 [loading]="false"
@@ -108,7 +108,7 @@
     </ng-container>
     <sr-checkbox
     class="zi-5 px-2"
-    [label]="'First row contains column header'"
+    label="{{ 'FIRST_ROW_COLUMN_HEADER_LABEL' | translate }}"
     state="checked"
     (changed)="
     onCheck($event)
@@ -118,13 +118,12 @@
   <!-- modal footer -->
   <div class="modal-footer justify-content-end gap-3"  style="height: 10%;">
     <us-button
-      label="Upload"
+      label="{{ 'UPLOAD_LABEL' | translate }}"
       size="sm"
       [loading]="false"
       [fill]="true"
       [disabled]="isDisabled"
       (clicked)="uploadFile()"
     ></us-button>
-
   </div>
 </section>

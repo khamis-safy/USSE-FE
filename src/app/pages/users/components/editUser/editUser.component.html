@@ -4,7 +4,7 @@
     class="d-flex justify-content-center align-items-center position-relative"
     style="height: 5%"
   >
-    <div class="txt-lg">Edit Permissions</div>
+    <div class="txt-lg">{{ 'EDIT_PERMISSIONS' | translate }}</div>
     <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
       <img
         src="assets/icons/close-circle.svg"
@@ -15,41 +15,36 @@
     </div>
   </div>
 
-<!-- modal body -->
-<div>
-  <app-action
-[data]="data"
-(sharedPermissions)="addSharedPermisions($event)"
-(permissions)="addPermissions($event)"></app-action>
+  <!-- modal body -->
+  <div>
+    <app-action
+      [data]="data"
+      (sharedPermissions)="addSharedPermisions($event)"
+      (permissions)="addPermissions($event)"
+    ></app-action>
+  </div>
 
-</div>
+  <!-- modal footer -->
+  <div
+    class="modal-footer justify-content-end gap-3 mb-3"
+    style="height: 10%"
+  >
+    <us-button
+      label="{{ 'CANCEL' | translate }}"
+      size="sm"
+      appearance="primary"
+      [fill]="false"
+      (clicked)="onClose()"
+      [loading]="false"
+    ></us-button>
 
-
-
-
-
-
-<!-- modal footer -->
-<div class="modal-footer justify-content-end gap-3 mb-3"  style="height: 10%;">
-
-  <us-button
-    label="Cancel"
-    size="sm"
-    appearance="primary"
-    [fill]="false"
-    (clicked)="onClose()"
-    [loading]="false"
-  ></us-button>
-
-<us-button
-
-label="Save"
-size="sm"
-[loading]="isLoading"
-[disabled]="isLoading"
-[fill]="true"
-(clicked)="submitEdit()"
-
-></us-button>
-</div>
+    <us-button
+      label="{{ 'SAVE' | translate }}"
+      size="sm"
+      [loading]="isLoading"
+      [disabled]="isLoading"
+      [fill]="true"
+      (clicked)="submitEdit()"
+    ></us-button>
+  </div>
 </section>

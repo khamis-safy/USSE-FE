@@ -4,7 +4,7 @@
     class="d-flex justify-content-center align-items-center position-relative"
     style="height: 5%"
   >
-    <div class="txt-lg">Add User</div>
+    <div class="txt-lg">{{ 'ADD_USER' | translate }}</div>
     <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
       <img
         src="assets/icons/close-circle.svg"
@@ -15,71 +15,6 @@
     </div>
   </div>
 
-  <!-- modal body  -->
-  <!-- <div class=" modal-body overflow-auto px-1 px-4 mx-auto   ps-4 text-center container" style="height: 89%;">
-        <div style="height: 15%; width: 85%; position: relative;" class="mx-auto  d-flex justify-content-between align-items-start">
-            <div class="d-flex flex-column justify-content-center align-content-center" style="width: 20%;">
-                <div class="divCircle bg-primary-800    mx-auto">1</div>
-                <p class="">User Info</p>
-            </div>
-            <hr style="width: 64%; position: absolute; top:5% ;left: 15%;" class="bg-primary-800 ">
-            <div style="width: 33%; ">
-                <div class="divCircle bg-primary-800 mx-auto">2</div>
-                <p>Access Control</p>
-            </div>
-        </div>
-        <div style="height: 85%;" *ngIf="!next  " class="d-flex gap-4 flex-column py-3 text-start">
-            <us-input [isDisabled]="false" value="" [optional]="false" type="email" [label]=" 'Email'" [error]="false"
-                [fullWidth]="true"></us-input>
-
-            <us-input [isDisabled]="false" value="" [optional]="false" type="password" [label]=" 'Password'"
-                [error]="false" [fullWidth]="true"></us-input>
-
-            <us-input [isDisabled]="false" value="" [optional]="false" type="text" [label]=" 'Username'" [error]="false"
-                [fullWidth]="true"></us-input>
-        </div>
-
-
-        <div style="height: 85%; width: 100%;" *ngIf="next" class=" overflow-auto  mx-md-auto  text-center ">
-            <div class="w-100 mx-auto">
-                <form [formGroup]="form" class="my-2   txt-lg  text-start" style="width: 80%;">
-                  <us-select
-                  [data]="devices"
-                  formControlName="devicesData"
-                  [multiSelect]="false"
-                  [label]="'Devices'"
-                  (onSelect)="onSelect($event)"
-
-                  [placeholder]="'Select Devices'"
-                  [isDisabled]="false"
-                  [optional]="true"
-                  [enableSearch]="true"
-                  [searchbarOnToggler]="true"
-                  [searchNoResultText]="'there is no result'"
-                  [maxListItemsWithoutSearch]="5"
-                ></us-select>
-                </form>
-
-
-                <div *ngFor="let section of sections" class="d-flex justify-content-center align-items-center my-4" style="width: 100%;">
-                  <div style="width: 25%;" class="d-flex justify-content-start">
-                    <img width="11%" [src]="section.icon" alt="" class="me-md-2">
-                    <span width="70%" class="txt-sm">{{ section.label }}</span>
-                  </div>
-                  <div *ngFor="let accessLevel of section.accessLevels" style="width: 25%;">
-
-
-                  <input width="15%" [checked]="accessLevel.checked"   (change)="test(section,input)" class="me-md-2" type="radio" [id]="accessLevel.value + section.name" [name]="section.name" [value]="accessLevel.value" #input >
-                  <label width="70%" [for]="accessLevel.value + section.name">{{ accessLevel.value }}</label>
-
-
-                  </div>
-
-                </div>
-            </div>
-        </div>
-    </div> -->
-
   <section>
     <mat-stepper [linear]="true" #stepper>
       <ng-template matStepperIcon="edit">
@@ -87,43 +22,43 @@
       </ng-template>
 
       <mat-step>
-        <ng-template matStepLabel>User Info</ng-template>
+        <ng-template matStepLabel>{{ 'USER_INFO' | translate }}</ng-template>
         <div
           class="d-flex align-items-between flex-column justify-content-between gap-3"
           style="min-height: 54vh"
         >
           <div
-          [formGroup]="form"
+            [formGroup]="form"
             style="height: 80%"
             class="d-flex gap-4 flex-column py-5 text-start"
           >
             <us-input
-            [label]="'Email'"
-            [type]="'email'"
-            [placeholder]="'Enter your email'"
-            formControlName="email"
-            [error]=" (email.touched && email.errors?.required || email.dirty && email.errors?.pattern)"
-            [hintText]=" email.touched && email.errors?.required ? 'This filed is required':email.dirty && email.errors?.pattern?'invalid email':'' "
-            [fullWidth]="true"
-            ></us-input>
-
-            <us-input
-              [label]="'Password'"
-              [type]="'password'"
-              [placeholder]="'Enter your password'"
-              formControlName="password"
-              [error]=" (password.touched && password.errors?.required)"
-              [hintText]=" password.touched && password.errors?.required ? 'This filed is required':'' "
+              [label]="'EMAIL' | translate"
+              [type]="'email'"
+              [placeholder]="'Enter your email'"
+              formControlName="email"
+              [error]=" (email.touched && email.errors?.required || email.dirty && email.errors?.pattern)"
+              [hintText]=" email.touched && email.errors?.required ? 'This field is required':email.dirty && email.errors?.pattern?'Invalid email':'' "
               [fullWidth]="true"
             ></us-input>
 
             <us-input
-              [label]="'Username'"
+              [label]="'PASSWORD' | translate"
+              [type]="'password'"
+              [placeholder]="'Enter your password'"
+              formControlName="password"
+              [error]=" (password.touched && password.errors?.required)"
+              [hintText]=" password.touched && password.errors?.required ? 'This field is required':'' "
+              [fullWidth]="true"
+            ></us-input>
+
+            <us-input
+              [label]="'Username' | translate"
               [type]="'text'"
               [placeholder]="'Enter your name'"
               formControlName="contactName"
               [error]=" (contactName.touched && contactName.errors?.required)"
-              [hintText]=" contactName.touched && contactName.errors?.required ? 'This filed is required':'' "
+              [hintText]=" contactName.touched && contactName.errors?.required ? 'This field is required':'' "
               [fullWidth]="true"
             ></us-input>
           </div>
@@ -135,7 +70,7 @@
             <button class="rest-style" matStepperNext [disabled]="form.invalid">
               <us-button
                 class="m-2"
-                label="Next"
+                label="{{ 'NEXT' | translate }}"
                 [fill]="true"
                 [size]="'md'"
                 [loading]="false"
@@ -149,7 +84,7 @@
       </mat-step>
 
       <mat-step>
-        <ng-template matStepLabel>Access Control</ng-template>
+        <ng-template matStepLabel>{{ 'ACCESS_CONTROL' | translate }}</ng-template>
         <div
           class="d-flex align-items-between flex-column justify-content-between gap-3"
           style="min-height: 54vh"
@@ -166,7 +101,7 @@
             <button class="rest-style" matStepperPrevious>
               <us-button
                 class="m-2"
-                label="Back"
+                label="{{ 'BACK' | translate }}"
                 [fill]="false"
                 [size]="'md'"
                 [loading]="false"
@@ -179,7 +114,7 @@
             <button class="rest-style" matStepperNext>
               <us-button
                 class="m-2"
-                label="Add"
+                label="{{ 'ADD' | translate }}"
                 [fill]="true"
                 [size]="'md'"
                 [loading]="isLoading"
@@ -194,20 +129,4 @@
       </mat-step>
     </mat-stepper>
   </section>
-
-  <!-- modal footer -->
-  <!-- <div class="modal-footer justify-content-end gap-3" style="height: 6%;">
-        <div *ngIf="!next">
-            <us-button [loading]="false" label="Next" size="sm" [fill]="true" (clicked)="openNext()"></us-button>
-
-        </div>
-        <div *ngIf="next">
-            <us-button class="me-2" (clicked)="openPrevious()" label="Back" size="sm" appearance="primary"
-                [fill]="false" [loading]="false"></us-button>
-            <us-button label="Add" size="sm" appearance="primary" [fill]="true" [loading]="false"></us-button>
-
-
-        </div>
-
-    </div> -->
 </section>

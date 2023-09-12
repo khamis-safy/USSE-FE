@@ -4,131 +4,131 @@
       <mat-icon>check</mat-icon>
     </ng-template>
 
-    <mat-step >
-      <ng-template matStepLabel>Select Lists</ng-template>
+    <mat-step>
+      <ng-template matStepLabel>{{ 'selectListsLabel' | translate }}</ng-template>
       <div class="d-flex align-items-between flex-column justify-content-between " style="min-height: 700px;">
         <app-stepOne (allSelected)="getLists($event)"></app-stepOne>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
-          <button class="rest-style " matStepperNext [disabled]="lists.length==0"
-          >
+          <button class="rest-style " matStepperNext [disabled]="lists.length==0">
             <us-button
-            class="m-2"
-            label="Next"
-            [fill]="true"
-            [size]="'md'"
-            [loading]="false"
-            [appearance]="'primary'"
-            (clicked)="toSecondStep()"
-            [disabled]="lists.length==0"
+              class="m-2"
+              label="{{ 'nextLabel' | translate }}"
+              [fill]="true"
+              [size]="'md'"
+              [loading]="false"
+              [appearance]="'primary'"
+              (clicked)="toSecondStep()"
+              [disabled]="lists.length==0"
             >
-
-        </us-button>
-        </button>
+            </us-button>
+          </button>
         </div>
       </div>
     </mat-step>
 
-    <mat-step  >
-      <ng-template matStepLabel>Write Message</ng-template>
+    <mat-step>
+      <ng-template matStepLabel>{{ 'writeMessageLabel' | translate }}</ng-template>
       <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-        <app-write-message (attachments)="filesUrls($event)"  style=" height: 80%;"></app-write-message>
+        <app-write-message (attachments)="filesUrls($event)" style="height: 80%;"></app-write-message>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
-            <button class="rest-style" matStepperPrevious>   <us-button
+          <button class="rest-style" matStepperPrevious>
+            <us-button
               class="m-2"
-              label="Back"
+              label="{{ 'backLabel' | translate }}"
               [fill]="false"
               [size]="'md'"
               [loading]="false"
               [disabled]="false"
               [appearance]="'primary'"
-              >
-            </us-button>
-            </button>
-
-            <button class="rest-style" matStepperNext>   <us-button
-            class="m-2"
-            label="Next"
-            [fill]="true"
-            [size]="'md'"
-            [loading]="false"
-            [disabled]="false"
-            [appearance]="'primary'"
-            (clicked)="toThirdStep()"
             >
             </us-button>
-            </button>
-          </div>
-      </div>
+          </button>
 
+          <button class="rest-style" matStepperNext>
+            <us-button
+              class="m-2"
+              label="{{ 'nextLabel' | translate }}"
+              [fill]="true"
+              [size]="'md'"
+              [loading]="false"
+              [disabled]="false"
+              [appearance]="'primary'"
+              (clicked)="toThirdStep()"
+            >
+            </us-button>
+          </button>
+        </div>
+      </div>
     </mat-step>
 
-    <mat-step  >
-      <ng-template matStepLabel>Information</ng-template>
+    <mat-step>
+      <ng-template matStepLabel>{{ 'informationLabel' | translate }}</ng-template>
       <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-          <app-stepThree></app-stepThree>
+        <app-stepThree></app-stepThree>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
-            <button class="rest-style" matStepperPrevious>   <us-button
+          <button class="rest-style" matStepperPrevious>
+            <us-button
               class="m-2"
-              label="Back"
+              label="{{ 'backLabel' | translate }}"
               [fill]="false"
               [size]="'md'"
               [loading]="false"
               [disabled]="false"
               [appearance]="'primary'"
-              >
-            </us-button>
-            </button>
-
-            <button class="rest-style" matStepperNext>   <us-button
-            class="m-2"
-            label="Next"
-            [fill]="true"
-            [size]="'md'"
-            [loading]="false"
-            [disabled]="false"
-            [appearance]="'primary'"
-            (clicked)="toLastStep()"
             >
             </us-button>
-            </button>
-          </div>
-      </div>
+          </button>
 
+          <button class="rest-style" matStepperNext>
+            <us-button
+              class="m-2"
+              label="{{ 'nextLabel' | translate }}"
+              [fill]="true"
+              [size]="'md'"
+              [loading]="false"
+              [disabled]="false"
+              [appearance]="'primary'"
+              (clicked)="toLastStep()"
+            >
+            </us-button>
+          </button>
+        </div>
+      </div>
     </mat-step>
 
-    <mat-step  >
-      <ng-template matStepLabel>Setting</ng-template>
+    <mat-step>
+      <ng-template matStepLabel>{{ 'settingLabel' | translate }}</ng-template>
       <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-          <app-stepFour  (formValidityChange)="updateChildFormValidity($event)"></app-stepFour>
+        <app-stepFour (formValidityChange)="updateChildFormValidity($event)"></app-stepFour>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
-            <button class="rest-style" matStepperPrevious>   <us-button
+          <button class="rest-style" matStepperPrevious>
+            <us-button
               class="m-2"
-              label="Back"
+              label="{{ 'backLabel' | translate }}"
               [fill]="false"
               [size]="'md'"
               [loading]="false"
               [disabled]="false"
               [appearance]="'primary'"
-
-              >
-            </us-button>
-            </button>
-
-            <button class="rest-style" matStepperNext>   <us-button
-            class="m-2"
-            label="Add"
-            [fill]="true"
-            [size]="'md'"
-            [loading]="isLoading"
-            [disabled]=" isLoading || !childFormValidity"
-            [appearance]="'primary'"
-            (clicked)="addCompaign()"
             >
             </us-button>
-            </button>
-          </div>
-      </div>
+          </button>
 
+          <button class="rest-style" matStepperNext>
+            <us-button
+              class="m-2"
+              label="{{ 'addLabel' | translate }}"
+              [fill]="true"
+              [size]="'md'"
+              [loading]="isLoading"
+              [disabled]="isLoading || !childFormValidity"
+              [appearance]="'primary'"
+              (clicked)="addCompaign()"
+            >
+            </us-button>
+          </button>
+        </div>
+      </div>
     </mat-step>
 
   </mat-stepper>

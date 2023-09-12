@@ -2,15 +2,13 @@
   <div class="d-flex justify-content-between mb-4 align-items-center">
     <div class="d-flex justify-content-center ">
       <img src="assets/icons/manage-contacts.svg" alt="" class="px-2">
-
-      <!-- <mat-icon class="tab-icon">recent_actors</mat-icon> -->
-   <span class="txt-lg main-heading"> Manage Contacts</span>
+      <span class="txt-lg main-heading">{{ 'MANAGE_CONTACTS' | translate }}</span>
     </div>
-    <div class="buttons_ ">
+    <div class="buttons_">
       <us-button
-      *ngIf="isChecked && !isCanceled && canEdit"
+        *ngIf="isChecked && !isCanceled && canEdit"
         class="m-2"
-        label="Remove Lists"
+        [label]="'REMOVE_LISTS' | translate"
         img="assets/icons/delete.svg"
         [iconClass]="'material-symbols-outlined'"
         [fill]="true"
@@ -22,9 +20,9 @@
       ></us-button>
 
       <us-button
-      *ngIf="isChecked || isDelete  && canEdit"
+        *ngIf="(isChecked || isDelete) && canEdit"
         class="m-2"
-        label="Delete"
+        [label]="'DELETE' | translate"
         img="assets/icons/delete.svg"
         [iconClass]="'material-symbols-outlined'"
         [fill]="true"
@@ -34,22 +32,24 @@
         [appearance]="'danger'"
         (clicked)="tab=='contacts'?openDeleteConModal():tab=='lists'?openDeleteModal():''"
       ></us-button>
+
       <us-button
-      *ngIf="isChecked && !isCanceled && canEdit"
-      class="m-2"
-      label="Add To lists"
-      [matIcon]="'add'"
-      [fill]="true"
-      [size]="'md'"
-      [loading]="false"
-      [disabled]="false"
-      [appearance]="'primary'"
-      (clicked)="openContactLists()"
-    ></us-button>
-      <us-button
-      *ngIf="(tab=='contacts' || tab=='lists')  && canEdit"
+        *ngIf="isChecked && !isCanceled && canEdit"
         class="m-2"
-        [label]="tab=='contacts'?'Add Contact':'Add list'"
+        [label]="'ADD_TO_LISTS' | translate"
+        [matIcon]="'add'"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+        (clicked)="openContactLists()"
+      ></us-button>
+
+      <us-button
+        *ngIf="(tab=='contacts' || tab=='lists') && canEdit"
+        class="m-2"
+        [label]="tab=='contacts'?('ADD_CONTACT'| translate) :('ADD_LIST' | translate)"
         [matIcon]="'add'"
         [fill]="true"
         [size]="'md'"
@@ -59,31 +59,32 @@
         (clicked)="tab=='contacts'?openAddContactModal():tab=='lists'?openAddListModal():openunsubscribeModal()"
       ></us-button>
 
-      <us-button *ngIf="tab=='contacts'"
-      class="m-2"
-      [label]="'Import File'"
-      img="assets/icons/import.svg"
-      [fill]="true"
-      [size]="'md'"
-      [loading]="false"
-      [disabled]="false"
-      [appearance]="'primary'"
-      (clicked)="openImportModal()"
-    ></us-button>
+      <us-button
+        *ngIf="tab=='contacts'"
+        class="m-2"
+        [label]="'IMPORT_FILE' | translate"
+        img="assets/icons/import.svg"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+        (clicked)="openImportModal()"
+      ></us-button>
 
-      <us-button *ngIf="tab=='contacts'"
-      class="m-2"
-      [label]="isChecked?'Export Selected':'Export All'"
-      img="assets/icons/export.svg"
-      [fill]="true"
-      [size]="'md'"
-      [loading]="false"
-      [disabled]="false"
-      [appearance]="'primary'"
-      (clicked)="isChecked ? exportSelectedContacts() : exportAllContacts()"
-    ></us-button>
+      <us-button
+        *ngIf="tab=='contacts'"
+        class="m-2"
+        [label]="isChecked?('EXPORT_SELECTED' | translate):'EXPORT_ALL' | translate"
+        img="assets/icons/export.svg"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+        (clicked)="isChecked ? exportSelectedContacts() : exportAllContacts()"
+      ></us-button>
     </div>
-
   </div>
 
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" (selectedTabChange)="changeModal($event)">
@@ -91,8 +92,7 @@
     <mat-tab>
       <ng-template mat-tab-label class="txt-md">
         <img src="assets/icons/contacts.svg" alt="" class="px-2">
-        <!-- <mat-icon class="tab-icon">contacts</mat-icon> -->
-          Contacts
+        {{ 'CONTACTS' | translate }}
       </ng-template>
       <app-contacts [canEdit]="canEdit" [isCanceled]="false" (isChecked)="onChecked($event)"></app-contacts>
     </mat-tab>
@@ -100,9 +100,7 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <img src="assets/icons/lists.svg" alt="" class="px-2">
-          Lists
-        <!-- <mat-icon class="tab-icon">format_list_bulleted</mat-icon> -->
-
+        {{ 'LISTS' | translate }}
       </ng-template>
       <app-lists [canEdit]="canEdit" (isDelete)="onDeleteChange($event)"></app-lists>
     </mat-tab>
@@ -110,9 +108,7 @@
     <mat-tab>
       <ng-template mat-tab-label >
         <img src="assets/icons/unsubscribe.svg" alt="" class="px-2">
-          Canceled Contacts
-        <!-- <mat-icon class="tab-icon">unsubscribe</mat-icon> -->
-
+        {{ 'CANCELED_CONTACTS' | translate }}
       </ng-template>
       <app-contacts [canEdit]="canEdit" [isCanceled]="true" (isChecked)="onChecked($event)"></app-contacts>
     </mat-tab>

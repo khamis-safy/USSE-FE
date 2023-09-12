@@ -1,197 +1,176 @@
-<section class="py-3 d-flex flex-column gap-3 ">
+<section class="py-3 d-flex flex-column gap-3">
   <ng-container *ngIf="!noData">
-  <div class="d-flex justify-content-between mb-3 align-items-center">
-    <div class="d-flex position-relative row m-0">
-      <div class="col-12 col-lg-4 p-0">
-        <input
-          #search
-          type="text"
-          class="form-control ps-5 txt-xs"
-          id="search"
-          placeholder="Search"
-          (keyup)="onSearch(search)"
-        />
+    <div class="d-flex justify-content-between mb-3 align-items-center">
+      <div class="d-flex position-relative row m-0">
+        <div class="col-12 col-lg-4 p-0">
+          <input
+            #search
+            type="text"
+            class="form-control ps-5 txt-xs"
+            id="search"
+            placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
+            (keyup)="onSearch(search)"
+          />
+        </div>
+        <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
+          <img src="assets/icons/search.svg" alt="" width="14" />
+        </div>
       </div>
-      <div
-        class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y"
-      >
-        <img src="assets/icons/search.svg" alt="" width="14" />
+      <div class="d-flex  justify-content-between" style="width: 33%;">
+        <form [formGroup]="form" style="width: 60%;">
+          <us-select
+            [data]="devices"
+            formControlName="devicesData"
+            [multiSelect]="false"
+            [label]="'Devices' | translate"
+            (onSelect)="onSelect($event)"
+            [loadingText]="deviceLoadingText"
+            [placeholder]="'Select Devices' | translate"
+            [isDisabled]="false"
+            [optional]="true"
+            [enableSearch]="true"
+            [searchbarOnToggler]="true"
+            [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
+            [maxListItemsWithoutSearch]="5"
+          ></us-select>
+        </form>
+        <mat-form-field class="us-select">
+          <mat-label class="txt-caption">
+            <img src="assets/icons/display.svg" alt="" class="m-2" width="15" />
+            <span class="txt-caption" style="font-size: 12px !important;">{{ 'DISPLAY_LABEL' | translate }}</span>
+          </mat-label>
+          <mat-select [formControl]="columns" (selectionChange)="changeColumns($event.value)" multiple>
+            <mat-option *ngFor="let topping of displayed" [value]="topping">{{ topping | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
-<div class="d-flex  justify-content-between" style="width: 33%;">
-<form [formGroup]="form" style="width:60%;">
-  <us-select
-  [data]="devices"
-  formControlName="devicesData"
-  [multiSelect]="false"
-  [label]="'Devices'"
-  (onSelect)="onSelect($event)"
-  [loadingText]="deviceLoadingText"
-  [placeholder]="'Select Devices'"
-  [isDisabled]="false"
-  [optional]="true"
-  [enableSearch]="true"
-  [searchbarOnToggler]="true"
-  [searchNoResultText]="'there is no result'"
-  [maxListItemsWithoutSearch]="5"
-></us-select>
-</form>
-  <mat-form-field class="us-select">
-    <mat-label class="txt-caption"> <img src="assets/icons/display.svg" alt="" class="m-2" width="15"> <span class="txt-caption" style="font-size: 12px !important;">Display</span></mat-label>
-    <mat-select [formControl]="columns"  (selectionChange)="changeColumns($event.value)" multiple>
-      <mat-option *ngFor="let topping of displayed" [value]="topping">{{topping}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-  </div>
-</ng-container>
-<ng-container *ngIf="length>0 && !noData">
-  <section class="table-wrapper">
+  </ng-container>
+  <ng-container *ngIf="length > 0 && !noData">
+    <section class="table-wrapper">
       <table mat-table [dataSource]="dataSource" class="table-wrapper">
-           <!-- Checkbox Column -->
-           <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox  color="ch-color"
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox
+              color="ch-color"
               (change)="$event ? toggleAllRows() : null"
               [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()"
-              [aria-label]="checkboxLabel()">
-          </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let row">
-              <mat-checkbox color="ch-color" (click)="$event.stopPropagation() && selectedRow($event) "
-                (change)="$event ? this.selection.toggle(row): null"
-                [checked]="selection.isSelected(row)"
-                [aria-label]="checkboxLabel(row)">
-              </mat-checkbox>
-            </td>
-          </ng-container>
-
-
-        <!-- deviceName Column -->
-        <ng-container matColumnDef="Device Name">
-          <th class="text-center" mat-header-cell *matHeaderCellDef>
-            Device Name
+              [aria-label]="checkboxLabel()"
+            ></mat-checkbox>
           </th>
-          <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element.device?.deviceName}}
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox
+              color="ch-color"
+              (click)="$event.stopPropagation() && selectedRow($event)"
+              (change)="$event ? this.selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)"
+              [aria-label]="checkboxLabel(row)"
+            ></mat-checkbox>
           </td>
         </ng-container>
 
-        <!-- Sender Column -->
-        <ng-container [matColumnDef]="msgCategory=='inbox'?'Sender':'Recipient'">
-          <th class="text-center" mat-header-cell *matHeaderCellDef>
-            <ng-container *ngIf="msgCategory=='inbox'">Sender</ng-container>
-            <ng-container *ngIf="msgCategory!='inbox'">Recipient</ng-container>
+        <!-- deviceName Column -->
+        <ng-container matColumnDef="Device Name">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'DEVICE_NAME_LABEL' | translate }}</th>
+          <td class="text-center" mat-cell *matCellDef="let element">{{ element.device?.deviceName }}</td>
+        </ng-container>
 
-            </th>
-          <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element.chat.chatName }}
-          </td>
+        <!-- Sender/Recipient Column -->
+        <ng-container [matColumnDef]="msgCategory=='inbox' ? 'Sender' : 'Recipient'">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>
+            <ng-container *ngIf="msgCategory == 'inbox'">{{ 'SENDER_LABEL' | translate }}</ng-container>
+            <ng-container *ngIf="msgCategory != 'inbox'">{{ 'RECIPIENT_LABEL' | translate }}</ng-container>
+          </th>
+          <td class="text-center" mat-cell *matCellDef="let element">{{ element.chat.chatName }}</td>
         </ng-container>
 
         <!-- Messages Column -->
         <ng-container matColumnDef="Messages">
-          <th class="text-center" mat-header-cell *matHeaderCellDef>
-            Messages
-          </th>
-
-          <td  mat-cell *matCellDef="let element"  style="max-width:135px ; " >
-          <div class="py-2">
-            <div class="d-flex justify-content-center align-items-center flex-column ">
-
-              <p  style="max-width:100% ; " class=" overflow-line-4"> {{ element.msgBody }}</p>
-            </div>
-            <ng-container *ngIf="element?.fileName">
-
-              <ng-container [ngSwitch]="(element.fileName | type)">
-                <img *ngSwitchCase="'image'"  class="ms-1" src="assets/images/image.svg" alt="">
-                <img *ngSwitchCase="'document'"  class="ms-1" src="assets/images/document.svg" alt="">
-
+          <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'MESSAGES_LABEL' | translate }}</th>
+          <td mat-cell *matCellDef="let element" style="max-width: 135px;">
+            <div class="py-2">
+              <div class="d-flex justify-content-center align-items-center flex-column">
+                <p style="max-width: 100%;" class="overflow-line-4">{{ element.msgBody }}</p>
+              </div>
+              <ng-container *ngIf="element?.fileName">
+                <ng-container [ngSwitch]="(element.fileName | type)">
+                  <img *ngSwitchCase="'image'" class="ms-1" src="assets/images/image.svg" alt="">
+                  <img *ngSwitchCase="'document'" class="ms-1" src="assets/images/document.svg" alt="">
+                </ng-container>
               </ng-container>
-            </ng-container>
-
-          </div>
-
+            </div>
           </td>
         </ng-container>
 
         <!-- Received at Column -->
         <ng-container matColumnDef="Received At">
-          <th class="text-center" mat-header-cell *matHeaderCellDef>
-            Received At
-          </th>
+          <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'RECEIVED_AT_LABEL' | translate }}</th>
+          <td class="text-center" mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime | date: 'h:mm a, M/d/y' }}</td>
+        </ng-container>
+
+        <!-- Updated At Column -->
+        <ng-container matColumnDef="Updated At">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'UPDATED_AT_LABEL' | translate }}</th>
+          <td class="text-center" mat-cell *matCellDef="let element">{{ element.updatedAt | toLocalTime | date: 'h:mm a, M/d/y' }}</td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="Status">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'STATUS_LABEL' | translate }}</th>
           <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element.createdAt | toLocalTime  | date: 'h:mm a , M/d/y '}}
+            <ng-container [ngSwitch]="element.status">
+              <div *ngSwitchCase="3">
+                <img src="assets/images/read.svg" alt="">
+              </div>
+              <div *ngSwitchCase="1">
+                <img src="assets/images/sent.svg" alt="">
+              </div>
+              <div *ngSwitchCase="2">
+                <img src="assets/images/delivered.svg" alt="">
+              </div>
+              <div *ngSwitchCase="0">
+                <img src="assets/images/pending.svg" alt="">
+              </div>
+            </ng-container>
           </td>
         </ng-container>
-  <!-- Updated At at Column -->
-  <ng-container matColumnDef="Updated At">
-    <th class="text-center" mat-header-cell *matHeaderCellDef> Updated At </th>
-    <td class="text-center" mat-cell *matCellDef="let element"> {{element.updatedAt | toLocalTime  | date: 'h:mm a , M/d/y '}} </td>
-  </ng-container>
 
-  <!-- Status at Column -->
-  <ng-container matColumnDef="Status">
-    <th class="text-center" mat-header-cell *matHeaderCellDef> Status </th>
-    <td class="text-center" mat-cell *matCellDef="let element">
-      <ng-container [ngSwitch]="element.status">
-        <div *ngSwitchCase=3>
-          <img src="assets/images/read.svg" alt="">
-        </div>
+        <!-- Action Column -->
+        <ng-container matColumnDef="Action">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'ACTION_LABEL' | translate }}</th>
+          <td class="text-center" mat-cell *matCellDef="let element"><img src="assets/icons/action.svg" alt="" width="14"> </td>
+        </ng-container>
 
-        <div *ngSwitchCase=1>
-          <img src="assets/images/sent.svg" alt="">
-        </div>
-
-        <div *ngSwitchCase=2>
-          <img src="assets/images/delivered.svg" alt="">
-        </div>
-
-        <div *ngSwitchCase=0>
-          <img src="assets/images/pending.svg" alt="">
-        </div>
-      </ng-container>
-
-
-    </td>
-  </ng-container>
- <!-- Action at Column -->
- <ng-container matColumnDef="Ation">
-  <th class="text-center" mat-header-cell *matHeaderCellDef> Action </th>
-  <td class="text-center" mat-cell *matCellDef="let element"><img src="assets/icons/action.svg" alt="" width="14"> </td>
-
-</ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
-      <ng-container *ngIf="!loading">
-
-      <tr class="pointer" (click)="displayMessage(row)" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
-        [ngClass]="{'active-row':selection.isSelected(row)}"
-        >
-      </tr>
-    </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+        <ng-container *ngIf="!loading">
+          <tr class="pointer" (click)="displayMessage(row)" mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
+            [ngClass]="{'active-row': selection.isSelected(row)}">
+          </tr>
+        </ng-container>
       </table>
 
       <div *ngIf="loading" class="spinner-container p-3">
-        <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
+        <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style>
+          <path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
       </div>
 
       <mat-paginator
-    (page)="onPageChange($event)"
-    [pageSizeOptions]="[10, 50, 100]"
-    [length]="length"
+        (page)="onPageChange($event)"
+        [pageSizeOptions]="[10, 50, 100]"
+        [length]="length"
         showFirstLastButtons
         aria-label="Select page of periodic elements">
-    </mat-paginator>
+      </mat-paginator>
     </section>
   </ng-container>
 
-  <ng-container *ngIf="length==0 &&( !loading || notFound || noData)">
-
-    <div class="d-flex justify-content-center align-items-center flex-column gap-3  w-100" style="height: 500px;">
+  <ng-container *ngIf="length == 0 && (!loading || notFound || noData)">
+    <div class="d-flex justify-content-center align-items-center flex-column gap-3 w-100" style="height: 500px;">
       <img src="assets/images/files.svg" alt="">
-      <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">No data to show</span>
+      <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA_TO_SHOW_LABEL' | translate }}</span>
     </div>
-
   </ng-container>
 </section>

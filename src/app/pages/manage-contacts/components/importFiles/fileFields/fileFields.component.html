@@ -1,48 +1,42 @@
 <section class="d-flex flex-column py-4 px-3 mx-auto gap-3 h-100" style="width: 90%;">
   <!-- modal header -->
   <div class="d-flex justify-content-between align-items-center mb-4 " style="height: 10%;">
-    <p class="txt-lg ms-4">Fields in File</p>
-    <p class="txt-lg me-5 pe-5">Fields in WizPulse</p>
-
-   </div>
+    <p class="txt-lg ms-4">{{ 'FIELDS_IN_FILE' | translate }}</p>
+    <p class="txt-lg me-5 pe-5">{{ 'FIELDS_IN_WIZPULSE' | translate }}</p>
+  </div>
   <!-- modal body  -->
   <div class="modal-body overflow-auto p-4 w-100"  style="height: 80%;">
     <ng-container *ngFor="let item of rowsData">
-
       <div class="d-flex w-100 justify-content-between mb-3 align-items-center">
         <span class="txt-md" style="font-weight: 500; width: 20%;">{{item.columnName}}</span>
         <div class="switcher d-flex justify-content-between align-items-center" style="width: 20%;">
-          <span class="txt-sm">Same as file</span>
+          <span class="txt-sm">{{ 'SAME_AS_FILE' | translate }}</span>
           <div  style="width:20%" class="form-check form-switch">
             <input [checked]="item.swichOpened"  (change)="item.swichOpened=!item.swichOpened; onSwitcherChange($event,item)" class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
           </div>
-
-
         </div>
         <div style="width:40%">
           <form [formGroup]="item.form">
-
             <us-select
-            [data]="item.contactsData"
-            [multiSelect]="false"
-            formControlName="contacts"
-            [placeholder]="'Choose an option'"
-            (onSelect)="onSelect($event,item)"
-            [enableSearch]="true"
-            [searchbarOnToggler]="true"
-            [searchNoResultText]="'there is no result'"
-            [maxListItemsWithoutSearch]="5"
-          ></us-select>
+              [data]="item.contactsData"
+              [multiSelect]="false"
+              formControlName="contacts"
+              [placeholder]="'CHOOSE_AN_OPTION' | translate"
+              (onSelect)="onSelect($event,item)"
+              [enableSearch]="true"
+              [searchbarOnToggler]="true"
+              [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
+              [maxListItemsWithoutSearch]="5"
+            ></us-select>
           </form>
         </div>
       </div>
     </ng-container>
-
   </div>
   <!-- modal footer -->
   <div class="modal-footer justify-content-end gap-3"  style="height: 10%;">
     <us-button
-      label="Import"
+      label="{{ 'IMPORT' | translate }}"
       size="sm"
       [loading]="loading"
       [fill]="true"
@@ -50,7 +44,7 @@
       (clicked)="importFile()"
     ></us-button>
     <us-button
-      label="Back"
+      label="{{ 'BACK' | translate }}"
       size="sm"
       [loading]="false"
       [fill]="false"

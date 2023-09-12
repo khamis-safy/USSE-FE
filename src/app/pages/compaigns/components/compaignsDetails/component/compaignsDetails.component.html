@@ -1,38 +1,32 @@
 <section class="m-4">
   <div class="d-flex justify-content-between pt-2 align-items-center">
-    <div class="d-flex gap-3 flex-column ">
-      <div >
-        <span class="text-primary-800 pointer "(click)="backToCompaigns()" >Compaigns</span> / <span style="color:rgba(134, 134, 134, 1)">{{compaign?.campaignName}}</span>
+    <div class="d-flex gap-3 flex-column">
+      <div>
+        <span class="text-primary-800 pointer" (click)="backToCompaigns()">{{ 'campaignsLabel' | translate }}</span> / <span style="color:rgba(134, 134, 134, 1)">{{ compaign?.campaignName }}</span>
       </div>
 
-      <div class="mb-3 d-flex gap-2 align-items-center w-100"><p class="txt-lg" style="font-weight: 500;">{{compaign?.campaignName}}</p> <p class="txt-xs mb-2" style="font-weight: 500; color:rgba(134, 134, 134, 1)">{{compaign?.createdAt | toLocalTime  | date: 'h:mm a , M/d/y '}}</p></div>
-
+      <div class="mb-3 d-flex gap-2 align-items-center w-100">
+        <p class="txt-lg" style="font-weight: 500;">{{ compaign?.campaignName }}</p>
+        <p class="txt-xs mb-2" style="font-weight: 500; color: rgba(134, 134, 134, 1)">{{ compaign?.createdAt | toLocalTime | date: 'h:mm a , M/d/y ' }}</p>
+      </div>
     </div>
-
   </div>
 
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" (selectedTabChange)="resetTableData()">
     <mat-tab>
       <ng-template mat-tab-label>
         <img src="assets/icons/report-icon.svg" alt="" class="px-2">
-        Report Summary
-        <!-- <mat-icon class="tab-icon">format_list_bulleted</mat-icon> -->
-
+        {{ 'reportSummaryLabel' | translate }}
       </ng-template>
-      <app-reportSummary  [compaignId]="compaignId" [compaign]="compaign"></app-reportSummary>
+      <app-reportSummary [compaignId]="compaignId" [compaign]="compaign"></app-reportSummary>
     </mat-tab>
 
     <mat-tab>
       <ng-template mat-tab-label class="txt-md">
         <img src="assets/icons/recip-activite.svg" alt="" class="px-2">
-        <!-- <mat-icon class="tab-icon">contacts</mat-icon> -->
-        Recipient Activities
+        {{ 'recipientActivitiesLabel' | translate }}
       </ng-template>
       <app-recipientActivities [compaignId]="compaignId" [compaign]="compaign"></app-recipientActivities>
     </mat-tab>
-
-
-
-
   </mat-tab-group>
 </section>

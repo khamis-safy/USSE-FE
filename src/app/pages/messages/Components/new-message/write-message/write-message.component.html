@@ -1,47 +1,45 @@
 <div class="w-100 h-100 p-5 mt-5">
 
-<div class="d-flex gap-5 flex-column">
-  <form [formGroup]="form" class="d-flex gap-5 flex-column">
-  <us-select
-[data]="templates"
-formControlName="templatesData"
-[multiSelect]="false"
-(onSelect)="onSelect($event)"
-[loadingText]="templateLoadingText"
+  <div class="d-flex gap-5 flex-column">
+    <form [formGroup]="form" class="d-flex gap-5 flex-column">
+      <us-select
+        [data]="templates"
+        formControlName="templatesData"
+        [multiSelect]="false"
+        (onSelect)="onSelect($event)"
+        [loadingText]="templateLoadingText"
+        [label]="'Templates' | translate"
+        [placeholder]="'Select Templates' | translate"
+        [isDisabled]="false"
+        [optional]="true"
+        [enableSearch]="true"
+        [searchbarOnToggler]="true"
+        [searchNoResultText]="'there is no result' | translate"
+        [maxListItemsWithoutSearch]="5"
+      ></us-select>
 
-[label]="'Templates'"
-[placeholder]="'Select Templates'"
-[isDisabled]="false"
-[optional]="true"
-[enableSearch]="true"
-[searchbarOnToggler]="true"
-[searchNoResultText]="'there is no result'"
-[maxListItemsWithoutSearch]="5"
-></us-select>
+      <us-input
+        [isDisabled]="false"
+        placeholder="{{ 'Enter Your Message...' | translate }}"
+        [optional]="true"
+        type="text"
+        [error]="false"
+        [fullWidth]="true"
+        formControlName="message"
+        [label]="'Message Contacts' | translate"
+        [isTextArea]="true"
+      ></us-input>
+    </form>
+    <div class="form-group d-flex gap-lg-5 flex-column  flex-lg-row flex-nowrap">
+      <label for="devicesData" class="w-25 d-none d-lg-block text-nowrap"
+        ><span class="txt txt-sm text-black text-wrap">{{ 'Attachments' | translate }}</span>
+      </label>
 
-<us-input
-    [isDisabled]="false"
-    placeholder="Enter Your Message..."
-    [optional]="true"
-    type="text"
-    [error]="false"
-    [fullWidth]="true"
-    formControlName="message"
-    label="Message Contacts"
-    [isTextArea]="true"
-  ></us-input>
-</form>
-<div class="form-group d-flex gap-lg-5 flex-column  flex-lg-row flex-nowrap">
-  <label for="devicesData" class="w-25 d-none d-lg-block text-nowrap"
-    ><span class="txt txt-sm text-black text-wrap">Attachments</span>
-  </label>
-
-  <us-upload  class="w-100"
-  (onFileChange)="onFileChange($event)"
-  [isLoading]="loading"
-  [(ngModel)]="fileData"
-  ></us-upload>
-</div>
-
-
+      <us-upload class="w-100"
+        (onFileChange)="onFileChange($event)"
+        [isLoading]="loading"
+        [(ngModel)]="fileData"
+      ></us-upload>
+    </div>
+  </div>
 </div>

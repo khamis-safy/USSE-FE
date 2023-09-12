@@ -3,172 +3,154 @@
     <div class="d-flex justify-content-center">
       <img *ngIf="isCompagins"  src="assets/icons/Compaigns.svg" alt="" class="px-2" />
       <mat-icon *ngIf="!isCompagins" class="me-2 pointer" (click)="isCompagins=true">keyboard_backspace</mat-icon>
-      <span  class="txt-lg main-heading"> Compaigns</span>
+      <span class="txt-lg main-heading">{{ 'campaigns' | translate }}</span>
     </div>
 
     <us-button
       *ngIf="isCompagins "
       class="m-2"
-      label="New Compaign"
+      [label]="'newCampaign' | translate"
       img="assets/icons/compagins-icon.svg"
       [fill]="true"
       [size]="'md'"
       [loading]="false"
       [disabled]="false"
       [appearance]="'primary'"
-      (clicked)="addCampaigns() "
+      (clicked)="addCampaigns()"
     >
     </us-button>
-
   </div>
-<ng-container *ngIf="!isCompagins">
-<app-addCompaigns (back)="backToCompaigns($event)"></app-addCompaigns>
-</ng-container>
 
-<ng-container *ngIf="isCompagins">
+  <ng-container *ngIf="!isCompagins">
+    <app-addCompaigns (back)="backToCompaigns($event)"></app-addCompaigns>
+  </ng-container>
 
-
+  <ng-container *ngIf="isCompagins">
     <section class="py-3 d-flex flex-column gap-3">
-            <ng-container *ngIf="!noData">
-
-            <div class="d-flex justify-content-between mb-3 align-items-center">
-              <div class="d-flex position-relative row m-0">
-                <div class="col-12 col-lg-4 p-0">
-                  <input
+      <ng-container *ngIf="!noData">
+        <div class="d-flex justify-content-between mb-3 align-items-center">
+          <div class="d-flex position-relative row m-0">
+            <div class="col-12 col-lg-4 p-0">
+              <input
                 #search
                 type="text"
                 class="form-control ps-5 txt-xs"
                 id="search"
-                placeholder="Search"
+                placeholder="{{ 'searchPlaceholder' | translate }}"
                 (keyup)="onSearch(search)"
               />
-                </div>
-                <div
-                  class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y"
-                >
-                  <img src="assets/icons/search.svg" alt="" width="14" />
-                </div>
-                <!-- <mat-icon class="w-fit text-neutral-500 position-absolute start-0 top-50 translate-middle-y">search</mat-icon> -->
-              </div>
-              <div class="d-flex  justify-content-between" style="width: 33%;">
-                <form [formGroup]="form" style="width: 60%;">
-                  <us-select
-                  [data]="devices"
-                  formControlName="devicesData"
-                  [multiSelect]="false"
-                  [label]="'Devices'"
-                  (onSelect)="onSelect($event)"
-                  [loadingText]="deviceLoadingText"
-                  [placeholder]="'Select Devices'"
-                  [isDisabled]="false"
-                  [optional]="true"
-                  [enableSearch]="true"
-                  [searchbarOnToggler]="true"
-                  [searchNoResultText]="'there is no result'"
-                  [maxListItemsWithoutSearch]="5"
-                ></us-select>
-                </form>
-                  <mat-form-field class="us-select">
-                    <mat-label class="txt-caption"> <img src="assets/icons/display.svg" alt="" class="m-2" width="15"> <span class="txt-caption" style="font-size: 12px !important;">Display</span></mat-label>
-                    <mat-select [formControl]="columns"  (selectionChange)="changeColumns($event.value)" multiple>
-                      <mat-option *ngFor="let topping of displayed" [value]="topping">{{topping}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
             </div>
+            <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
+              <img src="assets/icons/search.svg" alt="" width="14" />
+            </div>
+          </div>
+          <div class="d-flex justify-content-between" style="width: 33%;">
+            <form [formGroup]="form" style="width: 60%;">
+              <us-select
+                [data]="devices"
+                formControlName="devicesData"
+                [multiSelect]="false"
+                [label]="'devicesLabel' | translate"
+                (onSelect)="onSelect($event)"
+                [loadingText]="deviceLoadingText"
+                [placeholder]="'selectDevicesPlaceholder' | translate"
+                [isDisabled]="false"
+                [optional]="true"
+                [enableSearch]="true"
+                [searchbarOnToggler]="true"
+                [searchNoResultText]="'searchNoResultText' | translate"
+                [maxListItemsWithoutSearch]="'maxListItemsWithoutSearch' | translate"
+              ></us-select>
+            </form>
+            <mat-form-field class="us-select">
+              <mat-label class="txt-caption">
+                <img src="assets/icons/display.svg" alt="" class="m-2" width="15" />
+                <span class="txt-caption" style="font-size: 12px !important;">{{ 'displayLabel' | translate }}</span>
+              </mat-label>
+              <mat-select [formControl]="columns" (selectionChange)="changeColumns($event.value)" multiple>
+                <mat-option *ngFor="let topping of displayed" [value]="topping">{{ topping | translate }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
       </ng-container>
 
-          <ng-container *ngIf="length>0 && !noData">
-      <section class="table-wrapper">
-        <table mat-table [dataSource]="dataSource" class="table-wrapper">
-          <!-- name Column -->
-          <ng-container matColumnDef="Name">
-            <th class="text-center" mat-header-cell *matHeaderCellDef>Name</th>
-            <td class="text-center" mat-cell *matCellDef="let element">
-              {{ element.campaignName }}
-            </td>
-          </ng-container>
+      <ng-container *ngIf="length > 0 && !noData">
+        <section class="table-wrapper">
+          <table mat-table [dataSource]="dataSource" class="table-wrapper">
+            <!-- name Column -->
+            <ng-container matColumnDef="Name">
+              <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'nameColumn' | translate }}</th>
+              <td class="text-center" mat-cell *matCellDef="let element">{{ element.campaignName }}</td>
+            </ng-container>
 
-          <!-- status Column -->
-          <ng-container matColumnDef="Status">
-            <th class="text-center" mat-header-cell *matHeaderCellDef>Status</th>
-            <td class="text-center" mat-cell *matCellDef="let element">
-              <div *ngIf="element.isStopped ==true">
-                <img src="assets/icons/ended-compagins.svg" alt="" />
-              </div>
-              <div *ngIf="element.isStopped ==false">
-                <img src="assets/icons/active-compaigns.svg" alt="" />
-              </div>
-            </td>
-          </ng-container>
+            <!-- status Column -->
+            <ng-container matColumnDef="Status">
+              <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'statusColumn' | translate }}</th>
+              <td class="text-center" mat-cell *matCellDef="let element">
+                <div *ngIf="element.isStopped == true">
+                  <img src="assets/icons/ended-compagins.svg" alt="" />
+                </div>
+                <div *ngIf="element.isStopped == false">
+                  <img src="assets/icons/active-compaigns.svg" alt="" />
+                </div>
+              </td>
+            </ng-container>
 
-          <!-- Creator Name Column -->
-          <ng-container matColumnDef="Creator Name">
-            <th class="text-center" mat-header-cell *matHeaderCellDef>
-              Creator Name
-            </th>
-            <td class="text-center" mat-cell *matCellDef="let element">
-              {{ element?.device.deviceName }}
-            </td>
-          </ng-container>
+            <!-- Creator Name Column -->
+            <ng-container matColumnDef="Creator Name">
+              <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'creatorNameColumn' | translate }}</th>
+              <td class="text-center" mat-cell *matCellDef="let element">{{ element?.device.deviceName }}</td>
+            </ng-container>
 
-          <!-- Start Date at Column -->
-          <ng-container matColumnDef="Start Date">
-            <th class="text-center" mat-header-cell *matHeaderCellDef>
-              Start Date
-            </th>
-            <td class="text-center" mat-cell *matCellDef="let element">
-              {{ element?.scheduledAt | toLocalTime | date: 'h:mm a , M/d/y '}}
-            </td>
-          </ng-container>
+            <!-- Start Date Column -->
+            <ng-container matColumnDef="Start Date">
+              <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'startDateColumn' | translate }}</th>
+              <td class="text-center" mat-cell *matCellDef="let element">{{ element?.scheduledAt | toLocalTime | date: 'h:mm a , M/d/y ' }}</td>
+            </ng-container>
 
-          <!-- Action at Column -->
-          <ng-container matColumnDef="Action">
-            <th class="text-center" mat-header-cell *matHeaderCellDef>Action</th>
-            <td class="text-center" mat-cell *matCellDef="let element"  (click)=" cellClick=true;">
-
-                 <div class="d-flex justify-content-center w-100">
-                  <div class="d-flex flex-row-reverse gap-2 justify-content-between "style="
-                  width: 25%;">
-                    <img (click)="deleteCompaign(element)" src="assets/icons/Actionsc.svg" alt="" />
-                    <img *ngIf="element.isStopped ==false" (click)="stopComaign(element);" src="assets/icons/stop-compaigns.svg" alt="" />
+            <!-- Action Column -->
+            <ng-container matColumnDef="Action">
+              <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'actionColumn' | translate }}</th>
+              <td class="text-center" mat-cell *matCellDef="let element" (click)="cellClick=true;">
+                <div class="d-flex justify-content-center w-100">
+                  <div class="d-flex flex-row-reverse gap-2 justify-content-between " style="width: 25%;">
+                    <img (click)="deleteCampaign(element)" src="assets/icons/Actionsc.svg" alt="" />
+                    <img *ngIf="element.isStopped == false" (click)="stopCampaign(element);" src="assets/icons/stop-compaigns.svg" alt="" />
                   </div>
-                 </div>
-            </td>
-          </ng-container>
+                </div>
+              </td>
+            </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
-          <ng-container *ngIf="!loading">
+            <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+            <ng-container *ngIf="!loading">
+              <tr class="pointer" (click)="campaignDetails(row); cellClick=false" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"></tr>
+            </ng-container>
+          </table>
 
-          <tr class="pointer" (click)="compaignDetails(row); cellClick=false" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
+          <div *ngIf="loading" class="spinner-container p-3">
+            <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style>
+              <path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
+          </div>
 
-            >
-          </tr>
-        </ng-container>
-        </table>
-
-        <div *ngIf="loading" class="spinner-container p-3">
-          <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
-        </div>
-
-        <mat-paginator
-        (page)="onPageChange($event)"
-        [pageSizeOptions]="[10, 50, 100]"
-        [length]="length"
+          <mat-paginator
+            (page)="onPageChange($event)"
+            [pageSizeOptions]="[10, 50, 100]"
+            [length]="length"
             showFirstLastButtons
             aria-label="Select page of periodic elements">
-        </mat-paginator>
+          </mat-paginator>
+        </section>
+      </ng-container>
       </section>
-    </ng-container>
-    </section>
 
-    <ng-container *ngIf="length==0 &&( !loading || notFound || noData)">
 
-    <div class="d-flex justify-content-center align-items-center flex-column gap-3  w-100" style="height: 700px;">
-      <img src="assets/images/files.svg" alt="">
-      <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">No data to show</span>
-    </div>
-
+    <ng-container *ngIf="length == 0 && (!loading || notFound || noData)">
+      <div class="d-flex justify-content-center align-items-center flex-column gap-3 w-100" style="height: 700px;">
+        <img src="assets/images/files.svg" alt="{{ 'noDataImageAlt' | translate }}" />
+        <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'noDataMessage' | translate }}</span>
+      </div>
     </ng-container>
 </ng-container>
 

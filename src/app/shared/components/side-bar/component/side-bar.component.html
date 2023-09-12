@@ -1,4 +1,4 @@
-<div class="bg-white sidnav-container py-md-2 py-lg-3  d-flex flex-column square scrollbar-dusty-grass square thin">
+<div class="bg-white sidnav-container py-md-2 py-lg-3 d-flex flex-column square scrollbar-dusty-grass square thin">
   <div class="d-flex justify-content-between align-items-center user-info-container w-100">
     <div class="user-info d-flex gap-3 align-items-center">
       <div class="user-img d-flex justify-content-center align-items-center">
@@ -17,42 +17,34 @@
   </div>
 
   <ng-container *ngIf="show">
-    <ng-container>
-
-      <ul style="cursor: pointer;" class="user-options d-flex p-4 bg-neutral-0 zi-5 flex-column">
-        <li class="opt" (click)="openSettingModal()">
-          <a  routerLinkActive="active"  class="text-neutral-600 d-flex">
-
-
-
-            <div class="icon">
-              <img src="assets/icons/settings.svg" alt="" />
-            </div>
-            <span class="txt-md">Settings</span>
-          </a>
-        </li>
-
-        <li class="opt">
-          <a href="" class="text-neutral-600 d-flex">
-            <div class="icon">
-              <img src="assets/icons/logout.svg" alt="" />
-            </div>
-
-            <span class="txt-md">Logout</span>
-          </a>
-        </li>
-      </ul>
-    </ng-container>
+    <ul style="cursor: pointer;" class="user-options d-flex p-4 bg-neutral-0 zi-5 flex-column">
+      <li class="opt" (click)="openSettingModal()">
+        <a routerLinkActive="active" class="text-neutral-600 d-flex">
+          <div class="icon">
+            <img src="assets/icons/settings.svg" alt="" />
+          </div>
+          <span class="txt-md">{{ "SETTINGS" | translate }}</span>
+        </a>
+      </li>
+      <li class="opt">
+        <a href="" class="text-neutral-600 d-flex">
+          <div class="icon">
+            <img src="assets/icons/logout.svg" alt="" />
+          </div>
+          <span class="txt-md">{{ "LOGOUT" | translate }}</span>
+        </a>
+      </li>
+    </ul>
   </ng-container>
 
-  <div class="all-options-container d-flex justify-content-between  flex-column h-100 overflow-auto px-3">
+  <div class="all-options-container d-flex justify-content-between flex-column h-100 overflow-auto px-3">
     <ul class="d-flex flex-column">
-      <li class="">
+      <li>
         <a routerLinkActive="active" routerLink="/dashboard" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/dashboard-1.svg" alt="" />
           </div>
-          <span class="txt-xs">Dashboard</span>
+          <span class="txt-xs">{{ "DASHBOARD" | translate }}</span>
         </a>
       </li>
       <li>
@@ -60,46 +52,39 @@
           <div class="icon">
             <img src="assets/icons/message-1.svg" alt="" />
           </div>
-          <span class="txt-xs">Message</span>
+          <span class="txt-xs">{{ "MESSAGES" | translate }}</span>
         </a>
       </li>
-
-
       <!-- <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/chats"
-          class="text-neutral-600 d-flex"
-        >
+        <a routerLinkActive="active" routerLink="/chats" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/chats-1.svg" alt="" />
           </div>
-          <span class="txt-xs">Chats</span>
+          <span class="txt-xs">{{ "CHATS" | translate }}</span>
         </a>
       </li> -->
-
-      <li >
+      <li>
         <a routerLinkActive="active" routerLink="/compaigns" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/campaign-1.svg" alt="" />
           </div>
-          <span class="txt-xs">Campaigns</span>
+          <span class="txt-xs">{{ "CAMPAIGNS" | translate }}</span>
         </a>
       </li>
-      <li  *ngIf="permissions?.Templates">
+      <li *ngIf="permissions?.Templates">
         <a routerLinkActive="active" routerLink="/templates" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/templates-1.svg" alt="" />
           </div>
-          <span class="txt-xs">Templates</span>
+          <span class="txt-xs">{{ "TEMPLATES" | translate }}</span>
         </a>
       </li>
-      <li  *ngIf="permissions?.Contacts">
+      <li *ngIf="permissions?.Contacts">
         <a routerLinkActive="active" routerLink="/contacts" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/manage-contacts-1.svg" alt="" />
           </div>
-          <span class="txt-xs">Manage Contacts</span>
+          <span class="txt-xs">{{ "MANAGE CONTACTS" | translate }}</span>
         </a>
       </li>
       <li *ngIf="!isUser">
@@ -107,7 +92,7 @@
           <div class="icon">
             <img src="assets/icons/users-1.svg" alt="" />
           </div>
-          <span class="txt-xs"> Users</span>
+          <span class="txt-xs">{{ "USERS" | translate }}</span>
         </a>
       </li>
       <li *ngIf="permissions?.Devices">
@@ -115,76 +100,41 @@
           <div class="icon">
             <img src="assets/icons/devices-1.svg" alt="" />
           </div>
-          <span class="txt-xs">Devices</span>
+          <span class="txt-xs">{{ "DEVICES" | translate }}</span>
         </a>
       </li>
-
       <!-- <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/bot"
-          class="text-neutral-600 d-flex pe-4"
-        >
-
-          <div class="icon">
-            <img src="assets/icons/bot-1.svg" alt="" />
-          </div>
-          <span class="txt-xs">Bot</span>
-        </a>
-
-      </li>
-      <li>
         <a routerLinkActive="active" routerLink="/billing" class="text-neutral-600 d-flex">
-
-      </li> -->
-
-
-      <!-- <li>
-        <a
-          routerLinkActive="active"
-          routerLink="/billing"
-          class="text-neutral-600 d-flex"
-        >
-
           <div class="icon">
             <img src="assets/icons/billing-1.svg" alt="" />
           </div>
-          <span class="txt-xs">Billing</span>
+          <span class="txt-xs">{{ "BILLING" | translate }}</span>
         </a>
-      </li>
-
-      <li>
+      </li> -->
+      <!-- <li>
         <a routerLinkActive="active" routerLink="/videos" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/video-1.svg" alt="" />
           </div>
-          <span class="txt-xs">Videos</span>
+          <span class="txt-xs">{{ "VIDEOS" | translate }}</span>
         </a>
-      </li>
-
-
-      <li class="mb-3">
+      </li> -->
+      <!-- <li class="mb-3">
         <a routerLinkActive="active" routerLink="/notes" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/notes-1.svg" alt="" />
           </div>
-          <span class="txt-xs">Notes</span>
+          <span class="txt-xs">{{ "NOTES" | translate }}</span>
         </a>
       </li> -->
-
-
     </ul>
     <div class="i-help">
       <a routerLinkActive="active" routerLink="/help" class="text-neutral-600 d-flex">
         <div class="icon">
           <img src="assets/icons/help-1.svg" alt="" />
         </div>
-        <span class="txt-xs">Help</span>
+        <span class="txt-xs">{{ "HELP" | translate }}</span>
       </a>
     </div>
   </div>
-
-
 </div>
-
-

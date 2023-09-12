@@ -1,94 +1,69 @@
 <section class="p-3">
   <div class="d-flex justify-content-between mb-4 align-items-center">
-
     <div class="d-flex justify-content-center ">
-      <mat-icon *ngIf="!isMessages" class="me-2 pointer" (click)="isMessages=true">keyboard_backspace</mat-icon>
-
-      <img *ngIf="isMessages"  src="assets/icons/Vector (1).svg" alt="" class="px-2">
-   <span class="txt-lg main-heading"> Message</span>
+      <mat-icon *ngIf="!isMessages" class="me-2 pointer" (click)="isMessages=true">{{ 'BACK_ICON' | translate }}</mat-icon>
+      <img *ngIf="isMessages" src="assets/icons/Vector (1).svg" alt="" class="px-2">
+      <span class="txt-lg main-heading">{{ 'MAIN_HEADING' | translate }}</span>
     </div>
-
-  <div class="buttons_ ">
-
-    <us-button
-    *ngIf="isChecked && isMessages "
-      class="m-2"
-      label="Delete"
-      img="assets/icons/delete.svg"
-      [iconClass]="'material-symbols-outlined'"
-      [fill]="true"
-      [size]="'md'"
-      [loading]="false"
-      [disabled]="false"
-      [appearance]="'danger'"
-      (clicked)="openDeleteModal()"
-
-    ></us-button>
-
-   <us-button
-   *ngIf="isMessages "
-      class="m-2"
-      label="New Message"
-      img="assets/icons/new-message-icon.svg"
-      [fill]="true"
-      [size]="'md'"
-      [loading]="false"
-      [disabled]="false"
-      [appearance]="'primary'"
-      (clicked)="openNewMessage()"
-      >
-
-  </us-button>
-
-
-
+    <div class="buttons_ ">
+      <us-button *ngIf="isChecked && isMessages"
+        class="m-2"
+        label="{{ 'DELETE_LABEL' | translate }}"
+        img="assets/icons/delete.svg"
+        [iconClass]="'material-symbols-outlined'"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'danger'"
+        (clicked)="openDeleteModal()">
+      </us-button>
+      <us-button *ngIf="isMessages"
+        class="m-2"
+        label="{{ 'NEW_MESSAGE_LABEL' | translate }}"
+        img="assets/icons/new-message-icon.svg"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+        (clicked)="openNewMessage()">
+      </us-button>
     </div>
-
-
   </div>
-
   <ng-container *ngIf="isMessages">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent"  (selectedTabChange)="changeModal()">
-
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" (selectedTabChange)="changeModal()">
       <mat-tab>
         <ng-template mat-tab-label class="txt-md">
           <img src="assets/icons/Frame 1171275397.svg" alt="" class="px-2">
-            Inbox
+          {{ 'INBOX_LABEL' | translate }}
         </ng-template>
         <app-message-type [canEdit]="canEdit" (isChecked)="onChecked($event)" [msgCategory]="'inbox'"></app-message-type>
       </mat-tab>
-
       <mat-tab>
         <ng-template mat-tab-label>
           <img src="assets/icons/Vector.svg" alt="" class="px-2">
-            Scheduled
-
+          {{ 'SCHEDULED_LABEL' | translate }}
         </ng-template>
         <app-scheduled [canEdit]="canEdit" (isChecked)="onChecked($event)"></app-scheduled>
       </mat-tab>
-
       <mat-tab>
-        <ng-template mat-tab-label >
+        <ng-template mat-tab-label>
           <img src="assets/icons/outbox.svg" alt="" class="px-2">
-            Outbox
-
+          {{ 'OUTBOX_LABEL' | translate }}
         </ng-template>
         <app-message-type [canEdit]="canEdit" (isChecked)="onChecked($event)" [msgCategory]="'outbox'"></app-message-type>
       </mat-tab>
-
       <mat-tab>
-        <ng-template mat-tab-label >
+        <ng-template mat-tab-label>
           <img src="assets/icons/Group 1171276390.svg" alt="" class="px-2">
-            Undelivered
-
+          {{ 'UNDELIVERED_LABEL' | translate }}
         </ng-template>
         <app-message-type [canEdit]="canEdit" (isChecked)="onChecked($event)" [msgCategory]="'failed'"></app-message-type>
       </mat-tab>
     </mat-tab-group>
   </ng-container>
-
   <ng-container *ngIf="!isMessages">
     <app-new-message (back)="isMessages=$event"></app-new-message>
   </ng-container>
 </section>
-

@@ -53,7 +53,7 @@ const routes: Routes = [
 
       {
         path: "compaigns",
-        canActivate:[AuthGuard],
+        // canActivate:[AuthGuard],
 
         loadChildren: () =>
           import("./../../pages/compaigns/compaigns.module").then((m) => m.CompaignsModule),

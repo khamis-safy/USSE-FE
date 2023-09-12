@@ -4,101 +4,94 @@
       <mat-icon>check</mat-icon>
     </ng-template>
 
-    <mat-step >
-      <ng-template matStepLabel>Select Contacts</ng-template>
-      <div class="d-flex align-items-between flex-column justify-content-between " style="min-height: 700px;">
-        <app-select-contacts (displayedContactsCount)="contactsCount($event)" style=" height: 80%;"></app-select-contacts>
+    <mat-step>
+      <ng-template matStepLabel>{{ 'SELECT_CONTACTS' | translate }}</ng-template>
+      <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
+        <app-select-contacts (displayedContactsCount)="contactsCount($event)" style="height: 80%;"></app-select-contacts>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
-          <button class="rest-style " matStepperNext  [disabled]="count==0">
+          <button class="rest-style" matStepperNext [disabled]="count == 0">
             <us-button
-            class="m-2"
-            label="Next"
-            [fill]="true"
-            [size]="'md'"
-            [loading]="false"
-            [appearance]="'primary'"
-            (clicked)="toWriteMessage()"
-            [disabled]="count==0"
+              class="m-2"
+              label="{{ 'NEXT' | translate }}"
+              [fill]="true"
+              [size]="'md'"
+              [loading]="false"
+              [appearance]="'primary'"
+              (clicked)="toWriteMessage()"
+              [disabled]="count == 0"
             >
-
-
-        </us-button>
-        </button>
+            </us-button>
+          </button>
         </div>
       </div>
     </mat-step>
 
-    <mat-step  >
-      <ng-template matStepLabel>Write Message</ng-template>
+    <mat-step>
+      <ng-template matStepLabel>{{ 'WRITE_MESSAGE' | translate }}</ng-template>
       <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-          <app-write-message (attachments)="filesUrls($event)"  style=" height: 80%;"></app-write-message>
-          <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
-            <button class="rest-style" matStepperPrevious>   <us-button
+        <app-write-message (attachments)="filesUrls($event)" style="height: 80%;"></app-write-message>
+        <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
+          <button class="rest-style" matStepperPrevious>
+            <us-button
               class="m-2"
-              label="Back"
+              label="{{ 'BACK' | translate }}"
               [fill]="false"
               [size]="'md'"
               [loading]="false"
               [disabled]="false"
               [appearance]="'primary'"
-              >
-            </us-button>
-            </button>
-
-            <button class="rest-style" matStepperNext>   <us-button
-            class="m-2"
-            label="Next"
-            [fill]="true"
-            [size]="'md'"
-            [loading]="false"
-            [disabled]="false"
-            [appearance]="'primary'"
-            (clicked)="toSendMessage()"
             >
-            <!--             [disabled]="message!='' || attachments.length!=0"
- -->
             </us-button>
-            </button>
-          </div>
-      </div>
-
-    </mat-step>
-
-    <mat-step>
-      <ng-template matStepLabel>Send Message</ng-template>
-
-      <div class="d-flex align-items-between flex-column justify-content-between h-100" style="min-height: 700px;" >
-
-        <app-send-message  style=" height: 80%;"></app-send-message>
-        <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
-          <button class="rest-style" matStepperPrevious>   <us-button
-            class="m-2"
-            label="Back"
-            [fill]="false"
-            [size]="'md'"
-            [loading]="false"
-            [disabled]="false"
-            [appearance]="'primary'"
-            >
-          </us-button>
           </button>
-
-          <button class="rest-style" matStepperNext>   <us-button
-          class="m-2"
-          label="Send"
-          [fill]="true"
-          [size]="'md'"
-          [loading]="isLoading"
-          [disabled]=" isLoading"
-          [appearance]="'primary'"
-          (clicked)="toLastStep()"
-
-          >
-          </us-button>
+          <button class="rest-style" matStepperNext>
+            <us-button
+              class="m-2"
+              label="{{ 'NEXT' | translate }}"
+              [fill]="true"
+              [size]="'md'"
+              [loading]="false"
+              [disabled]="false"
+              [appearance]="'primary'"
+              (clicked)="toSendMessage()"
+            >
+            </us-button>
           </button>
         </div>
       </div>
     </mat-step>
 
+    <mat-step>
+      <ng-template matStepLabel>{{ 'SEND_MESSAGE' | translate }}</ng-template>
+      <div class="d-flex align-items-between flex-column justify-content-between h-100" style="min-height: 700px;">
+        <app-send-message style="height: 80%;"></app-send-message>
+        <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
+          <button class="rest-style" matStepperPrevious>
+            <us-button
+              class="m-2"
+              label="{{ 'BACK' | translate }}"
+              [fill]="false"
+              [size]="'md'"
+              [loading]="false"
+              [disabled]="false"
+              [appearance]="'primary'"
+            >
+            </us-button>
+          </button>
+          <button class="rest-style" matStepperNext>
+            <us-button
+              class="m-2"
+              label="{{ 'SEND' | translate }}"
+              [fill]="true"
+              [size]="'md'"
+              [loading]="isLoading"
+              [disabled]="isLoading"
+              [appearance]="'primary'"
+              (clicked)="toLastStep()"
+            >
+            </us-button>
+          </button>
+        </div>
+      </div>
+    </mat-step>
   </mat-stepper>
 </section>

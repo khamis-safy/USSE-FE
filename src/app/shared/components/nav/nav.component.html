@@ -14,8 +14,8 @@
       </div>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="language='English'">English</button>
-      <button mat-menu-item (click)="language='Arabic'">Arabic</button>
+      <button mat-menu-item (click)="language='English';switchLanguage('en')">English</button>
+      <button mat-menu-item (click)="language='Arabic';switchLanguage('ar')">Arabic</button>
     </mat-menu>
   </div>
 
