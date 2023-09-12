@@ -23,7 +23,7 @@ const routes: Routes = [
       },
       {
         path: "contacts",
-        // canActivate:[AuthGuard],data:{name:"Contacts"},
+        canActivate:[AuthGuard],data:{name:"Contacts"},
 
         loadChildren: () =>
           import("./../../pages/manage-contacts/manage-contacts.module").then((m) => m.ManageContactsModule),

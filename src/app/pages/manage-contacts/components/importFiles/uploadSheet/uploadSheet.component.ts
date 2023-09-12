@@ -67,7 +67,7 @@ export class UploadSheetComponent implements OnInit {
         if(res.length==0){
           this.listsLoadingText='No Results'
         }
-         if(res.length==0 && lisname){
+         if(res.length!=0 && lisname){
           this.addedList=allLists.find((listData)=>listData.name==lisname);
           this.form.patchValue({
             selectedLists: {
@@ -133,6 +133,7 @@ this.listId=event.value
 
         this.addNewList=false;
         this.toaster.success("Success")
+        this.getLists(this.form.value.listName)
       },
       (err)=>{
         this.addNewList=false;
