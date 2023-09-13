@@ -7,9 +7,14 @@ import { TranslationService } from '../../services/translation.service';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent {
-language:string="English";
-constructor(private translationService: TranslationService) {}
+language:string=localStorage.getItem("currentLang")=="ar"?"العربية":"English";
+currentLang:string;
+constructor(private translationService: TranslationService) {
+  this.currentLang=localStorage.getItem("currentLang") || "en";
+  translationService.setLanguage(this.currentLang)
+}
 switchLanguage(lang: string) {
   this.translationService.setLanguage(lang);
+  localStorage.setItem("currentLang",lang)
 }
 }

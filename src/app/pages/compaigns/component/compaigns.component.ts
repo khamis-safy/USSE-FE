@@ -25,7 +25,6 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   loading:boolean=false;
   cellClick:boolean=false;
   isCompagins:boolean=true;
-  isSearch:boolean=false;
   columns :FormControl;
   displayed: string[] = ['Name', 'Status', 'Creator Name', 'Start Date'];
   displayedColumns: string[] = ['Name', 'Status', 'Creator Name', 'Start Date','Action'];
@@ -176,7 +175,6 @@ if(this.isCompagins){
         }
         else{
           this.compaignsCount(deviceId);
-          this.isSearch=false;
 
 
         }
@@ -198,6 +196,7 @@ compaignsCount(deviceId){
     }
     ,(err)=>{
       this.length=0;
+
     }
   )
 

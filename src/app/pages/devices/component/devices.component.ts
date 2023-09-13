@@ -25,12 +25,13 @@ export class DevicesComponent implements OnInit{
   loading;
   delay:number;
   @Input() isCanceled:boolean;
-
-
+  noData: boolean;
+  sessionName:string;
+  notFound: boolean=false;
+  isReonnect:boolean=false;
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild("search") search!:ElementRef
-
   deletedContacts:string[]=[];
   columns :FormControl;
   displayed: string[] = ['Device Name', 'Device Type', 'Number',"Create At", "Status","Delay Interval(s)"];
@@ -68,14 +69,22 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
     let orderedBy=this.devicesService.orderedBy;
     let search=this.devicesService.search;
     this.loading = true;
+    this.isReonnect=false;
+
     this.devicesService.getDevices(email,shows,pageNum,orderedBy,search).subscribe(
       (res)=>{
         this.numRows=res.length;
         this.loading = false;
         this.dataSource=new MatTableDataSource<DeviceData>(res);
         if(search!=""){
-          this.length=res.length
-      }
+          this.length=res.length;
+          if(this.length==0){
+            this.notFound=true;
+          }
+          else{
+            this.notFound=false;
+          }
+              }
       else{
         this.getDevicesCount();
 
@@ -104,34 +113,20 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
   getDevicesCount(){
     this.devicesService.getDevicesCount(this.devicesService.email).subscribe(
       (res)=>{
-       this.length=res
+       this.length=res;
+       if( this.length==0){
+        this.noData=true;
+
+      }
+      else{
+         this.noData=false;
+
+       }
        },
        (err)=>{
         this.length=0;
+        this.noData=true;
        })
-  }
-  openStepsModal(data?){
-    const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='95vh';
-    dialogConfig.width='70vw';
-    dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
-    dialogConfig.maxHeight='85vh';
-    dialogConfig.disableClose = true;
-    if(data){
-      dialogConfig.data=data
-    }
-    const dialogRef = this.dialog.open(StepsComponent,dialogConfig);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.getDevices();
-        this.toaster.success("Success")
-      }
-
-    });
-
-
   }
 
   changeColumns(event){
@@ -158,16 +153,21 @@ else{
   }
 
   reconnect(device:DeviceData){
+    this.loading=true;
+    this.isReonnect=true;
     this.devicesService.reconnectWPPDevice(device.id,this.devicesService.email).subscribe(
       (res)=>{
+
         this.getDevices();
       },
       (error: HttpErrorResponse) => {
+        this.loading=false;
         if (error.status === 400 && error.error) {
 
 
           const sessionName = error.error.sessionName;
-          this.openStepsModal(sessionName)
+
+          this.openStepsModal({sessionName:sessionName,device:device})
 
 
         } else {
@@ -177,6 +177,35 @@ else{
       }
     )
   }
+
+  openStepsModal(data?){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='95vh';
+    dialogConfig.width='70vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.maxHeight='85vh';
+    dialogConfig.disableClose = true;
+    if(data){
+      dialogConfig.data=data.sessionName
+    }
+    const dialogRef = this.dialog.open(StepsComponent,dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        if(data){
+
+           this.reconnect(data.device)
+        }
+        this.toaster.success("Success")
+      }
+      this.getDevices();
+
+    });
+
+
+  }
+
   updateDeviceDelay(id: string) {
 
      //console.log(this.delay)
@@ -205,6 +234,7 @@ else{
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
+
         this.getDevices();
       }
     });

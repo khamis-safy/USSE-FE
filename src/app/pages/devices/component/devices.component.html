@@ -25,7 +25,8 @@
   </div>
 
   <section class="py-3 d-flex flex-column gap-3">
-    <div class="d-flex justify-content-between align-items-center ">
+    <ng-container *ngIf="!noData">
+    <div  class="d-flex justify-content-between align-items-center ">
       <div class="d-flex position-relative row m-0">
         <div class=" col-12 col-lg-4 p-0">
           <input #search type="text" class="form-control ps-5  txt-xs" id="search" placeholder="{{ 'SEARCH' | translate }}" (keyup)="onSearch(search)">
@@ -42,8 +43,8 @@
         </mat-select>
       </mat-form-field>
     </div>
-
-    <ng-container *ngIf="length>0">
+</ng-container>
+    <ng-container *ngIf="length>0  && !noData">
       <section class="table-wrapper ">
         <table matSort mat-table [dataSource]="dataSource" (matSortChange)="onSortChange($event)">
           <!-- Device Name Column -->
@@ -131,12 +132,14 @@
                 <div class="delete pointer">
                   <img src="assets/icons/delDev.svg" alt="" (click)="openDeleteModal(element.id)">
                 </div>
-                <div *ngIf="!element.isConnected" class="retry pointer" (click)="reconnect(element)">
+                <div *ngIf="!element.isConnected && !isReonnect" class="retry pointer" (click)="reconnect(element)">
                   <img src="assets/icons/reload.svg" alt="">
                 </div>
               </div>
             </td>
           </ng-container>
+
+
           <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
           <ng-container *ngIf="!loading">
             <tr mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
@@ -156,7 +159,7 @@
         </mat-paginator>
       </section>
     </ng-container>
-    <ng-container *ngIf="length==0 && !loading">
+    <ng-container *ngIf="length==0 &&  (!loading || notFound || noData)">
       <div class="d-flex justify-content-center align-items-center flex-column gap-3  w-100" style="height: 500px;">
         <img src="assets/images/files.svg" alt="">
         <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA_TO_SHOW' | translate }}</span>
