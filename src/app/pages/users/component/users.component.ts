@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { UsersService } from '../users.service';
 import { Users } from '../users';
 import { EditUserComponent } from '../components/editUser/editUser.component';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -40,6 +41,8 @@ export class UsersComponent implements OnInit ,OnDestroy{
     constructor(public dialog: MatDialog ,
       private toaster: ToasterServices,
       private authService:AuthService,
+      private translate: TranslateService,
+
       private userService:UsersService
       ) { };
 

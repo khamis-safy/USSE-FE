@@ -8,6 +8,8 @@ import { SignupService } from 'src/app/pages/signup/signup.service';
 import { PluginsService } from 'src/app/services/plugins.service';
 import { UsersService } from '../../users.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { TranslateService } from '@ngx-translate/core';
+
 export interface TestData{
   deviceId:string,
   deviceValue:string
@@ -41,6 +43,8 @@ export class AddUserComponent implements OnInit {
   isLoading: boolean;
 
     constructor(public dialogRef: MatDialogRef<AddUserComponent>,
+      private translate: TranslateService,
+
       private plugin:PluginsService,private toaster: ToasterServices,
     private signupService:SignupService,private userService:UsersService) {
     }
@@ -81,7 +85,8 @@ export class AddUserComponent implements OnInit {
         (res) => {
           this.isLoading = false;
           this.onClose(true);
-          this.toaster.success('Success');
+                  this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
         },
         (err) => {
           this.isLoading = false;

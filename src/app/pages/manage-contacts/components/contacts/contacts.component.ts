@@ -13,7 +13,7 @@ import { AddContactComponent } from './addContact/addContact.component';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { DISPLAYED } from '../../constants/constants';
+import { CONTACTSHEADER } from '../../constants/constants';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -39,7 +39,7 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
   listTableData:ListData[]=[]
   deletedContacts:string[]=[];
   columns :FormControl;
-  displayed: any[] = DISPLAYED;
+  displayed: any[] = CONTACTSHEADER;
   displayedColumns: string[] = ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At","action"];
   dataSource:MatTableDataSource<Contacts>;
   selection = new SelectionModel<Contacts>(true, []);
@@ -98,7 +98,7 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
     this.listService.unDeleteContact(email,this.deletedContacts).subscribe(
       (res)=>{
 
-        this.toaster.success("Success");
+        this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
         this.getContacts();
         this.deletedContacts=[];
 

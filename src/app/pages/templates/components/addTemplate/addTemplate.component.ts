@@ -24,6 +24,7 @@ import { WriteMessageComponent } from 'src/app/pages/messages/Components/new-mes
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface files {
   name: string;
@@ -56,6 +57,8 @@ export class AddTemplateComponent implements OnInit {
     private templatesService: TemplatesService,
     @Inject(MAT_DIALOG_DATA) public data: Templates,
     public dialogRef: MatDialogRef<AddTemplateComponent>,
+    private translate: TranslateService,
+
     private toaster: ToasterServices
   ) {}
 
@@ -84,7 +87,8 @@ export class AddTemplateComponent implements OnInit {
         (res) => {
           this.isLoading = false;
           this.onClose(true);
-          this.toaster.success('Success');
+                  this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
         },
         (err) => {
           this.isLoading = false;
@@ -114,7 +118,8 @@ export class AddTemplateComponent implements OnInit {
         (res) => {
           this.isLoading = false;
           this.onClose(true);
-          this.toaster.success('Success');
+                  this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
         },
         (err) => {
           this.isLoading = false;

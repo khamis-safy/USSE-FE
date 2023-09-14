@@ -1,4 +1,4 @@
-export const DISPLAYED: any[] = [
+export const CONTACTSHEADER: any[] = [
   {
     title:"NAME",
     value:"Name"
@@ -22,5 +22,20 @@ export const DISPLAYED: any[] = [
   {
     title:"CREATE_AT",
     value:"Create At"
+  },
+];
+export const LISTHEADERS: any[] = [
+  {
+    title:"NAME",
+    value:"Name"
+  },
+
+  {
+    title:"CREATE_AT",
+    value:"Create At"
+  },
+  {
+    title:"TOTAL_CONTACTS_COLUMN",
+    value:"Total Contacts"
   },
 ];

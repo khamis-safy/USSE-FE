@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     this.translate.use(this.currentLang);
     document.documentElement.dir=  this.currentLang === 'ar' ? 'rtl' : 'ltr'
     let body:any = document.querySelector('body');
-    console.log(body)
+
     body.classList.add(this.currentLang === 'ar' ? 'rtl' : 'ltr');
   }
 
@@ -29,7 +29,8 @@ export class AppComponent implements OnInit {
     if(this.authService.userInfo.customerId!=""){
       let email=this.authService.userInfo.email;
       this.getUserPermisisons(email);
-    }    this.initMode();
+    }
+    this.initMode();
 
   }
   getUserPermisisons(email){

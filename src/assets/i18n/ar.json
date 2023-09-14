@@ -163,7 +163,6 @@
   "SEARCH_PLACEHOLDER": "بحث",
   "DISPLAY_LABEL": "عرض",
   "NAME_COLUMN": "الاسم",
-  "CREATE_AT_COLUMN": "تاريخ الإنشاء",
   "TOTAL_CONTACTS_COLUMN": "إجمالي الجهات الاتصال",
   "ACTION_COLUMN": "الإجراء",
   "EDIT_ACTION": "تعديل",
@@ -244,7 +243,6 @@
   "USER_INFO": "معلومات المستخدم",
   "ACCESS_CONTROL": "مراقبة الوصول",
   "EDIT_PERMISSIONS": "تعديل الصلاحيات",
-  "CLOSE": "إغلاق",
   "ITEMS_SELECTED": "العناصر المحددة",
   "DELETE_DEVICE_MESSAGE": "هل أنت متأكد أنك تريد حذف هذا الجهاز؟",
   "DELETE_TEMPLATE_MESSAGE": "هل أنت متأكد أنك تريد حذف هذا القالب؟",
@@ -282,6 +280,11 @@
   "Message Contacts": "اتصل بالرسائل",
   "Attachments": "المرفقات",
   "COMMON":  {
-    "ERR_MSG": "هناك خطأ ما، يرجى الاتصال بنا."
+    "ERR_MSG": "هناك خطأ ما، يرجى الاتصال بنا.",
+    "SUCC_MSG":"تم بنجاح",
+    "DELETE_MESSAGES":"تم الحذف بنجاح",
+    "ERR":"خطأ",
+    "SUCC_ADD":"تمت الاضافة بنجاح"
   }
+
 }

@@ -12,7 +12,6 @@
   "displayLabel": "Display",
   "noDataImageAlt": "No data image",
   "noDataMessage": "No data to show",
-  "nameColumn": "Name",
   "statusColumn": "Status",
   "creatorNameColumn": "Creator Name",
   "startDateColumn": "Start Date",
@@ -163,7 +162,6 @@
   "SEARCH_PLACEHOLDER": "Search",
   "DISPLAY_LABEL": "Display",
   "NAME_COLUMN": "Name",
-  "CREATE_AT_COLUMN": "Create At",
   "TOTAL_CONTACTS_COLUMN": "Total Contacts",
   "ACTION_COLUMN": "Action",
   "EDIT_ACTION": "Edit",
@@ -244,7 +242,6 @@
   "USER_INFO": "User Info",
   "ACCESS_CONTROL": "Access Control",
   "EDIT_PERMISSIONS": "Edit Permissions",
-  "CLOSE": "close",
   "ITEMS_SELECTED": "item(s) Selected",
   "DELETE_DEVICE_MESSAGE": "Are you sure you want to delete this device?",
   "DELETE_TEMPLATE_MESSAGE": "Are you sure you want to delete this template?",
@@ -281,7 +278,11 @@
   "Message Contacts": "Message Contacts",
   "Attachments": "Attachments",
   "COMMON":  {
-    "ERR_MSG": "There is something wrong, please contact us."
+    "ERR_MSG": "There is something wrong, please contact us.",
+    "SUCC_MSG":"Success",
+    "DELETE_MESSAGES":"Deleted Successfully",
+    "ERR":"Error",
+    "SUCC_ADD":"Added Successfully"
   }
 
 }

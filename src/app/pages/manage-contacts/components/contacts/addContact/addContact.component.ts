@@ -9,6 +9,7 @@ import { AddListComponent } from '../../lists/addList/addList.component';
 import { Contacts } from '../../../contacts';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
+import { TranslateService } from '@ngx-translate/core';
 
 interface CheckedCont{
   contacts:Contacts,
@@ -55,6 +56,8 @@ oldData;
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<AddContactComponent>,
+    private translate: TranslateService,
+
     @Inject(MAT_DIALOG_DATA) public data:any,
   ) { }
 
@@ -161,12 +164,12 @@ oldData;
       (res)=>{
         this.isLoading = false
         this.onClose(true);
-        this.toaster.success("Success")
-                  },
+        this.toaster.success( this.translate.instant("COMMON.SUCC_ADD"));
+      },
       (err)=>{
         this.isLoading = false
         this.onClose(false);
-        this.toaster.error(`Error`)
+        this.toaster.error( this.translate.instant("COMMON.ERR"))
       }
     )
 
@@ -187,7 +190,8 @@ oldData;
         (res)=>{
           this.isLoading = false
           this.onClose(true);
-          this.toaster.success("Success")
+                  this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
         },
         (err)=>{
           this.isLoading = false
@@ -202,7 +206,8 @@ oldData;
         (res)=>{
           this.isLoading = false
           this.onClose(true);
-          this.toaster.success("Success")
+                  this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
         },
         (err)=>{
           this.isLoading = false

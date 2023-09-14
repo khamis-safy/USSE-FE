@@ -11,6 +11,7 @@ import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/del
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { DevicesService } from '../../devices/devices.service';
+import { CAMPAIGNSHEADERSWithAction, CAMPAIGNSHEADERSWithOUTAction } from '../constants/contstants';
 
 
 
@@ -74,7 +75,7 @@ this.getDevices();
       let devicePermissions=this.permission.find((e)=>e.deviceId==deviceId);
       if(devicePermissions){
       let value=devicePermissions.value;
-      this.displayedColumns=value=="FullAccess"?['Name', 'Status', 'Creator Name', 'Start Date','Action']:['Name', 'Status', 'Creator Name', 'Start Date'];
+      this.displayedColumns=value=="FullAccess"?CAMPAIGNSHEADERSWithAction:CAMPAIGNSHEADERSWithOUTAction;
       this.canEdit=value=="ReadOnly"?false:true;
       }
       else{

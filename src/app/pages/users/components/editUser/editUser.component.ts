@@ -4,6 +4,7 @@ import { UsersService } from '../../users.service';
 import { AddUserComponent } from '../addUser/addUser.component';
 import { DevicesData, DeviceSections, Users } from '../../users';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-editUser',
@@ -19,6 +20,8 @@ export class EditUserComponent implements OnInit {
   sharedPermisions:DeviceSections[];
   sharedPermisions$:{name:string,value:string}[]=[]
   constructor(public dialogRef: MatDialogRef<AddUserComponent>,
+    private translate: TranslateService,
+
               private userService:UsersService,
               @Inject(MAT_DIALOG_DATA) public data:any,
               private toaster: ToasterServices) { }
@@ -91,7 +94,8 @@ export class EditUserComponent implements OnInit {
       (res) => {
         this.isLoading = false;
         this.onClose(true);
-        this.toaster.success('Success');
+                this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
       },
       (err) => {
         this.isLoading = false;

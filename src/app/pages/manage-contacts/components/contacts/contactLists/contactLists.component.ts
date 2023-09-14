@@ -9,6 +9,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Contacts } from '../../../contacts';
+import { TranslateService } from '@ngx-translate/core';
 
 interface CheckedCont{
   list:string[],
@@ -39,6 +40,8 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<AddContactComponent>,
+    private translate: TranslateService,
+
     @Inject(MAT_DIALOG_DATA) public data: CheckedCont,
   ) { }
 

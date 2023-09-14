@@ -12,7 +12,8 @@ import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { ListDetailsService } from './list-details/list-details.service';
+import { LISTHEADERS } from '../../constants/constants';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-lists',
@@ -33,7 +34,7 @@ subscribtions:Subscription[]=[];
   notFound: boolean=false;
   columns :FormControl;
   @ViewChild(MatSort) sort: MatSort;
-  displayed: string[] = ['Name','Create At', 'Total Contacts'];
+  displayed: any[] = LISTHEADERS;
   listTableData:ListData[]=[]
   displayedColumns: string[] = ['select', 'Name', 'Create At', 'Total Contacts',"edit"];
   dataSource:MatTableDataSource<ListData>;
@@ -47,6 +48,7 @@ subscribtions:Subscription[]=[];
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     private snackBar: MatSnackBar,
+    private translate: TranslateService,
     private router:Router) {
   }
 
@@ -159,7 +161,8 @@ getListData(){
     this.listService.unDeleteList(email,this.deletedLists).subscribe(
       (res)=>{
 
-        this.toaster.success('Success');
+      this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
         this.getListData();
         this.deletedLists=[];
 

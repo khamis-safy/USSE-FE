@@ -4,6 +4,7 @@ import { Component, OnInit,Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ManageContactsService } from '../../../manage-contacts.service';
 import { ListData } from '../../../list-data';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-addList',
@@ -24,6 +25,8 @@ export class AddListComponent implements OnInit {
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<AddListComponent>,
+    private translate: TranslateService,
+
     @Inject(MAT_DIALOG_DATA) public data: ListData,
   ) { }
 
@@ -47,7 +50,8 @@ export class AddListComponent implements OnInit {
       (res)=>{
         this.isLoading = false
         this.onClose(true);
-        this.toaster.success("Success")
+                this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
       },
       (err)=>{
         this.isLoading = false
@@ -62,7 +66,8 @@ export class AddListComponent implements OnInit {
       (res)=>{
         this.isLoading = false
         this.onClose(true);
-        this.toaster.success("Success")
+                this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
       },
       (err)=>{
         this.isLoading = false

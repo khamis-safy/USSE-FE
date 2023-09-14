@@ -35,9 +35,5 @@ setDirectionForLanguage() {
   document.documentElement.dir = languageDirection;
 }
 
-// Call this function whenever the language changes
-languageChanged(newLang: string) {
-  this.setLanguage(newLang);
-}
 
 }

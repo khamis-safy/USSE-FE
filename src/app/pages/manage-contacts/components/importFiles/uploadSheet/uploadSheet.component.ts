@@ -6,6 +6,8 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FileFieldsComponent } from '../fileFields/fileFields.component';
 import { ListData } from '../../../list-data';
+import { TranslateService } from '@ngx-translate/core';
+
 export interface files{
   name:string,
   type:string,
@@ -41,6 +43,8 @@ export class UploadSheetComponent implements OnInit {
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data:any,
     private listService:ManageContactsService,
+    private translate: TranslateService,
+
     public dialogRef: MatDialogRef<UploadSheetComponent>) { }
 
   ngOnInit() {
@@ -132,7 +136,8 @@ this.listId=event.value
         this.isLoading = false;
 
         this.addNewList=false;
-        this.toaster.success("Success")
+                this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
         this.getLists(this.form.value.listName)
       },
       (err)=>{

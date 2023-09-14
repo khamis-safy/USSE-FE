@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-devices',
@@ -38,7 +39,8 @@ export class DevicesComponent implements OnInit{
   displayedColumns: string[] = ['Device Name', 'Device Type', 'Number',"Create At", "Status","Delay Interval(s)","action"];
   dataSource:MatTableDataSource<DeviceData>;
   canEdit: any;
-  constructor(public dialog: MatDialog,private  toaster: ToasterServices,private authService:AuthService,private devicesService:DevicesService){
+  constructor(public dialog: MatDialog,    private translate: TranslateService,
+    private  toaster: ToasterServices,private authService:AuthService,private devicesService:DevicesService){
   }
   ngOnInit() {
     this.getDevices();
@@ -197,7 +199,8 @@ else{
 
            this.reconnect(data.device)
         }
-        this.toaster.success("Success")
+                this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
       }
       this.getDevices();
 
