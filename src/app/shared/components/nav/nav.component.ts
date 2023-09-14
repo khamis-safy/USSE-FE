@@ -15,6 +15,8 @@ constructor(private translationService: TranslationService) {
 }
 switchLanguage(lang: string) {
   this.translationService.setLanguage(lang);
-  localStorage.setItem("currentLang",lang)
+  localStorage.setItem("currentLang",lang);
+  this.translationService.setDirectionForLanguage();
+
 }
 }

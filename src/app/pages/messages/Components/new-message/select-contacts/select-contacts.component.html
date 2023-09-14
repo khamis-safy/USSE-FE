@@ -85,6 +85,7 @@
             <div class="d-flex gap-4 align-items-center flex-wrap p-3">
               <ng-container *ngFor="let contact of listContact.contacts">
                 <sr-checkbox
+                (click)="onHeaderClick($event,contact.isChecked)"
                   class="txt-sm"
                   [label]="contact?.name"
                   (changed)="onSelectContact($event, listContact,contact)"

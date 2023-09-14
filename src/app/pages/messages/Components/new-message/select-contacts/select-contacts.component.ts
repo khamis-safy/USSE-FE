@@ -219,30 +219,7 @@ checkIfListFound(list){
 }
 resetSelectedLists(){
 
-  // this.allSelectedLists.map((listContact)=>listContact.contacts.map((contact)=> contact.isChecked=""))
 
-
-
-  // this.allSelectedLists.map((listContact)=>{
-  //   listContact.list.contactsNum=0;
-  //   listContact.contacts.map((contact)=> {
-  //     if(this.addedContacts.find((con)=>con.id==contact.id)){
-  //       contact.isChecked="checked"
-  //       listContact.list.contactsNum++;
-
-  //     }
-  //     else{
-  //       contact.isChecked=""
-  //     }
-
-  //   }
-
-  //   )
-  //   if(listContact.list.contactsNum==0){
-  //     listContact.list.isChecked="";
-  //     this.allSelectedLists.splice(this.allSelectedLists.indexOf(listContact),1);
-  //   }
-  // })
 
   this.allLists.map((listContact)=>{
     listContact.list.isChecked="";
@@ -338,6 +315,17 @@ else{
 }
 
 }
+onHeaderClick(event: Event,state): void {
+  if(state==""){
+
+    event.stopPropagation();
+  }
+}
+
+
+
+
+
 onSelectContact(state, listContact,contact:Contacts){
   if(!listContact.list.contactsNum){
     listContact.list.contactsNum=0

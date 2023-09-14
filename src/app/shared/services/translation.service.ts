@@ -5,12 +5,39 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root'
 })
 export class TranslationService {
-  constructor(private translate: TranslateService) {
-    this.translate.setDefaultLang('en'); // Default language
-    this.translate.use('en'); // Initial language
-  }
+ currLang: string;
 
-  setLanguage(lang: string) {
-    this.translate.use(lang);
-  }
+constructor(private translate: TranslateService) {
+  this.translate.setDefaultLang('en'); // Default language
+  this.setCurrentLanguage(); // Initialize current language
+  this.setDirectionForLanguage(); // Set direction based on current language
+}
+
+setCurrentLanguage() {
+  this.currLang = localStorage.getItem("currentLang") || 'en';
+  this.translate.use(this.currLang); // Set the current language
+}
+
+setLanguage(lang: string) {
+  this.currLang = lang;
+  this.translate.use(lang);
+  localStorage.setItem("currentLang", lang); // Save the current language preference
+  this.setDirectionForLanguage(); // Update the direction when the language changes
+}
+
+getDirectionForLanguage(languageCode: string): string {
+  // Add more language codes as needed
+  return languageCode === 'ar' ? 'rtl' : 'ltr';
+}
+
+setDirectionForLanguage() {
+  let languageDirection = this.getDirectionForLanguage(this.currLang);
+  document.documentElement.dir = languageDirection;
+}
+
+// Call this function whenever the language changes
+languageChanged(newLang: string) {
+  this.setLanguage(newLang);
+}
+
 }

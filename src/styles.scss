@@ -245,6 +245,10 @@ $clr_warning_50: #FDF4DC;
 /* Handle on hover */
 // ::-webkit-scrollbar-thumb:hover {
 // }
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
 .txt{
   margin: 0 !important;
   padding: 0;

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { PluginsService } from './services/plugins.service';
 import { AuthService } from './shared/services/auth.service';
 import { UsersService } from './pages/users/users.service';
+import { TranslationService } from './shared/services/translation.service';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,14 @@ export class AppComponent implements OnInit {
   title = 'pro2023';
   darkActive:boolean = false;
   currentLang:string;
-  constructor(private plugin:PluginsService,public translate:TranslateService,private authService:AuthService, private userServiece:UsersService){
-    this.currentLang = localStorage.getItem('currentLang') || 'en';
-    this.translate.use(this.currentLang)
+  languageDirection: string;
 
+  constructor(private plugin:PluginsService,public translate:TranslateService,private languageService:TranslationService,private authService:AuthService, private userServiece:UsersService){
+    this.currentLang = localStorage.getItem('currentLang') || 'en';
+    this.translate.use(this.currentLang);
+    document.documentElement.dir=  this.currentLang === 'ar' ? 'rtl' : 'ltr'
   }
+
   ngOnInit(): void {
     if(this.authService.userInfo.customerId!=""){
       let email=this.authService.userInfo.email;
