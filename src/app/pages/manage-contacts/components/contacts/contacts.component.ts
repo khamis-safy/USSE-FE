@@ -13,6 +13,8 @@ import { AddContactComponent } from './addContact/addContact.component';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { DISPLAYED } from '../../constants/constants';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 
@@ -37,7 +39,7 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
   listTableData:ListData[]=[]
   deletedContacts:string[]=[];
   columns :FormControl;
-  displayed: string[] = ['Name','Mobile','Notes','Lists','Company Name','Create At'];
+  displayed: any[] = DISPLAYED;
   displayedColumns: string[] = ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At","action"];
   dataSource:MatTableDataSource<Contacts>;
   selection = new SelectionModel<Contacts>(true, []);
@@ -53,7 +55,7 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     private snackBar: MatSnackBar,
-
+    private translate: TranslateService,
   ) {
     }
 
@@ -96,15 +98,16 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
     this.listService.unDeleteContact(email,this.deletedContacts).subscribe(
       (res)=>{
 
-        this.toaster.success('Success');
+        this.toaster.success("Success");
         this.getContacts();
         this.deletedContacts=[];
-
 
       },
       (err)=>{
 
-        this.toaster.error("Error")
+        this.toaster.error(
+          this.translate.instant("COMMON.ERR_MSG")
+        );
 
       }
     )

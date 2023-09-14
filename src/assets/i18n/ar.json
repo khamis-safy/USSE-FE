@@ -280,6 +280,8 @@
   "Select Templates": "حدد القوالب",
   "Enter Your Message...": "أدخل رسالتك...",
   "Message Contacts": "اتصل بالرسائل",
-  "Attachments": "المرفقات"
-
+  "Attachments": "المرفقات",
+  "COMMON":  {
+    "ERR_MSG": "هناك خطأ ما، يرجى الاتصال بنا."
+  }
 }

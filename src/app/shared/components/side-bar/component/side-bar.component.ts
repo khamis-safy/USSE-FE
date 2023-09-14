@@ -15,7 +15,7 @@ import { Permission } from 'src/app/pages/users/users';
 
 export class SideBarComponent implements OnInit {
   userName:string=this.authService.userInfo.userName;
-  chars:string=this.userName.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
+  chars:string=this.userName?.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
   show:boolean=false;
   listsArr:SelectOption[]
   displaySetting:boolean=false;

@@ -20,6 +20,9 @@ export class AppComponent implements OnInit {
     this.currentLang = localStorage.getItem('currentLang') || 'en';
     this.translate.use(this.currentLang);
     document.documentElement.dir=  this.currentLang === 'ar' ? 'rtl' : 'ltr'
+    let body:any = document.querySelector('body');
+    console.log(body)
+    body.classList.add(this.currentLang === 'ar' ? 'rtl' : 'ltr');
   }
 
   ngOnInit(): void {

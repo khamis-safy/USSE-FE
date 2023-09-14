@@ -21,7 +21,7 @@ export class ManageContactsService {
     contactsPermissions:PermissionData;
   constructor(private http:HttpClient,private authService:AuthService) {
     if(authService.userInfo.customerId!=""){
-      this.contactsPermissions=authService.usersPermissions.find((e)=>e.name=="Contacts");
+      this.contactsPermissions=authService?.usersPermissions?.find((e)=>e.name=="Contacts");
      }
      else{
        this.contactsPermissions={name:"Contacts",value:"FullAccess"}
@@ -137,7 +137,7 @@ contactsCount(email:string,isCanceled:boolean):Observable<number>{
 
 
 unDeleteContact(email:string,ids:string[]):Observable<ErrSucc>{
-  return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteContact?email=${email}`,ids)
+  return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteContac?email=${email}`,ids)
 }
 exportSelectedContacts(data): Observable<Blob> {
   const url = `${env.api}Contacts/exportSelectedContacts`;
