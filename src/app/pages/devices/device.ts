@@ -11,7 +11,7 @@ export interface DeviceData {
     applicationUserId: string,
     host: string,
     password: string,
-    port: string,
+    port: number,
     systemID: string,
     lastUpdate: string,
     token: string
@@ -21,6 +21,8 @@ export interface Init{
   sessionName:string,
   token:string,
   isSuccess:boolean,
+  port:number,
+  serverId:number
   errorMessage:string | null
 }
 export interface CheckCon {

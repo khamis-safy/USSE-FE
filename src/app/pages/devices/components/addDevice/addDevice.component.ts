@@ -12,6 +12,8 @@ export class AddDeviceComponent implements OnInit {
   isLoading = false;
   @Input() sessionName:string;
   @Input() token:string;
+  @Input() port:number;
+  @Input() serverId:number;
   @Output() isClose = new EventEmitter<boolean>;
 
   deviceName:any = new FormControl('',[Validators.required]);
@@ -28,7 +30,7 @@ export class AddDeviceComponent implements OnInit {
     this.isLoading=true;
     let deviceN=this.form.value.deviceName;
     let phoneNumber="000";
-    this.devicesService.addNewWhatsappBisunessDevice(this.devicesService.email,deviceN,phoneNumber,this.token,this.sessionName).subscribe(
+    this.devicesService.addNewWhatsappBisunessDevice(this.devicesService.email,deviceN,phoneNumber,this.token,this.sessionName,this.port,this.serverId).subscribe(
       (res)=>{
         this.isLoading = false;
         this.isClose.emit(true);

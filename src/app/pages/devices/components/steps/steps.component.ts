@@ -21,6 +21,8 @@ onlyScan:boolean;
 wBstatus:boolean=false;
 initSuccB:boolean=false;
 sessionNB:string="";
+portWB:number;
+servierIDwB:number;
 tokenB:string="";
 qrCode:string="";
 check;
@@ -72,16 +74,19 @@ onAddClose(event){
 }
 
 initSessionAndCheckStatus(){
-  this.initSessionSubscription= this.devicesService.initWhatsAppB(this.sessionNB).subscribe(
+  this.initSessionSubscription= this.devicesService.initWhatsAppB(this.sessionNB,this.portWB,this.servierIDwB).subscribe(
   (res)=>{
           this.isLoading=false;
           this.addDevice=false;
           this.steps=false;
           this.scanDevice=true;
 
+
           this.sessionNB=res.sessionName;
           this.tokenB=res.token;
           this.initSuccB=res.isSuccess;
+          this.portWB=res.port;
+          this.servierIDwB=res.serverId
 
           let data='data:image/png;base64,';
           let code=res.base64.includes(data)? res.base64.replace(data,""):res.base64;
@@ -125,7 +130,7 @@ checkWhatsappB(){
 checkStatus(){
     this.check=setInterval(()=>{
 
-    this.checkStatusSubscription = this.devicesService.CheckWhatsappBisuness(this.sessionNB,this.tokenB).subscribe(
+    this.checkStatusSubscription = this.devicesService.CheckWhatsappBisuness(this.sessionNB,this.tokenB,this.portWB,this.servierIDwB).subscribe(
         (res)=>{
           this.wBstatus=res.status;
           this.retryCounter++;

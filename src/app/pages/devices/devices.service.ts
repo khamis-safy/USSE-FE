@@ -32,14 +32,18 @@ getDevices(email:string,showsNum:number,pageNum:number,orderedBy:string,search:s
   return this.http.get<DeviceData[]>(`${env.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }
 
-initWhatsAppB(sessionName:string):Observable<Init>{
-  return this.http.post<Init>(`${env.api}Device/InitializeWhatsappBisunessSession?sessionName=${sessionName}`,"")
+initWhatsAppB(sessionName?:string,port?:number,serverId?:number):Observable<Init>{
+  const query=sessionName? `?email=${this.email}&sessionName=${sessionName}&port=${port}&serverId=${serverId}`:`?email=${this.email}`
+
+  return this.http.post<Init>(`${env.api}Device/InitializeWhatsappBisunessSession${query}`,"")
 }
 
-CheckWhatsappBisuness(sessionName:string,token:string):Observable<CheckCon>{
+CheckWhatsappBisuness(sessionName:string,token:string,port:number,serverId:number):Observable<CheckCon>{
   const data={
     sessionName:sessionName,
-    token:token
+    token:token,
+    port:port,
+    serverId: serverId
   }
   return this.http.post<CheckCon>(`${env.api}Device/CheckWhatsappBisunessSession`,data)
 
@@ -55,13 +59,15 @@ reconnectWPPDevice(id:string,email:string):Observable<any>{
   return this.http.put<any>(`${env.api}Device/reconnectWBSDevice?id=${id}&email=${email}`,"")
 }
 
-addNewWhatsappBisunessDevice( email: string,deviceName: string,phoneNumber: string,token: string,sessionName: string):Observable<any>{
+addNewWhatsappBisunessDevice( email: string,deviceName: string,phoneNumber: string,token: string,sessionName: string,port:number,serverId:number):Observable<any>{
   const data={
     email: email,
     deviceName: deviceName,
     phoneNumber: phoneNumber,
     token: token,
-    sessionName: sessionName
+    sessionName: sessionName,
+    port:port,
+    serverId: serverId
   }
   return this.http.post<any>(`${env.api}Device/addNewWhatsappBisunessDevice`,data)
 }
