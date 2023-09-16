@@ -32,8 +32,12 @@ getDevices(email:string,showsNum:number,pageNum:number,orderedBy:string,search:s
   return this.http.get<DeviceData[]>(`${env.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }
 
-initWhatsAppB(sessionName?:string,port?:number,serverId?:number):Observable<Init>{
-  const query=sessionName? `?email=${this.email}&sessionName=${sessionName}&port=${port}&serverId=${serverId}`:`?email=${this.email}`
+initWhatsAppB(sessionName:string,port:number,serverId:number,host?:string):Observable<Init>{
+  const query=sessionName && !host?
+   `?email=${this.email}&sessionName=${sessionName}&port=${port}&serverId=${serverId}`
+   :sessionName && host?
+   `?email=${this.email}&sessionName=${sessionName}&port=${port}&host=${host}`
+   :`?email=${this.email}`
 
   return this.http.post<Init>(`${env.api}Device/InitializeWhatsappBisunessSession${query}`,"")
 }

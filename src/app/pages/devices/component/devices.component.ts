@@ -189,7 +189,7 @@ else{
     dialogConfig.maxHeight='85vh';
     dialogConfig.disableClose = true;
     if(data){
-      dialogConfig.data=data.sessionName
+      dialogConfig.data=data
     }
     const dialogRef = this.dialog.open(StepsComponent,dialogConfig);
 

@@ -20,11 +20,12 @@ scanDevice:boolean=false;
 onlyScan:boolean;
 wBstatus:boolean=false;
 initSuccB:boolean=false;
-sessionNB:string="";
+sessionNB:string;
 portWB:number;
 servierIDwB:number;
-tokenB:string="";
+tokenB:string;
 qrCode:string="";
+host:string;
 check;
 private initSessionSubscription: Subscription;
 private checkStatusSubscription: Subscription;
@@ -38,13 +39,17 @@ retryCounter:number = 0;
 
   ngOnInit() {
     this.onlyScan=this.data?true:false;
-    this.sessionNB=this.data?this.data:"";
+
 
     if(this.onlyScan){
       this.steps=false;
       this.isLoading=true;
       this.addDevice=false;
       this.scanDevice=false;
+      this.sessionNB=this.data.sessionName,
+      this.servierIDwB=undefined;
+      this.host=this.data.device.host;
+      this.portWB=this.data.device.port
       this.initSessionAndCheckStatus();
     }
     else{
@@ -74,7 +79,7 @@ onAddClose(event){
 }
 
 initSessionAndCheckStatus(){
-  this.initSessionSubscription= this.devicesService.initWhatsAppB(this.sessionNB,this.portWB,this.servierIDwB).subscribe(
+  this.initSessionSubscription= this.devicesService.initWhatsAppB(this.sessionNB,this.portWB,this.servierIDwB,this.host).subscribe(
   (res)=>{
           this.isLoading=false;
           this.addDevice=false;
@@ -122,7 +127,6 @@ checkWhatsappB(){
   else if(!this.wBstatus&& this.retryCounter>=30){
     clearInterval(this.check);
     this.retryCounter=0;
-
     this.initSessionAndCheckStatus();
 
   }
