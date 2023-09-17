@@ -71,7 +71,7 @@ getContacts(email:string,isCanceled:boolean,showsNum:number,pageNum:number,order
 }
 
 addContact(name:string,mobileNumber:string,companyName:string,note:string,email:string,listId:string[],additionalContactParameters?:{name:string,value:string}[]):Observable<Contacts>{
-  const data=additionalContactParameters?{
+  const data=additionalContactParameters && additionalContactParameters.length>0?{
     name:name,
     mobileNumber:mobileNumber,
     companyName:companyName,
@@ -91,7 +91,7 @@ addContact(name:string,mobileNumber:string,companyName:string,note:string,email:
   return this.http.post<Contacts>(`${env.api}Contacts/addNewContact`,data)
 }
 
-updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:string,email:string,newListId?:string[]):Observable<any>{
+updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:string,email:string,newListId?:string[],additionalContactParameters?:{name:string,value:string}[]):Observable<any>{
   const data=newListId?{
     id:id,
     name: name,
@@ -100,7 +100,18 @@ updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:
     note: note,
     email: email,
     newListId:newListId
-  }:{
+  }:
+  additionalContactParameters ?{
+    id:id,
+    name: name,
+    mobileNumber: mobileNumber,
+    companyName: companyName,
+    note: note,
+    email: email,
+    additionalContactParameters: additionalContactParameters
+
+  }:
+  {
     id:id,
     name: name,
     mobileNumber: mobileNumber,

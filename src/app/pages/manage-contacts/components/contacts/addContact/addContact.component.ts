@@ -40,17 +40,29 @@ email:string=this.listService.email;
   mobile:any = new FormControl('',[Validators.required]);
   cnName:any = new FormControl('');
   note:any=new FormControl('');
+  fieldName:any=new FormControl('',[Validators.required]);
+  value:any=new FormControl('',[Validators.required]);
+
   form = new FormGroup({
     name:this.name,
     mobile:this.mobile,
     cnName:this.cnName,
     note:this.note,
-    selectedLists:this.selectedLists
+    selectedLists:this.selectedLists,
+
+  });
+  form2 = new FormGroup({
+    fieldName:this.fieldName,
+    value:this.value
+
   });
   isEdit:boolean =false
 
 oldData;
 
+additionalParameters:{name:string, value:string}[]=[]
+
+showInputs:boolean=false;
   // listsIds:string[]=[""];
   constructor(
     private toaster: ToasterServices,
@@ -59,12 +71,14 @@ oldData;
     private translate: TranslateService,
 
     @Inject(MAT_DIALOG_DATA) public data:any,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.getLists();
     if(this.data){
-
+      console.log(this.data.contacts,this.data.contacts.additionalContactParameter)
+      this.additionalParameters=this.data.contacts.additionalContactParameter;
       this.isEdit = true
       this.fillingData();
       // this.listsIds=this.data.lists.map((e)=>e.id)
@@ -149,8 +163,22 @@ oldData;
 
       })
   }
+  remove(i){
+    this.additionalParameters.splice(i,1);
+  }
+  save(){
+    this.showInputs=false;
 
+    this.additionalParameters.push({name:this.form2.value.fieldName,value:this.form2.value.value})
+    this.form2.patchValue({
+      fieldName:"",
+      value:""
+    })
+  }
+  cancel(){
+    this.showInputs=false;
 
+  }
   submitAdd(){
     this.isLoading = true
     let email=this.email;
@@ -160,7 +188,7 @@ oldData;
     let note = this.form.value.note;
     let listsIds = this.form.value.selectedLists.map((e)=>e.value);
 
-    this.listService.addContact(name,mobile,cnNName,note,email,listsIds).subscribe(
+    this.listService.addContact(name,mobile,cnNName,note,email,listsIds,this.additionalParameters).subscribe(
       (res)=>{
         this.isLoading = false
         this.onClose(true);

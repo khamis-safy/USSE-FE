@@ -4,6 +4,42 @@
 .icon{
   cursor: pointer;
 }
+.additional{
+  background-color: #FBFBFB;
+  border: 0.5px dashed #A0A0A0;
+  border-radius: 20px;
+}
+.tbheader{
+  display: flex;
+  width: 42%;
+  justify-content: space-between;
+  margin-left: 50px;
+}
+.tbBody{
+  margin-top: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.tbrow{
+  margin-bottom: 5px;
+  padding-bottom: 4px;
+  display: flex;
+  align-items: center;
+  height: 30px;
+
+}
+.tbBody .tbrow:not(:last-of-type){
+  border-bottom: 0.5px solid #bebbbb;
+}
+.inputs{
+  display: flex;
+    width: 61%;
+    justify-content: space-around;
+    gap: 42px;
+    margin-left: 43px;
+    margin-bottom: 25px;
+
+}
 // .form-control{
 //   width: 397px;
 //   height: 42px;
