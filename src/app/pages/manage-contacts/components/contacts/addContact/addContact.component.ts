@@ -197,7 +197,7 @@ showInputs:boolean=false;
       (err)=>{
         this.isLoading = false
         this.onClose(false);
-        this.toaster.error( this.translate.instant("COMMON.ERR"))
+        // this.toaster.error( this.translate.instant("COMMON.ERR"))
       }
     )
 
@@ -224,7 +224,6 @@ showInputs:boolean=false;
         (err)=>{
           this.isLoading = false
           this.onClose(false);
-          this.toaster.error(`Error`)
         }
       )
     }
@@ -240,7 +239,6 @@ showInputs:boolean=false;
         (err)=>{
           this.isLoading = false
           this.onClose(false);
-          this.toaster.error(`Error`)
         }
       )
     }

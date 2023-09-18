@@ -41,14 +41,17 @@
 
         <div
           class="form-group d-flex gap-lg-5 flex-column flex-lg-row flex-nowrap"
-        >
-          <label for="mobile" class="w-25 d-none d-lg-block text-nowrap">
+        > <div
+        class="label-widget text-start w-25 d-none d-lg-block"
+        style="min-width: 105px"
+      >
+          <label for="mobile" class="label txt txt-sm text-nowrap d-flex">
             <span class="txt txt-sm text-black text-wrap">{{
               "MOBILE_NUMBER" | translate
             }}</span>
             <em class="text-danger">*</em>
           </label>
-
+</div>
           <div class="w-100">
             <ngx-intl-tel-input
               [cssClass]="
@@ -110,7 +113,7 @@
           [data]="listsArr"
           formControlName="selectedLists"
           [multiSelect]="true"
-          [label]="'Lists'"
+          label="{{ 'listsLabel' | translate }}"
           [placeholder]="'SELECT_LISTS' | translate"
           [isDisabled]="false"
           [optional]="true"
@@ -139,8 +142,8 @@
         <ng-container *ngIf="additionalParameters && additionalParameters?.length != 0">
           <div class="additionaltb">
             <div class="tbheader">
-              <span class="txt-md" style="font-weight: 500">Field Name</span>
-              <span class="txt-md" style="font-weight: 500">Value</span>
+              <span class="txt-md" style="font-weight: 500">{{ 'FIELD_NAME' | translate }}</span>
+              <span class="txt-md" style="font-weight: 500">{{ 'VALUE' | translate }}</span>
             </div>
             <div class="tbBody">
               <div
@@ -183,14 +186,14 @@
                 [optional]="false"
                 type="text"
                 [fullWidth]="true"
-                placeholder="field name"
+                placeholder="{{ 'FIELD_NAME' | translate }}"
                 formControlName="fieldName"
               ></us-input>
             </div>
             <div class="value">
               <us-input
                 [isDisabled]="false"
-                placeholder="value"
+                placeholder="{{ 'VALUE' | translate }}"
                 formControlName="value"
                 [isDisabled]="false"
                 [optional]="false"
@@ -224,7 +227,7 @@
         <div *ngIf="!showInputs" class="w-100 d-flex justify-content-center">
           <us-button
             class="m-2"
-            label="Add New Content"
+            label="{{ 'ADD_NEW_CONTENT' | translate }}"
             [matIcon]="'add'"
             [fill]="true"
             [size]="'md'"

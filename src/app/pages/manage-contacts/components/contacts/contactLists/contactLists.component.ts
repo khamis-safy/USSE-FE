@@ -110,7 +110,6 @@ getListData(){
       },
       (err)=>{
         this.onClose();
-        this.toaster.error("Error")
       })
 }
 getContactsData(){
@@ -138,7 +137,6 @@ getContactsData(){
       },
       (err)=>{
         this.onClose();
-        this.toaster.error("Error")
       })
 }
   onClose(data?): void {
@@ -186,7 +184,6 @@ getContactsData(){
       (err)=>{
         this.isLoading = false
         this.onClose(false);
-        this.toaster.error(`Error: ${err.message}`)
       }
     )
   }

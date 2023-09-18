@@ -13,6 +13,7 @@ import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/del
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
+import { DEVICESHEADERS } from '../constants/constants';
 
 @Component({
   selector: 'app-devices',
@@ -35,7 +36,7 @@ export class DevicesComponent implements OnInit{
   @ViewChild("search") search!:ElementRef
   deletedContacts:string[]=[];
   columns :FormControl;
-  displayed: string[] = ['Device Name', 'Device Type', 'Number',"Create At", "Status","Delay Interval(s)"];
+  displayed: string[] = DEVICESHEADERS;
   displayedColumns: string[] = ['Device Name', 'Device Type', 'Number',"Create At", "Status","Delay Interval(s)","action"];
   dataSource:MatTableDataSource<DeviceData>;
   canEdit: any;
@@ -174,7 +175,6 @@ else{
 
         } else {
           // Handle other error scenarios
-          this.toaster.error("Error")
         }
       }
     )

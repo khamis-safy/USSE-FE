@@ -93,7 +93,6 @@ export class AddTemplateComponent implements OnInit {
         (err) => {
           this.isLoading = false;
           this.onClose(false);
-          this.toaster.error(`Error`);
         }
       );
   }
@@ -124,7 +123,6 @@ export class AddTemplateComponent implements OnInit {
         (err) => {
           this.isLoading = false;
           this.onClose(false);
-          this.toaster.error(`Error`);
         }
       );
   }

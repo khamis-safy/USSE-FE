@@ -12,6 +12,7 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { FAILED, INBOXHEADER, OUTBOX } from '../constants/messagesConst';
 
 @Component({
   selector: 'app-message-type',
@@ -39,7 +40,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   deviceId:string;
 
   columns :FormControl;
-  displayed: string[] = ['Device Name', 'Sender', 'Messages', 'Received At'];
+  displayed: string[] = INBOXHEADER;
   displayedColumns: string[] = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At','Updated At','Status','Ation'];
   dataSource:MatTableDataSource<Message>;
   selection = new SelectionModel<Message>(true, []);
@@ -109,21 +110,17 @@ else{
     else{
       if(this.msgCategory=='inbox'){
 
-        this.displayed = ['Device Name', 'Sender', 'Messages', 'Received At'];
+        this.displayed = INBOXHEADER
         this.displayedColumns = ['Device Name', 'Sender', 'Messages', 'Received At'];
       }
       else if(this.msgCategory=='outbox'){
-        this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
+        this.displayed = OUTBOX;
         this.displayedColumns = ['Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
       }
       else if(this.msgCategory=='failed'){
-        if(this.canEdit){
-          this.displayedColumns = ['Device Name', 'Recipient', 'Messages', 'Received At'];
-        }
-        else{
-          this.displayedColumns = ['Device Name', 'Recipient', 'Messages', 'Received At'];
-        }
-        this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At'];
+
+        this.displayedColumns = ['Device Name', 'Recipient', 'Messages', 'Received At'];
+        this.displayed = FAILED;
 
       }
     }

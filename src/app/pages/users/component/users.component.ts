@@ -12,6 +12,7 @@ import { UsersService } from '../users.service';
 import { Users } from '../users';
 import { EditUserComponent } from '../components/editUser/editUser.component';
 import { TranslateService } from '@ngx-translate/core';
+import { USERSHEADERS } from '../constants/constants';
 
 
 
@@ -34,7 +35,7 @@ export class UsersComponent implements OnInit ,OnDestroy{
     loading;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     columns :FormControl;
-    displayed: string[] = ['User Email','User Name', 'Created At'];
+    displayed: string[] = USERSHEADERS ;
     displayedColumns: string[] = ['User Email','User Name', 'Created At',"Action"];
     dataSource:MatTableDataSource<Users>;
 

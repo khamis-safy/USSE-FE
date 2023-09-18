@@ -169,7 +169,6 @@ getListData(){
 
       },
       (err)=>{
-        this.toaster.error("Error")
 
       }
     )

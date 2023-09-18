@@ -74,8 +74,8 @@ else{
   }
   openAddContactModal(){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='70vh';
-    dialogConfig.width='40vw';
+    dialogConfig.height='80vh';
+    dialogConfig.width='45vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
@@ -292,7 +292,7 @@ else{
         this.listService.exportFileData(res);
 
     },
-      (err)=>{this.toaster.error("Error");
+      (err)=>{
       console.log(err)}
 
     )
@@ -312,7 +312,7 @@ else{
         this.listService.exportFileData(res);
         this.contacts.selection.clear()
       },
-      (err)=>{this.toaster.error("Error");
+      (err)=>{
       }
     )
   }

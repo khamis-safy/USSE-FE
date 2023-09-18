@@ -39,7 +39,6 @@ export class AddDeviceComponent implements OnInit {
       (err)=>{
         this.isLoading = false;
         this.isClose.emit(false);
-        this.toaster.error("Error")
             }
     )
   }

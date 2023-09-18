@@ -22,6 +22,7 @@ import { FormControl } from '@angular/forms';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { TEMPLATESHEADERS } from '../constats/contstants';
 
 @Component({
   selector: 'app-innerTemplates',
@@ -48,7 +49,7 @@ export class InnerTemplatesComponent implements OnInit {
 
   deletedContacts: string[] = [];
   columns: FormControl;
-  displayed: string[] = ['Template Name', 'Message', 'Created At'];
+  displayed: string[] = TEMPLATESHEADERS;
   displayedColumns: string[] = [
     'Template Name',
     'Message',

@@ -15,6 +15,7 @@ import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster
 import { AddContactComponent } from '../../../../contacts/addContact/addContact.component';
 import { ContactsComponent } from '../../../../contacts/contacts.component';
 import { TotalContacts } from '../../totalContacts';
+import { LISTDETAILSHEADERS } from 'src/app/pages/manage-contacts/constants/constants';
 
 @Component({
 selector: 'app-list-contacts',
@@ -42,7 +43,7 @@ WrapperOffsetWidth =250;
 listTableData:ListData[]=[]
 deletedContacts:string[]=[];
 columns :FormControl;
-displayed: string[] = ['Name',"Create At",'Company'];
+displayed: string[] = LISTDETAILSHEADERS;
 displayedColumns: string[] = ['select','Name',"Create At",'Company',"action"];
 dataSource:MatTableDataSource<Contacts>;
 // dataSource = new MatTableDataSource<any>(this.listTableData);

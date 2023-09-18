@@ -85,7 +85,6 @@ else{
         },
 
         (err)=>{
-        this.toaster.error("Error")
         })
 
 
@@ -211,7 +210,7 @@ this.router.navigateByUrl('contacts')
 exportAllContacts(){
   this.listService.exportContactsInList(this.listId).subscribe(
     (res)=>{this.listService.exportFileData(res)},
-    (err)=>{this.toaster.error("Error")}
+    (err)=>{}
   )
 }
 
@@ -230,7 +229,7 @@ exportSelectedContacts(){
       this.listContacts.selection.clear();
 
     },
-    (err)=>{this.toaster.error("Error");
+    (err)=>{;
     }
   )
 }

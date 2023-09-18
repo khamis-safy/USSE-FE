@@ -171,7 +171,6 @@ export class DeleteModalComponent implements OnInit {
       (err) => {
         this.isLoading = false
         this.onClose();
-        this.toaster.error("Error")
 
       }
     )
@@ -201,7 +200,6 @@ export class DeleteModalComponent implements OnInit {
       (err) => {
         this.isLoading = false
         this.onClose();
-        this.toaster.error("Error")
 
       }
     )
@@ -223,7 +221,6 @@ export class DeleteModalComponent implements OnInit {
       (err) => {
         this.isLoading = false
         this.onClose();
-        this.toaster.error("Error")
 
       }
     )
@@ -247,7 +244,6 @@ export class DeleteModalComponent implements OnInit {
       (err) => {
         this.isLoading = false
         this.onClose();
-        this.toaster.error("Error")
 
 
       }
@@ -269,7 +265,6 @@ export class DeleteModalComponent implements OnInit {
       (err) => {
         this.isLoading = false
         this.onClose();
-        this.toaster.error("Error")
 
       }
     )
@@ -293,7 +288,6 @@ export class DeleteModalComponent implements OnInit {
       (err) => {
         this.isLoading = false
         this.onClose();
-        this.toaster.error("Error")
 
       }
     )
@@ -327,7 +321,6 @@ export class DeleteModalComponent implements OnInit {
       (err) => {
         this.isLoading = false
         this.onClose();
-        this.toaster.error("Error")
 
       }
     )
@@ -355,7 +348,6 @@ export class DeleteModalComponent implements OnInit {
       (err) => {
         this.isLoading = false
         this.onClose();
-        this.toaster.error("Error")
 
       }
     )

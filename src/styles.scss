@@ -77,6 +77,7 @@ $clr_warning_50: #FDF4DC;
 }
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap');
 *:not(i,mat-icon){
   font-family: 'Poppins', sans-serif !important;
 }
@@ -1194,6 +1195,9 @@ ngx-intl-tel-input .error {
   overflow: hidden;
 }
 .rtl{
+  *:not(i,mat-icon){
+    font-family: 'Almarai', sans-serif !important;
+    }
   .us-toaster {
 
     right: 764px !important;
@@ -1245,4 +1249,7 @@ ngx-intl-tel-input .error {
       left: 2px;
     }
   }
+}
+.selected-dial-code{
+  direction: ltr !important;
 }

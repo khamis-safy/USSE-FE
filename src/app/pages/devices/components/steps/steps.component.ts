@@ -103,7 +103,6 @@ initSessionAndCheckStatus(){
 
   },
   (err)=>{
-    this.toaster.error("Error")
 
     this.onClose()
 
@@ -142,7 +141,6 @@ checkStatus(){
         },
         (err)=>{
           this.onClose()
-          this.toaster.error("Error")
         }
       )
     },2000) ;

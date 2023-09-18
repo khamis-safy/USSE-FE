@@ -91,7 +91,6 @@ export class AddUserComponent implements OnInit {
         (err) => {
           this.isLoading = false;
           this.onClose(false);
-          this.toaster.error(`Error`);
         }
       )
       console.log("all permisions",data)

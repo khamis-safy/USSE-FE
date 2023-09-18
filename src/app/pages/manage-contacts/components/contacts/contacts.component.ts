@@ -105,9 +105,7 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
       },
       (err)=>{
 
-        this.toaster.error(
-          this.translate.instant("COMMON.ERR_MSG")
-        );
+
 
       }
     )

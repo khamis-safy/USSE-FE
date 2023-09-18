@@ -1,17 +1,19 @@
-import { NgModule } from '@angular/core';
+import { InjectionToken, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core'
+import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbThemeModule, NbLayoutModule, NbDatepickerModule, NbTimepickerModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-
+import { ErrorInterceptorService } from './interceptors/error-interceptor.service';
+import { ToasterServices } from './shared/components/us-toaster/us-toaster.component';
+import { TRANSLATE_SERVICE } from './shared/shared.module';
 
 
 @NgModule({
@@ -38,7 +40,21 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     NbLayoutModule,
     NbEvaIconsModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy},
+    ToasterServices,
+
+     {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptorService,
+      multi: true,
+    },
+    {
+      provide: TRANSLATE_SERVICE,
+      useClass: TranslateService,
+    },
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

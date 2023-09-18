@@ -144,7 +144,6 @@ this.listId=event.value
         this.addNewList=false;
 
         this.isLoading = false
-        this.toaster.error(`Error`)
       }
     )
 

@@ -6,6 +6,8 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { AccessLevels, DeviceSections, DevicesData, PermissionData, Users } from '../../users';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ACCESSLEVELS, LEVELS } from '../../constants/constants';
 
 
 // interface DevicePermisions{
@@ -68,21 +70,22 @@ export class ActionComponent implements OnInit{
 updated:any;
 noDevices;
 permissionsData;
-
+levels:any=LEVELS
   sections = [
-    { icon: 'assets/icons/me-icon.svg', label: 'Messages', name: 'messages' },
-    { icon: 'assets/icons/users-compagns-icon.svg', label: 'Campaigns', name: 'campaigns' },
+    { icon: 'assets/icons/me-icon.svg', label:"Messages", name: 'messages' },
+    { icon: 'assets/icons/users-compagns-icon.svg', label: "Campaigns", name: 'campaigns' },
 
   ];
   sharedSections=[
-    { icon: 'assets/icons/users-temp.svg', label: 'Templates', name: 'templates'},
-    { icon: 'assets/icons/users-bots.svg', label: 'Bots', name: 'bots'},
-    { icon: 'assets/icons/users-devices.svg', label: 'Devices', name: 'devices' },
-    { icon: 'assets/icons/users-contacts.svg', label: 'Contacts', name: 'contacts'}
+    { icon: 'assets/icons/users-temp.svg', label: "Templates", name: 'templates'},
+    { icon: 'assets/icons/users-devices.svg', label: "Devices", name: 'devices' },
+    { icon: 'assets/icons/users-contacts.svg', label: "Contacts", name: 'contacts'}
   ]
   sharedPermisions;
   isEdit: boolean;
-    constructor(private devicesService:DevicesService,public dialogRef: MatDialogRef<ActionComponent>,private authService:AuthService) {
+    constructor(private devicesService:DevicesService,
+      private translator:TranslateService,
+      public dialogRef: MatDialogRef<ActionComponent>,private authService:AuthService) {
 
      }
   ngOnInit() {
@@ -162,19 +165,19 @@ fillingSharedPermissions(permission:any){
 
     return{
       section:section,
-      accessLevels: [
-        {
-          value: "ReadOnly",
-          checked: accessLevel === "ReadOnly"
-        },
-        {
-          value: "FullAccess",
-          checked: accessLevel === "FullAccess"
-        },
-        {
-          value: "None",
-          checked: accessLevel === "None"
-        }
+        accessLevels: [
+          {
+            value: "ReadOnly",
+            checked: accessLevel === "ReadOnly"
+          },
+          {
+            value: "FullAccess",
+            checked: accessLevel === "FullAccess"
+          },
+          {
+            value: "None",
+            checked: accessLevel === "None"
+          }
       ]
     }
 

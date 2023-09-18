@@ -160,7 +160,6 @@ export class FileFieldsComponent implements OnInit {
       (err)=>{
         this.loading=false;
         this.onClose(this.data);
-        this.toaster.error("Error")
       }
     )
 

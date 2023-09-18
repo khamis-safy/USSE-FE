@@ -39,3 +39,18 @@ export const LISTHEADERS: any[] = [
     value:"Total Contacts"
   },
 ];
+export const LISTDETAILSHEADERS: any[] = [
+  {
+    title:"NAME",
+    value:"Name"
+  },
+
+  {
+    title:"CREATE_AT",
+    value:"Create At"
+  },
+  {
+    title:"COMPANY",
+    value:"Company Name"
+  },
+];

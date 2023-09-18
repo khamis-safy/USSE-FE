@@ -12,6 +12,7 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { SCHEDULED } from '../constants/messagesConst';
 
 
 
@@ -28,7 +29,7 @@ export class ScheduledComponent implements OnInit  {
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   cellClick:boolean=false;
   columns :FormControl;
-  displayed: string[] = ['Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
+  displayed: string[] = SCHEDULED;
   displayedColumns: string[] = ['Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
   dataSource:MatTableDataSource<Shceduled>;
   selection = new SelectionModel<Shceduled>(true, []);

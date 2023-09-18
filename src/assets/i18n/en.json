@@ -312,30 +312,30 @@
   "Add a new list": "Add a new list",
   "Error: Email is Not Found": "Error: Email is Not Found",
   "Error: on Adding into Database": "Error: on Adding into Database",
-  
+
   "Update the list": "Update the list",
   "Error: User is Not Authorized to update this list": "Error: User is Not Authorized to update this list",
   "Error: List name already exists": "Error: List name already exists",
   "Error: on Updating into Database": "Error: on Updating into Database",
-  
+
   "Delete the list": "Delete the list",
   "Error: User is Not Found": "Error: User is Not Found",
   "Error: User is Not Authorized to delete this list": "Error: User is Not Authorized to delete this list",
   "Error: List is already deleted": "Error: List is already deleted",
   "Error: on Deleting into Database": "Error: on Deleting into Database",
-  
+
   "Get list by ID": "Get list by ID",
   "Error: List is Not Found": "Error: List is Not Found",
-  
+
   "List lists": "List lists",
-  
+
   "List lists count": "List lists count",
-  
+
   "List archived lists": "List archived lists",
-  
+
   "List archived lists count": "List archived lists count",
   "Error: None": "Error: None",
-  
+
   "Undelete the list": "Undelete the list",
   "Error: List Not Found": "Error: List Not Found",
   "Error: User Not Found": "Error: User Not Found",
@@ -353,7 +353,7 @@
   "Error: Contact is Not Found": "Error: Contact is Not Found",
   "Error: User is Not Authorized to delete this contact": "Error: User is Not Authorized to delete this contact",
   "Error: Contact is already deleted": "Error: Contact is already deleted",
- 
+
   "Error on creating sms device on SMS side": "Error on creating sms device on SMS side",
   "Error: device not found on SMPP list": "Error: device not found on SMPP list",
   "Error on deleting smpp device on SMPP Connector side": "Error on deleting smpp device on SMPP Connector side",
@@ -377,7 +377,7 @@
   "Error: device not found on Whatsapp Business list": "Error: device not found on Whatsapp Business list",
   "Error: User Not Authorized to undelete this contact": "Error: User Not Authorized to undelete this contact",
   "Error: on updating device on Backend side": "Error: on updating device on Backend side",
-  
+
   "Error: the user is not found": "Error: the user is not found",
   "Error: this template already exists": "Error: this template already exists",
   "Error: on adding the Template to the db": "Error: on adding the Template to the db",
@@ -405,8 +405,17 @@
   "Error: attachments must be more than 0 valid attachment on base64 format": "Error: attachments must be more than 0 valid attachment on base64 format"
   ,"EmailNotValid": "Error: Email is not valid",
   "MessageBodyTooLong": "Error: Message body must be less than 1600 characters",
-  "AttachmentsInvalid": "Error: Attachments must be more than 0 valid attachment in Base64 format"
-
+  "AttachmentsInvalid": "Error: Attachments must be more than 0 valid attachment in Base64 format",
+  "FIELD_NAME":"Field Name",
+  "VALUE":"Value",
+  "ADD_NEW_CONTENT":"Add New Content",
+  "SEND":"send",
+  "ReadOnly":"ReadOnly",
+  "FullAccess":"FullAccess",
+  "None":"None",
+  "Messages":"Messages",
+  "Campaigns":"Campaigns",
+  "Contacts":"Contacts"
 
 
 

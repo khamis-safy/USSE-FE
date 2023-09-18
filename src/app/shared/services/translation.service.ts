@@ -34,6 +34,8 @@ setDirectionForLanguage() {
   let languageDirection = this.getDirectionForLanguage(this.currLang);
   document.documentElement.dir = languageDirection;
 }
-
+translateMessage(message:string):string{
+  return this.translate.instant(message)
+}
 
 }

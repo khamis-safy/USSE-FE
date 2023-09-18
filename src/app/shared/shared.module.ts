@@ -1,5 +1,5 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
+import { InjectionToken, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -34,7 +34,6 @@ import { RadioButtonModule } from './components/radio-button/radio-button.module
 import { CheckboxModule } from './components/checkbox/checkbox.module';
 import { TagModule } from './components/tag/tag.module';
 import { SelectModule } from './components/select/select.module';
-import { HttpClientModule } from '@angular/common/http';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { DragZoneModule } from './components/drag-zone/drag-zone.module';
@@ -43,7 +42,11 @@ import { NbTimepickerModule, NbDatepickerModule, NbToggleModule } from '@nebular
 
 import { ToLocalTimePipe } from './pipes/toLocalTime.pipe';
 import { SideBarComponent } from './components/side-bar/component/side-bar.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorInterceptorService } from '../interceptors/error-interceptor.service';
+
+export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE_SERVICE');
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -75,7 +78,6 @@ import { TranslateModule } from '@ngx-translate/core';
     RadioButtonModule,
     TooltipModule,
     SelectModule,
-    HttpClientModule,
     MatExpansionModule,
     DragZoneModule,
     NbTimepickerModule,
@@ -123,7 +125,6 @@ import { TranslateModule } from '@ngx-translate/core';
     NgxIntlTelInputModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    HttpClientModule,
     CheckboxModule,
     RadioButtonModule,
     TagModule,
@@ -137,6 +138,5 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule
 
   ],
-  providers:[ToasterServices]
 })
 export class SharedModule { }
