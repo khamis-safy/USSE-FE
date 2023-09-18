@@ -163,19 +163,9 @@ else{
 
         this.getDevices();
       },
-      (error: HttpErrorResponse) => {
+      (error) => {
         this.loading=false;
-        if (error.status === 400 && error.error) {
-
-
-          const sessionName = error.error.sessionName;
-
-          this.openStepsModal({sessionName:sessionName,device:device})
-
-
-        } else {
-          // Handle other error scenarios
-        }
+        this.openStepsModal({sessionName:device.instanceId,device:device})
       }
     )
   }
