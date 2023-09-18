@@ -40,7 +40,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   deviceId:string;
 
   columns :FormControl;
-  displayed: string[] = INBOXHEADER;
+  displayed: string[] ;
   displayedColumns: string[] = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At','Updated At','Status','Ation'];
   dataSource:MatTableDataSource<Message>;
   selection = new SelectionModel<Message>(true, []);
@@ -52,6 +52,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   permission:DevicesPermissions[];
   constructor(public dialog: MatDialog,private devicesService:DevicesService,private messageService:MessagesService,private authService:AuthService){}
   ngOnInit() {
+
     this.columns=new FormControl(this.displayedColumns)
 
     this.selection.changed.subscribe(
@@ -109,7 +110,6 @@ else{
     }
     else{
       if(this.msgCategory=='inbox'){
-
         this.displayed = INBOXHEADER
         this.displayedColumns = ['Device Name', 'Sender', 'Messages', 'Received At'];
       }
@@ -291,11 +291,11 @@ console.log("permissions",this.permission)
   tableData(){
     if(this.msgCategory=='inbox'){
 
-      this.displayed = ['Device Name', 'Sender', 'Messages', 'Received At'];
+      this.displayed = INBOXHEADER;
       this.displayedColumns = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At'];
     }
     else if(this.msgCategory=='outbox'){
-      this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
+      this.displayed = OUTBOX;
       this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
     }
     else if(this.msgCategory=='failed'){
@@ -305,7 +305,7 @@ console.log("permissions",this.permission)
       else{
         this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At'];
       }
-      this.displayed = ['Device Name', 'Recipient', 'Messages', 'Received At'];
+      this.displayed = FAILED;
 
     }
 
