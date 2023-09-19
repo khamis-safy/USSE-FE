@@ -16,9 +16,10 @@
           <img src="assets/icons/search.svg" alt="" width="14" />
         </div>
       </div>
-      <div class="d-flex  justify-content-between" style="width: 33%;">
-        <form [formGroup]="form" style="width: 60%;">
+      <div class="d-flex justify-content-between" style="width: 38%;align-items: center;">
+        <form [formGroup]="form"class="d-flex" style="width: 70%;">
           <us-select
+          class="mx-3"
             [data]="devices"
             formControlName="devicesData"
             [multiSelect]="false"
@@ -32,6 +33,7 @@
             [searchbarOnToggler]="true"
             [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
             [maxListItemsWithoutSearch]="5"
+
           ></us-select>
         </form>
         <mat-form-field class="us-select">

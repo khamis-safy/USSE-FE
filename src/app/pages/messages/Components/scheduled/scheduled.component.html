@@ -2,9 +2,10 @@
   <ng-container *ngIf="!noData">
 
     <div class="d-flex justify-content-end mb-3 align-items-center">
-      <div class="d-flex align-items-center gap-3">
-        <form [formGroup]="form" style="width: 60%;">
+      <div class="d-flex justify-content-between" style="width: 38%;align-items: center;">
+        <form [formGroup]="form"class="d-flex" style="width: 70%;">
           <us-select
+          class="mx-3"
             [data]="devices"
             formControlName="devicesData"
             [multiSelect]="false"

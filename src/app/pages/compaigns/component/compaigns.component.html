@@ -44,9 +44,10 @@
               <img src="assets/icons/search.svg" alt="" width="14" />
             </div>
           </div>
-          <div class="d-flex justify-content-between" style="width: 33%;">
+          <div class="d-flex justify-content-between" style="width: 40%;">
             <form [formGroup]="form" style="width: 60%;">
               <us-select
+              class="me-3"
                 [data]="devices"
                 formControlName="devicesData"
                 [multiSelect]="false"

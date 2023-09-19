@@ -1198,9 +1198,31 @@ ngx-intl-tel-input .error {
   *:not(i,mat-icon){
     font-family: 'Almarai', sans-serif !important;
     }
-  .us-toaster {
 
-    right: 764px !important;
+    // scan device steps
+    .steps-container{
+      .images-steps-arrows{
+        transform: rotate(180deg);
+
+      }
+      ol.circles > li::before {
+
+        left: 23.8rem !important;
+      }
+
+      .arrow{
+        right: 86% !important;
+        transform: rotatey(180deg);
+      }
+      .hand-img{
+        right: 59% !important;
+
+      }
+    }
+  .us-toaster {
+    direction: ltr !important;
+    right: 59% !important;
+    margin-right: 31px!important;
 
   }
   .mat-mdc-table .mdc-data-table__row.active-row{
@@ -1252,4 +1274,5 @@ ngx-intl-tel-input .error {
 }
 .selected-dial-code{
   direction: ltr !important;
+  margin-inline: 3px !important;
 }

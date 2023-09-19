@@ -2,32 +2,32 @@
   border-radius: 25px;
 }
 
-.div-content{
-  position: relative;
-  overflow: hidden;
-  height: 100%;
-  margin-left: -50px;
-}
-@media  (min-width : 0px) and (max-width:1200px) {
-  .div-content{
-    margin-left: 0px;
-    overflow: auto;
-  }
-}
+// .div-content{
+//   position: relative;
+//   overflow: hidden;
+//   height: 100%;
+//   margin-left: -50px;
+// }
+// @media  (min-width : 0px) and (max-width:1200px) {
+//   .div-content{
+//     margin-left: 0px;
+//     overflow: auto;
+//   }
+// }
 
-.images-steps-img{
-  width:9.6rem;
+// .images-steps-img{
+//   width:9.6rem;
 
-}
+// }
 
-.images-steps-arrows{
-width: 5.93rem;
+// .images-steps-arrows{
+// width: 5.93rem;
 
-}
+// }
 
-.hand-img{
-width:14rem;
-}
+// .hand-img{
+// width:14rem;
+// }
 
 ol li{
 color: #292D32;

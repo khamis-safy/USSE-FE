@@ -32,7 +32,7 @@
     </div>
   </div>
   <ng-container *ngIf="isMessages">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" (selectedTabChange)="changeModal()">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" (selectedTabChange)="changeModal($event)">
       <mat-tab>
         <ng-template mat-tab-label class="txt-md">
           <img src="assets/icons/Frame 1171275397.svg" alt="" class="px-2">

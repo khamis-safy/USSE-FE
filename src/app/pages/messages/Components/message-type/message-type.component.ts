@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild , ChangeDetectorRef } from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
@@ -50,7 +50,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   notFound: boolean;
   isUser: boolean;
   permission:DevicesPermissions[];
-  constructor(public dialog: MatDialog,private devicesService:DevicesService,private messageService:MessagesService,private authService:AuthService){}
+  constructor(public cdr: ChangeDetectorRef ,public dialog: MatDialog,private devicesService:DevicesService,private messageService:MessagesService,private authService:AuthService){}
   ngOnInit() {
 
     this.columns=new FormControl(this.displayedColumns)
@@ -76,7 +76,7 @@ else{
   this.isUser=false;
 }
 // get device's messages
-    this.getDevices();
+    this.getDevices(this.msgCategory);
 
 
     }
@@ -124,10 +124,11 @@ else{
 
       }
     }
-
+    this.columns.setValue(this.displayedColumns)
   }
  // get devices data
- getDevices(){
+ getDevices(megtype:string){
+  this.msgCategory=megtype;
   this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
     (res)=>{
       let alldevices=res;
@@ -173,11 +174,15 @@ console.log("permissions",this.permission)
             }
 
    })
+   console.log("message category",this.msgCategory,"device id",this.deviceId)
+
     }},
     (err)=>{
 
     }
   )
+  this.cdr.detectChanges(); // Trigger change detection
+
 }
 
     getMessages(deviceId:string){
@@ -222,6 +227,7 @@ console.log("permissions",this.permission)
       this.messageService.getMessagesCount(email,msgCategory,deviceId).subscribe(
         (res)=>{
           this.length=res;
+
         }
         ,(err)=>{
           this.length=0;
@@ -308,6 +314,7 @@ console.log("permissions",this.permission)
       this.displayed = FAILED;
 
     }
+    this.columns.setValue(this.displayedColumns)
 
   }
   displayMessage(row){

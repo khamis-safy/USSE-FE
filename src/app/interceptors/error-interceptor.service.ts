@@ -32,7 +32,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
         if (error instanceof HttpErrorResponse) {
           console.error('HTTP error:', error);
           // Check if 'error.error' exists before trying to access 'message'
-          const errorMessage = error && error.error ? error.error  : 'COMMON.ERR';
+          const errorMessage = error && error.error && this.translate.instant(error.error)? error.error  : 'COMMON.ERR';
 
           // Use the injected ToasterService to display the error message
           // this.toaster.error(this.translate.translateMessage(errorMessage))
