@@ -413,8 +413,10 @@
 "Messages":"الرسائل",
 "Campaigns":"الحملات",
 "Contacts":"جهات الاتصال",
-"Follow these steps to add a new device":"اتبع هذه الخطوات لإضافة جهاز جديد"
-
+"Follow these steps to add a new device":"اتبع هذه الخطوات لإضافة جهاز جديد",
+"Sender":"المرسل",
+  "Receiver":"المتلقي",
+  "Both":"كلاهما "
 
 
 

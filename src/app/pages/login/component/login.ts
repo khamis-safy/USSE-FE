@@ -18,8 +18,10 @@ export interface Login {
   partnerId: string,
   users: any,
   devices: DeviceData[],
+  phoneNumber:string;
   apiToken:string,
   apiId: string,
+  maskType:string,
   isEmailAuthonticated: boolean,
   subscriptions: {
     name: string,

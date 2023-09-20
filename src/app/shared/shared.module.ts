@@ -45,6 +45,7 @@ import { SideBarComponent } from './components/side-bar/component/side-bar.compo
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptorService } from '../interceptors/error-interceptor.service';
+import { ClickOutsideDirective } from './directives/clickOutside.directive';
 
 export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE_SERVICE');
 
@@ -96,6 +97,7 @@ export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE
     ToasterServices,
     DeleteModalComponent,
     WriteMessageComponent,
+    ClickOutsideDirective
   ],
   exports:[
     SideBarComponent,

@@ -1,6 +1,6 @@
 <section class="d-flex flex-lg-row flex-column align-items-center flex-nowrap gap-lg-5" >
-  <div class="d-none d-lg-block label-widget w-25" *ngIf="optional || label" style=" min-width: 24%;">
-    <label class="txt txt-sm text-nowrap" (click)="toggleDropdown()"><span class="text-wrap text-black txt txt-sm">{{label}}</span> <span style="color: red;">{{optional ? '' :"*"}}</span></label>
+  <div class="d-none d-lg-block label-widget w-25 " *ngIf="optional || label" style=" min-width: 24%;">
+    <label class="txt txt-sm text-nowrap d-flex" (click)="toggleDropdown()"><span class="text-wrap text-black txt txt-sm">{{label}}</span> <span style="color: red;">{{optional ? '' :"*"}}</span></label>
     <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
   </div>
   <div class="d-block d-lg-none label-widget w-100" *ngIf="optional || label">
@@ -8,7 +8,7 @@
     <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
   </div>
 
-  <div  class="host {{class}} w-100" style="width:98%" [attr.data-count]="value?.length"
+  <div  class="host {{class}} w-100" style="width:98%;min-width:11rem" [attr.data-count]="value?.length"
     [ngClass]="{'multi': value?.length, 'disabled': isDisabled, 'error': isError, grouped, 'actions': actions && !grouped}">
     <ng-container *ngIf="!isMulti">
       <!-- Toggler -->

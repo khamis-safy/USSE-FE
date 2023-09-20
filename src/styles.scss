@@ -1198,7 +1198,9 @@ ngx-intl-tel-input .error {
   *:not(i,mat-icon){
     font-family: 'Almarai', sans-serif !important;
     }
-
+    input#phone {
+      direction: ltr;
+  }
     // scan device steps
     .steps-container{
       .images-steps-arrows{
@@ -1207,11 +1209,11 @@ ngx-intl-tel-input .error {
       }
       ol.circles > li::before {
 
-        left: 23.8rem !important;
+        left: 103%!important;
       }
 
       .arrow{
-        right: 86% !important;
+        right: 88% !important;
         transform: rotatey(180deg);
       }
       .hand-img{
@@ -1221,7 +1223,7 @@ ngx-intl-tel-input .error {
     }
   .us-toaster {
     direction: ltr !important;
-    right: 59% !important;
+    right: 62% !important;
     margin-right: 31px!important;
 
   }
@@ -1274,5 +1276,5 @@ ngx-intl-tel-input .error {
 }
 .selected-dial-code{
   direction: ltr !important;
-  margin-inline: 3px !important;
+  margin-inline: 8px !important;
 }

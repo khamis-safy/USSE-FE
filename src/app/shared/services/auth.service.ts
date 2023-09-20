@@ -70,6 +70,7 @@ getUserInfo(){
      email:localStorage.getItem('email'),
      customerId:localStorage.getItem("customerId"),
      refreshToken:this.loginService.getCookieValue("refreshToken")
+
    }
  return userData$;
  }
@@ -100,6 +101,11 @@ saveDataToLocalStorage(data){
   localStorage.setItem('userName',data.userName);
   localStorage.setItem("token",data.token),
   localStorage.setItem("customerId",data.customerId)
+  localStorage.setItem("apiToken",data.apiToken)
+  localStorage.setItem("maskType",data.maskType)
+  localStorage.setItem("phoneNumber",data.phoneNumber)
+
+
 
 }
 updateUserInfo(){
@@ -126,4 +132,8 @@ devicesPermissions(permissions:PermissionData[],name:string){
   getDevices(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<DeviceData[]>{
     return this.http.get<DeviceData[]>(`${env.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
   }
+  editProfile(data):Observable<any>{
+    return this.http.put<any>(`${env.api}Auth/editProfile`,data)
+  }
+
   }

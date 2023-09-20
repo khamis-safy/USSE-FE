@@ -53,7 +53,7 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
       time1: this.time1,
       time2: this.time2,
     },
-    { validators: [this.timeValidator,this.intervalInvalid] }
+    { validators: [this.timeValidator] }
   );
 }
   ngAfterViewInit() {

@@ -102,6 +102,9 @@ else{
         this.fillBasedOnPermissions("ReadOnly")
         this.canEdit=false;
       }
+      else{
+        this.canEdit=true;
+      }
 
     }
   fillBasedOnPermissions(permission:string){
@@ -165,7 +168,7 @@ console.log("permissions",this.permission)
         this.deviceId=res[0].id;
 
       this.getDevicePermission(this.deviceId);
-
+        console.log("can edit",this.canEdit)
         this.getMessages(this.deviceId);
           this.form.patchValue({
             devicesData: {
@@ -272,7 +275,7 @@ console.log("permissions",this.permission)
 
   changeColumns(event){
   //  change displayed column based on component type
-
+console.log("can edit",this.canEdit)
   if(this.msgCategory=='failed' && this.canEdit){
     this.displayedColumns=['select',...event,'Ation']
   }

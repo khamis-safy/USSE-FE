@@ -1,64 +1,213 @@
-<div>
-  <div class="p-5 d-flex flex-column">
 
-    <!-- header -->
-    <div class="d-flex justify-content-center align-items-center position-relative   " style="height: 10%;">
-      <div class="txt-lg">{{ "SETTING" | translate }}</div>
-      <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
-        <img (click)="onClose()" src="assets/icons/close-circle.svg" alt="close-icon" style="cursor: pointer;" />
-      </div>
+
+<section class="d-flex flex-column p-4 gap-3 h-100">
+  <!-- modal header -->
+  <div
+    class="d-flex justify-content-center align-items-center position-relative"
+    style="height: 10%"
+  >
+    <div class="txt-lg">{{ "SETTING" | translate }}</div>
+    <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
+      <img
+        (click)="onClose()"
+        src="assets/icons/close-circle.svg"
+        alt="close-icon"
+        style="cursor: pointer"
+      />
     </div>
+  </div>
 
-    <!-- body -->
-    <div class="  mt-4 mb-5 modal-body overflow-auto px-1 px-4 mx-auto   ps-4 text-center container" style="height: 88%;">
-      <div class="w-100 ">
+  <!-- modal body -->
+  <div class="modal-body overflow-auto px-1" style="height: 80%">
+    <form [formGroup]="form" class="w-100 m-auto">
+      <div class="d-flex gap-4 flex-column py-3">
         <!-- Token -->
-        <div class="d-flex align-items-center  text-start my-4 txt-sm">
-          <div style="width: 80%;">
-            <us-input [isDisabled]="true" [placeholder]="'dsS51d809dsSA5D16A001'" value="" [optional]="true"
-              type="text" [label]=" 'Token'" [error]="false" [fullWidth]="true"></us-input>
-          </div>
-          <div class=" d-flex justify-content-center align-items-center ms-3  py-2" style="width: 8%;
-            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
-            border-radius: 11px;
-            border: 1px solid rgba(160, 160, 160, 1) ;
-">
-            <a style="cursor: pointer;" >
-              <img src="../assets/icons/reload.svg" alt="">
-            </a>
-          </div>
+      <div class="d-flex align-items-center">
+        <div style="width:80%">
+          <us-input
+          formControlName="apiToken"
+          value=""
+          [optional]="true"
+          type="text"
+          [label]="'Token' | translate"
+          [error]="false"
+          [fullWidth]="true"
+        ></us-input>
         </div>
-        <!-- Time Zone -->
-          <div class=" py-auto my-4 " style="width: 80%;">
-            <us-select [data]="timeZoneArr" [multiSelect]="true" [label]="'Time Zone'"
-              [placeholder]="'(UTC -03:00) Salvador'" [isDisabled]="false" [optional]="true" [enableSearch]="true"
-              [searchbarOnToggler]="true" [searchNoResultText]="'there is no result'" [maxListItemsWithoutSearch]="5">
-            </us-select>
-          </div>
-        <!-- Username -->
-        <div class=" text-start my-4 " style="width: 80%;">
-          <us-input [isDisabled]="false" value="" [optional]="true" type="text" [label]=" 'Username'" [error]="false"
-            [fullWidth]="true" class="mb-5"></us-input>
-        </div>
-        <!-- Organization Name -->
-        <div class=" text-start my-4 " style="width: 80%;">
-          <us-input [isDisabled]="true" [placeholder]="'Organization Name'" value="" [optional]="true" type="text"
-            [label]=" 'Organization Name'" [error]="false" [fullWidth]="true" class="mb-5 "></us-input>
-        </div>
-        <!-- Mask Type -->
-        <div class=" text-start my-4   text-start" style="width: 80%;">
-          <us-select [data]=" maskTypeArr" [multiSelect]="true" [label]="'Mask Type'" [placeholder]="'Source'"
-            [isDisabled]="false" [optional]="true" [enableSearch]="true" [searchbarOnToggler]="true"
-            [searchNoResultText]="'there is no result'" [maxListItemsWithoutSearch]="5"></us-select>
-        </div>
-      </div>
+
+        <div class=" d-flex justify-content-center align-items-center mx-2 pointer " style="box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+        border-radius: 11px;
+        border: 1px solid rgba(160, 160, 160, 1);
+        width: 6%;
+        height: 44px;
+
+    "
+              (click)="generateGuid()"
+
+    >
+    <div style="width:4% " class="image-container  d-flex justify-content-center align-items-cente">
+      <img src="../assets/icons/reload.svg" alt="" style="object-fit: contain;">
     </div>
 
-    <!-- footer -->
-    <div class="modal-footer justify-content-end gap-3" style="height: 2%;">
-      <us-button (click)="onClose()" label="{{ 'CANCEL' | translate }}" size="sm" appearance="primary" [fill]="false" [loading]="false"></us-button>
-      <us-button [loading]="false" label="{{ 'SAVE' | translate }}" size="sm" [fill]="true"></us-button>
+      </div>
+
+
+
+
+    <div class=" d-flex justify-content-center align-items-center mx-2 pointer  " style="box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 11px;
+    border: 1px solid rgba(160, 160, 160, 1);
+    width: 6%;
+    height: 44px;
+
+"
+(click)="copyToClipboard()">
+<div style="width:4% " class="image-container  d-flex justify-content-center align-items-cente">
+      <img src="../assets/icons/copy.svg" alt="" style="object-fit: contain;">
     </div>
 
   </div>
+      </div>
+        <!-- Time Zone -->
+        <div style="width:80%">
+        <us-select
+          [data]="timeZoneArr"
+          [multiSelect]="true"
+          [label]="'Time Zone' | translate"
+          [placeholder]="'(UTC -03:00) Salvador' | translate"
+          [isDisabled]="false"
+          [optional]="true"
+          [enableSearch]="true"
+          [searchbarOnToggler]="true"
+          [searchNoResultText]="'there is no result' | translate"
+          [maxListItemsWithoutSearch]="5"
+          (onSelect)="onSelect($event)"
+        ></us-select>
 </div>
+        <!-- Username -->
+        <div style="width:80%">
+        <us-input
+          formControlName="contactName"
+          [isDisabled]="false"
+          value=""
+          [optional]="true"
+          type="text"
+          [label]="'Username' | translate"
+          [error]="false"
+          [fullWidth]="true"
+        ></us-input>
+        </div>
+        <!-- phone number -->
+
+        <div
+          class="form-group d-flex gap-lg-5 flex-column flex-lg-row flex-nowrap" style="width:80%"
+        >
+          <div
+            class="label-widget text-start w-25 d-none d-lg-block"
+            style="min-width: 24%"
+          >
+            <label for="mobile" class="label txt txt-sm text-nowrap d-flex">
+              <span class="txt txt-sm text-black text-wrap">{{
+                "MOBILE_NUMBER" | translate
+              }}</span>
+            </label>
+          </div>
+          <div class="w-100">
+            <ngx-intl-tel-input
+              [cssClass]="
+                (mobile?.touched && mobile.invalid ? 'error' : '') +
+                ' rounded-pill border border-1py-2 txt-input w-100'
+              "
+              [enableAutoCountrySelect]="true"
+              [preferredCountries]="[CountryISO.UnitedArabEmirates]"
+              [enablePlaceholder]="true"
+              [searchCountryFlag]="true"
+              [searchCountryField]="[
+                SearchCountryField.Iso2,
+                SearchCountryField.Name
+              ]"
+              [selectFirstCountry]="false"
+              [selectedCountryISO]="CountryISO.Egypt"
+              [maxLength]="15"
+              [phoneValidation]="true"
+              [separateDialCode]="separateDialCode"
+              [numberFormat]="PhoneNumberFormat.National"
+              name="phone"
+              formControlName="mobile"
+            ></ngx-intl-tel-input>
+
+            <ng-container *ngIf="mobile?.touched && mobile?.errors?.required">
+              <div class="hint error">
+                <i class="si-info"></i>
+                <p class="txt txt-xs">{{ "REQUIRED_FIELD" | translate }}</p>
+              </div>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                mobile?.touched && mobile.invalid && !mobile?.errors?.required
+              "
+            >
+              <div class="hint error">
+                <i class="si-info"></i>
+                <p class="txt txt-xs">
+                  {{ "INCORRECT_PHONE_NUMBER" | translate }}
+                </p>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <!-- Organization Name -->
+        <div style="width:80%">
+        <us-input
+          [placeholder]="'Organization Name' | translate"
+          formControlName="organisationName"
+          value=""
+          [optional]="true"
+          type="text"
+          [label]="'Organization Name' | translate"
+          [error]="false"
+          [fullWidth]="true"
+        ></us-input>
+        </div>
+        <!-- Mask Type -->
+        <div style="width:80%">
+        <us-select
+          [data]="maskTypeArr"
+          formControlName="maskType"
+          [multiSelect]="false"
+          [label]="'Mask Type' | translate"
+          [placeholder]="'Source' | translate"
+          [isDisabled]="false"
+          [optional]="true"
+          [enableSearch]="true"
+          [searchbarOnToggler]="true"
+          [searchNoResultText]="'noResultText' | translate"
+          [maxListItemsWithoutSearch]="5"
+        ></us-select>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- modal footer -->
+  <div class="modal-footer justify-content-center gap-3" style="height: 10%">
+    <us-button
+      (clicked)="onClose()"
+      label="{{ 'CANCEL' | translate }}"
+      size="sm"
+      appearance="primary"
+      [fill]="false"
+      [loading]="false"
+
+    ></us-button>
+    <us-button
+    (clicked)="submitSave()"
+      [loading]="loading"
+      label="{{ 'SAVE' | translate }}"
+      size="sm"
+      [fill]="true"
+      [disabled]="form.invalid || loading"
+    ></us-button>
+  </div>
+</section>

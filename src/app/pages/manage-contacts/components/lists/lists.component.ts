@@ -256,7 +256,13 @@ getListData(){
   }
 
   changeColumns(event){
-    this.displayedColumns=['select',...event,'edit']
+    if(this.canEdit){
+      this.displayedColumns=['select',...event,'edit']
+    }
+    else{
+      this.displayedColumns=[...event]
+    }
+
 
 
   }

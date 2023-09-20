@@ -1,4 +1,4 @@
-<section class="h-100 d-flex position-relative flex-column " style="overflow: hidden; overflow-y: auto;">
+<section class="h-100 d-flex flex-column " style="overflow: hidden; overflow-y: auto;">
   <div
   class="d-flex justify-content-center w-100 align-items-center position-relative"
   style="height: 5%"
@@ -13,29 +13,29 @@
 
   <ng-container *ngIf="!isLoading && steps && !addDevice && !scanDevice">
 
-  <div class="steps-container mt-2 " style=" height:100%;">
+  <div class="steps-container mt-2  position-relative" style=" height:100%;">
 
-    <div class="d-flex justify-content-center    align-items-center position-relative  " style="height: 60%;">
-      <div class="  images-steps-img mx-lg-3 ">
-          <img src="../../../../../assets/images/1.svg" alt="" class="w-100">
+    <div class="d-flex justify-content-center align-items-center position-relative  " style="height: 60%;">
+      <div class="  images-steps-img mx-lg-3 image-container" style="width:18%">
+          <img src="../../../../../assets/images/1.svg" alt="" class="w-100" style="object-fit: contain;">
       </div>
-      <div class="images-steps-arrows ">
-          <img src="../../../../../assets/images/path3035.svg" alt="" class="w-100">
+      <div class="images-steps-arrows image-container" style="width:10%">
+          <img src="../../../../../assets/images/path3035.svg" alt="" class="w-100" style="object-fit: contain;">
       </div>
-      <div class=" images-steps-img  mx-lg-3">
-          <img src="../../../../../assets/images/2.svg" alt="" class="w-100">
+      <div class=" images-steps-img image-container mx-lg-3" style="width:18%">
+          <img src="../../../../../assets/images/2.svg" alt="" class="w-100" style="object-fit: contain;">
       </div>
-      <div class="  images-steps-arrows  ">
-          <img src="../../../../../assets/images/path3035.svg" alt="" class="w-100">
+      <div class="  images-steps-arrows image-container " style="width:10%">
+          <img src="../../../../../assets/images/path3035.svg" alt="" class="w-100" style="object-fit: contain;">
       </div>
-      <div class=" images-steps-img  mx-lg-3">
-          <img src="../../../../../assets/images/3.svg" alt="" class="w-100">
+      <div class=" images-steps-img image-container mx-lg-3" style="width:18%">
+          <img src="../../../../../assets/images/3.svg" alt="" class="w-100" style="object-fit: contain;">
       </div>
 
   </div>
   <div class="d-flex justify-content-center align-items-center flex-row-reverse" style="height: 45%;">
-    <div class="images-steps-img " style="width: 37%;">
-        <img src="../../../../../assets/images/Rectangle 110863.svg" alt="" width="100%" height="100%">
+    <div class="images-steps-img image-container" style="width: 37%;">
+        <img src="../../../../../assets/images/Rectangle 110863.svg" alt="" class="w-100" style="object-fit: contain;">
     </div>
     <div style="width: 33%; " class="steps">
         <h3 style="color:  black;   " class="mb-0 mt-0 pt-0">{{ 'steps' | translate }}</h3>
@@ -58,17 +58,17 @@
         </ol>
     </div>
 </div>
-    <div class="arrow " style="    position: absolute;
+    <div class="arrow image-container" style="  width: 7%;  position: absolute;
     bottom: 31%;
     right: 4%;">
-      <img src="../../../../../assets/images/Group.svg" alt="" class="w-75">
+      <img src="../../../../../assets/images/Group.svg" alt="" class="w-100" style="object-fit: contain;">
   </div>
-  <div style="position: absolute;
+  <div class="image-container" style="position: absolute;
   bottom: -15%;
   right: 17%;
   width: 23%;
   filter: blur(1px);" class="hand-img">
-      <img src="../../../../../assets/images/Group 1171276337.svg" alt="" width="100%">
+      <img src="../../../../../assets/images/Group 1171276337.svg" alt="" class="w-100" style="object-fit: contain;">
   </div>
   </div>
   <div class="modal-footer justify-content-center gap-3" style="height: 14%;">

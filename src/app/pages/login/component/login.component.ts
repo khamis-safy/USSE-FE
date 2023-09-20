@@ -44,7 +44,10 @@ userInfo:any;
       id:res.id,
       email:res.email,
       token:res.token,
-      customerId:res.customerId
+      customerId:res.customerId,
+      apiToken:res.apiToken,
+      maskType:res.maskType,
+      phoneNumber:res.phoneNumber
     }
 this.authService.saveDataToLocalStorage(this.userInfo);
 this.authService.updateUserInfo()

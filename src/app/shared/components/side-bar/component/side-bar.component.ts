@@ -57,8 +57,8 @@ this.permissions={
 
     //this.displaySetting=true;
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.height = '81vh';
-    dialogConfig.width = '45vw';
+    dialogConfig.height = '83vh';
+    dialogConfig.width = '55vw';
     dialogConfig.maxWidth = '100%';
     dialogConfig.minWidth = '300px';
     dialogConfig.maxHeight = '87vh';
