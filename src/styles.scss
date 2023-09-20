@@ -789,7 +789,7 @@ section.table-wrapper {
           content: "";
           width: 4px;
           height: 100%;
-          background-color: var(--clr-primary-700);
+          background-color: var(--clr-primary-800);
           left: -10px;
           border-radius: 16px 0 0 16px;
           top: 0px;
@@ -828,10 +828,10 @@ section.table-wrapper {
   }
 
 .mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background{
-  background-color:var(--clr-primary-700) !important;
+  background-color:var(--clr-primary-800) !important;
 }
 .mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background{
-  background-color:var(--clr-primary-700) !important;
+  background-color:var(--clr-primary-800) !important;
 
 }
 .mat-mdc-checkbox .mdc-checkbox__ripple {
@@ -843,10 +843,10 @@ section.table-wrapper {
   }
 }
 .mat-mdc-checkbox .mdc-checkbox:hover .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate):not([data-indeterminate=true])~.mdc-checkbox__background {
-  border-color: var(--clr-primary-700) !important;
+  border-color: var(--clr-primary-800) !important;
 }
 .mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background{
-  border-color: var(--clr-primary-700) !important;
+  border-color: var(--clr-primary-800) !important;
 
 }
 // end table override
@@ -937,7 +937,7 @@ ngx-intl-tel-input .iti{
   }
   span.mdc-button__label {
     font-size: 24px;
-    color: var( --clr-primary-700);
+    color: var( --clr-primary-800);
   }
 }
 
@@ -1023,7 +1023,7 @@ span.mdc-tab__content {
   }
   &:hover {
     background:var(--clr-primary-400);
-    color: var(--clr-primary-700) !important;
+    color: var(--clr-primary-800) !important;
     span{
       color: var(--clr-primary-800) !important;
 
@@ -1048,7 +1048,7 @@ span.mdc-tab__content {
 }
 .mat-tab-label-active{
   background:var(--clr-primary-400) !important;
-  color: var(--clr-primary-700) !important;
+  color: var(--clr-primary-800) !important;
   img{
     filter: invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg)
       brightness(39%) contrast(93%);
@@ -1251,7 +1251,7 @@ ngx-intl-tel-input .error {
           content: "";
           width: 4px;
           height: 100%;
-          background-color: var(--clr-primary-700);
+          background-color: var(--clr-primary-800);
           right: -10px;
           border-radius: 0 16px 16px 0 !important;
           -webkit-border-radius: 0 16px 16px 0 !important;

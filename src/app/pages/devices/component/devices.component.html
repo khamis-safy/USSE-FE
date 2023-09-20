@@ -55,7 +55,19 @@
           <!-- Device Type Column -->
           <ng-container matColumnDef="Device Type">
             <th mat-header-cell *matHeaderCellDef>{{ 'DEVICE_TYPE' | translate }}</th>
-            <td mat-cell *matCellDef="let element">{{ element.deviceType }}</td>
+            <td mat-cell *matCellDef="let element">
+              <div class=" px-3">
+
+                  <ng-container [ngSwitch]="element.deviceType">
+
+                    <img *ngSwitchCase="'WBS'" src="assets/icons/whatsB.svg"  style="width: 22%;"  alt="wbs">
+                    <img *ngSwitchCase="'OWA'" src="assets/icons/whats.svg" style="width: 22%;"  alt="wbs">
+                    <img *ngSwitchCase="'SMS'" src="assets/icons/sms.svg"  style="width: 22%;" alt="wbs">
+
+                  </ng-container>
+
+              </div>
+            </td>
           </ng-container>
           <!-- Number Column -->
           <ng-container matColumnDef="Number">
