@@ -72,16 +72,18 @@
         <div style="width:80%">
         <us-select
           [data]="timeZoneArr"
-          [multiSelect]="true"
+          [multiSelect]="false"
           [label]="'Time Zone' | translate"
           [placeholder]="'(UTC -03:00) Salvador' | translate"
           [isDisabled]="false"
+
           [optional]="true"
           [enableSearch]="true"
           [searchbarOnToggler]="true"
           [searchNoResultText]="'there is no result' | translate"
           [maxListItemsWithoutSearch]="5"
           (onSelect)="onSelect($event)"
+          formControlName="timeZone"
         ></us-select>
 </div>
         <!-- Username -->
@@ -104,7 +106,7 @@
         >
           <div
             class="label-widget text-start w-25 d-none d-lg-block"
-            style="min-width: 24%"
+            style="min-width: 25%"
           >
             <label for="mobile" class="label txt txt-sm text-nowrap d-flex">
               <span class="txt txt-sm text-black text-wrap">{{

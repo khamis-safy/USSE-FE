@@ -104,6 +104,7 @@ saveDataToLocalStorage(data){
   localStorage.setItem("apiToken",data.apiToken)
   localStorage.setItem("maskType",data.maskType)
   localStorage.setItem("phoneNumber",data.phoneNumber)
+  localStorage.setItem("timeZone",data.timeZone)
 
 
 

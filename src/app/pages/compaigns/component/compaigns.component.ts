@@ -219,7 +219,7 @@ compaignsCount(deviceId){
 
   }
 
-  compaignDetails(com:compaignDetails){
+  campaignDetails(com:compaignDetails){
     if(!this.cellClick){
       let id=com.id;
       this.router.navigateByUrl(`compaign/${id}`)

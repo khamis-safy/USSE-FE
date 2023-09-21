@@ -47,7 +47,8 @@ userInfo:any;
       customerId:res.customerId,
       apiToken:res.apiToken,
       maskType:res.maskType,
-      phoneNumber:res.phoneNumber
+      phoneNumber:res.phoneNumber,
+      timeZone:res.timeZone
     }
 this.authService.saveDataToLocalStorage(this.userInfo);
 this.authService.updateUserInfo()

@@ -21,6 +21,7 @@ export interface Login {
   phoneNumber:string;
   apiToken:string,
   apiId: string,
+  timeZone:number,
   maskType:string,
   isEmailAuthonticated: boolean,
   subscriptions: {

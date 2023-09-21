@@ -6,6 +6,7 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ToasterServices } from '../../../us-toaster/us-toaster.component';
 import { TranslateService } from '@ngx-translate/core';
+import { TIMEZONES } from './constants/constant';
 
 @Component({
 
@@ -20,6 +21,8 @@ export class SettingComponent implements OnInit{
   mobile:any = new FormControl('');
   organisationName:any = new FormControl('',[Validators.required]);
   maskType:any=new FormControl([]);
+  timeZone:any=new FormControl([]);
+
   // ngx-intl-tel
   separateDialCode = true;
 	SearchCountryField = SearchCountryField;
@@ -32,9 +35,12 @@ export class SettingComponent implements OnInit{
     mobile:this.mobile,
     organisationName:this.organisationName,
     maskType:this.maskType,
+    timeZone:this.timeZone,
 
   });
+  selectedZone:any;
   timeZoneArr:SelectOption[];
+  timeZones:any[] =TIMEZONES
   maskTypeArr:SelectOption[] ;
   loading;
   userInfo: any;
@@ -46,12 +52,21 @@ export class SettingComponent implements OnInit{
       {title:translate.instant('None'),value:'N'}
     ]
       this.maskValue=this.maskTypeArr.find((res)=>res.value==localStorage.getItem("maskType"));
-
+    this.timeZoneArr=this.timeZones.map((timezone)=>{return{
+      title:translate.instant(timezone.title),
+      value:timezone.index
+    }})
 
      }
   ngOnInit(): void {
     let phoneNumber = localStorage.getItem('phoneNumber');
-
+    let timeZone=localStorage.getItem("timeZone")
+    this.selectedZone=timeZone !== "null" && timeZone !== "undefined"? timeZone:null;
+    if(this.selectedZone){
+      this.form.patchValue({
+        timeZone: {title:this.timeZones.find((time)=>time.value==this.selectedZone).title,value:this.timeZones.find((time)=>time.value==this.selectedZone).value}
+      })
+    }
     let mobileNum = phoneNumber !== "null" && phoneNumber !== "undefined" ? phoneNumber.slice(1) : "";
     this.form.patchValue(
       {
@@ -106,20 +121,21 @@ export class SettingComponent implements OnInit{
       document.body.removeChild(tempInput);
     }
   }
-  onSelect(mask){
+  onSelect(zone){
 
-
+this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value
 
         }
     submitSave() {
       this.loading=true;
       let mobile=this.form.value.mobile? this.form.value.mobile.e164Number:null;
+      let selectedZone=this.selectedZone || null
       const data={
         token: this.authService.getUserInfo().refreshToken,
         apiToken: this.apiToken.value,
         contactName: this.form.value.contactName,
         organisationName: this.form.value.organisationName,
-        timeZone: 0,
+        timeZone: selectedZone,
         maskType: this.form.value.maskType.value,
         phoneNumber: mobile
       }
@@ -137,7 +153,8 @@ export class SettingComponent implements OnInit{
             customerId:res.customerId,
             apiToken:res.apiToken,
             maskType:res.maskType,
-            phoneNumber:res.phoneNumber
+            phoneNumber:res.phoneNumber,
+            timeZone:res.timeZone
           }
       this.authService.saveDataToLocalStorage(this.userInfo);
       this.authService.updateUserInfo()
