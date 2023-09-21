@@ -228,6 +228,20 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
           }
           else{
             this.getMessagesCount(deviceId);
+            this.dataSource=new MatTableDataSource<Message>(res)
+
+          //
+          if(search!=""){
+            this.length=res.length;
+            if(this.length==0){
+              this.notFound=true;
+            }
+            else{
+              this.notFound=false;
+            }
+        }
+        else{
+          this.getMessagesCount(deviceId);
 
 
           }
