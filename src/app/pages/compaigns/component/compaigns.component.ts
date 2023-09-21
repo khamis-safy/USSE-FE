@@ -11,7 +11,7 @@ import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/del
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { DevicesService } from '../../devices/devices.service';
-import { CAMPAIGNSHEADERSWithAction, CAMPAIGNSHEADERSWithOUTAction } from '../constants/contstants';
+import { CAMPAIGNSHEADER } from '../constants/contstants';
 
 
 
@@ -27,7 +27,7 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   cellClick:boolean=false;
   isCompagins:boolean=true;
   columns :FormControl;
-  displayed: string[] = ['Name', 'Status', 'Creator Name', 'Start Date'];
+  displayed: string[] = CAMPAIGNSHEADER;
   displayedColumns: string[] = ['Name', 'Status', 'Creator Name', 'Start Date','Action'];
   dataSource:MatTableDataSource<compaignDetails>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -75,7 +75,7 @@ this.getDevices();
       let devicePermissions=this.permission.find((e)=>e.deviceId==deviceId);
       if(devicePermissions){
       let value=devicePermissions.value;
-      this.displayedColumns=value=="FullAccess"?CAMPAIGNSHEADERSWithAction:CAMPAIGNSHEADERSWithOUTAction;
+      this.displayedColumns=value=="FullAccess"?['Name', 'Status', 'Creator Name', 'Start Date','Action']:['Name', 'Status', 'Creator Name', 'Start Date'];
       this.canEdit=value=="ReadOnly"?false:true;
       }
       else{
