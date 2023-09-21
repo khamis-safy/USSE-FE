@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild , ChangeDetectorRef } from '@angular/core';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatPaginator, MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import { MessagesService } from '../../messages.service';
@@ -13,6 +13,8 @@ import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { FAILED, INBOXHEADER, OUTBOX } from '../constants/messagesConst';
+import { TranslateService } from '@ngx-translate/core';
+import { InitPaginationService } from 'src/app/shared/services/initPagination.service';
 
 @Component({
   selector: 'app-message-type',
@@ -23,7 +25,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
 
   length:number=0;
   numRows;
-  loading:boolean=false;
+  loading:boolean=true;
   @Input() msgCategory:string="inbox"
   @Output() isChecked = new EventEmitter<Message[]>;
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
@@ -50,8 +52,22 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   notFound: boolean;
   isUser: boolean;
   permission:DevicesPermissions[];
-  constructor(public cdr: ChangeDetectorRef ,public dialog: MatDialog,private devicesService:DevicesService,private messageService:MessagesService,private authService:AuthService){}
+
+  @ViewChild('tabCom') tabCom:ElementRef;
+
+  constructor(
+    public cdr: ChangeDetectorRef ,
+    public dialog: MatDialog,
+    private devicesService:DevicesService,
+    private messageService:MessagesService,
+    private authService:AuthService,
+    private translate:TranslateService
+  ){
+    console.log("uuuuuuuuuuuuuu")
+  }
+
   ngOnInit() {
+
 
     this.columns=new FormControl(this.displayedColumns)
 
@@ -66,15 +82,15 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
           this.isChecked.emit()
         }
       });
-this.tableData();
+      this.tableData();
 
-this.permission =this.messageService.devicesPermissions;
-if(this.authService.userInfo.customerId!=""){
-  this.isUser=true;
-}
-else{
-  this.isUser=false;
-}
+      this.permission =this.messageService.devicesPermissions;
+      if(this.authService.userInfo.customerId!=""){
+        this.isUser=true;
+      }
+      else{
+        this.isUser=false;
+      }
 // get device's messages
     this.getDevices(this.msgCategory);
 
@@ -138,7 +154,7 @@ else{
       console.log("devices",alldevices)
 
       if(this.permission){
-console.log("permissions",this.permission)
+      console.log("permissions",this.permission)
         alldevices.map((device)=>
         {
           let found =this.permission.find((devP)=>devP.deviceId==device.id && devP.value=="None");
@@ -200,13 +216,19 @@ console.log("permissions",this.permission)
           this.numRows=res.length;
 
           this.loading = false;
-          if(msgCategory=="outbox"){
-            this.dataSource=new MatTableDataSource<Message>(res)
+          this.dataSource=new MatTableDataSource<Message>(res)
+            if(search!=""){
+              this.length=res.length;
+              if(this.length==0){
+                this.notFound=true;
+              }
+              else{
+                this.notFound=false;
+              }
           }
           else{
-
-            this.dataSource=new MatTableDataSource<Message>([])
-          }
+            this.getMessagesCount(deviceId);
+            this.dataSource=new MatTableDataSource<Message>(res)
 
           //
           if(search!=""){
@@ -222,7 +244,7 @@ console.log("permissions",this.permission)
           this.getMessagesCount(deviceId);
 
 
-        }
+          }
         },
         (err)=>{
          this.loading = false;
@@ -233,15 +255,18 @@ console.log("permissions",this.permission)
       this.subscribtions.push(messagesSub)
     }
     getMessagesCount(deviceId){
+      this.loading=true
       let email=this.messageService.email;
       let msgCategory=this.msgCategory;
       this.messageService.getMessagesCount(email,msgCategory,deviceId).subscribe(
         (res)=>{
           this.length=res;
-
+          this.loading=false
         }
         ,(err)=>{
           this.length=0;
+          this.loading=false
+
         }
       )
     }

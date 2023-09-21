@@ -12,6 +12,10 @@ import { MessageTypeComponent } from './Components/message-type/message-type.com
 import { NbTimepickerModule, NbDatepickerModule } from '@nebular/theme';
 import { DisplayMessageComponent } from './Components/display-message/display-message.component';
 import { TypePipe } from './type.pipe';
+import { InitPaginationService } from 'src/app/shared/services/initPagination.service';
+import { TranslateService } from '@ngx-translate/core';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+
 
 @NgModule({
   imports: [
@@ -33,6 +37,6 @@ import { TypePipe } from './type.pipe';
    ],
    exports:[
     // WriteMessageComponent
-   ]
+   ],
 })
 export class MessagesModule { }
