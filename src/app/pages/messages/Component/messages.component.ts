@@ -1,4 +1,4 @@
-import { Component, AfterViewInit,OnInit, ViewChild , ChangeDetectorRef } from '@angular/core';
+import { Component, AfterViewInit,OnInit, ViewChild , ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
@@ -8,16 +8,12 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { ScheduledComponent } from '../Components/scheduled/scheduled.component';
 import { InitPaginationService } from 'src/app/shared/services/initPagination.service';
 import { ActivatedRoute, Router } from '@angular/router';
-
-
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
-  styleUrls: ['./messages.component.scss'],
-  providers: [
-  ]
+  styleUrls: ['./messages.component.scss']
 })
-export class MessagesComponent implements OnInit{
+export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
   tabs=["inbox","scheduled","outbox","failed"];
   tabsArr=[
     {
@@ -63,17 +59,25 @@ export class MessagesComponent implements OnInit{
         this.selectedTabIndex= this.tabs.indexOf(this.selectedTab)
 
       }
+      else{
+        this.selectedTab = "inbox"
+        this.updateQueryParams();
+      }
     })
   }
   updateQueryParams(){
     this.router.navigateByUrl("/messages?tab="+this.selectedTab)
   }
-
   ngOnInit() {
     let permission =this.messageService.messageasPermission
     let customerId=this.authService.userInfo.customerId;
-  }
 
+
+  }
+  ngAfterViewInit() {
+    // this.messageType.getDevices("inbox");
+
+  }
   openDeleteModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -97,40 +101,10 @@ export class MessagesComponent implements OnInit{
     this.isChecked=e;
 
   }
-  changeModal(ev){
 
+  changeModal(ev){
     this.selectedTab = this.tabs[ev.index]
     this.updateQueryParams();
-    // this.tab=this.tabs[ev.index];
-    // console.log(this.tab)
-
-
-    if(this.tab=="inbox"){
-      this.messageType.msgCategory=this.tab
-      this.messageType.getDevices(this.tab);
-      this.messageType.cdr.detectChanges(); // Trigger change detection
-
-    }
-    if(this.tab=="outbox"){
-      this.messageType.msgCategory=this.tab
-      this.messageType.getDevices(this.tab);
-      this.messageType.cdr.detectChanges(); // Trigger change detection
-
-    }
-    if(this.tab=="scheduled"){
-
-      this.scheduled.getDevices()
-      this.cdr.detectChanges(); // Trigger change detection
-
-    }
-    if(this.tab=="failed"){
-      this.messageType.msgCategory=this.tab
-      this.messageType.getDevices(this.tab);
-      this.messageType.cdr.detectChanges(); // Trigger change detection
-
-    }
-    this.cdr.detectChanges(); // Trigger change detection
-
     this.messageType.selection.clear();
   }
   openNewMessage(){

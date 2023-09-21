@@ -18,7 +18,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSelectModule} from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
@@ -46,8 +46,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptorService } from '../interceptors/error-interceptor.service';
 import { ClickOutsideDirective } from './directives/clickOutside.directive';
-import { CustomPaginator } from './components/customizePaginator';
-import { InitPaginationService } from './services/initPagination.service';
 
 export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE_SERVICE');
 
@@ -142,6 +140,5 @@ export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE
     TranslateModule
 
   ],
-  providers:[MatPaginatorIntl,InitPaginationService]
 })
 export class SharedModule { }
