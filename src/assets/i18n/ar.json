@@ -448,7 +448,9 @@
 "Moscow Standard Time (MSK)": "توقيت موسكو القياسي (MSK)",
 "Email or password is wrong":"البريد الإلكتروني أو كلمة المرور خاطئة",
 "We can't logged you in":"لا يمكننا تسجيل دخولك",
-"Ended":"انتهت"
+"Ended":"انتهت",
+"ITEMS_PER_PAGE":"عدد العناصر لكل صفحة:",
+"OF_KEYWORD":"من"
 
 
 

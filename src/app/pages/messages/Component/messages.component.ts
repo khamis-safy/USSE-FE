@@ -6,31 +6,74 @@ import {  MessageTypeComponent } from '../Components/message-type/message-type.c
 import { MessagesService } from '../messages.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ScheduledComponent } from '../Components/scheduled/scheduled.component';
+import { InitPaginationService } from 'src/app/shared/services/initPagination.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
-  styleUrls: ['./messages.component.scss']
+  styleUrls: ['./messages.component.scss'],
+  providers: [
+  ]
 })
-export class MessagesComponent implements OnInit , AfterViewInit{
+export class MessagesComponent implements OnInit{
   tabs=["inbox","scheduled","outbox","failed"];
-  tab = this.tabs[0];
+  tabsArr=[
+    {
+      title:'INBOX_LABEL',
+      tab:'inbox'
+    },
+    {
+      title:'SCHEDULED_LABEL',
+      tab:'scheduled'
+    },
+    {
+      title:'OUTBOX_LABEL',
+      tab:'outbox'
+    },
+    {
+      title:'UNDELIVERED_LABEL',
+      tab:'failed'
+    }
+  ]
+  selectedTab;
   isChecked;
   isMessages:boolean=true;
   canEdit:boolean;
   @ViewChild(MessageTypeComponent) messageType:MessageTypeComponent;
   @ViewChild(ScheduledComponent) scheduled:ScheduledComponent;
+  routingObservable;
+  selectedTabIndex=0
+  constructor(
+    private router:Router,
+    private activatedRouter:ActivatedRoute,
+    private initPaginationService:InitPaginationService,
+    private cdr: ChangeDetectorRef ,public dialog: MatDialog,private  toaster: ToasterServices,private messageService:MessagesService,private authService:AuthService)
+  {
+    initPaginationService.init();
+    this.initRouting()
+  }
 
-  constructor(private cdr: ChangeDetectorRef ,public dialog: MatDialog,private  toaster: ToasterServices,private messageService:MessagesService,private authService:AuthService) { }
+  initRouting(){
+
+    this.routingObservable= this.activatedRouter.queryParams.subscribe(params=>{
+      if(params["tab"]){
+        this.selectedTab = params["tab"].replace(/[\s]/g)
+        this.selectedTabIndex= this.tabs.indexOf(this.selectedTab)
+
+      }
+    })
+  }
+  updateQueryParams(){
+    this.router.navigateByUrl("/messages?tab="+this.selectedTab)
+  }
 
   ngOnInit() {
     let permission =this.messageService.messageasPermission
     let customerId=this.authService.userInfo.customerId;
+  }
 
-  }
-  ngAfterViewInit() {
-    this.messageType.getDevices(this.tab);
-  }
   openDeleteModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -54,8 +97,9 @@ export class MessagesComponent implements OnInit , AfterViewInit{
     this.isChecked=e;
 
   }
-
   changeModal(ev){
+    this.selectedTab = this.tabs[ev.index]
+    this.updateQueryParams();
     // this.tab=this.tabs[ev.index];
     // console.log(this.tab)
 
@@ -89,5 +133,8 @@ export class MessagesComponent implements OnInit , AfterViewInit{
   }
   openNewMessage(){
     this.isMessages=false;
+  }
+  ngOnDestroy(): void {
+    this.routingObservable.unsubscribe()
   }
 }
