@@ -66,7 +66,7 @@ toLastStep(){
   this.stepFourComponent.setDefaultTime();
 
 }
-addCompaign(){
+addCampaign(){
 this.isRepeatable=this.stepFourComponent.isRepeatable;
 this.isInterval=this.stepFourComponent.isInterval;
 
@@ -120,8 +120,7 @@ data={
 }
 
 
-console.log(data);
-this.back.emit(true)
+
 
 this.compaignsService.addMewCampain(data).subscribe(
   (res)=>{
@@ -130,7 +129,7 @@ this.compaignsService.addMewCampain(data).subscribe(
     this.isLoading = false
     console.log(res)},
   (err)=>{
-    this.toasterService.error("Error");
+
     this.back.emit(false)
     this.isLoading = false;
     console.log(err)}

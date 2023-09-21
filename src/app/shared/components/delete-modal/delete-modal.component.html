@@ -21,7 +21,7 @@
       <ng-container *ngIf="isTemplates">
         <p class="txt-lg my-2 text-center" style="line-height: 1.3;">{{ 'DELETE_TEMPLATE_MESSAGE' | translate }}</p>
       </ng-container>
-      <ng-container *ngIf="isCompaigns">
+      <ng-container *ngIf="isCampaigns">
         <ng-container [ngSwitch]="action">
           <p *ngSwitchCase="'delete'" class="txt-lg my-2 text-center" style="line-height: 1.3;">{{ 'DELETE_CAMPAIGN_MESSAGE' | translate }}</p>
           <p *ngSwitchCase="'stop'" class="txt-lg my-2 text-center" style="line-height: 1.3;">{{ 'STOP_CAMPAIGN_MESSAGE' | translate }}</p>
@@ -53,6 +53,7 @@
       [loading]="isLoading"
       [fill]="true"
       (clicked)="submit()"
+      [disabled]="isLoading"
     ></us-button>
 
     <us-button

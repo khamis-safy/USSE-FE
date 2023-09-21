@@ -150,9 +150,7 @@ onSelect(device){
 
 backToCompaigns(event){
 this.isCompagins=event;
-if(this.isCompagins){
-  this.getCompaigns(this.deviceId);
-}
+this.getCompaigns(this.deviceId);
 }
   getCompaigns(deviceId:string){
 
@@ -225,7 +223,7 @@ compaignsCount(deviceId){
       this.router.navigateByUrl(`compaign/${id}`)
     }
   }
-  stopComaign(element){
+  stopCampaign(element){
 
     const dialogConfig=new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -246,7 +244,7 @@ compaignsCount(deviceId){
 
 
   }
-  deleteCompaign(element){
+  deleteCampaign(element){
     console.log("delete compaign")
 
     const dialogConfig=new MatDialogConfig();

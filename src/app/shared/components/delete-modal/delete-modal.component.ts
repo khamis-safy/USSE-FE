@@ -11,6 +11,7 @@ import { Message } from 'src/app/pages/messages/message';
 import { MessagesService } from 'src/app/pages/messages/messages.service';
 import { compaignDetails } from 'src/app/pages/compaigns/campaigns';
 import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
+import { TranslateService } from '@ngx-translate/core';
 
 interface ComponentData {
   contactsData?: { contacts: Contacts[], remove: boolean },
@@ -43,7 +44,7 @@ export class DeleteModalComponent implements OnInit {
   isTemplates: boolean = false;
   isLists: boolean = false;
   isMessages: boolean = false;
-  isCompaigns: boolean = false;
+  isCampaigns: boolean = false;
   constructor(
     private devicesService: DevicesService,
     private templatesService: TemplatesService,
@@ -53,6 +54,7 @@ export class DeleteModalComponent implements OnInit {
     private compaignsService: CompaignsService,
     public dialogRef: MatDialogRef<DeleteModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ComponentData,
+    private translate:TranslateService
   ) {
   }
 
@@ -129,8 +131,8 @@ export class DeleteModalComponent implements OnInit {
       this.isDevices = false;
       this.isLists = false;
       this.isMessages = false;
-      this.isCompaigns = true;
-      console.log("is compaigns", this.isCompaigns)
+      this.isCampaigns = true;
+      console.log("is compaigns", this.isCampaigns)
 
     }
     else {
@@ -139,7 +141,7 @@ export class DeleteModalComponent implements OnInit {
       this.isTemplates = false;
       this.isLists = false;
       this.isMessages = false;
-      this.isCompaigns = false;
+      this.isCampaigns = false;
 
     }
 
@@ -163,7 +165,7 @@ export class DeleteModalComponent implements OnInit {
           this.toaster.warning(`${succ} Success ${err} Failed`)
         }
         else if (succ > 0 && err == 0) {
-          this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
+          this.toaster.success(`${res.numberOfSuccess} ${this.translate.instant("COMMON.DELETE_MESSAGES")}`)
 
         }
 
@@ -175,6 +177,7 @@ export class DeleteModalComponent implements OnInit {
       }
     )
   }
+  // this.translate.instant("COMMON.SUCC_MSG")
 
   removeLists() {
     this.listService.removeContactsFromLists(this.body,this.listService.email).subscribe(
@@ -192,7 +195,7 @@ export class DeleteModalComponent implements OnInit {
           this.toaster.warning(`${succ} Success ${err} Failed`)
         }
         else if (succ > 0 && err == 0) {
-          this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
+          this.toaster.success(`${res.numberOfSuccess} ${this.translate.instant("COMMON.DELETE_MESSAGES")}`)
 
         }
 
@@ -214,7 +217,7 @@ export class DeleteModalComponent implements OnInit {
 
         this.onClose(true);
 
-        this.toaster.success(`Deleted Successfully`)
+        this.toaster.success(this.translate.instant("COMMON.DELETE_MESSAGES"))
 
 
       },
@@ -236,7 +239,7 @@ export class DeleteModalComponent implements OnInit {
 
         this.onClose(true);
 
-        this.toaster.success(`Deleted Successfully`)
+        this.toaster.success(this.translate.instant("COMMON.DELETE_MESSAGES"))
 
 
 
@@ -258,7 +261,7 @@ export class DeleteModalComponent implements OnInit {
 
         this.onClose(true);
 
-        this.toaster.success(`Deleted Successfully`)
+        this.toaster.success(this.translate.instant("COMMON.SUCC_MSG"))
 
 
       },
@@ -281,7 +284,7 @@ export class DeleteModalComponent implements OnInit {
 
         this.onClose(true);
 
-        this.toaster.success(`Deleted Successfully`)
+        this.toaster.success(this.translate.instant("COMMON.DELETE_MESSAGES"))
 
 
       },
@@ -340,7 +343,7 @@ export class DeleteModalComponent implements OnInit {
           this.toaster.warning(`${succ} Success ${err} Failed`)
         }
         else if (succ > 0 && err == 0) {
-          this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
+          this.toaster.success(`${res.numberOfSuccess} ${this.translate.instant("COMMON.DELETE_MESSAGES")}`)
 
         }
 
@@ -407,7 +410,7 @@ submit() {
   } else if (this.isTemplates) {
     this.deleteTemplates();
   }
-  else if (this.isCompaigns) {
+  else if (this.isCampaigns) {
     if (this.data.compaignData.action == "delete") {
 
       this.deleteCompaign()

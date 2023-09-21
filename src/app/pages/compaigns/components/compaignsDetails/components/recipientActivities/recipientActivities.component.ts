@@ -15,9 +15,9 @@ import { RECEPEINTHEADERS } from 'src/app/pages/compaigns/constants/contstants';
   styleUrls: ['./recipientActivities.component.scss']
 })
 export class RecipientActivitiesComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] =RECEPEINTHEADERS;
   columns :FormControl;
-  displayed: string[] = ['Mobile Number', 'Name', 'Updated At', 'Status'];
+  displayed: string[] = RECEPEINTHEADERS;
+  displayedColumns: string[] = ['Mobile Number', 'Name', 'Updated At', 'Status'];
   loading;
   length:number=0;
 

@@ -1201,6 +1201,9 @@ ngx-intl-tel-input .error {
     input#phone {
       direction: ltr;
   }
+  input.rounded-pill.border.border-1py-2.txt-input.w-100.date.ng-untouched.ng-pristine.ng-valid {
+    direction: ltr;
+}
     // scan device steps
     .steps-container{
       .images-steps-arrows{

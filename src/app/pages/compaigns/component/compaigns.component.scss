@@ -50,6 +50,23 @@ table {
 
 
 }
+.status{
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+
+}
+.active{
+  background: rgba(37, 255, 98, 1);
+
+}
+.inactive{
+  background: rgba(255, 181, 37, 1);
+
+}
+span{
+  color: rgba(51,50,61 ,1)!important ;
+}
 .listName{
   border: 1px solid var(--clr-primary-800);
   color:var(--clr-primary-800);

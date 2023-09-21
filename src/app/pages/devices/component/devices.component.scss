@@ -16,6 +16,9 @@
   background: rgba(255, 181, 37, 1);
 
 }
+span{
+  color: rgba(51,50,61 ,1)!important ;
+}
 .delay {
   ::ng-deep{
     .mat-mdc-button, .mat-mdc-outlined-button {
@@ -24,9 +27,7 @@
 
   }
   }}
-span{
-  color: rgba(51,50,61 ,1)!important ;
-}
+
 mat-icon{
   color: rgba(51,50,61 ,1)!important;
 }

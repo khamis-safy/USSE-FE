@@ -29,7 +29,7 @@ export const RECEPEINTHEADERS:any[]=[
   },
   {
     title:"updatedAtLabel",
-    value:"'Updated At"
+    value:"Updated At"
   },
   {
     title:"statusLabel",
