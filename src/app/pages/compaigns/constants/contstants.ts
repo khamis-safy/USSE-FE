@@ -44,3 +44,21 @@ export const CAMPAIGNSHEADERSWithOUTAction: any[] = [
   },
 
 ];
+export const RECEPEINTHEADERS:any[]=[
+  {
+    title:"mobileNumberLabel",
+    value:"Mobile Number"
+  },
+  {
+    title:"nameLabel",
+    value:"Name"
+  },
+  {
+    title:"updatedAtLabel",
+    value:"'Updated At"
+  },
+  {
+    title:"statusLabel",
+    value:"Status"
+  }
+]

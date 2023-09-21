@@ -6,7 +6,7 @@
         {{ 'displayLabel' | translate }}
       </mat-label>
       <mat-select [formControl]="columns" (selectionChange)="changeColumns($event.value)" multiple>
-        <mat-option *ngFor="let topping of displayed" [value]="topping">{{ topping | translate }}</mat-option>
+        <mat-option *ngFor="let topping of displayed" [value]="topping.value">{{ topping.title | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

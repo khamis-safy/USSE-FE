@@ -5,6 +5,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { CompainMessages, compaignDetails } from 'src/app/pages/compaigns/campaigns';
 import { FormControl } from '@angular/forms';
 import { CompaignsDetailsService } from '../../compaignsDetails.service';
+import { RECEPEINTHEADERS } from 'src/app/pages/compaigns/constants/contstants';
 
 
 
@@ -14,7 +15,7 @@ import { CompaignsDetailsService } from '../../compaignsDetails.service';
   styleUrls: ['./recipientActivities.component.scss']
 })
 export class RecipientActivitiesComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['Mobile Number', 'Name', 'Updated At', 'Status'];
+  displayedColumns: string[] =RECEPEINTHEADERS;
   columns :FormControl;
   displayed: string[] = ['Mobile Number', 'Name', 'Updated At', 'Status'];
   loading;
