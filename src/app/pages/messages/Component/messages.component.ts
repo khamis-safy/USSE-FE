@@ -56,34 +56,34 @@ export class MessagesComponent implements OnInit , AfterViewInit{
   }
 
   changeModal(ev){
-    // this.tab=this.tabs[ev.index];
-    // console.log(this.tab)
+    this.tab=this.tabs[ev.index];
+    console.log(this.tab)
 
-    // if(this.tab=="inbox"){
-    //   this.messageType.msgCategory=this.tab
-    //   this.messageType.getDevices(this.tab);
-    //   this.messageType.cdr.detectChanges(); // Trigger change detection
+    if(this.tab=="inbox"){
+      this.messageType.msgCategory=this.tab
+      this.messageType.getDevices(this.tab);
+      this.messageType.cdr.detectChanges(); // Trigger change detection
 
-    // }
-    // if(this.tab=="outbox"){
-    //   this.messageType.msgCategory=this.tab
-    //   this.messageType.getDevices(this.tab);
-    //   this.messageType.cdr.detectChanges(); // Trigger change detection
+    }
+    if(this.tab=="outbox"){
+      this.messageType.msgCategory=this.tab
+      this.messageType.getDevices(this.tab);
+      this.messageType.cdr.detectChanges(); // Trigger change detection
 
-    // }
-    // if(this.tab=="scheduled"){
+    }
+    if(this.tab=="scheduled"){
 
-    //   this.scheduled.getDevices()
-    //   this.cdr.detectChanges(); // Trigger change detection
+      this.scheduled.getDevices()
+      this.cdr.detectChanges(); // Trigger change detection
 
-    // }
-    // if(this.tab=="failed"){
-    //   this.messageType.msgCategory=this.tab
-    //   this.messageType.getDevices(this.tab);
-    //   this.messageType.cdr.detectChanges(); // Trigger change detection
+    }
+    if(this.tab=="failed"){
+      this.messageType.msgCategory=this.tab
+      this.messageType.getDevices(this.tab);
+      this.messageType.cdr.detectChanges(); // Trigger change detection
 
-    // }
-    // this.cdr.detectChanges(); // Trigger change detection
+    }
+    this.cdr.detectChanges(); // Trigger change detection
 
     this.messageType.selection.clear();
   }

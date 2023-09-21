@@ -200,7 +200,15 @@ console.log("permissions",this.permission)
           this.numRows=res.length;
 
           this.loading = false;
-          this.dataSource=new MatTableDataSource<Message>(res)
+          if(msgCategory=="outbox"){
+            this.dataSource=new MatTableDataSource<Message>(res)
+          }
+          else{
+
+            this.dataSource=new MatTableDataSource<Message>([])
+          }
+
+          //
           if(search!=""){
             this.length=res.length;
             if(this.length==0){
