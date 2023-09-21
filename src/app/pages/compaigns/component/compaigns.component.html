@@ -91,11 +91,11 @@
               <td class="text-center" mat-cell *matCellDef="let element">
 
                 <ng-container [ngSwitch]="element.isStopped">
-                  <div *ngSwitchCase="false" class="d-flex gap-2 align-items-center">
+                  <div *ngSwitchCase="false" class="d-flex gap-2 align-items-center justify-content-center">
                     <span class="status active"></span>
                     <p style="margin: 0 0 0 0;">{{ 'ACTIVE' | translate }}</p>
                   </div>
-                  <div *ngSwitchCase="true" class="d-flex gap-2 align-items-center">
+                  <div *ngSwitchCase="true" class="d-flex gap-2 align-items-center justify-content-center">
                     <span class="status inactive"></span>
                     <p style="margin: 0 0 0 0;">{{ 'Ended' | translate }}</p>
                   </div>

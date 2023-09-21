@@ -53,7 +53,7 @@ export class SettingComponent implements OnInit{
     ]
       this.maskValue=this.maskTypeArr.find((res)=>res.value==localStorage.getItem("maskType"));
     this.timeZoneArr=this.timeZones.map((timezone)=>{return{
-      title:translate.instant(timezone.title),
+      title:`${translate.instant(timezone.title)} ${timezone.value}`,
       value:timezone.index
     }})
 
@@ -64,7 +64,9 @@ export class SettingComponent implements OnInit{
     this.selectedZone=timeZone !== "null" && timeZone !== "undefined"? timeZone:null;
     if(this.selectedZone){
       this.form.patchValue({
-        timeZone: {title:this.timeZones.find((time)=>time.value==this.selectedZone).title,value:this.timeZones.find((time)=>time.value==this.selectedZone).value}
+        timeZone:
+        {title:`${this.translate.instant(this.timeZones.find((time)=>time.value==this.selectedZone).title,)} ${this.timeZones.find((time)=>time.value==this.selectedZone).value}`,
+          value:this.timeZones.find((time)=>time.value==this.selectedZone).index}
       })
     }
     let mobileNum = phoneNumber !== "null" && phoneNumber !== "undefined" ? phoneNumber.slice(1) : "";
