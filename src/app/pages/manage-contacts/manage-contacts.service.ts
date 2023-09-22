@@ -91,7 +91,7 @@ addContact(name:string,mobileNumber:string,companyName:string,note:string,email:
   return this.http.post<Contacts>(`${env.api}Contacts/addNewContact`,data)
 }
 
-updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:string,email:string,newListId?:string[],additionalContactParameters?:{name:string,value:string}[]):Observable<any>{
+updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:string,email:string,additionalContactParameters:{name:string,value:string}[],newListId?:string[]):Observable<any>{
   const data=newListId?{
     id:id,
     name: name,
@@ -99,15 +99,7 @@ updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:
     companyName: companyName,
     note: note,
     email: email,
-    newListId:newListId
-  }:
-  additionalContactParameters ?{
-    id:id,
-    name: name,
-    mobileNumber: mobileNumber,
-    companyName: companyName,
-    note: note,
-    email: email,
+    newListId:newListId,
     additionalContactParameters: additionalContactParameters
 
   }:
@@ -117,7 +109,9 @@ updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:
     mobileNumber: mobileNumber,
     companyName: companyName,
     note: note,
-    email: email
+    email: email,
+    additionalContactParameters: additionalContactParameters
+
   }
   return this.http.put(`${env.api}Contacts/updateContact`,data)
 }

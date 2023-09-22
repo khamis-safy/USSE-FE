@@ -78,7 +78,6 @@ showInputs:boolean=false;
     this.getLists();
     if(this.data){
       console.log(this.data.contacts,this.data.contacts.additionalContactParameter)
-      this.additionalParameters=this.data.contacts.additionalContactParameter;
       this.isEdit = true
       this.fillingData();
       // this.listsIds=this.data.lists.map((e)=>e.id)
@@ -104,7 +103,7 @@ showInputs:boolean=false;
       cnName:this.data.contacts.companyName,
       note:this.data.contacts.note,
     });
-
+    this.additionalParameters=this.data.contacts.additionalContactParameter;
 
 
   }
@@ -213,7 +212,7 @@ showInputs:boolean=false;
     let listsIds = this.form.value.selectedLists.map((e)=>e.value);
     this.isLoading = true
     if(this.data.listDetails){
-      this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email).subscribe(
+      this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email,this.additionalParameters).subscribe(
 
         (res)=>{
           this.isLoading = false

@@ -26,6 +26,7 @@ export class WriteMessageComponent implements OnInit {
   loading:boolean=false;
   templatesData = new FormControl([]);
   message = new FormControl('',[Validators.required]);
+  @Output() formValidityChange = new EventEmitter<boolean>(true);
 
   form = new FormGroup({
     templatesData:this.templatesData,
@@ -34,6 +35,12 @@ export class WriteMessageComponent implements OnInit {
   constructor(private templateService:TemplatesService) { }
 
   ngOnInit() {
+    this.formValidityChange.emit(this.form.valid);
+
+    this.form.valueChanges.subscribe(() => {
+      this.formValidityChange.emit(this.form.valid);
+    });
+    this.getTemplates();
   }
 
   getTemplates(){

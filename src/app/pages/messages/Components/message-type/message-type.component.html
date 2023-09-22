@@ -169,7 +169,7 @@
     </section>
   </ng-container>
 
-  <ng-container *ngIf="length == 0 && (!loading || notFound || noData)">
+  <ng-container *ngIf="length == 0 && !loading && ( notFound || noData)">
     <div class="d-flex justify-content-center align-items-center flex-column gap-3 w-100" style="height: 500px;">
       <img src="assets/images/files.svg" alt="">
       <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA_TO_SHOW_LABEL' | translate }}</span>

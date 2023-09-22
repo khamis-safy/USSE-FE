@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
@@ -19,7 +19,7 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
 
   devices:SelectOption[];
   selectedDevices:string[]=[];
-  devicesData = new FormControl([]);
+  devicesData:any = new FormControl([]);
   compainName:any = new FormControl('',[Validators.required]);
   deviceId:string;
   dateFormControl:any = new FormControl('');
@@ -31,13 +31,25 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   utcDateTime;
   timeSub$;
   isUser: boolean;
+  @Output() formValidityChange = new EventEmitter<boolean>(true);
+  @Output() noSelectedDevices = new EventEmitter<boolean>(true);
+
   constructor(private devicesService:DevicesService,private datePipe: DatePipe,private compaignsService:CompaignsService,private authService:AuthService) { }
   ngOnDestroy(): void {
+
     this.timeSub$.unsubscribe()
   }
 
 
   ngOnInit() {
+    this.getDevices()
+    this.noSelectedDevices.emit(false);
+
+    this.form.valueChanges.subscribe(() => {
+      this.formValidityChange.emit(this.form.valid);
+
+    });
+    this.setDefaultTime();
     this.permission =this.compaignsService.devicesPermissions;
 if(this.authService.userInfo.customerId!=""){
   this.isUser=true;
@@ -52,6 +64,16 @@ else{
 
 
    });
+  }
+
+  deviceSelection(){
+    if(this.deviceId)
+    {
+      return null
+    }
+    else{
+      return { deviceSelection: true }
+    }
   }
   convertToUTC(timecontrol) {
     const selectedTime =timecontrol.value;
@@ -88,6 +110,8 @@ else{
   }
   onSelect(event){
     this.deviceId=event.value;
+    this.noSelectedDevices.emit(true);
+
   }
 
 }

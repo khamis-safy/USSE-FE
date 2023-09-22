@@ -6,30 +6,36 @@
 
     <mat-step>
       <ng-template matStepLabel>{{ 'selectListsLabel' | translate }}</ng-template>
-      <div class="d-flex align-items-between flex-column justify-content-between " style="min-height: 700px;">
-        <app-stepOne (allSelected)="getLists($event)"></app-stepOne>
-        <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
-          <button class="rest-style " matStepperNext [disabled]="lists.length==0">
-            <us-button
-              class="m-2"
-              label="{{ 'nextLabel' | translate }}"
-              [fill]="true"
-              [size]="'md'"
-              [loading]="false"
-              [appearance]="'primary'"
-              (clicked)="toSecondStep()"
-              [disabled]="lists.length==0"
-            >
-            </us-button>
-          </button>
+      <ng-container *ngIf="step1">
+
+        <div class="d-flex align-items-between flex-column justify-content-between " style="min-height: 700px;">
+          <app-stepOne (allSelected)="getLists($event)"></app-stepOne>
+          <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
+            <button class="rest-style " matStepperNext [disabled]="lists.length==0">
+              <us-button
+                class="m-2"
+                label="{{ 'nextLabel' | translate }}"
+                [fill]="true"
+                [size]="'md'"
+                [loading]="false"
+                [appearance]="'primary'"
+                (clicked)="toSecondStep()"
+                [disabled]="lists.length==0"
+              >
+              </us-button>
+            </button>
+          </div>
         </div>
-      </div>
+      </ng-container>
     </mat-step>
 
     <mat-step>
       <ng-template matStepLabel>{{ 'writeMessageLabel' | translate }}</ng-template>
+      <ng-container *ngIf="step2">
+
+
       <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-        <app-write-message (attachments)="filesUrls($event)" style="height: 80%;"></app-write-message>
+        <app-write-message (formValidityChange)="stepTwoValidation($event)" (attachments)="filesUrls($event)" style="height: 80%;"></app-write-message>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
           <button class="rest-style" matStepperPrevious>
             <us-button
@@ -44,14 +50,14 @@
             </us-button>
           </button>
 
-          <button class="rest-style" matStepperNext>
+          <button class="rest-style" matStepperNext [disabled]="!stepTwoValidate">
             <us-button
               class="m-2"
               label="{{ 'nextLabel' | translate }}"
               [fill]="true"
               [size]="'md'"
               [loading]="false"
-              [disabled]="false"
+              [disabled]="!stepTwoValidate"
               [appearance]="'primary'"
               (clicked)="toThirdStep()"
             >
@@ -59,12 +65,14 @@
           </button>
         </div>
       </div>
+    </ng-container>
     </mat-step>
 
     <mat-step>
       <ng-template matStepLabel>{{ 'informationLabel' | translate }}</ng-template>
+      <ng-container *ngIf="step3">
       <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-        <app-stepThree></app-stepThree>
+        <app-stepThree (formValidityChange)="stepThreeValidation($event)" (noSelectedDevices)="deviceSelected=$event"></app-stepThree>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
           <button class="rest-style" matStepperPrevious>
             <us-button
@@ -79,14 +87,14 @@
             </us-button>
           </button>
 
-          <button class="rest-style" matStepperNext>
+          <button class="rest-style" matStepperNext [disabled]="!stepThreeValidate || !deviceSelected">
             <us-button
               class="m-2"
               label="{{ 'nextLabel' | translate }}"
               [fill]="true"
               [size]="'md'"
               [loading]="false"
-              [disabled]="false"
+              [disabled]="!stepThreeValidate || !deviceSelected"
               [appearance]="'primary'"
               (clicked)="toLastStep()"
             >
@@ -94,12 +102,14 @@
           </button>
         </div>
       </div>
+    </ng-container>
     </mat-step>
 
     <mat-step>
       <ng-template matStepLabel>{{ 'settingLabel' | translate }}</ng-template>
+      <ng-container *ngIf="step4">
       <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-        <app-stepFour (formValidityChange)="updateChildFormValidity($event)"></app-stepFour>
+        <app-stepFour (formValidityChange)="stepFourValidation($event)"></app-stepFour>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
           <button class="rest-style" matStepperPrevious>
             <us-button
@@ -121,7 +131,7 @@
               [fill]="true"
               [size]="'md'"
               [loading]="isLoading"
-              [disabled]="isLoading || !childFormValidity"
+              [disabled]="isLoading || !stepFourValidate"
               [appearance]="'primary'"
               (clicked)="addCampaign()"
             >
@@ -129,6 +139,7 @@
           </button>
         </div>
       </div>
+    </ng-container>
     </mat-step>
 
   </mat-stepper>

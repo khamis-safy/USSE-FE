@@ -27,15 +27,24 @@ export class AddCompaignsComponent implements OnInit {
   blackoutFrom: any;
   blackoutTo: any;
   maxPerDay: number;
-  message:string;
+  message:string="";
   lists:string[]=[];
   dateTime:string;
   deviceId:string;
   compaignName:string;
   numErr:number=0;
-  childFormValidity: boolean = true;
-  constructor(private compaignsService:CompaignsService,private toasterService:ToasterServices){}
+  stepTwoValidate: boolean = true;
+  stepThreeValidate: boolean = true;
+  stepFourValidate: boolean = true;
+  deviceSelected:boolean=false;
+  step1:boolean=true;
+step2:boolean=false;
+step3:boolean=false;
+step4:boolean=false;
+  constructor(private compaignsService:CompaignsService,private toasterService:ToasterServices){
+  }
   ngOnInit() {
+
   }
   getLists(listsData){
     this.lists=listsData.map((list)=>list.id);
@@ -43,27 +52,33 @@ export class AddCompaignsComponent implements OnInit {
   filesUrls(e){
     this.attachments=e;
   }
-  updateChildFormValidity(validity: boolean) {
-    this.childFormValidity = validity;
+  stepTwoValidation(validity: boolean) {
+    this.stepTwoValidate = validity;
   }
+  stepThreeValidation(validity: boolean) {
+    this.stepThreeValidate = validity;
+  }
+  stepFourValidation(validity: boolean) {
+    this.stepFourValidate = validity;
+  }
+
 toSecondStep(){
-  console.log("selected lists",this.lists);
-  this.writeMessage.getTemplates();
+  this.step2=true;
+
 
 }
 toThirdStep(){
-  this.stepThreeComponent.getDevices();
+  this.step3=true;
   this.message=this.writeMessage.form.value.message;
-  this.stepThreeComponent.setDefaultTime();
 
   this.attachments=this.writeMessage.fileData.map((file)=>file.url);
 
 }
 toLastStep(){
+  this.step4=true;
   this.deviceId=this.stepThreeComponent.deviceId?this.stepThreeComponent.deviceId:"";
   this.dateTime=`${this.stepThreeComponent.utcDateTime}Z`;
   this.compaignName=this.stepThreeComponent.form.value.compainName;
-  this.stepFourComponent.setDefaultTime();
 
 }
 addCampaign(){

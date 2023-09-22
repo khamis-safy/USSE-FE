@@ -32,6 +32,7 @@ time2Sub$
 utcTime1;
 utcTime2;
 
+
 toggleTime:boolean=false;
 time1:any = new FormControl({value:'',  disabled: true}, [Validators.required]);
 time2:any= new FormControl({value: '',  disabled: true}, [Validators.required]);
@@ -53,7 +54,7 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
       time1: this.time1,
       time2: this.time2,
     },
-    { validators: [this.timeValidator] }
+    { validators: [this.timeValidator,this.intervalInvalid] }
   );
 }
   ngAfterViewInit() {
@@ -106,6 +107,7 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
     this.time2.setValue(new Date());
   }
   ngOnInit() {
+    this.setDefaultTime()
     this.form.valueChanges.subscribe(() => {
       this.formValidityChange.emit(this.form.valid);
     });
