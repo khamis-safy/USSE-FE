@@ -53,7 +53,7 @@ export class SettingComponent implements OnInit{
     ]
       this.maskValue=this.maskTypeArr.find((res)=>res.value==localStorage.getItem("maskType"));
     this.timeZoneArr=this.timeZones.map((timezone)=>{return{
-      title:`${translate.instant(timezone.title)} ${timezone.value}`,
+      title:`${translate.instant(timezone.title)} `,
       value:timezone.index
     }})
 
@@ -65,7 +65,7 @@ export class SettingComponent implements OnInit{
     if(this.selectedZone){
       this.form.patchValue({
         timeZone:
-        {title:`${this.translate.instant(this.timeZones.find((time)=>time.value==this.selectedZone).title,)} ${this.timeZones.find((time)=>time.value==this.selectedZone).value}`,
+        {title:this.translate.instant(this.timeZones.find((time)=>time.value==this.selectedZone).title),
           value:this.timeZones.find((time)=>time.value==this.selectedZone).index}
       })
     }
@@ -125,27 +125,35 @@ export class SettingComponent implements OnInit{
   }
   onSelect(zone){
 
-this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value
+this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value;
+console.log("selected zone",this.selectedZone)
 
         }
     submitSave() {
       this.loading=true;
       let mobile=this.form.value.mobile? this.form.value.mobile.e164Number:null;
-      let selectedZone=this.selectedZone || null
-      const data={
+      const data=this.selectedZone?{
         token: this.authService.getUserInfo().refreshToken,
         apiToken: this.apiToken.value,
         contactName: this.form.value.contactName,
         organisationName: this.form.value.organisationName,
-        timeZone: selectedZone,
+        timeZone: this.selectedZone,
+        maskType: this.form.value.maskType.value,
+        phoneNumber: mobile
+      }:{
+        token: this.authService.getUserInfo().refreshToken,
+        apiToken: this.apiToken.value,
+        contactName: this.form.value.contactName,
+        organisationName: this.form.value.organisationName,
         maskType: this.form.value.maskType.value,
         phoneNumber: mobile
       }
+
       console.log('edit work',data);
       this.authService.editProfile(data).subscribe(
         (res)=>{
           this.loading=false;
-          this.onClose();
+
           this.toaster.success(this.translate.instant('COMMON.SUCC_MSG'));
           this.userInfo={userName:res.contactName,
             organizationName:res.organisationName,
@@ -156,11 +164,11 @@ this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value
             apiToken:res.apiToken,
             maskType:res.maskType,
             phoneNumber:res.phoneNumber,
-            timeZone:res.timeZone
+            timeZone:this.selectedZone
           }
       this.authService.saveDataToLocalStorage(this.userInfo);
       this.authService.updateUserInfo()
-
+      this.onClose(true);
         },
         (err)=>{
           this.loading=false;

@@ -204,18 +204,25 @@ showInputs:boolean=false;
 
 
   submitEdit(){
-    let email=this.email;
-    let name =this.form.value.name;
-    let cnName=this.form.value.cnName;
-    let mobile=this.form.value.mobile.e164Number
-    let note = this.form.value.note;
+    let data:any={
+      id:this.data.contacts.id,
+      name :this.form.value.name,
+      mobileNumber:this.form.value.mobile.e164Number,
+      companyName:this.form.value.cnName,
+      note: this.form.value.note,
+      email: this.email,
+      additionalContactParameters: this.additionalParameters
+
+    }
+
     let listsIds = this.form.value.selectedLists.map((e)=>e.value);
     this.isLoading = true
     if(this.data.listDetails){
-      this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email,this.additionalParameters).subscribe(
+      this.listService.updateContact(data).subscribe(
 
         (res)=>{
           this.isLoading = false
+          console.log("additional",this.additionalParameters)
           this.onClose(true);
                   this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
 
@@ -227,7 +234,18 @@ showInputs:boolean=false;
       )
     }
     else{
-      this.listService.updateContact(this.data.contacts.id,name,mobile,cnName,note,email,listsIds).subscribe(
+      data={
+        id:this.data.contacts.id,
+        name :this.form.value.name,
+        mobileNumber:this.form.value.mobile.e164Number,
+        companyName:this.form.value.cnName,
+        note: this.form.value.note,
+        email: this.email,
+        newListId:listsIds,
+        additionalContactParameters: this.additionalParameters
+      }
+
+      this.listService.updateContact(data).subscribe(
 
         (res)=>{
           this.isLoading = false

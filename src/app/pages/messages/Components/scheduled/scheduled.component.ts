@@ -24,7 +24,7 @@ import { SCHEDULED } from '../constants/messagesConst';
 export class ScheduledComponent implements OnInit  {
   length:number=0;
   numRows;
-  loading:boolean=false;
+  loading:boolean=true;
   @Output() isChecked = new EventEmitter<Shceduled[]>;
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   cellClick:boolean=false;

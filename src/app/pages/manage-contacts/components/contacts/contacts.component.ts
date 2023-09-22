@@ -98,7 +98,6 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
     this.listService.unDeleteContact(email,this.deletedContacts).subscribe(
       (res)=>{
 
-        this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
         this.getContacts();
         this.deletedContacts=[];
 

@@ -9,7 +9,7 @@ const routes: Routes = [
     children: [
       {
         path: "messages",
-        // canActivate:[AuthGuard],
+        canActivate:[AuthGuard],
 
         loadChildren: () =>
           import("./../../pages/messages/messages.module").then((m) => m.MessagesModule),

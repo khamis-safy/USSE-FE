@@ -64,6 +64,10 @@ this.permissions={
     dialogConfig.maxHeight = '87vh';
     dialogConfig.disableClose = true;
     const dialogRef = this.dialog.open(SettingComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+     this.userName=localStorage.getItem("userName")
+     this.chars=this.userName?.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
+    });
   }
 
 

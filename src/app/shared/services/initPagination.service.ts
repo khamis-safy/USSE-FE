@@ -6,17 +6,22 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root'
 })
 export class InitPaginationService {
+  currentLang: string;
 
 constructor(
   private matPaginatorIntl:MatPaginatorIntl,
   private translate:TranslateService
 
 ) {
+  this.currentLang = localStorage.getItem('currentLang') || 'en';
  }
-   init(){
-    this.matPaginatorIntl.itemsPerPageLabel = this.translate.instant("ITEMS_PER_PAGE")
-    this.matPaginatorIntl.getRangeLabel =(page: number, pageSize: number, length: number) =>{
-      return `${page+1} - ${length} ${this.translate.instant("OF_KEYWORD")} ${length < pageSize ? length : pageSize}`;
+ async  init(){
+    await this.translate.get('ITEMS_PER_PAGE').toPromise().then((translation: string) => {
+      this.matPaginatorIntl.itemsPerPageLabel = translation;
+    });
+      this.matPaginatorIntl.getRangeLabel =(page: number, pageSize: number, length: number) =>{
+        return `${page+1} - ${length < pageSize ? length : pageSize}  ${this.translate.instant("OF_KEYWORD")} ${length}`;
+
     }
   }
 

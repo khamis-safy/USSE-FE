@@ -57,9 +57,7 @@ ListsCount(email:string):Observable<number>{
   return this.http.get<number>(`${env.api}Contacts/listListsCount?email=${email}`)
 }
 
-unDeleteList(email:string,ids:string[]):Observable<ErrSucc>{
-  return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteList?email=${email}`,ids)
-}
+
 getListById(listId:string): Observable<ListData>{
 
     return this.http.get<ListData>(`${env.api}Contacts/getListById?id=${listId}`)
@@ -91,28 +89,8 @@ addContact(name:string,mobileNumber:string,companyName:string,note:string,email:
   return this.http.post<Contacts>(`${env.api}Contacts/addNewContact`,data)
 }
 
-updateContact(id:string,name:string,mobileNumber:string,companyName:string,note:string,email:string,additionalContactParameters:{name:string,value:string}[],newListId?:string[]):Observable<any>{
-  const data=newListId?{
-    id:id,
-    name: name,
-    mobileNumber: mobileNumber,
-    companyName: companyName,
-    note: note,
-    email: email,
-    newListId:newListId,
-    additionalContactParameters: additionalContactParameters
+updateContact(data):Observable<any>{
 
-  }:
-  {
-    id:id,
-    name: name,
-    mobileNumber: mobileNumber,
-    companyName: companyName,
-    note: note,
-    email: email,
-    additionalContactParameters: additionalContactParameters
-
-  }
   return this.http.put(`${env.api}Contacts/updateContact`,data)
 }
 
@@ -148,10 +126,11 @@ return this.http.put<ErrSucc>(`${env.api}Contacts/addOrMoveContactsFromLists`,da
 contactsCount(email:string,isCanceled:boolean):Observable<number>{
   return this.http.get<number>(`${env.api}Contacts/listContactsCount?email=${email}&isCanceled=${isCanceled}`)
 }
-
-
+unDeleteList(email:string,ids:string[]):Observable<ErrSucc>{
+  return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteList?email=${email}`,ids)
+}
 unDeleteContact(email:string,ids:string[]):Observable<ErrSucc>{
-  return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteContac?email=${email}`,ids)
+  return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteContact?email=${email}`,ids)
 }
 exportSelectedContacts(data): Observable<Blob> {
   const url = `${env.api}Contacts/exportSelectedContacts`;

@@ -47,7 +47,7 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     private initPaginationService:InitPaginationService,
     private cdr: ChangeDetectorRef ,public dialog: MatDialog,private  toaster: ToasterServices,private messageService:MessagesService,private authService:AuthService)
   {
-    initPaginationService.init();
+    // initPaginationService.init();
     this.initRouting()
   }
 
@@ -103,9 +103,10 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
   }
 
   changeModal(ev){
+
     this.selectedTab = this.tabs[ev.index]
     this.updateQueryParams();
-    this.messageType.selection.clear();
+
   }
   openNewMessage(){
     this.isMessages=false;

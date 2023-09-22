@@ -4,6 +4,7 @@ import { PluginsService } from './services/plugins.service';
 import { AuthService } from './shared/services/auth.service';
 import { UsersService } from './pages/users/users.service';
 import { TranslationService } from './shared/services/translation.service';
+import { InitPaginationService } from './shared/services/initPagination.service';
 
 @Component({
   selector: 'app-root',
@@ -16,13 +17,19 @@ export class AppComponent implements OnInit {
   currentLang:string;
   languageDirection: string;
 
-  constructor(private plugin:PluginsService,public translate:TranslateService,private languageService:TranslationService,private authService:AuthService, private userServiece:UsersService){
+  constructor(private plugin:PluginsService,
+    public translate:TranslateService,
+    private languageService:TranslationService,
+    private initPaginationService:InitPaginationService,
+    private authService:AuthService, private userServiece:UsersService){
     this.currentLang = localStorage.getItem('currentLang') || 'en';
     this.translate.use(this.currentLang);
     document.documentElement.dir=  this.currentLang === 'ar' ? 'rtl' : 'ltr'
     let body:any = document.querySelector('body');
 
     body.classList.add(this.currentLang === 'ar' ? 'rtl' : 'ltr');
+    initPaginationService.init();
+
   }
 
   ngOnInit(): void {

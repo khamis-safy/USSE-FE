@@ -162,7 +162,7 @@ getListData(){
     this.listService.unDeleteList(email,this.deletedLists).subscribe(
       (res)=>{
 
-      this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+
 
         this.getListData();
         this.deletedLists=[];

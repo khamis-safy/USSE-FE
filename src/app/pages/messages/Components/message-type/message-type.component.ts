@@ -23,7 +23,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
 
   length:number=0;
   numRows;
-  loading:boolean=false;
+  loading:boolean=true;
   @Input() msgCategory:string="inbox"
   @Output() isChecked = new EventEmitter<Message[]>;
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
@@ -344,6 +344,7 @@ console.log("can edit",this.canEdit)
 
   }
   ngOnDestroy(){
+    this.selection.clear()
     this.subscribtions.map(e=>e.unsubscribe());
   }
 }
