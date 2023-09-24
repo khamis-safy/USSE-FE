@@ -4,6 +4,7 @@ import { VerifyService } from './verify.service';
 import { LoginService } from '../../login.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { UsersService } from 'src/app/pages/users/users.service';
 
 @Component({
   selector: 'app-verify',
@@ -16,7 +17,12 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
   digitIndexes: number[] = [0, 1, 2, 3, 4, 5];
   loading: boolean;
   invalid:boolean=false;
-  constructor(private loginService:LoginService,private authService:AuthService,private router:Router,private formBuilder: FormBuilder,private verificatioinService:VerifyService) {
+  constructor(private loginService:LoginService,
+    private authService:AuthService,
+    private router:Router,
+    private formBuilder: FormBuilder,
+    private userServiece:UsersService,
+    private verificatioinService:VerifyService) {
     this.verificationForm = this.formBuilder.group({
       digit0: ['', Validators.required],
       digit1: ['', Validators.required],
@@ -72,7 +78,19 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
       this.setFocus(prevDigitIndex);
     }
   }
+  getUserPermisisons(email){
+    this.userServiece.getUserByEmail(email).subscribe(
+      (res)=>{
+        this.authService.userPermissions=this.userServiece.executePermissions(res.permissions);
+        this.authService.updateUserPermisisons(res.permissions);
+        this.router.navigateByUrl('messages')
 
+
+      },
+      (err)=>{}
+    )
+
+}
   checkVerificationCode() {
     const code = Object.keys(this.verificationForm.controls)
       .map(key => this.verificationForm.controls[key].value)
@@ -87,9 +105,13 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
       this.verificatioinService.confirmEmail(code,token).subscribe(
         (res)=>{
           this.isLoading=false
-
+          if(this.authService.userInfo.customerId!=""){
+            let email=this.authService.userInfo.email;
+            this.getUserPermisisons(email);
+          }
           this.invalid=false;
           console.log(res);
+
           this.router.navigateByUrl('messages')
         },
         (err)=>{

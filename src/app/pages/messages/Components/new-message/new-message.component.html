@@ -1,4 +1,4 @@
-<section class="stepper">
+<section class="stepper " >
   <mat-stepper [linear]="true" #stepper>
     <ng-template matStepperIcon="edit">
       <mat-icon>check</mat-icon>
@@ -6,9 +6,9 @@
 
     <mat-step>
       <ng-template matStepLabel>{{ 'SELECT_CONTACTS' | translate }}</ng-template>
-      <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-        <app-select-contacts (displayedContactsCount)="contactsCount($event)" style="height: 80%;"></app-select-contacts>
-        <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
+      <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 100%;">
+        <app-select-contacts (displayedContactsCount)="contactsCount($event)" ></app-select-contacts>
+        <div class="d-flex justify-content-end align-items-center" style="width: 98%; ">
           <button class="rest-style" matStepperNext [disabled]="count == 0">
             <us-button
               class="m-2"
@@ -28,9 +28,9 @@
 
     <mat-step>
       <ng-template matStepLabel>{{ 'WRITE_MESSAGE' | translate }}</ng-template>
-      <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-        <app-write-message (attachments)="filesUrls($event)" style="height: 80%;"></app-write-message>
-        <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
+      <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 100%;">
+        <app-write-message (emptyMessageAndFiles)="stepTwoValidation($event)" (attachments)="filesUrls($event)" ></app-write-message>
+        <div class="d-flex justify-content-end align-items-center" style="width: 98%; ">
           <button class="rest-style" matStepperPrevious>
             <us-button
               class="m-2"
@@ -43,14 +43,14 @@
             >
             </us-button>
           </button>
-          <button class="rest-style" matStepperNext>
+          <button class="rest-style" matStepperNext [disabled]="this.stepTwoValidate">
             <us-button
               class="m-2"
               label="{{ 'NEXT' | translate }}"
               [fill]="true"
               [size]="'md'"
               [loading]="false"
-              [disabled]="false"
+              [disabled]="this.stepTwoValidate"
               [appearance]="'primary'"
               (clicked)="toSendMessage()"
             >
@@ -62,9 +62,9 @@
 
     <mat-step>
       <ng-template matStepLabel>{{ 'SEND_MESSAGE' | translate }}</ng-template>
-      <div class="d-flex align-items-between flex-column justify-content-between h-100" style="min-height: 700px;">
-        <app-send-message style="height: 80%;"></app-send-message>
-        <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
+      <div class="d-flex align-items-between flex-column justify-content-between h-100" style="min-height: 100%;">
+        <app-send-message  (isSelectedDevices)="deviceSelected=$event" ></app-send-message>
+        <div class="d-flex justify-content-end align-items-center" style="width: 98%; ">
           <button class="rest-style" matStepperPrevious>
             <us-button
               class="m-2"
@@ -77,14 +77,14 @@
             >
             </us-button>
           </button>
-          <button class="rest-style" matStepperNext>
+          <button class="rest-style" matStepperNext [disabled]="isLoading || !deviceSelected">
             <us-button
               class="m-2"
               label="{{ 'SEND' | translate }}"
               [fill]="true"
               [size]="'md'"
               [loading]="isLoading"
-              [disabled]="isLoading"
+              [disabled]="isLoading || !deviceSelected"
               [appearance]="'primary'"
               (clicked)="toLastStep()"
             >

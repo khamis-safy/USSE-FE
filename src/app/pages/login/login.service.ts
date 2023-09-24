@@ -13,6 +13,7 @@ export class LoginService {
 
 // khamissafy056@gmail.com
 // Khamis.Safy@056
+userInfo!:any;
   constructor(private http:HttpClient) { }
   login(data):Observable<Login>{
 
@@ -25,7 +26,9 @@ export class LoginService {
   //         });
   //   return this.http.get<Login>(`${env.api}Auth/refreshToken`, { headers })
   // }
-
+updateUser(userinfo){
+  this.userInfo=userinfo
+}
   storeRefreshTokenInCookie(token: string) {
     const expirationDate = new Date();
     expirationDate.setHours(expirationDate.getHours() + 1); // Cookie will expire in 1 hour

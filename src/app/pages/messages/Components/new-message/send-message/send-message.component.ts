@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NbDateService } from '@nebular/theme';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
@@ -19,6 +19,7 @@ export class SendMessageComponent implements OnInit ,OnDestroy{
   deviceLoadingText:string='Loading ...';
   devicesData = new FormControl([]);
   dateFormControl:any = new FormControl('');
+  @Output() isSelectedDevices = new EventEmitter<boolean>(true);
 
   // selectedDevices:string[]=[];
   deviceId:string;
@@ -36,7 +37,9 @@ isUser: boolean;
    }
 
   ngOnInit() {
+
     // this.getDevices();
+    this.isSelectedDevices.emit(false);
     this.convertToUTC(this.dateFormControl)
     this.timeSub$ = this.dateFormControl.valueChanges.subscribe(res=>{
      this.convertToUTC(this.dateFormControl);
@@ -92,6 +95,8 @@ else{
   }
   onSelect(event){
     this.deviceId=event.value;
+    this.isSelectedDevices.emit(true);
+
   }
 
 }

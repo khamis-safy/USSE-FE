@@ -32,7 +32,7 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   timeSub$;
   isUser: boolean;
   @Output() formValidityChange = new EventEmitter<boolean>(true);
-  @Output() noSelectedDevices = new EventEmitter<boolean>(true);
+  @Output() isSelectedDevices = new EventEmitter<boolean>(true);
 
   constructor(private devicesService:DevicesService,private datePipe: DatePipe,private compaignsService:CompaignsService,private authService:AuthService) { }
   ngOnDestroy(): void {
@@ -43,7 +43,7 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
 
   ngOnInit() {
     this.getDevices()
-    this.noSelectedDevices.emit(false);
+    this.isSelectedDevices.emit(false);
 
     this.form.valueChanges.subscribe(() => {
       this.formValidityChange.emit(this.form.valid);
@@ -110,7 +110,7 @@ else{
   }
   onSelect(event){
     this.deviceId=event.value;
-    this.noSelectedDevices.emit(true);
+    this.isSelectedDevices.emit(true);
 
   }
 

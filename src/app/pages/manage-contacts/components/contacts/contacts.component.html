@@ -19,7 +19,7 @@
   </div>
 </ng-container>
 
-  <ng-container *ngIf="length>0 && !noData">
+  <ng-container *ngIf="length>0 && !noData || loading">
     <section class="table-wrapper ">
     <table matSort mat-table [dataSource]="dataSource" (matSortChange)="onSortChange($event)">
       <!-- Checkbox Column -->
@@ -129,7 +129,7 @@
   </section>
 </ng-container>
 
-<ng-container *ngIf="length==0 && !loading">
+<ng-container *ngIf="(length == 0 && !loading) || ( notFound || noData)">
 
   <div class="d-flex justify-content-center align-items-center flex-column gap-3  w-100" style="height: 500px;">
     <img src="assets/images/files.svg" alt="">

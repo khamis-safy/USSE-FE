@@ -22,11 +22,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 
 
-export class ListsComponent implements OnInit ,AfterViewInit  {
+export class ListsComponent implements OnInit ,AfterViewInit  ,OnDestroy{
 length:number=0;
 active:boolean=false;
 numRows;
-loading;
+loading:boolean=true;
 subscribtions:Subscription[]=[];
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef;
@@ -56,7 +56,7 @@ subscribtions:Subscription[]=[];
 
   ngOnInit() {
     // this.getListsCount();
-    // this.getListData();
+    this.getListData();
     // this.length=10
     if(!this.canEdit){
       this.displayedColumns = ['select', 'Name', 'Create At', 'Total Contacts'];
@@ -82,6 +82,7 @@ getListsCount(){
 
  let sub1= this.listService.ListsCount(email).subscribe(
     (res)=>{
+      this.loading=false;
       this.length=res;
       // this.length=0;
       if(this.length==0){
@@ -93,6 +94,8 @@ getListsCount(){
 
     }
     ,(err)=>{
+      this.loading=false;
+
       this.length=0;}
   );
   this.subscribtions.push(sub1)
@@ -266,7 +269,9 @@ getListData(){
 
 
   }
-  destroy() {
+  ngOnDestroy(){
+    this.selection.clear();
+
     this.subscribtions.map(e=>e.unsubscribe());
     this.dataSource.data=[];
   }

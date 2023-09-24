@@ -147,10 +147,7 @@
         <div class="w-100">
           <form [formGroup]="form">
             <ngx-intl-tel-input
-              [cssClass]="
-                (mobile?.touched && mobile.invalid ? 'error' : '') +
-                ' rounded-pill border border-1 py-2 txt-input w-100'
-              "
+              cssClass="rounded-pill border border-1 py-2 txt-input w-100"
               [enableAutoCountrySelect]="true"
               [preferredCountries]="[CountryISO.UnitedArabEmirates]"
               [enablePlaceholder]="true"

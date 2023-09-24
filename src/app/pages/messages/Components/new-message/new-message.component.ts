@@ -27,12 +27,15 @@ export class NewMessageComponent implements OnInit,AfterViewInit {
   isLoading = false;
 count:number=0;
 contacts:Contacts[]=[];
+deviceSelected:boolean=false;
+
   addedContacts: string[] = [];
   deviceId:string;
   message:string;
   dateTime:string;
   fileUrl:string;
-  attachments:string[]=[];
+  attachments:string[];
+  stepTwoValidate: boolean = true;
 
   constructor(private messageService:MessagesService,private toasterService:ToasterServices) { }
   ngAfterViewInit() {
@@ -41,6 +44,9 @@ contacts:Contacts[]=[];
     this.message=this.writeMessage.messageBody;
 
 
+  }
+  stepTwoValidation(validity: boolean) {
+    this.stepTwoValidate = validity;
   }
   contactsCount(e){
     this.count=e

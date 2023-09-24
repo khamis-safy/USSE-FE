@@ -18,7 +18,7 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
   tabsArr=[
     {
       title:'INBOX_LABEL',
-      tab:'inbox'
+      tab:'inbox',
     },
     {
       title:'SCHEDULED_LABEL',

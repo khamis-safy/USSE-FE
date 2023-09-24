@@ -23,7 +23,7 @@ import { CAMPAIGNSHEADER } from '../constants/contstants';
 export class CompaignsComponent implements AfterViewInit ,OnInit {
   isUser:boolean;
   length:number=0;
-  loading:boolean=false;
+  loading:boolean=true;
   cellClick:boolean=false;
   isCompagins:boolean=true;
   columns :FormControl;
@@ -191,9 +191,12 @@ compaignsCount(deviceId){
   let email=this.compaignsService.email;
   this.compaignsService.compaignsCount(email,deviceId).subscribe(
     (res)=>{
+      this.loading = false;
       this.length=res;
     }
     ,(err)=>{
+      this.loading = false;
+
       this.length=0;
 
     }

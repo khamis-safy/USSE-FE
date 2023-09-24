@@ -21,7 +21,11 @@ invalid:boolean=false;
 hintMessage:string;
 userInfo:any;
 
-  constructor(private plugin:PluginsService,private authService:AuthService,private loginService:LoginService,private router:Router, private userServiece:UsersService) {
+  constructor(private plugin:PluginsService,
+    private authService:AuthService,
+    private loginService:LoginService,
+    private router:Router,
+    private userServiece:UsersService) {
 
   }
   ngOnInit() {
@@ -71,22 +75,24 @@ this.authService.updateUserInfo()
         let email=this.authService.userInfo.email;
         this.getUserPermisisons(email);
       }
-      else{
+
+        setInterval(() => {
+          this.refreshToken();
+        }, 60 * 60 * 1000); // 1 hour in milliseconds
+
         this.router.navigateByUrl('messages')
-      }
+
 
 
     }
-       // Refresh the token every 1 hour
 
-   setInterval(() => {
-    this.refreshToken();
-  }, 60 * 60 * 1000); // 1 hour in milliseconds
-    console.log("invalid")
+  else{
+
     this.hintMessage="We can't logged you in "
     this.invalid=(!res.isActive && !res.isTrial)?true:false
+  }
 
-this.invalid=false;
+
 
 
 

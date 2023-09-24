@@ -1,5 +1,5 @@
 import { ToasterServices } from './../../../shared/components/us-toaster/us-toaster.component';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddListComponent } from '../components/lists/addList/addList.component';
 import { ListsComponent } from '../components/lists/lists.component';
@@ -10,6 +10,7 @@ import { ContactListsComponent } from '../components/contacts/contactLists/conta
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UploadSheetComponent } from '../components/importFiles/uploadSheet/uploadSheet.component';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-manage-contacts',
@@ -17,8 +18,35 @@ import { UploadSheetComponent } from '../components/importFiles/uploadSheet/uplo
   styleUrls: ['./manage-contacts.component.scss'],
 
 })
-export class ManageContactsComponent implements OnInit, AfterViewInit{
+export class ManageContactsComponent implements OnInit, AfterViewInit,OnDestroy{
   tabs=["contacts","lists","cancel"];
+  tabsArr=[
+    {
+      title:'CONTACTS',
+      tab:'contacts',
+      image:'assets/icons/contacts.svg',
+      canceled:false
+
+    },
+    {
+      title:'LISTS',
+      tab:'lists',
+      image:'assets/icons/lists.svg'
+
+    },
+    {
+      title:'CANCELED_CONTACTS',
+      tab:'cancel',
+      image:'assets/icons/unsubscribe.svg',
+      canceled:true
+
+
+    }
+  ]
+  selectedTab;
+  routingObservable;
+  selectedTabIndex=0
+
   tab = this.tabs[0];
   added:boolean=false;
   isDelete;
@@ -28,8 +56,29 @@ export class ManageContactsComponent implements OnInit, AfterViewInit{
   isCanceled:boolean;
   canEdit: boolean;
 
-  constructor(public dialog: MatDialog,private  toaster: ToasterServices,private listService:ManageContactsService,private authService:AuthService){
+  constructor(public dialog: MatDialog,
+    private  toaster: ToasterServices,
+    private router:Router,
+    private activatedRouter:ActivatedRoute,
+    private listService:ManageContactsService,
+    private authService:AuthService){
+      this.initRouting()
 
+
+  }
+  initRouting(){
+
+    this.routingObservable= this.activatedRouter.queryParams.subscribe(params=>{
+      if(params["tab"]){
+        this.selectedTab = params["tab"].replace(/[\s]/g)
+        this.selectedTabIndex= this.tabs.indexOf(this.selectedTab)
+
+      }
+      else{
+        this.selectedTab = "contacts"
+        this.updateQueryParams();
+      }
+    })
   }
   ngAfterViewInit(){
     this.isCanceled=false;
@@ -225,66 +274,51 @@ else{
   }
 
 
-
+  updateQueryParams(){
+    this.router.navigateByUrl("/contacts?tab="+this.selectedTab)
+  }
   changeModal(ev){
+    this.selectedTab = this.tabs[ev.index];
+    this.updateQueryParams();
     this.listService.display=10;
     this.listService.pageNum=0;
     this.listService.orderedBy='';
     this.listService.search='';
-    this.contacts.selection.clear();
-    this.lists.selection.clear();
-    if(this.contacts.search){
 
-      this.contacts.search.nativeElement.value ="";
-    }
-    if(this.lists.search){
+  //   if(this.selectedTab=='contacts'){
+  //     if(this.contacts.length){
+  //           this.contacts.paginator.pageSize=this.listService.display;
+  //           this.contacts.paginator.pageIndex=this.listService.pageNum;
+  //     }
 
-      this.lists.search.nativeElement.value="";
-    }
+  //     if(this.lists.length){
+  //       this.lists.paginator.pageSize=this.listService.display;
+  //       this.lists.paginator.pageIndex=this.listService.pageNum;
+  //     }
 
-    this.tab=this.tabs[ev.index]
-    if(this.tab=='contacts'){
-      this.isCanceled=false
-      this.contacts.isCanceled=this.isCanceled;
-      this.contacts.getContacts();
-      if(this.contacts.length){
-            this.contacts.paginator.pageSize=this.listService.display;
-            this.contacts.paginator.pageIndex=this.listService.pageNum;
-      }
+  //   }
+  //   else if(this.selectedTab=='lists'){
 
-      if(this.lists.length){
-        this.lists.paginator.pageSize=this.listService.display;
-        this.lists.paginator.pageIndex=this.listService.pageNum;
-      }
+  //     if(this.contacts.length){
+  //       this.contacts.paginator.pageSize=this.listService.display;
+  //       this.contacts.paginator.pageIndex=this.listService.pageNum;
+  // }
+  //   }
+  //   else if(this.selectedTab=='cancel'){
 
-    }
-    else if(this.tab=='lists'){
-      this.lists.getListData();
-      this.lists.selection.clear();
 
-      if(this.contacts.length){
-        this.contacts.paginator.pageSize=this.listService.display;
-        this.contacts.paginator.pageIndex=this.listService.pageNum;
-  }
-    }
-    else if(this.tab=='cancel'){
+  //     if(this.contacts.length){
+  //       this.contacts.paginator.pageSize=this.listService.display;
+  //       this.contacts.paginator.pageIndex=this.listService.pageNum;
+  // }
 
-      this.isCanceled=true
-      this.contacts.isCanceled=this.isCanceled;
+  // if(this.lists.length){
+  //   this.lists.paginator.pageSize=this.listService.display;
+  //   this.lists.paginator.pageIndex=this.listService.pageNum;
+  // }
 
-      if(this.contacts.length){
-        console.log(this.contacts.length)
-        this.contacts.paginator.pageSize=this.listService.display;
-        this.contacts.paginator.pageIndex=this.listService.pageNum;
-  }
-
-  if(this.lists.length){
-    this.lists.paginator.pageSize=this.listService.display;
-    this.lists.paginator.pageIndex=this.listService.pageNum;
-  }
-
-      this.contacts.getContacts();
-     }
+  //     this.contacts.getContacts();
+  //    }
   }
   exportAllContacts(){
     this.listService.exportAllContacts().subscribe(
@@ -315,5 +349,8 @@ else{
       (err)=>{
       }
     )
+  }
+  ngOnDestroy(): void {
+    this.routingObservable.unsubscribe()
   }
 }

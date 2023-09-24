@@ -62,13 +62,11 @@ export class SettingComponent implements OnInit{
     let phoneNumber = localStorage.getItem('phoneNumber');
     let timeZone=localStorage.getItem("timeZone")
     this.selectedZone=timeZone !== "null" && timeZone !== "undefined"? timeZone:null;
-    if(this.selectedZone){
-      this.form.patchValue({
-        timeZone:
-        {title:this.translate.instant(this.timeZones.find((time)=>time.value==this.selectedZone).title),
-          value:this.timeZones.find((time)=>time.value==this.selectedZone).index}
-      })
-    }
+    this.form.patchValue({
+      timeZone:
+      {title:this.translate.instant(this.timeZones.find((time)=>time.value==this.selectedZone).title),
+        value:this.timeZones.find((time)=>time.value==this.selectedZone).index}
+    })
     let mobileNum = phoneNumber !== "null" && phoneNumber !== "undefined" ? phoneNumber.slice(1) : "";
     this.form.patchValue(
       {

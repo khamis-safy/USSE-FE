@@ -19,6 +19,7 @@ export class MessagesService {
     orderedBy:string="";
     search:string="";
     msgCategory:string="inbox";
+    selectedDeviceId:string="";
 constructor(private http:HttpClient,private authService:AuthService) {
   if(authService.userInfo.customerId!=""){
   //   console.log("permissions from messages",authService.usersPermissions)

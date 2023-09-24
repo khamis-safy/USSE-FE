@@ -25,7 +25,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class ContactsComponent  implements OnInit ,OnDestroy {
   length:number;
   numRows;
-  loading;
+  loading:boolean=true;
 
   @Input() isCanceled:boolean;
   @Output() isDelete = new EventEmitter<Contacts[]>;
@@ -116,7 +116,6 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
 
 
   getContacts(){
-    this.contactsCount();
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
   let email=this.listService.email;
@@ -171,6 +170,8 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
     let sub2=this.listService.contactsCount(email,this.isCanceled).subscribe(
 
       (res)=>{
+        this.loading=false;
+
         this.length=res;
         if(this.length==0){
           this.noData=true
@@ -180,6 +181,8 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
         }
       }
       ,(err)=>{
+        this.loading=false;
+
         this.length=0;
       }
     )
@@ -306,6 +309,8 @@ else{
 }
 }
 ngOnDestroy(){
+  this.selection.clear();
+
   this.subscribtions.map(e=>e.unsubscribe());
 }
 

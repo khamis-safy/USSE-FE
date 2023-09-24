@@ -33,11 +33,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.authService.userInfo.customerId!=""){
-      let email=this.authService.userInfo.email;
-      this.getUserPermisisons(email);
+    if(localStorage.getItem("customerId")){
+
+      if(this.authService.userInfo.customerId!=""){
+        let email=this.authService.userInfo.email;
+        this.getUserPermisisons(email);
+      }
+      this.initMode();
     }
-    this.initMode();
 
   }
   getUserPermisisons(email){

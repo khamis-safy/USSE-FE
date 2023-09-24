@@ -35,7 +35,7 @@
 
 
       <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-        <app-write-message (formValidityChange)="stepTwoValidation($event)" (attachments)="filesUrls($event)" style="height: 80%;"></app-write-message>
+        <app-write-message (emptyMessageAndFiles)="stepTwoValidation($event)" (attachments)="filesUrls($event)" style="height: 80%;"></app-write-message>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
           <button class="rest-style" matStepperPrevious>
             <us-button
@@ -50,14 +50,14 @@
             </us-button>
           </button>
 
-          <button class="rest-style" matStepperNext [disabled]="!stepTwoValidate">
+          <button class="rest-style" matStepperNext [disabled]="stepTwoValidate">
             <us-button
               class="m-2"
               label="{{ 'nextLabel' | translate }}"
               [fill]="true"
               [size]="'md'"
               [loading]="false"
-              [disabled]="!stepTwoValidate"
+              [disabled]="stepTwoValidate"
               [appearance]="'primary'"
               (clicked)="toThirdStep()"
             >
@@ -72,7 +72,7 @@
       <ng-template matStepLabel>{{ 'informationLabel' | translate }}</ng-template>
       <ng-container *ngIf="step3">
       <div class="d-flex align-items-between flex-column justify-content-between" style="min-height: 700px;">
-        <app-stepThree (formValidityChange)="stepThreeValidation($event)" (noSelectedDevices)="deviceSelected=$event"></app-stepThree>
+        <app-stepThree (formValidityChange)="stepThreeValidation($event)" (isSelectedDevices)="deviceSelected=$event"></app-stepThree>
         <div class="d-flex justify-content-end align-items-center" style="width: 98%; height: 20%;">
           <button class="rest-style" matStepperPrevious>
             <us-button
@@ -124,7 +124,7 @@
             </us-button>
           </button>
 
-          <button class="rest-style" matStepperNext>
+          <button class="rest-style" matStepperNext [disabled]="isLoading || !stepFourValidate">
             <us-button
               class="m-2"
               label="{{ 'addLabel' | translate }}"

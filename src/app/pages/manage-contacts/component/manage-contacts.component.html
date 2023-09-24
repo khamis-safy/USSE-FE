@@ -89,7 +89,25 @@
 
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" (selectedTabChange)="changeModal($event)">
 
-    <mat-tab>
+    <mat-tab *ngFor="let item of tabsArr" [label]="tab">
+
+      <ng-template mat-tab-label class="txt-md">
+        <img [src]="item.image" alt="" class="px-2">
+        {{ item.title | translate }}
+      </ng-template>
+
+      <ng-container *ngIf="item.tab!='lists' else lists">
+
+        <app-contacts *ngIf="selectedTab == item.tab" [canEdit]="canEdit" [isCanceled]="item.canceled" (isChecked)="onChecked($event)"></app-contacts>
+      </ng-container>
+
+      <ng-template #lists>
+        <app-lists *ngIf="selectedTab == item.tab" [canEdit]="canEdit" (isDelete)="onDeleteChange($event)"></app-lists>
+      </ng-template>
+
+    </mat-tab>
+
+    <!-- <mat-tab>
       <ng-template mat-tab-label class="txt-md">
         <img src="assets/icons/contacts.svg" alt="" class="px-2">
         {{ 'CONTACTS' | translate }}
@@ -111,6 +129,6 @@
         {{ 'CANCELED_CONTACTS' | translate }}
       </ng-template>
       <app-contacts [canEdit]="canEdit" [isCanceled]="true" (isChecked)="onChecked($event)"></app-contacts>
-    </mat-tab>
+    </mat-tab> -->
   </mat-tab-group>
 </section>

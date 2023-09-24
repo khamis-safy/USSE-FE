@@ -22,10 +22,12 @@ export class WriteMessageComponent implements OnInit {
   templateLoadingText:string='Loading ...';
   // @Output() messageBody = new EventEmitter<string>;
   @Output() attachments = new EventEmitter<string[]>;
+  @Output() emptyMessageAndFiles=new EventEmitter<boolean>;
   messageBody:string="";
   loading:boolean=false;
   templatesData = new FormControl([]);
   message = new FormControl('',[Validators.required]);
+  files:boolean=false;
   @Output() formValidityChange = new EventEmitter<boolean>(true);
 
   form = new FormGroup({
@@ -38,7 +40,8 @@ export class WriteMessageComponent implements OnInit {
     this.formValidityChange.emit(this.form.valid);
 
     this.form.valueChanges.subscribe(() => {
-      this.formValidityChange.emit(this.form.valid);
+      this.emptyMessageAndFiles.emit(!this.form.valid && !this.files)
+
     });
     this.getTemplates();
   }
@@ -114,5 +117,13 @@ export class WriteMessageComponent implements OnInit {
 
   onFileChange(e){
     console.log(this.fileData);
+    this.files=true;
+    this.emptyMessageAndFiles.emit(!this.form.valid && !this.files)
+
+  }
+  onFileDelete(e){
+    this.files=this.fileData.length==0? false : true;
+    this.emptyMessageAndFiles.emit(!this.form.valid && !this.files)
+
   }
 }

@@ -71,5 +71,7 @@ this.permissions={
   }
 
 
-
+  clearLocatStorage(){
+    localStorage.clear()
+  }
 }

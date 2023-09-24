@@ -76,7 +76,7 @@
         </div>
       </ng-container>
 
-      <ng-container *ngIf="length > 0 && !noData">
+      <ng-container *ngIf="length > 0 && !noData || loading">
         <section class="table-wrapper">
           <table mat-table [dataSource]="dataSource" class="table-wrapper">
             <!-- name Column -->
@@ -154,7 +154,7 @@
       </section>
 
 
-    <ng-container *ngIf="length == 0 && (!loading || notFound || noData)">
+    <ng-container *ngIf="(length == 0 && !loading) || ( notFound || noData)">
       <div class="d-flex justify-content-center align-items-center flex-column gap-3 w-100" style="height: 700px;">
         <img src="assets/images/files.svg" alt="{{ 'noDataImageAlt' | translate }}" />
         <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'noDataMessage' | translate }}</span>

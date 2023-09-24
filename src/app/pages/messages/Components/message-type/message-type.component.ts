@@ -169,14 +169,29 @@ console.log("permissions",this.permission)
 
       this.getDevicePermission(this.deviceId);
         console.log("can edit",this.canEdit)
-        this.getMessages(this.deviceId);
+
+        if(this.messageService.selectedDeviceId ==""){
+
+          this.form.patchValue({
+          devicesData: {
+          title:alldevices[0]?.deviceName,
+          value:alldevices[0]?.id
+          }
+
+          })
+        }
+        else{
+          let selected= this.devices.find((device)=>device.value==this.messageService.selectedDeviceId)
+          this.deviceId=this.messageService.selectedDeviceId;
           this.form.patchValue({
             devicesData: {
-              title:alldevices[0]?.deviceName,
-              value:alldevices[0]?.id
+            title:selected.title,
+            value:selected?.value
             }
 
-   })
+            })
+        }
+        this.getMessages(this.deviceId);
    console.log("message category",this.msgCategory,"device id",this.deviceId)
 
     }},
@@ -243,6 +258,7 @@ console.log("permissions",this.permission)
     }
     onSelect(device){
       this.deviceId=device.value;
+      this.messageService.selectedDeviceId=device.value;
       this.getMessages(this.deviceId);
       this.getDevicePermission(this.deviceId);
           }
