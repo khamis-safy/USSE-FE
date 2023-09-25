@@ -101,7 +101,7 @@ else{
     }
   }
   backTolists(){
-this.router.navigateByUrl('contacts')
+this.router.navigateByUrl('contacts?tab=lists')
   }
 
   onChecked(e){

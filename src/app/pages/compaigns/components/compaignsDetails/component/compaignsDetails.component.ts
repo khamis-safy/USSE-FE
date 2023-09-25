@@ -18,7 +18,8 @@ export class CompaignsDetailsComponent implements OnInit ,AfterViewInit{
   compaign:compaignDetails;
   @ViewChild(ReportSummaryComponent) reportSummaryComponent:ReportSummaryComponent;
   @ViewChild(RecipientActivitiesComponent) recipientActivitiesComponent:RecipientActivitiesComponent;
-
+  selectedTab="summary";
+  tabs=["summary","activity"]
   constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     private compaignsService:CompaignsService,
     private compaignDetailsService:CompaignsDetailsService,
@@ -41,11 +42,11 @@ export class CompaignsDetailsComponent implements OnInit ,AfterViewInit{
     this.getCompaignData();
 
     }
-    resetTableData(){
+    resetTableData(ev){
       this.compaignDetailsService.display=10;
       this.compaignDetailsService.pageNum=0;
-      this.recipientActivitiesComponent.paginator.pageSize=this.compaignDetailsService.display;
-      this.recipientActivitiesComponent.paginator.pageIndex=this.compaignDetailsService.pageNum;
+      this.selectedTab = this.tabs[ev.index]
+
     }
     getCompaignData(){
       this.compaignsService.getCampaignById(this.compaignId).subscribe(

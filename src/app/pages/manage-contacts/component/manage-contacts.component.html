@@ -30,7 +30,7 @@
         [loading]="false"
         [disabled]="false"
         [appearance]="'danger'"
-        (clicked)="tab=='contacts'?openDeleteConModal():tab=='lists'?openDeleteModal():''"
+        (clicked)="selectedTab=='contacts'?openDeleteConModal():selectedTab=='lists'?openDeleteModal():''"
       ></us-button>
 
       <us-button
@@ -47,20 +47,20 @@
       ></us-button>
 
       <us-button
-        *ngIf="(tab=='contacts' || tab=='lists') && canEdit"
+        *ngIf="(selectedTab=='contacts' || selectedTab=='lists') && canEdit"
         class="m-2"
-        [label]="tab=='contacts'?('ADD_CONTACT'| translate) :('ADD_LIST' | translate)"
+        [label]="selectedTab=='contacts'?('ADD_CONTACT'| translate) :('ADD_LIST' | translate)"
         [matIcon]="'add'"
         [fill]="true"
         [size]="'md'"
         [loading]="false"
         [disabled]="false"
         [appearance]="'primary'"
-        (clicked)="tab=='contacts'?openAddContactModal():tab=='lists'?openAddListModal():openunsubscribeModal()"
+        (clicked)="selectedTab=='contacts'?openAddContactModal():selectedTab=='lists'?openAddListModal():openunsubscribeModal()"
       ></us-button>
 
       <us-button
-        *ngIf="tab=='contacts'"
+        *ngIf="selectedTab=='contacts'"
         class="m-2"
         [label]="'IMPORT_FILE' | translate"
         img="assets/icons/import.svg"
@@ -73,7 +73,7 @@
       ></us-button>
 
       <us-button
-        *ngIf="tab=='contacts'"
+        *ngIf="selectedTab=='contacts'"
         class="m-2"
         [label]="isChecked?('EXPORT_SELECTED' | translate):'EXPORT_ALL' | translate"
         img="assets/icons/export.svg"
@@ -87,7 +87,7 @@
     </div>
   </div>
 
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" (selectedTabChange)="changeModal($event)">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent"  [(selectedIndex)]="selectedTabIndex"   (selectedTabChange)="changeModal($event)">
 
     <mat-tab *ngFor="let item of tabsArr" [label]="tab">
 

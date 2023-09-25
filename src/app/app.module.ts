@@ -14,6 +14,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ErrorInterceptorService } from './interceptors/error-interceptor.service';
 import { ToasterServices } from './shared/components/us-toaster/us-toaster.component';
 import { TRANSLATE_SERVICE } from './shared/shared.module';
+import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 
 
 @NgModule({
@@ -47,6 +48,11 @@ import { TRANSLATE_SERVICE } from './shared/shared.module';
      {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptorService,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
       multi: true,
     },
     {
