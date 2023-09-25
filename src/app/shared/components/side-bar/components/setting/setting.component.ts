@@ -44,6 +44,7 @@ export class SettingComponent implements OnInit{
   maskTypeArr:SelectOption[] ;
   loading;
   userInfo: any;
+  isUser:boolean;
     constructor(public dialogRef: MatDialogRef<SettingComponent>,private translate:TranslateService,private authService:AuthService,private toaster:ToasterServices) {
      this.maskTypeArr=[
       {title:translate.instant('Sender'),value:'S'},
@@ -59,14 +60,17 @@ export class SettingComponent implements OnInit{
 
      }
   ngOnInit(): void {
+    if(localStorage.getItem("customerId")==""){
+      this.isUser=false;
+
+    }
+    else{
+      this.isUser=true;
+
+    }
+
     let phoneNumber = localStorage.getItem('phoneNumber');
-    let timeZone=localStorage.getItem("timeZone")
-    this.selectedZone=timeZone !== "null" && timeZone !== "undefined"? timeZone:null;
-    this.form.patchValue({
-      timeZone:
-      {title:this.translate.instant(this.timeZones.find((time)=>time.value==this.selectedZone).title),
-        value:this.timeZones.find((time)=>time.value==this.selectedZone).index}
-    })
+
     let mobileNum = phoneNumber !== "null" && phoneNumber !== "undefined" ? phoneNumber.slice(1) : "";
     this.form.patchValue(
       {
@@ -78,6 +82,13 @@ export class SettingComponent implements OnInit{
 
       }
     )
+    let timeZone=localStorage.getItem("timeZone")
+    this.selectedZone=timeZone !== "null" && timeZone !== "undefined"? timeZone:null;
+    this.form.patchValue({
+      timeZone:
+      {title:this.translate.instant(this.timeZones.find((time)=>time.value==this.selectedZone).title),
+        value:this.timeZones.find((time)=>time.value==this.selectedZone).index}
+    })
   }
   generateGuid() {
     this.form.patchValue(
@@ -147,7 +158,6 @@ console.log("selected zone",this.selectedZone)
         phoneNumber: mobile
       }
 
-      console.log('edit work',data);
       this.authService.editProfile(data).subscribe(
         (res)=>{
           this.loading=false;
@@ -178,5 +188,13 @@ console.log("selected zone",this.selectedZone)
 
     onClose(data?): void {
         this.dialogRef.close(data);
+    }
+    isValid(){
+      if(this.isUser){
+return !this.contactName.valid
+      }
+      else{
+return this.form.invalid
+      }
     }
 }

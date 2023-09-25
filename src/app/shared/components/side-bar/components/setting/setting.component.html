@@ -22,7 +22,7 @@
     <form [formGroup]="form" class="w-100 m-auto">
       <div class="d-flex gap-4 flex-column py-3">
         <!-- Token -->
-      <div class="d-flex align-items-center">
+      <div *ngIf="!isUser" class="d-flex align-items-center">
         <div style="width:80%">
           <us-input
           formControlName="apiToken"
@@ -101,7 +101,7 @@
         </div>
         <!-- phone number -->
 
-        <div
+        <div *ngIf="!isUser"
           class="form-group d-flex gap-lg-5 flex-column flex-lg-row flex-nowrap" style="width:80%"
         >
           <div
@@ -160,7 +160,7 @@
         </div>
 
         <!-- Organization Name -->
-        <div style="width:80%">
+        <div *ngIf="!isUser" style="width:80%">
         <us-input
           [placeholder]="'Organization Name' | translate"
           formControlName="organisationName"
@@ -173,7 +173,7 @@
         ></us-input>
         </div>
         <!-- Mask Type -->
-        <div style="width:80%">
+        <div *ngIf="!isUser" style="width:80%">
         <us-select
           [data]="maskTypeArr"
           formControlName="maskType"
@@ -209,7 +209,7 @@
       label="{{ 'SAVE' | translate }}"
       size="sm"
       [fill]="true"
-      [disabled]="form.invalid || loading"
+      [disabled]="isValid() || loading"
     ></us-button>
   </div>
 </section>
