@@ -54,7 +54,7 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
       time1: this.time1,
       time2: this.time2,
     },
-    { validators: [this.timeValidator,this.intervalInvalid] }
+    { validators: [this.intervalInvalid] }
   );
 }
   ngAfterViewInit() {
@@ -65,28 +65,28 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
 
   }
 
-  timeValidator(formGroup: FormGroup) {
-    const time1Value: Date = formGroup.get('time1')!.value;
-    const time2Value: Date = formGroup.get('time2')!.value;
+  // timeValidator(formGroup: FormGroup) {
+  //   const time1Value: Date = formGroup.get('time1')!.value;
+  //   const time2Value: Date = formGroup.get('time2')!.value;
 
-    if (time1Value && time2Value) {
-      const hours1 = time1Value.getHours();
-      const minutes1 = time1Value.getMinutes();
+  //   if (time1Value && time2Value) {
+  //     const hours1 = time1Value.getHours();
+  //     const minutes1 = time1Value.getMinutes();
 
-      const hours2 = time2Value.getHours();
-      const minutes2 = time2Value.getMinutes();
+  //     const hours2 = time2Value.getHours();
+  //     const minutes2 = time2Value.getMinutes();
 
 
-      if ((hours1 <= hours2 || (hours1 === hours2 && minutes1 <= minutes2))) {
-        return null; // Valid
-      } else {
-        return { timeOrderInvalid: true }; // Invalid
-      }
+  //     if ((hours1 <= hours2 || (hours1 === hours2 && minutes1 <= minutes2))) {
+  //       return null; // Valid
+  //     } else {
+  //       return { timeOrderInvalid: true }; // Invalid
+  //     }
 
-    }
+  //   }
 
-    return null; // No comparison if values are not set
-  }
+  //   return null; // No comparison if values are not set
+  // }
   intervalInvalid(formGroup: FormGroup){
     const intervalFrom = formGroup.get('intFrom')!.value;
     const intervalTo = formGroup.get('intTo')!.value;
@@ -120,7 +120,7 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
 
 
     });
-    this.time2Sub$ =  this.time1.valueChanges.subscribe(res=>{
+    this.time2Sub$ =  this.time2.valueChanges.subscribe(res=>{
       this.utcTime2=this.convertToUTC(this.time2)
 
 

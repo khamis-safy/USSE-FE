@@ -135,8 +135,6 @@ data={
 }
 
 
-
-
 this.compaignsService.addMewCampain(data).subscribe(
   (res)=>{
     this.toasterService.success("Success");

@@ -552,9 +552,12 @@ addHocNumber(){
     this.toaster.warning("This number alraedy exists")
 
 }
-else{
 
-  this.addHocs.push(this.form.value.mobile.e164Number.substring(1));
+else{
+  if(!this.addHocs.find((hoc)=>this.form.value.mobile.e164Number.substring(1)==hoc)){
+
+    this.addHocs.push(this.form.value.mobile.e164Number.substring(1));
+  }
   this.form.patchValue({
     mobile:''
   })}
@@ -708,6 +711,12 @@ this.displayedContactsCount.emit(allSelected.length);
 
 
 }
+removeNum(num:string){
+  this.addHocs.splice(this.addHocs.indexOf(num),1);
+  // this.hocsNum.emit(this.addHocs)
+  this.emitContacts();
+
+}
 // removeContact(contact:Contacts){
 //   this.addedContacts.splice(this.addedContacts.indexOf(contact),1);
 //   let found =this.selectedList.contacts.find((con)=>con.id==contact.id);
@@ -732,12 +741,7 @@ this.displayedContactsCount.emit(allSelected.length);
 // }
 
 
-// removeNum(num:string){
-//   this.addHocs.splice(this.addHocs.indexOf(num),1);
-//   // this.hocsNum.emit(this.addHocs)
-//   this.emitContacts();
 
-// }
 
 
 
