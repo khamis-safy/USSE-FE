@@ -20,7 +20,10 @@ export class TemplatesService {
 
 constructor(private http:HttpClient,private authService:AuthService) {
   if(authService.userInfo.customerId!=""){
-    this.TemplatesPermission=authService.usersPermissions.find((e)=>e.name=="Templates");
+    authService.getUserDataObservable().subscribe(permissions => {
+      this.TemplatesPermission=permissions.find((e)=>e.name=="Templates");
+      console.log("devices Templates",this.TemplatesPermission)
+    })
    }
    else{
      this.TemplatesPermission={name:"Templates",value:"FullAccess"}

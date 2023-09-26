@@ -71,10 +71,7 @@ this.authService.updateUserInfo()
     }
     if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
       console.log("navigate to messages")
-      if(this.authService.userInfo.customerId!=""){
-        let email=this.authService.userInfo.email;
-        this.getUserPermisisons(email);
-      }
+
 
         setInterval(() => {
           this.refreshToken();
@@ -84,6 +81,9 @@ this.authService.updateUserInfo()
 
 
 
+    }
+    else if(!res.isActive && !res.isTrial){
+      this.hintMessage="Your account is not active , please contact the support to activate it"
     }
 
   else{
@@ -108,19 +108,19 @@ this.authService.updateUserInfo()
 
   }
 
-  getUserPermisisons(email){
-    this.userServiece.getUserByEmail(email).subscribe(
-      (res)=>{
-        this.authService.userPermissions=this.userServiece.executePermissions(res.permissions);
-        this.authService.updateUserPermisisons(res.permissions);
-        this.router.navigateByUrl('messages')
+//   getUserPermisisons(email){
+//     this.userServiece.getUserByEmail(email).subscribe(
+//       (res)=>{
+//         this.authService.userPermissions=this.userServiece.executePermissions(res.permissions);
+//         this.authService.updateUserPermisisons(res.permissions);
+//         this.router.navigateByUrl('messages')
 
 
-      },
-      (err)=>{}
-    )
+//       },
+//       (err)=>{}
+//     )
 
-}
+// }
   refreshToken() {
     let token=this.loginService.getCookieValue('refreshToken')
     this.loginService.refreshToken(token).subscribe(

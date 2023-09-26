@@ -7,6 +7,7 @@ import { CheckCon, DeviceData, Init } from './device';
 import { ErrSucc } from '../manage-contacts/list-data';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PermissionData } from '../users/users';
+import { PermissionsService } from 'src/app/shared/services/permissions.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,14 @@ export class DevicesService {
   search:string="";
   DevicesPermission:PermissionData;
 
-constructor(private http:HttpClient,private authService:AuthService) {
+constructor(private http:HttpClient,
+  private authService:AuthService,
+  private permissionService:PermissionsService) {
   if(authService.userInfo.customerId!=""){
-    this.DevicesPermission=authService.usersPermissions.find((e)=>e.name=="Devices");
+    authService.getUserDataObservable().subscribe(permissions => {
+      this.DevicesPermission=permissions.find((e)=>e.name=="Devices");
+      console.log("devices Permissions",this.DevicesPermission)
+    })
    }
    else{
      this.DevicesPermission={name:"Devices",value:"FullAccess"}

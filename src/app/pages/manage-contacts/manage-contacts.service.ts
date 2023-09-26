@@ -21,7 +21,10 @@ export class ManageContactsService {
     contactsPermissions:PermissionData;
   constructor(private http:HttpClient,private authService:AuthService) {
     if(authService.userInfo.customerId!=""){
-      this.contactsPermissions=authService?.usersPermissions?.find((e)=>e.name=="Contacts");
+      authService.getUserDataObservable().subscribe(permissions => {
+        this.contactsPermissions=permissions.find((e)=>e.name=="Contacts");
+        console.log("Contacts Permissions",this.contactsPermissions)
+      })
      }
      else{
        this.contactsPermissions={name:"Contacts",value:"FullAccess"}

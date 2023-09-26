@@ -5,6 +5,7 @@ import { AuthService } from './shared/services/auth.service';
 import { UsersService } from './pages/users/users.service';
 import { TranslationService } from './shared/services/translation.service';
 import { InitPaginationService } from './shared/services/initPagination.service';
+import { PermissionsService } from './shared/services/permissions.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit {
     public translate:TranslateService,
     private languageService:TranslationService,
     private initPaginationService:InitPaginationService,
+    private permissionService:PermissionsService,
     private authService:AuthService, private userServiece:UsersService){
     this.currentLang = localStorage.getItem('currentLang') || 'en';
     this.translate.use(this.currentLang);
@@ -33,17 +35,17 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(localStorage.getItem("customerId")){
+    // if(localStorage.getItem("customerId")){
 
-      if(this.authService.userInfo.customerId!=""){
-        let email=this.authService.userInfo.email;
-        this.getUserPermisisons(email);
-      }
-      this.initMode();
-    }
+    //   if(this.authService.userInfo.customerId!=""){
+    //     this.authService.setUserDataObservable(this.permissionService.getUserByEmail());
+    //   }
+    // }
+    this.initMode();
 
   }
   getUserPermisisons(email){
+
     this.userServiece.getUserByEmail(email).subscribe(
       (res)=>{
         let userPermissions=this.userServiece.executePermissions(res.permissions);

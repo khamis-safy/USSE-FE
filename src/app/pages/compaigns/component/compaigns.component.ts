@@ -44,7 +44,7 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
   });
   deviceId:string;
   permission:DevicesPermissions[];
-  constructor(private devicesService:DevicesService,private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router,private authService:AuthService){}
+  constructor(private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router,private authService:AuthService){}
 
 
   ngOnInit() {
@@ -93,7 +93,7 @@ this.getDevices();
 
  // get devices data
  getDevices(){
-  this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+  this.authService.getDevices(this.compaignsService.email,10,0,"","").subscribe(
     (res)=>{
       let alldevices=res;
 

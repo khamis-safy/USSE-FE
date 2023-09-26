@@ -46,7 +46,9 @@ export class ScheduledComponent implements OnInit  {
   noData: boolean;
   isUser: boolean;
   permission:DevicesPermissions[];
-  constructor(private messageService:MessagesService,public dialog: MatDialog,private devicesService:DevicesService,private authService:AuthService){}
+  constructor(private messageService:MessagesService,
+    public dialog: MatDialog,
+    private authService:AuthService){}
   ngOnInit() {
 
     this.columns=new FormControl(this.displayedColumns)
@@ -78,7 +80,7 @@ export class ScheduledComponent implements OnInit  {
     }
  // get devices data
  getDevices(){
-  this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+  this.authService.getDevices(this.messageService.email,10,0,"","").subscribe(
     (res)=>{
       let alldevices=res;
       if(this.permission){

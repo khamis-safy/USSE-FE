@@ -50,7 +50,10 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   notFound: boolean;
   isUser: boolean;
   permission:DevicesPermissions[];
-  constructor(public cdr: ChangeDetectorRef ,public dialog: MatDialog,private devicesService:DevicesService,private messageService:MessagesService,private authService:AuthService){}
+  constructor(public cdr: ChangeDetectorRef ,
+    public dialog: MatDialog,
+    private messageService:MessagesService,
+    private authService:AuthService){}
   ngOnInit() {
 
     this.columns=new FormControl(this.displayedColumns)
@@ -132,7 +135,7 @@ else{
  // get devices data
  getDevices(megtype:string){
   this.msgCategory=megtype;
-  this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+  this.authService.getDevices(this.messageService.email,10,0,"","").subscribe(
     (res)=>{
       let alldevices=res;
       console.log("devices",alldevices)

@@ -6,6 +6,7 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UsersService } from 'src/app/pages/users/users.service';
 import { Permission } from 'src/app/pages/users/users';
+import { PermissionsService } from 'src/app/shared/services/permissions.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -21,11 +22,16 @@ export class SideBarComponent implements OnInit {
   displaySetting:boolean=false;
   permissions:Permission;
   isUser:boolean;
-  constructor(public plugin:PluginsService,private render:Renderer2, private userServiece:UsersService,public dialog: MatDialog ,private authService:AuthService) {}
+  constructor(public plugin:PluginsService,
+     public dialog: MatDialog ,
+     private authService:AuthService,
+     private permissionService:PermissionsService) {}
   ngOnInit(): void {
     if(this.authService.userInfo.customerId!=""){
       this.isUser=true;
-      this.permissions=this.authService.userPermissions
+      this.authService.getUserDataObservable().subscribe(permissions => {
+        this.permissions=this.permissionService.executePermissions(permissions);
+      })
       // let email=this.authService.userInfo.email;
       // this.getUserPermisisons(email);
     }
@@ -57,8 +63,8 @@ this.permissions={
 
     //this.displaySetting=true;
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.height = '83vh';
-    dialogConfig.width = '55vw';
+    dialogConfig.height = this.isUser ? '83vh' : '50vw';
+    dialogConfig.width =  '55vw';
     dialogConfig.maxWidth = '100%';
     dialogConfig.minWidth = '300px';
     dialogConfig.maxHeight = '87vh';

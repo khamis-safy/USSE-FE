@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Login } from 'src/app/pages/login/component/login';
 import { LoginService } from 'src/app/pages/login/login.service';
-import { Permission, PermissionData, UserData } from 'src/app/pages/users/users';
+import { Permission, PermissionData, UserData, Users } from 'src/app/pages/users/users';
 import { HttpClient } from '@angular/common/http';
 
 import { environment as env } from '@env/environment.development';
+import { PermissionsService } from './permissions.service';
 interface DeviceData {
   id: string,
   deviceName: string,
@@ -33,7 +34,7 @@ userInfo!:UserData;
 unAuthorized:boolean=false;
 empty:number=0;
 userPermissions:Permission
-usersPermissions:PermissionData[]
+allPermissions:PermissionData[]
 permissionsSubject = new BehaviorSubject<PermissionData[]>([]);
 permissionSubject = new BehaviorSubject<Permission>({
   Templates:true,
@@ -41,19 +42,48 @@ permissionSubject = new BehaviorSubject<Permission>({
   Devices:true,
   Contacts:true
     });
-
-constructor(private loginService:LoginService,private http:HttpClient) {
+userData$:Observable<any>;
+constructor(private loginService:LoginService,private http:HttpClient,private permissionService:PermissionsService) {
   this.userInfo= this.getUserInfo();
 console.log("refresh token",this.userInfo.refreshToken)
  }
  updateUserPermisisons(permissions){
-  this.usersPermissions=permissions
-  this.permissionsSubject.next(permissions);
+  this.allPermissions=permissions
 
 }
 updatePermissions(permisions:any){
   this.userPermissions=permisions
 }
+async getPermission() {
+  return new Promise<void>((resolve) => {
+    this.getUserDataObservable().subscribe((permissions) => {
+      this.updateUserPermisisons(permissions)
+      this.userPermissions = this.permissionService.executePermissions(permissions);
+      resolve();
+    });
+  });
+}
+async hasPermission(routeName: string) {
+  // this.permissions=this.permissionService.executePermissions(permissions);
+  // this.authService.updatePermissions(this.permissions)
+  await this.getPermission();
+  const customerId = localStorage.getItem("customerId");
+
+  if (customerId !== "" && this.userPermissions) {
+    if(routeName){
+
+        return  routeName =="Users"? false :this.userPermissions[routeName]
+
+      }
+      else{
+        return true;
+
+      }
+  } else {
+    return true;
+  }
+}
+
 getPermissionsObservable(): Observable<PermissionData[]> {
 return this.permissionsSubject.asObservable();
 }
@@ -119,22 +149,21 @@ devicesPermissions(permissions:PermissionData[],name:string){
   let modulePermissions=permissions.filter((permission)=>permission.name.split("_")[0]==name)
   return modulePermissions
   }
-  hasPermission(routeName:string){
-    if(this.userInfo.customerId!="" ){
 
-     return routeName?this.userPermissions[routeName]:true
 
-    }
-  else{
-
-    return true
-  }
-  }
   getDevices(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<DeviceData[]>{
     return this.http.get<DeviceData[]>(`${env.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
   }
   editProfile(data):Observable<any>{
     return this.http.put<any>(`${env.api}Auth/editProfile`,data)
   }
+setUserDataObservable(observable:Observable<Users>):any{
+  this.userData$=observable.pipe(
+    map(res=>res.permissions)
 
+  )
+}
+getUserDataObservable(){
+return this.userData$
+}
   }

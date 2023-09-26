@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { Campaigns, compaignDetails } from './campaigns';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PermissionData } from '../users/users';
+import { ActivatedRoute } from '@angular/router';
+import { PermissionStorageService } from 'src/app/shared/services/permissionStorage.service';
 
 export interface DevicesPermissions{deviceId:string,value:string}
 @Injectable({
@@ -17,8 +19,14 @@ export class CompaignsService  {
   search:string="";
   compaignssPermission:PermissionData[];
   devicesPermissions:DevicesPermissions[];
-constructor(private http:HttpClient,private authService:AuthService) {
+constructor(private http:HttpClient,
+  private authService:AuthService,
+  private route: ActivatedRoute,
+  private permissionsStorageService: PermissionStorageService) {
 
+    // const permissions=this.getPermissionsFromRoute()
+
+    // console.log("campaigns permissions",permissions)
   if(authService.userInfo.customerId!=""){
     // this.compaignssPermission=authService.devicesPermissions(authService.usersPermissions,"Campaigns");
     // if(this.compaignssPermission){
@@ -35,8 +43,33 @@ constructor(private http:HttpClient,private authService:AuthService) {
     //   })
     //   console.log(this.devicesPermissions)
     // }
-    authService.getPermissionsObservable().subscribe(permissions => {
-      console.log("campaigns permissions",permissions,)
+
+//       this.compaignssPermission=authService.devicesPermissions(permissions,"Campaigns");
+//       if(this.compaignssPermission){
+//         this.devicesPermissions=this.compaignssPermission.map((permission)=>{
+
+//           let name=permission.name
+//           const underscoreIndex = permission.name.indexOf("_");
+//           let deviceId=name.substring(underscoreIndex + 1)
+
+//           return {
+//             deviceId:deviceId,
+//             value:permission.value
+//           }
+//         })
+//         console.log(this.devicesPermissions)
+//       }
+
+
+
+
+
+
+
+
+
+authService.getUserDataObservable().subscribe(permissions => {
+
       this.compaignssPermission=authService.devicesPermissions(permissions,"Campaigns");
       if(this.compaignssPermission){
         this.devicesPermissions=this.compaignssPermission.map((permission)=>{
@@ -59,9 +92,18 @@ constructor(private http:HttpClient,private authService:AuthService) {
 
 
     });
+
+
    }
 
-
+}
+getPermissionsFromRoute(): { name: string, value: string }[] | undefined {
+  const data = this.route.snapshot.data;
+  if (data && data['permissions']) {
+    return data['permissions'];
+  } else {
+    return undefined; // Handle the case where permissions are not available
+  }
 }
 getCampaigns(email:string,showsNum:number,pageNum:number,search:string,deviceId:string):Observable<compaignDetails[]>{
   return this.http.get<compaignDetails[]>(`${env.api}Message/listCampaigns?email=${email}&take=${showsNum}&scroll=${pageNum}&search=${search}&deviceId=${deviceId}`)

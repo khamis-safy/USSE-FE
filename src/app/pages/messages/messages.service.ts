@@ -38,8 +38,8 @@ constructor(private http:HttpClient,private authService:AuthService) {
   //     })
   //     console.log(this.devicesPermissions)
   //   }
+  authService.getUserDataObservable().subscribe(permissions => {
 
-    authService.getPermissionsObservable().subscribe(permissions => {
       console.log("Messages permissions",permissions,)
       this.messageasPermission=authService.devicesPermissions(permissions,"Messages");
       if(this.messageasPermission){
