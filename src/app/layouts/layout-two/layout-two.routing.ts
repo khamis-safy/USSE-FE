@@ -1,7 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutTwoComponent } from './layout-two.component';
 import { AuthGuard } from 'src/app/shared/services/auth.guard';
-import { PermissionResolverService } from 'src/app/shared/services/permissionResolver.service';
 
 const routes: Routes = [
   {
@@ -55,7 +54,6 @@ const routes: Routes = [
       {
         path: "compaigns",
         canActivate:[AuthGuard],
-        // resolve: { permissions: PermissionResolverService },
 
         loadChildren: () =>
           import("./../../pages/compaigns/compaigns.module").then((m) => m.CompaignsModule),
