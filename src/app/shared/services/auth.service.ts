@@ -66,20 +66,27 @@ async getPermission() {
 async hasPermission(routeName: string) {
   // this.permissions=this.permissionService.executePermissions(permissions);
   // this.authService.updatePermissions(this.permissions)
-  await this.getPermission();
   const customerId = localStorage.getItem("customerId");
+  if (customerId !== "" ){
 
-  if (customerId !== "" && this.userPermissions) {
-    if(routeName){
+    await this.getPermission();
+    if (customerId !== "" && this.userPermissions) {
+      if(routeName){
 
-        return  routeName =="Users"? false :this.userPermissions[routeName]
+          return  routeName =="Users"? false :this.userPermissions[routeName]
 
-      }
-      else{
-        return true;
+        }
+        else{
+          return true;
 
-      }
-  } else {
+        }
+    }
+    else {
+      return true;
+    }
+  }
+
+  else {
     return true;
   }
 }

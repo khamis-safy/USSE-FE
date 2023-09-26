@@ -17,12 +17,13 @@ export class AuthGuard implements CanActivate {
   }
 async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const routeName = route.data['name'];
-    const customerId=localStorage.getItem("customerId")
+    const customerId=localStorage.getItem("customerId");
+    const email =localStorage.getItem("email")
     if(customerId){
 
       if(customerId!=""){
 
-        this.authService.setUserDataObservable(this.permissionService.getUserByEmail());
+        this.authService.setUserDataObservable(this.permissionService.getUserByEmail(email));
       }
     }
    await this.authService.hasPermission(routeName).then((__values)=>this.isAllowed=__values)

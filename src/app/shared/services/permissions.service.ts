@@ -8,10 +8,9 @@ import { Permission, Users } from 'src/app/pages/users/users';
   providedIn: 'root'
 })
 export class PermissionsService {
-email=localStorage.getItem("email")
 constructor(private http:HttpClient) { }
-getUserByEmail():Observable<Users>{
-  return this.http.get<Users>(`${env.api}Auth/getUserByEmail?Email=${this.email}`).pipe(
+getUserByEmail(email):Observable<Users>{
+  return this.http.get<Users>(`${env.api}Auth/getUserByEmail?Email=${email}`).pipe(
     shareReplay()
   )
 }
