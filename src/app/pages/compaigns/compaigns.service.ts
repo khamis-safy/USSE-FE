@@ -6,7 +6,6 @@ import { Campaigns, compaignDetails } from './campaigns';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PermissionData } from '../users/users';
 import { ActivatedRoute } from '@angular/router';
-import { PermissionStorageService } from 'src/app/shared/services/permissionStorage.service';
 
 export interface DevicesPermissions{deviceId:string,value:string}
 @Injectable({
@@ -21,8 +20,8 @@ export class CompaignsService  {
   devicesPermissions:DevicesPermissions[];
 constructor(private http:HttpClient,
   private authService:AuthService,
-  private route: ActivatedRoute,
-  private permissionsStorageService: PermissionStorageService) {
+  private route: ActivatedRoute
+  ) {
 
     // const permissions=this.getPermissionsFromRoute()
 
