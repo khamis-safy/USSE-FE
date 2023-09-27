@@ -66,6 +66,8 @@ export class SignupComponent implements OnInit {
     }
     this.signupService.register(data).subscribe(
       (res)=>{
+        this.loading=false;
+
         this.userInfo={userName:res.contactName,
           organizationName:res.organisationName,
           id:res.id,

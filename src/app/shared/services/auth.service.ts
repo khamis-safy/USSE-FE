@@ -101,6 +101,7 @@ return !this.checkData(this.userInfo)
 }
 getUserInfo(){
   let userData$={
+     token:localStorage.getItem("token"),
      userName:localStorage.getItem('userName'),
      organizationName:localStorage.getItem('organizationName'),
      id:localStorage.getItem('id'),
@@ -118,7 +119,7 @@ checkData(obj: any) {
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       const value = obj[key];
-      if (value==null) {
+      if (value==null || value == undefined) {
         this.unAuthorized = true;
         console.log("Unauthorized", key, "is missing");
         break; // Exit the loop as soon as an empty value is detected

@@ -167,7 +167,7 @@ console.log("selected zone",this.selectedZone)
             organizationName:res.organisationName,
             id:res.id,
             email:res.email,
-            token:res.token,
+            token:localStorage.getItem("token"),
             customerId:res.customerId,
             apiToken:res.apiToken,
             maskType:res.maskType,

@@ -42,6 +42,8 @@ userInfo:any;
     this.loading=true
     this.loginService.login(this.form.value).subscribe(
   (res)=>{
+    this.loading=false;
+
     console.log(res)
     this.userInfo={userName:res.contactName,
       organizationName:res.organisationName,
@@ -83,12 +85,14 @@ this.authService.updateUserInfo()
 
     }
     else if(!res.isActive && !res.isTrial){
+
       this.hintMessage="Your account is not active , please contact the support to activate it"
     }
 
   else{
 
-    this.hintMessage="We can't logged you in "
+    this.hintMessage="We can't logged you in ";
+
     this.invalid=(!res.isActive && !res.isTrial)?true:false
   }
 
