@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -10,10 +10,12 @@ import { Contacts } from '../../../contacts';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 interface CheckedCont{
   contacts:Contacts,
-  listDetails:boolean
+  listDetails:boolean,
+  list:ListData
 
 }
 @Component({
@@ -21,7 +23,7 @@ interface CheckedCont{
   templateUrl: './addContact.component.html',
   styleUrls: ['./addContact.component.scss']
 })
-export class AddContactComponent implements OnInit{
+export class AddContactComponent implements OnInit,OnDestroy{
 // isChanged:boolean=false;
 listsLoadingText:string='Loading ...';
 email:string=this.listService.email;
@@ -50,6 +52,7 @@ email:string=this.listService.email;
     note:this.note,
     selectedLists:this.selectedLists,
 
+
   });
   form2 = new FormGroup({
     fieldName:this.fieldName,
@@ -59,9 +62,9 @@ email:string=this.listService.email;
   isEdit:boolean =false
 
 oldData;
-
+invalidName:boolean;
 additionalParameters:{name:string, value:string}[]=[]
-
+subscribe:Subscription;
 showInputs:boolean=false;
   // listsIds:string[]=[""];
   constructor(
@@ -70,13 +73,19 @@ showInputs:boolean=false;
     public dialogRef: MatDialogRef<AddContactComponent>,
     private translate: TranslateService,
 
-    @Inject(MAT_DIALOG_DATA) public data:any,
+    @Inject(MAT_DIALOG_DATA) public data:CheckedCont,
   ) {
   }
 
+
   ngOnInit() {
+    this.subscribe= this.form2.valueChanges.subscribe(()=>{
+      this.invalidName=this.checkIfFieldFound(this.form2.value.fieldName)
+
+    })
     this.getLists();
     if(this.data){
+
       console.log(this.data.contacts,this.data.contacts.additionalContactParameter)
       this.isEdit = true
       this.fillingData();
@@ -107,12 +116,27 @@ showInputs:boolean=false;
 
 
   }
+checkIfFieldFound(name){
+  let found= this.additionalParameters.find((param)=>param.name==name)
+  return found? true: false
 
+}
   getLists(){
   this.listService.getList(this.email,10,0,"","").subscribe(
      (res)=>{
       if(this.data){
-      let dataLists=this.data.contacts.lists;
+        let dataLists;
+        let lists=[];
+        if(this.data.listDetails){
+
+          lists.push(this.data.list);
+          dataLists=lists;
+        }
+        else{
+          dataLists=this.data.contacts.lists;
+        }
+
+
       let resList=res
       const listsMap = new Map();
 
@@ -134,14 +158,28 @@ showInputs:boolean=false;
           value:res.id
         }
       })
-      this.form.patchValue({
-        selectedLists: this.data.contacts?.lists.map(res=>{
-          return {
-            title:res.name,
-            value:res.id
-          }
+      if(this.data.listDetails){
+        this.form.patchValue({
+          selectedLists: lists.map(res=>{
+            return {
+              title:res.name,
+              value:res.id
+            }
+          })
         })
-      })
+      }
+      else{
+        this.form.patchValue({
+          selectedLists: this.data.contacts?.lists.map(res=>{
+            return {
+              title:res.name,
+              value:res.id
+            }
+          })
+        })
+      }
+
+
       }
       else{
         // this.lists=res;
@@ -268,5 +306,7 @@ showInputs:boolean=false;
 
     // this.listsIds=event.map((e)=>e.id)
   }
-
+  ngOnDestroy() {
+    this.subscribe.unsubscribe()
+  }
 }

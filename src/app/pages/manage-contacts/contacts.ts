@@ -10,6 +10,7 @@ export interface Contacts {
   isDeleted: boolean,
   createdAt: string,
   isChecked:string,
+  additionalContactParameter:{name:string, value:string}[],
   // applicationUser: object,
   // applicationUserId:string,
   lists:ListData[]

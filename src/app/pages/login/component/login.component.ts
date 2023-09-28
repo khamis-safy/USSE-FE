@@ -84,7 +84,7 @@ this.authService.updateUserInfo()
 
 
     }
-    else if(!res.isActive && !res.isTrial){
+    else if(!res.isActive ){
 
       this.hintMessage="Your account is not active , please contact the support to activate it"
     }

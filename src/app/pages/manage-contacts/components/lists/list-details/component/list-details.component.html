@@ -83,7 +83,7 @@
           {{ 'CONTACTS' | translate }}
 
       </ng-template>
-      <app-list-contacts [count]="count" [isCanceled]="false" (isChecked)="onChecked($event)"></app-list-contacts>
+      <app-list-contacts [count]="count" [isCanceled]="false" [listData]="list"  (isChecked)="onChecked($event)"></app-list-contacts>
     </mat-tab>
 
     <mat-tab>

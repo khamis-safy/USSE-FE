@@ -1,4 +1,4 @@
-<section class="d-flex flex-column p-4 gap-3 h-100">
+<section class="d-flex flex-column py-4 px-5 gap-3 h-100">
   <!-- modal header -->
   <div
     class="d-flex justify-content-between align-items-center mb-4"
@@ -14,7 +14,7 @@
       src="assets/icons/close-circle.svg"
       (click)="onClose()"
       alt="{{ 'CLOSE_ICON_ALT_TEXT' | translate }}"
-      style="cursor: pointer"
+      style="cursor: pointer ; width: 35px;"
     />
   </div>
 
@@ -138,7 +138,7 @@
       </div>
     </form>
       <!-- additional fields -->
-      <div class="additional p-3">
+      <div class="additional p-3 mt-3">
         <ng-container *ngIf="additionalParameters && additionalParameters?.length != 0">
           <div class="additionaltb">
             <div class="tbheader">
@@ -207,7 +207,7 @@
           <us-button
           label="{{ 'CANCEL' | translate }}"
           size="sm"
-            [loading]="isLoading"
+          [loading]="false"
             [fill]="false"
             (clicked)="cancel()"
           ></us-button>
@@ -219,7 +219,7 @@
           [fill]="true"
           (clicked)="save()"
           [loading]="false"
-          [disabled]="form2.invalid"
+          [disabled]="form2.invalid || invalidName"
         ></us-button>
           </div>
         </ng-container>
@@ -267,7 +267,7 @@
       [loading]="isLoading"
       [fill]="true"
       (clicked)="submitEdit()"
-      [disabled]="form.invalid || isLoading ||showInputs"
+      [disabled]="form.invalid || isLoading ||showInputs  || invalidName"
     ></us-button>
   </div>
 </section>

@@ -445,6 +445,7 @@
 "Email or password is wrong":"البريد الإلكتروني أو كلمة المرور خاطئة",
 "Default": "افتراضي",
 "We can't logged you in":"لا يمكننا تسجيل دخولك",
+"Your account is not active , please contact the support to activate it":"حسابك غير نشط ، يرجى الاتصال بالدعم لتفعيله",
 "Ended":"انتهت",
 "ITEMS_PER_PAGE":"عدد العناصر لكل صفحة:",
 "OF_KEYWORD":"من"

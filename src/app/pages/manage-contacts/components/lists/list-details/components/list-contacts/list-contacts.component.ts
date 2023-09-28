@@ -35,7 +35,7 @@ WrapperOffsetWidth =250;
 @Output() isChecked = new EventEmitter<ListData[]>;
 @Input() isCanceled:boolean;
 @Input() count:TotalContacts={totalContacts:0,totalCancelContacts:0};
-
+@Input() listData:any
 @ViewChild(MatPaginator)  paginator!: MatPaginator;
 @ViewChild(MatSort) sort: MatSort;
 @ViewChild("search") search!:ElementRef;
@@ -153,13 +153,12 @@ getContacts(){
     openEditModal(data?){
       const dialogConfig=new MatDialogConfig();
       dialogConfig.disableClose = true;
-
-      dialogConfig.height='70vh';
-      dialogConfig.width='40vw';
+      dialogConfig.height='80vh';
+      dialogConfig.width='45vw';
       dialogConfig.maxWidth='100%';
       dialogConfig.minWidth='300px';
       dialogConfig.maxHeight='85vh';
-      dialogConfig.data= {contacts:data,listDetails:true};
+      dialogConfig.data= {contacts:data,listDetails:true,list:this.listData};
       const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
       this.selection.clear();
       dialogRef.afterClosed().subscribe(result => {

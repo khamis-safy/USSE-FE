@@ -236,8 +236,8 @@ this.subscribtions.push(sub2)
 
   openEditModal(data?){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='70vh';
-    dialogConfig.width='40vw';
+    dialogConfig.height='80vh';
+    dialogConfig.width='45vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='300px';
     dialogConfig.maxHeight='85vh';
