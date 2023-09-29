@@ -185,10 +185,17 @@
                 [isDisabled]="false"
                 [optional]="false"
                 type="text"
+                [error]="fieldName.touched && fieldName.errors?.required"
+                [hintText]="
+                fieldName.touched && fieldName.errors?.required
+                  ? ('REQUIRED_FIELD' | translate)
+                  : ''
+              "
                 [fullWidth]="true"
                 placeholder="{{ 'FIELD_NAME' | translate }}"
                 formControlName="fieldName"
               ></us-input>
+             
             </div>
             <div class="value">
               <us-input
@@ -199,6 +206,12 @@
                 [optional]="false"
                 type="text"
                 [fullWidth]="true"
+                [error]="value.touched && value.errors?.required"
+                [hintText]="
+                value.touched && value.errors?.required
+                  ? ('REQUIRED_FIELD' | translate)
+                  : ''
+              "
               ></us-input>
             </div>
           </form>
