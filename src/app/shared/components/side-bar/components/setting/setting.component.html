@@ -7,12 +7,12 @@
     style="height: 10%"
   >
     <div class="txt-lg">{{ "settingLabel" | translate }}</div>
-    <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
+    <div class=" close-icon position-absolute end-0 top-50 translate-middle-y mx-2">
       <img
         (click)="onClose()"
         src="assets/icons/close-circle.svg"
         alt="close-icon"
-        style="cursor: pointer"
+        style="cursor: pointer;width: 32px;"
       />
     </div>
   </div>
@@ -23,7 +23,7 @@
       <div class="d-flex gap-4 flex-column py-3">
         <!-- Token -->
       <div *ngIf="!isUser" class="d-flex align-items-center">
-        <div style="width:80% ;margin-right: 10px;">
+        <div style="width:80% ">
           <us-input
           formControlName="apiToken"
           value=""

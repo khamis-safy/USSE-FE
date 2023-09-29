@@ -13,6 +13,7 @@ import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { FAILED, INBOXHEADER, OUTBOX } from '../constants/messagesConst';
+import { TranslationService } from 'src/app/shared/services/translation.service';
 
 @Component({
   selector: 'app-message-type',
@@ -53,7 +54,8 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   constructor(public cdr: ChangeDetectorRef ,
     public dialog: MatDialog,
     private messageService:MessagesService,
-    private authService:AuthService){}
+    private authService:AuthService,
+    private translationService:TranslationService){}
   ngOnInit() {
 
     this.columns=new FormControl(this.displayedColumns)
@@ -332,14 +334,15 @@ console.log("can edit",this.canEdit)
 
   }
   displayMessage(row){
+    const currentLang=this.translationService.getCurrentLanguage()
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='100vh';
     dialogConfig.width='25vw';
     dialogConfig.maxWidth='100%';
     // dialogConfig.minWidth='200px';
     dialogConfig.disableClose = true;
-    dialogConfig.position = { right: '2px'};
-    dialogConfig.direction ="ltr";
+    dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
+    dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
     dialogConfig.data={message:row};
     const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
 

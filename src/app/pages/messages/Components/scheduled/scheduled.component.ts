@@ -13,6 +13,7 @@ import { DevicesService } from 'src/app/pages/devices/devices.service';
 import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SCHEDULED } from '../constants/messagesConst';
+import { TranslationService } from 'src/app/shared/services/translation.service';
 
 
 
@@ -48,7 +49,8 @@ export class ScheduledComponent implements OnInit  {
   permission:DevicesPermissions[];
   constructor(private messageService:MessagesService,
     public dialog: MatDialog,
-    private authService:AuthService){}
+    private authService:AuthService,
+    private translationService:TranslationService){}
   ngOnInit() {
 
     this.columns=new FormControl(this.displayedColumns)
@@ -219,13 +221,15 @@ export class ScheduledComponent implements OnInit  {
       }
 
       onCellClick(recipient){
+        const currentLang=this.translationService.getCurrentLanguage()
+
         const dialogConfig=new MatDialogConfig();
         dialogConfig.height='100vh';
         dialogConfig.width='25vw';
         dialogConfig.maxWidth='100%';
         dialogConfig.disableClose = true;
-        dialogConfig.position = { right: '2px'};
-        dialogConfig.direction ="ltr";
+        dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
+        dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
         dialogConfig.data={
           recipients:recipient,
           isScheduleN:true
@@ -241,14 +245,15 @@ export class ScheduledComponent implements OnInit  {
 
       displayMessage(row){
         if(!this.cellClick){
+          const currentLang=this.translationService.getCurrentLanguage()
           const dialogConfig=new MatDialogConfig();
           dialogConfig.height='100vh';
           dialogConfig.width='25vw';
           dialogConfig.maxWidth='100%';
           // dialogConfig.minWidth='200px';
           dialogConfig.disableClose = true;
-          dialogConfig.position = { right: '2px'};
-          dialogConfig.direction ="ltr";
+          dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
+          dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
           dialogConfig.data={
             schedule:row,
             isScheduleM:true

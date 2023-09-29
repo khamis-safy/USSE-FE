@@ -4,13 +4,13 @@
   <div class="d-flex justify-content-center align-items-center position-relative mb-4 " style="height: 10%;">
     <div *ngIf="!isEdit" class="txt-lg">{{ 'ADD_TEMPLATE' | translate }}</div>
     <div *ngIf="isEdit" class="txt-lg">{{ 'EDIT_TEMPLATE' | translate }}</div>
-    <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
+    <div class=" close-icon position-absolute end-0 top-50 translate-middle-y mx-2">
       <img
         src="assets/icons/close-circle.svg"
         (click)="onClose()"
         alt="close-icon"
-        style="cursor: pointer;"
-      />
+        style="cursor: pointer;width: 32px;"
+              />
     </div>
   </div>
 

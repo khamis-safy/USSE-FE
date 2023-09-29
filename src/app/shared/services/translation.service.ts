@@ -17,7 +17,9 @@ setCurrentLanguage() {
   this.currLang = localStorage.getItem("currentLang") || 'en';
   this.translate.use(this.currLang); // Set the current language
 }
-
+getCurrentLanguage(){
+  return  this.currLang 
+}
 setLanguage(lang: string) {
   this.currLang = lang;
   this.translate.use(lang);

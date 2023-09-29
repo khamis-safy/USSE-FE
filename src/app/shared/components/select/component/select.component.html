@@ -8,7 +8,7 @@
     <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
   </div>
 
-  <div  class="host {{class}} w-100" style="width:98%;min-width:11rem" [attr.data-count]="value?.length"
+  <div  class="host {{class}} w-100" style="width:98%;min-width:11rem;padding: 2px;" [attr.data-count]="value?.length"
     [ngClass]="{'multi': value?.length, 'disabled': isDisabled, 'error': isError, grouped, 'actions': actions && !grouped}">
     <ng-container *ngIf="!isMulti">
       <!-- Toggler -->
