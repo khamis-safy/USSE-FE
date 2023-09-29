@@ -89,7 +89,6 @@ export class SignupComponent implements OnInit {
 
       this.sendCode();
       this.router.navigateByUrl('verification')
-      this.loading=false;
 
       },
       (err)=>{
@@ -118,7 +117,7 @@ export class SignupComponent implements OnInit {
 
       (res)=>{
 
-        this.loading=false;
+      
 
       },
       (err)=>{

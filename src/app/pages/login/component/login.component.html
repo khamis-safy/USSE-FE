@@ -5,12 +5,13 @@
       style="box-shadow: 0px 11px 22px 0px #00000029"
     >
     <img src="/assets/images/colored logo_name side.svg" alt="myLogo" style="width:65%" class="my-3" />
-      <div class="col-md-11 mx-auto text-center">
-        <h3 class="my-3" style="font-family: Poppins; font-weight: 500">
+      <div class="col-md-12  text-center">
+        <h3 class="mb-5 mt-3" style="font-family: Poppins; font-weight: 500;font-size: 22px;">
           {{ 'WELCOME_BACK' | translate }}
         </h3>
         <form [formGroup]="form" class="w-100">
-          <div class="col-md-12 mb-4">
+          <!-- email -->
+          <div class="col-md-12 mb-4 ">
             <us-input
               [isDisabled]="false"
               value=""
@@ -30,8 +31,8 @@
               "
             ></us-input>
           </div>
-
-          <div class="col-md-12 my-2 mb-4 mb-5">
+          <!-- passward -->
+          <div class="col-md-12 my-2 mb-4  mb-5">
             <us-input
               [isDisabled]="false"
               value=""
@@ -66,16 +67,16 @@
             <p class="txt hint error txt-xs">{{ hintMessage | translate }}</p>
           </div>
         </form>
-        <div class="d-flex justify-content-center align-items-center my-3">
+        <!-- <div class="d-flex justify-content-center align-items-center my-3">
           <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
           <div class="mx-2">
             <p style="color: #b5b3b3">{{ 'OR' | translate }}</p>
           </div>
           <div style="width: 45%; height: 1px; background-color: #b5b3b3"></div>
-        </div>
+        </div> -->
       </div>
 
-      <div class="w-100">
+      <!-- <div class="w-100">
         <us-button
           label="{{ 'LOGIN_WITH_GOOGLE' | translate }}"
           [size]="'xl'"
@@ -87,11 +88,12 @@
           [fill]="false"
           [fullWidth]="true"
         ></us-button>
-      </div>
+      </div> -->
       <div class="col-md-12">
-        <div class="d-flex my-3 justify-content-center">
-          <p style="font-weight: 500" class="mx-2">{{ 'DONT_HAVE_AN_ACCOUNT' | translate }}</p>
+        <div class="d-flex my-4 justify-content-center">
+          <p style="font-weight: 500" class="mx-2 txt-md">{{ 'DONT_HAVE_AN_ACCOUNT' | translate }}</p>
           <a
+          class="txt-md"
             style="text-decoration: none; font-weight: 500"
             routerLink="/signup"
             >{{ 'SIGNUP' | translate }}</a
@@ -104,7 +106,7 @@
     >
       <div class="w-75 text-center mx-auto">
         <img src="/assets/images/Connected-cuate 2.svg" alt="connectedLogo" class="w-100 text-center mx-auto" />
-        <p class="text-center mx-auto" style="color: #292a32">
+        <p class="text-center txt-lg mx-auto" style="color: #292a32;line-height: 1.5;">
           {{ 'LOREM_IPSUM' | translate }}
         </p>
       </div>

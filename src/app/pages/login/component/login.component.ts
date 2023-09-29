@@ -89,19 +89,21 @@ userInfo:any;
      if(!res.isActive ){
 
       this.hintMessage="Your account is not active , please contact the support to activate it";
+      this.loading=false;
       this.invalid=true;
     }
 
   else{
 
     this.hintMessage="We can't logged you in ";
+    this.loading=false;
+    this.invalid=(!res.isActive && !res.isTrial)?true:false;
 
-    this.invalid=(!res.isActive && !res.isTrial)?true:false
   }
 
 
 
-  this.loading=false;
+
 
 
   },

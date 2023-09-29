@@ -1,5 +1,5 @@
 <div class=" d-flex align-items-center justify-content-center mt-3 w-100" style="width: 100%;">
-  <form [formGroup]="form" class="d-flex gap-5 flex-column align-items-center justify-content-center " style="width:50%;height: 480px;">
+  <form [formGroup]="form" class="d-flex gap-5 flex-column align-items-center justify-content-center " style="width:55%;height: 480px;">
 
     <!-- first line -->
     <div class="w-100  d-flex justify-content-between align-items-center">
@@ -21,8 +21,8 @@
             formControlName="intFrom"
           ></us-input>
         </div>
-        <span style="margin-inline: 10px">{{ 'toLabel' | translate }}</span>
-        <div class="" style="width:136px">
+        <span class="mx-3">{{ 'toLabel' | translate }}</span>
+        <div  style="width:136px">
           <us-input
             value=""
             type="number"
@@ -101,7 +101,7 @@
             <input #timePicker1 formControlName="time1" [nbTimepicker]="timepicker1" class="rounded-pill border border-1py-2 txt-input w-100 date" style="padding: 0 12px;">
             <nb-timepicker #timepicker1></nb-timepicker>
           </div>
-          <span style="margin-inline: 10px">{{ 'toLabel' | translate }}</span>
+          <span class="mx-3">{{ 'toLabel' | translate }}</span>
           <div style="width:136px">
             <input #timePicker2 formControlName="time2" [nbTimepicker]="timepicker2" class="rounded-pill border border-1py-2 txt-input w-100 date" style="padding: 0 12px;">
             <nb-timepicker #timepicker2></nb-timepicker>
