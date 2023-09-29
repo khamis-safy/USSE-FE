@@ -9,7 +9,13 @@
       </div>
       <div class="d-flex align-content-center justify-content-around" style="width: 70%;">
         <div *ngFor="let accessLevel of sharedSection.accessLevels">
-          <input width="15%"
+          <sr-radio [label]="accessLevel.value| translate"
+          [state]="accessLevel.checked?'checked':''"
+          (changed)="onAccessLevelChange(sharedSection, accessLevel)">
+
+          </sr-radio>
+
+          <!-- <input width="15%"
             [checked]="accessLevel.checked"
             (change)="onAccessLevelChange(sharedSection, accessLevel)"
             class="mx-md-2"
@@ -18,7 +24,7 @@
             [name]="sharedSection.section.name + accessLevel.value"
             [value]="accessLevel.value"
             #input>
-          <label width="70%" [for]="accessLevel.value + sharedSection.section.name">{{ accessLevel.value| translate }}</label>
+          <label width="70%" [for]="accessLevel.value + sharedSection.section.name">{{ accessLevel.value| translate }}</label> -->
         </div>
       </div>
     </div>
@@ -51,7 +57,14 @@
         </div>
         <div class="d-flex align-content-center justify-content-around" style="width: 70%;">
           <div *ngFor="let accessLevel of sectionLevel?.accessLevels">
-            <input width="15%"
+
+            <sr-radio [label]="accessLevel.value| translate"
+            [state]="accessLevel.checked?'checked':''"
+            (changed)="onAccessLevelChange(sectionLevel, accessLevel)">
+
+            </sr-radio>
+
+            <!-- <input width="15%"
               [checked]="accessLevel.checked"
               (change)="onAccessLevelChange(sectionLevel, accessLevel)"
               class="mx-md-2"
@@ -60,7 +73,7 @@
               [name]="sectionLevel.section.name + accessLevel.value"
               [value]="accessLevel.value"
               #input>
-            <label width="70%" [for]="accessLevel.value + sectionLevel.section.name">{{ accessLevel.value |translate}}</label>
+            <label width="70%" [for]="accessLevel.value + sectionLevel.section.name">{{ accessLevel.value |translate}}</label> -->
           </div>
         </div>
       </div>

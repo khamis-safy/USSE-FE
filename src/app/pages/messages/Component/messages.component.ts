@@ -19,18 +19,25 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     {
       title:'INBOX_LABEL',
       tab:'inbox',
+      image:"assets/icons/inbox gray.svg"
     },
     {
       title:'SCHEDULED_LABEL',
-      tab:'scheduled'
+      tab:'scheduled',
+      image:"assets/icons/Scheduled gray.svg"
+
     },
     {
       title:'OUTBOX_LABEL',
-      tab:'outbox'
+      tab:'outbox',
+      image:"assets/icons/Outbox gray.svg"
+
     },
     {
       title:'UNDELIVERED_LABEL',
-      tab:'failed'
+      tab:'failed',
+      image:"assets/icons/Undelivered gray.svg"
+
     }
   ]
   selectedTab;

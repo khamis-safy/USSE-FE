@@ -18,23 +18,37 @@ export class AuthGuard implements CanActivate {
 async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const routeName = route.data['name'];
     const customerId=localStorage.getItem("customerId");
-    const email =localStorage.getItem("email")
-    if(customerId){
+      const email =localStorage.getItem("email")
+    if(routeName==="verification"){
+      if(email){
+        return true
+      }
+      else{
+        this.router.navigate(['login'])
 
-      if(customerId!=""){
-
-        this.authService.setUserDataObservable(this.permissionService.getUserByEmail(email));
+        return false
       }
     }
-   await this.authService.hasPermission(routeName).then((__values)=>this.isAllowed=__values)
-    if(this.authService.isLoggedIn() && this.isAllowed )
-    {
-      console.log("from guard",this.isAllowed)
-      return true;
-    }
     else{
-      this.router.navigate(['login'])
-      return false;
+
+
+      if(customerId){
+
+        if(customerId!=""){
+
+          this.authService.setUserDataObservable(this.permissionService.getUserByEmail(email));
+        }
+      }
+     await this.authService.hasPermission(routeName).then((__values)=>this.isAllowed=__values)
+      if(this.authService.isLoggedIn() && this.isAllowed )
+      {
+        console.log("from guard",this.isAllowed)
+        return true;
+      }
+      else{
+        this.router.navigate(['login'])
+        return false;
+      }
     }
 
   }

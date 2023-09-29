@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { VerifyService } from './verify.service';
 import { LoginService } from '../../login.service';
@@ -11,7 +11,7 @@ import { UsersService } from 'src/app/pages/users/users.service';
   templateUrl: './verify.component.html',
   styleUrls: ['./verify.component.scss']
 })
-export class VerifyComponent implements OnInit ,AfterViewInit{
+export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
   verificationForm: FormGroup;
   isLoading:boolean=false;
   digitIndexes: number[] = [0, 1, 2, 3, 4, 5];
@@ -31,9 +31,21 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
       digit4: ['', Validators.required],
       digit5: ['', Validators.required]
     });
+    window.addEventListener('beforeunload', this.clearLocalStorage);
   }
+
+  clearLocalStorage() {
+    // Clear the local storage when the 'beforeunload' event is triggered
+    localStorage.removeItem("email")
+  }
+
+  ngOnDestroy() {
+    // Remove the event listener when the component is destroyed
+    window.removeEventListener('beforeunload', this.clearLocalStorage);
+  }
+
   ngOnInit(): void {
-    console.log(this.authService.userInfo)
+    console.log("from verify",this.authService.getUserData())
   }
 
   ngAfterViewInit(): void {
@@ -78,26 +90,29 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
       this.setFocus(prevDigitIndex);
     }
   }
-  getUserPermisisons(email){
-    this.userServiece.getUserByEmail(email).subscribe(
-      (res)=>{
-        this.authService.userPermissions=this.userServiece.executePermissions(res.permissions);
-        this.authService.updateUserPermisisons(res.permissions);
-        this.router.navigateByUrl('messages')
+//   getUserPermisisons(email){
+//     this.userServiece.getUserByEmail(email).subscribe(
+//       (res)=>{
+//         this.authService.userPermissions=this.userServiece.executePermissions(res.permissions);
+//         this.authService.updateUserPermisisons(res.permissions);
+//         this.router.navigateByUrl('messages')
 
 
-      },
-      (err)=>{}
-    )
+//       },
+//       (err)=>{}
+//     )
 
-}
+// }
   checkVerificationCode() {
+
+
     const code = Object.keys(this.verificationForm.controls)
       .map(key => this.verificationForm.controls[key].value)
       .join('');
     if (code.length === 6) {
+
       // Send verification request using code
-      let token=this.loginService.getCookieValue('refreshToken')
+      let token=this.authService.getToken()
       this.isLoading=true
 
       // const token=localStorage.getItem("token");
@@ -105,12 +120,16 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
       this.verificatioinService.confirmEmail(code,token).subscribe(
         (res)=>{
           this.isLoading=false
-          if(this.authService.userInfo.customerId!=""){
-            let email=this.authService.userInfo.email;
-            this.getUserPermisisons(email);
-          }
+
           this.invalid=false;
-          console.log(res);
+
+          // update local storage
+          this.authService.saveDataToLocalStorage(this.authService.getUserData());
+          this.authService.updateUserInfo()
+          this.loginService.storeRefreshTokenInCookie(token);
+          setInterval(() => {
+            this.refreshToken();
+          }, 60 * 60 * 1000); // 1 hour in milliseconds
 
           this.router.navigateByUrl('messages')
         },
@@ -122,8 +141,18 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
         }
       )
 
-      // console.log('Sending verification request with code:', code,"token",token);
     }
+  }
+  refreshToken() {
+    let token=this.loginService.getCookieValue('refreshToken')
+    this.loginService.refreshToken(token).subscribe(
+      (res) => {
+        // Update the refresh token in the cookie
+        this.loginService.storeRefreshTokenInCookie(res.refreshToken);
+      },
+      (err) => {
+      }
+    );
   }
   resetData(){
     this.verificationForm.setValue({
@@ -137,7 +166,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
     this.invalid=false;
   }
   reSendCode(){
-    const email=this.authService.userInfo.email;
+    const email=this.authService.getUserData().email;
     this.loading=true;
   this.resetData();
     this.loginService.sendEmailCode(email).subscribe(
@@ -153,4 +182,10 @@ export class VerifyComponent implements OnInit ,AfterViewInit{
     )
 
   }
+  // ngOnDestroy() {
+  //   console.log("destroyed")
+  //   if(!this.verified){
+  //     localStorage.removeItem("email")
+  //   }
+  // }
 }

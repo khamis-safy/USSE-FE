@@ -56,7 +56,7 @@ export class SignupComponent implements OnInit {
     })
   }
   signUp(){
-    this.isLoading =true;
+    this.loading =true;
 
     const data={
       contactName: this.contactName.value ,
@@ -66,7 +66,7 @@ export class SignupComponent implements OnInit {
     }
     this.signupService.register(data).subscribe(
       (res)=>{
-        this.loading=false;
+
 
         this.userInfo={userName:res.contactName,
           organizationName:res.organisationName,
@@ -79,23 +79,17 @@ export class SignupComponent implements OnInit {
           phoneNumber:res.phoneNumber,
           timeZone:res.timeZone
         }
-this.authService.saveDataToLocalStorage(this.userInfo);
-this.authService.updateUserInfo()
 
 
            // Store the refresh token in a cookie
-           this.loginService.storeRefreshTokenInCookie(res.refreshToken);
-           this.refreshToken();
 
-           // Refresh the token every 1 hour
-
-            setInterval(() => {
-            this.refreshToken();
-           }, 60 * 60 * 1000); // 1 hour in milliseconds
+           localStorage.removeItem("email")
+           localStorage.setItem("email",res.email)
+           this.authService.setUserData(this.userInfo,res.refreshToken);
 
       this.sendCode();
       this.router.navigateByUrl('verification')
-
+      this.loading=false;
 
       },
       (err)=>{

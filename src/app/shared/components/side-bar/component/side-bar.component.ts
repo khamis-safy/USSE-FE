@@ -78,6 +78,7 @@ this.permissions={
 
 
   clearLocatStorage(){
-    localStorage.clear()
+    let localData=['email','organizationName','id','userName',"token","customerId","apiToken","maskType","phoneNumber","timeZone"]
+    localData.map((key)=>localStorage.removeItem(key))
   }
 }

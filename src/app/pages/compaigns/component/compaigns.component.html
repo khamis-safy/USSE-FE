@@ -76,7 +76,7 @@
         </div>
       </ng-container>
 
-      <ng-container *ngIf="length > 0 && !noData || loading">
+      <ng-container *ngIf="(length > 0 && !noData )|| loading">
         <section class="table-wrapper">
           <table mat-table [dataSource]="dataSource" class="table-wrapper">
             <!-- name Column -->

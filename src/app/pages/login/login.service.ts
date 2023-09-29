@@ -13,7 +13,8 @@ export class LoginService {
 
 // khamissafy056@gmail.com
 // Khamis.Safy@056
-userInfo!:any;
+email:string=localStorage.getItem("email")
+userInfo:any;
   constructor(private http:HttpClient) { }
   login(data):Observable<Login>{
 
@@ -26,8 +27,11 @@ userInfo!:any;
   //         });
   //   return this.http.get<Login>(`${env.api}Auth/refreshToken`, { headers })
   // }
-updateUser(userinfo){
+  updateUserInfo(userinfo){
   this.userInfo=userinfo
+}
+getUserinfo(){
+  return this.userInfo
 }
   storeRefreshTokenInCookie(token: string) {
     const expirationDate = new Date();

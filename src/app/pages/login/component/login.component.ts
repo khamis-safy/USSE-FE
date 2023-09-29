@@ -42,9 +42,9 @@ userInfo:any;
     this.loading=true
     this.loginService.login(this.form.value).subscribe(
   (res)=>{
-    this.loading=false;
 
-    console.log(res)
+        // Store the refresh token in a cookie
+
     this.userInfo={userName:res.contactName,
       organizationName:res.organisationName,
       id:res.id,
@@ -56,23 +56,25 @@ userInfo:any;
       phoneNumber:res.phoneNumber,
       timeZone:res.timeZone
     }
-this.authService.saveDataToLocalStorage(this.userInfo);
-this.authService.updateUserInfo()
 
-   // Store the refresh token in a cookie
-   this.loginService.storeRefreshTokenInCookie(res.refreshToken);
-   this.refreshToken();
 
     // check autheraization
 
     if(!res.isEmailAuthonticated){
-      console.log("navigate to verification")
+      this.authService.setUserData(this.userInfo,res.refreshToken);
+      localStorage.removeItem("email")
+      localStorage.setItem("email",res.email)
+
       this.sendCode();
       this.router.navigateByUrl('verification')
 
     }
     if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
-      console.log("navigate to messages")
+      // update local storage
+      this.authService.saveDataToLocalStorage(this.userInfo);
+      this.authService.updateUserInfo()
+
+      this.loginService.storeRefreshTokenInCookie(res.refreshToken);
 
 
         setInterval(() => {
@@ -84,9 +86,10 @@ this.authService.updateUserInfo()
 
 
     }
-    else if(!res.isActive ){
+     if(!res.isActive ){
 
-      this.hintMessage="Your account is not active , please contact the support to activate it"
+      this.hintMessage="Your account is not active , please contact the support to activate it";
+      this.invalid=true;
     }
 
   else{
@@ -98,7 +101,7 @@ this.authService.updateUserInfo()
 
 
 
-
+  this.loading=false;
 
 
   },

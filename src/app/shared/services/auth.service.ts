@@ -30,6 +30,8 @@ interface DeviceData {
 })
 
 export class AuthService {
+  userData!:UserData;
+  resfreshToken!:string;
 userInfo!:UserData;
 unAuthorized:boolean=false;
 empty:number=0;
@@ -45,7 +47,6 @@ permissionSubject = new BehaviorSubject<Permission>({
 userData$:Observable<any>;
 constructor(private loginService:LoginService,private http:HttpClient,private permissionService:PermissionsService) {
   this.userInfo= this.getUserInfo();
-console.log("refresh token",this.userInfo.refreshToken)
  }
  updateUserPermisisons(permissions){
   this.allPermissions=permissions
@@ -100,7 +101,7 @@ return !this.checkData(this.userInfo)
 
 }
 getUserInfo(){
-  let userData$={
+  let userData={
      token:localStorage.getItem("token"),
      userName:localStorage.getItem('userName'),
      organizationName:localStorage.getItem('organizationName'),
@@ -110,7 +111,7 @@ getUserInfo(){
      refreshToken:this.loginService.getCookieValue("refreshToken")
 
    }
- return userData$;
+ return userData;
  }
 
 checkData(obj: any) {
@@ -133,7 +134,14 @@ checkData(obj: any) {
 }
 
 saveDataToLocalStorage(data){
-  localStorage.setItem('email',data.email);
+  if (localStorage.getItem("email")){
+    localStorage.removeItem("email")
+    localStorage.setItem('email',data.email);
+  }
+  else{
+    localStorage.setItem('email',data.email);
+
+  }
   localStorage.setItem('organizationName',data.organizationName);
   localStorage.setItem('id',data.id);
   localStorage.setItem('userName',data.userName);
@@ -153,6 +161,18 @@ updateUserInfo(){
 
 }
 
+// setting user data from login or signup components
+setUserData(userData:any,token:any){
+this.userData=userData;
+this.resfreshToken=token;
+}
+// get user data
+getUserData(){
+  return this.userData
+}
+getToken(){
+  return this.resfreshToken
+}
 devicesPermissions(permissions:PermissionData[],name:string){
   let modulePermissions=permissions.filter((permission)=>permission.name.split("_")[0]==name)
   return modulePermissions

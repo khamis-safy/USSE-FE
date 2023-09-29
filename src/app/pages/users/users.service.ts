@@ -21,8 +21,7 @@ export class UsersService {
   id:string=this.authService.userInfo.id;
   constructor(private http:HttpClient,private authService:AuthService) {
     this.token=this.getCookieValue("refreshToken")
-    console.log("refresh token",this.token);
-    authService.updateUserInfo()
+
 
   }
    getCookieValue(cookieName: string): string {

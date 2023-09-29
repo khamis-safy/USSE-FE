@@ -6,6 +6,7 @@ import { UsersService } from './pages/users/users.service';
 import { TranslationService } from './shared/services/translation.service';
 import { InitPaginationService } from './shared/services/initPagination.service';
 import { PermissionsService } from './shared/services/permissions.service';
+import { LoginService } from './pages/login/login.service';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +23,8 @@ export class AppComponent implements OnInit {
     public translate:TranslateService,
     private languageService:TranslationService,
     private initPaginationService:InitPaginationService,
-    private permissionService:PermissionsService,
-    private authService:AuthService, private userServiece:UsersService){
+    private loginService:LoginService,
+    private authService:AuthService){
     this.currentLang = localStorage.getItem('currentLang') || 'en';
     this.translate.use(this.currentLang);
     document.documentElement.dir=  this.currentLang === 'ar' ? 'rtl' : 'ltr'
@@ -35,6 +36,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    setInterval(() => {
+      this.refreshToken();
+    }, 60 * 60 * 1000); // 1 hour in milliseconds
+
     // if(localStorage.getItem("customerId")){
 
     //   if(this.authService.userInfo.customerId!=""){
@@ -43,6 +49,20 @@ export class AppComponent implements OnInit {
     // }
     this.initMode();
 
+  }
+  refreshToken() {
+    let refreshToken=this.loginService.getCookieValue('refreshToken')
+    if(refreshToken){
+
+      this.loginService.refreshToken(refreshToken).subscribe(
+        (res) => {
+          // Update the refresh token in the cookie
+          this.loginService.storeRefreshTokenInCookie(res.refreshToken);
+        },
+        (err) => {
+        }
+      );
+    }
   }
 
   initMode(){

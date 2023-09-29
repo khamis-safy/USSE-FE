@@ -138,22 +138,18 @@ else{
   this.authService.getDevices(this.messageService.email,10,0,"","").subscribe(
     (res)=>{
       let alldevices=res;
-      console.log("devices",alldevices)
 
       if(this.permission){
-console.log("permissions",this.permission)
         alldevices.map((device)=>
         {
           let found =this.permission.find((devP)=>devP.deviceId==device.id && devP.value=="None");
           if(found){
-            console.log("found",found)
             alldevices.splice(alldevices.indexOf(device),1)
           }
         }
         )
       }
 
-      console.log("devices",alldevices)
       this.devices = alldevices.map(res=>{
         return {
           title:res.deviceName,
@@ -171,7 +167,6 @@ console.log("permissions",this.permission)
         this.deviceId=res[0].id;
 
       this.getDevicePermission(this.deviceId);
-        console.log("can edit",this.canEdit)
 
         if(this.messageService.selectedDeviceId ==""){
 
@@ -195,14 +190,12 @@ console.log("permissions",this.permission)
             })
         }
         this.getMessages(this.deviceId);
-   console.log("message category",this.msgCategory,"device id",this.deviceId)
 
     }},
     (err)=>{
 
     }
   )
-  this.cdr.detectChanges(); // Trigger change detection
 
 }
 
@@ -331,12 +324,7 @@ console.log("can edit",this.canEdit)
       this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
     }
     else if(this.msgCategory=='failed'){
-      if(this.canEdit){
-        this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Ation'];
-      }
-      else{
-        this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At'];
-      }
+      this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At'];
       this.displayed = FAILED;
 
     }

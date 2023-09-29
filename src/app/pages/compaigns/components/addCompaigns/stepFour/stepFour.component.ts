@@ -23,9 +23,7 @@ export class StepFourComponent implements OnInit ,AfterViewInit,OnDestroy{
   disable:boolean=true;
   isSendingOutTimeChecked:boolean=false;
   isIntervalChecked:boolean=true;
-// @ViewChild(InputComponent) inputCom1:InputComponent;
-// @ViewChild(InputComponent) inputCom1:InputComponent;
-// @ViewChild(InputComponent) inputCom1:InputComponent;
+
 time1Sub$
 time2Sub$
 
@@ -58,35 +56,13 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
   );
 }
   ngAfterViewInit() {
-    // this.disableInterval=true;
-    // this.disableRepeate=true;
-    // this.inputCom.isDisabled=true;
-    // this.cdRef.detectChanges();
+
 
   }
 
-  // timeValidator(formGroup: FormGroup) {
-  //   const time1Value: Date = formGroup.get('time1')!.value;
-  //   const time2Value: Date = formGroup.get('time2')!.value;
-
-  //   if (time1Value && time2Value) {
-  //     const hours1 = time1Value.getHours();
-  //     const minutes1 = time1Value.getMinutes();
-
-  //     const hours2 = time2Value.getHours();
-  //     const minutes2 = time2Value.getMinutes();
-
-
-  //     if ((hours1 <= hours2 || (hours1 === hours2 && minutes1 <= minutes2))) {
-  //       return null; // Valid
-  //     } else {
-  //       return { timeOrderInvalid: true }; // Invalid
-  //     }
-
-  //   }
-
-  //   return null; // No comparison if values are not set
-  // }
+test(evet){
+  console.log(evet)
+}
   intervalInvalid(formGroup: FormGroup){
     const intervalFrom = formGroup.get('intFrom')!.value;
     const intervalTo = formGroup.get('intTo')!.value;
@@ -126,6 +102,24 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
 
     })
   }
+
+  // for date time
+
+convertToUTC(timecontrol: any): any {
+  const selectedTime = timecontrol.value;
+
+  if (selectedTime) {
+    const timeOnly = new Date();
+    timeOnly.setHours(selectedTime.getHours());
+    timeOnly.setMinutes(selectedTime.getMinutes());
+    timeOnly.setSeconds(selectedTime.getSeconds());
+
+
+    const utcTime = this.datePipe.transform(timeOnly, 'HH:mm:ss', 'UTC');
+
+    return utcTime;
+  }
+}
   onSwitcherChange(e,data){
 
       for(let item of data){
@@ -158,21 +152,5 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
     this.time2Sub$.unsubscribe()
 
   }
-// for date time
 
-convertToUTC(timecontrol: any): any {
-  const selectedTime = timecontrol.value;
-
-  if (selectedTime) {
-    const timeOnly = new Date();
-    timeOnly.setHours(selectedTime.getHours());
-    timeOnly.setMinutes(selectedTime.getMinutes());
-    timeOnly.setSeconds(selectedTime.getSeconds());
-
-
-    const utcTime = this.datePipe.transform(timeOnly, 'HH:mm:ss', 'UTC');
-
-    return utcTime;
-  }
-}
 }

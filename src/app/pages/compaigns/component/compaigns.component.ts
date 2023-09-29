@@ -109,7 +109,6 @@ this.getDevices();
         )
       }
 
-      console.log("devices",alldevices)
       this.devices = alldevices.map(res=>{
         return {
           title:res.deviceName,
@@ -161,7 +160,7 @@ this.getCompaigns(this.deviceId);
     this.loading = true;
     this.compaignsService.getCampaigns(email,shows,pageNum,search,deviceId).subscribe(
       (res)=>{
-        this.loading = false;
+
         this.dataSource=new MatTableDataSource<compaignDetails>(res);
         if(search!=""){
             this.length=res.length;
@@ -177,12 +176,11 @@ this.getCompaigns(this.deviceId);
 
 
         }
-        console.log(res)
-
+        this.loading = false;
       },
       (err)=>{
-       this.loading = false;
-       this.length=0;
+        this.length=0;
+        this.loading = false;
 
       }
     )
@@ -191,13 +189,13 @@ compaignsCount(deviceId){
   let email=this.compaignsService.email;
   this.compaignsService.compaignsCount(email,deviceId).subscribe(
     (res)=>{
-      this.loading = false;
       this.length=res;
+      this.loading = false;
     }
     ,(err)=>{
-      this.loading = false;
 
       this.length=0;
+      this.loading = false;
 
     }
   )

@@ -12,7 +12,6 @@ const routes: Routes = [
       {
         path: "login",
 
-
         loadChildren:()=>
         import("./../../pages/login/login.module").then((m)=>m.LoginModule)
       },
@@ -23,7 +22,7 @@ const routes: Routes = [
       },
       {
         path: "verification",
-        canActivate:[AuthGuard],
+        canActivate:[AuthGuard],data:{name:"verification"},
         loadChildren:()=>
         import("./../../pages/login/components/verify/verify.module").then((m)=>m.VerifyModule)
       }
