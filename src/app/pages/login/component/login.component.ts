@@ -64,6 +64,7 @@ userInfo:any;
       this.authService.setUserData(this.userInfo,res.refreshToken);
       localStorage.removeItem("email")
       localStorage.setItem("email",res.email)
+      this.authService.setFromValue("login")
 
       this.sendCode();
       this.router.navigateByUrl('verification')

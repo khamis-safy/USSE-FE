@@ -12,6 +12,7 @@ import { MessagesService } from 'src/app/pages/messages/messages.service';
 import { compaignDetails } from 'src/app/pages/compaigns/campaigns';
 import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
 import { TranslateService } from '@ngx-translate/core';
+import { UsersService } from 'src/app/pages/users/users.service';
 
 interface ComponentData {
   contactsData?: { contacts: Contacts[], remove: boolean },
@@ -20,6 +21,9 @@ interface ComponentData {
   listsData?: { contacts: Contacts[], list: string[], lists: ListData[] },
   messagesData?: { messages: Message[] },
   compaignData?: { compaignId: string, action: string },
+  users:{userEmail:string,customerEmail:string}
+
+
 
 }
 @Component({
@@ -45,6 +49,7 @@ export class DeleteModalComponent implements OnInit {
   isLists: boolean = false;
   isMessages: boolean = false;
   isCampaigns: boolean = false;
+  isUsers:boolean=false
   constructor(
     private devicesService: DevicesService,
     private templatesService: TemplatesService,
@@ -52,9 +57,11 @@ export class DeleteModalComponent implements OnInit {
     private messageService: MessagesService,
     private toaster: ToasterServices,
     private compaignsService: CompaignsService,
+    private usersService:UsersService,
     public dialogRef: MatDialogRef<DeleteModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ComponentData,
-    private translate:TranslateService
+    private translate:TranslateService,
+    
   ) {
   }
 
@@ -66,6 +73,8 @@ export class DeleteModalComponent implements OnInit {
       this.isTemplates = false;
       this.isLists = false;
       this.isMessages = false
+      this.isUsers=false
+
       this.body = this.data.contactsData.contacts.map(res => res.id)
       this.numOfItems = this.body.length;
 
@@ -102,6 +111,7 @@ export class DeleteModalComponent implements OnInit {
       this.isTemplates = false;
       this.isLists = true;
       this.isMessages = false;
+      this.isUsers=false
 
     }
     else if (this.data.messagesData) {
@@ -110,6 +120,7 @@ export class DeleteModalComponent implements OnInit {
       this.isTemplates = false;
       this.isLists = false;
       this.isMessages = true;
+      this.isUsers=false
 
 
       this.body = this.data.messagesData.messages.map(res => res.id);
@@ -123,6 +134,7 @@ export class DeleteModalComponent implements OnInit {
       this.isTemplates = true;
       this.isLists = false;
       this.isMessages = false;
+      this.isUsers=false
 
     }
     else if (this.data.compaignData) {
@@ -132,8 +144,16 @@ export class DeleteModalComponent implements OnInit {
       this.isLists = false;
       this.isMessages = false;
       this.isCampaigns = true;
-      console.log("is compaigns", this.isCampaigns)
+      this.isUsers=false
 
+    }
+    else if(this.data.users){
+      this.isContacts = false;
+      this.isDevices = false;
+      this.isTemplates = false;
+      this.isLists = false;
+      this.isMessages = false;
+      this.isUsers=true
     }
     else {
       this.isContacts = false;
@@ -142,6 +162,7 @@ export class DeleteModalComponent implements OnInit {
       this.isLists = false;
       this.isMessages = false;
       this.isCampaigns = false;
+      this.isUsers=false
 
     }
 
@@ -379,7 +400,25 @@ export class DeleteModalComponent implements OnInit {
 
 
 
+deleteUser(){
+  this.usersService.deleteUser(this.data.users.customerEmail,this.data.users.userEmail).subscribe(
+    (res) => {
+      this.isLoading = false
 
+      this.onClose(true);
+
+      this.toaster.success(this.translate.instant("COMMON.DELETE_MESSAGES"))
+
+
+    },
+    (err) => {
+      this.isLoading = false
+      this.onClose();
+
+    }
+
+  )
+}
 
 submit() {
   this.isLoading = true;
@@ -420,7 +459,9 @@ submit() {
     }}
 
 
-
+else if(this.isUsers){
+  this.deleteUser();
+}
     else {
       this.deleteDevice();
     }

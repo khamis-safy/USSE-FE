@@ -10,11 +10,9 @@ export class NavComponent {
 language:string=localStorage.getItem("currentLang")=="ar"?"العربية":"English";
 currentLang:string;
 constructor(private translationService: TranslationService) {
-  this.currentLang=localStorage.getItem("currentLang") || "en";
-  translationService.setLanguage(this.currentLang)
+  
 }
 switchLanguage(lang: string) {
-  this.translationService.setLanguage(lang);
   localStorage.setItem("currentLang",lang);
   location.reload()
 

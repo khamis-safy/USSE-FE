@@ -61,7 +61,7 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>{{ 'ACTION' | translate }}</th>
           <td mat-cell *matCellDef="let element">
-            <div class="d-flex align-items-center pointer text-primary-800" (click)="openEditModal(element)">
+            <div class="d-flex align-items-center justify-content-center pointer text-primary-800" (click)="openEditModal(element)">
               <mat-icon class="mat-icon" color="primary">edit</mat-icon>
               <span class="txt-sm edit">{{ 'EDIT' | translate }}</span>
             </div>

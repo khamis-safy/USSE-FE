@@ -170,7 +170,7 @@ else{
 
       this.getDevicePermission(this.deviceId);
 
-        if(this.messageService.selectedDeviceId ==""){
+        if(this.authService.selectedDeviceId ==""){
 
           this.form.patchValue({
           devicesData: {
@@ -181,8 +181,8 @@ else{
           })
         }
         else{
-          let selected= this.devices.find((device)=>device.value==this.messageService.selectedDeviceId)
-          this.deviceId=this.messageService.selectedDeviceId;
+          let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
+          this.deviceId=this.authService.selectedDeviceId;
           this.form.patchValue({
             devicesData: {
             title:selected.title,
@@ -256,7 +256,7 @@ else{
     }
     onSelect(device){
       this.deviceId=device.value;
-      this.messageService.selectedDeviceId=device.value;
+      this.authService.selectedDeviceId=device.value
       this.getMessages(this.deviceId);
       this.getDevicePermission(this.deviceId);
           }

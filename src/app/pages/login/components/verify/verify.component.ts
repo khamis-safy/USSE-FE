@@ -37,6 +37,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
   clearLocalStorage() {
     // Clear the local storage when the 'beforeunload' event is triggered
     localStorage.removeItem("email")
+    this.router.navigateByUrl("/login")
   }
 
   ngOnDestroy() {
@@ -110,36 +111,53 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
       .map(key => this.verificationForm.controls[key].value)
       .join('');
     if (code.length === 6) {
+      const from =this.authService.getFromValue();
+      if(from=="login"){
+        
+        // Send verification request using code
+        let token=this.authService.getToken()
+        this.isLoading=true
+  
+        // const token=localStorage.getItem("token");
+        this.verificatioinService.confirmEmail(code,token).subscribe(
+          (res)=>{
+            this.isLoading=false
+  
+            this.invalid=false;
+  
+            // update local storage
+            this.authService.saveDataToLocalStorage(this.authService.getUserData());
+            this.authService.updateUserInfo()
+            this.loginService.storeRefreshTokenInCookie(token);
+            setInterval(() => {
+              this.refreshToken();
+            }, 60 * 60 * 1000); // 1 hour in milliseconds
+  
+            this.router.navigateByUrl('messages')
+          },
+          (err)=>{
+            this.isLoading=false
+  
+            this.invalid=true;
+            console.log(err)
+          }
+        )
+      }
+      else{
+        this.isLoading=true
 
-      // Send verification request using code
-      let token=this.authService.getToken()
-      this.isLoading=true
+        this.verificatioinService.confirmCode(code,this.authService.getEmail()).subscribe(
+          (res)=>{
+            this.isLoading=false
+  
+            this.invalid=false;
+            this.authService.setCode(code)
+            this.router.navigateByUrl('change-Passward')
 
-      // const token=localStorage.getItem("token");
-      console.log(code)
-      this.verificatioinService.confirmEmail(code,token).subscribe(
-        (res)=>{
-          this.isLoading=false
+          }
+        )
 
-          this.invalid=false;
-
-          // update local storage
-          this.authService.saveDataToLocalStorage(this.authService.getUserData());
-          this.authService.updateUserInfo()
-          this.loginService.storeRefreshTokenInCookie(token);
-          setInterval(() => {
-            this.refreshToken();
-          }, 60 * 60 * 1000); // 1 hour in milliseconds
-
-          this.router.navigateByUrl('messages')
-        },
-        (err)=>{
-          this.isLoading=false
-
-          this.invalid=true;
-          console.log(err)
-        }
-      )
+      }
 
     }
   }

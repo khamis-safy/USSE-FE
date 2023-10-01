@@ -153,8 +153,8 @@ getListData(){
 
 
   openSnackBar(){
-    let message = `${this.deletedLists.length} Item(s) Deleted`;
-    let action ="Undo"
+    let message = `${this.deletedLists.length} ${this.translate.instant("Item(s) Deleted")}`;
+    let action =this.translate.instant("Undo")
     let snackBarRef=this.snackBar.open(message,action,{duration:4000});
     snackBarRef.onAction().subscribe(()=>{
       this.undoDelete();

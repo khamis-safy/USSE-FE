@@ -448,7 +448,23 @@
 "Your account is not active , please contact the support to activate it":"حسابك غير نشط ، يرجى الاتصال بالدعم لتفعيله",
 "Ended":"انتهت",
 "ITEMS_PER_PAGE":"عدد العناصر لكل صفحة:",
-"OF_KEYWORD":"من"
+"OF_KEYWORD":"من",
+"DELETE_USER_MESSAGE":"هل أنت متأكد من أنك تريد إزالة هذا المستخدم",
+"One user removed":"تمت إزالة مستخدم واحد",
+"Item(s) Deleted":"تم حذف العنصر (العناصر)",
+"Undo":"تراجع",
+"Forgot Password?":"نسيت كلمة المرور؟",
+"Reset password":"إعادة تعيين كلمة المرور",
+"Forgot your password?":"هل نسيت كلمة المرور؟",
+"Recover_text":"استرداد حسابك. سنرسل لك رابطا لتغيير كلمة المرور الخاصة بك.",
+"SUMBIT":"تأكيد",
+"Back_to_login":"العودة إلى تسجيل الدخول",
+"PASS_CHANGED":"تم تغيير كلمة المرور بنجاح"
+
+
+
+
+
 
 
 

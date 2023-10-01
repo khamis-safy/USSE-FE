@@ -451,7 +451,18 @@
 "Your account is not active , please contact the support to activate it":"Your account is not active , please contact the support to activate it",
 "Ended":"Ended",
 "ITEMS_PER_PAGE":"Items per page:",
-"OF_KEYWORD":"of"
+"OF_KEYWORD":"of",
+"DELETE_USER_MESSAGE":"are you sure you want to remove this user",
+"One user removed":"One user removed",
+"Item(s) Deleted":"Item(s) Deleted",
+"Undo":"Undo",
+"Forgot Password?":"Forgot Password?",
+"Reset password":"Reset password",
+"Forgot your password?":"Forgot your password?",
+"Recover_text":"Recover your account. We will send you a link to change your password.",
+"SUMBIT":"submit",
+"Back_to_login":"Back To Login",
+"PASS_CHANGED":"password changed successfully"
 
 
 

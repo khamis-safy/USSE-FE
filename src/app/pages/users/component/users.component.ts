@@ -13,6 +13,8 @@ import { Users } from '../users';
 import { EditUserComponent } from '../components/editUser/editUser.component';
 import { TranslateService } from '@ngx-translate/core';
 import { USERSHEADERS } from '../constants/constants';
+import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -43,6 +45,7 @@ export class UsersComponent implements OnInit ,OnDestroy{
       private toaster: ToasterServices,
       private authService:AuthService,
       private translate: TranslateService,
+      private snackBar: MatSnackBar,
 
       private userService:UsersService
       ) { };
@@ -183,7 +186,43 @@ console.log("from user component",token)
 
 
     }
+    openSnackBar(customerEmail,userEmail){
+      let message = this.translate.instant("One user removed");
+      let action =this.translate.instant("Undo")
+      let snackBarRef=this.snackBar.open(message,action,{duration:4000});
+      snackBarRef.onAction().subscribe(()=>{
+        this.undoDelete(customerEmail,userEmail);
+      })
+    }
+    undoDelete(customerEmail,userEmail){
+      
+      this.userService.unDeleteUser(customerEmail,userEmail).subscribe(
+        (res)=>{
+          this.getUsers()
 
+        }
+      )
+  
+    }
+    deleteUser(element){
+      const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+    dialogConfig.data =
+    {
+      users:{userEmail:element.email,customerEmail:this.authService.getUserInfo().email}
+    }
+    const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.openSnackBar(this.authService.getUserInfo().email,element.email)
+        this.getUsers()
+      }
+    });
+    }
     ngOnDestroy(){};
 }
 

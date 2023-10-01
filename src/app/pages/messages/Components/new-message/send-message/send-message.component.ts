@@ -17,7 +17,7 @@ export class SendMessageComponent implements OnInit ,OnDestroy{
   @ViewChild("dateTime") dateTime!: ElementRef;
   devices:SelectOption[];
   deviceLoadingText:string='Loading ...';
-  devicesData = new FormControl([]);
+  devicesData:any = new FormControl([]);
   dateFormControl:any = new FormControl('');
   @Output() isSelectedDevices = new EventEmitter<boolean>(true);
 
@@ -79,6 +79,31 @@ else{
             value:res.id
           }
         });
+        
+        if(this.authService.selectedDeviceId ==""){
+
+          this.form.patchValue({
+          devicesData: {
+          title:this.devices[0]?.title,
+          value:this.devices[0]?.value
+          }
+
+          })
+        }
+        else{
+          let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId);
+          if(selected){
+
+            this.deviceId=this.authService.selectedDeviceId;
+            this.form.patchValue({
+              devicesData: {
+              title:selected.title,
+              value:selected?.value
+              }
+  
+              })
+          }
+        }
         console.log(this.devices)
         if(activeDevices.length==0){
           this.deviceLoadingText='No Results'
@@ -95,6 +120,8 @@ else{
   }
   onSelect(event){
     this.deviceId=event.value;
+    this.authService.selectedDeviceId=event.value
+
     this.isSelectedDevices.emit(true);
 
   }

@@ -22,7 +22,7 @@ export class ToasterServices implements OnInit {
 @Input() message:string = '';
 @Input() state: 'error' | 'warning' | 'success' | '' = 'success';
 @Input() icon:string = '';
-@Input() duration: number = 5000;
+@Input() duration: number = 3000;
 progress = 100;
   constructor(private viewContainerRef : ViewContainerRef) { }
 

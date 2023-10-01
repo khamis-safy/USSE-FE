@@ -1,0 +1,75 @@
+<div class="ps-0 bg-primary-100">
+  <div class="row">
+    <div
+    class=" bg-primary-200  vh-100 col-md-4 p-5 d-flex flex-column justify-content-center align-items-center"      style="box-shadow: 0px 11px 22px 0px #00000029"
+      style="box-shadow: 0px 11px 22px 0px #00000029"
+    >
+    <img src="/assets/images/colored logo_name side.svg" alt="myLogo" style="width:65%" class="mb-5" />
+    <div class="col-md-12  recover-text mb-3">
+      <h2 class="font-800 text-black txt-xxlg">{{'Forgot your password?' |translate}}</h2>
+      <p class="txt-lg2 font-300 text-black " style="line-height: 1.5;">{{'Recover_text' |translate}}</p>
+    </div>
+      <div class="col-md-12  ">
+       
+        <form [formGroup]="form" class="w-100">
+            <!-- email -->
+            <div class="col-md-12 mb-5  ">
+              <us-input
+                [isDisabled]="false"
+                value=""
+                [placeholder]="'ENTER_YOUR_EMAIL' | translate"
+                [optional]="false"
+                type="text"
+                [fullWidth]="true"
+                formControlName="email"
+                label="{{ 'EMAIL' | translate }}"
+                [error]="email.touched && (email.errors?.required || email.errors?.pattern)"
+                [hintText]="
+                  email.touched && email.errors?.required
+                    ? ('requiredFieldHint' | translate)
+                    : email.dirty && email.errors?.pattern
+                    ? ('INVALID_EMAIL' | translate)
+                    : ''
+                "
+              ></us-input>
+            </div>
+         
+          <div class="w-100 mb-4">
+            <us-button class="special-button"
+              label="{{ 'Reset password' | translate }}"
+              [fill]="true"
+              [size]="'xl'"
+              [loading]="loading"
+              [disabled]="loading || form.invalid"
+              [appearance]="'primary'"
+              (clicked)="sendCode()"
+              [fullWidth]="true"
+            ></us-button>
+          </div>
+          <div class="w-100">
+            <us-button class="special-button"
+              label="{{ 'CANCEL' | translate }}"
+              [fill]="false"
+              [size]="'xl'"
+              [loading]="false"
+              [appearance]="'primary'"
+              (clicked)="returnToLogin()"
+              [fullWidth]="true"
+            ></us-button>
+          </div>
+        </form>
+       
+      </div>
+
+    
+    </div>
+    <div
+    class="col-md-8  pt-1 d-flex flex-column align-items-center justify-content-center text-center "    >
+    >
+      <div class=" text-center mx-auto">
+        <img src="/assets/images/Forgot password-rafiki 1.svg" alt="connectedLogo" class="w-100 text-center mx-auto" />
+        
+      </div>
+    </div>
+  </div>
+</div>

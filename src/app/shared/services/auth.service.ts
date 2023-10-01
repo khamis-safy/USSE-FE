@@ -30,6 +30,10 @@ interface DeviceData {
 })
 
 export class AuthService {
+  selectedDeviceId:string="";
+  code!:string;
+  email:string;
+  from!:string;
   userData!:UserData;
   resfreshToken!:string;
 userInfo!:UserData;
@@ -91,7 +95,24 @@ async hasPermission(routeName: string) {
     return true;
   }
 }
-
+setCode(code){
+  this.code=code
+}
+getCode(){
+  return this.code
+}
+setEmail(email){
+this.email=email
+}
+getEmail(){
+return this.email
+}
+setFromValue(from){
+  this.from=from
+}
+getFromValue(){
+  return this.from
+}
 getPermissionsObservable(): Observable<PermissionData[]> {
 return this.permissionsSubject.asObservable();
 }

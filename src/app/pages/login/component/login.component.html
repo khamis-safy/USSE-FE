@@ -24,7 +24,7 @@
               [error]="email.touched && (email.errors?.required || email.errors?.pattern)"
               [hintText]="
                 email.touched && email.errors?.required
-                  ? ('THIS_FIELD_IS_REQUIRED' | translate)
+                  ? ('requiredFieldHint' | translate)
                   : email.dirty && email.errors?.pattern
                   ? ('INVALID_EMAIL' | translate)
                   : ''
@@ -45,11 +45,13 @@
               [error]="password.touched && password.errors?.required"
               [hintText]="
                 password.touched && password.errors?.required
-                  ? ('THIS_FIELD_IS_REQUIRED' | translate)
+                  ? ('requiredFieldHint' | translate)
                   : ''
               "
             ></us-input>
+            <div class="w-100 my-3 forgot-pass"><a routerLink="/forgot-Passward" class="text-primary-800 txt-sm" >{{'Forgot Password?' | translate}}</a></div>
           </div>
+
           <div class="w-100">
             <us-button
               label="{{ 'LOGIN' | translate }}"

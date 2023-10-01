@@ -8,7 +8,7 @@ import { __values } from 'tslib';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  isAllowed:boolean;
+  isAllowed:boolean=true;
   constructor(private authService:AuthService,
     private router:Router,
     private permissionService:PermissionsService)
@@ -34,12 +34,12 @@ async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
       if(customerId){
 
-        if(customerId!=""){
+        if(customerId!="" && this.authService.isLoggedIn()){
 
           this.authService.setUserDataObservable(this.permissionService.getUserByEmail(email));
+          await this.authService.hasPermission(routeName).then((__values)=>this.isAllowed=__values)
         }
       }
-     await this.authService.hasPermission(routeName).then((__values)=>this.isAllowed=__values)
       if(this.authService.isLoggedIn() && this.isAllowed )
       {
         console.log("from guard",this.isAllowed)

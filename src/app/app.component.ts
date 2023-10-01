@@ -21,7 +21,6 @@ export class AppComponent implements OnInit {
 
   constructor(private plugin:PluginsService,
     public translate:TranslateService,
-    private languageService:TranslationService,
     private initPaginationService:InitPaginationService,
     private loginService:LoginService,
     private authService:AuthService){

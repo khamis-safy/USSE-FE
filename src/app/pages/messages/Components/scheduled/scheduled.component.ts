@@ -113,7 +113,8 @@ export class ScheduledComponent implements OnInit  {
         this.noData=false
 
         this.deviceId=res[0].id;
-        if(this.messageService.selectedDeviceId ==""){
+
+        if(this.authService.selectedDeviceId ==""){
 
           this.form.patchValue({
           devicesData: {
@@ -124,8 +125,8 @@ export class ScheduledComponent implements OnInit  {
           })
         }
         else{
-          let selected= this.devices.find((device)=>device.value==this.messageService.selectedDeviceId)
-          this.deviceId=this.messageService.selectedDeviceId;
+          let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
+          this.deviceId=this.authService.selectedDeviceId;
           this.form.patchValue({
             devicesData: {
             title:selected.title,
@@ -143,7 +144,7 @@ export class ScheduledComponent implements OnInit  {
 }
   onSelect(device){
     this.deviceId=device.value;
-    this.messageService.selectedDeviceId=device.value;
+    this.authService.selectedDeviceId=device.value
 
     this.getMessages(this.deviceId)
         }

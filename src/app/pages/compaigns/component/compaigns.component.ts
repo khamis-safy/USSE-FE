@@ -115,7 +115,7 @@ this.getDevices();
           value:res.id
         }
       });
-      if(this.devices.length==0){
+      if(this.devices.length==0){ 
         this.deviceLoadingText='No Results';
         // set no data design
         this.noData=true
@@ -127,14 +127,29 @@ this.getDevices();
 
       this.getDevicePermission(this.deviceId);
 
-        this.getCompaigns(this.deviceId);
-          this.form.patchValue({
-            devicesData: {
-              title:alldevices[0]?.deviceName,
-              value:alldevices[0]?.id
-            }
+      if(this.authService.selectedDeviceId ==""){
 
-   })
+        this.form.patchValue({
+        devicesData: {
+        title:alldevices[0]?.deviceName,
+        value:alldevices[0]?.id
+        }
+
+        })
+      }
+      else{
+        let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
+        this.deviceId=this.authService.selectedDeviceId;
+        this.form.patchValue({
+          devicesData: {
+          title:selected.title,
+          value:selected?.value
+          }
+
+          })
+      }
+        this.getCompaigns(this.deviceId);
+
     }},
     (err)=>{
 
@@ -246,7 +261,6 @@ compaignsCount(deviceId){
 
   }
   deleteCampaign(element){
-    console.log("delete compaign")
 
     const dialogConfig=new MatDialogConfig();
     dialogConfig.disableClose = true;

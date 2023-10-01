@@ -8,15 +8,18 @@
     </div>
     <!-- modal body -->
     <div class="content d-flex justify-content-center align-items-center flex-column gap-4">
+      <ng-container *ngIf="!isDevices && !isCampaigns && !isTemplates && !isUsers">
       <div class="txt-lg" *ngIf="!isTemplates">
         <!-- number of selected items -->
-        <ng-container *ngIf="!isDevices && !isCampaigns">
           <span style="font-weight: 700;">{{ numOfItems }} {{ 'ITEMS_SELECTED' | translate }}</span>
-        </ng-container>
-      </div>
+        </div>
+      </ng-container>
       <!-- displayed message -->
       <ng-container *ngIf="isDevices">
         <p class="txt-lg my-2 text-center" style="line-height: 1.3;">{{ 'DELETE_DEVICE_MESSAGE' | translate }}</p>
+      </ng-container>
+      <ng-container *ngIf="isUsers">
+        <p class="txt-lg my-2 text-center" style="line-height: 1.3;">{{ 'DELETE_USER_MESSAGE' | translate }}</p>
       </ng-container>
       <ng-container *ngIf="isTemplates">
         <p class="txt-lg my-2 text-center" style="line-height: 1.3;">{{ 'DELETE_TEMPLATE_MESSAGE' | translate }}</p>

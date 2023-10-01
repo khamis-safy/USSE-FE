@@ -1,0 +1,73 @@
+<div class="container-fluid ps-0 bg-primary-100">
+  <div class="row h-100">
+    <div
+    class=" bg-primary-200 text-center vh-100 col-md-4 p-5 d-flex flex-column justify-content-center align-items-center"      style="box-shadow: 0px 11px 22px 0px #00000029"
+    >
+    <img src="/assets/images/colored logo_name side.svg" alt="myLogo" style="width:65%" class="my-5" />
+      <div class="col-md-12 ">
+      
+        <form [formGroup]="form" class="w-100">
+             <!-- Password -->
+             <div class="col-md-12 mb-4 special-input">
+              <us-input
+                class="my-2"
+                [label]="'Password' | translate"
+                [type]="'password'"
+                [placeholder]="'Enter your password' | translate"
+                formControlName="password"
+                [error]="password.touched && password.errors?.required"
+                [hintText]="password.touched && password.errors?.required ? ('requiredFieldHint' | translate ): ''"
+              ></us-input>
+              <!-- Hint / caption -->
+              <div *ngIf="password.dirty && password.errors?.pattern" class="hint mt-2 error">
+                <i class="si-info" style="align-self: start; margin-top: 4px;"></i>
+                <p class="txt txt-xs hint mt-2 error">
+                  {{ 'PASSWORD_HINT' | translate }}
+                </p>
+              </div>
+            </div>
+  
+            <!-- Confirm Password -->
+            <div class="col-md-12 mb-5 special-input">
+              <us-input
+                class="my-2"
+                [label]="'Confirm Password' | translate"
+                [type]="'password'"
+                [placeholder]="'Enter your password' | translate"
+                formControlName="confirmPass"
+                [error]="confirmPass.touched && (confirmPass.errors?.required || confirmPass.touched && confirmPass.value != password.value)"
+                [hintText]="confirmPass.touched && confirmPass.errors?.required ?( 'requiredFieldHint' | translate) : confirmPass.touched && confirmPass.value != password.value ? ('Passwords Don\'t Match' | translate ): ''"
+              ></us-input>
+            </div>
+       
+          <div class="w-100  mt-4">
+            <us-button class="special-button"
+              label="{{ 'SUMBIT' | translate }}"
+              [fill]="true"
+              [size]="'xl'"
+              [loading]="loading"
+              [disabled]="loading || form.invalid"
+              [appearance]="'primary'"
+              (clicked)="confirm()"
+              [fullWidth]="true"
+            ></us-button>
+          </div>
+        
+        </form> 
+        <div class="w-100  mt-4 d-flex justify-content-center align-items-center">
+          <span class="font-600 text-primary-800 txt-md pointer" (click)="backToLogin()">  {{ 'Back_to_login' | translate }}</span>
+        </div>
+      </div>
+
+     
+      
+    </div>
+    <div
+    class="col-md-8  pt-1 d-flex flex-column align-items-center justify-content-center text-center "    >
+      <div class="text-center mx-auto">
+        <img src="/assets/images/Forgot password-rafiki 1.svg" alt="connectedLogo" class="w-100 text-center mx-auto" />
+      
+      </div>
+    </div>
+  </div>
+</div>

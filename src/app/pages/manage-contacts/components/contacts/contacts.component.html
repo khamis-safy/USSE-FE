@@ -62,12 +62,12 @@
       <!-- Lists Column -->
       <ng-container matColumnDef="Lists">
         <th mat-header-cell *matHeaderCellDef style="text-align: center;" > {{ 'LISTS' | translate }} </th>
-        <td mat-cell *matCellDef="let element" style=" width: 340px;">
-          <div  class=" position-relative" style=" width: 280px;">
-            <div class="d-flex gap-2 overflow-hidden lists-wrapper px-4" #listsWrapper  style="width: 260px;">
+        <td mat-cell *matCellDef="let element" >
+          <div  class=" position-relative lists" >
+            <div class="d-flex gap-2 overflow-hidden lists-wrapper px-4" #listsWrapper >
               <div *ngFor="let item of element.lists" class="listName bg-white text-nowrap px-2 py-1 rounded-2">
                 {{item.name}}
-              </div>
+              </div> 
             </div>
             <ng-container *ngIf="element.lists.length>1">
               <div   (click)="scrollRight(listsWrapper)" class="right-arrow position-absolute end-0 top-0 h-100 d-flex justify-content-end align-items-center" style="width: 50%">
@@ -97,7 +97,7 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> {{ 'ACTION' | translate }} </th>
         <td mat-cell *matCellDef="let element">
-            <div class="d-flex align-items-center pointer text-primary-800" (click)="openEditModal(element)">
+            <div class="d-flex align-items-center pointer justify-content-center text-primary-800" (click)="openEditModal(element)">
                 <mat-icon class="mat-icon" color="primary" >edit</mat-icon>
                 <span class="txt-sm edit">{{ 'EDIT' | translate }}</span>
             </div>

@@ -26,4 +26,8 @@ export class VerifyService {
     }
     return this.http.put(`${env.api}Auth/confirmEmail?code=${code}`,data)
   }
+  confirmCode(code:string,email:string):Observable<any>{
+  
+    return this.http.put(`${env.api}Auth/confirmCode?code=${code}&email${email}`,null)
+  }
 }

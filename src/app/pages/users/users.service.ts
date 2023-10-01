@@ -52,19 +52,28 @@ export class UsersService {
  getUserByEmail(email:string):Observable<Users>{
   return this.http.get<Users>(`${env.api}Auth/getUserByEmail?Email=${email}`)
 }
-executePermissions(permissions:{name:string,value:string}[]):Permission{
-  const accessMap: { [key: string]: boolean } = {
-    ReadOnly: true,
-    FullAccess: true,
-    None: false,
-  };
+// executePermissions(permissions:{name:string,value:string}[]):Permission{
+//   const accessMap: { [key: string]: boolean } = {
+//     ReadOnly: true,
+//     FullAccess: true,
+//     None: false,
+//   };
 
-  const singlePermissionObject: Permission = permissions.reduce((accumulator, permission) => {
-    const permissionName = permission.name as keyof Permission;
-    accumulator[permissionName] = accessMap[permission.value];
-    return accumulator;
-  }, {} as Permission);
-return singlePermissionObject}
+//   const singlePermissionObject: Permission = permissions.reduce((accumulator, permission) => {
+//     const permissionName = permission.name as keyof Permission;
+//     accumulator[permissionName] = accessMap[permission.value];
+//     return accumulator;
+//   }, {} as Permission);
+// return singlePermissionObject
+// }
 
+deleteUser(customerEmail:string, userEmail:string):Observable<any>{
+  return this.http.put<any>(`${env.api}Auth/deleteUser?userEmail=${userEmail}&customerEmail=${customerEmail}`,null)
+  }
+
+unDeleteUser(customerEmail:string, userEmail:string):Observable<any>{
+  return this.http.put<any>(`${env.api}Auth/unDeleteUser?userEmail=${userEmail}&customerEmail=${customerEmail}`,null)
+  }
+  
 
 }

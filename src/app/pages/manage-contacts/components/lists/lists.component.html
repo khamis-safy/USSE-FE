@@ -10,7 +10,7 @@
         </div>
       </div>
 
-      <mat-form-field class="us-select">
+      <mat-form-field class="us-select"> 
         <mat-label class="txt-caption">
           <img src="assets/icons/display.svg" alt="" class="m-2" width="15">
           {{ 'DISPLAY_LABEL' | translate }}
@@ -68,7 +68,7 @@
         <ng-container matColumnDef="edit">
           <th mat-header-cell *matHeaderCellDef> {{ 'ACTION_COLUMN' | translate }} </th>
           <td mat-cell *matCellDef="let element">
-            <div class="d-flex align-items-center pointer text-primary-800" (click)="openEditModal(element) ;cellClick=true">
+            <div class="d-flex align-items-center justify-content-center pointer text-primary-800" (click)="openEditModal(element) ;cellClick=true">
               <mat-icon class="mat-icon" color="primary" >edit</mat-icon>
               <span class="txt-sm edit">{{ 'EDIT_ACTION' | translate }}</span>
             </div>
