@@ -42,12 +42,36 @@ export class ForgotPassComponent implements OnInit ,OnDestroy{
       )
     }
     sendCode(){
-      this.sendCodeToEmail().subscribe(
+      this.sendCodeToEmail();
+      this.authService.setFromValue("forgot")
+      this.authService.setEmail(this.form.value.email)
+      this.router.navigateByUrl('verification')
+      // this.sendCodeToEmail().subscribe(
+  
+      //   (res)=>{
+      //     this.authService.setFromValue("forgot")
+      //     this.authService.setEmail(this.form.value.email)
+      //     this.router.navigateByUrl('verification')
+      //     this.loading=false;
+  
+      //   },
+      //   (err)=>{
+      //     this.loading=false;
+      //   }
+      // );
+     
+
+    }
+    returnToLogin(){
+      this.router.navigateByUrl("login")
+
+    }
+    sendCodeToEmail(){
+      this.loading=true;
+      return this.loginService.sendEmailCode(this.form.value.email).subscribe(
   
         (res)=>{
-          this.authService.setFromValue("forgot")
-          this.authService.setEmail(this.form.value.email)
-          this.router.navigateByUrl('/verification')
+        
           this.loading=false;
   
         },
@@ -56,15 +80,6 @@ export class ForgotPassComponent implements OnInit ,OnDestroy{
         }
       );
      
-
-    }
-    returnToLogin(){
-      this.router.navigateByUrl("/login")
-
-    }
-    sendCodeToEmail(){
-      this.loading=true;
-      return this.loginService.sendEmailCode(this.form.value.email)
   
     }
 }

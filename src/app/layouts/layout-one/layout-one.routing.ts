@@ -22,7 +22,6 @@ const routes: Routes = [
       },
       {
         path: "verification",
-        canActivate:[AuthGuard],data:{name:"verification"},
         loadChildren:()=>
         import("./../../pages/login/components/verify/verify.module").then((m)=>m.VerifyModule)
       },

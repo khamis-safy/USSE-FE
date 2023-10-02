@@ -51,7 +51,8 @@ export class ResetPassComponent implements OnInit ,OnDestroy{
   }
   confirm(){
     this.loading=true;
-    this.resetPassService.changePassword(this.authService.getEmail(),this.authService.getCode(),this.form.value.password).subscribe(
+    const encodedValue = encodeURIComponent(this.form.get('password').value);
+    this.resetPassService.changePassword(this.authService.getEmail(),this.authService.getCode(),encodedValue).subscribe(
       (res)=>{
         this.toaster.success(this.translate.instant('PASS_CHANGED'))
         this.router.navigateByUrl("/login")

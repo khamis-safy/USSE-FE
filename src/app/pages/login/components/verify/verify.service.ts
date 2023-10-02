@@ -28,6 +28,6 @@ export class VerifyService {
   }
   confirmCode(code:string,email:string):Observable<any>{
   
-    return this.http.put(`${env.api}Auth/confirmCode?code=${code}&email${email}`,null)
+    return this.http.put(`${env.api}Auth/confirmCode?code=${code}&email=${email}`,null)
   }
 }
