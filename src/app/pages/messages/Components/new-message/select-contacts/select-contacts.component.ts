@@ -247,6 +247,7 @@ resetSelectedLists(){
   })
 }
 onSelectList(state,listContacts:ListContacts){
+
   listContacts.list.isExpanded=false;
 
   this.changeListSelectionState(state,listContacts);
@@ -669,6 +670,12 @@ selectAllContacts(){
 onSearch(event:string){
 
   this.getAllContacts(event)
+}
+onClose(event:string){
+  this.searchForm.patchValue({
+    contactsData:[]
+  })
+  this.allContacts=[]
 }
 onSelect(event:any){
   let contact=this.allContactsData.find((contact)=>contact.id==event.value)

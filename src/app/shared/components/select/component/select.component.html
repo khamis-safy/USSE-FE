@@ -1,3 +1,5 @@
+
+
 <section class="d-flex flex-lg-row flex-column align-items-center flex-nowrap gap-lg-4" >
   <div class="d-none d-lg-block label-widget w-25 " *ngIf="optional || label" style=" min-width: 25%;">
     <label class="txt txt-sm text-nowrap d-flex" (click)="toggleDropdown()"><span class="text-wrap text-black txt txt-sm">{{label}}</span> <span style="color: red;">{{optional ? '' :"*"}}</span></label>
@@ -129,7 +131,7 @@
       </button>
 
       <!-- List -->
-      <ng-container *ngIf="isOpen">
+      <ng-container *ngIf="isOpen && enableDropdownWhileSearching && searchText">
         <div  class="overflow" (click)="toggleDropdown()"></div>
         <ul  class="list" [ngClass]="{'custom': isCustom}" #uList>
           <div class="list_content" (scroll)="onScroll($event)">
@@ -195,9 +197,12 @@
               <!-- end nested select -->
               </ng-container>
             </ng-container>
-            <ng-container *ngIf="isLoading || !options || !options?.length || !(options | search:searchText).length">
+            <ng-container *ngIf="(isLoading || !options || !options?.length || !(options | search:searchText).length) && !enableDropdownWhileSearching">
               <label *ngIf="isLoading || !options || (!options?.length && !searchText)" class="txt txt-sm font-w-600">{{ loadingText }}</label>
               <label *ngIf="searchText && (!options?.length || !(options | search:searchText).length)" class="txt txt-sm font-w-600">{{ noResultText }}</label>
+            </ng-container>
+            <ng-container *ngIf="(isLoading || !options || !options?.length || !(options | search:searchText).length) && enableDropdownWhileSearching">
+              <label *ngIf="searchText && (!options?.length || !(options | search:searchText).length)" class="txt txt-sm font-w-600">{{ loadingText }}</label>
             </ng-container>
           </div>
         </ul>
