@@ -129,7 +129,8 @@ getUserInfo(){
      id:localStorage.getItem('id'),
      email:localStorage.getItem('email'),
      customerId:localStorage.getItem("customerId"),
-     refreshToken:this.loginService.getCookieValue("refreshToken")
+     refreshToken:this.loginService.getCookieValue("refreshToken"),
+     roles:localStorage.getItem("roles")
 
    }
  return userData;
@@ -172,6 +173,7 @@ saveDataToLocalStorage(data){
   localStorage.setItem("maskType",data.maskType)
   localStorage.setItem("phoneNumber",data.phoneNumber)
   localStorage.setItem("timeZone",data.timeZone)
+  localStorage.setItem("roles",data.roles)
 
 
 

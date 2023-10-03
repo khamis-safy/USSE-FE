@@ -227,7 +227,9 @@ else{
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-
+        if(id== this.authService.selectedDeviceId){
+          this.authService.selectedDeviceId="";
+        }
         this.getDevices();
       }
     });

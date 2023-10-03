@@ -54,7 +54,8 @@ userInfo:any;
       apiToken:res.apiToken,
       maskType:res.maskType,
       phoneNumber:res.phoneNumber,
-      timeZone:res.timeZone
+      timeZone:res.timeZone,
+      roles:res.roles[0]
     }
 
 

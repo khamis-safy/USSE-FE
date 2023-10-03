@@ -91,19 +91,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
       this.setFocus(prevDigitIndex);
     }
   }
-//   getUserPermisisons(email){
-//     this.userServiece.getUserByEmail(email).subscribe(
-//       (res)=>{
-//         this.authService.userPermissions=this.userServiece.executePermissions(res.permissions);
-//         this.authService.updateUserPermisisons(res.permissions);
-//         this.router.navigateByUrl('messages')
 
-
-//       },
-//       (err)=>{}
-//     )
-
-// }
   checkVerificationCode() {
 
 

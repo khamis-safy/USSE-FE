@@ -255,6 +255,7 @@ else{
       )
     }
     onSelect(device){
+      this.selection.clear()
       this.deviceId=device.value;
       this.authService.selectedDeviceId=device.value
       this.getMessages(this.deviceId);

@@ -15,8 +15,11 @@ import { PermissionsService } from 'src/app/shared/services/permissions.service'
 })
 
 export class SideBarComponent implements OnInit {
-  userName:string=this.authService.userInfo.userName;
+  userName:string=this.authService.getUserInfo().userName;
   chars:string=this.userName?.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
+  frontVersion:string='V 2.8.1 ';
+  backVersion:string='V 1.80';
+  role:string=this.authService.getUserInfo().roles
   show:boolean=false;
   listsArr:SelectOption[]
   displaySetting:boolean=false;

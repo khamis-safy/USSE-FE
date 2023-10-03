@@ -6,6 +6,7 @@ import { PluginsService } from 'src/app/services/plugins.service';
 import { ResetPassService } from './reset.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { Subscription, from } from 'rxjs';
 
 @Component({
   selector: 'app-reset-pass',
@@ -17,6 +18,8 @@ export class ResetPassComponent implements OnInit ,OnDestroy{
   loading;
   password:any;
   confirmPass:any;
+  supscription:Subscription;
+  valid: boolean;
   constructor( private plugin:PluginsService,
      private router:Router,
     private authService:AuthService,
@@ -28,14 +31,26 @@ export class ResetPassComponent implements OnInit ,OnDestroy{
  
 
   ngOnDestroy() {
+    this.supscription.unsubscribe()
     // Remove the event listener when the component is destroyed
     window.removeEventListener('beforeunload', this.backToLogin);
+    
   }
   ngOnInit() {
        // controls
        this.initFormControles()
        //form creation
        this.createForm();
+this.supscription=this.form.valueChanges.subscribe(
+(res)=>{
+  if(this.form.get('password').value ===this.form.get('confirmPass').value){
+    this.valid=true;
+  }
+  else{
+    this.valid=false;
+  }
+}
+)
   }
   initFormControles(){
     this.password = new FormControl('',[Validators.required,Validators.pattern(this.plugin.passReg)]);

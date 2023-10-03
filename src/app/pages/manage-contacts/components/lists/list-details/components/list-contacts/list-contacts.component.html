@@ -21,24 +21,26 @@
     <section class="table-wrapper ">
       <table matSort mat-table [dataSource]="dataSource" (matSortChange)="onSortChange($event)">
         <!-- Checkbox Column -->
-        <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox  color="ch-color"
+        <ng-container  matColumnDef="select">
+          <th class="checkBox" mat-header-cell *matHeaderCellDef>
+            <mat-checkbox
+              color="ch-color"
               (change)="$event ? toggleAllRows() : null"
               [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()"
-              [aria-label]="checkboxLabel()">
-            </mat-checkbox>
+              [aria-label]="checkboxLabel()"
+            ></mat-checkbox>
           </th>
-          <td mat-cell *matCellDef="let row">
-            <mat-checkbox color="ch-color" (click)="$event.stopPropagation() && selectedRow($event) "
-              (change)="$event ? this.selection.toggle(row): null"
+          <td  class="checkBox" mat-cell *matCellDef="let row">
+            <mat-checkbox
+              color="ch-color"
+              (click)="$event.stopPropagation() && selectedRow($event)"
+              (change)="$event ? this.selection.toggle(row) : null"
               [checked]="selection.isSelected(row)"
-              [aria-label]="checkboxLabel(row)">
-            </mat-checkbox>
+              [aria-label]="checkboxLabel(row)"
+            ></mat-checkbox>
           </td>
         </ng-container>
-
         <!-- Name Column -->
         <ng-container matColumnDef="Name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'NAME' | translate }}</th>

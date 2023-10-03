@@ -35,7 +35,7 @@ a {
       li {
         &:hover {
           a {
-            background: linear-gradient(0deg, #eef4f9, #eef4f9), #ffffff;
+            background: var(--hover-color);
             border-radius: 8px;
             color: var(--clr-primary-800) !important;
             font-weight: 500 !important;
@@ -45,13 +45,18 @@ a {
           }
         }
         .active {
-          background: linear-gradient(0deg, #eef4f9, #eef4f9), #ffffff;
+          background: var(--clr-primary-500);
           border-radius: 8px;
           color: var(--clr-primary-800) !important;
           font-weight: 500 !important;
           img{
             filter : invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
           }
+        }
+        .active {
+         &:hover{
+          background: var(--clr-primary-500);
+         }
         }
       }
     }
@@ -64,7 +69,6 @@ a {
   .user-img {
     width: 52px;
     height: 52px;
-    background: #bfdeea;
     border-radius: 50%;
     img{
       width: 100%;

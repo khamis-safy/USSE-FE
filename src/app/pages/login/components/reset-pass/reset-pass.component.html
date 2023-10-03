@@ -46,7 +46,7 @@
               [fill]="true"
               [size]="'xl'"
               [loading]="loading"
-              [disabled]="loading || form.invalid"
+              [disabled]="loading || form.invalid || !valid"
               [appearance]="'primary'"
               (clicked)="confirm()"
               [fullWidth]="true"

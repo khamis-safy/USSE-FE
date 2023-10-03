@@ -1,5 +1,5 @@
 import { SignupService } from './../signup.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PluginsService } from 'src/app/services/plugins.service';
@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit ,OnDestroy{
   isVisiblePass =false;
   isLoading = false
   userInfo:any;
@@ -23,6 +23,8 @@ export class SignupComponent implements OnInit {
   password:any;
   confirm:any;
   loading;
+  supscription: any;
+  valid: boolean;
 
   constructor(private plugin:PluginsService,
     private signupService:SignupService,
@@ -36,6 +38,16 @@ export class SignupComponent implements OnInit {
     this.initFormControles()
     //form creation
     this.createForm();
+    this.supscription=this.form.valueChanges.subscribe(
+      (res)=>{
+        if(this.form.get('password').value === this.form.get('confirm').value){
+          this.valid=true;
+        }
+        else{
+          this.valid=false;
+        }
+      }
+      )
   }
   initFormControles(){
     this.contactName = new FormControl('',[Validators.required]);
@@ -127,6 +139,11 @@ export class SignupComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this.supscription.unsubscribe()
+   
+    
+  }
 }
 
 // pass ["aaddsDD@dsfd23"],

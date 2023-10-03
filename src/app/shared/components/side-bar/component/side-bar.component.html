@@ -1,14 +1,15 @@
 <div class="bg-white sidnav-container py-md-2 py-lg-3 d-flex flex-column square scrollbar-dusty-grass square thin">
   <div (click)="$event.stopPropagation()" class="d-flex justify-content-between align-items-center user-info-container w-100">
     <div class="user-info d-flex gap-3 align-items-center">
-      <div class="user-img d-flex justify-content-center align-items-center">
+      <div class="user-img d-flex justify-content-center align-items-center bg-primary-400">
         <div class="chars text-neutral-0 txt-md">
           {{ chars }}
         </div>
       </div>
 
-      <div class="user-name text-neutral-900 txt-md">
-        {{ userName }}
+      <div class=" d-flex flex-column gap-2">
+       <span class="user-name text-neutral-900 txt-md"> {{ userName }}</span>
+       <span class="text-primary-800 txt-sm ">({{role}})</span>
       </div>
     </div>
     <div class="options_icon" (click)="showOptions();">
@@ -127,14 +128,18 @@
           <span class="txt-xs">{{ "NOTES" | translate }}</span>
         </a>
       </li> -->
+      <li class="i-help">
+        <a routerLinkActive="active" routerLink="/help" class="text-neutral-600 d-flex">
+          <div class="icon">
+            <img src="assets/icons/help-1.svg" alt="" />
+          </div>
+          <span class="txt-xs">{{ "HELP" | translate }}</span>
+        </a>
+      </li>
     </ul>
-    <div class="i-help">
-      <a routerLinkActive="active" routerLink="/help" class="text-neutral-600 d-flex">
-        <div class="icon">
-          <img src="assets/icons/help-1.svg" alt="" />
-        </div>
-        <span class="txt-xs">{{ "HELP" | translate }}</span>
-      </a>
+    <div class="versions pt-3 text-primary-800 " style="border-top: 1px solid #C7C6C6; height: 50px;">
+      <span>{{frontVersion}} / {{backVersion}}</span>
     </div>
+
   </div>
 </div>

@@ -16,8 +16,8 @@
           <img src="assets/icons/search.svg" alt="" width="14" />
         </div>
       </div>
-      <div class="d-flex justify-content-between" style="width: 38%;align-items: center;">
-        <form [formGroup]="form"class="d-flex" style="width: 70%;">
+      <div class="d-flex justify-content-between" style="width: 31%;align-items: center;">
+        <form [formGroup]="form"class="d-flex" style=" margin-inline: 20px;">
           <us-select
           class="mx-3"
             [data]="devices"
@@ -52,8 +52,8 @@
     <section class="table-wrapper">
       <table mat-table [dataSource]="dataSource" class="table-wrapper">
         <!-- Checkbox Column -->
-        <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef>
+        <ng-container  matColumnDef="select">
+          <th class="checkBox" mat-header-cell *matHeaderCellDef>
             <mat-checkbox
               color="ch-color"
               (change)="$event ? toggleAllRows() : null"
@@ -62,7 +62,7 @@
               [aria-label]="checkboxLabel()"
             ></mat-checkbox>
           </th>
-          <td mat-cell *matCellDef="let row">
+          <td  class="checkBox" mat-cell *matCellDef="let row">
             <mat-checkbox
               color="ch-color"
               (click)="$event.stopPropagation() && selectedRow($event)"

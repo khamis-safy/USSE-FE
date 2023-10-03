@@ -73,11 +73,12 @@
           <div class="col-md-12 mt-3">
             <div class="w-100">
               <us-button
+              class="special-button"
                 label="{{'SIGNUP' |translate}}"
                 [fill]="true"
                 [size]="'xl'"
                 [loading]="loading"
-                [disabled]="loading || form.invalid"
+                [disabled]="loading || form.invalid  || !valid"
                 [appearance]="'primary'"
                 (clicked)="signUp()"
                 [fullWidth]="true"
