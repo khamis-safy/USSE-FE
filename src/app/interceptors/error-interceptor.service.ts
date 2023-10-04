@@ -17,7 +17,6 @@ import { TRANSLATE_SERVICE } from '../shared/shared.module';
 export class ErrorInterceptorService implements HttpInterceptor {
 
   constructor(private toaster: ToasterServices,@Inject(TRANSLATE_SERVICE) private translate: TranslateService) {}
-
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -25,18 +24,20 @@ export class ErrorInterceptorService implements HttpInterceptor {
     // Lazy injection of services using Injector
     // const traslate =this.injector.get(TranslationService)
     console.log('Interceptor is working'); // Add this linep rivate injector:Injector
-
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         // Check if the error is an HTTP error
         if (error instanceof HttpErrorResponse) {
           console.error('HTTP error:', error);
-          // Check if 'error.error' exists before trying to access 'message'
-          const errorMessage = error && error.error && this.translate.instant(error.error)? error.error  : 'COMMON.ERR';
+          if(error.status !==200){
 
-          // Use the injected ToasterService to display the error message
-          // this.toaster.error(this.translate.translateMessage(errorMessage))
-          this.toaster.error(this.translate.instant(errorMessage))
+            // Check if 'error.error' exists before trying to access 'message'
+            const errorMessage = error && error.error && this.translate.instant(error.error)? error.error  : 'COMMON.ERR';
+            // Use the injected ToasterService to display the error message
+            // this.toaster.error(this.translate.translateMessage(errorMessage))
+            this.toaster.error(this.translate.instant(errorMessage))
+          }
+
 
           // Handle the error message as needed (e.g., display it to the user)
           // For example, you can use a ToastrService or a custom error dialog

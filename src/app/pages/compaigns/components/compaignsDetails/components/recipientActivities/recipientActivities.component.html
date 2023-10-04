@@ -42,24 +42,32 @@
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'statusLabel' | translate }}</th>
           <td class="text-center" mat-cell *matCellDef="let element">
             <ng-container [ngSwitch]="element.status">
-              <div *ngSwitchCase="3">
-                <img src="assets/images/read.svg" alt="">
+              
+              <div *ngSwitchCase="3" class="d-flex justify-content-center align-items-center w-100">
+                <span class=" message-state read  d-flex justify-content-center align-items-center " >
+                  {{ 'Read' | translate }}
+                </span>
               </div>
-
-              <div *ngSwitchCase="1">
-                <img src="assets/images/sent.svg" alt="">
+            
+              <div *ngSwitchCase="1" class="d-flex justify-content-center align-items-center w-100">
+                <span class=" message-state sent d-flex justify-content-center align-items-center " >
+                  {{ 'Sent' | translate }}
+                </span>
               </div>
-
-              <div *ngSwitchCase="2">
-                <img src="assets/images/delivered.svg" alt="">
+            
+              <div *ngSwitchCase="2" class="d-flex justify-content-center align-items-center w-100">
+                <span class=" message-state delivered d-flex justify-content-center align-items-center " >
+                  {{ 'Delivered' | translate }}
+                </span>
               </div>
-
-              <div *ngSwitchCase="0">
-                <img src="assets/images/pending.svg" alt="">
+              
+              <div *ngSwitchCase="0" class="d-flex justify-content-center align-items-center w-100">
+                <span class="message-state pending d-flex justify-content-center align-items-center " >
+                  {{ 'Pending' | translate }}
+                </span>
               </div>
-
               <div *ngSwitchCase="4" class="d-flex justify-content-center align-items-center w-100">
-                <span class="d-flex justify-content-center align-items-center text-neutral-0" style="background-color: #f34646; border-radius: 8px; width: 74px; height: 33px;">
+                <span class="message-state failed d-flex justify-content-center align-items-center " >
                   {{ 'failedLabel' | translate }}
                 </span>
               </div>

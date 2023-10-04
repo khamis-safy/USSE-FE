@@ -462,7 +462,11 @@
 "Recover_text":"Recover your account. We will send you a link to change your password.",
 "SUMBIT":"submit",
 "Back_to_login":"Back To Login",
-"PASS_CHANGED":"password changed successfully"
+"PASS_CHANGED":"password changed successfully",
+"Pending":"Pending",
+"Read":"Read",
+"Sent":"Sent",
+"Delivered":"Delivered"
 
 
 

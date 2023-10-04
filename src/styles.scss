@@ -1040,10 +1040,27 @@ span.mdc-tab__content {
       color: var(--clr-primary-800) !important;
 
       }
-    img{
-      filter: invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
-      -webkit-filter: invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
-}
+      svg path:not([id="scheduled"]){
+        stroke:var(--clr-primary-800) !important;
+      }
+      svg path#scheduled {
+        fill:var(--clr-primary-800) !important;
+      }
+      svg circle#circle1 {      
+        fill: #D0E8EB;
+      }
+      svg circle#circle2 {
+        stroke:var(--clr-primary-800) !important;
+      }
+      svg line{
+        stroke: #D0E8EB;
+      }
+      img{
+        filter: invert(22%) sepia(100%) saturate(3678%) hue-rotate(187deg) brightness(93%) contrast(100%);
+        -webkit-filter : invert(22%) sepia(100%) saturate(3678%) hue-rotate(187deg) brightness(93%) contrast(100%);
+
+      }   
+   
   }
   &:hover {
     background:var(--clr-primary-400);
@@ -1052,10 +1069,28 @@ span.mdc-tab__content {
       color: var(--clr-primary-800) !important;
 
       }
-    img{
-      filter:  invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
-      -webkit-filter:  invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
-}
+      svg path:not([id="scheduled"]){
+        stroke:var(--clr-primary-800) !important;
+      }
+      svg path#scheduled {
+        fill:var(--clr-primary-800) !important;
+      }
+      svg circle#circle1 {      
+        fill: #D0E8EB;
+      }
+      svg circle#circle2 {
+        stroke:var(--clr-primary-800) !important;
+      }
+      svg line{
+        stroke: #D0E8EB;
+      }
+      img{
+        filter: invert(22%) sepia(100%) saturate(3678%) hue-rotate(187deg) brightness(93%) contrast(100%);
+        -webkit-filter : invert(22%) sepia(100%) saturate(3678%) hue-rotate(187deg) brightness(93%) contrast(100%);
+
+      }   
+   
+
   }
   &:focus {
     background:var(--clr-primary-400);
@@ -1082,7 +1117,31 @@ span.mdc-tab__content {
   box-shadow: none !important;
   }
   
+// messages states
+.message-state{
+  border-radius: 8px; 
+  width: 74px;
+  height: 38px;
+  &.read{
+background-color: #C1FFCF;
+  }
+  &.pending{
+    background-color: #FEFFBC;
 
+  }
+  &.sent{
+    background-color: #FF7A0038;
+
+  }
+  &.delivered{
+    background-color: #D7E7FF;
+
+  }
+  &.failed{
+    background-color: #f34646;
+    color: var(--clr-neutral-0);
+  }
+}
 
 // display columns deropdown
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
