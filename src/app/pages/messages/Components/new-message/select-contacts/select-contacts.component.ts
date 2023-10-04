@@ -290,7 +290,12 @@ onSelectList(state,listContacts:ListContacts){
 
 
 }
-
+onClose(event:string){
+  this.searchForm.patchValue({
+    contactsData:[]
+  })
+  this.allContacts=[]
+}
 changeListSelectionState(state,listContacts:ListContacts){
 
   if(state=="checked"){
@@ -580,23 +585,7 @@ else{
 getAllContacts(search?:string){
   let searchVal=search?search:""
 
-    // this.fetchAllContacts(searchVal).then((contacts) => {
-    //   if(search){
-    //     this.allContactsData=contacts;
-    //     this.allContacts=this.allContactsData.map(res=>{
-    //       return {
-    //         title:res.name,
-    //         value:res.id
-    //       }
-    //     })
-
-    //   }
-    //   else{
-    //     this.allContacts=[];
-    //   }
-
-    // }).catch((error) => {
-    // });
+  
   this.listService.getContacts(this.listService.email,false,50,0,"",searchVal,"").subscribe(
     (res)=>{
       this.allContactsData=res;
@@ -621,6 +610,7 @@ getAllContacts(search?:string){
       else{
         this.allContacts=[];
       }
+      console.log("data",this.searchForm.value.contactsData)
 },
       (err)=>{
 

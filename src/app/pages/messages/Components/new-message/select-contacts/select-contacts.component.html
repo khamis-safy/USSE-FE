@@ -5,23 +5,20 @@
       <div class="w-100">
         <form [formGroup]="searchForm">
           <us-select
+            (onClose)="onClose($event)"
             (onSearch)="onSearch($event)"
             (onSelect)="onSelect($event)"
             (onDeSelect)="onDeSelect($event)"
-            (onSelectAll)="onSelectAll($event)"
-            (onDeSelectAll)="onDeSelectAll($event)"
             [data]="allContacts"
-            formControlName="contactsData"
-            placeholder="{{ 'SELECT_CONTACTS' | translate }}"
             [multiSelect]="true"
             [isDisabled]="false"
             [enableSearch]="true"
-            [enableSelectAll]="true"
             [searchbarOnToggler]="true"
             [showSelectedItemsNumberOnly]="true"
             [enableParentSearch]="true"
             [searchNoResultText]="'NO_RESULT_FOUND' | translate"
             [maxListItemsWithoutSearch]="5"
+            [enableDropdownWhileSearching]="true"
           ></us-select>
         </form>
       </div>
@@ -67,6 +64,7 @@
             class="custom-panel"
 
             (opened)="onAccordionOpened(listContact)"
+            [expanded]="(listContact.list.isChecked=='' && !listContact.list.isExpanded)"
           >
             <mat-expansion-panel-header   class="zi-2">
               <mat-panel-title>

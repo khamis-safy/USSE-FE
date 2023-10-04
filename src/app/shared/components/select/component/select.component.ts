@@ -41,6 +41,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   }
   /* Optional [ Settings ] */
   @Input() badgesLimit: number = 4;
+  @Input("enableDropdownWhileSearching") enableDropdownWhileSearching: boolean = false;
   @Input('maxListItemsWithoutSearch') maxWithoutSearch: number = 20; // when to enable search
   @Input('paginationThrottle') throttle?: number; // how much time [in milliseconds] to wait before next pagination
   @Input('multiSelect') isMulti?: boolean; // [ single or multi ]-select
