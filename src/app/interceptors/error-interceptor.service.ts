@@ -26,7 +26,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
     console.log('Interceptor is working'); // Add this linep rivate injector:Injector
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        if(error.status !==200){
+        
         // Check if the error is an HTTP error
         if (error instanceof HttpErrorResponse) {
           console.error('HTTP error:', error);
@@ -42,7 +42,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
           // Handle the error message as needed (e.g., display it to the user)
           // For example, you can use a ToastrService or a custom error dialog
           // to display the error message.
-        }
+        
         return throwError(error);
       })
     );

@@ -11,6 +11,7 @@ import {
   AfterViewInit,
   Inject,
   SimpleChanges,
+  OnDestroy,
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TemplatesService } from '../../templates.service';
@@ -25,6 +26,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 export interface files {
   name: string;
@@ -38,7 +40,7 @@ export interface files {
   templateUrl: './addTemplate.component.html',
   styleUrls: ['./addTemplate.component.scss'],
 })
-export class AddTemplateComponent implements OnInit {
+export class AddTemplateComponent implements OnInit , OnDestroy {
   isLoading = false;
   fileData: files[] = [];
   loading:boolean;
@@ -51,8 +53,11 @@ export class AddTemplateComponent implements OnInit {
     messageBody: this.messageBody,
     attachments: this.attachments,
   });
+  cachedFiles:files[] = [];
   isEdit;
-
+  emptyMessageAndFilesAndName:boolean;
+  emptyFiles:boolean;
+  subscripe:Subscription
   constructor(
     private templatesService: TemplatesService,
     @Inject(MAT_DIALOG_DATA) public data: Templates,
@@ -61,6 +66,10 @@ export class AddTemplateComponent implements OnInit {
 
     private toaster: ToasterServices
   ) {}
+  ngOnDestroy() {
+ this.subscripe.unsubscribe()
+  }
+ 
 
   ngOnInit() {
     if (this.data) {
@@ -70,7 +79,18 @@ export class AddTemplateComponent implements OnInit {
     } else {
       this.isEdit = false;
       this.loading=false;
+      this.emptyFiles=true;
     }
+
+      this.emptyMessageAndFilesAndName=(this.form.value.messageBody.trim()=="" && ( this.form.value.templateName.trim()=="" || this.emptyFiles))
+    console.log("condition value",this.emptyMessageAndFilesAndName,"message value",this.form.value.messageBody, "is no files",this.emptyFiles)
+
+    this.subscripe= this.form.valueChanges.subscribe(() => {
+     
+      this.emptyMessageAndFilesAndName=(this.form.value.messageBody.trim()=="" && ( this.form.value.templateName.trim()=="" || this.emptyFiles))
+      console.log("condition value",this.emptyMessageAndFilesAndName,"message value",this.form.value.messageBody, "is no files",this.emptyFiles)
+
+    });
   }
 
   submitAdd() {
@@ -133,6 +153,7 @@ export class AddTemplateComponent implements OnInit {
       messageBody: this.data.messageBody,
       attachments: this.data.attachments,
     });
+
  // attachment
  this.loading=true;
  this.templatesService.getTemplateById(this.data.id).subscribe(
@@ -150,7 +171,7 @@ export class AddTemplateComponent implements OnInit {
         size:size
       }
     })
-    console.log(this.fileData)
+    this.emptyFiles=this.fileData.length>0 ? false : true;
   },
   (err)=>{
     this.loading=false;
@@ -161,9 +182,21 @@ export class AddTemplateComponent implements OnInit {
 
 
   onClose(data?): void {
+
     this.dialogRef.close(data);
   }
-  test(event){
-console.log("file data",this.fileData)
+  onFileChange(e){
+    console.log(this.fileData);
+    this.emptyFiles=false;
+      this.emptyMessageAndFilesAndName=(this.form.value.messageBody.trim()=="" && ( this.form.value.templateName.trim()=="" || this.emptyFiles))
+    console.log("condition value",this.emptyMessageAndFilesAndName)
+
+  }
+  onFileDelete(e){
+
+    this.emptyFiles=this.fileData.length==0? true : false;
+      this.emptyMessageAndFilesAndName=(this.form.value.messageBody.trim()=="" && ( this.form.value.templateName.trim()=="" || this.emptyFiles))
+    console.log("condition value",this.emptyMessageAndFilesAndName)
+
   }
 }

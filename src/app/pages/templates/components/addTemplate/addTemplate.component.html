@@ -56,7 +56,8 @@
       <us-upload  class="w-100"
       [isLoading]="loading"
       [(ngModel)]="fileData"
-      (onFileChange)="test($event)"
+      (onFileChange)="onFileChange($event)"
+      (onFileDelete)="onFileDelete($event)"
       ></us-upload>
     </div>
   </div>
@@ -69,7 +70,7 @@
     [loading]="isLoading"
     [fill]="true"
     (clicked)="submitAdd()"
-    [disabled]="form.invalid || isLoading"
+    [disabled]="emptyMessageAndFilesAndName  || isLoading"
   ></us-button>
   <us-button
   *ngIf="isEdit"
@@ -78,7 +79,7 @@
   [loading]="isLoading"
   [fill]="true"
   (clicked)="submitEdit()"
-  [disabled]="form.invalid || isLoading"
+  [disabled]="emptyMessageAndFilesAndName || isLoading"
   ></us-button>
   <us-button
   label="{{ 'CANCEL' | translate }}"

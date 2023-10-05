@@ -71,7 +71,7 @@ userInfo:any;
       this.router.navigateByUrl('verification')
 
     }
-    if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
+   else if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
       // update local storage
       this.authService.saveDataToLocalStorage(this.userInfo);
       this.authService.updateUserInfo()
@@ -88,7 +88,7 @@ userInfo:any;
 
 
     }
-     if(!res.isActive ){
+    else if(!res.isActive ){
 
       this.hintMessage="Your account is not active , please contact the support to activate it";
       this.loading=false;
