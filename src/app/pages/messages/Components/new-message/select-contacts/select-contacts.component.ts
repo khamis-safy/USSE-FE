@@ -707,193 +707,6 @@ removeNum(num:string){
   this.emitContacts();
 
 }
-// removeContact(contact:Contacts){
-//   this.addedContacts.splice(this.addedContacts.indexOf(contact),1);
-//   let found =this.selectedList.contacts.find((con)=>con.id==contact.id);
-//   found.isChecked="";
-//   this.selectedList.list.contactsNum--;
-//   this.selectedList.list.selectionState=0;
-//   this.selectedLists--;
-//   // change state of list check to be unchecked
-
-//   this.emitContacts();
-
-//   // change state of select all checkbox
-
-
-//     if(this.selectedLists==0 ){
-//       this.selectAllStatus=0;
-//       this.isAllListsSelected=false;
-
-//     }
-//   this.rescetSelected();
-
-// }
-
-
-
-
-
-
-// getContacts( list:ListData) {
-
-  //   this.contacts = [];
-  //   list.contactsNum=0;
-  //     this.listService.getContacts(this.listService.email, false, 50, 0, "", "", list.id).subscribe(
-  //       (res) => {
-  //         this.contacts=res;
-  //         this.selectedList={list:list,contacts:this.contacts}
-  //         list.contactsNum=this.contacts.length;
-  //         if(this.checked ){
-  //           if(list.isChecked){
-  //             this.contacts.map((con)=>{
-  //               con.isChecked="checked";
-  //               this.addedContacts.push(con)});
-  //             list.contactsNum=this.contacts.length;
-
-  //           }
-  //           else{
-  //             this.contacts.map((con)=>{
-  //               con.isChecked="";
-  //               this.addedContacts.splice(this.addedContacts.indexOf(con),1)
-  //             })
-  //             list.contactsNum=0;
-  //             list.selectionState=0
-  //           }
-  //           this.filterContacts(this.addedContacts);
-
-  //         }
-
-  //         else{
-  //           this.contacts.map((con)=>{
-  //             if(this.addedContacts.find((contact)=>contact.id==con.id)){
-  //               con.isChecked="checked";
-  //               list.contactsNum++;
-  //               list.selectionState=2;
-  //             }
-  //             else{
-  //               con.isChecked="";
-  //               list.contactsNum--;
-  //               list.selectionState=list.contactsNum==0?0:2
-  //             }
-  //           })
-
-  //         }
-
-  //       },
-  //       (err) => { }
-  //     )
-  //   }
-
-
-
-
-// get contacts data to be displayed in search input
-
-// filterContacts(contacts:Contacts[]){
-//   this.addedContacts=Array.from(new Set(contacts.map(obj => JSON.stringify(obj)))).map(str => JSON.parse(str));
-//   this.emitContacts();
-
-
-// }
-// rescetSelected(){
-
-//   let contacts =this.addedContacts.map(res=>{
-//     return {
-//       title:res.name,
-//       value:res.id
-//     }
-//   })
-//   this.searchForm.patchValue({
-//     contactsData:contacts
-//   })
-//   console.log("search result",this.searchForm.value.contactsData)
-// }
-// selectAllContacts(){
-
-//   this.addedContacts=[];
-//   this.lists.map((list)=>{
-//     this.listService.getContacts(this.listService.email, false, 50, 0, "", "", list.id).subscribe(
-//       (res)=>{
-
-//           res.map((con)=>this.addedContacts.push(con));
-//           this.filterContacts(this.addedContacts)
-//       }
-
-//     )
-//   })
-//   this.rescetSelected()
-
-// }
-// // on select list
-// onSelectList(state,list:ListData){
-
-//   if(state=="checked"){
-//     // change list status to checked
-//     list.isChecked=true;
-
-//     this.getContacts(list)
-
-//     list.selectionState=2;
-//     // incerease lists selection number
-//     this.selectedLists++
-// // this.getContacts(list,true)
-//       if(this.selectedLists==this.lists.length){
-//         // change state of select all checkbox
-//         this.selectAllStatus=2;
-//         this.isAllListsSelected=true;
-
-
-//       }
-
-//       else{
-//         this.selectAllStatus=1
-//       }
-
-//       // get contacts on list checked and change state of select contact
-//       // this.getContacts(list,true);
-
-
-
-
-//   }
-// else{
-//   this.onDeslectList(list);
-// }
-// this.rescetSelected()
-
-// }
-
-// // on deselect list
-// onDeslectList(list:ListData){
-//   // change list status
-//   list.isChecked=false;
-//   this.getContacts(list)
-
-//   this.selectedList.contacts.map((con)=>con.isChecked="");
-//   this.contacts=this.selectedList.contacts;
-//   this.contacts.map((con)=>this.addedContacts.splice(this.addedContacts.indexOf(con),1))
-
-//   // decerease lists selection number
-//   this.selectedLists--;
-//   // change state of list check to be unchecked
-
-//   list.selectionState=0;
-
-//   // change state of select all checkbox
-
-
-//     if(this.selectedLists==0 ){
-//       this.selectAllStatus=0;
-//       this.isAllListsSelected=false;
-
-//     }
-
-
-
-
-// }
-
 
 
 // // on clear all data
@@ -903,48 +716,18 @@ clearContacts(){
   this.addHocs=[];
   this.selectedListsNum=0;
   this.selectAllStatus=0;
+  this.allLists.map((listcontact)=>{
+    listcontact.list.isChecked="";
+    listcontact.contacts.map((contact)=>contact.isChecked="")
+  })
     // this.hocsNum.emit(this.addHocs)
     this.emitContacts();
 
 
 }
 
-// removeContact(contact:Contacts){
-//   this.addedContacts.splice(this.addedContacts.indexOf(contact),1);
-//   let found =this.selectedList.contacts.find((con)=>con.id==contact.id);
-//   found.isChecked="";
-//   this.selectedList.list.contactsNum--;
-//   this.selectedList.list.selectionState=0;
-//   this.selectedLists--;
-//   // change state of list check to be unchecked
-
-//   this.emitContacts();
-
-//   // change state of select all checkbox
-
-
-//     if(this.selectedLists==0 ){
-//       this.selectAllStatus=0;
-//       this.isAllListsSelected=false;
-
-//     }
-//   this.rescetSelected();
-
-// }
-
-
-
-
 
 
 }
 
 
-// 1- لو عملت تشيك على كونتاكت من ع الشمال .. بلف على اليمين ولو الرقم موجود بستبدله
-// 2- لو بضيف اد هوك .. بلف ع اليمين ولو الرقم موجود مبضفش وننبه بتوستر
-// 3- لو بشيل كونتاكت من اليمين .. بلف ع الاراي ولو موجود فيه بشيله
-// 4- لما بسيرش عن كونتاكت .. بلف بالنتايج على الليسته اللى ع اليمين لو موجود فيها بعمل تشيك
-// 5- لما بعمل سيليكت لليسته من ع الشمال .. بفتح الاكورديون واجيب الداتا بتاعت الكونتاكتس اللى جوا الليست ..وبضيف الليسته دي والكونتاكتس بتوعها ف الاراي .. وبنفذ رقم 1 باللوب
-// 6- لما بقفل التشيك من ليسته ع الشمال .. بشوف الاوبجكت في الاراي وبعدها بشيله من اليمين .. وبشيله من الاراي .. وبلف ع الاراي كلها وبشيل السيليكت وبعدها اشوف الموجود على اليمين واعمله سيليكت
-// 7- لما بعمل unselect لكونتاكت من الشمال .. بلف ع اليمين ولو موجود بشيله .. وبلف ع الشمال كذلك ولو موجود بعمل unselect
-// *لأن وارد انه يكون متكرر ف ليسته تانيه .. ف بالتالى يتشال منها السيليكت هى كمان*

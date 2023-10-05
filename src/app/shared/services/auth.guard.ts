@@ -20,13 +20,24 @@ async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const customerId=localStorage.getItem("customerId");
       const email =localStorage.getItem("email")
     if(routeName==="verification"){
-      if(email){
+      if(this.authService.getFromValue()){
         return true
       }
       else{
         this.router.navigate(['login'])
 
         return false
+      }
+    }
+    else if(routeName==="change-Passward"){
+      if(this.authService.getAccessToReset()){
+        return true
+
+      }
+      else{
+        this.router.navigate(['login'])
+        return false
+
       }
     }
     else{

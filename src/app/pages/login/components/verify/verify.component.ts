@@ -46,6 +46,8 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
   }
 
   ngOnInit(): void {
+    this.authService.setAccessToReset(false)
+
     console.log("from verify",this.authService.getUserData())
   }
 
@@ -100,7 +102,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
       .join('');
     if (code.length === 6) {
       const from =this.authService.getFromValue();
-      if(from=="login"){
+      if(from == "login" || from == "signUp"){
         
         // Send verification request using code
         let token=this.authService.getToken()
@@ -139,7 +141,8 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
             this.isLoading=false
   
             this.invalid=false;
-            this.authService.setCode(code)
+            this.authService.setCode(code);
+            this.authService.setAccessToReset(true)
             this.router.navigateByUrl('change-Passward')
 
           }

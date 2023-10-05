@@ -68,7 +68,6 @@ userInfo:any;
       this.authService.setFromValue("login")
 
       this.sendCode();
-      this.router.navigateByUrl('verification')
 
     }
    else if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
@@ -150,6 +149,7 @@ userInfo:any;
       (res)=>{
 
         this.loading=false;
+        this.router.navigateByUrl('verification')
 
       },
       (err)=>{

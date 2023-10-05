@@ -14,7 +14,6 @@
             [isDisabled]="false"
             [enableSearch]="true"
             [searchbarOnToggler]="true"
-            [showSelectedItemsNumberOnly]="true"
             [enableParentSearch]="true"
             [searchNoResultText]="'NO_RESULT_FOUND' | translate"
             [maxListItemsWithoutSearch]="5"
@@ -104,7 +103,7 @@
     <div class="contacts py-4">
       <div
         class="contacts-heading px-4 d-flex justify-content-between align-items-center"
-        (click)="onDeselectAllLists()"
+        (click)="clearContacts()"
       >
         <span class="txt-md">{{ 'CONTACTS' | translate }}</span>
         <span class="d-flex align-items-center gap-2 pointer" >

@@ -22,16 +22,21 @@ const routes: Routes = [
       },
       {
         path: "verification",
+        canActivate:[AuthGuard],data:{name:"verification"},
+
         loadChildren:()=>
         import("./../../pages/login/components/verify/verify.module").then((m)=>m.VerifyModule)
       },
       {
         path: "change-Passward",
+        canActivate:[AuthGuard],data:{name:"change-Passward"},
+
         loadChildren:()=>
         import("./../../pages/login/components/reset-pass/reset.module").then((m)=>m.ResetModule)
       },
       {
         path: "forgot-Passward",
+
         loadChildren:()=>
         import("./../../pages/login/components/forgotPass/forgotPass.module").then((m)=>m.ForgotPassModule)
       }
