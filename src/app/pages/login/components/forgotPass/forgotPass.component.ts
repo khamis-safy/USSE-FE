@@ -56,8 +56,9 @@ export class ForgotPassComponent implements OnInit ,OnDestroy{
           this.router.navigateByUrl('verification')
           this.loading=false;
   
-        },
+        }, 
         (err)=>{
+          console.log("error from component")
           this.loading=false;
         }
       );

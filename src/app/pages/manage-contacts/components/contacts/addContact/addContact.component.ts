@@ -34,7 +34,6 @@ email:string=this.listService.email;
 	SearchCountryField = SearchCountryField;
 	CountryISO = CountryISO;
   PhoneNumberFormat = PhoneNumberFormat;
-
   isLoading = false;
 
   selectedLists = new FormControl([]);
@@ -63,7 +62,9 @@ email:string=this.listService.email;
 
 oldData;
 invalidName:boolean;
-additionalParameters:{name:string, value:string}[]=[]
+additionalParameters:{name:string, value:string}[]=[];
+cachedFields:{name:string, value:string}[]=[];
+
 subscribe:Subscription;
 showInputs:boolean=false;
   // listsIds:string[]=[""];
@@ -78,7 +79,7 @@ showInputs:boolean=false;
   }
 
 
-  ngOnInit() {
+  ngOnInit() { 
     this.subscribe= this.form2.valueChanges.subscribe(()=>{
       this.invalidName=this.checkIfFieldFound(this.form2.value.fieldName)
 
@@ -201,6 +202,7 @@ checkIfFieldFound(name){
       })
   }
   remove(i){
+    this.cachedFields.push(this.additionalParameters[i]);
     this.additionalParameters.splice(i,1);
   }
   save(){
@@ -213,7 +215,12 @@ checkIfFieldFound(name){
     })
   }
   cancel(){
+    
     this.showInputs=false;
+    this.form2.patchValue({
+      fieldName:"",
+      value:""
+    })
 
   }
   submitAdd(){
@@ -300,6 +307,9 @@ checkIfFieldFound(name){
 
   }
   onClose(data?):void {
+    if(this.cachedFields.length>0){
+      this.cachedFields.map((field)=>this.additionalParameters.push(field))
+    }
     this.dialogRef.close(data);
   }
   changeLists(event){

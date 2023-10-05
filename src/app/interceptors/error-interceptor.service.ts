@@ -26,10 +26,10 @@ export class ErrorInterceptorService implements HttpInterceptor {
     console.log('Interceptor is working'); // Add this linep rivate injector:Injector
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
+        if(error.status !==200){
         // Check if the error is an HTTP error
         if (error instanceof HttpErrorResponse) {
           console.error('HTTP error:', error);
-          if(error.status !==200){
 
             // Check if 'error.error' exists before trying to access 'message'
             const errorMessage = error && error.error && this.translate.instant(error.error)? error.error  : 'COMMON.ERR';

@@ -139,12 +139,16 @@
     </form>
       <!-- additional fields -->
       <div class="additional p-3 mt-3">
-        <ng-container *ngIf="additionalParameters && additionalParameters?.length != 0">
-          <div class="additionaltb">
-            <div class="tbheader">
-              <span class="txt-md" style="font-weight: 500">{{ 'FIELD_NAME' | translate }}</span>
-              <span class="txt-md" style="font-weight: 500">{{ 'VALUE' | translate }}</span>
-            </div>
+        <div class="additionaltb">
+          <div *ngIf="showInputs || additionalParameters?.length != 0" class="tbheader mb-2">
+            <span class="txt-md" style="font-weight: 500">{{ 'FIELD_NAME' | translate }}            
+              <em class="text-danger">*</em>
+            </span>
+            <span class="txt-md" style="font-weight: 500">{{ 'VALUE' | translate }}            
+              <em class="text-danger">*</em>
+            </span>
+          </div>
+          <ng-container *ngIf="additionalParameters && additionalParameters?.length != 0">
             <div class="tbBody">
               <div
                 class="tbrow"
@@ -175,21 +179,21 @@
                 /></span>
               </div>
             </div>
+          </ng-container>
           </div>
-        </ng-container>
 
         <ng-container *ngIf="showInputs">
           <form [formGroup]="form2" class="inputs">
-            <div class="nam">
+            <div class="name"> 
               <us-input
                 [isDisabled]="false"
                 [optional]="false"
                 type="text"
-                [error]="fieldName.touched && fieldName.errors?.required"
+                [error]="fieldName.touched && fieldName.errors?.required || invalidName"
                 [hintText]="
                 fieldName.touched && fieldName.errors?.required
                   ? ('REQUIRED_FIELD' | translate)
-                  : ''
+                  : invalidName?('EXIST_NAME' | translate):''
               "
                 [fullWidth]="true"
                 placeholder="{{ 'FIELD_NAME' | translate }}"

@@ -466,7 +466,8 @@
 "Pending":"Pending",
 "Read":"Read",
 "Sent":"Sent",
-"Delivered":"Delivered"
+"Delivered":"Delivered",
+"EXIST_NAME":"field name already exist"
 
 
 

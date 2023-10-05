@@ -68,7 +68,7 @@ progress = 100;
   }
   success(message:any){
     if(toasterCustomComponent){
-        // toasterCustomComponent.destroy();
+        toasterCustomComponent.destroy();
     }
     this.message=  message;
     this.state = "success",
