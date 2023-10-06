@@ -45,7 +45,10 @@ export class SettingComponent implements OnInit{
   loading;
   userInfo: any;
   isUser:boolean;
-    constructor(public dialogRef: MatDialogRef<SettingComponent>,private translate:TranslateService,private authService:AuthService,private toaster:ToasterServices) {
+    constructor(public dialogRef: MatDialogRef<SettingComponent>,
+      private translate:TranslateService,
+      private authService:AuthService,
+      private toaster:ToasterServices) {
      this.maskTypeArr=[
       {title:translate.instant('Sender'),value:'S'},
       {title:translate.instant('Receiver'),value:'R'},

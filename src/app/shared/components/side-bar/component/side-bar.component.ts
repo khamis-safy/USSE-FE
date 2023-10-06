@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { UsersService } from 'src/app/pages/users/users.service';
 import { Permission } from 'src/app/pages/users/users';
 import { PermissionsService } from 'src/app/shared/services/permissions.service';
+import { ConfirmLogOutComponent } from '../components/confirmLogOut/confirmLogOut.component';
 
 @Component({
   selector: 'app-side-bar',
@@ -79,9 +80,17 @@ this.permissions={
     });
   }
 
+  openLogOutConfirmation(){
 
-  clearLocatStorage(){
-    let localData=['email','organizationName','id','userName',"token","customerId","apiToken","maskType","phoneNumber","timeZone"]
-    localData.map((key)=>localStorage.removeItem(key))
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='300px';
+   
+    const dialogRef = this.dialog.open(ConfirmLogOutComponent,dialogConfig);
+   
   }
+  
 }

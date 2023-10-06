@@ -467,7 +467,8 @@
 "Read":"Read",
 "Sent":"Sent",
 "Delivered":"Delivered",
-"EXIST_NAME":"field name already exist"
+"EXIST_NAME":"field name already exist",
+"CONFIRM_LOGOUT_MSG":"are you sure you want to log out?"
 
 
 

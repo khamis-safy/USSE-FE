@@ -46,6 +46,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptorService } from '../interceptors/error-interceptor.service';
 import { ClickOutsideDirective } from './directives/clickOutside.directive';
+import { ConfirmLogOutComponent } from './components/side-bar/components/confirmLogOut/confirmLogOut.component';
 
 export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE_SERVICE');
 
@@ -97,7 +98,8 @@ export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE
     ToasterServices,
     DeleteModalComponent,
     WriteMessageComponent,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    ConfirmLogOutComponent
   ],
   exports:[
     SideBarComponent,
