@@ -54,21 +54,45 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
   ngAfterViewInit(): void {
     this.setFocus(0);
   }
-
   onDigitInput(event: any, digitIndex: number) {
     const nextDigitIndex = digitIndex + 1;
-
     const enteredDigit = event.target.value;
-    if (!isNaN(enteredDigit) && enteredDigit.length === 1) {
-      this.verificationForm.controls[`digit${digitIndex}`].setValue(enteredDigit);
-
-      if (nextDigitIndex < this.digitIndexes.length) {
-        this.setFocus(nextDigitIndex);
-      }
+    
+    // Remove non-numeric characters and limit input to a single character
+    const cleanedInput = enteredDigit.replace(/\D/g, '').substr(0, 1);
+    this.verificationForm.controls[`digit${digitIndex}`].setValue(cleanedInput);
+  
+    // If a digit is entered, move focus to the next input field
+    if (cleanedInput && nextDigitIndex < this.digitIndexes.length) {
+      this.setFocus(nextDigitIndex);
     }
-
+  
     this.checkVerificationCode();
   }
+  onDigitPaste(event: any) {
+    event.preventDefault();
+    const pastedCode = event.clipboardData.getData('text/plain').replace(/\D/g, '').substr(0, 6);
+    for (let i = 0; i < pastedCode.length; i++) {
+      this.verificationForm.controls[`digit${i}`].setValue(pastedCode[i]);
+      this.setFocus(i+1);
+
+    }
+    this.checkVerificationCode();
+  }
+  // onDigitInput(event: any, digitIndex: number) {
+  //   const nextDigitIndex = digitIndex + 1;
+
+  //   const enteredDigit = event.target.value;
+  //   if (!isNaN(enteredDigit) && enteredDigit.length === 1) {
+  //     this.verificationForm.controls[`digit${digitIndex}`].setValue(enteredDigit);
+
+  //     if (nextDigitIndex < this.digitIndexes.length) {
+  //       this.setFocus(nextDigitIndex);
+  //     }
+  //   }
+
+  //   this.checkVerificationCode();
+  // }
 
 
   setFocus(digitIndex: number) {
