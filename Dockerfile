@@ -1,15 +1,13 @@
-# ----------------------------
-# build from source
-# ----------------------------
-FROM node:latest as node
+FROM node:14 as builder
+
 WORKDIR /app
-COPY . .
+
+COPY package*.json ./
 RUN npm install
+COPY . .
 RUN npm run build --prod
 
-# ----------------------------
-# run with nginx
-# ----------------------------
-FROM nginx:alpine
-COPY --from=node /app/dist/pro2023 /usr/share/nginx/html
+FROM nginx:1.19
 
+COPY --from=builder /app/dist/pro2023 /usr/share/nginx/html
+COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
