@@ -46,27 +46,53 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
   }
 
   ngOnInit(): void {
+    this.authService.setAccessToReset(false)
+
     console.log("from verify",this.authService.getUserData())
   }
 
   ngAfterViewInit(): void {
     this.setFocus(0);
   }
-
   onDigitInput(event: any, digitIndex: number) {
     const nextDigitIndex = digitIndex + 1;
-
     const enteredDigit = event.target.value;
-    if (!isNaN(enteredDigit) && enteredDigit.length === 1) {
-      this.verificationForm.controls[`digit${digitIndex}`].setValue(enteredDigit);
-
-      if (nextDigitIndex < this.digitIndexes.length) {
-        this.setFocus(nextDigitIndex);
-      }
+    
+    // Remove non-numeric characters and limit input to a single character
+    const cleanedInput = enteredDigit.replace(/\D/g, '').substr(0, 1);
+    this.verificationForm.controls[`digit${digitIndex}`].setValue(cleanedInput);
+  
+    // If a digit is entered, move focus to the next input field
+    if (cleanedInput && nextDigitIndex < this.digitIndexes.length) {
+      this.setFocus(nextDigitIndex);
     }
-
+  
     this.checkVerificationCode();
   }
+  onDigitPaste(event: any) {
+    event.preventDefault();
+    const pastedCode = event.clipboardData.getData('text/plain').replace(/\D/g, '').substr(0, 6);
+    for (let i = 0; i < pastedCode.length; i++) {
+      this.verificationForm.controls[`digit${i}`].setValue(pastedCode[i]);
+      this.setFocus(i+1);
+
+    }
+    this.checkVerificationCode();
+  }
+  // onDigitInput(event: any, digitIndex: number) {
+  //   const nextDigitIndex = digitIndex + 1;
+
+  //   const enteredDigit = event.target.value;
+  //   if (!isNaN(enteredDigit) && enteredDigit.length === 1) {
+  //     this.verificationForm.controls[`digit${digitIndex}`].setValue(enteredDigit);
+
+  //     if (nextDigitIndex < this.digitIndexes.length) {
+  //       this.setFocus(nextDigitIndex);
+  //     }
+  //   }
+
+  //   this.checkVerificationCode();
+  // }
 
 
   setFocus(digitIndex: number) {
@@ -100,7 +126,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
       .join('');
     if (code.length === 6) {
       const from =this.authService.getFromValue();
-      if(from=="login"){
+      if(from == "login" || from == "signUp"){
         
         // Send verification request using code
         let token=this.authService.getToken()
@@ -139,7 +165,8 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
             this.isLoading=false
   
             this.invalid=false;
-            this.authService.setCode(code)
+            this.authService.setCode(code);
+            this.authService.setAccessToReset(true)
             this.router.navigateByUrl('change-Passward')
 
           }

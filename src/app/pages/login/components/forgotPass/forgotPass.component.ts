@@ -42,23 +42,26 @@ export class ForgotPassComponent implements OnInit ,OnDestroy{
       )
     }
     sendCode(){
-      this.sendCodeToEmail();
-      this.authService.setFromValue("forgot")
-      this.authService.setEmail(this.form.value.email)
-      this.router.navigateByUrl('verification')
-      // this.sendCodeToEmail().subscribe(
+      // this.sendCodeToEmail();
+      // this.authService.setFromValue("forgot")
+      // this.authService.setEmail(this.form.value.email)
+      // this.router.navigateByUrl('verification')
+
+      this.loading=true;
+      this.sendCodeToEmail().subscribe(
   
-      //   (res)=>{
-      //     this.authService.setFromValue("forgot")
-      //     this.authService.setEmail(this.form.value.email)
-      //     this.router.navigateByUrl('verification')
-      //     this.loading=false;
+        (res)=>{
+          this.authService.setFromValue("forgot")
+          this.authService.setEmail(this.form.value.email)
+          this.router.navigateByUrl('verification')
+          this.loading=false;
   
-      //   },
-      //   (err)=>{
-      //     this.loading=false;
-      //   }
-      // );
+        }, 
+        (err)=>{
+          console.log("error from component")
+          this.loading=false;
+        }
+      );
      
 
     }
@@ -67,18 +70,8 @@ export class ForgotPassComponent implements OnInit ,OnDestroy{
 
     }
     sendCodeToEmail(){
-      this.loading=true;
-      return this.loginService.sendEmailCode(this.form.value.email).subscribe(
-  
-        (res)=>{
-        
-          this.loading=false;
-  
-        },
-        (err)=>{
-          this.loading=false;
-        }
-      );
+      
+      return this.loginService.sendEmailCode(this.form.value.email)
      
   
     }

@@ -16,7 +16,10 @@
           <img src="assets/icons/search.svg" alt="" width="14" />
         </div>
       </div>
-      <div class="d-flex justify-content-between" style="width: 31%;align-items: center;">
+      <div class="d-flex justify-content-between" style="width: 31%;
+      align-items: center;
+      min-width: 512px;
+      max-width: 512px;">
         <form [formGroup]="form"class="d-flex" style=" margin-inline: 20px;">
           <us-select
           class="mx-3"
@@ -123,17 +126,33 @@
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'STATUS_LABEL' | translate }}</th>
           <td class="text-center" mat-cell *matCellDef="let element">
             <ng-container [ngSwitch]="element.status">
-              <div *ngSwitchCase="3">
-                <img src="assets/images/read.svg" alt="">
+              <div *ngSwitchCase="3" class="d-flex justify-content-center align-items-center w-100">
+                <span class=" message-state read  d-flex justify-content-center align-items-center " >
+                  {{ 'Read' | translate }}
+                </span>
               </div>
-              <div *ngSwitchCase="1">
-                <img src="assets/images/sent.svg" alt="">
+            
+              <div *ngSwitchCase="1" class="d-flex justify-content-center align-items-center w-100">
+                <span class=" message-state sent d-flex justify-content-center align-items-center " >
+                  {{ 'Sent' | translate }}
+                </span>
               </div>
-              <div *ngSwitchCase="2">
-                <img src="assets/images/delivered.svg" alt="">
+            
+              <div *ngSwitchCase="2" class="d-flex justify-content-center align-items-center w-100">
+                <span class=" message-state delivered d-flex justify-content-center align-items-center " >
+                  {{ 'Delivered' | translate }}
+                </span>
               </div>
-              <div *ngSwitchCase="0">
-                <img src="assets/images/pending.svg" alt="">
+              
+              <div *ngSwitchCase="0" class="d-flex justify-content-center align-items-center w-100">
+                <span class="message-state pending d-flex justify-content-center align-items-center " >
+                  {{ 'Pending' | translate }}
+                </span>
+              </div>
+              <div *ngSwitchCase="4" class="d-flex justify-content-center align-items-center w-100">
+                <span class="message-state failed d-flex justify-content-center align-items-center " >
+                  {{ 'failedLabel' | translate }}
+                </span>
               </div>
             </ng-container>
           </td>

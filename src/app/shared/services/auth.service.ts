@@ -34,6 +34,7 @@ export class AuthService {
   code!:string;
   email:string;
   from!:string;
+  accessToResetPass!:boolean;
   userData!:UserData;
   resfreshToken!:string;
 userInfo!:UserData;
@@ -95,6 +96,14 @@ async hasPermission(routeName: string) {
     return true;
   }
 }
+setAccessToReset(access){
+  this.accessToResetPass=access
+  }
+
+getAccessToReset(){
+  return this.accessToResetPass
+  }
+
 setCode(code){
   this.code=code
 }

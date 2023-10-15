@@ -34,6 +34,7 @@
           </p>
         </div>
         <form [formGroup]="verificationForm" class="d-flex justify-content-center mb-2 p-4" style="direction: ltr;">
+         <!-- form inputs -->
           <ng-container *ngFor="let digitIndex of digitIndexes; let last = last">
             <div
               class="mx-1"
@@ -49,6 +50,8 @@
                 (keydown)="onKeyDown($event, digitIndex)"
                 [attr.id]="'digitInput' + digitIndex"
                 [attr.tabindex]="digitIndex + 1"
+                (paste)="onDigitPaste($event)"
+
               />
             </div>
             <div *ngIf="!last" class="mx-1"></div>

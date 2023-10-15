@@ -84,7 +84,7 @@
 "scan_now": "Scan Now",
 "please_wait_qr_code_loading": "Please wait, QR code is loading...",
 "scan_this_qr_code_to_preview": "Scan this QR Code to preview",
-"WELCOME_BACK": "Welcome back! Login into your account",
+"WELCOME_BACK": "Welcome back! Login to your account",
 "ENTER_YOUR_EMAIL": "Enter your email",
 "ENTER_YOUR_PASSWORD": "Enter your password",
 "EMAIL": "Email",
@@ -462,7 +462,13 @@
 "Recover_text":"Recover your account. We will send you a link to change your password.",
 "SUMBIT":"submit",
 "Back_to_login":"Back To Login",
-"PASS_CHANGED":"password changed successfully"
+"PASS_CHANGED":"password changed successfully",
+"Pending":"Pending",
+"Read":"Read",
+"Sent":"Sent",
+"Delivered":"Delivered",
+"EXIST_NAME":"field name already exist",
+"CONFIRM_LOGOUT_MSG":"are you sure you want to log out?"
 
 
 

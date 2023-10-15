@@ -24,40 +24,42 @@ a {
   }
   a {
     gap: 12px;
-    padding: 15px
+    padding: 15px;
+    font-weight: 500 !important;
+
+    img{
+      filter: invert(22%) sepia(100%) saturate(3678%) hue-rotate(187deg) brightness(93%) contrast(100%);
+    }          
+  
+    
   }
   .all-options-container {
     height: 100%;
     overflow-y: auto !important;
 
-    ul {
-      gap: 5px;
-      li {
-        &:hover {
-          a {
-            background: var(--hover-color);
-            border-radius: 8px;
-            color: var(--clr-primary-800) !important;
-            font-weight: 500 !important;
-          }
-          img{
-            filter : invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
-          }
-        }
-        .active {
-          background: var(--clr-primary-500);
+  }
+  ul {
+    
+    li {
+      &:hover {
+        a {
+          background: var(--hover-color);
           border-radius: 8px;
           color: var(--clr-primary-800) !important;
-          font-weight: 500 !important;
-          img{
-            filter : invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
-          }
         }
-        .active {
-         &:hover{
-          background: var(--clr-primary-500);
-         }
-        }
+      
+      }
+      .active {
+        background: var(--clr-primary-500);
+        border-radius: 8px;
+        color: var(--clr-primary-800) !important;
+        font-weight: 500 !important;
+      
+      }
+      .active {
+       &:hover{
+        background: var(--clr-primary-500);
+       }
       }
     }
   }

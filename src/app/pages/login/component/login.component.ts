@@ -68,10 +68,9 @@ userInfo:any;
       this.authService.setFromValue("login")
 
       this.sendCode();
-      this.router.navigateByUrl('verification')
 
     }
-    if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
+   else if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
       // update local storage
       this.authService.saveDataToLocalStorage(this.userInfo);
       this.authService.updateUserInfo()
@@ -88,7 +87,7 @@ userInfo:any;
 
 
     }
-     if(!res.isActive ){
+    else if(!res.isActive ){
 
       this.hintMessage="Your account is not active , please contact the support to activate it";
       this.loading=false;
@@ -150,6 +149,7 @@ userInfo:any;
       (res)=>{
 
         this.loading=false;
+        this.router.navigateByUrl('verification')
 
       },
       (err)=>{

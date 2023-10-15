@@ -98,9 +98,9 @@ export class SignupComponent implements OnInit ,OnDestroy{
            localStorage.removeItem("email")
            localStorage.setItem("email",res.email)
            this.authService.setUserData(this.userInfo,res.refreshToken);
+           this.authService.setFromValue("signUp")
 
       this.sendCode();
-      this.router.navigateByUrl('verification')
 
       },
       (err)=>{
@@ -129,7 +129,9 @@ export class SignupComponent implements OnInit ,OnDestroy{
 
       (res)=>{
 
-      
+        this.router.navigateByUrl('verification')
+        this.loading=false;
+
 
       },
       (err)=>{
