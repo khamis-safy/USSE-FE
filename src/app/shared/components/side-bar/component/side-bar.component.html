@@ -128,17 +128,15 @@
           <span class="txt-xs">{{ "NOTES" | translate }}</span>
         </a>
       </li> -->
-      <li class="i-help">
-        <a routerLinkActive="active" routerLink="/help" class="text-neutral-600 d-flex">
-          <div class="icon">
-            <img src="assets/icons/help-1.svg" alt="" />
-          </div>
-          <span class="txt-xs">{{ "HELP" | translate }}</span>
-        </a>
-      </li>
+  
     </ul>
-    <div class="versions pt-3 text-primary-800 " style="border-top: 1px solid #C7C6C6; height: 50px;">
-      <span>{{frontVersion}} / {{backVersion}}</span>
+    <div class="versions w-100 d-flex justify-content-between  text-primary-800 " style="border-top: 1px solid #C7C6C6; height: 50px;">
+      <span [title]="'versions' | translate">{{frontVersion}} / {{backVersion}}</span>
+      <div class="icon p-0 m-0 pointer" [title]="'HELP' | translate" >
+      <img src="assets/icons/help-1.svg" class="w-100" alt="" />
+      </div>
+    
+     
     </div>
 
   </div>

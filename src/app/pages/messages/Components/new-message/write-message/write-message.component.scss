@@ -1,0 +1,14 @@
+@media (max-width: 1399px)
+{
+    .write-message-containter{
+        margin-top: 0 !important;
+        padding: 32px !important;
+
+    }
+    .d-flex.gap-5.flex-column {
+        gap: 15px !important;
+    }
+    form.d-flex.gap-5.flex-column.ng-dirty.ng-valid.ng-touched {
+        gap: 15px !important;
+    }
+}

@@ -39,6 +39,7 @@
   height: 20px;
   padding: 0;
   border-radius: 20px;
+  border: none;
   // border: 1.5px solid $clr_neutral_500;
   color: $clr_neutral_0;
   background-color: $clr_neutral_0;
@@ -85,4 +86,12 @@
 
 .txt-caption {
   color: $clr_neutral_600;
+}
+
+@media (max-width: 1399px)
+{
+  .radio{
+    width: 15px !important;
+    height: 15px !important;
+  }
 }

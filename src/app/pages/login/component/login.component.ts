@@ -20,7 +20,8 @@ loading;
 invalid:boolean=false;
 hintMessage:string;
 userInfo:any;
-
+language:string=localStorage.getItem("currentLang")=="ar"?"العربية":"English";
+currentLang:string;
   constructor(private plugin:PluginsService,
     private authService:AuthService,
     private loginService:LoginService,
@@ -37,6 +38,11 @@ userInfo:any;
         password:this.password
       }
     )
+  }
+  switchLanguage(lang: string) {
+    localStorage.setItem("currentLang",lang);
+    location.reload()
+  
   }
   login(){
     this.loading=true

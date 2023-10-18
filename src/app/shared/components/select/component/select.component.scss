@@ -541,3 +541,20 @@
 .icon-arrow{
   color: $clr_neutral_900;
 }
+
+@media (max-width: 1399px)
+{
+  
+  .host{
+    .toggler{
+      height: 27px !important;
+      padding: 0 12px !important;
+    }
+    .list_item{
+      padding: 1px 0px !important;
+    }
+  }
+  .input-wrapper:has(textarea) {
+    height: 82px !important;
+}
+}

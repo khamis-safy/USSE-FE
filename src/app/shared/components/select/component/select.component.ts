@@ -41,7 +41,9 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   }
   /* Optional [ Settings ] */
   @Input() badgesLimit: number = 4;
-  @Input("enableDropdownWhileSearching") enableDropdownWhileSearching: boolean = false;
+  @Input() isSearchOnly: boolean = false;
+
+  @Input("enableDropdownWhileSearching") enableDropdownWhileSearching: boolean = true;
   @Input('maxListItemsWithoutSearch') maxWithoutSearch: number = 20; // when to enable search
   @Input('paginationThrottle') throttle?: number; // how much time [in milliseconds] to wait before next pagination
   @Input('multiSelect') isMulti?: boolean; // [ single or multi ]-select
@@ -102,7 +104,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Output() onAction = new EventEmitter<any>();
   @Output() onSelectAll = new EventEmitter<SelectOption[]>();
   @Output() onDeSelectAll = new EventEmitter<SelectOption[]>();
-
+  
   value: any = null;
   filteredOptions!: SelectOption[]; // the options that being filtered by search
   isOpen = false; // to toggle dropdown list

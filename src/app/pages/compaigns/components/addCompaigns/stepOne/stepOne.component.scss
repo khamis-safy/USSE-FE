@@ -92,3 +92,46 @@
 
 }
 
+@media (max-width: 1399px) { 
+.stepone-containter{
+  margin-block: 16px !important;
+
+}
+button.button-size-md {
+  min-height: 36px !important;
+}
+.d-flex.gap-4.px-4.py-3.ng-star-inserted {
+  gap: 23px !important;
+}
+.d-flex.gap-4.px-4.py-3.ng-star-inserted {
+  padding: 8px 20px !important;
+}
+.lists.py-3 {
+  padding-block: 10px !important;
+}
+.lists .line {
+  top: 43px !important;
+}
+.lists-body.mt-3 {
+  margin-top: 4px !important;
+}
+.lists {
+  .lists-body {
+    height: 215px !important;
+  }
+}
+.col-5.d-flex.gap-4.flex-column.me-2 {
+  gap: 18px !important;
+}
+.contacts.py-4 {
+  padding-block: 15px !important;
+}
+.contacts{
+  .contacts-body {
+  height: 268px  !important;
+}
+} 
+.d-flex.justify-content-between.align-items-center.w-100.px-4.pb-2.txt-sm.lists-top {
+  padding-inline: 20px !important;
+}
+}

@@ -37,7 +37,7 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit{
   tabs=["contacts","canceled"];
   tab = this.tabs[0];
   canEdit: boolean;
-
+  totalContacts:number;
   constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private listService:ManageContactsService,
@@ -80,7 +80,7 @@ else{
         (res)=>{
         this.list=res;
         this.count={totalContacts:this.list.totalContacts,totalCancelContacts:this.list.totalCancelContacts};
-
+        this.totalContacts=this.list.totalContacts
 
         },
 
@@ -107,6 +107,11 @@ this.router.navigateByUrl('contacts?tab=lists')
   onChecked(e){
     this.isChecked=e;
 
+  }
+
+
+  updateTotalContacts(event){
+    this.totalContacts=event
   }
   openDeleteConModal(){
     const dialogConfig=new MatDialogConfig();
@@ -177,7 +182,6 @@ this.router.navigateByUrl('contacts?tab=lists')
       if(result){
 
         this.listContacts.getContacts();
-
       }
 
 

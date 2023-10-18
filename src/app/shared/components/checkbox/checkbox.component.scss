@@ -49,4 +49,9 @@
 .txt-caption {
   color: $clr_neutral_600;
 }
-
+@media (max-width: 1399px) {
+.checkbox{
+  width: 16px  !important;
+  height: 16px  !important;
+}
+}

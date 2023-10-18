@@ -35,3 +35,27 @@
     color: $clr_danger_700;
   }
 }
+@media (max-width: 1399px) { 
+  form.d-flex.gap-5.flex-column.align-items-center.justify-content-center.ng-untouched.ng-pristine.ng-valid {
+    height: 299px !important;
+    gap: 23px !important;
+}
+label {
+  font-size: 12px !important;
+}
+.form-switch{
+   .form-check-input{
+  width: 43px !important;
+  height: 20px !important;
+}
+}
+input.rounded-pill.border.border-1py-2.txt-input.w-100.date.ng-untouched.ng-pristine {
+  font-size: 12px;
+}
+span {
+  font-size: 12px;
+}
+.intervals{
+  width: 133px !important;
+}
+}

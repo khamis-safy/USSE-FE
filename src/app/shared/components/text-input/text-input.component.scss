@@ -204,3 +204,18 @@ textarea {
   }
 }
 
+@media (max-width: 1399px) {
+
+ 
+  .input-wrapper{
+    height: 40px !important;
+
+   input, textarea
+    {
+    font-size: 12px !important;
+  }
+  }
+  .special-input .us-input .input-label {
+    min-width: 100px !important;
+}
+  }

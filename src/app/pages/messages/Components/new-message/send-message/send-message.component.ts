@@ -80,31 +80,31 @@ else{
           }
         });
         
-        if(this.authService.selectedDeviceId ==""){
+        // if(this.authService.selectedDeviceId ==""){
 
-          this.form.patchValue({
-          devicesData: {
-          title:this.devices[0]?.title,
-          value:this.devices[0]?.value
-          }
+        //   this.form.patchValue({
+        //   devicesData: {
+        //   title:this.devices[0]?.title,
+        //   value:this.devices[0]?.value
+        //   }
 
-          })
-        }
-        else{
-          let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId);
-          if(selected){
+        //   })
+        // }
+        // else{
+        //   let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId);
+        //   if(selected){
 
-            this.deviceId=this.authService.selectedDeviceId;
-            this.form.patchValue({
-              devicesData: {
-              title:selected.title,
-              value:selected?.value
-              }
+        //     this.deviceId=this.authService.selectedDeviceId;
+        //     this.form.patchValue({
+        //       devicesData: {
+        //       title:selected.title,
+        //       value:selected?.value
+        //       }
   
-              })
-          }
-        }
-        console.log(this.devices)
+        //       })
+        //   }
+        // }
+        // console.log(this.devices)
         if(activeDevices.length==0){
           this.deviceLoadingText='No Results'
         }

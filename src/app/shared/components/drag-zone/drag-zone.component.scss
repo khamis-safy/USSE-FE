@@ -21,3 +21,25 @@ label{
 .context-cursor{
   cursor: context-menu;
 }
+
+@media (max-width: 1399px)
+{
+  label.rounded-5.bg-white.px-2.py-4.w-100 {
+    padding: 14px 5px !important;
+}
+svg{
+  width: 28px !important;
+}
+span.btn.bg-primary-400.txt-xs {
+
+  padding-block: 5px !important;;
+  font-size: 10px !important;
+}
+mat-icon.mat-icon.notranslate.material-symbols-outlined.text-primary-800.material-icons.mat-ligature-font.mat-icon-no-color {
+  font-size: 19px !important;
+}
+span.overflow-line-1.txt-xs {
+  font-size: 9px !important;
+}
+
+}

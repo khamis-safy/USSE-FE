@@ -1,4 +1,22 @@
 <div class="container-fluid ps-0 bg-primary-100">
+  <div class="colored-menu">
+    <button mat-button [matMenuTriggerFor]="menu" class="text-primary-800">
+      <div class="d-flex align-items-center gap-3 txt-sm">
+        <div class="icon">
+          <img src="assets/icons/lang-colored.svg" alt="" />
+        </div>
+        {{language}}
+        <div class="icon">
+          <img src="assets/icons/Polygon 35.svg" alt="" />
+        </div>
+      </div>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="language='English';switchLanguage('en')">English</button>
+      <button mat-menu-item (click)="language='العربية';switchLanguage('ar')">العربية</button>
+    </mat-menu>
+  </div>
+
   <div class="row">
     <div
       class="bg-primary-200 mx-auto text-center vh-100 col-md-4 p-5 d-flex flex-column justify-content-center align-items-center"
@@ -6,7 +24,7 @@
     >    <img src="/assets/images/colored logo_name side.svg" alt="myLogo" style="width:65%" class="my-3" />
 
       <div class="col-md-12  text-center">
-        <h3 class="mb-5 mt-3 " style="font-family: Poppins; font-weight: 500; font-size: 22px;">
+        <h3 class="mb-5 mt-3 signup-heading" style="font-family: Poppins; font-weight: 500; font-size: 22px;">
           {{ 'CREATE_YOUR_ACCOUNT' | translate }}
         </h3>
 
@@ -122,9 +140,9 @@
           alt=""
           class="w-100 text-center mx-auto"
         />
-        <p class="text-center mx-auto" style="color: #292a32 ;line-height: 1.5;">
+        <!-- <p class="text-center mx-auto" style="color: #292a32 ;line-height: 1.5;">
           {{ 'LOREM_IPSUM' | translate }}
-        </p>
+        </p> -->
       </div>
     </div>
   </div>

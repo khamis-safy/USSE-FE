@@ -1,8 +1,8 @@
-<section class="p-3">
+<section class="campaign-containter p-3">
   <div class="d-flex justify-content-between  align-items-center " style="height: 50px;">
     <div class="d-flex justify-content-center">
       <img *ngIf="isCompagins"  src="assets/icons/Compaigns.svg" alt="" class="px-2" />
-      <mat-icon *ngIf="!isCompagins" class="me-2 pointer" (click)="isCompagins=true">keyboard_backspace</mat-icon>
+      <mat-icon *ngIf="!isCompagins" class="me-2 pointer back" (click)="isCompagins=true">keyboard_backspace</mat-icon>
       <span class="txt-lg main-heading">{{ 'campaigns' | translate }}</span>
     </div>
 

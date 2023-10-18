@@ -39,7 +39,7 @@ WrapperOffsetWidth =250;
 @ViewChild(MatPaginator)  paginator!: MatPaginator;
 @ViewChild(MatSort) sort: MatSort;
 @ViewChild("search") search!:ElementRef;
-
+@Output() updatedCount= new EventEmitter<number>;
 listTableData:ListData[]=[]
 deletedContacts:string[]=[];
 columns :FormControl;
@@ -164,6 +164,7 @@ getContacts(){
       dialogRef.afterClosed().subscribe(result => {
         if(result){
           this.getContacts();
+          this.getListData();
               }
 
       });
@@ -195,5 +196,24 @@ getContacts(){
 
 
     }
+    getListData(){
 
+      this.listService.getListById(this.listId).subscribe(
+        (res)=>{
+        this.count={totalContacts:res.totalContacts,totalCancelContacts:res.totalCancelContacts};
+        this.updatedCount.emit(res.totalContacts)
+        if(this.isCanceled){
+          this.length=this.count?.totalCancelContacts;
+        }
+        else{
+          this.length=this.count?.totalContacts;
+
+        }
+        },
+
+        (err)=>{
+        })
+
+
+    }
 }

@@ -249,18 +249,20 @@ checkIfFieldFound(name){
 
 
   submitEdit(){
+    let listsIds = this.form.value.selectedLists.map((e)=>e.value);
+
     let data:any={
       id:this.data.contacts.id,
       name :this.form.value.name,
       mobileNumber:this.form.value.mobile.e164Number,
-      companyName:this.form.value.cnName,
-      note: this.form.value.note,
+      companyName:this.form.value.cnName || "",
+      note: this.form.value.note || "",
       email: this.email,
+      newListId:listsIds,
       additionalContactParameters: this.additionalParameters
 
     }
 
-    let listsIds = this.form.value.selectedLists.map((e)=>e.value);
     this.isLoading = true
     if(this.data.listDetails){
       this.listService.updateContact(data).subscribe(
@@ -283,8 +285,8 @@ checkIfFieldFound(name){
         id:this.data.contacts.id,
         name :this.form.value.name,
         mobileNumber:this.form.value.mobile.e164Number,
-        companyName:this.form.value.cnName,
-        note: this.form.value.note,
+        companyName:this.form.value.cnName || "",
+        note: this.form.value.note || "",
         email: this.email,
         newListId:listsIds,
         additionalContactParameters: this.additionalParameters

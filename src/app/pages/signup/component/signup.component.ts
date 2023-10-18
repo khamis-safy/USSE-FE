@@ -15,7 +15,8 @@ export class SignupComponent implements OnInit ,OnDestroy{
   isVisiblePass =false;
   isLoading = false
   userInfo:any;
-
+  language:string=localStorage.getItem("currentLang")=="ar"?"العربية":"English";
+  currentLang:string;
   form:any;
   contactName:any;
   organisationName:any;
@@ -48,6 +49,11 @@ export class SignupComponent implements OnInit ,OnDestroy{
         }
       }
       )
+  }
+  switchLanguage(lang: string) {
+    localStorage.setItem("currentLang",lang);
+    location.reload()
+  
   }
   initFormControles(){
     this.contactName = new FormControl('',[Validators.required]);
