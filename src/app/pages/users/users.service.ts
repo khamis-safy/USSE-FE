@@ -15,7 +15,7 @@ export class UsersService {
   pageNum:number=0;
   orderedBy:string="";
   search:string="";
-
+  email:string=this.authService.userInfo.email
   token:string;
   organizationName:string=this.authService.userInfo.organizationName;
   id:string=this.authService.userInfo.id;
@@ -38,7 +38,7 @@ export class UsersService {
 
 
   listCustomersUsers(token:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Users[]>{
-    return this.http.get<Users[]>(`${env.api}Auth/listCustomersUsers?token=${token}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+    return this.http.get<Users[]>(`${env.api}Auth/listCustomersUsers?email=${this.email}&token=${token}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
   }
 
   listCustomersUsersCount(token:string):Observable<number>{
