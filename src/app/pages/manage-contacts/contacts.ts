@@ -11,8 +11,8 @@ export interface Contacts {
   createdAt: string,
   isChecked:string,
   additionalContactParameter:{name:string, value:string}[],
-  // applicationUser: object,
-  // applicationUserId:string,
+  hideLeftArrow: boolean,
+  hideRightArrow: boolean,
   lists:ListData[]
 }
 

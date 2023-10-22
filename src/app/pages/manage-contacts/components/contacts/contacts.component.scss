@@ -31,6 +31,12 @@
 .listName{
   border: 1px solid var(--clr-primary-800);
   color:var(--clr-primary-800);
+  width: 35%;
+  min-width:80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+
 }
 .overflow-control{
   &::after{
@@ -58,3 +64,13 @@
   scroll-behavior: smooth;
 }
 
+.lists{
+  width: 200px;
+
+}
+@media (max-width: 1700px) {
+.listName{
+  padding: 3px 6px!important;
+  font-size: 10px !important;
+}
+}

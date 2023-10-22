@@ -15,7 +15,8 @@ a {
   position: relative;
   gap: 30px;
   height: 85vh;
-  width: 300px;
+  width: 17vw !important;
+  max-width: 312px !important;
   min-height: 50vh;
   max-height: 100vh;
   overflow: hidden;
@@ -128,12 +129,12 @@ height: 45px !important;
 }
 }
 
-@media (max-width: 1399px) {
+@media (max-width: 1700px) {
   .all-options-container.d-flex.justify-content-between.flex-column.h-100.overflow-auto.px-3 {
     padding-inline: 15px !important;
 }
   .sidnav-container{
-    width: 267px !important;
+    width: 245px !important;
     gap: 12px !important;
     .user-options {
       padding: 12px !important;

@@ -67,11 +67,14 @@ toSecondStep(){
 
 
 }
-toThirdStep(){
-  this.step3=true;
-  this.message=this.writeMessage.form.value.message;
 
-  this.attachments=this.writeMessage.fileData.map((file)=>file.url);
+toThirdStep(data){
+  this.step3=true;
+  this.message=data.message;
+  this.attachments=data.files
+  // this.message=this.writeMessage.form.value.message;
+
+  // this.attachments=this.writeMessage.fileData.map((file)=>file.url);
 
 }
 toLastStep(){
@@ -82,6 +85,7 @@ toLastStep(){
 
 }
 addCampaign(){
+  this.isLoading = true;
 this.isRepeatable=this.stepFourComponent.isRepeatable;
 this.isInterval=this.stepFourComponent.isInterval;
 
@@ -133,19 +137,21 @@ data={
 
 
 }
-
+//  console.log(data)
 
 this.compaignsService.addMewCampain(data).subscribe(
   (res)=>{
     this.toasterService.success("Success");
     this.back.emit(true)
     this.isLoading = false
-    console.log(res)},
+    
+  },
   (err)=>{
 
     this.back.emit(false)
     this.isLoading = false;
-    console.log(err)}
+    
+  }
 
 
 )

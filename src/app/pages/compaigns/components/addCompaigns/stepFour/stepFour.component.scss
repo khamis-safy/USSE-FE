@@ -35,7 +35,7 @@
     color: $clr_danger_700;
   }
 }
-@media (max-width: 1399px) { 
+@media (max-width: 1700px) { 
   form.d-flex.gap-5.flex-column.align-items-center.justify-content-center.ng-untouched.ng-pristine.ng-valid {
     height: 299px !important;
     gap: 23px !important;
@@ -44,7 +44,7 @@ label {
   font-size: 12px !important;
 }
 .form-switch{
-   .form-check-input{
+  .form-check-input{
   width: 43px !important;
   height: 20px !important;
 }
@@ -57,5 +57,8 @@ span {
 }
 .intervals{
   width: 133px !important;
+}
+.campaign-setting-container{
+  height: 385px !important;
 }
 }

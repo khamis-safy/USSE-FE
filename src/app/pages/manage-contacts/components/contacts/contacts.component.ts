@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../manage-contacts.service';
@@ -12,7 +12,7 @@ import { Contacts } from '../../contacts';
 import { AddContactComponent } from './addContact/addContact.component';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription } from 'rxjs';
+import { Subscription, fromEvent, map } from 'rxjs';
 import { CONTACTSHEADER } from '../../constants/constants';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -22,7 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss']
 })
-export class ContactsComponent  implements OnInit ,OnDestroy {
+export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   length:number;
   numRows;
   loading:boolean=true;
@@ -51,6 +51,8 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
   isSearch: boolean;
   noData: boolean=false;
   notFound: boolean=false;
+
+
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -58,6 +60,11 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
     private translate: TranslateService,
   ) {
     }
+  ngAfterViewInit() {
+    // fromEvent(this.search.nativeElement,'keyup').pipe{
+    //   map()
+    // }
+  }
 
 
     @Input('isUnsubscribe') isUnsubscribe = false;
@@ -132,8 +139,12 @@ export class ContactsComponent  implements OnInit ,OnDestroy {
           this.displayedColumns= ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At"];
 
         }
-
+        res.forEach(contact => {
+          contact.hideLeftArrow = true;
+          contact.hideRightArrow = false;
+        });
         this.dataSource=new MatTableDataSource<Contacts>(res);
+        
         if(search!=""){
           this.length=res.length;
           if(this.length==0){
@@ -272,23 +283,45 @@ this.subscribtions.push(sub2)
 
   selectedRow(event){
   }
-  scrollRight(wrapper){
-    this.WrapperOffsetWidth = wrapper.offsetWidth
-    this.WrapperScrollLeft =wrapper.scrollLeft+100
+  scrollRight(element, wrapper: HTMLElement) {
+    element.hideLeftArrow = false;
+  element.WrapperOffsetWidth = wrapper.offsetWidth;
 
-    wrapper.scrollTo({
-      left: this.WrapperScrollLeft,
-      behavior: "smooth",
-    })
+  // Calculate the total width of list items dynamically
+  const totalListWidth = Array.from(wrapper.querySelectorAll('.listName')).reduce((acc, listItem) => {
+    // Calculate the width of each list item and add it to the accumulator
+    const listItemWidth = listItem.clientWidth;
+    return acc + listItemWidth;
+  }, 0);
 
+  
+
+  // Update hideRightArrow based on the scroll position
+  if (this.WrapperScrollLeft > totalListWidth - element.WrapperOffsetWidth) {
+    element.hideRightArrow = true;
+  } else {
+    element.hideRightArrow = false;
   }
-  scrollLeft(wrapper){
+  this.WrapperScrollLeft = wrapper.scrollLeft + 100;
+  // Scroll to the calculated position
+  wrapper.scrollTo({
+    left: this.WrapperScrollLeft,
+    behavior: "smooth",
+  });
+  }
+  scrollLeft(element , wrapper){
+    element.hideRightArrow = false;
     this.WrapperScrollLeft =wrapper.scrollLeft-100
-    if(this.WrapperScrollLeft<0)this.WrapperScrollLeft =0;
+    if(this.WrapperScrollLeft<=5){
+      this.WrapperScrollLeft =0;
+      element.hideLeftArrow=true;
+      
+    }
     wrapper.scrollTo({
       left: this.WrapperScrollLeft,
       behavior: "smooth",
     })
+    
 
 
 }

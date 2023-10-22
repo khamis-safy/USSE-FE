@@ -195,7 +195,9 @@ else{
 
     }},
     (err)=>{
-
+      this.loading = false;
+      this.length=0;
+      this.noData=true;
     }
   )
 
@@ -234,6 +236,7 @@ else{
         (err)=>{
          this.loading = false;
          this.length=0;
+         this.noData=true;
 
         }
       )
@@ -251,6 +254,8 @@ else{
         ,(err)=>{
           this.length=0;
           this.loading=false
+          this.noData=true;
+
         }
       )
     }

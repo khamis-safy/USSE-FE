@@ -30,7 +30,7 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
 
   displayedColumns: string[] = ['select', 'name', "totalContacts"];
   listTableData:ListData[]=[];
-
+  loading:boolean=true;
   listIds:string[]=[];
   contactsIds:string[];
   contacts:boolean=false;
@@ -105,10 +105,12 @@ getListData(){
   let search="";
   this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
       (res)=>{
+        this.loading=false;
         this.numRows=res.length;
   this.dataSource=new MatTableDataSource<ListData>(res)
       },
       (err)=>{
+        this.loading=false;
         this.onClose();
       })
 }
@@ -121,6 +123,7 @@ getContactsData(){
 
     let sub1= this.listService.getContacts(email,false,shows,pageNum,orderedBy,search,"").subscribe(
       (res)=>{
+        this.loading=false;
         const filterdContacts = res.filter((obj) => !this.contactsIds.includes(obj.id));
         this.contactsIds=filterdContacts.map((e)=>e.id);
 
@@ -130,12 +133,14 @@ getContactsData(){
 
         }
         else{
+          
           this.numRows=res.length;
 
         }
   this.dataSource=new MatTableDataSource<Contacts>(filterdContacts)
       },
       (err)=>{
+        this.loading=false;
         this.onClose();
       })
 }

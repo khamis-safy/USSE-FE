@@ -31,6 +31,8 @@ shouldCloseAccordion:boolean=true;
 // lists variables
 sortBy;
 @Output() displayedContactsCount = new EventEmitter<number>;
+@Output() allContactsFromChild = new EventEmitter<any>;
+
   // lists: ListData[] = [];
   selectedListsNum:number=0;
   // isAllListsSelected:boolean=false;
@@ -120,8 +122,11 @@ sortBy;
 
         if(isCheck){
           this.addContactNumber(contact);
+         
+
 
         }
+        
         contact.isChecked = isCheck?"checked":"";
                                   });
       return contacts;
@@ -196,6 +201,7 @@ onAccordionOpened(listContacts:ListContacts) {
     this.getListContacts(listContacts,false);
   }
   else if(listContacts.contacts.length!=0 && listContacts.list.isExpanded){
+
     listContacts.contacts.map((contact)=>{
       if(this.addedContacts.find((cont)=>cont.id==contact.id)){
         contact.isChecked="checked";
@@ -247,9 +253,9 @@ resetSelectedLists(){
   })
 }
 onSelectList(state,listContacts:ListContacts){
-  listContacts.list.isExpanded=false;
 
   this.changeListSelectionState(state,listContacts);
+  listContacts.list.isExpanded=false;
 
 
   if(state=="checked"){
@@ -694,7 +700,12 @@ onDeSelectAll(event:any){
   this.emitContacts();
 
 }
-
+getAllContactsData(){
+return [...this.addedContacts.map((e)=>e.mobileNumber),...this.addHocs.map((hoc)=>`+${hoc}`)]
+}
+allContactsToParent(){
+this.allContactsFromChild.emit(this.getAllContactsData())
+}
 emitContacts(){
 let allSelected=[...this.addedContacts.map((e)=>e.mobileNumber),...this.addHocs.map((hoc)=>`+${hoc}`)];
 this.displayedContactsCount.emit(allSelected.length);

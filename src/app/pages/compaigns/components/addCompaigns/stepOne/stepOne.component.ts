@@ -144,13 +144,14 @@ clearLists(){
   this.selectedLists=0;
   this.allSelected.emit(this.addedLists)
 
-  this.lists.map((e)=>e.selectionState)
+  this.lists.map((e)=>{e.selectionState=0; e.isChecked=""})
 
 }
 removeList(list:ListData){
   this.addedLists.splice(this.addedLists.indexOf(list),1)
   // change state of list check to be unchecked
   let found = this.lists.find((li)=>li.id==list.id);
+  found.isChecked=""
   found.selectionState=0;
   this.allSelected.emit(this.addedLists)
 

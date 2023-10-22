@@ -1,6 +1,6 @@
-<div class="row w-100 my-5" style="height: 70%; place-content: space-around">
+<div class="row w-100 my-5 " style="height: 70%; place-content: space-around">
   <!-- lists and contacts with search -->
-  <div class="col-5 d-flex gap-4 flex-column me-2">
+  <div class="col-5 d-flex gap-3 flex-column me-2 select-contacts">
     <div class="d-flex position-relative w-100 m-0">
       <div class="w-100">
         <form [formGroup]="searchForm">
@@ -58,13 +58,13 @@
       <div class="lists-body">
         <ng-container>
           <mat-accordion>
-
+            
             <mat-expansion-panel
             *ngFor="let listContact of allLists; let i = index"
             class="custom-panel"
 
             (opened)="onAccordionOpened(listContact)"
-            [expanded]="(listContact.list.isChecked=='' && !listContact.list.isExpanded)"
+            [expanded]="(listContact.list.isChecked=='' && !listContact.list.isExpanded )"
           >
             <mat-expansion-panel-header   class="zi-2">
               <mat-panel-title>
@@ -176,18 +176,38 @@
             </div>
           </ng-container>
         </div>
-        <us-button
-          class="m-2"
-          label="{{ 'ADD' | translate }}"
-          [fill]="true"
-          [size]="'md'"
-          [loading]="false"
-          [disabled]="form.invalid"
-          [appearance]="'primary'"
-          (clicked)="addHocNumber()"
-        >
-        </us-button>
+        <div class="add-button">
+
+          <us-button
+            class="m-2"
+            label="{{ 'ADD' | translate }}"
+            [fill]="true"
+            [size]="'xl'"
+            [loading]="false"
+            [disabled]="form.invalid"
+            [fullWidth]="true"
+            [appearance]="'primary'"
+            (clicked)="addHocNumber()"
+          >
+          </us-button>
+        </div>
       </div>
     </div>
+  </div>
+
+  <div class="d-flex justify-content-end align-items-center buttons" style="width: 98%; ">
+    <button class="rest-style" matStepperNext [disabled]="getAllContactsData().length == 0">
+      <us-button
+        class="m-2"
+        label="{{ 'NEXT' | translate }}"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [appearance]="'primary'"
+        (clicked)="allContactsToParent()"
+        [disabled]="getAllContactsData().length == 0"
+      >
+      </us-button>
+    </button>
   </div>
 </div>

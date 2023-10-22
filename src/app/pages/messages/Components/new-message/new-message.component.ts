@@ -28,7 +28,7 @@ export class NewMessageComponent implements OnInit,AfterViewInit {
 count:number=0;
 contacts:Contacts[]=[];
 deviceSelected:boolean=false;
-
+sendMessageData:any;
   addedContacts: string[] = [];
   deviceId:string;
   message:string;
@@ -60,16 +60,20 @@ deviceSelected:boolean=false;
   filesUrls(e){
     this.attachments=e;
   }
-  toWriteMessage(){
-    this.addedContacts=[...this.selectContacts.addedContacts.map((e)=>e.mobileNumber),...this.selectContacts.addHocs]
-   console.log(this.selectContacts.addHocs)
+  toWriteMessage(contacts){
+    this.addedContacts=contacts
+  //  console.log(this.selectContacts.addHocs)
     this.writeMessage.getTemplates();
   }
-  toSendMessage(){this.sendMessage.getDevices();
+  toSendMessage(data){
+    this.message=data.message;
+    this.attachments=data.files
+    this.sendMessage.getDevices();
     this.sendMessage.setDefaultTime();
-    this.message=this.writeMessage.form.value.message;
+ 
+    // this.message=this.writeMessage.form.value.message;
 
-    this.attachments=this.writeMessage.fileData.map((file)=>file.url);
+    // this.attachments=this.writeMessage.fileData.map((file)=>file.url);
 
   }
   toLastStep(){
@@ -78,7 +82,6 @@ deviceSelected:boolean=false;
 
     this.isLoading = true
 
-    console.log("date time",this.dateTime);
     console.log({
       deviceId:this.deviceId,
       addedContacts:this.addedContacts,

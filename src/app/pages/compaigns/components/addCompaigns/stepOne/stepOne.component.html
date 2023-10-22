@@ -26,6 +26,7 @@
               [label]="list?.name"
               [state]="list.isChecked"
               (changed)="onSelectList($event, list); checked=true;"
+              [(ngModel)]="list.isChecked"
             ></sr-checkbox>
             <span class="txt-sm total">{{ list.totalContacts }}</span>
           </div>
@@ -39,9 +40,9 @@
     <div class="contacts py-4">
       <div class="contacts-heading px-4 d-flex justify-content-between align-items-center">
         <span class="txt-md">{{ 'listsLabel' | translate }}</span>
-        <span class="d-flex align-items-center gap-2 pointer">
+        <span class="d-flex align-items-center gap-2 pointer" (click)="clearLists()">
           <img src="assets/icons/clear.svg" alt="" />
-          <span class="txt-md text-primary-800" (click)="clearLists()">
+          <span class="txt-md text-primary-800" >
             {{ 'clearLabel' | translate }}
           </span>
         </span>

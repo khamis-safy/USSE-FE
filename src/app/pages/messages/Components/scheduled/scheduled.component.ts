@@ -138,7 +138,9 @@ export class ScheduledComponent implements OnInit  {
         this.getMessages(this.deviceId);
     }},
     (err)=>{
-
+      this.loading = false;
+      this.length=0;
+      this.noData=true;
     }
   )
 }
@@ -164,6 +166,7 @@ export class ScheduledComponent implements OnInit  {
         (err)=>{
          this.loading = false;
          this.length=0;
+         this.noData=true;
 
         }
       )
@@ -177,7 +180,9 @@ export class ScheduledComponent implements OnInit  {
           this.length=res;
         }
         ,(err)=>{
+          this.loading = false;
           this.length=0;
+          this.noData=true;
         }
       )
 

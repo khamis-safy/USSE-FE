@@ -152,7 +152,9 @@ this.getDevices();
 
     }},
     (err)=>{
-
+      this.loading = false;
+      this.length=0;
+      this.noData=true;
     }
   )
 }
@@ -194,8 +196,9 @@ this.getCompaigns(this.deviceId);
         this.loading = false;
       },
       (err)=>{
-        this.length=0;
         this.loading = false;
+        this.length=0;
+        this.noData=true;
 
       }
     )
@@ -209,8 +212,9 @@ compaignsCount(deviceId){
     }
     ,(err)=>{
 
-      this.length=0;
       this.loading = false;
+      this.length=0;
+      this.noData=true;
 
     }
   )

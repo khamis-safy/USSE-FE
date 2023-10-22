@@ -143,7 +143,7 @@
       width: calc(100% - 46px);
       padding: 0;
       height: 28px;
-      border: none;
+      border:none;
       outline: none;
       font-size: 16px;
       inset-inline-start: 10px;
@@ -542,12 +542,12 @@
   color: $clr_neutral_900;
 }
 
-@media (max-width: 1399px)
+@media (max-width: 1700px)
 {
   
   .host{
     .toggler{
-      height: 27px !important;
+      height: 28px !important;
       padding: 0 12px !important;
     }
     .list_item{

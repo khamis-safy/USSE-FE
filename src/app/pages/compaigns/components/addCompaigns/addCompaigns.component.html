@@ -8,9 +8,9 @@
       <ng-template matStepLabel>{{ 'selectListsLabel' | translate }}</ng-template>
       <ng-container *ngIf="step1">
 
-        <div class="d-flex  align-items-between flex-column justify-content-between " >
+        <div class="d-flex   position-relative  align-items-between flex-column justify-content-between " style="min-height: 100%;">
           <app-stepOne (allSelected)="getLists($event)"></app-stepOne>
-          <div class="d-flex buttons justify-content-end align-items-center" style="width: 98%; height: 20%;">
+          <div class="d-flex buttons justify-content-end align-items-center">
             <button class="rest-style " matStepperNext [disabled]="lists.length==0">
               <us-button
                 class="m-2"
@@ -34,9 +34,9 @@
       <ng-container *ngIf="step2">
 
 
-      <div class="d-flex align-items-between flex-column justify-content-between" >
-        <app-write-message (emptyMessageAndFiles)="stepTwoValidation($event)" (attachments)="filesUrls($event)" style="height: 80%;"></app-write-message>
-        <div class="d-flex buttons justify-content-end align-items-center" style="width: 98%; height: 20%;">
+      <div class="d-flex   position-relative align-items-between flex-column justify-content-between " style="min-height: 100%;">
+        <app-write-message (filesAndMessage)="toThirdStep($event)" style="height: 80%;"></app-write-message>
+        <!-- <div class="d-flex buttons justify-content-end align-items-center">
           <button class="rest-style" matStepperPrevious>
             <us-button
               class="m-2"
@@ -63,7 +63,7 @@
             >
             </us-button>
           </button>
-        </div>
+        </div> -->
       </div>
     </ng-container>
     </mat-step>
@@ -71,9 +71,9 @@
     <mat-step>
       <ng-template matStepLabel>{{ 'informationLabel' | translate }}</ng-template>
       <ng-container *ngIf="step3">
-      <div class="d-flex align-items-between flex-column justify-content-between" >
+      <div class="d-flex   position-relative align-items-between flex-column justify-content-between " style="min-height: 100%;">
         <app-stepThree (formValidityChange)="stepThreeValidation($event)" (isSelectedDevices)="deviceSelected=$event"></app-stepThree>
-        <div class="d-flex buttons justify-content-end align-items-center" style="width: 98%; height: 20%;">
+        <div class="d-flex buttons justify-content-end align-items-center">
           <button class="rest-style" matStepperPrevious>
             <us-button
               class="m-2"
@@ -83,10 +83,11 @@
               [loading]="false"
               [disabled]="false"
               [appearance]="'primary'"
+              
             >
             </us-button>
           </button>
-
+<!-- [disabled]="!stepThreeValidate || !deviceSelected" -->
           <button class="rest-style" matStepperNext [disabled]="!stepThreeValidate || !deviceSelected">
             <us-button
               class="m-2"
@@ -94,9 +95,9 @@
               [fill]="true"
               [size]="'md'"
               [loading]="false"
-              [disabled]="!stepThreeValidate || !deviceSelected"
               [appearance]="'primary'"
               (clicked)="toLastStep()"
+              [disabled]="!stepThreeValidate || !deviceSelected"
             >
             </us-button>
           </button>
@@ -108,9 +109,9 @@
     <mat-step>
       <ng-template matStepLabel>{{ 'settingLabel' | translate }}</ng-template>
       <ng-container *ngIf="step4">
-      <div class="d-flex align-items-between flex-column justify-content-between" >
+      <div class="d-flex  position-relative  align-items-between flex-column justify-content-between " style="min-height: 100%;">
         <app-stepFour (formValidityChange)="stepFourValidation($event)"></app-stepFour>
-        <div class="d-flex buttons justify-content-end align-items-center" style="width: 98%; height: 20%;">
+        <div class="d-flex buttons justify-content-end align-items-center" >
           <button class="rest-style" matStepperPrevious>
             <us-button
               class="m-2"
