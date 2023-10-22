@@ -1,7 +1,7 @@
 # ----------------------------
 # build from source
 # ----------------------------
-FROM node:latest as node
+FROM node:18-alpine as node
 WORKDIR /app
 COPY . .
 RUN npm --verbose install
