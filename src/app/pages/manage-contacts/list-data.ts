@@ -9,7 +9,8 @@ export interface ListData {
   isChecked:string,
   selectionState:number,
   contactsNum:number,
-  isExpanded:boolean
+  isExpanded:boolean,
+  shoudBeClosed:boolean
 
 }
 export interface ErrSucc{

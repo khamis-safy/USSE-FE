@@ -9,7 +9,7 @@ import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-cont
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 interface ListContacts {
-  list: ListData,
+  list: any,
   contacts: Contacts[],
 };
 @Component({
@@ -19,7 +19,7 @@ interface ListContacts {
 })
 export class SelectContactsComponent implements OnInit {
 
-allLists:ListContacts[];
+allLists:ListContacts[]=[];
 allSelectedLists:ListContacts[]=[];
 openedAccordion:ListContacts;
 
@@ -74,11 +74,43 @@ sortBy;
   constructor(private listService: ManageContactsService,private toaster:ToasterServices) { }
 
   ngOnInit() {
-    this.getLists();
+    this.getNonListContactsAndLists();
     this.getAllContacts();
 
   }
 
+  getNonListContactsAndLists() {
+    this.getNonListContacts().subscribe(
+      (nonListContacts) => {
+        if (nonListContacts.length > 0) {
+          const defaultList = {
+            id: null,
+            name: "contacts have no lists",
+            isExpanded: true,
+            isChecked: "",
+            totalContacts:nonListContacts.length,
+            shoudBeClosed:false
+
+          };
+
+          this.allLists.push({
+            list: defaultList,
+            contacts: nonListContacts
+          });
+        }
+  
+        // Proceed to get the lists
+        this.getLists();
+      },
+      (err) => {
+        // Handle errors for getting non-list contacts
+      }
+    );
+  }
+  getNonListContacts() {
+    return this.listService.getNonListContacts(this.listService.email, false, 100, 0, "", "");
+  }
+  
 
   // get lists that contains contacts
 
@@ -88,14 +120,15 @@ sortBy;
       (res) => {
 
         let filteredLlist = res.filter((e) => e.totalContacts != 0);
-        this.allLists=filteredLlist.map((list)=>{
+        filteredLlist.map((list)=>{
           list.isExpanded=true;
+          list.shoudBeClosed=false;
 
-          return{
+          this.allLists.push({
             list:list,
             contacts:[]
 
-          }
+          })
         })
 
         if(orderBy){
@@ -122,7 +155,7 @@ sortBy;
 
         if(isCheck){
           this.addContactNumber(contact);
-         
+          
 
 
         }
@@ -145,12 +178,10 @@ setSelections(listContacts:ListContacts){
             con.isChecked="";
           }
         })
-        console.log("from getlistcontacts","num is",listContacts.list.contactsNum,"contacts length is",listContacts.contacts.length)
 
         if(listContacts.list.contactsNum==listContacts.contacts.length){
           // listContacts.list.isChecked="checked";
           this.onSelectList("checked",listContacts)
-          console.log("from get listcontacts",this.allSelectedLists);
           let found=this.allSelectedLists.find((listContact)=>listContact.list.id==listContacts.list.id);
           if(!found)
             {
@@ -170,7 +201,6 @@ setSelections(listContacts:ListContacts){
         else{
           this.selectAllStatus=1
         }
-        console.log("list contacts number",listContacts.list.contactsNum,"list data",this.allSelectedLists)
 }
    getListContacts(listContacts:ListContacts,isCheck){
     // this.resetSelectedLists()
@@ -189,18 +219,21 @@ setSelections(listContacts:ListContacts){
     }
     this.resetSelectedLists()
 
-    this.openedAccordion=listContacts;
 }
 toggle(){
   this.shouldCloseAccordion=!this.shouldCloseAccordion
 }
 
 onAccordionOpened(listContacts:ListContacts) {
+ 
   if(listContacts.contacts.length==0 && listContacts.list.isExpanded){
 
     this.getListContacts(listContacts,false);
+    listContacts.list.shoudBeClosed=true;
+
   }
   else if(listContacts.contacts.length!=0 && listContacts.list.isExpanded){
+    listContacts.list.shoudBeClosed=true;
 
     listContacts.contacts.map((contact)=>{
       if(this.addedContacts.find((cont)=>cont.id==contact.id)){
@@ -212,9 +245,16 @@ onAccordionOpened(listContacts:ListContacts) {
       }
     })
   }
+ 
   else{
     this.getListContacts(listContacts,true)
   }
+  console.log({
+    shoudBeClosed: listContacts.list.shoudBeClosed,
+    isChecked:listContacts.list.isChecked,
+    
+  },
+  (listContacts.list.isChecked ==='' && listContacts.list.shoudBeClosed))
 
 }
 
@@ -231,7 +271,6 @@ resetSelectedLists(){
     listContact.list.isChecked="";
     listContact.contacts.map((cont)=>cont.isChecked="")
     if(listContact.contacts .length > 0){
-      console.log("contacts");
       listContact.list.contactsNum=0;
       listContact.contacts.map((contact)=> {
         if(this.addedContacts.find((con)=>con.id==contact.id)){
@@ -253,12 +292,13 @@ resetSelectedLists(){
   })
 }
 onSelectList(state,listContacts:ListContacts){
-
-  this.changeListSelectionState(state,listContacts);
   listContacts.list.isExpanded=false;
+  
+  this.changeListSelectionState(state,listContacts);
 
 
   if(state=="checked"){
+
     // listContacts.contacts.map((contact)=>this.removeContact(contact))
     listContacts.contacts.map((contact)=>{this.addContactNumber(contact);
     })
@@ -270,6 +310,7 @@ onSelectList(state,listContacts:ListContacts){
       }
   }
   else{
+    listContacts.list.shoudBeClosed=true;
     listContacts.contacts.map((contact)=>this.removeContact(contact));
 
 
@@ -293,7 +334,12 @@ onSelectList(state,listContacts:ListContacts){
     }
 
   }
-
+  console.log({
+    shoudBeClosed: listContacts.list.shoudBeClosed,
+    isChecked:listContacts.list.isChecked,
+    
+  },
+  (listContacts.list.isChecked ==='' && listContacts.list.shoudBeClosed))
 
 }
 onClose(event:string){
@@ -354,26 +400,7 @@ onSelectContact(state, listContact,contact:Contacts){
                 this.onSelectList("checked",listContact);
                 this.resetSelectedLists();
 
-                // this.selectedListsNum++;
-                // listContact.list.isChecked="checked";
-
-                // let found=this.allSelectedLists.find((listContact)=>listContact.list.id==listContact.list.id);
-                // if(!found)
-                //   {
-
-                //     this.allSelectedLists.push(listContact)
-                //   }
-                //   console.log("alll contacts from on select contact",this.allSelectedLists)
-
-                // if(this.selectedListsNum==this.allLists.length){
-                //   // change state of select all checkbox
-                //   this.selectAllStatus=2;
-
-                // }
-
-                // else{
-                //   this.selectAllStatus=1
-                // }
+            
 
 
 
@@ -398,7 +425,6 @@ onSelectContact(state, listContact,contact:Contacts){
 }
 
 removeContact(contact:Contacts){
-  console.log("remove",this.searchForm.value.contactsData);
   if(this.searchForm.value.contactsData.length!=0){
     let found = this.searchForm.value.contactsData.find((con)=>con.value==contact.id);
     if(found){
@@ -406,7 +432,6 @@ removeContact(contact:Contacts){
 
     }
     let filtered=this.searchForm.value.contactsData;
-    console.log(filtered)
     this.searchForm.patchValue({
       contactsData:filtered
     })
@@ -442,78 +467,6 @@ removeContact(contact:Contacts){
 
 }
 
-// // on select contact
-// onSelectContact(state,contact:Contacts,list:ListData){
-
-
-//       if(state=="checked"){
-//         list.contactsNum++;
-//         this.selectedContacts++;
-//           // change contact state to be checked
-//           contact.isChecked="checked"
-//           // incerease selected contact number
-//           this.addedContacts.push(contact);
-//           this.filterContacts(this.addedContacts);
-
-//           if(list.contactsNum==this.selectedList.contacts.length){
-
-//             this.selectedLists++;
-//               list.selectionState=2;
-//               list.isChecked=true;
-//             if(this.selectedLists==this.lists.length){
-//               // change state of select all checkbox
-//               this.selectAllStatus=2;
-//               this.isAllListsSelected=true;
-
-//             }
-
-//             else{
-//               this.selectAllStatus=1
-//             }
-
-
-
-//             console.log("seclecion state",)
-//           }
-
-
-
-//   }
-//   else{
-//     // this.removeContact(contact)
-//     this.onDeslectContact(contact,list)
-//   }
-//   this.rescetSelected()
-
-// }
-// // on deselect contact
-// onDeslectContact(contact:Contacts,list:ListData){
-//   contact.isChecked="";
-//  this.selectedContacts--;
-
-//  console.log("contact",contact,"remove con",this.addedContacts[this.addedContacts.indexOf(contact)],"added",this.addedContacts)
-//  this.addedContacts.splice(this.addedContacts.indexOf(contact),1);
-//  list.contactsNum--;
-//     this.emitContacts();
-
-//   if(this.contactsNum==0){
-//     this.selectedLists--;
-//     if(this.selectedLists<=0){
-//       this.selectAllStatus=0;
-//       this.selectedLists=0;
-//     }
-//     else{
-//       this.selectAllStatus=1;
-//     }
-//   }
-
-//   list.selectionState=0;
-//   list.isChecked=false;
-
-
-// }
-
-
 
 
 addContactNumber(contact:Contacts){
@@ -536,15 +489,7 @@ addContactNumber(contact:Contacts){
 
         this.addHocs.splice(this.addHocs.indexOf(contact.mobileNumber),1)
     }
-    // this.allContactsNumbers=this.addedContacts.map((contact)=>{return contact.mobileNumber});
-
-    // let isFoundHock =this.allContactsNumbers.find((hoc)=>this.hocsNums.includes(hoc))
-    // let allNumbers= [...new Set([...this.hocsNums,...this.allContactsNumbers])]
-
-    // this.addedContacts=this.addedContacts.filter((contact)=>allNumbers.includes(contact.mobileNumber));
-
-
-// if there is addhoc number and i added contact with same number
+ 
 
 
 }
@@ -616,7 +561,6 @@ getAllContacts(search?:string){
       else{
         this.allContacts=[];
       }
-      console.log("data",this.searchForm.value.contactsData)
 },
       (err)=>{
 
@@ -641,7 +585,12 @@ onDeselectAllLists(){
   this.allSelectedLists=[];
 
   this.allLists.map((listContact)=>{
-  this.onSelectList("",listContact)
+    listContact.list.isChecked='';
+    listContact.list.isExpanded=true;
+    listContact.contacts.map((contact)=>{
+      this.removeContact(contact);
+      contact.isChecked=''})
+
    })
    this.selectAllStatus=0;
    this.selectedListsNum=0;
@@ -655,7 +604,9 @@ selectAllContacts(){
   this.addedContacts=[];
   this.allSelectedLists=[];
  this.allLists.map((listContact)=>{
+
   this.getListContacts(listContact,true);
+  listContact.list.shoudBeClosed=false;
   this.onSelectList("checked",listContact)
 
  })
@@ -693,7 +644,6 @@ onDeSelectAll(event:any){
     return this.allContactsData.find((cont)=>cont.id==res.value)
   })
   contacts.map((cont)=>this.removeContact(cont))
-  console.log("from search",contacts)
   // this.addedContacts=[];
   this.resetSelectedLists()
 

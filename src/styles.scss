@@ -254,9 +254,16 @@ $clr_warning_50: #FDF4DC;
   width: 5px;
   height: 10px;
 }
+
+::-webkit-scrollbar{
+  border-radius:30px;
+
+}
 /* Track */
 ::-webkit-scrollbar-track {
   background: var(--clr-neutral-200);
+  border-radius:30px;
+
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
@@ -759,10 +766,23 @@ input#phone {
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border: none;
 }
+.table-inner-container {
+  max-height: 100%; /* Set your desired max height for the table body */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+
+.table-inner-container thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+
 // start table override
 section.table-wrapper {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
-
+ 
   border-radius: 24px 24px !important;
   position: relative;
   

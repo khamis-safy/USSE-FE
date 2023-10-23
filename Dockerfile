@@ -4,8 +4,8 @@
 FROM node:18-alpine as node
 WORKDIR /app
 COPY . .
-RUN npm --verbose install
-RUN npm run build
+RUN npm install
+RUN npm run build --prod
 
 # ----------------------------
 # run with nginx

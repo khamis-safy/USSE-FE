@@ -64,7 +64,7 @@
             class="custom-panel"
 
             (opened)="onAccordionOpened(listContact)"
-            [expanded]="(listContact.list.isChecked=='' && !listContact.list.isExpanded )"
+            [expanded]="(listContact.list.isChecked ==='' && listContact.list?.shoudBeClosed)"
           >
             <mat-expansion-panel-header   class="zi-2">
               <mat-panel-title>
