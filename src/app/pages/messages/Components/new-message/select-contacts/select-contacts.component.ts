@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { resetFakeAsyncZone } from '@angular/core/testing';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
+import { TranslateService } from '@ngx-translate/core';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
 import { Contacts } from 'src/app/pages/manage-contacts/contacts';
 import { ListData } from 'src/app/pages/manage-contacts/list-data';
@@ -21,38 +22,24 @@ export class SelectContactsComponent implements OnInit {
 
 allLists:ListContacts[]=[];
 allSelectedLists:ListContacts[]=[];
-openedAccordion:ListContacts;
 
 allContactsNumbers:string[]=[];
 hocsNums:string[]=[];
-// for select status
 shouldCloseAccordion:boolean=true;
 
-// lists variables
 sortBy;
-@Output() displayedContactsCount = new EventEmitter<number>;
 @Output() allContactsFromChild = new EventEmitter<any>;
 
-  // lists: ListData[] = [];
   selectedListsNum:number=0;
-  // isAllListsSelected:boolean=false;
-  // checked:boolean=false;
+
   contacts: Contacts[] = [];
-  // listContacts: ListContacts[] = [];
   addedContacts: Contacts[] = [];
   allContactsData:Contacts[] = [];
-  // shouldCloseAccordion: boolean;
-  // selectedList:ListContacts;
-  // contactsNum:number=0;
-  // duplicatedContacts:ListContacts[]=[];
   selectAllStatus:number=0;
-
   selectedContacts:number=0;
-  // allNumbers:string[]=[];
   allContacts:SelectOption[];
   contactsData = new FormControl([]);
 
-  // dnum:number=0;
   // // ngx-intl-tel
   separateDialCode = true;
   SearchCountryField = SearchCountryField;
@@ -71,7 +58,9 @@ sortBy;
     mobile: this.mobile,
 
   });
-  constructor(private listService: ManageContactsService,private toaster:ToasterServices) { }
+  constructor(private listService: ManageContactsService,
+    private toaster:ToasterServices, 
+    private translate:TranslateService) { }
 
   ngOnInit() {
     this.getNonListContactsAndLists();
@@ -85,7 +74,7 @@ sortBy;
         if (nonListContacts.length > 0) {
           const defaultList = {
             id: null,
-            name: "contacts have no lists",
+            name: this.translate.instant("contacts have no lists"),
             isExpanded: true,
             isChecked: "",
             totalContacts:nonListContacts.length,
@@ -103,6 +92,7 @@ sortBy;
         this.getLists();
       },
       (err) => {
+        this.getLists();
         // Handle errors for getting non-list contacts
       }
     );
@@ -205,11 +195,9 @@ setSelections(listContacts:ListContacts){
    getListContacts(listContacts:ListContacts,isCheck){
     // this.resetSelectedLists()
     if(listContacts.contacts.length==0 ){
-      this.openedAccordion=listContacts;
       this.fetchListContacts(listContacts.list,isCheck).then((contacts) => {
 
         listContacts.contacts=contacts;
-        this.openedAccordion=listContacts;
         listContacts.list.contactsNum=0;
         this.setSelections(listContacts)
 
@@ -658,7 +646,6 @@ this.allContactsFromChild.emit(this.getAllContactsData())
 }
 emitContacts(){
 let allSelected=[...this.addedContacts.map((e)=>e.mobileNumber),...this.addHocs.map((hoc)=>`+${hoc}`)];
-this.displayedContactsCount.emit(allSelected.length);
 
 
 }

@@ -91,7 +91,7 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.data =
     {
       messagesData:{messages:this.isChecked}

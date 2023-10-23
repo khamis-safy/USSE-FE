@@ -107,7 +107,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
 
         this.getContacts();
         this.deletedContacts=[];
-
+        this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
       },
       (err)=>{
 
@@ -250,7 +250,7 @@ this.subscribtions.push(sub2)
     dialogConfig.height='80vh';
     dialogConfig.width='45vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.maxHeight='85vh';
     dialogConfig.disableClose = true;
 

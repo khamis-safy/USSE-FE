@@ -98,7 +98,7 @@ export class UploadSheetComponent implements OnInit {
       dialogConfig.height='80vh';
       dialogConfig.width='60vw';
       dialogConfig.maxWidth='100%';
-      dialogConfig.minWidth='300px';
+      dialogConfig.minWidth='465px';
       dialogConfig.disableClose = true;
       dialogConfig.data={
         rowData:this.fileData[0].excelData[0],

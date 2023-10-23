@@ -1281,7 +1281,7 @@ ngx-intl-tel-input .error {
 @media (min-width: 1200px) {  }
 
 // XX-Large devices (larger desktops, 1400px and up)
-@media (min-width: 1400px) { 
+@media (min-width: 1700px) { 
   .special-button button.fullWidth {
     height: 38px;
 }
@@ -1329,7 +1329,7 @@ ngx-intl-tel-input .error {
 
 // special
 .stepper{
-      height: 81vh;
+  height: 82vh;
 
   .mat-horizontal-stepper-content {
     height: 100%;

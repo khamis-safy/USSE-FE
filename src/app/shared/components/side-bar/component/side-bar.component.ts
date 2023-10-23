@@ -87,7 +87,7 @@ this.permissions={
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
    
     const dialogRef = this.dialog.open(ConfirmLogOutComponent,dialogConfig);
    

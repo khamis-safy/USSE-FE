@@ -210,7 +210,7 @@ console.log("from user component",token)
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.data =
     {
       users:{userEmail:element.email,customerEmail:this.authService.getUserInfo().email}

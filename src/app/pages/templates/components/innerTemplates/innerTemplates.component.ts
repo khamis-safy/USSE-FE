@@ -84,7 +84,7 @@ export class InnerTemplatesComponent implements OnInit {
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.data =
     {
       templatesData:{templatesId:id}
@@ -106,7 +106,7 @@ export class InnerTemplatesComponent implements OnInit {
     dialogConfig.height='77vh';
     dialogConfig.width='40vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.maxHeight='85vh';
     dialogConfig.disableClose = true;
 

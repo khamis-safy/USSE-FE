@@ -19,7 +19,13 @@
 }
   .lists-body{
     height: 300px;
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 24px;
+    .lists-body-container{
+    height: 100%;
     overflow-y: auto;
+
+   }
     }
 
   .sort-by {
@@ -93,7 +99,8 @@
 
 }
 
-@media (max-width: 1700px) {
+
+@media (max-width: 1700px ) {
   .row.w-100.my-5 {
     margin-block: 20px !important;
 }
@@ -103,18 +110,19 @@
 .line {
   top: 48px !important;
 }
-.lists-body {
-  height: 219px !important;
-}
+// .lists-body {
+//   height: 295px !important;
+// }
+// .contacts-body.px-4 {
+//   height: 258px !important;
+// }
 .contacts.py-4 {
   padding-block: 10px !important;
 }
 .d-flex.flex-wrap.mt-4.gap-3 {
   margin-top: 12px !important;
 }
-.contacts-body.px-4 {
-  height: 178px !important;
-}
+
 .mobile-num.p-4 {
   padding: 14px 20px 14px 28px!important;
 }
@@ -132,4 +140,19 @@ p.txt-md {
 .select-contacts{
   gap: 11px !important;
 }
+
+ .lists-body {
+    height: 219px !important;
+  }
+  .contacts-body.px-4 {
+    height: 178px !important;
+  }
+}
+@media (max-width: 1400px) {
+  .lists-body {
+    height: 219px !important;
+  }
+  .contacts-body.px-4 {
+    height: 178px !important;
+  }
 }

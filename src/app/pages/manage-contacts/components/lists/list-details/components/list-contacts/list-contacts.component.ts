@@ -156,7 +156,7 @@ getContacts(){
       dialogConfig.height='80vh';
       dialogConfig.width='45vw';
       dialogConfig.maxWidth='100%';
-      dialogConfig.minWidth='300px';
+      dialogConfig.minWidth='465px';
       dialogConfig.maxHeight='85vh';
       dialogConfig.data= {contacts:data,listDetails:true,list:this.listData};
       const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
