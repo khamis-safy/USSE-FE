@@ -247,11 +247,10 @@ this.subscribtions.push(sub2)
 
   openEditModal(data?){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='80vh';
+    dialogConfig.height='88vh';
     dialogConfig.width='45vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='465px';
-    dialogConfig.maxHeight='85vh';
     dialogConfig.disableClose = true;
 
     dialogConfig.data= {contacts:data,listDetails:false};

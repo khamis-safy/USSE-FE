@@ -153,11 +153,10 @@ getContacts(){
     openEditModal(data?){
       const dialogConfig=new MatDialogConfig();
       dialogConfig.disableClose = true;
-      dialogConfig.height='80vh';
+      dialogConfig.height='88vh';
       dialogConfig.width='45vw';
       dialogConfig.maxWidth='100%';
       dialogConfig.minWidth='465px';
-      dialogConfig.maxHeight='85vh';
       dialogConfig.data= {contacts:data,listDetails:true,list:this.listData};
       const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
       this.selection.clear();

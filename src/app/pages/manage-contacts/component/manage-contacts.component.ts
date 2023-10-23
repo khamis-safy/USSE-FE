@@ -123,11 +123,10 @@ else{
   }
   openAddContactModal(){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='80vh';
+    dialogConfig.height='88vh';
     dialogConfig.width='45vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='465px';
-    dialogConfig.maxHeight='85vh';
     dialogConfig.disableClose = true;
 
     const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);

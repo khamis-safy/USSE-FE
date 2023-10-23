@@ -99,7 +99,11 @@
 
 }
 
-
+.contacts-container {
+  max-height: 120px;
+  overflow: auto;
+  margin-top: 10px;
+}
 @media (max-width: 1700px ) {
   .row.w-100.my-5 {
     margin-block: 20px !important;
@@ -116,6 +120,7 @@
 // .contacts-body.px-4 {
 //   height: 258px !important;
 // }
+
 .contacts.py-4 {
   padding-block: 10px !important;
 }
@@ -146,6 +151,10 @@ p.txt-md {
   }
   .contacts-body.px-4 {
     height: 178px !important;
+  }
+  .contacts-container{
+    gap: 15px !important;
+
   }
 }
 @media (max-width: 1400px) {

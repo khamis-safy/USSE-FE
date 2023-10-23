@@ -541,7 +541,13 @@
 .icon-arrow{
   color: $clr_neutral_900;
 }
-
+@media (max-width:992x) {
+.d-block.d-lg-none.label-widget.w-100.ng-tns-c148-71.ng-star-inserted {
+  display: flex !important;
+  justify-content: start !important;
+  margin-bottom: 10px !important;
+}
+}
 @media (max-width: 1700px)
 {
   

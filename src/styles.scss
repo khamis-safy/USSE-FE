@@ -1355,7 +1355,12 @@ ngx-intl-tel-input .error {
     }
 }
 // end stepper styling
+mat-expansion-panel-body{
+  overflow: auto!important;
+  max-height: 128px !important;
+  margin-inline: 10px !important;
 
+} 
   .total{
     width: 40px;
     height: 32px;
@@ -1504,7 +1509,14 @@ ngx-intl-tel-input .error {
       left: 2px;
     }
   }
+
+  @media (max-width: 1700px) {
+    .us-toaster {
+      right: calc(43% - (100vw - 100%)) !important;}}
 }
+
+
+
 .selected-dial-code{
   direction: ltr !important;
   margin-inline: 8px !important;
@@ -1545,7 +1557,16 @@ ngx-intl-tel-input .error {
   }
 }
 @media (max-width: 1700px) {
- 
+  .us-toaster {
+
+  .toaster-content{
+    font-size: 16px;
+  }
+  img{
+    width: 22px !important;
+
+  }
+  }
   .nodata-container{
     span.text-neutral-600 {
       font-size: 16px !important;
@@ -1615,6 +1636,7 @@ button.button-size-md{
   #search {
     height: 32px !important;
     font-size: 12px !important;
+    width: 318px !important;
 
   } 
   

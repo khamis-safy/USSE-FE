@@ -106,7 +106,7 @@ sortBy;
 
   getLists(orderBy?:string) {
     let sorting=orderBy?orderBy:"";
-    this.listService.getList(this.listService.email, 100, 0,sorting,"").subscribe(
+    this.listService.getList(this.listService.email, 500, 0,sorting,"").subscribe(
       (res) => {
 
         let filteredLlist = res.filter((e) => e.totalContacts != 0);
