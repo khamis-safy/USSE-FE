@@ -48,6 +48,7 @@ export class FileFieldsComponent implements OnInit {
       })
 
     }
+    console.log("row data",this.rowsData)
   }
   change(item:FilesData){
     item.contactsData=this.contactsData.map((res)=>{return {title:res,value:this.contactsData.indexOf(res)+1}})

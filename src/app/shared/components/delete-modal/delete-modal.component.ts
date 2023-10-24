@@ -381,20 +381,9 @@ export class DeleteModalComponent implements OnInit {
       (res) => {
         this.isLoading = false
         this.onClose(this.body);
-        let succ = res.numberOfSuccess;
-        let err = res.numberOfErrors;
-        if (succ == 0 && err > 0) {
-          this.toaster.error(`Error - ${err}`)
-        }
+      
+        this.toaster.success(this.translate.instant("COMMON.DELETE_MESSAGES"))
 
-        else if (succ > 0 && err > 0) {
-          this.toaster.warning(`${succ} Success ${err} Failed`)
-        }
-        else if (succ > 0 && err == 0) {
-          this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
-
-
-        }
       })
   }
 

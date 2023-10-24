@@ -147,7 +147,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
               this.refreshToken();
             }, 60 * 60 * 1000); // 1 hour in milliseconds
   
-            this.router.navigateByUrl('messages')
+            this.router.navigateByUrl('devices')
           },
           (err)=>{
             this.isLoading=false

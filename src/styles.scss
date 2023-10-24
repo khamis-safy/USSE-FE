@@ -1453,12 +1453,16 @@ mat-expansion-panel-body{
       }
       .hand-img{
         right: 57% !important;
-
       }
+      // @media (max-width:1600px){
+      //   .hand-img{
+      //   // right: 17% !important;
+      //   }
+      // }
     }
   .us-toaster {
     direction: ltr !important;
-    right: 62% !important;
+    right: 61% !important;
     margin-right: 31px!important;
 
   }
@@ -1517,6 +1521,11 @@ mat-expansion-panel-body{
 
 
 
+.status {
+  width: 12px !important;
+  height: 12px !important;
+}
+
 .selected-dial-code{
   direction: ltr !important;
   margin-inline: 8px !important;
@@ -1557,6 +1566,17 @@ mat-expansion-panel-body{
   }
 }
 @media (max-width: 1700px) {
+.close-icon{
+  img{
+    width: 24px !important;
+
+  }
+}
+  .mat-mdc-menu-content.mdc-list{
+    padding-block: 4px !important;
+}
+
+  
   .us-toaster {
 
   .toaster-content{
@@ -1604,7 +1624,7 @@ mat-expansion-panel-body{
     height: 24px !important;
   }
   .txt-lg{
-    font-size: 18px !important;
+    font-size: 16px !important;
   }
   .txt-sm {
     font-size: 12px !important;

@@ -126,7 +126,7 @@
             <ng-container matColumnDef="Action">
               <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'actionColumn' | translate }}</th>
               <td class="text-center" mat-cell *matCellDef="let element" (click)="cellClick=true;">
-                <div class="d-flex justify-content-center w-100">
+                <div class="actions d-flex justify-content-center w-100">
                   <div class="d-flex flex-row-reverse gap-2 justify-content-center " style="width: 25%;">
                     <img (click)="deleteCampaign(element)" src="assets/icons/Actionsc.svg" alt="" />
                     <img *ngIf="element.isStopped == false" (click)="stopCampaign(element);" src="assets/icons/stop-compaigns.svg" alt="" />

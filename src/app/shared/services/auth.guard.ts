@@ -56,6 +56,11 @@ async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         console.log("from guard",this.isAllowed)
         return true;
       }
+      else if(this.authService.isLoggedIn() && !this.isAllowed)
+      {
+        this.router.navigate(['messages'])
+        return false;
+      }
       else{
         this.router.navigate(['login'])
         return false;

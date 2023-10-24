@@ -88,7 +88,7 @@ currentLang:string;
           this.refreshToken();
         }, 60 * 60 * 1000); // 1 hour in milliseconds
 
-        this.router.navigateByUrl('messages')
+        this.router.navigateByUrl('devices')
 
 
 

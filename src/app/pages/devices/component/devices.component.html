@@ -1,12 +1,12 @@
-<section class="p-3 component-container">
-  <div class="d-flex justify-content-between mb-4 align-items-center">
+<section class="p-3 devices-container component-container">
+  <div class="top-section d-flex justify-content-between mb-4 align-items-center">
     <div class="d-flex justify-content-center ">
       <img src="assets/icons/devices.svg" alt="" class="px-2 pe-3">
       <span class="txt-lg main-heading" style="font-weight: 500">{{ 'DEVICES' | translate }}</span>
     </div>
     <div *ngIf="canEdit" class="menu">
-      <button mat-button [matMenuTriggerFor]="menu" class="text-neutral-0 bg-primary-800 rounded-3 p-4">
-        <div class="d-flex align-items-center justify-content-center gap-3">
+      <button mat-button [matMenuTriggerFor]="menu" class=" add-device-button text-neutral-0 bg-primary-800 rounded-3 p-4">
+        <div class="add-device-menu d-flex align-items-center justify-content-center gap-3">
           <div class="icon">
             <img src="assets/icons/device.svg" alt="" />
           </div>
@@ -60,9 +60,9 @@
 
                   <ng-container [ngSwitch]="element.deviceType">
 
-                    <img *ngSwitchCase="'WBS'" src="assets/icons/whatsB.svg"  style="width: 25px;"  alt="wbs">
-                    <img *ngSwitchCase="'OWA'" src="assets/icons/whats.svg" style="width: 25px;"  alt="wbs">
-                    <img *ngSwitchCase="'SMS'" src="assets/icons/sms.svg"  style="width: 25px;" alt="wbs">
+                    <img class="device-type-icon" *ngSwitchCase="'WBS'" src="assets/icons/whatsB.svg"  style="width: 25px;"  alt="wbs">
+                    <img class="device-type-icon" *ngSwitchCase="'OWA'" src="assets/icons/whats.svg" style="width: 25px;"  alt="wbs">
+                    <img class="device-type-icon" *ngSwitchCase="'SMS'" src="assets/icons/sms.svg"  style="width: 25px;" alt="wbs">
 
                   </ng-container>
 
@@ -88,6 +88,7 @@
                   <span class="status active"></span>
                   <p style="margin: 0 0 0 0;">{{ 'ACTIVE' | translate }}</p>
                 </div>
+                
                 <div *ngSwitchCase="false" class="d-flex gap-2 justify-content-center  align-items-center">
                   <span class="status inactive"></span>
                   <p style="margin: 0 0 0 0;">{{ 'INACTIVE' | translate }}</p>
@@ -140,7 +141,7 @@
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>{{ 'ACTION' | translate }}</th>
             <td mat-cell *matCellDef="let element">
-              <div class="d-flex align-items-center justify-content-center gap-4">
+              <div class="actions d-flex align-items-center justify-content-center gap-3">
                 <div class="delete pointer">
                   <img src="assets/icons/Actionsc.svg" alt="" (click)="openDeleteModal(element.id)">
                 </div>

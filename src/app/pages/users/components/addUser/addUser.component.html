@@ -1,4 +1,4 @@
-<section class="d-flex flex-column p-5 gap-3 h-100">
+<section class="d-flex flex-column p-4 gap-3 h-100">
   <!-- modal header -->
   <div
     class="d-flex justify-content-center align-items-center position-relative"
@@ -30,7 +30,7 @@
           <div
             [formGroup]="form"
             style="height: 80%"
-            class="d-flex gap-4 flex-column py-5 text-start"
+            class="d-flex gap-4 flex-column py-5 mx-2 text-start"
           >
             <us-input
               [label]="'EMAIL' | translate"
@@ -87,7 +87,6 @@
         <ng-template matStepLabel>{{ 'ACCESS_CONTROL' | translate }}</ng-template>
         <div
           class="d-flex align-items-between flex-column justify-content-between gap-3"
-          style="min-height: 54vh"
         >
           <app-action
             style="height: 80%"
@@ -95,7 +94,7 @@
             (permissions)="addPermissions($event)"
           ></app-action>
           <div
-            class="d-flex justify-content-end align-items-center"
+            class="d-flex justify-content-end align-items-center mb-3"
             style="width: 98%; height: 20%"
           >
             <button class="rest-style" matStepperPrevious>

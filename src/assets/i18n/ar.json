@@ -133,7 +133,7 @@
 "EDIT": "تعديل",
 "NO_DATA": "لا تتوفر بيانات لعرضها",
 "FIELDS_IN_FILE": "حقول في الملف",
-"FIELDS_IN_WIZPULSE": "حقول في ويزبالس",
+"FIELDS_IN_WIZPULSE": "حقول في Qweira",
 "COLUMN_NAME": "اسم العمود",
 "SAME_AS_FILE": "نفس الملف",
 "CHOOSE_AN_OPTION": "اختر خيارًا",
@@ -467,19 +467,8 @@
 "EXIST_NAME":"اسم الحقل موجود بالفعل",
 "CONFIRM_LOGOUT_MSG":"هل أنت متأكد أنك تريد تسجيل الخروج؟",
 "versions":"الإصدارات",
-"contacts have no lists":"جهات الاتصال لا تحتوي على قوائم"
-
-
-
-
-
-
-
-
-
-
-
-
+"contacts have no lists":"جهات الاتصال لا تحتوي على قوائم",
+"open":"فتح"
 
 
 }

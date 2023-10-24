@@ -31,3 +31,36 @@ span{
 mat-icon{
   color: rgba(51,50,61 ,1)!important;
 }
+
+@media(max-width:1700px){
+  .add-device-menu{
+    font-size: 11px;
+
+  }
+  .add-device-button{
+    padding: 20px !important;
+  }
+  .top-section {
+    margin-bottom: 15px !important;
+
+  }
+
+  .mat-mdc-menu-content.mdc-list {
+    padding-block: 2px !important;
+}
+::ng-deep {
+  span.mdc-list-item__primary-text {
+  font-size: 12px !important;
+  display: flex;
+  gap: 4px;
+
+}}
+.device-type-icon{
+  width:22px !important
+}
+.actions{
+  img{
+    width: 90% !important;
+  }
+}
+}
