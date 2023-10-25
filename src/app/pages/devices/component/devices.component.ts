@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { DevicesService } from '../devices.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
@@ -20,7 +20,7 @@ import { DEVICESHEADERS } from '../constants/constants';
   templateUrl: './devices.component.html',
   styleUrls: ['./devices.component.scss']
 })
-export class DevicesComponent implements OnInit{
+export class DevicesComponent implements OnInit,OnDestroy{
   length:number;
   active:boolean=false;
   numRows;
@@ -234,4 +234,10 @@ else{
       }
     });
   }
+  ngOnDestroy(){
+    this.devicesService.display=10;
+    this.devicesService.pageNum=0;
+    this.devicesService.orderedBy='';
+    this.devicesService.search='';
+  };
 }

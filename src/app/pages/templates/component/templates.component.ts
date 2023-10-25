@@ -1,4 +1,4 @@
-import { Component , ViewChild } from '@angular/core';
+import { Component , OnDestroy, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddTemplateComponent } from '../components/addTemplate/addTemplate.component';
 import { InnerTemplatesComponent } from '../components/innerTemplates/innerTemplates.component';
@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './templates.component.html',
   styleUrls: ['./templates.component.scss'],
 })
-export class TemplatesComponent {
+export class TemplatesComponent implements  OnDestroy{
 
   @ViewChild(InnerTemplatesComponent) templates:InnerTemplatesComponent;
   canEdit: boolean;
@@ -57,7 +57,12 @@ else{
 
 
 
-
+  ngOnDestroy(): void {
+    this.templateService.showsNum=10;
+    this.templateService.pageNum=0;
+    this.templateService.orderedBy='';
+    this.templateService.search='';
+  }
 
 }
 

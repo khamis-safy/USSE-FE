@@ -113,12 +113,19 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
 
     this.selectedTab = this.tabs[ev.index]
     this.updateQueryParams();
-
+    this.messageService.display=10;
+    this.messageService.pageNum=0;
+    this.messageService.orderedBy='';
+    this.messageService.search='';
   }
   openNewMessage(){
     this.isMessages=false;
   }
   ngOnDestroy(): void {
-    this.routingObservable.unsubscribe()
+    this.routingObservable.unsubscribe();
+    this.messageService.display=10;
+    this.messageService.pageNum=0;
+    this.messageService.orderedBy='';
+    this.messageService.search='';
   }
 }

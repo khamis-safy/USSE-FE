@@ -284,40 +284,7 @@ else{
     this.listService.orderedBy='';
     this.listService.search='';
 
-  //   if(this.selectedTab=='contacts'){
-  //     if(this.contacts.length){
-  //           this.contacts.paginator.pageSize=this.listService.display;
-  //           this.contacts.paginator.pageIndex=this.listService.pageNum;
-  //     }
-
-  //     if(this.lists.length){
-  //       this.lists.paginator.pageSize=this.listService.display;
-  //       this.lists.paginator.pageIndex=this.listService.pageNum;
-  //     }
-
-  //   }
-  //   else if(this.selectedTab=='lists'){
-
-  //     if(this.contacts.length){
-  //       this.contacts.paginator.pageSize=this.listService.display;
-  //       this.contacts.paginator.pageIndex=this.listService.pageNum;
-  // }
-  //   }
-  //   else if(this.selectedTab=='cancel'){
-
-
-  //     if(this.contacts.length){
-  //       this.contacts.paginator.pageSize=this.listService.display;
-  //       this.contacts.paginator.pageIndex=this.listService.pageNum;
-  // }
-
-  // if(this.lists.length){
-  //   this.lists.paginator.pageSize=this.listService.display;
-  //   this.lists.paginator.pageIndex=this.listService.pageNum;
-  // }
-
-  //     this.contacts.getContacts();
-  //    }
+ 
   }
   exportAllContacts(){
     this.listService.exportAllContacts().subscribe(
@@ -350,6 +317,10 @@ else{
     )
   }
   ngOnDestroy(): void {
+    this.listService.display=10;
+    this.listService.pageNum=0;
+    this.listService.orderedBy='';
+    this.listService.search='';
     this.routingObservable.unsubscribe()
   }
 }

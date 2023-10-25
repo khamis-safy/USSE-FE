@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
@@ -20,7 +20,7 @@ import { CAMPAIGNSHEADER } from '../constants/contstants';
   templateUrl: './compaigns.component.html',
   styleUrls: ['./compaigns.component.scss']
 })
-export class CompaignsComponent implements AfterViewInit ,OnInit {
+export class CompaignsComponent implements AfterViewInit ,OnInit,OnDestroy {
   isUser:boolean;
   length:number=0;
   loading:boolean=true;
@@ -288,6 +288,11 @@ compaignsCount(deviceId){
     this.compaignsService.search=event.value;
 
     this.getCompaigns(this.deviceId);
+  }
+  ngOnDestroy(): void {
+    this.compaignsService.display=10;
+    this.compaignsService.pageNum=0;
+    this.compaignsService.search='';
   }
 }
 

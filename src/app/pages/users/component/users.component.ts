@@ -223,7 +223,12 @@ console.log("from user component",token)
       }
     });
     }
-    ngOnDestroy(){};
+    ngOnDestroy(){
+      this.userService.display=10;
+      this.userService.pageNum=0;
+      this.userService.orderedBy='';
+      this.userService.search='';
+    };
 }
 
 // Messages_(DeviceID) | ReadOnly-FullAccess-None

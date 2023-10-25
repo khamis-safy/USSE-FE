@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -28,7 +28,7 @@ import { UploadSheetComponent } from '../../../importFiles/uploadSheet/uploadShe
   templateUrl: './list-details.component.html',
   styleUrls: ['./list-details.component.scss']
 })
-export class ListDetailsComponent implements OnInit ,AfterViewInit{
+export class ListDetailsComponent implements OnInit ,AfterViewInit , OnDestroy{
   listId:string;
   isChecked:Contacts[];
   list:ListData;
@@ -236,5 +236,11 @@ exportSelectedContacts(){
     (err)=>{;
     }
   )
+}
+ngOnDestroy(): void {
+  this.listService.display=10;
+  this.listService.pageNum=0;
+  this.listService.orderedBy='';
+  this.listService.search='';
 }
 }
