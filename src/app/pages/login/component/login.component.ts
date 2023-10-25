@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoginService } from '../login.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,13 +6,14 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { PluginsService } from 'src/app/services/plugins.service';
 import { UserData } from '../../users/users';
 import { UsersService } from '../../users/users.service';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent  implements OnInit{
+export class LoginComponent  implements OnInit,OnDestroy {
 email:any ;
 password:any;
 form: FormGroup;
@@ -22,6 +23,8 @@ hintMessage:string;
 userInfo:any;
 language:string=localStorage.getItem("currentLang")=="ar"?"العربية":"English";
 currentLang:string;
+emailSubscription: Subscription;
+unsubscribe$ = new Subject<void>();
   constructor(private plugin:PluginsService,
     private authService:AuthService,
     private loginService:LoginService,
@@ -38,6 +41,13 @@ currentLang:string;
         password:this.password
       }
     )
+    this.emailSubscription = this.email.valueChanges
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(value => {
+      this.unsubscribe$.next(); // Signal to unsubscribe
+      this.email.setValue(value.trim(), { emitEvent: false });
+      this.email.updateValueAndValidity();
+    });
   }
   switchLanguage(lang: string) {
     localStorage.setItem("currentLang",lang);
@@ -124,19 +134,7 @@ currentLang:string;
 
   }
 
-//   getUserPermisisons(email){
-//     this.userServiece.getUserByEmail(email).subscribe(
-//       (res)=>{
-//         this.authService.userPermissions=this.userServiece.executePermissions(res.permissions);
-//         this.authService.updateUserPermisisons(res.permissions);
-//         this.router.navigateByUrl('messages')
 
-
-//       },
-//       (err)=>{}
-//     )
-
-// }
   refreshToken() {
     let token=this.loginService.getCookieValue('refreshToken')
     this.loginService.refreshToken(token).subscribe(
@@ -166,7 +164,12 @@ currentLang:string;
   }
 
 
-
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+  this.unsubscribe$.complete();
+    if (this.emailSubscription) {
+      this.emailSubscription.unsubscribe();
+    }}
 
 }
 

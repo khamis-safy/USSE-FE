@@ -11,6 +11,7 @@ import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { PluginsService } from 'src/app/services/plugins.service';
 
 interface CheckedCont{
   contacts:Contacts,
@@ -37,7 +38,7 @@ email:string=this.listService.email;
   isLoading = false;
 
   selectedLists = new FormControl([]);
-  name:any = new FormControl('',[Validators.required]);
+  name:any = new FormControl('',[Validators.required,Validators.pattern(this.plugin.notStartWithSpaceReg)]);
   mobile:any = new FormControl('',[Validators.required]);
   cnName:any = new FormControl('');
   note:any=new FormControl('');
@@ -69,6 +70,7 @@ subscribe:Subscription;
 showInputs:boolean=false;
   // listsIds:string[]=[""];
   constructor(
+    private plugin:PluginsService,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<AddContactComponent>,

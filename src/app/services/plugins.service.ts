@@ -10,6 +10,7 @@ export class PluginsService {
   public emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,16}$/;
   public passReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
   public textReg = /^[a-zA-Z0-9_-]{2,15}$/;
+  public notStartWithSpaceReg = /^[^\s]+.*$/;
 
   private renderer:Renderer2
   constructor(rendererFactory: RendererFactory2) {

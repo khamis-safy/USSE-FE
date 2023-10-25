@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ManageContactsService } from '../../../manage-contacts.service';
 import { ListData } from '../../../list-data';
 import { TranslateService } from '@ngx-translate/core';
+import { PluginsService } from 'src/app/services/plugins.service';
 
 @Component({
   selector: 'app-addList',
@@ -14,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class AddListComponent implements OnInit {
   email:string=this.listService.email
   isLoading = false
-  name:any = new FormControl('',[Validators.required]);
+  name:any = new FormControl('',[Validators.required,Validators.pattern(this.plugin.notStartWithSpaceReg)]);
   form = new FormGroup({
     name:this.name
   });
@@ -22,6 +23,7 @@ export class AddListComponent implements OnInit {
   isEdit:boolean =false
 
   constructor(
+    private plugin:PluginsService,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<AddListComponent>,
