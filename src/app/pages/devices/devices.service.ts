@@ -15,7 +15,7 @@ import { PermissionsService } from 'src/app/shared/services/permissions.service'
 export class DevicesService {
   display:number=10;
   pageNum:number=0;
-  email:string=this.authService.userInfo.email;
+  email:string=this.authService.getUserInfo()?.email;
   orderedBy:string="";
   search:string="";
   DevicesPermission:PermissionData;
@@ -23,15 +23,13 @@ export class DevicesService {
 constructor(private http:HttpClient,
   private authService:AuthService,
   private permissionService:PermissionsService) {
-  if(authService.userInfo.customerId!=""){
+  if(authService.userInfo?.customerId!=""){
     authService.getUserDataObservable().subscribe(permissions => {
       this.DevicesPermission=permissions.find((e)=>e.name=="Devices");
-      console.log("devices Permissions",this.DevicesPermission)
     })
    }
    else{
      this.DevicesPermission={name:"Devices",value:"FullAccess"}
-     console.log(this.DevicesPermission)
    }
 }
 getDevices(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<DeviceData[]>{

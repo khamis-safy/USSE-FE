@@ -53,7 +53,7 @@ export class CompaignsComponent implements AfterViewInit ,OnInit,OnDestroy {
 
 // get device's messages
 this.permission =this.compaignsService.devicesPermissions;
-if(this.authService.userInfo.customerId!=""){
+if(this.authService.getUserInfo()?.customerId!=""){
   this.isUser=true;
 }
 else{

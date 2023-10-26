@@ -77,7 +77,7 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
   }
   ngOnInit() {
     let permission =this.messageService.messageasPermission
-    let customerId=this.authService.userInfo.customerId;
+    let customerId=this.authService.getUserInfo()?.customerId;
 
 
   }

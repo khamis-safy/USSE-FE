@@ -61,8 +61,9 @@ unsubscribe$ = new Subject<void>();
 
         // Store the refresh token in a cookie
 
-    this.userInfo={userName:res.contactName,
-      organizationName:res.organisationName,
+    this.userInfo={
+      userName:res.contactName,
+      organisationName:res.organisationName,
       id:res.id,
       email:res.email,
       token:res.token,
@@ -71,16 +72,17 @@ unsubscribe$ = new Subject<void>();
       maskType:res.maskType,
       phoneNumber:res.phoneNumber,
       timeZone:res.timeZone,
-      roles:res.roles[0]
+      roles:res.roles[0],
     }
 
+    
 
     // check autheraization
 
     if(!res.isEmailAuthonticated){
       this.authService.setUserData(this.userInfo,res.refreshToken);
-      localStorage.removeItem("email")
-      localStorage.setItem("email",res.email)
+      // localStorage.removeItem("email")
+      // localStorage.setItem("email",res.email)
       this.authService.setFromValue("login")
 
       this.sendCode();
@@ -89,17 +91,16 @@ unsubscribe$ = new Subject<void>();
    else if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
       // update local storage
       this.authService.saveDataToLocalStorage(this.userInfo);
-      this.authService.updateUserInfo()
+      this.authService.updateUserInfo(this.userInfo)
 
       this.loginService.storeRefreshTokenInCookie(res.refreshToken);
-
+ 
 
         setInterval(() => {
           this.refreshToken();
         }, 60 * 60 * 1000); // 1 hour in milliseconds
 
         this.router.navigateByUrl('devices')
-
 
 
     }
@@ -171,5 +172,6 @@ unsubscribe$ = new Subject<void>();
       this.emailSubscription.unsubscribe();
     }}
 
+    
 }
 

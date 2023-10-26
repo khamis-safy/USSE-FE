@@ -15,10 +15,10 @@ export class UsersService {
   pageNum:number=0;
   orderedBy:string="";
   search:string="";
-  email:string=this.authService.userInfo.email
+  email:string=this.authService.getUserInfo()?.email
   token:string;
-  organizationName:string=this.authService.userInfo.organizationName;
-  id:string=this.authService.userInfo.id;
+  organizationName:string=this.authService.getUserInfo()?.organisationName;
+  id:string=this.authService.getUserInfo()?.id;
   constructor(private http:HttpClient,private authService:AuthService) {
     this.token=this.getCookieValue("refreshToken")
 

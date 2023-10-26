@@ -47,7 +47,7 @@ export class DevicesComponent implements OnInit,OnDestroy{
     this.getDevices();
     this.columns=new FormControl(this.displayedColumns)
     let permission =this.devicesService.DevicesPermission
-    let customerId=this.authService.userInfo.customerId;
+    let customerId=this.authService.getUserInfo()?.customerId;
 
 if(permission){
   if(permission.value=="ReadOnly" || permission.value =="None"){

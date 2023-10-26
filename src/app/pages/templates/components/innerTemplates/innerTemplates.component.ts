@@ -134,7 +134,6 @@ export class InnerTemplatesComponent implements OnInit {
          let sub1= this.templatesService.getTemplates(email,showsNum,pageNum,orderedBy,search).subscribe(
             (res)=>{
               this.numRows=res.length;
-              console.log(res);
               if(this.isCanceled){
                 this.displayedColumns= ['Template Name', 'Message', "Create At" , 'Action'];
 

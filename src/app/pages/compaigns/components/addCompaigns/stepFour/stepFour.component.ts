@@ -61,7 +61,6 @@ constructor(private fb: FormBuilder, private datePipe: DatePipe) {
   }
 
 test(evet){
-  console.log(evet)
 }
   intervalInvalid(formGroup: FormGroup){
     const intervalFrom = formGroup.get('intFrom')!.value;
@@ -90,7 +89,6 @@ test(evet){
 
     this.utcTime1=this.convertToUTC(this.time1);
     this.utcTime2=this.convertToUTC(this.time2);
- console.log("uts time",this.utcTime1);
     this.time1Sub$ =  this.time1.valueChanges.subscribe(res=>{
       this.utcTime1=this.convertToUTC(this.time1);
 
@@ -125,7 +123,6 @@ convertToUTC(timecontrol: any): any {
       for(let item of data){
         e.target.checked ? item.enable() : item.disable()
       }
-      console.log(this.isRepeatable)
   }
 
   toggleInterval(){

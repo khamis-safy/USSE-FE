@@ -47,7 +47,7 @@ isUser: boolean;
 
     });
     this.permission =this.messageService.devicesPermissions;
-if(this.authService.userInfo.customerId!=""){
+if(this.authService.getUserInfo()?.customerId!=""){
   this.isUser=true;
 }
 else{

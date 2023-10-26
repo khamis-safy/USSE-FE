@@ -126,7 +126,7 @@ fillingDevicesPermissions(permission:PermissionData[],id:string){
     }
 
   })
-   console.log("device permissions",devicePermissions)
+  
   let devicesP=devicePermissions?devicePermissions.map((devPer)=>{
     let sectionName=devPer.name;
     let section =this.sections.find((sec)=>sec.label==sectionName)
@@ -240,7 +240,7 @@ return sectionsLevels
 getDevices(){
   this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
     (res)=>{
-      console.log(res)
+     
     let devicesData=res;
       this.devices = res.map(res=>{
         return {
@@ -248,7 +248,7 @@ getDevices(){
           value:res.id
         }
       });
-      console.log(this.devices)
+     
       if(this.devices.length==0){
         this.noDevices=true;
         this.deviceLoadingText='No Results'
@@ -308,12 +308,10 @@ getDevices(){
 
       // console.log("prev",prevDevice);
       // console.log("selected ",this.selectedDevice)
-      console.log("all devices data",this.allDevices)
     }
 
 onAccessLevelChange(section: any, changedAccessLevel: any) {
 section.accessLevels.forEach((accessLevel: any) => {
-  console.log("section name", section.section.name,"acces level",changedAccessLevel.value)
   this.noDevices=section.section.name=="devices" && changedAccessLevel.value=="None"
   accessLevel.checked = accessLevel === changedAccessLevel;
 });

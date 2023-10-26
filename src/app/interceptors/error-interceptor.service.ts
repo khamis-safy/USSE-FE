@@ -21,12 +21,18 @@ export class ErrorInterceptorService implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    console.log('Interceptor is working'); // Add this linep rivate injector:Injector
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         
         // Check if the error is an HTTP error
         if (error instanceof HttpErrorResponse) {
+          if(error.status==401){
+            let localData=['email',"token"]
+            localData.map((key)=>localStorage.removeItem(key));
+            const expirationDate = new Date('2000-01-01'); // Set expiration date to a past date
+            const removedCookie = "refreshToken" + '=; expires=' + expirationDate.toUTCString() + '; path=/';
+            document.cookie = removedCookie;
+          }
           if(error.status!=200){
 
             console.error('HTTP error:', error);
@@ -36,6 +42,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
               const errorMessage = error && error.error && this.translate.instant(error.error)? error.error  : 'COMMON.ERR';
               this.toaster.error(this.translate.instant(errorMessage))
             }
+
           }
           return throwError(()=>error);
         

@@ -51,7 +51,7 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
     });
     this.setDefaultTime();
     this.permission =this.compaignsService.devicesPermissions;
-if(this.authService.userInfo.customerId!=""){
+if(this.authService.getUserInfo()?.customerId!=""){
   this.isUser=true;
 }
 else{

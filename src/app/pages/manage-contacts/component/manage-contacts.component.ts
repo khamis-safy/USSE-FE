@@ -86,7 +86,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit,OnDestroy{
 
   ngOnInit() {
     let permission =this.listService.contactsPermissions
-    let customerId=this.authService.userInfo.customerId;
+    let customerId=this.authService.getUserInfo()?.customerId;
 
 if(permission){
   if(permission.value=="ReadOnly" || permission.value =="None"){

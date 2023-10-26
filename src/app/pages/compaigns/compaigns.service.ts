@@ -14,7 +14,7 @@ export interface DevicesPermissions{deviceId:string,value:string}
 export class CompaignsService  {
   display:number=10;
   pageNum:number=0;
-  email:string=this.authService.userInfo.email;
+  email:string=this.authService.getUserInfo()?.email;
   search:string="";
   compaignssPermission:PermissionData[];
   devicesPermissions:DevicesPermissions[];
@@ -26,7 +26,7 @@ constructor(private http:HttpClient,
     // const permissions=this.getPermissionsFromRoute()
 
     // console.log("campaigns permissions",permissions)
-  if(authService.userInfo.customerId!=""){
+  if(authService.userInfo?.customerId!=""){
     // this.compaignssPermission=authService.devicesPermissions(authService.usersPermissions,"Campaigns");
     // if(this.compaignssPermission){
     //   this.devicesPermissions=this.compaignssPermission.map((permission)=>{

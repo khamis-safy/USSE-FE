@@ -58,7 +58,6 @@ export class ForgotPassComponent implements OnInit ,OnDestroy{
   
         }, 
         (err)=>{
-          console.log("error from component")
           this.loading=false;
         }
       );

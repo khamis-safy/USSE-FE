@@ -15,20 +15,18 @@ export class ManageContactsService {
 
     display:number=10;
     pageNum:number=0;
-    email:string=this.authService.userInfo.email;
+    email:string=this.authService.getUserInfo()?.email;
     orderedBy:string="";
     search:string="";
     contactsPermissions:PermissionData;
   constructor(private http:HttpClient,private authService:AuthService) {
-    if(authService.userInfo.customerId!=""){
+    if(authService.userInfo?.customerId!=""){
       authService.getUserDataObservable().subscribe(permissions => {
         this.contactsPermissions=permissions.find((e)=>e.name=="Contacts");
-        console.log("Contacts Permissions",this.contactsPermissions)
       })
      }
      else{
        this.contactsPermissions={name:"Contacts",value:"FullAccess"}
-       console.log(this.contactsPermissions)
      }
    }
 

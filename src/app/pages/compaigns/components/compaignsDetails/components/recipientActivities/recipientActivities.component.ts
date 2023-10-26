@@ -48,7 +48,6 @@ export class RecipientActivitiesComponent implements OnInit, AfterViewInit,OnDes
         this.loading = false;
 
     this.dataSource=new MatTableDataSource<CompainMessages>(res);
-    console.log(res)
         },
         (err)=>{
           this.loading = false;

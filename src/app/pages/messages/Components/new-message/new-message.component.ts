@@ -82,14 +82,14 @@ sendMessageData:any;
 
     this.isLoading = true
 
-    console.log({
-      deviceId:this.deviceId,
-      addedContacts:this.addedContacts,
-      dateTime:this.dateTime,
-      attachements:this.attachments,
-      message:this.message
+    // console.log({
+    //   deviceId:this.deviceId,
+    //   addedContacts:this.addedContacts,
+    //   dateTime:this.dateTime,
+    //   attachements:this.attachments,
+    //   message:this.message
 
-    })
+    // })
 
     this.messageService.sendWhatsappBusinessMessage(this.deviceId,this.addedContacts,this.message,this.dateTime,this.messageService.email,this.attachments).subscribe(
       (res)=>{

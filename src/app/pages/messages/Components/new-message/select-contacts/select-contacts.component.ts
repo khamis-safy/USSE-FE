@@ -237,12 +237,7 @@ onAccordionOpened(listContacts:ListContacts) {
   else{
     this.getListContacts(listContacts,true)
   }
-  console.log({
-    shoudBeClosed: listContacts.list.shoudBeClosed,
-    isChecked:listContacts.list.isChecked,
-    
-  },
-  (listContacts.list.isChecked ==='' && listContacts.list.shoudBeClosed))
+
 
 }
 

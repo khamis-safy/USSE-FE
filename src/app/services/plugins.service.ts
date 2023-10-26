@@ -131,7 +131,6 @@ export class PluginsService {
           })
         )
       });
-      console.log(arr)
       return arr;
 
     }else{
@@ -145,7 +144,6 @@ export class PluginsService {
 
   }
   getBase64Image(img:any){
-    console.log(img)
     var canvas = document.createElement("canvas");
     canvas.width = img.width;
     canvas.height = img.height;
@@ -155,7 +153,6 @@ export class PluginsService {
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
   }
   ScrollLeft(element:any){
-    console.log(element.scrollLeft);
     // element.scrollTo(0, 0)
     // element.scrollLeft = element.scrollLeft -270
     // console.log(element.scrollLeft);

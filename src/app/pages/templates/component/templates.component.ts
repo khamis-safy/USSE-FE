@@ -19,7 +19,7 @@ export class TemplatesComponent implements  OnDestroy{
 
   constructor(public dialog: MatDialog,private templateService:TemplatesService,private authService:AuthService) {
     let permission =this.templateService.TemplatesPermission
-    let customerId=this.authService.userInfo.customerId;
+    let customerId=this.authService.getUserInfo()?.customerId;
 
 if(permission){
   if(permission.value=="ReadOnly" || permission.value =="None"){

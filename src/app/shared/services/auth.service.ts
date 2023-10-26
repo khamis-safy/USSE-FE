@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment as env } from '@env/environment.development';
 import { PermissionsService } from './permissions.service';
+import { LocalStorageService } from './localStorage.service';
+import { PluginsService } from 'src/app/services/plugins.service';
 interface DeviceData {
   id: string,
   deviceName: string,
@@ -35,6 +37,7 @@ export class AuthService {
   email:string;
   from!:string;
   accessToResetPass!:boolean;
+  RoleAndRefreshtoken:any;
   userData!:UserData;
   resfreshToken!:string;
 userInfo!:UserData;
@@ -50,9 +53,82 @@ permissionSubject = new BehaviorSubject<Permission>({
   Contacts:true
     });
 userData$:Observable<any>;
-constructor(private loginService:LoginService,private http:HttpClient,private permissionService:PermissionsService) {
-  this.userInfo= this.getUserInfo();
+constructor(private loginService:LoginService,
+  private http:HttpClient,
+  private permissionService:PermissionsService,
+  private localStorageService: LocalStorageService,
+  private plugin:PluginsService
+  ) {
+    this.setRefreshToken();
+    // this.getUserInfoFromRequest();
  }
+
+ loadUserInfo(): Promise<any> {
+  return new Promise((resolve, reject) => {
+    if (this.userInfo) {
+      resolve(this.userInfo);
+    } else if (this.checkExistenceAndValidation()) {
+      const decryptedEmail = this.localStorageService.getDecryptedData('email');
+      this.permissionService.getUserByEmail(decryptedEmail).subscribe(
+        (res) => {
+          const data={
+            userName:res.contactName,
+            organisationName:res.organisationName,
+            id:res.id,
+            email:res.email,
+            token:res.token,
+            customerId:res.customerId,
+            apiToken:res.apiToken,
+            maskType:res.maskType,
+            phoneNumber:res.phoneNumber,
+            timezone:res.timezone,
+            
+          }
+          this.updateUserInfo(data);
+          resolve(this.userInfo);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } else {
+      reject('User information not available');
+    }
+  });
+}
+
+//  getUserInfoFromRequest(){
+//   if(this.checkExistenceAndValidation()){
+//     const decryptedEmail = this.localStorageService.getDecryptedData("email")
+//     this.permissionService.getUserByEmail(decryptedEmail).subscribe(
+//       (res)=>{
+//         const data={
+//           userName:res.contactName,
+//           organisationName:res.organisationName,
+//           id:res.id,
+//           email:res.email,
+//           token:res.token,
+//           customerId:res.customerId,
+//           apiToken:res.apiToken,
+//           maskType:res.maskType,
+//           phoneNumber:res.phoneNumber,
+//           timezone:res.timezone,
+//           roles:res.roles[0],
+//           refreshToken:res.refreshTokens[0].token
+//         }
+//         this.updateUserInfo(data)
+//       }
+//     )
+//   }
+//  }
+
+ getUserInfo(){
+  return this.userInfo
+ }
+ updateUserInfo(data?){
+  this.userInfo=data
+}
+
  updateUserPermisisons(permissions){
   this.allPermissions=permissions
 
@@ -60,6 +136,7 @@ constructor(private loginService:LoginService,private http:HttpClient,private pe
 updatePermissions(permisions:any){
   this.userPermissions=permisions
 }
+
 async getPermission() {
   return new Promise<void>((resolve) => {
     this.getUserDataObservable().subscribe((permissions) => {
@@ -72,7 +149,7 @@ async getPermission() {
 async hasPermission(routeName: string) {
   // this.permissions=this.permissionService.executePermissions(permissions);
   // this.authService.updatePermissions(this.permissions)
-  const customerId = localStorage.getItem("customerId");
+  const customerId = this.userInfo.customerId;
   if (customerId !== "" ){
 
     await this.getPermission();
@@ -96,6 +173,8 @@ async hasPermission(routeName: string) {
     return true;
   }
 }
+
+// help to acces to reset passward page from
 setAccessToReset(access){
   this.accessToResetPass=access
   }
@@ -103,108 +182,108 @@ setAccessToReset(access){
 getAccessToReset(){
   return this.accessToResetPass
   }
-
+// help to get code from verification page to reset passward page
 setCode(code){
   this.code=code
 }
 getCode(){
   return this.code
 }
+// get email after login or signup to be used in verification page 
 setEmail(email){
 this.email=email
 }
 getEmail(){
 return this.email
 }
+
+// from variable used verification page to detect which funcion will be used (is it from login or forgot passward or signup)
 setFromValue(from){
   this.from=from
 }
 getFromValue(){
   return this.from
 }
-getPermissionsObservable(): Observable<PermissionData[]> {
-return this.permissionsSubject.asObservable();
-}
-isLoggedIn(){
-  this.userInfo= this.getUserInfo();
-return !this.checkData(this.userInfo)
+
+setRoleAndRefreshtoken(role,refreshToken){
+this.RoleAndRefreshtoken={
 
 }
-getUserInfo(){
-  let userData={
-     token:localStorage.getItem("token"),
-     userName:localStorage.getItem('userName'),
-     organizationName:localStorage.getItem('organizationName'),
-     id:localStorage.getItem('id'),
-     email:localStorage.getItem('email'),
-     customerId:localStorage.getItem("customerId"),
-     refreshToken:this.loginService.getCookieValue("refreshToken"),
-     roles:localStorage.getItem("roles")
+}
 
-   }
- return userData;
- }
+setUserDataObservable(observable:Observable<Users>):any{
+  this.userData$=observable.pipe(
+    map(res=>res.permissions)
 
-checkData(obj: any) {
-  this.unAuthorized = false; // Reset the flag for each call
-
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      const value = obj[key];
-      if (value==null || value == undefined) {
-        this.unAuthorized = true;
-        console.log("Unauthorized", key, "is missing");
-        break; // Exit the loop as soon as an empty value is detected
-      }
-    }
+  )
+}
+getUserDataObservable(){
+  return this.userData$
   }
 
-  console.log("Unauthorized", this.unAuthorized);
 
-  return this.unAuthorized;
+isLoggedIn(){
+
+return this.checkExistenceAndValidation()
+
 }
 
 saveDataToLocalStorage(data){
-  if (localStorage.getItem("email")){
-    localStorage.removeItem("email")
-    localStorage.setItem('email',data.email);
+  // encrypt email and save to local storage 
+
+  localStorage.setItem("token",data.token)
+  this.localStorageService.saveEncryptedData("email", data.email);
+  localStorage.setItem("role",data.roles)
+
+  // this.loginService.storeRefreshTokenInCookie(data.refreshToken);
+
+
+
+
+}
+
+ 
+ 
+ checkExistenceAndValidation(){
+  if(localStorage.getItem("token") && this.loginService.getCookieValue("refreshToken") && localStorage.getItem("email")){
+    const decryptedEmail = this.localStorageService.getDecryptedData("email");
+    return this.isEmailValid(decryptedEmail)
   }
   else{
-    localStorage.setItem('email',data.email);
-
+    return false
   }
-  localStorage.setItem('organizationName',data.organizationName);
-  localStorage.setItem('id',data.id);
-  localStorage.setItem('userName',data.userName);
-  localStorage.setItem("token",data.token),
-  localStorage.setItem("customerId",data.customerId)
-  localStorage.setItem("apiToken",data.apiToken)
-  localStorage.setItem("maskType",data.maskType)
-  localStorage.setItem("phoneNumber",data.phoneNumber)
-  localStorage.setItem("timeZone",data.timeZone)
-  localStorage.setItem("roles",data.roles)
-
-
-
 }
-updateUserInfo(){
-  this.userInfo= this.getUserInfo();
-  console.log("updated user info",this.userInfo)
-
+isEmailValid(email:string){
+  return this.plugin.emailReg.test(email)
 }
 
+clearUserInfo(){
+  let localData=['email',"token"]
+  localData.map((key)=>localStorage.removeItem(key));
+  this.loginService.removeCookie("refreshToken")
+
+}
 // setting user data from login or signup components
 setUserData(userData:any,token:any){
-this.userData=userData;
-this.resfreshToken=token;
-}
+  this.userData=userData;
+  this.resfreshToken=token;
+  }
 // get user data
 getUserData(){
   return this.userData
 }
-getToken(){
-  return this.resfreshToken
+setRefreshToken(){
+  if(this.loginService.getCookieValue("refreshToken")){
+
+    this.resfreshToken=this.loginService.getCookieValue("refreshToken")
+  }
+
 }
+getRefreshToken(){
+  return this.resfreshToken
+
+}
+
 devicesPermissions(permissions:PermissionData[],name:string){
   let modulePermissions=permissions.filter((permission)=>permission.name.split("_")[0]==name)
   return modulePermissions
@@ -217,13 +296,6 @@ devicesPermissions(permissions:PermissionData[],name:string){
   editProfile(data):Observable<any>{
     return this.http.put<any>(`${env.api}Auth/editProfile`,data)
   }
-setUserDataObservable(observable:Observable<Users>):any{
-  this.userData$=observable.pipe(
-    map(res=>res.permissions)
 
-  )
-}
-getUserDataObservable(){
-return this.userData$
-}
+
   }
