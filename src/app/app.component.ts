@@ -60,6 +60,7 @@ export class AppComponent implements OnInit ,OnDestroy {
         (res) => {
           // Update the refresh token in the cookie
           this.loginService.storeRefreshTokenInCookie(res.refreshToken);
+          this.authService.setRefreshToken();
         },
         (err) => {
         }
