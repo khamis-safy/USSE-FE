@@ -30,4 +30,4 @@ jobs:
           context: .
           file: ./Dockerfile-prod
           push: true
-          tags: khamisapis/dev-usse-fe:production
+          tags: khamisapis/dev-usse-fe:production-${{ vars.PRODUCTION_VERSION }}
