@@ -1,4 +1,4 @@
-name: CI
+name: CIProduction
 
 # Controls when the workflow will run
 on:
@@ -28,6 +28,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile-prod
           push: true
-          tags: khamisapis/dev-usse-fe:latest
+          tags: khamisapis/dev-usse-fe:production
