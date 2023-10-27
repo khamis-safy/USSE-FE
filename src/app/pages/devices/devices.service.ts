@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 import { CheckCon, DeviceData, Init } from './device';
-import { ErrSucc } from '../manage-contacts/list-data';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PermissionData } from '../users/users';
 import { PermissionsService } from 'src/app/shared/services/permissions.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +18,7 @@ export class DevicesService {
   orderedBy:string="";
   search:string="";
   DevicesPermission:PermissionData;
+  private api: string = environment.api;
 
 constructor(private http:HttpClient,
   private authService:AuthService,
@@ -33,7 +33,7 @@ constructor(private http:HttpClient,
    }
 }
 getDevices(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<DeviceData[]>{
-  return this.http.get<DeviceData[]>(`${env.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+  return this.http.get<DeviceData[]>(`${this.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }
 
 initWhatsAppB(sessionName:string,port:number,serverId:number,host?:string):Observable<Init>{
@@ -43,7 +43,7 @@ initWhatsAppB(sessionName:string,port:number,serverId:number,host?:string):Obser
    `?email=${this.email}&sessionName=${sessionName}&port=${port}&host=${host}`
    :`?email=${this.email}`
 
-  return this.http.post<Init>(`${env.api}Device/InitializeWhatsappBisunessSession${query}`,"")
+  return this.http.post<Init>(`${this.api}Device/InitializeWhatsappBisunessSession${query}`,"")
 }
 
 CheckWhatsappBisuness(sessionName:string,token:string,port:number,serverId:number):Observable<CheckCon>{
@@ -53,18 +53,18 @@ CheckWhatsappBisuness(sessionName:string,token:string,port:number,serverId:numbe
     port:port,
     serverId: serverId
   }
-  return this.http.post<CheckCon>(`${env.api}Device/CheckWhatsappBisunessSession`,data)
+  return this.http.post<CheckCon>(`${this.api}Device/CheckWhatsappBisunessSession`,data)
 
 }
 getDevicesCount(email:string):Observable<number>{
-  return this.http.get<number>(`${env.api}Device/listDevicesCount?email=${email}`)
+  return this.http.get<number>(`${this.api}Device/listDevicesCount?email=${email}`)
 }
 
 deleteDevice(email:string,id:string):Observable<DeviceData>{
-  return this.http.put<DeviceData>(`${env.api}Device/deleteDevice?email=${email}&id=${id}`,"")
+  return this.http.put<DeviceData>(`${this.api}Device/deleteDevice?email=${email}&id=${id}`,"")
 }
 reconnectWPPDevice(id:string,email:string):Observable<any>{
-  return this.http.put<any>(`${env.api}Device/reconnectWBSDevice?id=${id}&email=${email}`,"")
+  return this.http.put<any>(`${this.api}Device/reconnectWBSDevice?id=${id}&email=${email}`,"")
 }
 
 addNewWhatsappBisunessDevice( email: string,deviceName: string,phoneNumber: string,token: string,sessionName: string,port:number,serverId:number):Observable<any>{
@@ -77,10 +77,10 @@ addNewWhatsappBisunessDevice( email: string,deviceName: string,phoneNumber: stri
     port:port,
     serverId: serverId
   }
-  return this.http.post<any>(`${env.api}Device/addNewWhatsappBisunessDevice`,data)
+  return this.http.post<any>(`${this.api}Device/addNewWhatsappBisunessDevice`,data)
 }
 
 updateDeviceDelay(email:string,id:string ,delayIntervalInSeconds:number):Observable<DeviceData>{
-  return this.http.put<DeviceData>(`${env.api}Device/updateDeviceDelay?email=${email}&id=${id}&delay=${delayIntervalInSeconds}`,"")
+  return this.http.put<DeviceData>(`${this.api}Device/updateDeviceDelay?email=${email}&id=${id}&delay=${delayIntervalInSeconds}`,"")
 }
 }

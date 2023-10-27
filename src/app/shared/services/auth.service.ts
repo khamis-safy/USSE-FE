@@ -4,8 +4,8 @@ import { Login } from 'src/app/pages/login/component/login';
 import { LoginService } from 'src/app/pages/login/login.service';
 import { Permission, PermissionData, UserData, Users } from 'src/app/pages/users/users';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
-import { environment as env } from '@env/environment.development';
 import { PermissionsService } from './permissions.service';
 import { PluginsService } from 'src/app/services/plugins.service';
 import { LocalStorageService } from './localStorage.service';
@@ -32,6 +32,8 @@ interface DeviceData {
 })
 
 export class AuthService {
+  private api: string = environment.api;
+
   selectedDeviceId:string="";
   code!:string;
   email:string;
@@ -291,15 +293,15 @@ devicesPermissions(permissions:PermissionData[],name:string){
 
 
   getDevices(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<DeviceData[]>{
-    return this.http.get<DeviceData[]>(`${env.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+    return this.http.get<DeviceData[]>(`${this.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
   }
   editProfile(data):Observable<any>{
-    return this.http.put<any>(`${env.api}Auth/editProfile`,data)
+    return this.http.put<any>(`${this.api}Auth/editProfile`,data)
   }
 
  getBackEndVersion()
  :Observable<string>{
-  return this.http.get<string>(`${env.api}Auth/getVersion`)
+  return this.http.get<string>(`${this.api}Auth/getVersion`)
 }
 
   }

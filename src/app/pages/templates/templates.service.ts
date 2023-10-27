@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { environment as env } from '@env/environment.development';
+import { environment } from 'src/environments/environment';
 
 import { Observable } from 'rxjs';
 import { CheckCon, Templates, Init, TemplateData } from './templates';
@@ -17,6 +17,7 @@ export class TemplatesService {
   orderedBy:string="";
   search:string="";
   TemplatesPermission:PermissionData;
+  private api: string = environment.api;
 
 constructor(private http:HttpClient,private authService:AuthService) {
   if(authService.userInfo?.customerId!=""){
@@ -30,14 +31,14 @@ constructor(private http:HttpClient,private authService:AuthService) {
  }
 
 getTemplates(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Templates[]>{
-  return this.http.get<Templates[]>(`${env.api}Template/listTemplates?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+  return this.http.get<Templates[]>(`${this.api}Template/listTemplates?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }
 
 deleteTemplates(email:string,id:string):Observable<Templates>{
-  return this.http.delete<Templates>(`${env.api}Template/deleteTemplate?email=${email}&id=${id}`)
+  return this.http.delete<Templates>(`${this.api}Template/deleteTemplate?email=${email}&id=${id}`)
 }
 listTemplatesCount(email:string):Observable<number>{
-  return this.http.get<number>(`${env.api}Template/listTemplatesCount?email=${email}`)
+  return this.http.get<number>(`${this.api}Template/listTemplatesCount?email=${email}`)
 }
 
 
@@ -57,7 +58,7 @@ addTemplate(templateName:string,messageBody:string,email:string,attachments:stri
     messageBody: messageBody,
     email: email
   }
-  return this.http.post<Templates>(`${env.api}Template/addNewTemplate`,data)
+  return this.http.post<Templates>(`${this.api}Template/addNewTemplate`,data)
 }
 
 
@@ -77,7 +78,7 @@ updateTemplate(id:string,templateName:string,messageBody:string,email:string, at
     messageBody: messageBody,
     email: email
   }
-  return this.http.put(`${env.api}Template/updateTemplate`,data)
+  return this.http.put(`${this.api}Template/updateTemplate`,data)
 }
 
 
@@ -96,7 +97,7 @@ updateTemplate(id:string,templateName:string,messageBody:string,email:string, at
 
 
 getTemplateById(id:string):Observable<TemplateData>{
-  return this.http.get<TemplateData>(`${env.api}Template/getTemplateById?id=${id}`)
+  return this.http.get<TemplateData>(`${this.api}Template/getTemplateById?id=${id}`)
 }
 
 

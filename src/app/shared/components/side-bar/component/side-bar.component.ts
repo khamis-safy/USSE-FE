@@ -50,9 +50,11 @@ this.permissions={
     }
 
   }}
+  //  console.log(res) 
   getBackEndVerison(){
     this.authService.getBackEndVersion().subscribe(
-      (res)=>this.backVersion=`V ${JSON.parse(res)}`
+      (res)=>{;
+        this.backVersion=`V ${JSON.parse(res)}`}
     )
   }
 //   getUserPermisisons(email){

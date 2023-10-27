@@ -1,16 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment as env } from '@env/environment.development';
 import { Observable, shareReplay } from 'rxjs';
 import { Permission, Users } from 'src/app/pages/users/users';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PermissionsService {
+  private api: string = environment.api;
+
 constructor(private http:HttpClient) { }
 getUserByEmail(email):Observable<Users>{
-  return this.http.get<Users>(`${env.api}Auth/getUserByEmail?Email=${email}`).pipe(
+  return this.http.get<Users>(`${this.api}Auth/getUserByEmail?Email=${email}`).pipe(
     shareReplay()
   )
 }
