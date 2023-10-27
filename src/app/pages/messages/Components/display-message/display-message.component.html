@@ -49,8 +49,7 @@
             <ng-container *ngSwitchCase="false">
 
               <p  class="txt-md ms-3 mb-2 text-neutral-900 message">{{message?.msgBody}}</p>
-              <a  class="pointer" [href]="message.fileUrl" target="_blank" [title]="'open' | translate" ><img   class="ms-1 w-100" src="assets/images/doc.svg" alt=""></a>
-              <a  class="pointer" [href]="message.fileUrl" target="_blank" [title]="'open' | translate"><img  class="ms-1 w-100" src="assets/images/vid.svg" alt=""></a>
+
               <ng-container *ngIf="message.fileName">
 
                 <ng-container [ngSwitch]="(message.fileName | type)">

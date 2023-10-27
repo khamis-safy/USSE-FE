@@ -145,7 +145,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
             setInterval(() => {
               this.refreshToken();
             }, 60 * 60 * 1000); // 1 hour in milliseconds
-  
+
             this.router.navigateByUrl('devices')
           },
           (err)=>{
@@ -215,6 +215,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
     )
 
   }
+ 
   // ngOnDestroy() {
   //   console.log("destroyed")
   //   if(!this.verified){

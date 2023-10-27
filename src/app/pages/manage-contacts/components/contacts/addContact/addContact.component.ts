@@ -12,6 +12,7 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { PluginsService } from 'src/app/services/plugins.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 interface CheckedCont{
   contacts:Contacts,
@@ -27,7 +28,7 @@ interface CheckedCont{
 export class AddContactComponent implements OnInit,OnDestroy{
 // isChanged:boolean=false;
 listsLoadingText:string='Loading ...';
-email:string=this.listService.email;
+email:string=this.authService.getUserInfo()?.email;
   // lists: ListData[] ;
   listsArr:SelectOption[]
   // ngx-intl-tel
@@ -74,6 +75,7 @@ showInputs:boolean=false;
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<AddContactComponent>,
+    private authService:AuthService,
     private translate: TranslateService,
 
     @Inject(MAT_DIALOG_DATA) public data:CheckedCont,

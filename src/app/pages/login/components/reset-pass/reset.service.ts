@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
-import { environment as env } from '@env/environment.development';
 
 import { Observable } from 'rxjs';
 
@@ -9,10 +9,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ResetPassService {
+  private api: string = environment.api;
 
   constructor(private http:HttpClient) { }
   changePassword(email:string, code:string, newPassword:string):Observable<any>{
-    return this.http.put<any>(`${env.api}Auth/changePassword?email=${email}&code=${code}&newPassword=${newPassword}`,null)
+    return this.http.put<any>(`${this.api}Auth/changePassword?email=${email}&code=${code}&newPassword=${newPassword}`,null)
   }
 
 }

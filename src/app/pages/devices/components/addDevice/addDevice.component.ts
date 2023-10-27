@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { DevicesService } from '../../devices.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-addDevice',
@@ -21,7 +22,7 @@ export class AddDeviceComponent implements OnInit {
     deviceName:this.deviceName
   });
   constructor(    private toaster: ToasterServices,
-    private devicesService:DevicesService) { }
+    private devicesService:DevicesService,private authService:AuthService) { }
 
   ngOnInit() {
   }
@@ -30,7 +31,7 @@ export class AddDeviceComponent implements OnInit {
     this.isLoading=true;
     let deviceN=this.form.value.deviceName;
     let phoneNumber="000";
-    this.devicesService.addNewWhatsappBisunessDevice(this.devicesService.email,deviceN,phoneNumber,this.token,this.sessionName,this.port,this.serverId).subscribe(
+    this.devicesService.addNewWhatsappBisunessDevice(this.authService.getUserInfo()?.email,deviceN,phoneNumber,this.token,this.sessionName,this.port,this.serverId).subscribe(
       (res)=>{
         this.isLoading = false;
         this.isClose.emit(true);

@@ -10,6 +10,7 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Contacts } from '../../../contacts';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 interface CheckedCont{
   list:string[],
@@ -41,7 +42,7 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<AddContactComponent>,
     private translate: TranslateService,
-
+    private authService:AuthService,
     @Inject(MAT_DIALOG_DATA) public data: CheckedCont,
   ) { }
 
@@ -100,7 +101,7 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
 getListData(){
   let shows=100;
   let pageNum=this.listService.pageNum;
-  let email=this.listService.email;
+  let email=this.authService.getUserInfo()?.email;
   let orderedBy="";
   let search="";
   this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
@@ -117,7 +118,7 @@ getListData(){
 getContactsData(){
   let shows=50;
   let pageNum=this.listService.pageNum;
-  let email=this.listService.email;
+  let email=this.authService.getUserInfo()?.email;
   let orderedBy="";
   let search="";
 
@@ -180,7 +181,7 @@ getContactsData(){
 
   submitAdd(){
     this.isLoading = true
-    this.listService.addOrMoveContacts(this.contactsIds,this.listIds,this.listService.email).subscribe(
+    this.listService.addOrMoveContacts(this.contactsIds,this.listIds,this.authService.getUserInfo()?.email).subscribe(
       (res)=>{
         this.isLoading = false
         this.onClose(true);

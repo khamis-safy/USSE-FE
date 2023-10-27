@@ -5,8 +5,7 @@ FROM node:18-alpine as node
 WORKDIR /app
 COPY . .
 RUN npm install
-RUN npm run build --prod
-
+RUN npm run build --configuration=production
 # ----------------------------
 # run with nginx
 # ----------------------------

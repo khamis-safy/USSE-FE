@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FileFieldsComponent } from '../fileFields/fileFields.component';
 import { ListData } from '../../../list-data';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 export interface files{
   name:string,
@@ -44,7 +45,7 @@ export class UploadSheetComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data:any,
     private listService:ManageContactsService,
     private translate: TranslateService,
-
+    private authService:AuthService,
     public dialogRef: MatDialogRef<UploadSheetComponent>) { }
 
   ngOnInit() {
@@ -59,7 +60,7 @@ export class UploadSheetComponent implements OnInit {
     }
   }
   getLists(lisname?:string){
-    this.listService.getList(this.listService.email,10,0,"","").subscribe(
+    this.listService.getList(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
        (res)=>{
         let allLists=res;
         this.listsArr = res.map(res=>{
@@ -131,7 +132,7 @@ this.listId=event.value
   submitAddList(){
     this.isLoading = true
 
-    this.listService.addList(this.form.value.listName,this.listService.email).subscribe(
+    this.listService.addList(this.form.value.listName,this.authService.getUserInfo()?.email).subscribe(
       (res)=>{
         this.isLoading = false;
 

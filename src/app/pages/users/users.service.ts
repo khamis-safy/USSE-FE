@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import { Access, Permission, PermissionData, Users } from './users';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   providedIn: 'root'
 })
 export class UsersService {
+  private api: string = environment.api;
 
   display:number=10;
   pageNum:number=0;
@@ -38,19 +39,19 @@ export class UsersService {
 
 
   listCustomersUsers(token:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Users[]>{
-    return this.http.get<Users[]>(`${env.api}Auth/listCustomersUsers?email=${this.email}&token=${token}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+    return this.http.get<Users[]>(`${this.api}Auth/listCustomersUsers?email=${this.email}&token=${token}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
   }
 
   listCustomersUsersCount(token:string):Observable<number>{
-    return this.http.get<number>(`${env.api}Auth/listCustomersUsersCount?token=${token}`)
+    return this.http.get<number>(`${this.api}Auth/listCustomersUsersCount?token=${token}`)
   }
   editUserPermissions(data):Observable<any>{
 
-    return this.http.patch<any>(`${env.api}Auth/editUserPermissions`,data)
+    return this.http.patch<any>(`${this.api}Auth/editUserPermissions`,data)
   }
 
  getUserByEmail(email:string):Observable<Users>{
-  return this.http.get<Users>(`${env.api}Auth/getUserByEmail?Email=${email}`)
+  return this.http.get<Users>(`${this.api}Auth/getUserByEmail?Email=${email}`)
 }
 // executePermissions(permissions:{name:string,value:string}[]):Permission{
 //   const accessMap: { [key: string]: boolean } = {
@@ -68,11 +69,11 @@ export class UsersService {
 // }
 
 deleteUser(customerEmail:string, userEmail:string):Observable<any>{
-  return this.http.put<any>(`${env.api}Auth/deleteUser?userEmail=${userEmail}&customerEmail=${customerEmail}`,null)
+  return this.http.put<any>(`${this.api}Auth/deleteUser?userEmail=${userEmail}&customerEmail=${customerEmail}`,null)
   }
 
 unDeleteUser(customerEmail:string, userEmail:string):Observable<any>{
-  return this.http.put<any>(`${env.api}Auth/unDeleteUser?userEmail=${userEmail}&customerEmail=${customerEmail}`,null)
+  return this.http.put<any>(`${this.api}Auth/unDeleteUser?userEmail=${userEmail}&customerEmail=${customerEmail}`,null)
   }
   
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { environment as env } from '@env/environment.development';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -8,7 +8,7 @@ import { environment as env } from '@env/environment.development';
 })
 export class EncryptionService {
 
-  private secretKey = env.secretKey; // Replace this with your secret key
+  private secretKey = environment.secretKey; // Replace this with your secret key
 
   encrypt(data: any): string {
     const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), this.secretKey).toString();

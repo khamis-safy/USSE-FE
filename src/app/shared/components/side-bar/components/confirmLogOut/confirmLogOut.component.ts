@@ -21,6 +21,7 @@ this.isLoading=true;
 this.authService.clearUserInfo()
 this.onClose();
 this.isLoading=false;
+location.reload()
 this.router.navigateByUrl("login");
   }
 

@@ -1,38 +1,24 @@
 import { Injectable } from '@angular/core';
-import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Login } from './component/login';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-// Mm123456@@
+private api: string = environment.api;
 
-// khamissafy056@gmail.com
-// Khamis.Safy@056
-// email:string=localStorage.getItem("email")
+
 userInfo:any;
   constructor(private http:HttpClient) { }
   login(data):Observable<Login>{
 
-    return this.http.post<Login>(`${env.api}Auth/login`,data)
+    return this.http.post<Login>(`${this.api}Auth/login`,data)
   }
 
-  // refreshToken(refreshToken:string):Observable<Login>{
-  //   const headers = new HttpHeaders({
-  //           'Authorization': `Bearer ${refreshToken}`
-  //         });
-  //   return this.http.get<Login>(`${env.api}Auth/refreshToken`, { headers })
-  // }
-//   updateUserInfo(userinfo){
-//   this.userInfo=userinfo
-// }
-// getUserinfo(){
-//   return this.userInfo
-// }
   storeRefreshTokenInCookie(token: string) {
     const expirationDate = new Date();
     expirationDate.setHours(expirationDate.getHours() + 1); // Cookie will expire in 1 hour
@@ -63,12 +49,12 @@ userInfo:any;
       token:token
     };
 
-    return this.http.post<any>(`${env.api}Auth/refreshToken`, refreshToken)
+    return this.http.post<any>(`${this.api}Auth/refreshToken`, refreshToken)
   }
 
 
   sendEmailCode(email:string):Observable<any>{
 
-    return this.http.post<any>(`${env.api}Auth/sendEmailCode?email=${email}`,"")
+    return this.http.post<any>(`${this.api}Auth/sendEmailCode?email=${email}`,"")
   }
 }

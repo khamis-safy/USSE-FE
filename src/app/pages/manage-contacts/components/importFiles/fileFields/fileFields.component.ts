@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ManageContactsService } from '../../../manage-contacts.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 interface FilesData{
   columnName:string,
@@ -28,7 +29,8 @@ export class FileFieldsComponent implements OnInit {
   constructor(    @Inject(MAT_DIALOG_DATA) public data:any,
   private listService: ManageContactsService,
   public dialogRef: MatDialogRef<FileFieldsComponent>,
-  private toaster: ToasterServices,) { }
+  private toaster: ToasterServices,    private authService:AuthService,
+  ) { }
 
   ngOnInit() {
     if(this.data){
@@ -139,7 +141,7 @@ export class FileFieldsComponent implements OnInit {
     })
     const fileData={
       file:this.data.base64,
-      email:this.listService.email,
+      email:this.authService.getUserInfo()?.email,
       isFirstHeader:this.data.withHeader,
       mobileNumberIndex:mobileIndex,
       contactNameIndex:contactNameIndex,

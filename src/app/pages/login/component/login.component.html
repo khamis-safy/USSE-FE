@@ -33,6 +33,7 @@
             <us-input
               [isDisabled]="false"
               value=""
+              [key]="'email'"
               [placeholder]="'ENTER_YOUR_EMAIL' | translate"
               [optional]="false"
               type="email"
@@ -57,6 +58,7 @@
               [placeholder]="'ENTER_YOUR_PASSWORD' | translate"
               [optional]="false"
               type="password"
+              [key]="'pass'"
               [fullWidth]="true"
               formControlName="password"
               label="{{ 'PASSWORD' | translate }}"

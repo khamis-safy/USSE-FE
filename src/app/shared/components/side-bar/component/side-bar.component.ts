@@ -18,8 +18,8 @@ import { ConfirmLogOutComponent } from '../components/confirmLogOut/confirmLogOu
 export class SideBarComponent implements OnInit {
   userName:string=this.authService.getUserInfo()?.userName;
   chars:string=this.userName?.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
-  frontVersion:string='V 2.8.1 ';
-  backVersion:string='V 1.80';
+  frontVersion:string='V 0.0.1 ';
+  backVersion:string=localStorage.getItem("version");
   role:string=localStorage.getItem("role")
   show:boolean=false;
   listsArr:SelectOption[]
@@ -31,6 +31,7 @@ export class SideBarComponent implements OnInit {
      private authService:AuthService,
      private permissionService:PermissionsService) {}
   ngOnInit(): void {
+   this.getBackEndVerison();
     if(this.authService.getUserInfo()?.customerId!=""){
       this.isUser=true;
       this.authService.getUserDataObservable().subscribe(permissions => {
@@ -49,6 +50,13 @@ this.permissions={
     }
 
   }}
+  //  console.log(res) 
+  getBackEndVerison(){
+    this.authService.getBackEndVersion().subscribe(
+      (res)=>{;
+        this.backVersion=`V ${JSON.parse(res)}`}
+    )
+  }
 //   getUserPermisisons(email){
 //       this.userServiece.getUserByEmail(email).subscribe(
 //         (res)=>{

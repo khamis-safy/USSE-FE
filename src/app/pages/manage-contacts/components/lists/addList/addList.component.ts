@@ -6,6 +6,7 @@ import { ManageContactsService } from '../../../manage-contacts.service';
 import { ListData } from '../../../list-data';
 import { TranslateService } from '@ngx-translate/core';
 import { PluginsService } from 'src/app/services/plugins.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-addList',
@@ -13,7 +14,7 @@ import { PluginsService } from 'src/app/services/plugins.service';
   styleUrls: ['./addList.component.scss']
 })
 export class AddListComponent implements OnInit {
-  email:string=this.listService.email
+  email:string=this.authService.getUserInfo()?.email
   isLoading = false
   name:any = new FormControl('',[Validators.required,Validators.pattern(this.plugin.notStartWithSpaceReg)]);
   form = new FormGroup({
@@ -28,7 +29,7 @@ export class AddListComponent implements OnInit {
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<AddListComponent>,
     private translate: TranslateService,
-
+    private authService:AuthService,
     @Inject(MAT_DIALOG_DATA) public data: ListData,
   ) { }
 

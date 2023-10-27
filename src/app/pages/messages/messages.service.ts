@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Message, Shceduled } from './message';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PermissionData } from '../users/users';
 import { DevicesPermissions } from '../compaigns/compaigns.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,8 @@ export class MessagesService {
     search:string="";
     msgCategory:string="inbox";
     selectedDeviceId:string="";
+    private api: string = environment.api;
+
 constructor(private http:HttpClient,private authService:AuthService) {
   if(authService.userInfo?.customerId!=""){
   //   console.log("permissions from messages",authService.usersPermissions)
@@ -63,21 +65,21 @@ constructor(private http:HttpClient,private authService:AuthService) {
 
 
 getMessages(email:string,msgCategory:string,showsNum:number,pageNum:number,search:string,deviceId:string):Observable<Message[]>{
-  return this.http.get<Message[]>(`${env.api}Message/listMessages?email=${email}&msgCategory=${msgCategory}&take=${showsNum}&scroll=${pageNum}&search=${search}&deviceId=${deviceId}`)
+  return this.http.get<Message[]>(`${this.api}Message/listMessages?email=${email}&msgCategory=${msgCategory}&take=${showsNum}&scroll=${pageNum}&search=${search}&deviceId=${deviceId}`)
 }
 getScheduledMessages(email:string,showsNum:number,pageNum:number,deviceId:string):Observable<Shceduled[]>{
-  return this.http.get<Shceduled[]>(`${env.api}Message/listScheduledMessages?email=${email}&take=${showsNum}&scroll=${pageNum}&deviceId=${deviceId}`)
+  return this.http.get<Shceduled[]>(`${this.api}Message/listScheduledMessages?email=${email}&take=${showsNum}&scroll=${pageNum}&deviceId=${deviceId}`)
 }
 getMessagesCount(email:string,msgCategory:string,deviceId:string):Observable<number>{
-  return this.http.get<number>(`${env.api}Message/listMessagesCount?email=${email}&msgCategory=${msgCategory}&deviceId=${deviceId}`)
+  return this.http.get<number>(`${this.api}Message/listMessagesCount?email=${email}&msgCategory=${msgCategory}&deviceId=${deviceId}`)
 }
 listScheduledMessagesCount(email:string,deviceId:string):Observable<number>{
-  return this.http.get<number>(`${env.api}Message/listScheduledMessagesCount?email=${email}&deviceId=${deviceId}`)
+  return this.http.get<number>(`${this.api}Message/listScheduledMessagesCount?email=${email}&deviceId=${deviceId}`)
 }
 deleteMessage(ids:string[]):Observable<any>{
 
 
-  return this.http.put<number>(`${env.api}Message/deleteMessage?email=${this.email}`,ids)
+  return this.http.put<number>(`${this.api}Message/deleteMessage?email=${this.email}`,ids)
 
 }
 
@@ -97,7 +99,7 @@ sendWhatsappBusinessMessage( deviceid: string,targetPhoneNumber: string[],msgBod
     scheduledAt:scheduledAt,
     email: email
   }
-  return this.http.post<any>(`${env.api}Message/sendWhatsappBusinessMessage`,data)
+  return this.http.post<any>(`${this.api}Message/sendWhatsappBusinessMessage`,data)
 
 }
 

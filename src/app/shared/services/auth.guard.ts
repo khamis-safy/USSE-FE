@@ -17,10 +17,6 @@ export class AuthGuard implements CanActivate {
   }
 async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const routeName = route.data['name'];
-    if(this.authService.checkExistenceAndValidation()){
-
-      await this.authService.loadUserInfo().then(() => true);
-    }
     if(routeName==="verification"){
       if(this.authService.getFromValue()){
         return true
@@ -32,7 +28,7 @@ async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         return false
       }
     }
-    else if(routeName==="change-Passward"){
+    if(routeName==="change-Passward"){
       if(this.authService.getAccessToReset()){
         return true
 
@@ -44,8 +40,10 @@ async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
       }
     }
-    else{
 
+    if(this.authService.checkExistenceAndValidation()){
+
+      await this.authService.loadUserInfo().then(() => true);
       
       if(this.authService.isLoggedIn()){
         const customerId=this.authService.getUserInfo()?.customerId;
@@ -53,7 +51,6 @@ async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if(customerId){
 
           if(customerId!="" ){
-  
             this.authService.setUserDataObservable(this.permissionService.getUserByEmail(email));
             await this.authService.hasPermission(routeName).then((__values)=>this.isAllowed=__values)
           }
@@ -79,7 +76,13 @@ async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         return false;
       }
     }
-
+    else{
+      this.authService.clearUserInfo();
+      this.router.navigate(['login'])
+      return false;
+    }
   }
+ 
+  
 
 }

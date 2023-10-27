@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, fromEvent, map } from 'rxjs';
 import { CONTACTSHEADER } from '../../constants/constants';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
 
@@ -58,6 +59,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
     private listService:ManageContactsService,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
+    private authService:AuthService
   ) {
     }
   ngAfterViewInit() {
@@ -101,7 +103,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
     })
   }
   undoDelete(){
-    let email=this.listService.email;
+    let email=this.authService.getUserInfo()?.email;
     this.listService.unDeleteContact(email,this.deletedContacts).subscribe(
       (res)=>{
 
@@ -125,7 +127,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   getContacts(){
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
-  let email=this.listService.email;
+  let email=this.authService.getUserInfo()?.email;
   let orderedBy=this.listService.orderedBy;
   let search=this.listService.search;
   let isCanceled=this.isUnsubscribe;
@@ -176,7 +178,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
 
 
   contactsCount(){
-    let email=this.listService.email;
+    let email=this.authService.getUserInfo()?.email;
 
     let sub2=this.listService.contactsCount(email,this.isCanceled).subscribe(
 

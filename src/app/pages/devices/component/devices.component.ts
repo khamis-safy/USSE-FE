@@ -68,7 +68,7 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
   getDevices(){
     let shows=this.devicesService.display;
     let pageNum=this.devicesService.pageNum;
-    let email=this.devicesService.email;
+    let email=this.authService.getUserInfo()?.email;
     let orderedBy=this.devicesService.orderedBy;
     let search=this.devicesService.search;
     this.loading = true;
@@ -114,7 +114,7 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
 
 
   getDevicesCount(){
-    this.devicesService.getDevicesCount(this.devicesService.email).subscribe(
+    this.devicesService.getDevicesCount(this.authService.getUserInfo()?.email).subscribe(
       (res)=>{
        this.length=res;
        if( this.length==0){
@@ -158,7 +158,7 @@ else{
   reconnect(device:DeviceData){
     this.loading=true;
     this.isReonnect=true;
-    this.devicesService.reconnectWPPDevice(device.id,this.devicesService.email).subscribe(
+    this.devicesService.reconnectWPPDevice(device.id,this.authService.getUserInfo()?.email).subscribe(
       (res)=>{
 
         this.getDevices();
@@ -202,7 +202,7 @@ else{
   updateDeviceDelay(id: string) {
 
      //console.log(this.delay)
-    this.devicesService.updateDeviceDelay(this.devicesService.email, id, this.delay).subscribe(
+    this.devicesService.updateDeviceDelay(this.authService.getUserInfo()?.email, id, this.delay).subscribe(
       (res) => {
 
         this.delay=  res.delayIntervalInSeconds ;

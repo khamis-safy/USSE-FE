@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment as env } from '@env/environment.development';
+import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Campaigns, compaignDetails } from './campaigns';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -12,6 +12,8 @@ export interface DevicesPermissions{deviceId:string,value:string}
   providedIn: 'root'
 })
 export class CompaignsService  {
+  private api: string = environment.api;
+
   display:number=10;
   pageNum:number=0;
   email:string=this.authService.getUserInfo()?.email;
@@ -105,10 +107,10 @@ getPermissionsFromRoute(): { name: string, value: string }[] | undefined {
   }
 }
 getCampaigns(email:string,showsNum:number,pageNum:number,search:string,deviceId:string):Observable<compaignDetails[]>{
-  return this.http.get<compaignDetails[]>(`${env.api}Message/listCampaigns?email=${email}&take=${showsNum}&scroll=${pageNum}&search=${search}&deviceId=${deviceId}`)
+  return this.http.get<compaignDetails[]>(`${this.api}Message/listCampaigns?email=${email}&take=${showsNum}&scroll=${pageNum}&search=${search}&deviceId=${deviceId}`)
 }
 compaignsCount(email:string,deviceId:string):Observable<number>{
-  return this.http.get<number>(`${env.api}Message/listCampaignsCount?email=${email}&deviceId=${deviceId}`)
+  return this.http.get<number>(`${this.api}Message/listCampaignsCount?email=${email}&deviceId=${deviceId}`)
 }
 // addMewCampain(
 //   campaignName: string,
@@ -142,19 +144,19 @@ compaignsCount(email:string,deviceId:string):Observable<number>{
 //     msgBody: msgBody,
 //     deviceId: deviceId
 //   }
-//   return this.http.post<any>(`${env.api}Message/createWhatsappBusinessCampaign?email=${email}`,data)
+//   return this.http.post<any>(`${this.api}Message/createWhatsappBusinessCampaign?email=${email}`,data)
 // }
 addMewCampain(data:any):Observable<any>{
-  return this.http.post<any>(`${env.api}Message/createWhatsappBusinessCampaign?email=${data.email}`,data)
+  return this.http.post<any>(`${this.api}Message/createWhatsappBusinessCampaign?email=${data.email}`,data)
 }
 stopWhatsappBusinessCampaign(id:string,email:string):Observable<any>{
-  return this.http.put<any>(`${env.api}Message/stopWhatsappBusinessCampaign?id=${id}&email=${email}`,'')
+  return this.http.put<any>(`${this.api}Message/stopWhatsappBusinessCampaign?id=${id}&email=${email}`,'')
 }
 getCampaignById(id:string):Observable<compaignDetails>{
-  return this.http.get<compaignDetails>(`${env.api}Message/getCampaignById?id=${id}`);
+  return this.http.get<compaignDetails>(`${this.api}Message/getCampaignById?id=${id}`);
 }
 
 deleteWhatsappBusinessCampaign(id:string,email:string):Observable<any>{
-  return this.http.put<any>(`${env.api}Message/deleteWhatsappBusinessCampaign?id=${id}&email=${email}`,'')
+  return this.http.put<any>(`${this.api}Message/deleteWhatsappBusinessCampaign?id=${id}&email=${email}`,'')
 }
 }

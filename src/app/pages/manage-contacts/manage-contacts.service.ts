@@ -1,17 +1,18 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment as env } from '@env/environment.development';
 import { Observable } from 'rxjs';
 import { ErrSucc, ListData } from './list-data';
 import { Contacts } from './contacts';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PermissionData } from '../users/users';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ManageContactsService {
   listName:string="";
+  private api: string = environment.api;
 
     display:number=10;
     pageNum:number=0;
@@ -36,7 +37,7 @@ addList(name:string,email:string): Observable<ListData>{
     name:name,
     email:email
   }
-  return this.http.post<ListData>(`${env.api}Contacts/addNewList`,data)
+  return this.http.post<ListData>(`${this.api}Contacts/addNewList`,data)
 }
 
 updateList(id:string,name:string,email:string): Observable<ListData>{
@@ -45,32 +46,32 @@ const data ={
     name:name,
     email:email
   }
-  return this.http.put<ListData>(`${env.api}Contacts/updateList`,data)
+  return this.http.put<ListData>(`${this.api}Contacts/updateList`,data)
 }
 
 deleteList(email:string,listArr:string[]): Observable<ErrSucc>{
-  return this.http.put<ErrSucc>(`${env.api}Contacts/deleteList?email=${email}`,listArr)
+  return this.http.put<ErrSucc>(`${this.api}Contacts/deleteList?email=${email}`,listArr)
 }
 getList(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<ListData[]>{
-  return this.http.get<ListData[]>(`${env.api}Contacts/listLists?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+  return this.http.get<ListData[]>(`${this.api}Contacts/listLists?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }
 ListsCount(email:string):Observable<number>{
-  return this.http.get<number>(`${env.api}Contacts/listListsCount?email=${email}`)
+  return this.http.get<number>(`${this.api}Contacts/listListsCount?email=${email}`)
 }
 
 
 getListById(listId:string): Observable<ListData>{
 
-    return this.http.get<ListData>(`${env.api}Contacts/getListById?id=${listId}`)
+    return this.http.get<ListData>(`${this.api}Contacts/getListById?id=${listId}`)
   }
 
 // contacts methods
 getContacts(email:string,isCanceled:boolean,showsNum:number,pageNum:number,orderedBy:string,search:string,listId?:string):Observable<Contacts[]>{
-  return this.http.get<Contacts[]>(`${env.api}Contacts/listContacts?email=${email}&listId=${listId}&isCanceled=${isCanceled}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+  return this.http.get<Contacts[]>(`${this.api}Contacts/listContacts?email=${email}&listId=${listId}&isCanceled=${isCanceled}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }
 
 getNonListContacts(email:string,isCanceled:boolean,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Contacts[]>{
-  return this.http.get<Contacts[]>(`${env.api}Contacts/listContactsWithNoLists?email=${email}&isCanceled=${isCanceled}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+  return this.http.get<Contacts[]>(`${this.api}Contacts/listContactsWithNoLists?email=${email}&isCanceled=${isCanceled}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }
 
 addContact(name:string,mobileNumber:string,companyName:string,note:string,email:string,listId:string[],additionalContactParameters?:{name:string,value:string}[]):Observable<Contacts>{
@@ -91,17 +92,17 @@ addContact(name:string,mobileNumber:string,companyName:string,note:string,email:
     listId:listId,
   }
 
-  return this.http.post<Contacts>(`${env.api}Contacts/addNewContact`,data)
+  return this.http.post<Contacts>(`${this.api}Contacts/addNewContact`,data)
 }
 
 updateContact(data):Observable<any>{
 
-  return this.http.put(`${env.api}Contacts/updateContact`,data)
+  return this.http.put(`${this.api}Contacts/updateContact`,data)
 }
 
 
 deleteContact(email:string,listIDs:string[]): Observable<ErrSucc>{
-  return this.http.put<ErrSucc>(`${env.api}Contacts/deleteContact?email=${email}`,listIDs)
+  return this.http.put<ErrSucc>(`${this.api}Contacts/deleteContact?email=${email}`,listIDs)
 }
 
 removeContactsFromOneList(contactsId:string[],listId:string[],email:string): Observable<ErrSucc>{
@@ -110,7 +111,7 @@ removeContactsFromOneList(contactsId:string[],listId:string[],email:string): Obs
     newListId:listId,
     email:email
   }
-    return this.http.put<ErrSucc>(`${env.api}Contacts/removeContactsFromOneList`,data)
+    return this.http.put<ErrSucc>(`${this.api}Contacts/removeContactsFromOneList`,data)
 
 }
 removeContactsFromLists(id:string[],email:string): Observable<ErrSucc>{
@@ -118,7 +119,7 @@ removeContactsFromLists(id:string[],email:string): Observable<ErrSucc>{
     id:id,
     email:email
   }
-  return this.http.put<ErrSucc>(`${env.api}Contacts/removeContactsFromLists`,data)
+  return this.http.put<ErrSucc>(`${this.api}Contacts/removeContactsFromLists`,data)
 }
 addOrMoveContacts(ids:string[],newListIds:string[],email:string): Observable<ErrSucc>{
   const data ={
@@ -126,25 +127,25 @@ addOrMoveContacts(ids:string[],newListIds:string[],email:string): Observable<Err
   newListId:newListIds,
   email:email
 }
-return this.http.put<ErrSucc>(`${env.api}Contacts/addOrMoveContactsFromLists`,data)
+return this.http.put<ErrSucc>(`${this.api}Contacts/addOrMoveContactsFromLists`,data)
 }
 contactsCount(email:string,isCanceled:boolean):Observable<number>{
-  return this.http.get<number>(`${env.api}Contacts/listContactsCount?email=${email}&isCanceled=${isCanceled}`)
+  return this.http.get<number>(`${this.api}Contacts/listContactsCount?email=${email}&isCanceled=${isCanceled}`)
 }
 unDeleteList(email:string,ids:string[]):Observable<ErrSucc>{
-  return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteList?email=${email}`,ids)
+  return this.http.put<ErrSucc>(`${this.api}Contacts/unDeleteList?email=${email}`,ids)
 }
 unDeleteContact(email:string,ids:string[]):Observable<ErrSucc>{
-  return this.http.put<ErrSucc>(`${env.api}Contacts/unDeleteContact?email=${email}`,ids)
+  return this.http.put<ErrSucc>(`${this.api}Contacts/unDeleteContact?email=${email}`,ids)
 }
 exportSelectedContacts(data): Observable<Blob> {
-  const url = `${env.api}Contacts/exportSelectedContacts`;
+  const url = `${this.api}Contacts/exportSelectedContacts`;
 
   // Make the HTTP request and set responseType to 'blob' to expect a binary response
   return this.http.post(url, data, { responseType: 'blob' });
 }
 exportAllContacts():Observable<Blob> {
-  const url = `${env.api}Contacts/exportAllContacts`;
+  const url = `${this.api}Contacts/exportAllContacts`;
   const params = new HttpParams().set('email', this.email);
 
   return this.http.post(url, {}, { responseType: 'blob', params });
@@ -156,7 +157,7 @@ exportContactsInList(listId: string): Observable<Blob> {
     .set('listId', listId)
     .set('email', this.email);
 
-  const url = `${env.api}Contacts/exportContactsInList`;
+  const url = `${this.api}Contacts/exportContactsInList`;
 
   // Set responseType to 'blob' to expect a binary response
   return this.http.post(url, null, {
@@ -166,7 +167,7 @@ exportContactsInList(listId: string): Observable<Blob> {
 }
 
 importFile(data):Observable<any>{
-  return this.http.post<any>(`${env.api}Contacts/importFile`,data)
+  return this.http.post<any>(`${this.api}Contacts/importFile`,data)
 
 }
 
