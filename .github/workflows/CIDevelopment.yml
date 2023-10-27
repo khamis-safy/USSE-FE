@@ -1,4 +1,4 @@
-name: CIProduction
+name: CIDevelopment
 
 # Controls when the workflow will run
 on:
