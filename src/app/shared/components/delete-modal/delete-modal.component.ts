@@ -13,6 +13,7 @@ import { compaignDetails } from 'src/app/pages/compaigns/campaigns';
 import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from 'src/app/pages/users/users.service';
+import { AuthService } from '../../services/auth.service';
 
 interface ComponentData {
   contactsData?: { contacts: Contacts[], remove: boolean },
@@ -58,6 +59,7 @@ export class DeleteModalComponent implements OnInit {
     private toaster: ToasterServices,
     private compaignsService: CompaignsService,
     private usersService:UsersService,
+    private authService:AuthService,
     public dialogRef: MatDialogRef<DeleteModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ComponentData,
     private translate:TranslateService,
@@ -171,7 +173,7 @@ export class DeleteModalComponent implements OnInit {
 
   deleteCon() {
 
-    this.listService.deleteContact(this.listService.email, this.body).subscribe(
+    this.listService.deleteContact(this.authService.getUserInfo()?.email, this.body).subscribe(
       (res) => {
         this.isLoading = false
 
@@ -201,7 +203,7 @@ export class DeleteModalComponent implements OnInit {
   // this.translate.instant("COMMON.SUCC_MSG")
 
   removeLists() {
-    this.listService.removeContactsFromLists(this.body,this.listService.email).subscribe(
+    this.listService.removeContactsFromLists(this.body,this.authService.getUserInfo()?.email).subscribe(
       (res) => {
         this.isLoading = false
         this.onClose(this.body);
@@ -232,7 +234,7 @@ export class DeleteModalComponent implements OnInit {
 
 
   deleteDevice() {
-    this.devicesService.deleteDevice(this.devicesService.email, this.data.deviceData.deviceId).subscribe(
+    this.devicesService.deleteDevice(this.authService.getUserInfo()?.email, this.data.deviceData.deviceId).subscribe(
       (res) => {
         this.isLoading = false
 
@@ -253,7 +255,7 @@ export class DeleteModalComponent implements OnInit {
 
 
   deleteCompaign() {
-    this.compaignsService.deleteWhatsappBusinessCampaign(this.data.compaignData.compaignId, this.compaignsService.email).subscribe(
+    this.compaignsService.deleteWhatsappBusinessCampaign(this.data.compaignData.compaignId, this.authService.getUserInfo()?.email).subscribe(
       (res) => {
         this.isLoading = false
 
@@ -276,7 +278,7 @@ export class DeleteModalComponent implements OnInit {
 
   }
   stopComaign() {
-    this.compaignsService.stopWhatsappBusinessCampaign(this.data.compaignData.compaignId, this.compaignsService.email).subscribe(
+    this.compaignsService.stopWhatsappBusinessCampaign(this.data.compaignData.compaignId, this.authService.getUserInfo()?.email).subscribe(
       (res) => {
         this.isLoading = false
 
@@ -299,7 +301,7 @@ export class DeleteModalComponent implements OnInit {
 
 
   deleteTemplates() {
-    this.templatesService.deleteTemplates(this.templatesService.email, this.data.templatesData.templatesId).subscribe(
+    this.templatesService.deleteTemplates(this.authService.getUserInfo()?.email, this.data.templatesData.templatesId).subscribe(
       (res) => {
         this.isLoading = false
 
@@ -323,7 +325,7 @@ export class DeleteModalComponent implements OnInit {
   deleteList() {
     this.isLoading = true
     let body = this.data.listsData.lists.map(res => res.id)
-    this.listService.deleteList(this.listService.email, body).subscribe(
+    this.listService.deleteList(this.authService.getUserInfo()?.email, body).subscribe(
       (res) => {
         this.isLoading = false
         this.onClose(body);
@@ -350,7 +352,7 @@ export class DeleteModalComponent implements OnInit {
     )
   }
   removeContacts() {
-    this.listService.removeContactsFromOneList(this.contacts, this.list,this.listService.email).subscribe(
+    this.listService.removeContactsFromOneList(this.contacts, this.list,this.authService.getUserInfo()?.email).subscribe(
       (res) => {
         this.isLoading = false
         this.onClose(true);

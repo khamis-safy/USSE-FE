@@ -12,11 +12,12 @@ import { ToasterServices } from '../shared/components/us-toaster/us-toaster.comp
 import { TranslateService } from '@ngx-translate/core';
 import { TranslationService } from '../shared/services/translation.service';
 import { TRANSLATE_SERVICE } from '../shared/shared.module';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ErrorInterceptorService implements HttpInterceptor {
 
-  constructor(private toaster: ToasterServices,@Inject(TRANSLATE_SERVICE) private translate: TranslateService) {}
+  constructor(private router: Router,private toaster: ToasterServices,@Inject(TRANSLATE_SERVICE) private translate: TranslateService) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -32,8 +33,9 @@ export class ErrorInterceptorService implements HttpInterceptor {
             const expirationDate = new Date('2000-01-01'); // Set expiration date to a past date
             const removedCookie = "refreshToken" + '=; expires=' + expirationDate.toUTCString() + '; path=/';
             document.cookie = removedCookie;
+            location.reload();
           }
-          if(error.status!=200){
+          if(error.status!=200 && error.status!=401){
 
             console.error('HTTP error:', error);
   

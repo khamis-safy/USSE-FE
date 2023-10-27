@@ -33,6 +33,7 @@
           <div class="col-md-12 mb-4 special-input info-input">
             <us-input
               class="my-3"
+              [key]="'userName'"
               [label]="'Username' | translate"
               [type]="'text'"
               [placeholder]="'Enter your name' | translate"
@@ -46,6 +47,7 @@
           <div class="col-md-12 mb-4 special-input info-input">
             <us-input
               class="my-3"
+              [key]="'userEmail'"
               [label]="'Email' | translate"
               [type]="'email'"
               [placeholder]="'Enter your email' | translate"
@@ -61,6 +63,7 @@
               class="my-2"
               [label]="'Password' | translate"
               [type]="'password'"
+              [key]="'userpass'"
               [placeholder]="'Enter your password' | translate"
               formControlName="password"
               [error]="password.touched && password.errors?.required"
@@ -81,6 +84,7 @@
               class="my-2"
               [label]="'Confirm Password' | translate"
               [type]="'password'"
+              [key]="'passConfirm'"
               [placeholder]="'Enter your password' | translate"
               formControlName="confirm"
               [error]="confirm.touched && (confirm.errors?.required || confirm.touched && confirm.value != password.value)"

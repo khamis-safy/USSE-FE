@@ -16,6 +16,7 @@ import { AddContactComponent } from '../../../../contacts/addContact/addContact.
 import { ContactsComponent } from '../../../../contacts/contacts.component';
 import { TotalContacts } from '../../totalContacts';
 import { LISTDETAILSHEADERS } from 'src/app/pages/manage-contacts/constants/constants';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
 selector: 'app-list-contacts',
@@ -53,7 +54,9 @@ selection = new SelectionModel<any>(true, []);
 constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
   private toaster: ToasterServices,
   private listService:ManageContactsService,
-  private snackBar: MatSnackBar,) {
+  private snackBar: MatSnackBar,    private authService:AuthService,
+  ) {
+    
   activeRoute.paramMap.subscribe((data)=>
   {
   this.listId=data.get('id')
@@ -80,7 +83,7 @@ getContacts(){
 
   let shows=this.listService.display;
     let pageNum=this.listService.pageNum;
-    let email=this.listService.email;
+    let email=this.authService.getUserInfo()?.email;
     let orderedBy=this.listService.orderedBy;
     let search=this.listService.search;
     this.loading = true;

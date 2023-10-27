@@ -99,7 +99,7 @@ unsubscribe$ = new Subject<void>();
         setInterval(() => {
           this.refreshToken();
         }, 60 * 60 * 1000); // 1 hour in milliseconds
-
+        this.getBackEndVerison()
         this.router.navigateByUrl('devices')
 
 
@@ -174,6 +174,10 @@ unsubscribe$ = new Subject<void>();
       this.emailSubscription.unsubscribe();
     }}
 
-    
+    getBackEndVerison(){
+      this.authService.getBackEndVersion().subscribe(
+        (res)=>localStorage.setItem("version",res)
+      )
+    }
 }
 

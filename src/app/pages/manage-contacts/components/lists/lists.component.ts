@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { LISTHEADERS } from '../../constants/constants';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-lists',
@@ -49,6 +50,7 @@ subscribtions:Subscription[]=[];
     private listService:ManageContactsService,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
+    private authService:AuthService,
     private router:Router) {
   }
 
@@ -78,7 +80,7 @@ subscribtions:Subscription[]=[];
   ngAfterViewInit() {
   }
 getListsCount(){
-  let email=this.listService.email;
+  let email=this.authService.getUserInfo()?.email;
 
  let sub1= this.listService.ListsCount(email).subscribe(
     (res)=>{
@@ -105,7 +107,7 @@ getListData(){
 
   let shows=this.listService.display;
   let pageNum=this.listService.pageNum;
-  let email=this.listService.email;
+  let email=this.authService.getUserInfo()?.email;
   let orderedBy=this.listService.orderedBy;
   let search=this.listService.search;
 
@@ -161,7 +163,7 @@ getListData(){
     })
   }
   undoDelete(){
-    let email=this.listService.email;
+    let email=this.authService.getUserInfo()?.email;
     this.listService.unDeleteList(email,this.deletedLists).subscribe(
       (res)=>{
 

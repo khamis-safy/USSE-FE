@@ -7,8 +7,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment as env } from '@env/environment.development';
 import { PermissionsService } from './permissions.service';
-import { LocalStorageService } from './localStorage.service';
 import { PluginsService } from 'src/app/services/plugins.service';
+import { LocalStorageService } from './localStorage.service';
 interface DeviceData {
   id: string,
   deviceName: string,
@@ -297,5 +297,9 @@ devicesPermissions(permissions:PermissionData[],name:string){
     return this.http.put<any>(`${env.api}Auth/editProfile`,data)
   }
 
+ getBackEndVersion()
+ :Observable<string>{
+  return this.http.get<string>(`${env.api}Auth/getVersion`)
+}
 
   }

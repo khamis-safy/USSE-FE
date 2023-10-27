@@ -93,7 +93,7 @@ this.getDevices();
 
  // get devices data
  getDevices(){
-  this.authService.getDevices(this.compaignsService.email,10,0,"","").subscribe(
+  this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
     (res)=>{
       let alldevices=res;
 
@@ -172,7 +172,7 @@ this.getCompaigns(this.deviceId);
 
     let shows=this.compaignsService.display;
     let pageNum=this.compaignsService.pageNum;
-    let email=this.compaignsService.email;
+    let email=this.authService.getUserInfo()?.email;
     let search=this.compaignsService.search;
     this.loading = true;
     this.compaignsService.getCampaigns(email,shows,pageNum,search,deviceId).subscribe(
@@ -204,7 +204,7 @@ this.getCompaigns(this.deviceId);
     )
   }
 compaignsCount(deviceId){
-  let email=this.compaignsService.email;
+  let email=this.authService.getUserInfo()?.email;
   this.compaignsService.compaignsCount(email,deviceId).subscribe(
     (res)=>{
       this.length=res;

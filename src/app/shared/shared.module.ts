@@ -99,7 +99,8 @@ export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE
     DeleteModalComponent,
     WriteMessageComponent,
     ClickOutsideDirective,
-    ConfirmLogOutComponent
+    ConfirmLogOutComponent,
+    
   ],
   exports:[
     SideBarComponent,

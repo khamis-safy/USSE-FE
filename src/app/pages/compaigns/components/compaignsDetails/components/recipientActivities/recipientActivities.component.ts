@@ -6,6 +6,7 @@ import { CompainMessages, compaignDetails } from 'src/app/pages/compaigns/campai
 import { FormControl } from '@angular/forms';
 import { CompaignsDetailsService } from '../../compaignsDetails.service';
 import { RECEPEINTHEADERS } from 'src/app/pages/compaigns/constants/contstants';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 
@@ -26,7 +27,8 @@ export class RecipientActivitiesComponent implements OnInit, AfterViewInit,OnDes
 
   @Input() compaign!:compaignDetails;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private compaignDetailsService:CompaignsDetailsService) {}
+  constructor(private compaignDetailsService:CompaignsDetailsService,
+    private authService:AuthService) {}
   ngOnInit() {
     this.columns=new FormControl(this.displayedColumns)
 
@@ -38,7 +40,7 @@ export class RecipientActivitiesComponent implements OnInit, AfterViewInit,OnDes
     this.getComMessagesCount();
   let shows=this.compaignDetailsService.display;
   let pageNum=this.compaignDetailsService.pageNum;
-  let email=this.compaignDetailsService.email;
+  let email=this.authService.getUserInfo()?.email;
 
 
   this.loading = true;

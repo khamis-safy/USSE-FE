@@ -5,6 +5,7 @@ import { WriteMessageComponent } from 'src/app/pages/messages/Components/new-mes
 import { StepThreeComponent } from './stepThree/stepThree.component';
 import { StepFourComponent } from './stepFour/stepFour.component';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 // import { WriteMessageComponent } from 'src/app/pages/messages/Components/new-message/write-message/write-message.component';
 @Component({
   selector: 'app-addCompaigns',
@@ -41,7 +42,7 @@ export class AddCompaignsComponent implements OnInit {
 step2:boolean=false;
 step3:boolean=false;
 step4:boolean=false;
-  constructor(private compaignsService:CompaignsService,private toasterService:ToasterServices){
+  constructor(private compaignsService:CompaignsService,private toasterService:ToasterServices,private authService:AuthService){
   }
   ngOnInit() {
 
@@ -109,7 +110,7 @@ if(this.attachments.length==0){
     sendingoutTo: this.blackoutTo,
     maxPerDay: this.maxPerDay,
     lists: this.lists,
-    email: this.compaignsService.email,
+    email: this.authService.getUserInfo()?.email,
     msgBody: this.message,
     deviceId: this.deviceId,
     isInterval: this.isInterval
@@ -129,7 +130,7 @@ data={
   maxPerDay: this.maxPerDay,
   attachments: this.attachments,
   lists: this.lists,
-  email: this.compaignsService.email,
+  email: this.authService.getUserInfo()?.email,
   msgBody: this.message,
   deviceId: this.deviceId,
   isInterval: this.isInterval
