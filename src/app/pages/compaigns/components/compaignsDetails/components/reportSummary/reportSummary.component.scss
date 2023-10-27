@@ -1,0 +1,22 @@
+.summary-icon{
+    img{
+        width: 78px;
+    }
+}
+.summary-state{
+    height: 170px 
+}
+@media(max-width:1700px){
+    .summary-icon{
+        img{
+            width: 60px !important;
+        }
+    }
+    .summary-state{
+        padding: 10px 14px!important;
+        height: 142px !important;
+    }
+    h4.total-delevired {
+        font-size: 24px !important;
+    }
+}

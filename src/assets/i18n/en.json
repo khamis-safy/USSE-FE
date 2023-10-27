@@ -131,7 +131,7 @@
 "EDIT": "Edit",
 "NO_DATA": "No data to show",
 "FIELDS_IN_FILE": "Fields in File",
-"FIELDS_IN_WIZPULSE": "Fields in WizPulse",
+"FIELDS_IN_WIZPULSE": "Fields in Qweira",
 "COLUMN_NAME": "Column Name",
 "SAME_AS_FILE": "Same as file",
 "CHOOSE_AN_OPTION": "Choose an option",
@@ -275,7 +275,7 @@
 "Templates": "Templates",
 "Select Templates": "Select Templates",
 "Enter Your Message...": "Enter Your Message...",
-"Message Contacts": "Message Contacts",
+"Message": "Message content",
 "Attachments": "Attachments",
 "COMMON":  {
 "ERR_MSG": "There is something wrong, please contact us.",
@@ -468,7 +468,10 @@
 "Sent":"Sent",
 "Delivered":"Delivered",
 "EXIST_NAME":"field name already exist",
-"CONFIRM_LOGOUT_MSG":"are you sure you want to log out?"
+"CONFIRM_LOGOUT_MSG":"are you sure you want to log out?",
+"versions":"Versions",
+"contacts have no lists":"contacts have no lists",
+"open":"open"
 
 
 

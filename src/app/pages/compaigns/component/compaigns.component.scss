@@ -97,3 +97,13 @@ span{
   scroll-behavior: smooth;
 }
 
+@media (max-width: 1700px) { 
+  .headding-container{
+    margin-bottom: 10px !important;
+}
+
+  .d-flex.align-items-between.flex-column.justify-content-between.ng-star-inserted {
+    gap: 20px !important;
+}
+
+}

@@ -66,3 +66,13 @@ button{
     height: fit-content;
   }
 }
+@media (max-width: 1700px)
+{
+span.btn-label.mx-1 {
+  font-size: 11px !important;
+}
+button.button-size-md[_ngcontent-lpr-c149] {
+  min-width: 114px !important;
+  min-height: 35px !important;
+}
+}

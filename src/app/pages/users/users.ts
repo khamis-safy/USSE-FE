@@ -39,16 +39,24 @@ export interface Users  {
   twoFactorEnabled: boolean,
   lockoutEnd: string,
   lockoutEnabled: boolean,
-  accessFailedCount: number
+  accessFailedCount: number,
+  token:string,
+  roles:string
+
 }
 
 export interface UserData{
   email:string,
-  organizationName:string,
+  organisationName:string,
   id:string,
   refreshToken:string,
   userName:string,
-  customerId:string
+  customerId:string;
+  roles:string,
+  maskType:string;
+  phoneNumber:string;
+  apiToken:string,
+  timezone:string,
 }
 
 export interface Section{

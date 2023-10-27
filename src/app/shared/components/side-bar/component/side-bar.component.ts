@@ -16,11 +16,11 @@ import { ConfirmLogOutComponent } from '../components/confirmLogOut/confirmLogOu
 })
 
 export class SideBarComponent implements OnInit {
-  userName:string=this.authService.getUserInfo().userName;
+  userName:string=this.authService.getUserInfo()?.userName;
   chars:string=this.userName?.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
   frontVersion:string='V 2.8.1 ';
   backVersion:string='V 1.80';
-  role:string=this.authService.getUserInfo().roles
+  role:string=localStorage.getItem("role")
   show:boolean=false;
   listsArr:SelectOption[]
   displaySetting:boolean=false;
@@ -31,12 +31,12 @@ export class SideBarComponent implements OnInit {
      private authService:AuthService,
      private permissionService:PermissionsService) {}
   ngOnInit(): void {
-    if(this.authService.userInfo.customerId!=""){
+    if(this.authService.getUserInfo()?.customerId!=""){
       this.isUser=true;
       this.authService.getUserDataObservable().subscribe(permissions => {
         this.permissions=this.permissionService.executePermissions(permissions);
       })
-      // let email=this.authService.userInfo.email;
+      // let email=this.authService.getUserInfo()?.email;
       // this.getUserPermisisons(email);
     }
     else{
@@ -75,7 +75,7 @@ this.permissions={
     dialogConfig.disableClose = true;
     const dialogRef = this.dialog.open(SettingComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-     this.userName=localStorage.getItem("userName")
+     this.userName=this.authService.getUserInfo()?.userName
      this.chars=this.userName?.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
     });
   }
@@ -87,7 +87,7 @@ this.permissions={
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
    
     const dialogRef = this.dialog.open(ConfirmLogOutComponent,dialogConfig);
    

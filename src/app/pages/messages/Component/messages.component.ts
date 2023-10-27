@@ -77,7 +77,7 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
   }
   ngOnInit() {
     let permission =this.messageService.messageasPermission
-    let customerId=this.authService.userInfo.customerId;
+    let customerId=this.authService.getUserInfo()?.customerId;
 
 
   }
@@ -91,7 +91,7 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.data =
     {
       messagesData:{messages:this.isChecked}
@@ -113,12 +113,19 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
 
     this.selectedTab = this.tabs[ev.index]
     this.updateQueryParams();
-
+    this.messageService.display=10;
+    this.messageService.pageNum=0;
+    this.messageService.orderedBy='';
+    this.messageService.search='';
   }
   openNewMessage(){
     this.isMessages=false;
   }
   ngOnDestroy(): void {
-    this.routingObservable.unsubscribe()
+    this.routingObservable.unsubscribe();
+    this.messageService.display=10;
+    this.messageService.pageNum=0;
+    this.messageService.orderedBy='';
+    this.messageService.search='';
   }
 }

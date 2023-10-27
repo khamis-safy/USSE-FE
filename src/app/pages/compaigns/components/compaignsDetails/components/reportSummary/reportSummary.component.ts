@@ -26,10 +26,8 @@ getStatics(){
   this.compaignDetailsService.getCampaignStat(this.compaignId,this.compaignDetailsService.email).subscribe(
     (res)=>{
       this.statics=res
-      console.log(res)
     },
     (err)=>{
-      console.log(err)
     }
   )
 }

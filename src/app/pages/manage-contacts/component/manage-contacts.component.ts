@@ -86,7 +86,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit,OnDestroy{
 
   ngOnInit() {
     let permission =this.listService.contactsPermissions
-    let customerId=this.authService.userInfo.customerId;
+    let customerId=this.authService.getUserInfo()?.customerId;
 
 if(permission){
   if(permission.value=="ReadOnly" || permission.value =="None"){
@@ -107,7 +107,7 @@ else{
     dialogConfig.height='85vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.maxHeight='85vh';
     dialogConfig.disableClose = true;
 
@@ -123,11 +123,10 @@ else{
   }
   openAddContactModal(){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='80vh';
+    dialogConfig.height='88vh';
     dialogConfig.width='45vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
-    dialogConfig.maxHeight='85vh';
+    dialogConfig.minWidth='465px';
     dialogConfig.disableClose = true;
 
     const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
@@ -155,7 +154,7 @@ else{
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.data = {
       listsData:{lists:this.isDelete}
     };
@@ -179,7 +178,7 @@ else{
     dialogConfig.height='80vh';
     dialogConfig.width='60vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.disableClose = true;
 
 
@@ -201,7 +200,7 @@ else{
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.disableClose = true;
 
     dialogConfig.data =
@@ -232,7 +231,7 @@ else{
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
 
     dialogConfig.disableClose = true;
     dialogConfig.data =
@@ -255,7 +254,7 @@ else{
     dialogConfig.height='70vh';
     dialogConfig.width='40vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.maxHeight='85vh';
     dialogConfig.disableClose = true;
 
@@ -285,40 +284,7 @@ else{
     this.listService.orderedBy='';
     this.listService.search='';
 
-  //   if(this.selectedTab=='contacts'){
-  //     if(this.contacts.length){
-  //           this.contacts.paginator.pageSize=this.listService.display;
-  //           this.contacts.paginator.pageIndex=this.listService.pageNum;
-  //     }
-
-  //     if(this.lists.length){
-  //       this.lists.paginator.pageSize=this.listService.display;
-  //       this.lists.paginator.pageIndex=this.listService.pageNum;
-  //     }
-
-  //   }
-  //   else if(this.selectedTab=='lists'){
-
-  //     if(this.contacts.length){
-  //       this.contacts.paginator.pageSize=this.listService.display;
-  //       this.contacts.paginator.pageIndex=this.listService.pageNum;
-  // }
-  //   }
-  //   else if(this.selectedTab=='cancel'){
-
-
-  //     if(this.contacts.length){
-  //       this.contacts.paginator.pageSize=this.listService.display;
-  //       this.contacts.paginator.pageIndex=this.listService.pageNum;
-  // }
-
-  // if(this.lists.length){
-  //   this.lists.paginator.pageSize=this.listService.display;
-  //   this.lists.paginator.pageIndex=this.listService.pageNum;
-  // }
-
-  //     this.contacts.getContacts();
-  //    }
+ 
   }
   exportAllContacts(){
     this.listService.exportAllContacts().subscribe(
@@ -351,6 +317,10 @@ else{
     )
   }
   ngOnDestroy(): void {
+    this.listService.display=10;
+    this.listService.pageNum=0;
+    this.listService.orderedBy='';
+    this.listService.search='';
     this.routingObservable.unsubscribe()
   }
 }

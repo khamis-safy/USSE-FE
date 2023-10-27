@@ -73,7 +73,6 @@ export class AddTemplateComponent implements OnInit , OnDestroy {
 
   ngOnInit() {
     if (this.data) {
-      console.log(this.data);
       this.isEdit = true;
       this.fillingData();
     } else {
@@ -83,12 +82,11 @@ export class AddTemplateComponent implements OnInit , OnDestroy {
     }
 
       this.emptyMessageAndFilesAndName=(this.form.value.messageBody.trim()=="" && ( this.form.value.templateName.trim()=="" || this.emptyFiles))
-    console.log("condition value",this.emptyMessageAndFilesAndName,"message value",this.form.value.messageBody, "is no files",this.emptyFiles)
+   
 
     this.subscripe= this.form.valueChanges.subscribe(() => {
      
       this.emptyMessageAndFilesAndName=(this.form.value.messageBody.trim()=="" && ( this.form.value.templateName.trim()=="" || this.emptyFiles))
-      console.log("condition value",this.emptyMessageAndFilesAndName,"message value",this.form.value.messageBody, "is no files",this.emptyFiles)
 
     });
   }
@@ -100,7 +98,6 @@ export class AddTemplateComponent implements OnInit , OnDestroy {
     let messageBody = this.form.value.messageBody;
     let attachments = this.fileData.map((file) => file.url);
 
-    console.log('add');
     this.templatesService
       .addTemplate(templateName, messageBody, email, attachments)
       .subscribe(
@@ -124,7 +121,6 @@ export class AddTemplateComponent implements OnInit , OnDestroy {
     let attachments = this.fileData.map((file) => file.url);
     this.isLoading = true;
 
-    console.log(templateName);
     this.templatesService
       .updateTemplate(
         this.data.id,
@@ -186,17 +182,14 @@ export class AddTemplateComponent implements OnInit , OnDestroy {
     this.dialogRef.close(data);
   }
   onFileChange(e){
-    console.log(this.fileData);
     this.emptyFiles=false;
       this.emptyMessageAndFilesAndName=(this.form.value.messageBody.trim()=="" && ( this.form.value.templateName.trim()=="" || this.emptyFiles))
-    console.log("condition value",this.emptyMessageAndFilesAndName)
 
   }
   onFileDelete(e){
 
     this.emptyFiles=this.fileData.length==0? true : false;
       this.emptyMessageAndFilesAndName=(this.form.value.messageBody.trim()=="" && ( this.form.value.templateName.trim()=="" || this.emptyFiles))
-    console.log("condition value",this.emptyMessageAndFilesAndName)
 
   }
 }

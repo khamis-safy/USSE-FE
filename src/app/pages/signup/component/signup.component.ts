@@ -15,7 +15,8 @@ export class SignupComponent implements OnInit ,OnDestroy{
   isVisiblePass =false;
   isLoading = false
   userInfo:any;
-
+  language:string=localStorage.getItem("currentLang")=="ar"?"العربية":"English";
+  currentLang:string;
   form:any;
   contactName:any;
   organisationName:any;
@@ -49,6 +50,11 @@ export class SignupComponent implements OnInit ,OnDestroy{
       }
       )
   }
+  switchLanguage(lang: string) {
+    localStorage.setItem("currentLang",lang);
+    location.reload()
+  
+  }
   initFormControles(){
     this.contactName = new FormControl('',[Validators.required]);
     this.organisationName = new FormControl('');
@@ -81,7 +87,7 @@ export class SignupComponent implements OnInit ,OnDestroy{
 
 
         this.userInfo={userName:res.contactName,
-          organizationName:res.organisationName,
+          organisationName:res.organisationName,
           id:res.id,
           email:res.email,
           token:res.token,
@@ -89,14 +95,14 @@ export class SignupComponent implements OnInit ,OnDestroy{
           apiToken:res.apiToken,
           maskType:res.maskType,
           phoneNumber:res.phoneNumber,
-          timeZone:res.timeZone
+          timeZone:res.timeZone,
+          roles:res.roles[0]
         }
 
 
            // Store the refresh token in a cookie
 
-           localStorage.removeItem("email")
-           localStorage.setItem("email",res.email)
+          
            this.authService.setUserData(this.userInfo,res.refreshToken);
            this.authService.setFromValue("signUp")
 
@@ -111,18 +117,18 @@ export class SignupComponent implements OnInit ,OnDestroy{
   }
 
 
-  refreshToken() {
-    let token=this.loginService.getCookieValue('refreshToken')
-    this.loginService.refreshToken(token).subscribe(
-      (res) => {
-        // Update the refresh token in the cookie
-        this.loginService.storeRefreshTokenInCookie(res.refreshToken);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
+  // refreshToken() {
+  //   let token=this.loginService.getCookieValue('refreshToken')
+  //   this.loginService.refreshToken(token).subscribe(
+  //     (res) => {
+  //       // Update the refresh token in the cookie
+  //       this.loginService.storeRefreshTokenInCookie(res.refreshToken);
+  //     },
+  //     (err) => {
+  //       console.log(err);
+  //     }
+  //   );
+  // }
 
   sendCode(){
     this.loginService.sendEmailCode(this.form.value.email).subscribe(

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
@@ -20,7 +20,7 @@ import { CAMPAIGNSHEADER } from '../constants/contstants';
   templateUrl: './compaigns.component.html',
   styleUrls: ['./compaigns.component.scss']
 })
-export class CompaignsComponent implements AfterViewInit ,OnInit {
+export class CompaignsComponent implements AfterViewInit ,OnInit,OnDestroy {
   isUser:boolean;
   length:number=0;
   loading:boolean=true;
@@ -53,7 +53,7 @@ export class CompaignsComponent implements AfterViewInit ,OnInit {
 
 // get device's messages
 this.permission =this.compaignsService.devicesPermissions;
-if(this.authService.userInfo.customerId!=""){
+if(this.authService.getUserInfo()?.customerId!=""){
   this.isUser=true;
 }
 else{
@@ -152,7 +152,9 @@ this.getDevices();
 
     }},
     (err)=>{
-
+      this.loading = false;
+      this.length=0;
+      this.noData=true;
     }
   )
 }
@@ -194,8 +196,9 @@ this.getCompaigns(this.deviceId);
         this.loading = false;
       },
       (err)=>{
-        this.length=0;
         this.loading = false;
+        this.length=0;
+        this.noData=true;
 
       }
     )
@@ -209,8 +212,9 @@ compaignsCount(deviceId){
     }
     ,(err)=>{
 
-      this.length=0;
       this.loading = false;
+      this.length=0;
+      this.noData=true;
 
     }
   )
@@ -246,7 +250,7 @@ compaignsCount(deviceId){
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.data =
     {
       compaignData:{compaignId:element.id,action:"stop"}
@@ -267,7 +271,7 @@ compaignsCount(deviceId){
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.data =
     {
       compaignData:{compaignId:element.id,action:"delete"}
@@ -284,6 +288,11 @@ compaignsCount(deviceId){
     this.compaignsService.search=event.value;
 
     this.getCompaigns(this.deviceId);
+  }
+  ngOnDestroy(): void {
+    this.compaignsService.display=10;
+    this.compaignsService.pageNum=0;
+    this.compaignsService.search='';
   }
 }
 

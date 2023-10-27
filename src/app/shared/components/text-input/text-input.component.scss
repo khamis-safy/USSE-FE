@@ -66,7 +66,7 @@
   textarea {
     height: 100%;
     width: 100%;
-    padding: 9px 12px 7px;
+    padding: 9px 15px 7px;
     background: transparent;
     line-height: $LH_body;
     font-size: 16px;
@@ -203,4 +203,28 @@ textarea {
     color: $clr_danger_700;
   }
 }
+@media (max-width:992x) {
+.label-widget.text-start.w-100.d-block.d-lg-none.ng-star-inserted {
+  display: flex !important;
+  justify-content: start !important;
+  margin-bottom: 10px !important;
+}}
+@media (max-width: 1700px) {
 
+ 
+  .input-wrapper{
+    height: 35px !important;
+
+   input, textarea
+    {
+    font-size: 12px !important;
+  }
+  }
+  .special-input
+  {
+   
+    .us-input .input-label {
+      min-width: 100px !important;
+  }
+  }
+  }

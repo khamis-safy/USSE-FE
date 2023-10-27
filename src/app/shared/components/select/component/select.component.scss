@@ -143,7 +143,7 @@
       width: calc(100% - 46px);
       padding: 0;
       height: 28px;
-      border: none;
+      border:none;
       outline: none;
       font-size: 16px;
       inset-inline-start: 10px;
@@ -540,4 +540,27 @@
 }
 .icon-arrow{
   color: $clr_neutral_900;
+}
+@media (max-width:992x) {
+.d-block.d-lg-none.label-widget.w-100.ng-tns-c148-71.ng-star-inserted {
+  display: flex !important;
+  justify-content: start !important;
+  margin-bottom: 10px !important;
+}
+}
+@media (max-width: 1700px)
+{
+  
+  .host{
+    .toggler{
+      height: 28px !important;
+      padding: 0 12px !important;
+    }
+    .list_item{
+      padding: 1px 0px !important;
+    }
+  }
+  .input-wrapper:has(textarea) {
+    height: 82px !important;
+}
 }

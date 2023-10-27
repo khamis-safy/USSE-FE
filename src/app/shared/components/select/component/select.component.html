@@ -131,7 +131,7 @@
       </button>
 
       <!-- List -->
-      <ng-container *ngIf="isOpen && enableDropdownWhileSearching && searchText">
+      <ng-container *ngIf="isOpen && !isSearchOnly || (isSearchOnly && isOpen && enableDropdownWhileSearching && searchText)">
         <div  class="overflow" (click)="toggleDropdown()"></div>
         <ul  class="list" [ngClass]="{'custom': isCustom}" #uList>
           <div class="list_content" (scroll)="onScroll($event)">

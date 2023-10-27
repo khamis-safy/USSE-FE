@@ -104,7 +104,7 @@
 "WRONG_CODE": "رمز غير صحيح",
 "RESEND_CODE": "إعادة إرسال الرمز",
 "UPDATE_PHONE_NUMBER": "تحديث رقم هاتفي",
-"MANAGE_CONTACTS": "إدارة الجهات الاتصال",
+"MANAGE_CONTACTS": "إدارة جهات الاتصال",
 "REMOVE_LISTS": "إزالة القوائم",
 "DELETE": "حذف",
 "ADD_TO_LISTS": "إضافة إلى القوائم",
@@ -133,7 +133,7 @@
 "EDIT": "تعديل",
 "NO_DATA": "لا تتوفر بيانات لعرضها",
 "FIELDS_IN_FILE": "حقول في الملف",
-"FIELDS_IN_WIZPULSE": "حقول في ويزبالس",
+"FIELDS_IN_WIZPULSE": "حقول في Qweira",
 "COLUMN_NAME": "اسم العمود",
 "SAME_AS_FILE": "نفس الملف",
 "CHOOSE_AN_OPTION": "اختر خيارًا",
@@ -277,7 +277,7 @@
 "Templates": "القوالب",
 "Select Templates": "حدد القوالب",
 "Enter Your Message...": "أدخل رسالتك...",
-"Message Contacts": "اتصل بالرسائل",
+"Message": "محتوى الرسالة",
 "Attachments": "المرفقات",
 "COMMON":  {
 "ERR_MSG": "هناك خطأ ما، يرجى الاتصال بنا.",
@@ -465,17 +465,10 @@
 "Sent":"ارسلت",
 "Delivered":"تم التوصيل",
 "EXIST_NAME":"اسم الحقل موجود بالفعل",
-"CONFIRM_LOGOUT_MSG":"هل أنت متأكد أنك تريد تسجيل الخروج؟"
-
-
-
-
-
-
-
-
-
-
+"CONFIRM_LOGOUT_MSG":"هل أنت متأكد أنك تريد تسجيل الخروج؟",
+"versions":"الإصدارات",
+"contacts have no lists":"جهات الاتصال لا تحتوي على قوائم",
+"open":"فتح"
 
 
 }

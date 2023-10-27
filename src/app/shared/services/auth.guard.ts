@@ -17,13 +17,16 @@ export class AuthGuard implements CanActivate {
   }
 async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const routeName = route.data['name'];
-    const customerId=localStorage.getItem("customerId");
-      const email =localStorage.getItem("email")
+    if(this.authService.checkExistenceAndValidation()){
+
+      await this.authService.loadUserInfo().then(() => true);
+    }
     if(routeName==="verification"){
       if(this.authService.getFromValue()){
         return true
       }
       else{
+        this.authService.clearUserInfo();
         this.router.navigate(['login'])
 
         return false
@@ -35,6 +38,7 @@ async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
       }
       else{
+        this.authService.clearUserInfo();
         this.router.navigate(['login'])
         return false
 
@@ -42,21 +46,35 @@ async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     }
     else{
 
+      
+      if(this.authService.isLoggedIn()){
+        const customerId=this.authService.getUserInfo()?.customerId;
+        const email =this.authService.getUserInfo()?.email;
+        if(customerId){
 
-      if(customerId){
-
-        if(customerId!="" && this.authService.isLoggedIn()){
-
-          this.authService.setUserDataObservable(this.permissionService.getUserByEmail(email));
-          await this.authService.hasPermission(routeName).then((__values)=>this.isAllowed=__values)
+          if(customerId!="" ){
+  
+            this.authService.setUserDataObservable(this.permissionService.getUserByEmail(email));
+            await this.authService.hasPermission(routeName).then((__values)=>this.isAllowed=__values)
+          }
+        }
+        if( this.isAllowed )
+        {
+          return true;
+        }
+        else if(!this.isAllowed)
+        {
+          this.router.navigate(['messages'])
+          return false;
+        }
+        else{
+          this.authService.clearUserInfo();
+          this.router.navigate(['login'])
+          return false;
         }
       }
-      if(this.authService.isLoggedIn() && this.isAllowed )
-      {
-        console.log("from guard",this.isAllowed)
-        return true;
-      }
       else{
+        this.authService.clearUserInfo();
         this.router.navigate(['login'])
         return false;
       }

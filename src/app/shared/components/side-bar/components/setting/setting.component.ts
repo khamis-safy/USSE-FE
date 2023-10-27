@@ -31,10 +31,10 @@ export class SettingComponent implements OnInit{
   maskValue:any;
   form = new FormGroup({
     contactName:this.contactName,
-    apiToken:this.apiToken,
-    mobile:this.mobile,
-    organisationName:this.organisationName,
-    maskType:this.maskType,
+    apiToken:this.apiToken,//from request
+    mobile:this.mobile,//from request
+    organisationName:this.organisationName,//from request
+    maskType:this.maskType,//from request
     timeZone:this.timeZone,
 
   });
@@ -48,22 +48,24 @@ export class SettingComponent implements OnInit{
     constructor(public dialogRef: MatDialogRef<SettingComponent>,
       private translate:TranslateService,
       private authService:AuthService,
-      private toaster:ToasterServices) {
+      private toaster:ToasterServices,
+      ) {
      this.maskTypeArr=[
       {title:translate.instant('Sender'),value:'S'},
       {title:translate.instant('Receiver'),value:'R'},
       {title:translate.instant('Both'),value:'A'},
       {title:translate.instant('None'),value:'N'}
     ]
-      this.maskValue=this.maskTypeArr.find((res)=>res.value==localStorage.getItem("maskType"));
+    this.maskValue=this.maskTypeArr.find((res)=>res.value==authService.getUserInfo()?.maskType);
     this.timeZoneArr=this.timeZones.map((timezone)=>{return{
       title:`${translate.instant(timezone.title)} `,
       value:timezone.index
     }})
-
+   
      }
   ngOnInit(): void {
-    if(localStorage.getItem("customerId")==""){
+    // this.getUserByEmail()
+    if(this.authService.getUserInfo()?.customerId==""){
       this.isUser=false;
 
     }
@@ -72,27 +74,56 @@ export class SettingComponent implements OnInit{
 
     }
 
-    let phoneNumber = localStorage.getItem('phoneNumber');
+    let phoneNumber = this.authService.getUserInfo()?.phoneNumber;
 
-    let mobileNum = phoneNumber !== "null" && phoneNumber !== "undefined" ? phoneNumber.slice(1) : "";
+    let mobileNum = phoneNumber !== null && phoneNumber !== undefined ? phoneNumber.slice(1) : "";
     this.form.patchValue(
       {
-        contactName:localStorage.getItem('userName'),
+        contactName:this.authService.getUserInfo()?.userName,
         mobile:mobileNum,
-        apiToken:localStorage.getItem('apiToken'),
-        organisationName:localStorage.getItem('organizationName'),
+        apiToken:this.authService.getUserInfo()?.apiToken,
+        organisationName:this.authService.getUserInfo()?.organisationName,
         maskType:{title:this.translate.instant(this.maskValue.title),value:this.maskValue.value},
 
       }
     )
-    let timeZone=localStorage.getItem("timeZone")
-    this.selectedZone=timeZone !== "null" && timeZone !== "undefined"? timeZone:null;
+    let timeZone=this.authService.getUserInfo()?.timezone
+    this.selectedZone=timeZone !== null && timeZone !== undefined? timeZone:null;
     this.form.patchValue({
       timeZone:
       {title:this.translate.instant(this.timeZones.find((time)=>time.value==this.selectedZone).title),
         value:this.timeZones.find((time)=>time.value==this.selectedZone).index}
     })
   }
+
+  // getUserByEmail(){
+  //   this.userService.getUserByEmail(this.authService.getUserInfo()?.email).subscribe(
+  //     (res)=>{
+  //       console.log(res)
+  //       this.maskValue=this.maskTypeArr.find((mask)=>mask.value==res.maskType);
+    
+
+
+  //       let phoneNumber = res.phoneNumber;
+
+  //       let mobileNum = phoneNumber !== null && phoneNumber !== undefined ? phoneNumber.slice(1) : "";
+  //       this.form.patchValue(
+  //         {
+  //           contactName:res.contactName,
+  //           mobile:mobileNum,
+  //           apiToken:res.apiToken,
+  //           organisationName:res.organisationName,
+  //           maskType:{title:this.translate.instant(this.maskValue.title),value:this.maskValue.value},
+    
+  //         }
+  //       )
+  //     },
+  //     (err)=>{
+  //       console.log(err)
+  //     }
+  //   )
+  // }
+
   generateGuid() {
     this.form.patchValue(
       {
@@ -110,7 +141,6 @@ export class SettingComponent implements OnInit{
   }
   copyToClipboard() {
     // Check if the API token is present and not empty
-    console.log(this.apiToken)
     const textToCopy = this.apiToken.value;
     if (!textToCopy) {
       alert('No API token to copy.'+this.form.value);
@@ -138,14 +168,13 @@ export class SettingComponent implements OnInit{
   onSelect(zone){
 
 this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value;
-console.log("selected zone",this.selectedZone)
 
         }
     submitSave() {
       this.loading=true;
       let mobile=this.form.value.mobile? this.form.value.mobile.e164Number:null;
       const data=this.selectedZone?{
-        token: this.authService.getUserInfo().refreshToken,
+        token: this.authService.getRefreshToken(),
         apiToken: this.apiToken.value,
         contactName: this.form.value.contactName,
         organisationName: this.form.value.organisationName,
@@ -153,7 +182,7 @@ console.log("selected zone",this.selectedZone)
         maskType: this.form.value.maskType.value,
         phoneNumber: mobile
       }:{
-        token: this.authService.getUserInfo().refreshToken,
+        token: this.authService.getRefreshToken(),
         apiToken: this.apiToken.value,
         contactName: this.form.value.contactName,
         organisationName: this.form.value.organisationName,
@@ -166,19 +195,28 @@ console.log("selected zone",this.selectedZone)
           this.loading=false;
 
           this.toaster.success(this.translate.instant('COMMON.SUCC_MSG'));
-          this.userInfo={userName:res.contactName,
-            organizationName:res.organisationName,
-            id:res.id,
-            email:res.email,
-            token:localStorage.getItem("token"),
-            customerId:res.customerId,
-            apiToken:res.apiToken,
-            maskType:res.maskType,
-            phoneNumber:res.phoneNumber,
-            timeZone:this.selectedZone
-          }
-      this.authService.saveDataToLocalStorage(this.userInfo);
-      this.authService.updateUserInfo()
+          localStorage.setItem("timeZone",this.selectedZone);
+          this.authService.userInfo.userName=res.contactName
+          this.authService.userInfo.organisationName=res.organisationName
+          this.authService.userInfo.timezone=res.timezone
+          this.authService.userInfo.maskType=res.maskType
+          this.authService.userInfo.phoneNumber=res.phoneNumber
+          this.authService.userInfo.apiToken=res.apiToken
+
+          // this.userInfo={userName:res.contactName,
+          //   organizationName:res.organisationName,
+          //   id:res.id,
+          //   email:res.email,
+          //   token:localStorage.getItem("token"),
+          //   customerId:res.customerId,
+          //   apiToken:res.apiToken,
+          //   maskType:res.maskType,
+          //   phoneNumber:res.phoneNumber,
+          //   timeZone:this.selectedZone
+          // }
+  
+      // this.authService.saveDataToLocalStorage(this.userInfo);
+      // this.authService.updateUserInfo(this.userInfo)
       this.onClose(true);
         },
         (err)=>{

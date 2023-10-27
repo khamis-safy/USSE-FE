@@ -69,7 +69,7 @@ export class ScheduledComponent implements OnInit  {
 
 
       this.permission =this.messageService.devicesPermissions;
-      if(this.authService.userInfo.customerId!=""){
+      if(this.authService.getUserInfo()?.customerId!=""){
         this.isUser=true;
       }
       else{
@@ -97,7 +97,6 @@ export class ScheduledComponent implements OnInit  {
         )
       }
 
-      console.log("devices",alldevices)
       this.devices = alldevices.map(res=>{
         return {
           title:res.deviceName,
@@ -138,7 +137,9 @@ export class ScheduledComponent implements OnInit  {
         this.getMessages(this.deviceId);
     }},
     (err)=>{
-
+      this.loading = false;
+      this.length=0;
+      this.noData=true;
     }
   )
 }
@@ -164,6 +165,7 @@ export class ScheduledComponent implements OnInit  {
         (err)=>{
          this.loading = false;
          this.length=0;
+         this.noData=true;
 
         }
       )
@@ -177,7 +179,9 @@ export class ScheduledComponent implements OnInit  {
           this.length=res;
         }
         ,(err)=>{
+          this.loading = false;
           this.length=0;
+          this.noData=true;
         }
       )
 

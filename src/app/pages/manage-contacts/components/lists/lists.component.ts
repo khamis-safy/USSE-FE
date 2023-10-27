@@ -169,6 +169,7 @@ getListData(){
 
         this.getListData();
         this.deletedLists=[];
+        this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
 
 
       },
@@ -220,7 +221,7 @@ getListData(){
     dialogConfig.height='85vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.maxHeight='85vh';
     dialogConfig.data= data;
     dialogConfig.disableClose = true;

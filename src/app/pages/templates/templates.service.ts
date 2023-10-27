@@ -13,21 +13,19 @@ import { PermissionData } from '../users/users';
 export class TemplatesService {
   showsNum:number=10;
   pageNum:number=0;
-  email:string=this.authService.userInfo.email;
+  email:string=this.authService.getUserInfo()?.email;
   orderedBy:string="";
   search:string="";
   TemplatesPermission:PermissionData;
 
 constructor(private http:HttpClient,private authService:AuthService) {
-  if(authService.userInfo.customerId!=""){
+  if(authService.userInfo?.customerId!=""){
     authService.getUserDataObservable().subscribe(permissions => {
       this.TemplatesPermission=permissions.find((e)=>e.name=="Templates");
-      console.log("devices Templates",this.TemplatesPermission)
     })
    }
    else{
      this.TemplatesPermission={name:"Templates",value:"FullAccess"}
-     console.log(this.TemplatesPermission)
    }
  }
 

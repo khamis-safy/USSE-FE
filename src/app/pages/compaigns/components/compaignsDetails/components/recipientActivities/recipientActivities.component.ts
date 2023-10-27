@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -14,7 +14,7 @@ import { RECEPEINTHEADERS } from 'src/app/pages/compaigns/constants/contstants';
   templateUrl: './recipientActivities.component.html',
   styleUrls: ['./recipientActivities.component.scss']
 })
-export class RecipientActivitiesComponent implements OnInit, AfterViewInit {
+export class RecipientActivitiesComponent implements OnInit, AfterViewInit,OnDestroy {
   columns :FormControl;
   displayed: string[] = RECEPEINTHEADERS;
   displayedColumns: string[] = ['Mobile Number', 'Name', 'Updated At', 'Status'];
@@ -48,7 +48,6 @@ export class RecipientActivitiesComponent implements OnInit, AfterViewInit {
         this.loading = false;
 
     this.dataSource=new MatTableDataSource<CompainMessages>(res);
-    console.log(res)
         },
         (err)=>{
           this.loading = false;
@@ -84,5 +83,8 @@ export class RecipientActivitiesComponent implements OnInit, AfterViewInit {
 
   }
 
-
+  ngOnDestroy(): void {
+    this.compaignDetailsService.display=10;
+    this.compaignDetailsService.pageNum=0;
+  }
 }

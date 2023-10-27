@@ -17,7 +17,6 @@ export class LayoutTwoComponent implements OnInit {
     this.activeSidebar = !this.activeSidebar;
   }
   SidebarToggleHov(sidebar:any){
-    console.log(sidebar)
     sidebar.classList.toggle("close-sidebar")
   }
   prepareRoute(outlet: RouterOutlet) {

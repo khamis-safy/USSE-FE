@@ -67,7 +67,6 @@ export class UsersComponent implements OnInit ,OnDestroy{
       let token=this.userService.token;
 
       this.loading = true;
-console.log("from user component",token)
 
 
       this.userService.listCustomersUsers(token,shows,pageNum,orderedBy,search).subscribe(
@@ -90,7 +89,6 @@ console.log("from user component",token)
 
 
           }
-          console.log(res)
 
         },
         (err)=>{
@@ -210,20 +208,25 @@ console.log("from user component",token)
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.data =
     {
-      users:{userEmail:element.email,customerEmail:this.authService.getUserInfo().email}
+      users:{userEmail:element.email,customerEmail:this.userService.email}
     }
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.openSnackBar(this.authService.getUserInfo().email,element.email)
+        this.openSnackBar(this.userService.email,element.email)
         this.getUsers()
       }
     });
     }
-    ngOnDestroy(){};
+    ngOnDestroy(){
+      this.userService.display=10;
+      this.userService.pageNum=0;
+      this.userService.orderedBy='';
+      this.userService.search='';
+    };
 }
 
 // Messages_(DeviceID) | ReadOnly-FullAccess-None

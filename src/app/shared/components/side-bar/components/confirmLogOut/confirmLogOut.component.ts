@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-confirmLogOut',
@@ -9,22 +10,20 @@ import { Router } from '@angular/router';
 })
 export class ConfirmLogOutComponent implements OnInit {
   isLoading:boolean;
-  constructor(public dialogRef: MatDialogRef<ConfirmLogOutComponent>,private router:Router) { }
+  constructor(public dialogRef: MatDialogRef<ConfirmLogOutComponent>,
+    private router:Router,
+    private authService:AuthService) { }
 
   ngOnInit() {
   }
   submit() {
 this.isLoading=true;
-this.clearLocatStorage();
+this.authService.clearUserInfo()
 this.onClose();
 this.isLoading=false;
 this.router.navigateByUrl("login");
   }
-clearLocatStorage(){
-    let localData=['email','organizationName','id','userName',"token","customerId","apiToken","maskType","phoneNumber","timeZone"]
-    localData.map((key)=>localStorage.removeItem(key))
 
-  }
   onClose(): void {
     this.dialogRef.close();
 }

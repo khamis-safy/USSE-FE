@@ -1,10 +1,10 @@
 <div class="ps-0 bg-primary-100">
   <div class="row">
     <div
-    class=" bg-primary-200  vh-100 col-md-4 p-5 d-flex flex-column justify-content-center align-items-center"      style="box-shadow: 0px 11px 22px 0px #00000029"
+    class="side-form bg-primary-200  vh-100 col-md-4 p-5 d-flex flex-column justify-content-center align-items-center"      style="box-shadow: 0px 11px 22px 0px #00000029"
       style="box-shadow: 0px 11px 22px 0px #00000029"
     >
-    <img src="/assets/images/colored logo_name side.svg" alt="myLogo" style="width:65%" class="mb-5" />
+    <img src="/assets/images/colored logo_name side.svg" alt="myLogo" style="width:60%" class="mb-5" />
     <div class="col-md-12  recover-text mb-3">
       <h2 class="font-800 text-black txt-xxlg">{{'Forgot your password?' |translate}}</h2>
       <p class="txt-lg2 font-300 text-black " style="line-height: 1.5;">{{'Recover_text' |translate}}</p>
@@ -13,7 +13,7 @@
        
         <form [formGroup]="form" class="w-100">
             <!-- email -->
-            <div class="col-md-12 mb-5  ">
+            <div class="col-md-12 mb-5  info-input">
               <us-input
                 [isDisabled]="false"
                 value=""
@@ -34,7 +34,7 @@
               ></us-input>
             </div>
          
-          <div class="w-100 mb-4">
+          <div class="w-100 mb-4 ">
             <us-button class="special-button"
               label="{{ 'Reset password' | translate }}"
               [fill]="true"

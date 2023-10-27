@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { PluginsService } from './services/plugins.service';
 import { AuthService } from './shared/services/auth.service';
@@ -13,7 +13,7 @@ import { LoginService } from './pages/login/login.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit ,OnDestroy {
   title = 'pro2023';
   darkActive:boolean = false;
   currentLang:string;
@@ -33,6 +33,9 @@ export class AppComponent implements OnInit {
     initPaginationService.init();
 
   }
+  ngOnDestroy(): void {
+  }
+
 
   ngOnInit(): void {
 
@@ -42,7 +45,7 @@ export class AppComponent implements OnInit {
 
     // if(localStorage.getItem("customerId")){
 
-    //   if(this.authService.userInfo.customerId!=""){
+    //   if(this.authService.getUserInfo()?.customerId!=""){
     //     this.authService.setUserDataObservable(this.permissionService.getUserByEmail());
     //   }
     // }
@@ -57,6 +60,7 @@ export class AppComponent implements OnInit {
         (res) => {
           // Update the refresh token in the cookie
           this.loginService.storeRefreshTokenInCookie(res.refreshToken);
+          this.authService.setRefreshToken();
         },
         (err) => {
         }

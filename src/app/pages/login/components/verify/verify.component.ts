@@ -48,7 +48,6 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
   ngOnInit(): void {
     this.authService.setAccessToReset(false)
 
-    console.log("from verify",this.authService.getUserData())
   }
 
   ngAfterViewInit(): void {
@@ -78,7 +77,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
 
     }
     this.checkVerificationCode();
-  }
+  } 
   // onDigitInput(event: any, digitIndex: number) {
   //   const nextDigitIndex = digitIndex + 1;
 
@@ -129,31 +128,30 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
       if(from == "login" || from == "signUp"){
         
         // Send verification request using code
-        let token=this.authService.getToken()
+        let token=this.authService.getRefreshToken()
         this.isLoading=true
   
         // const token=localStorage.getItem("token");
         this.verificatioinService.confirmEmail(code,token).subscribe(
           (res)=>{
             this.isLoading=false
-  
+
             this.invalid=false;
   
             // update local storage
             this.authService.saveDataToLocalStorage(this.authService.getUserData());
-            this.authService.updateUserInfo()
+            this.authService.updateUserInfo(this.authService.getUserData())
             this.loginService.storeRefreshTokenInCookie(token);
             setInterval(() => {
               this.refreshToken();
             }, 60 * 60 * 1000); // 1 hour in milliseconds
   
-            this.router.navigateByUrl('messages')
+            this.router.navigateByUrl('devices')
           },
           (err)=>{
             this.isLoading=false
   
             this.invalid=true;
-            console.log(err)
           }
         )
       }
@@ -182,6 +180,8 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
       (res) => {
         // Update the refresh token in the cookie
         this.loginService.storeRefreshTokenInCookie(res.refreshToken);
+        this.authService.setRefreshToken();
+
       },
       (err) => {
       }

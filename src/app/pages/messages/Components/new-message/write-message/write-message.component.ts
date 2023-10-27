@@ -29,7 +29,7 @@ export class WriteMessageComponent implements OnInit {
   message = new FormControl('',[Validators.required]);
   files:boolean=false;
   @Output() formValidityChange = new EventEmitter<boolean>(true);
-
+  @Output() filesAndMessage=new EventEmitter<any>
   form = new FormGroup({
     templatesData:this.templatesData,
     message:this.message
@@ -45,7 +45,9 @@ export class WriteMessageComponent implements OnInit {
     });
     this.getTemplates();
   }
-
+  filesAndMessageToParent(){
+    this.filesAndMessage.emit({files:this.fileData.map((file)=>file.url) , message: this.form.value.message})
+  }
   getTemplates(){
 
     this.templateService.getTemplates(this.templateService.email,10,0,"","").subscribe(

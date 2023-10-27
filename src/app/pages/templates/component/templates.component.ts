@@ -1,4 +1,4 @@
-import { Component , ViewChild } from '@angular/core';
+import { Component , OnDestroy, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddTemplateComponent } from '../components/addTemplate/addTemplate.component';
 import { InnerTemplatesComponent } from '../components/innerTemplates/innerTemplates.component';
@@ -12,14 +12,14 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './templates.component.html',
   styleUrls: ['./templates.component.scss'],
 })
-export class TemplatesComponent {
+export class TemplatesComponent implements  OnDestroy{
 
   @ViewChild(InnerTemplatesComponent) templates:InnerTemplatesComponent;
   canEdit: boolean;
 
   constructor(public dialog: MatDialog,private templateService:TemplatesService,private authService:AuthService) {
     let permission =this.templateService.TemplatesPermission
-    let customerId=this.authService.userInfo.customerId;
+    let customerId=this.authService.getUserInfo()?.customerId;
 
 if(permission){
   if(permission.value=="ReadOnly" || permission.value =="None"){
@@ -41,7 +41,7 @@ else{
     dialogConfig.height='77vh';
     dialogConfig.width='40vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.maxHeight='85vh';
     dialogConfig.disableClose = true;
 
@@ -57,7 +57,12 @@ else{
 
 
 
-
+  ngOnDestroy(): void {
+    this.templateService.showsNum=10;
+    this.templateService.pageNum=0;
+    this.templateService.orderedBy='';
+    this.templateService.search='';
+  }
 
 }
 

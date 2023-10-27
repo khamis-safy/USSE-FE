@@ -19,8 +19,8 @@ constructor(
     await this.translate.get('ITEMS_PER_PAGE').toPromise().then((translation: string) => {
       this.matPaginatorIntl.itemsPerPageLabel = translation;
     });
-      this.matPaginatorIntl.getRangeLabel =(page: number, pageSize: number, length: number) =>{
-        return `${page+1} - ${length < pageSize ? length : pageSize}  ${this.translate.instant("OF_KEYWORD")} ${length}`;
+      this.matPaginatorIntl.getRangeLabel =(page: number, pageSize: number, length: number ,) =>{
+        return `${pageSize * page +1} - ${length <= pageSize || length <= pageSize * page + pageSize ? length : pageSize * page + pageSize}  ${this.translate.instant("OF_KEYWORD")} ${length}`;
 
     }
   }

@@ -1,4 +1,4 @@
-<div class="w-100 h-100 p-5 mt-5">
+<div class="write-message-containter  w-100 h-100 p-5 mt-5">
 
   <div class="d-flex gap-5 flex-column">
     <form [formGroup]="form" class="d-flex gap-5 flex-column">
@@ -26,7 +26,7 @@
         [error]="false"
         [fullWidth]="true"
         formControlName="message"
-        [label]="'Message Contacts' | translate"
+        [label]="'Message' | translate"
         [isTextArea]="true"
       ></us-input>
     </form>
@@ -42,5 +42,32 @@
         [(ngModel)]="fileData"
       ></us-upload>
     </div>
+  </div>
+  <div class="d-flex justify-content-end align-items-center buttons" style="width: 98%; ">
+    <button class="rest-style" matStepperPrevious>
+      <us-button
+        class="m-2"
+        label="{{ 'BACK' | translate }}"
+        [fill]="false"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+      >
+      </us-button>
+    </button>
+    <button class="rest-style" matStepperNext [disabled]="!form.valid && !files">
+      <us-button
+        class="m-2"
+        label="{{ 'NEXT' | translate }}"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="!form.valid && !files"
+        [appearance]="'primary'"
+        (clicked)="filesAndMessageToParent()"
+      >
+      </us-button>
+    </button>
   </div>
 </div>

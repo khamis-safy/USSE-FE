@@ -2,8 +2,12 @@
   color: #292A32;
   font-size: 1.1rem;
   border-radius: 8px;
-  width: 425px;
-  height: 80px;
+  // width: 425px;
+  width: 35vw;
+  max-width: 444px;
+  justify-content: center;
+  min-height: 78px;
+  height: fit-content;
   position: fixed !important;
   top: 7%;
   right: -11% ;

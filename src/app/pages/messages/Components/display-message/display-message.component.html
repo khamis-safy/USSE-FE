@@ -39,7 +39,7 @@
       </div>
       <div class="message-container">
 
-        <div class="ms-5">
+        <div class="mx-4">
 
           <ng-container [ngSwitch]="isScheduleM">
 
@@ -49,13 +49,14 @@
             <ng-container *ngSwitchCase="false">
 
               <p  class="txt-md ms-3 mb-2 text-neutral-900 message">{{message?.msgBody}}</p>
-
+              <a  class="pointer" [href]="message.fileUrl" target="_blank" [title]="'open' | translate" ><img   class="ms-1 w-100" src="assets/images/doc.svg" alt=""></a>
+              <a  class="pointer" [href]="message.fileUrl" target="_blank" [title]="'open' | translate"><img  class="ms-1 w-100" src="assets/images/vid.svg" alt=""></a>
               <ng-container *ngIf="message.fileName">
 
                 <ng-container [ngSwitch]="(message.fileName | type)">
-                  <img *ngSwitchCase="'image'"  class="ms-1 w-100" [src]="message.fileUrl" alt="">
-                  <img *ngSwitchCase="'document'"  class="ms-1 w-100" src="assets/images/doc.svg" alt="">
-                  <img *ngSwitchCase="'video'"  class="ms-1 w-100" src="assets/images/vid.svg" alt="">
+                  <img *ngSwitchCase="'image'"  class="mx-1 w-100" [src]="message.fileUrl" alt="">
+                  <a *ngSwitchCase="'document'" class="pointer " [href]="message.fileUrl" target="_blank" [title]="'open' | translate" ><img   class="media" src="assets/images/doc.svg" alt=""></a>
+                  <a *ngSwitchCase="'video'" class="pointer " [href]="message.fileUrl" target="_blank" [title]="'open' | translate"><img  class="media" src="assets/images/vid.svg" alt=""></a>
                 </ng-container>
 
 
@@ -75,7 +76,7 @@
               <ng-container *ngIf="message.status==3">
 
                 <div class="_image seen d-flex justify-content-center position-absolute end-0 bottom-0 align-items-center">
-                  <span class="text-neutral-0 ">{{lastTwoNums}}</span>
+                  <span class="text-neutral-0 ">{{userName}}</span>
               </div>
               </ng-container>
 

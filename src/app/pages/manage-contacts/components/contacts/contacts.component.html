@@ -1,4 +1,4 @@
-<section class="py-3 d-flex flex-column gap-3">
+<section class="py-3 component-container d-flex flex-column gap-3">
   <ng-container *ngIf="!noData">
     <div class="d-flex justify-content-between align-items-center ">
     <div class="d-flex position-relative row m-0">
@@ -68,17 +68,17 @@
         <td mat-cell *matCellDef="let element" >
           <div class="lists-container w-100 d-flex justify-content-center">
 
-            <div  class=" position-relative lists w-100" >
+            <div  class=" position-relative lists " >
               <div class="d-flex gap-2 overflow-hidden lists-wrapper px-4 w-100" #listsWrapper >
-                <div *ngFor="let item of element.lists" class="listName bg-white text-nowrap px-2 py-1 rounded-2">
+                <div *ngFor="let item of element.lists" [title]="item.name" class="listName bg-white text-nowrap px-2 py-1 rounded-2">
                   {{item.name}}
                 </div> 
               </div>
-              <ng-container *ngIf="element.lists.length>1">
-                <div   (click)="scrollRight(listsWrapper)" class="right-arrow position-absolute end-0 top-0 h-100 d-flex justify-content-end align-items-center" style="width: 50%">
+              <ng-container *ngIf="element.lists.length>2 ">
+                <div  *ngIf="!element.hideRightArrow"  (click)="scrollRight(element,listsWrapper)" class="right-arrow position-absolute end-0 top-0 h-100 d-flex justify-content-end align-items-center" style="width: 50%">
                   <img  src="assets/icons/arrow.svg" alt="">
                 </div>
-                <div  (click)="scrollLeft(listsWrapper)" class="left-arrow position-absolute start-0 top-0 h-100 d-flex justify-content-start align-items-center" style="width: 5%;">
+                <div *ngIf="!element.hideLeftArrow" (click)="scrollLeft(element,listsWrapper)" class="left-arrow position-absolute start-0 top-0 h-100 d-flex justify-content-center align-items-center" style="width: 16%;">
                   <img  src="assets/icons/arrow.svg" alt="">
                 </div>
               </ng-container>
@@ -110,7 +110,7 @@
           </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns;" ></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true" ></tr>
       <ng-container *ngIf="!loading">
 
       <tr  mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
@@ -120,7 +120,6 @@
     </ng-container>
 
     </table>
-
     <div *ngIf="loading" class="spinner-container p-3">
       <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
     </div>
@@ -137,7 +136,7 @@
 
 <ng-container *ngIf="(length == 0 && !loading) || ( notFound || noData)">
 
-  <div class="d-flex justify-content-center align-items-center flex-column gap-3  w-100" style="height: 500px;">
+  <div class="d-flex justify-content-center align-items-center flex-column gap-3 nodata-container  w-100" style="height: 500px;">
     <img src="assets/images/files.svg" alt="">
     <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA' | translate }}</span>
   </div>

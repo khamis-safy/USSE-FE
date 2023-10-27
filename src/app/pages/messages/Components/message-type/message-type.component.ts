@@ -74,7 +74,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
 this.tableData();
 
 this.permission =this.messageService.devicesPermissions;
-if(this.authService.userInfo.customerId!=""){
+if(this.authService.getUserInfo()?.customerId!=""){
   this.isUser=true;
 }
 else{
@@ -195,7 +195,9 @@ else{
 
     }},
     (err)=>{
-
+      this.loading = false;
+      this.length=0;
+      this.noData=true;
     }
   )
 
@@ -234,6 +236,7 @@ else{
         (err)=>{
          this.loading = false;
          this.length=0;
+         this.noData=true;
 
         }
       )
@@ -251,6 +254,8 @@ else{
         ,(err)=>{
           this.length=0;
           this.loading=false
+          this.noData=true;
+
         }
       )
     }
@@ -294,7 +299,6 @@ else{
 
   changeColumns(event){
   //  change displayed column based on component type
-console.log("can edit",this.canEdit)
   if(this.msgCategory=='failed' && this.canEdit){
     this.displayedColumns=['select',...event,'Ation']
   }

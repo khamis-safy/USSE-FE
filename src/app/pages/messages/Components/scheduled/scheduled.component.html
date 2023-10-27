@@ -1,7 +1,7 @@
-<section class="py-3 d-flex flex-column gap-3">
+<section class="py-3 component-container d-flex flex-column gap-3">
   <ng-container *ngIf="!noData">
 
-    <div class="d-flex justify-content-end mb-3 align-items-center">
+    <div class="d-flex justify-content-end mb-1 align-items-center">
       <div class="d-flex justify-content-between" style="width: 31%;
       align-items: center;
       min-width: 512px;
@@ -109,7 +109,7 @@
   </ng-container>
 
   <ng-container *ngIf="(length == 0 && !loading) || noData">
-    <div class="d-flex justify-content-center align-items-center flex-column gap-3 w-100" style="height: 500px;">
+    <div class="d-flex justify-content-center align-items-center flex-column gap-3 nodata-container w-100" style="height: 500px;">
       <img src="assets/images/files.svg" alt="">
       <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA_TO_SHOW' | translate }}</span>
     </div>

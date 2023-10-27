@@ -13,7 +13,7 @@ export class LoginService {
 
 // khamissafy056@gmail.com
 // Khamis.Safy@056
-email:string=localStorage.getItem("email")
+// email:string=localStorage.getItem("email")
 userInfo:any;
   constructor(private http:HttpClient) { }
   login(data):Observable<Login>{
@@ -27,12 +27,12 @@ userInfo:any;
   //         });
   //   return this.http.get<Login>(`${env.api}Auth/refreshToken`, { headers })
   // }
-  updateUserInfo(userinfo){
-  this.userInfo=userinfo
-}
-getUserinfo(){
-  return this.userInfo
-}
+//   updateUserInfo(userinfo){
+//   this.userInfo=userinfo
+// }
+// getUserinfo(){
+//   return this.userInfo
+// }
   storeRefreshTokenInCookie(token: string) {
     const expirationDate = new Date();
     expirationDate.setHours(expirationDate.getHours() + 1); // Cookie will expire in 1 hour
@@ -53,7 +53,11 @@ getUserinfo(){
     }
     return null;
   }
-
+  public removeCookie(cookieName: string): void {
+    const expirationDate = new Date('2000-01-01'); // Set expiration date to a past date
+    const removedCookie = cookieName + '=; expires=' + expirationDate.toUTCString() + '; path=/';
+    document.cookie = removedCookie;
+  }
   refreshToken(token:string): Observable<any> {
     const refreshToken ={
       token:token

@@ -39,7 +39,7 @@ WrapperOffsetWidth =250;
 @ViewChild(MatPaginator)  paginator!: MatPaginator;
 @ViewChild(MatSort) sort: MatSort;
 @ViewChild("search") search!:ElementRef;
-
+@Output() updatedCount= new EventEmitter<number>;
 listTableData:ListData[]=[]
 deletedContacts:string[]=[];
 columns :FormControl;
@@ -153,17 +153,17 @@ getContacts(){
     openEditModal(data?){
       const dialogConfig=new MatDialogConfig();
       dialogConfig.disableClose = true;
-      dialogConfig.height='80vh';
+      dialogConfig.height='88vh';
       dialogConfig.width='45vw';
       dialogConfig.maxWidth='100%';
-      dialogConfig.minWidth='300px';
-      dialogConfig.maxHeight='85vh';
+      dialogConfig.minWidth='465px';
       dialogConfig.data= {contacts:data,listDetails:true,list:this.listData};
       const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
       this.selection.clear();
       dialogRef.afterClosed().subscribe(result => {
         if(result){
           this.getContacts();
+          this.getListData();
               }
 
       });
@@ -195,5 +195,24 @@ getContacts(){
 
 
     }
+    getListData(){
 
+      this.listService.getListById(this.listId).subscribe(
+        (res)=>{
+        this.count={totalContacts:res.totalContacts,totalCancelContacts:res.totalCancelContacts};
+        this.updatedCount.emit(res.totalContacts)
+        if(this.isCanceled){
+          this.length=this.count?.totalCancelContacts;
+        }
+        else{
+          this.length=this.count?.totalContacts;
+
+        }
+        },
+
+        (err)=>{
+        })
+
+
+    }
 }

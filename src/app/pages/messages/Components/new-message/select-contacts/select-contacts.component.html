@@ -1,6 +1,6 @@
-<div class="row w-100 my-5" style="height: 70%; place-content: space-around">
+<div class="row w-100 my-5 " style="height: 70%; place-content: space-around">
   <!-- lists and contacts with search -->
-  <div class="col-5 d-flex gap-4 flex-column me-2">
+  <div class="col-5 d-flex gap-3 flex-column me-2 select-contacts">
     <div class="d-flex position-relative w-100 m-0">
       <div class="w-100">
         <form [formGroup]="searchForm">
@@ -18,6 +18,10 @@
             [searchNoResultText]="'NO_RESULT_FOUND' | translate"
             [maxListItemsWithoutSearch]="5"
             [enableDropdownWhileSearching]="true"
+            [isSearchOnly]="true"
+            formControlName="contactsData"
+            placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
+            searchPlaceholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
           ></us-select>
         </form>
       </div>
@@ -55,44 +59,48 @@
       <div class="line"></div>
 
       <div class="lists-body">
-        <ng-container>
-          <mat-accordion>
+        <div class="lists-body-container">
 
-            <mat-expansion-panel
-            *ngFor="let listContact of allLists; let i = index"
-            class="custom-panel"
-            (opened)="onAccordionOpened(listContact)"
-            [expanded]="(listContact.list.isChecked=='' && !listContact.list.isExpanded)"
-          >
-            <mat-expansion-panel-header   class="zi-2">
-              <mat-panel-title>
-                <div class="d-flex gap-4">
+          <ng-container>
+            <mat-accordion>
+
+              <mat-expansion-panel
+              *ngFor="let listContact of allLists; let i = index"
+              class="custom-panel"
+
+              (opened)="onAccordionOpened(listContact)"
+              [expanded]="(listContact.list.isChecked ==='' && listContact.list?.shoudBeClosed)"
+            >
+              <mat-expansion-panel-header   class="zi-2">
+                <mat-panel-title>
+                  <div class="d-flex gap-4">
+                    <sr-checkbox
+                      class="zi-5"
+                      [label]="listContact.list?.name"
+                      [state]="listContact.list.isChecked"
+                      [(ngModel)]="listContact.list.isChecked"
+                      (changed)="onSelectList($event,listContact)"
+                    ></sr-checkbox>
+                    <span class="txt-sm total">{{ listContact.list.totalContacts }}</span>
+                  </div>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="contacts-container d-flex gap-4 align-items-center flex-wrap p-3">
+                <ng-container *ngFor="let contact of listContact.contacts">
                   <sr-checkbox
-                    class="zi-5"
-                    [label]="listContact.list?.name"
-                    [state]="listContact.list.isChecked"
-                    [(ngModel)]="listContact.list.isChecked"
-                    (changed)="onSelectList($event,listContact)"
+                  (click)="onHeaderClick($event,contact.isChecked)"
+                    class="txt-sm"
+                    [label]="contact?.name"
+                    (changed)="onSelectContact($event, listContact,contact)"
+                    [state]="contact.isChecked"
+                    [(ngModel)]="contact.isChecked"
                   ></sr-checkbox>
-                  <span class="txt-sm total">{{ listContact.list.totalContacts }}</span>
-                </div>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="d-flex gap-4 align-items-center flex-wrap p-3">
-              <ng-container *ngFor="let contact of listContact.contacts">
-                <sr-checkbox
-                (click)="onHeaderClick($event,contact.isChecked)"
-                  class="txt-sm"
-                  [label]="contact?.name"
-                  (changed)="onSelectContact($event, listContact,contact)"
-                  [state]="contact.isChecked"
-                  [(ngModel)]="contact.isChecked"
-                ></sr-checkbox>
-              </ng-container>
-            </div>
-          </mat-expansion-panel>
-          </mat-accordion>
-        </ng-container>
+                </ng-container>
+              </div>
+            </mat-expansion-panel>
+            </mat-accordion>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>
@@ -174,18 +182,38 @@
             </div>
           </ng-container>
         </div>
-        <us-button
-          class="m-2"
-          label="{{ 'ADD' | translate }}"
-          [fill]="true"
-          [size]="'md'"
-          [loading]="false"
-          [disabled]="form.invalid"
-          [appearance]="'primary'"
-          (clicked)="addHocNumber()"
-        >
-        </us-button>
+        <div class="add-button">
+
+          <us-button
+            class="m-2"
+            label="{{ 'ADD' | translate }}"
+            [fill]="true"
+            [size]="'xl'"
+            [loading]="false"
+            [disabled]="form.invalid"
+            [fullWidth]="true"
+            [appearance]="'primary'"
+            (clicked)="addHocNumber()"
+          >
+          </us-button>
+        </div>
       </div>
     </div>
+  </div>
+
+  <div class="d-flex justify-content-end align-items-center buttons" style="width: 98%; ">
+    <button class="rest-style" matStepperNext [disabled]="getAllContactsData().length == 0">
+      <us-button
+        class="m-2"
+        label="{{ 'NEXT' | translate }}"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [appearance]="'primary'"
+        (clicked)="allContactsToParent()"
+        [disabled]="getAllContactsData().length == 0"
+      >
+      </us-button>
+    </button>
   </div>
 </div>

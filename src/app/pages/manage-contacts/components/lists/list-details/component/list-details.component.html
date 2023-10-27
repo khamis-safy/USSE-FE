@@ -79,11 +79,11 @@
 
     <mat-tab>
       <ng-template mat-tab-label>
-        <span class="text-primary-800 me-2" style="font-weight: 800;">{{ list?.totalContacts }}</span>
+        <span class="text-primary-800 me-2" style="font-weight: 800;">{{totalContacts }}</span>
           {{ 'CONTACTS' | translate }}
 
       </ng-template>
-      <app-list-contacts [count]="count" [isCanceled]="false" [listData]="list"  (isChecked)="onChecked($event)"></app-list-contacts>
+      <app-list-contacts [count]="count" [isCanceled]="false" [listData]="list" (updatedCount)="updateTotalContacts($event)" (isChecked)="onChecked($event)"></app-list-contacts>
     </mat-tab>
 
     <mat-tab>
@@ -92,7 +92,7 @@
           {{ 'CANCELED' | translate }}
 
       </ng-template>
-      <app-list-contacts [count]="count" [isCanceled]="true"></app-list-contacts>
+      <app-list-contacts [count]="count" [isCanceled]="true" (updatedCount)="updateTotalContacts($event)"></app-list-contacts>
     </mat-tab>
   </mat-tab-group>
 

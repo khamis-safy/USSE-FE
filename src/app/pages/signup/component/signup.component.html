@@ -1,18 +1,36 @@
-<div class="container-fluid ps-0 bg-primary-100">
+<div class="container-fluid px-0 bg-primary-100">
+  <div class="colored-menu">
+    <button mat-button [matMenuTriggerFor]="menu" class="text-primary-800">
+      <div class="d-flex align-items-center gap-3 txt-sm">
+        <div class="icon">
+          <img src="assets/icons/lang-colored.svg" alt="" />
+        </div>
+        {{language}}
+        <div class="icon">
+          <img src="assets/icons/Polygon 35.svg" alt="" />
+        </div>
+      </div>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="language='English';switchLanguage('en')">English</button>
+      <button mat-menu-item (click)="language='العربية';switchLanguage('ar')">العربية</button>
+    </mat-menu>
+  </div>
+
   <div class="row">
     <div
-      class="bg-primary-200 mx-auto text-center vh-100 col-md-4 p-5 d-flex flex-column justify-content-center align-items-center"
+      class="side-form bg-primary-200 text-center vh-100 col-md-4 p-5 d-flex flex-column justify-content-center align-items-center"
       style="box-shadow: 0px 11px 22px 0px #00000029"
-    >    <img src="/assets/images/colored logo_name side.svg" alt="myLogo" style="width:65%" class="my-3" />
+    >    <img src="/assets/images/colored logo_name side.svg" alt="myLogo" style="width:60%" class="my-3" />
 
       <div class="col-md-12  text-center">
-        <h3 class="mb-5 mt-3 " style="font-family: Poppins; font-weight: 500; font-size: 22px;">
+        <h3 class="mb-5 mt-3 signup-heading" style="font-family: Poppins; font-weight: 500; font-size: 22px;">
           {{ 'CREATE_YOUR_ACCOUNT' | translate }}
         </h3>
 
         <form [formGroup]="form" class="w-100">
           <!-- Username -->
-          <div class="col-md-12 mb-4 special-input">
+          <div class="col-md-12 mb-4 special-input info-input">
             <us-input
               class="my-3"
               [label]="'Username' | translate"
@@ -20,12 +38,12 @@
               [placeholder]="'Enter your name' | translate"
               formControlName="contactName"
               [error]="contactName.touched && contactName.errors?.required"
-              [hintText]="contactName.touched && contactName.errors?.required ? ('This field is required' | translate ): ''"
+              [hintText]="contactName.touched && contactName.errors?.required ? ('requiredFieldHint' | translate): ''"
             ></us-input>
           </div>
 
           <!-- Email -->
-          <div class="col-md-12 mb-4 special-input">
+          <div class="col-md-12 mb-4 special-input info-input">
             <us-input
               class="my-3"
               [label]="'Email' | translate"
@@ -33,12 +51,12 @@
               [placeholder]="'Enter your email' | translate"
               formControlName="email"
               [error]="email.touched && (email.errors?.required || email.dirty && email.errors?.pattern)"
-              [hintText]="email.touched && email.errors?.required ? ('This field is required' | translate ): email.dirty && email.errors?.pattern ? ('Invalid email' | translate ): ''"
+              [hintText]="email.touched && email.errors?.required ? ('requiredFieldHint' | translate): email.dirty && email.errors?.pattern ? ('Invalid email' | translate ): ''"
             ></us-input>
           </div>
 
           <!-- Password -->
-          <div class="col-md-12 mb-4 special-input">
+          <div class="col-md-12 mb-4 special-input info-input">
             <us-input
               class="my-2"
               [label]="'Password' | translate"
@@ -46,7 +64,7 @@
               [placeholder]="'Enter your password' | translate"
               formControlName="password"
               [error]="password.touched && password.errors?.required"
-              [hintText]="password.touched && password.errors?.required ? ('This field is required' | translate ): ''"
+              [hintText]="password.touched && password.errors?.required ? ('requiredFieldHint' | translate): ''"
             ></us-input>
             <!-- Hint / caption -->
             <div *ngIf="password.dirty && password.errors?.pattern" class="hint mt-2 error">
@@ -58,7 +76,7 @@
           </div>
 
           <!-- Confirm Password -->
-          <div class="col-md-12 mb-4 special-input">
+          <div class="col-md-12 mb-4 special-input info-input">
             <us-input
               class="my-2"
               [label]="'Confirm Password' | translate"
@@ -66,7 +84,7 @@
               [placeholder]="'Enter your password' | translate"
               formControlName="confirm"
               [error]="confirm.touched && (confirm.errors?.required || confirm.touched && confirm.value != password.value)"
-              [hintText]="confirm.touched && confirm.errors?.required ?( 'This field is required' | translate) : confirm.touched && confirm.value != password.value ? ('Passwords Don\'t Match' | translate ): ''"
+              [hintText]="confirm.touched && confirm.errors?.required ?('requiredFieldHint' | translate) : confirm.touched && confirm.value != password.value ? ('Passwords Don\'t Match' | translate ): ''"
             ></us-input>
           </div>
 
@@ -122,9 +140,9 @@
           alt=""
           class="w-100 text-center mx-auto"
         />
-        <p class="text-center mx-auto" style="color: #292a32 ;line-height: 1.5;">
+        <!-- <p class="text-center mx-auto" style="color: #292a32 ;line-height: 1.5;">
           {{ 'LOREM_IPSUM' | translate }}
-        </p>
+        </p> -->
       </div>
     </div>
   </div>

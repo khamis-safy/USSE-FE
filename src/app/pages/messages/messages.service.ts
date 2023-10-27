@@ -15,13 +15,13 @@ export class MessagesService {
     pageNum:number=0;
     messageasPermission:PermissionData[];
     devicesPermissions:DevicesPermissions[];
-    email:string=this.authService.userInfo.email;
+    email:string=this.authService.getUserInfo()?.email;
     orderedBy:string="";
     search:string="";
     msgCategory:string="inbox";
     selectedDeviceId:string="";
 constructor(private http:HttpClient,private authService:AuthService) {
-  if(authService.userInfo.customerId!=""){
+  if(authService.userInfo?.customerId!=""){
   //   console.log("permissions from messages",authService.usersPermissions)
   //   this.messageasPermission=authService.devicesPermissions(authService.usersPermissions,"Messages");
   //   if(this.messageasPermission){
@@ -40,7 +40,6 @@ constructor(private http:HttpClient,private authService:AuthService) {
   //   }
   authService.getUserDataObservable().subscribe(permissions => {
 
-      console.log("Messages permissions",permissions,)
       this.messageasPermission=authService.devicesPermissions(permissions,"Messages");
       if(this.messageasPermission){
         this.devicesPermissions=this.messageasPermission.map((permission)=>{
@@ -54,7 +53,6 @@ constructor(private http:HttpClient,private authService:AuthService) {
             value:permission.value
           }
         })
-        console.log(this.devicesPermissions)
       }
 
 

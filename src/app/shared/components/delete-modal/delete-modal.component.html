@@ -1,13 +1,13 @@
 <section class="d-flex flex-column gap-3 h-100 position-relative pt-5">
   <!-- modal header -->
   <div class="px-4">
-    <div class="d-flex justify-content-center align-items-center flex-column mb-4">
+    <div class="d-flex justify-content-center align-items-center flex-column mb-4"style="height: 60%;">
       <div class="close-icon">
         <mat-icon class="text-neutral-0">close</mat-icon>
       </div>
     </div>
     <!-- modal body -->
-    <div class="content d-flex justify-content-center align-items-center flex-column gap-4">
+    <div class="content d-flex justify-content-center align-items-center flex-column gap-4"style="height: 50%;">
       <ng-container *ngIf="!isDevices && !isCampaigns && !isTemplates && !isUsers">
       <div class="txt-lg" *ngIf="!isTemplates">
         <!-- number of selected items -->
@@ -49,7 +49,7 @@
   </div>
 
   <!-- modal footer -->
-  <div class="modal-footer justify-content-center position-absolute bottom-0 w-100 gap-3" style="height: 89px; background:#DBE9F2;">
+  <div class="modal-footer justify-content-center position-absolute bottom-0 w-100 gap-3" style="height: 21%; background:#DBE9F2;">
     <us-button
       label="{{ 'CONFIRM' | translate }}"
       size="sm"

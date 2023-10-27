@@ -1,7 +1,9 @@
-<section class="p-3 "style="  height: 96%;">
-  <div class="d-flex justify-content-between mb-4 align-items-center">
+<section class="p-3 "style="  height: 95%;">
+  <div class="headding-container d-flex justify-content-between mb-3 align-items-center">
     <div class="d-flex justify-content-center ">
-      <mat-icon *ngIf="!isMessages" class="me-2 pointer" (click)="isMessages=true">{{ 'BACK_ICON' | translate }}</mat-icon>
+      <div class="d-flex back-arrow">
+        <mat-icon *ngIf="!isMessages" class="me-2 pointer back" (click)="isMessages=true">keyboard_backspace</mat-icon>
+      </div>
       <img *ngIf="isMessages" src="assets/icons/Vector (1).svg" alt="" class="px-2">
       <span class="txt-lg main-heading">{{ 'MAIN_HEADING' | translate }}</span>
     </div>

@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -28,7 +28,7 @@ import { UploadSheetComponent } from '../../../importFiles/uploadSheet/uploadShe
   templateUrl: './list-details.component.html',
   styleUrls: ['./list-details.component.scss']
 })
-export class ListDetailsComponent implements OnInit ,AfterViewInit{
+export class ListDetailsComponent implements OnInit ,AfterViewInit , OnDestroy{
   listId:string;
   isChecked:Contacts[];
   list:ListData;
@@ -37,7 +37,7 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit{
   tabs=["contacts","canceled"];
   tab = this.tabs[0];
   canEdit: boolean;
-
+  totalContacts:number;
   constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private listService:ManageContactsService,
@@ -80,7 +80,7 @@ else{
         (res)=>{
         this.list=res;
         this.count={totalContacts:this.list.totalContacts,totalCancelContacts:this.list.totalCancelContacts};
-
+        this.totalContacts=this.list.totalContacts
 
         },
 
@@ -108,13 +108,18 @@ this.router.navigateByUrl('contacts?tab=lists')
     this.isChecked=e;
 
   }
+
+
+  updateTotalContacts(event){
+    this.totalContacts=event
+  }
   openDeleteConModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.data =
     {
       contactsData: {contacts:this.isChecked,remove:false}
@@ -140,7 +145,7 @@ this.router.navigateByUrl('contacts?tab=lists')
     dialogConfig.height='70vh';
     dialogConfig.width='40vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.maxHeight='85vh';
     dialogConfig.disableClose = true;
 
@@ -166,7 +171,7 @@ this.router.navigateByUrl('contacts?tab=lists')
     dialogConfig.height='80vh';
     dialogConfig.width='60vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.disableClose = true;
     dialogConfig.data=this.listId
 
@@ -177,7 +182,6 @@ this.router.navigateByUrl('contacts?tab=lists')
       if(result){
 
         this.listContacts.getContacts();
-
       }
 
 
@@ -189,7 +193,7 @@ this.router.navigateByUrl('contacts?tab=lists')
     dialogConfig.height='50vh';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='300px';
+    dialogConfig.minWidth='465px';
     dialogConfig.disableClose = true;
 
     dialogConfig.data = {
@@ -232,5 +236,11 @@ exportSelectedContacts(){
     (err)=>{;
     }
   )
+}
+ngOnDestroy(): void {
+  this.listService.display=10;
+  this.listService.pageNum=0;
+  this.listService.orderedBy='';
+  this.listService.search='';
 }
 }

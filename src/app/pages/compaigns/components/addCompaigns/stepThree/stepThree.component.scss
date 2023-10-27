@@ -1,0 +1,16 @@
+@media (max-width: 1700px) { 
+    input.rounded-pill.border.border-1py-2.txt-input.w-100.date.ng-untouched.ng-pristine.ng-valid {
+      font-size: 12px !important;
+      height: 32px !important;
+  }
+  .input-wrapper {
+    height: 31px !important;
+}
+form.w-100.h-100.p-5.mt-5.d-flex.justify-content-center.ng-untouched.ng-pristine.ng-invalid {
+    margin: 20px !important;
+    padding: 20px !important;
+}
+.d-flex.gap-5.flex-column {
+    gap: 22px !important;
+}
+}

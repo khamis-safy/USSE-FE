@@ -21,29 +21,31 @@ export class ErrorInterceptorService implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // Lazy injection of services using Injector
-    // const traslate =this.injector.get(TranslationService)
-    console.log('Interceptor is working'); // Add this linep rivate injector:Injector
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         
         // Check if the error is an HTTP error
         if (error instanceof HttpErrorResponse) {
-          console.error('HTTP error:', error);
-
-            // Check if 'error.error' exists before trying to access 'message'
-            const errorMessage = error && error.error && this.translate.instant(error.error)? error.error  : 'COMMON.ERR';
-            // Use the injected ToasterService to display the error message
-            // this.toaster.error(this.translate.translateMessage(errorMessage))
-            this.toaster.error(this.translate.instant(errorMessage))
+          if(error.status==401){
+            let localData=['email',"token"]
+            localData.map((key)=>localStorage.removeItem(key));
+            const expirationDate = new Date('2000-01-01'); // Set expiration date to a past date
+            const removedCookie = "refreshToken" + '=; expires=' + expirationDate.toUTCString() + '; path=/';
+            document.cookie = removedCookie;
           }
+          if(error.status!=200){
 
+            console.error('HTTP error:', error);
+  
+              // Check if 'error.error' exists before trying to access 'message'
+              // Handle the error message as needed (e.g., display it to the user)
+              const errorMessage = error && error.error && this.translate.instant(error.error)? error.error  : 'COMMON.ERR';
+              this.toaster.error(this.translate.instant(errorMessage))
+            }
 
-          // Handle the error message as needed (e.g., display it to the user)
-          // For example, you can use a ToastrService or a custom error dialog
-          // to display the error message.
+          }
+          return throwError(()=>error);
         
-        return throwError(error);
       })
     );
   }

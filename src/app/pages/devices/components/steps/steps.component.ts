@@ -123,7 +123,7 @@ checkWhatsappB(){
       this.onClose(this.data)
     }
   }
-  else if(!this.wBstatus&& this.retryCounter>=30){
+  else if(!this.wBstatus&& this.retryCounter>=10){
     clearInterval(this.check);
     this.retryCounter=0;
     this.initSessionAndCheckStatus();
