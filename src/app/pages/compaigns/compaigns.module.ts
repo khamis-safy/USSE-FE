@@ -11,13 +11,15 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { StepOneComponent } from './components/addCompaigns/stepOne/stepOne.component';
 import { StepThreeComponent } from './components/addCompaigns/stepThree/stepThree.component';
 import { StepFourComponent } from './components/addCompaigns/stepFour/stepFour.component';
-
-
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 @NgModule({
   imports: [
     CommonModule,
     CompaignsRoutes,
-    SharedModule
+    SharedModule,
+    NzTimePickerModule,
+    NzDatePickerModule
   ],
   declarations: [
     CompaignsComponent ,
@@ -30,6 +32,7 @@ import { StepFourComponent } from './components/addCompaigns/stepFour/stepFour.c
 
 
   ],
-  providers:[CompaignsService]
+  providers:[
+    CompaignsService]
 })
 export class CompaignsModule { }

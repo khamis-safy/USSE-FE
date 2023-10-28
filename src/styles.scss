@@ -782,17 +782,17 @@ input#phone {
 // start table override
 section.table-wrapper {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
- 
+
   border-radius: 24px 24px !important;
   position: relative;
-  
+
 
   table{
     width: 100%;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     overflow: hidden;
-   
+
     th:not(.checkBox) , td:not(.checkBox){
       text-align: center !important;
     }
@@ -805,7 +805,7 @@ section.table-wrapper {
     .mat-sort-header-container{
       justify-content: center !important;
     }
-  
+
     thead{
       background: var(--clr-primary-400) !important;
       tr{
@@ -852,7 +852,7 @@ section.table-wrapper {
 
 
       background-image: linear-gradient(90deg, transparent, rgb(238, 244, 249) 90%)!important;
-    }   
+    }
      position:relative;
      background-color: var(--clr-primary-500) !important;
      z-index: 2;
@@ -1061,7 +1061,7 @@ span.mdc-tab__content {
       svg path#scheduled {
         fill:var(--clr-primary-800) !important;
       }
-      svg circle#circle1 {      
+      svg circle#circle1 {
         fill: #D0E8EB;
       }
       svg circle#circle2 {
@@ -1074,8 +1074,8 @@ span.mdc-tab__content {
         filter: invert(22%) sepia(100%) saturate(3678%) hue-rotate(187deg) brightness(93%) contrast(100%);
         -webkit-filter : invert(22%) sepia(100%) saturate(3678%) hue-rotate(187deg) brightness(93%) contrast(100%);
 
-      }   
-   
+      }
+
 
   }
   &.mdc-tab--active ,&:focus{
@@ -1091,7 +1091,7 @@ span.mdc-tab__content {
       svg path#scheduled {
         fill:var(--clr-primary-800) !important;
       }
-      svg circle#circle1 {      
+      svg circle#circle1 {
         fill: #D0E8EB;
       }
       svg circle#circle2 {
@@ -1104,10 +1104,10 @@ span.mdc-tab__content {
         filter: invert(22%) sepia(100%) saturate(3678%) hue-rotate(187deg) brightness(93%) contrast(100%);
         -webkit-filter : invert(22%) sepia(100%) saturate(3678%) hue-rotate(187deg) brightness(93%) contrast(100%);
 
-      }   
+      }
       &:hover {
         background:var(--clr-primary-400) !important;
-      
+
       }
 
   }
@@ -1118,10 +1118,10 @@ span.mdc-tab__content {
 .mat-form-field .mat-mdc-form-field .us-select .mat-mdc-form-field-type-mat-select .mat-form-field-appearance-fill .mat-primary{
   box-shadow: none !important;
   }
-  
+
 // messages states
 .message-state{
-  border-radius: 8px; 
+  border-radius: 8px;
   width: 74px;
   height: 38px;
   &.read{
@@ -1257,13 +1257,13 @@ ngx-intl-tel-input .error {
 
   }
 
-   
-  
+
+
 
 }
 
 
-  
+
 
   .stepper .mat-horizontal-stepper-header-container {
     padding: 0px 0px  !important;
@@ -1281,7 +1281,7 @@ ngx-intl-tel-input .error {
 @media (min-width: 1200px) {  }
 
 // XX-Large devices (larger desktops, 1400px and up)
-@media (min-width: 1700px) { 
+@media (min-width: 1700px) {
   .special-button button.fullWidth {
     height: 38px;
 }
@@ -1348,7 +1348,7 @@ ngx-intl-tel-input .error {
     padding: 20px;
     height: 100%;
     .mat-horizontal-content-container{
-     
+
       overflow-y: auto;
       height: 100%;
     }
@@ -1360,7 +1360,7 @@ mat-expansion-panel-body{
   max-height: 128px !important;
   margin-inline: 10px !important;
 
-} 
+}
   .total{
     width: 40px;
     height: 32px;
@@ -1386,7 +1386,7 @@ mat-expansion-panel-body{
   position: fixed;
   top: 2%;
   right: 2%;
-  
+
 
 }
 .info-input{
@@ -1406,7 +1406,7 @@ mat-expansion-panel-body{
   .colored-menu{
     right: unset !important;
     left: 2% !important;
-  
+
   }
   *:not(i,mat-icon){
     font-family: 'Almarai', sans-serif !important;
@@ -1416,7 +1416,7 @@ mat-expansion-panel-body{
     }
     .recover-text{
       text-align: right!important;
-    
+
     }
     .close-icon{
       right:unset !important;
@@ -1545,7 +1545,7 @@ mat-expansion-panel-body{
   button.fullWidth{
     height: 45px;
   }
- 
+
 }
 .buttons {
   position: absolute;
@@ -1576,7 +1576,7 @@ mat-expansion-panel-body{
     padding-block: 4px !important;
 }
 
-  
+
   .us-toaster {
 
   .toaster-content{
@@ -1658,9 +1658,9 @@ button.button-size-md{
     font-size: 12px !important;
     width: 318px !important;
 
-  } 
-  
- 
+  }
+
+
   .mat-horizontal-content-container{
     padding: 0 !important;
 }
@@ -1671,42 +1671,42 @@ button.button-size-md{
 
     .mat-step-icon .mat-icon {
       font-size: 12px !important;
-      
+
   }
   .mat-step-icon {
     height: 22px  !important;
     width: 22px  !important;
   }
     .mat-horizontal-stepper-wrapper {
-  
+
     .mat-horizontal-stepper-header-container {
       width: 90%  !important;
 
   .mat-step-text-label {
     font-size: 10px !important;
-    
+
   }
   .mat-step-header:first-child {
     left: 7px;
   }
 
-  
+
   .mat-stepper-horizontal-line {
     margin: 0 -69px 0 -55px !important;
   }
-    
-  
+
+
     }
   }
-  
+
     }
-  
-     
-    
+
+
+
     .mat-step-icon-content
     {span.ng-star-inserted{
       font-size: 10px !important;
-  
+
     }}
     span.btn-label.mx-1 {
       font-size: 13px !important;
@@ -1715,7 +1715,7 @@ button.button-size-md{
       table{
         th.mat-mdc-header-cell {
           font-size: 11px !important;
-      } 
+      }
       td.mat-mdc-cell.mdc-data-table__cell.cdk-cell ,p,span{
         font-size: 11px !important;
     }
@@ -1738,7 +1738,7 @@ button.button-size-md{
     .mdc-list-item__primary-text {
       font-size: 10px !important;
   }
-  } 
+  }
 .side-form{
   padding-inline: 28px !important;
 
@@ -1752,7 +1752,7 @@ button.button-size-md{
 // }
 // }
   }
-  
+
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {  }
 
@@ -1767,3 +1767,8 @@ button.button-size-md{
 
 // XX-Large devices (larger desktops, 1400px and up)
 @media (min-width: 1400px) {  }
+
+// redesign ant design system************************************************************************
+nz-date-picker{
+  height: 37px !important;
+}

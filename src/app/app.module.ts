@@ -15,6 +15,7 @@ import { ErrorInterceptorService } from './interceptors/error-interceptor.servic
 import { ToasterServices } from './shared/components/us-toaster/us-toaster.component';
 import { TRANSLATE_SERVICE } from './shared/shared.module';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
+import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { TokenInterceptorService } from './interceptors/token-interceptor.servic
     NbEvaIconsModule
   ],
   providers: [
+    { provide: NZ_I18N, useValue: en_US },
     { provide: LocationStrategy, useClass: HashLocationStrategy},
     ToasterServices,
 
