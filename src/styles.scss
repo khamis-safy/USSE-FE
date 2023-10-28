@@ -1551,6 +1551,7 @@ mat-expansion-panel-body{
   position: absolute;
   bottom: 1%;
   left: 3%;
+  width:95%;
   background-color: white !important;
 }
 .module-main-heading{
@@ -1652,13 +1653,15 @@ button.button-size-md{
 .special-button button.fullWidth {
   height: 37px !important;
 }
-
+.d-flex.position-relative.w-100{
+  width: 318px !important;
   #search {
     height: 32px !important;
     font-size: 12px !important;
     width: 318px !important;
 
   }
+}
 
 
   .mat-horizontal-content-container{
