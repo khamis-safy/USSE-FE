@@ -300,8 +300,8 @@ devicesPermissions(permissions:PermissionData[],name:string){
   }
 
  getBackEndVersion()
- :Observable<string>{
-  return this.http.get<string>(`${this.api}Auth/getVersion`)
+ :Observable<any>{
+  return this.http.get<any>(`${this.api}Auth/getVersion`)
 }
 
   }
