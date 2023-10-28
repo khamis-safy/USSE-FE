@@ -127,7 +127,7 @@ checkIfFieldFound(name){
 
 }
   getLists(){
-  this.listService.getList(this.email,10,0,"","").subscribe(
+  this.listService.getList(this.email,100,0,"","").subscribe(
      (res)=>{
       if(this.data){
         let dataLists;

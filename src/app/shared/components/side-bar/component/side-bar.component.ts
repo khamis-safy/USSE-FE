@@ -8,6 +8,7 @@ import { UsersService } from 'src/app/pages/users/users.service';
 import { Permission } from 'src/app/pages/users/users';
 import { PermissionsService } from 'src/app/shared/services/permissions.service';
 import { ConfirmLogOutComponent } from '../components/confirmLogOut/confirmLogOut.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-side-bar',
@@ -18,8 +19,8 @@ import { ConfirmLogOutComponent } from '../components/confirmLogOut/confirmLogOu
 export class SideBarComponent implements OnInit {
   userName:string=this.authService.getUserInfo()?.userName;
   chars:string=this.userName?.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
-  frontVersion:string='V 0.0.1 ';
-  backVersion:string=localStorage.getItem("version");
+  frontVersion:string=environment.version;
+  backVersion:string="";
   role:string=localStorage.getItem("role")
   show:boolean=false;
   listsArr:SelectOption[]
@@ -54,7 +55,7 @@ this.permissions={
   getBackEndVerison(){
     this.authService.getBackEndVersion().subscribe(
       (res)=>{;
-        this.backVersion=`V ${JSON.parse(res)}`}
+        this.backVersion=`V${res.version}`}
     )
   }
 //   getUserPermisisons(email){

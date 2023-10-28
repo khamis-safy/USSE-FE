@@ -60,7 +60,7 @@ export class UploadSheetComponent implements OnInit {
     }
   }
   getLists(lisname?:string){
-    this.listService.getList(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
+    this.listService.getList(this.authService.getUserInfo()?.email,100,0,"","").subscribe(
        (res)=>{
         let allLists=res;
         this.listsArr = res.map(res=>{
