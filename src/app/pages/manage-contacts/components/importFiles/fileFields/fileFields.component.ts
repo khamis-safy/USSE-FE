@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ManageContactsService } from '../../../manage-contacts.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 interface FilesData{
   columnName:string,
@@ -29,7 +30,9 @@ export class FileFieldsComponent implements OnInit {
   constructor(    @Inject(MAT_DIALOG_DATA) public data:any,
   private listService: ManageContactsService,
   public dialogRef: MatDialogRef<FileFieldsComponent>,
-  private toaster: ToasterServices,    private authService:AuthService,
+  private toaster: ToasterServices,
+      private authService:AuthService,
+      private translate:TranslateService
   ) { }
 
   ngOnInit() {
@@ -158,7 +161,7 @@ export class FileFieldsComponent implements OnInit {
       (res)=>{
         this.loading=false;
         this.onClose(this.data)
-        this.toaster.success("Seccess")
+        this.toaster.success(this.translate.instant("COMMON.SUCC_MSG"))
       },
       (err)=>{
         this.loading=false;
