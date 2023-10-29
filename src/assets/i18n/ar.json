@@ -469,7 +469,8 @@
 "versions":"الإصدارات",
 "contacts have no lists":"جهات الاتصال لا تحتوي على قوائم",
 "open":"فتح",
-"already_uploaded":"تم تحميلها بالفعل."
+"already_uploaded":"تم تحميلها بالفعل.",
+"File_Size_Warning":"يجب أن يكون حجم الملف أقل من أو يساوي"
 
 
 }

@@ -8,6 +8,7 @@ import { SelectComponent } from '../select/component/select.component';
 import * as XLSX from "xlsx";
 import { TranslateService } from '@ngx-translate/core';
 import { ToasterServices } from '../us-toaster/us-toaster.component';
+import { AuthService } from '../../services/auth.service';
 const VALUE_ACCESSOR_CONFIG = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DragZoneComponent),
@@ -23,7 +24,10 @@ const VALUE_ACCESSOR_CONFIG = {
 export class DragZoneComponent implements OnInit {
   constructor(public dialog: MatDialog,
     private toaster:ToasterServices,
-    private translate:TranslateService) { }
+    private translate:TranslateService,
+    private authService:AuthService) { 
+      this.fileSize=this.authService.getAllowedFileSize();
+    }
   private _value!: any;
    filesList: any ;
    isTouched = false; // to handle on touched only once
@@ -90,11 +94,15 @@ async onChangeFile(e) {
 
   for (let item of e?.dataTransfer?.files?.length ? e?.dataTransfer?.files : e?.target?.files?.length ? e?.target?.files : []) {
       toBase64String = await this.toBase64(item);
-
-      // Check if the new file matches any existing file based on its base64 representation
+   
       const isReloaded = this.filesList.some(file => file.url === toBase64String);
 
-      if (isReloaded) {
+      if(this.isFileSizeNotAllowed(item.size,this.authService.getAllowedFileSize())){
+        this.toaster.warning(`${this.translate.instant("File_Size_Warning")} ${this.authService.getAllowedFileSize()} MB`)
+      }
+      // Check if the new file matches any existing file based on its base64 representation
+
+      else if (isReloaded) {
         reloadedFiles.push(item.name); // Add the name of the reloaded file to the list
       } 
        else {
@@ -187,5 +195,22 @@ async onChangeFile(e) {
   const fileInput = document.getElementById('fileInput') as HTMLInputElement;
   fileInput.value = ''; // Clear the input field value
 
+  }
+  isFileSizeNotAllowed(fileSize,allowedSize){
+      if(fileSize < 1024*1024){
+        return false
+      }
+      else{
+        let sizeInMB=(parseInt(fileSize)/1024/1024).toFixed(2);
+
+        if(sizeInMB > allowedSize){
+          return true;
+        }
+        else{
+          return false
+        }
+      }
+   
+    
   }
 }

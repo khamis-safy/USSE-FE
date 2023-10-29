@@ -99,7 +99,13 @@ export class SignupComponent implements OnInit ,OnDestroy{
           roles:res.roles[0]
         }
 
-
+        if(res.customerId!=""){
+          this.authService.setFileSizeBasedOnSubscription("S");
+        }
+        else{
+          const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
+          this.authService.setFileSizeBasedOnSubscription(subType);
+        }
            // Store the refresh token in a cookie
 
           

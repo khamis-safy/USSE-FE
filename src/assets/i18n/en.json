@@ -472,7 +472,8 @@
 "versions":"Versions",
 "contacts have no lists":"contacts have no lists",
 "open":"open",
-"already_uploaded":"already uploaded."
+"already_uploaded":"already uploaded.",
+"File_Size_Warning":"file size should be less than or equal"
 
 
 

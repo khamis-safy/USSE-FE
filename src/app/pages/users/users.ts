@@ -23,7 +23,7 @@ export interface Users  {
           isActive: boolean
       } []
  ,
-  subscriptions: [],
+  subscriptions: {name:string,value:string}[],
   permissions: {name:string,value:string}[],
   id: string,
   userName: string,
@@ -57,6 +57,8 @@ export interface UserData{
   phoneNumber:string;
   apiToken:string,
   timezone:string,
+  subscriptions: {name:string,value:string}[]
+
 }
 
 export interface Section{
