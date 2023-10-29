@@ -118,7 +118,6 @@ getListData(){
  let sub2= this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
      (res)=>{
       this.loading = false;
-      console.log(res)
 
         this.numRows=res.length;
   this.dataSource=new MatTableDataSource<ListData>(res);

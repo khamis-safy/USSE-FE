@@ -37,7 +37,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
           }
           if(error.status!=200 && error.status!=401){
 
-            console.error('HTTP error:', error);
+            // console.error('HTTP error:', error);
   
               // Check if 'error.error' exists before trying to access 'message'
               // Handle the error message as needed (e.g., display it to the user)

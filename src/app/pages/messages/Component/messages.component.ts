@@ -76,8 +76,7 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     this.router.navigateByUrl("/messages?tab="+this.selectedTab)
   }
   ngOnInit() {
-    let permission =this.messageService.messageasPermission
-    let customerId=this.authService.getUserInfo()?.customerId;
+   
 
 
   }

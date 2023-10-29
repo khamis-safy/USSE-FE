@@ -116,9 +116,9 @@ this.getDevices();
         }
       });
       if(this.devices.length==0){ 
-        this.deviceLoadingText='No Results';
-        // set no data design
-        this.noData=true
+        this.loading = false;
+        this.length=0;
+        this.noData=true;
       }
       else{
         this.noData=false
@@ -162,7 +162,7 @@ onSelect(device){
   this.deviceId=device.value;
   this.getCompaigns(this.deviceId)
   this.getDevicePermission(this.deviceId);
-      }
+}
 
 backToCompaigns(event){
 this.isCompagins=event;
@@ -177,7 +177,7 @@ this.getCompaigns(this.deviceId);
     this.loading = true;
     this.compaignsService.getCampaigns(email,shows,pageNum,search,deviceId).subscribe(
       (res)=>{
-
+        this.loading = false;
         this.dataSource=new MatTableDataSource<compaignDetails>(res);
         if(search!=""){
             this.length=res.length;
@@ -193,7 +193,6 @@ this.getCompaigns(this.deviceId);
 
 
         }
-        this.loading = false;
       },
       (err)=>{
         this.loading = false;
@@ -204,6 +203,7 @@ this.getCompaigns(this.deviceId);
     )
   }
 compaignsCount(deviceId){
+  this.loading=true
   let email=this.authService.getUserInfo()?.email;
   this.compaignsService.compaignsCount(email,deviceId).subscribe(
     (res)=>{

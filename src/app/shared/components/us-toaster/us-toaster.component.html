@@ -6,7 +6,7 @@
       'success': state == 'success'
     }"
   >
-    <div  class="toaster-content d-flex align-items-center h-100">
+    <div  class="toaster-content d-flex  h-100">
       <span class="me-4" *ngIf="state == 'error'">
         <img src="assets/icons/error.svg" alt="" />
       </span>
@@ -17,7 +17,10 @@
         <img src="assets/icons/succsess.svg" alt="" />
 
       </span>
-      {{ message }}
+      <p style="
+        margin: 0 !important;
+        max-width: 78%;
+    ">{{ message }}</p>
     </div>
     <mat-icon class="position-absolute top-0 end-0 m-3 pointer" (click)="onTagClose($event)">close</mat-icon>
   <span class="toaster-progress-bar position-absolute bottom-0 start-0"

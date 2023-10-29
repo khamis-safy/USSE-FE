@@ -61,10 +61,9 @@ else{
     const selectedTime =timecontrol.value;
     if (selectedTime) {
       this.utcDateTime = this.datePipe.transform(selectedTime,`yyyy-MM-ddTHH:mm:ss`, 'UTC');
-      console.log('UTC Time:', this.utcDateTime);
     }
     else {
-      console.error('Selected time is null or undefined');
+      
     }
   }
   getDevices(){

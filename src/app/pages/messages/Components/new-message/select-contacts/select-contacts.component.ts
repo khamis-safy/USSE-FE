@@ -317,12 +317,7 @@ onSelectList(state,listContacts:ListContacts){
     }
 
   }
-  console.log({
-    shoudBeClosed: listContacts.list.shoudBeClosed,
-    isChecked:listContacts.list.isChecked,
-    
-  },
-  (listContacts.list.isChecked ==='' && listContacts.list.shoudBeClosed))
+  
 
 }
 onClose(event:string){

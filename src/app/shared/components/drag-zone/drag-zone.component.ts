@@ -6,6 +6,8 @@ import { PreviewComponent } from './modals/preview/preview.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SelectComponent } from '../select/component/select.component';
 import * as XLSX from "xlsx";
+import { TranslateService } from '@ngx-translate/core';
+import { ToasterServices } from '../us-toaster/us-toaster.component';
 const VALUE_ACCESSOR_CONFIG = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DragZoneComponent),
@@ -19,7 +21,9 @@ const VALUE_ACCESSOR_CONFIG = {
   providers: [VALUE_ACCESSOR_CONFIG],
 })
 export class DragZoneComponent implements OnInit {
-  constructor(public dialog: MatDialog,) { }
+  constructor(public dialog: MatDialog,
+    private toaster:ToasterServices,
+    private translate:TranslateService) { }
   private _value!: any;
    filesList: any ;
    isTouched = false; // to handle on touched only once
@@ -77,53 +81,71 @@ export class DragZoneComponent implements OnInit {
       reader.onerror = reject;
   });
   }
-  async  onChangeFile(e){
-    e.preventDefault();
-    this.isTouched= true;
-    let toBase64String:any = '';
 
-    for(let item of e?.dataTransfer?.files?.length ? e?.dataTransfer?.files : e?.target?.files?.length ? e?.target?.files :[]){
-      toBase64String =await this.toBase64(item);
+async onChangeFile(e) {
+  e.preventDefault();
+  this.isTouched = true;
+  let toBase64String: any = '';
+  let reloadedFiles: string[] = [];
 
-      if(this.fileType!="" && !this.multiple){
-        if (item.name.endsWith('.xlsx') || item.name.endsWith('.xls')) {
-          this.invalid=false;
-          this.filesList=[];
-          const fileData = await this.readExcelData(item);
-          this.filesList.push(
-            {
-              name:item.name,
-              type:item.type,
-              url:toBase64String,
-              size:item.size,
-              excelData: fileData, // Store Excel data here
-            }
-          )
-        }
-        else{
-          this.invalid=true;
-        }
+  for (let item of e?.dataTransfer?.files?.length ? e?.dataTransfer?.files : e?.target?.files?.length ? e?.target?.files : []) {
+      toBase64String = await this.toBase64(item);
 
+      // Check if the new file matches any existing file based on its base64 representation
+      const isReloaded = this.filesList.some(file => file.url === toBase64String);
 
-      }
-      else{
-        this.filesList.push(
-          {
-            name:item.name,
-            type:item.type,
-            url:toBase64String,
-            size:item.size
+      if (isReloaded) {
+        reloadedFiles.push(item.name); // Add the name of the reloaded file to the list
+      } 
+       else {
+          // File is not already uploaded, add it to the list
+          if (this.fileType !== "" && !this.multiple) {
+              if (item.name.endsWith('.xlsx') || item.name.endsWith('.xls')) {
+                  this.invalid = false;
+                  const fileData = await this.readExcelData(item);
+                  this.filesList.push(
+                      {
+                          name: item.name,
+                          type: item.type,
+                          url: toBase64String,
+                          size: item.size,
+                          excelData: fileData // Store Excel data here
+                      }
+                  );
+              } else {
+                  this.invalid = true;
+              }
+          } else {
+              this.filesList.push(
+                  {
+                      name: item.name,
+                      type: item.type,
+                      url: toBase64String,
+                      size: item.size
+                  }
+              );
           }
-        )
       }
-
-    }
-
-    this.onChange(this.filesList);
-    this.handleTouched();
-    this.onFileChange.emit(toBase64String)
-    this.isLoading= false
   }
+
+  this.onChange(this.filesList);
+  this.handleTouched();
+  this.onFileChange.emit(toBase64String);
+ // Log a message if any file was reloaded
+ if (reloadedFiles.length > 0) {
+  const reloadedFilesMessage = `( ${reloadedFiles.join(', ')} ) ${this.translate.instant("already_uploaded")}`;
+  this.toaster.warning(reloadedFilesMessage)
+
+}
+  
+
+  this.isLoading = false;
+  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  fileInput.value = ''; // Clear the input field value
+}
+
+
+
   async readExcelData(fileData) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -161,7 +183,9 @@ export class DragZoneComponent implements OnInit {
     this.filesList.splice(index,1)
     this.onChange(this.filesList);
     this.onFileDelete.emit(true)
-
+  // Reset the input field to allow re-uploading the same file
+  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  fileInput.value = ''; // Clear the input field value
 
   }
 }

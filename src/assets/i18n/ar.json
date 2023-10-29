@@ -468,7 +468,8 @@
 "CONFIRM_LOGOUT_MSG":"هل أنت متأكد أنك تريد تسجيل الخروج؟",
 "versions":"الإصدارات",
 "contacts have no lists":"جهات الاتصال لا تحتوي على قوائم",
-"open":"فتح"
+"open":"فتح",
+"already_uploaded":"تم تحميلها بالفعل."
 
 
 }

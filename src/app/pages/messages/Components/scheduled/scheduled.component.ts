@@ -104,9 +104,9 @@ export class ScheduledComponent implements OnInit  {
         }
       });
       if(this.devices.length==0){
-        this.deviceLoadingText='No Results';
-        // set no data design
-        this.noData=true
+        this.loading = false;
+        this.length=0;
+        this.noData=true;
       }
       else{
         this.noData=false

@@ -91,7 +91,6 @@ showInputs:boolean=false;
     this.getLists();
     if(this.data){
 
-      console.log(this.data.contacts,this.data.contacts.additionalContactParameter)
       this.isEdit = true
       this.fillingData();
       // this.listsIds=this.data.lists.map((e)=>e.id)
@@ -273,7 +272,6 @@ checkIfFieldFound(name){
 
         (res)=>{
           this.isLoading = false
-          console.log("additional",this.additionalParameters)
           this.onClose(true);
                   this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
 
