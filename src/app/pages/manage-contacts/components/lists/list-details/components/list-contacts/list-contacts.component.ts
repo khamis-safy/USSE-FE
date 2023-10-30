@@ -51,12 +51,15 @@ dataSource:MatTableDataSource<Contacts>;
 selection = new SelectionModel<any>(true, []);
 
 @ViewChild(ContactsComponent) contacts:ContactsComponent;
+  display: number;
+  pageNum: number;
 constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
   private toaster: ToasterServices,
   private listService:ManageContactsService,
   private snackBar: MatSnackBar,    private authService:AuthService,
   ) {
-    
+    this.display=listService.getUpdatedDisplayNumber()
+    this.pageNum=this.listService.pageNum;
   activeRoute.paramMap.subscribe((data)=>
   {
   this.listId=data.get('id')
@@ -82,12 +85,11 @@ this.selection.changed.subscribe(
 getContacts(){
 
   let shows=this.listService.display;
-    let pageNum=this.listService.pageNum;
     let email=this.authService.getUserInfo()?.email;
     let orderedBy=this.listService.orderedBy;
     let search=this.listService.search;
     this.loading = true;
-    let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNum,orderedBy,search,this.listId).subscribe(
+    let sub1= this.listService.getContacts(email,this.isCanceled,shows,this.pageNum,orderedBy,search,this.listId).subscribe(
         (res)=>{
           if(this.isCanceled){
             this.length=this.count?.totalCancelContacts;
@@ -174,7 +176,8 @@ getContacts(){
     }
     onPageChange(event){
       this.listService.display=event.pageSize;
-      this.listService.pageNum=event.pageIndex;
+      this.pageNum=event.pageIndex;
+      this.listService.updateDisplayNumber(event.pageSize)
       this.selection.clear();
 
       this.getContacts();

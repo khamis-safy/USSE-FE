@@ -43,8 +43,8 @@ export class CompaignsDetailsComponent implements OnInit ,AfterViewInit{
 
     }
     resetTableData(ev){
-      this.compaignDetailsService.display=10;
-      this.compaignDetailsService.pageNum=0;
+      // this.compaignDetailsService.display=10;
+      // this.compaignDetailsService.pageNum=0;
       this.selectedTab = this.tabs[ev.index]
 
     }

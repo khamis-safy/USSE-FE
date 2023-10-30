@@ -7,6 +7,7 @@ import { FormControl } from '@angular/forms';
 import { CompaignsDetailsService } from '../../compaignsDetails.service';
 import { RECEPEINTHEADERS } from 'src/app/pages/compaigns/constants/contstants';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
 
 
 
@@ -27,8 +28,14 @@ export class RecipientActivitiesComponent implements OnInit, AfterViewInit,OnDes
 
   @Input() compaign!:compaignDetails;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  display: number;
+  pageNum: number;
   constructor(private compaignDetailsService:CompaignsDetailsService,
-    private authService:AuthService) {}
+    private compaignsService:CompaignsService,
+    private authService:AuthService) {
+      this.display=compaignsService.getUpdatedDisplayNumber();
+      this.pageNum=this.compaignsService.pageNum;
+    }
   ngOnInit() {
     this.columns=new FormControl(this.displayedColumns)
 
@@ -39,13 +46,12 @@ export class RecipientActivitiesComponent implements OnInit, AfterViewInit,OnDes
   getComMessages(){
     this.getComMessagesCount();
   let shows=this.compaignDetailsService.display;
-  let pageNum=this.compaignDetailsService.pageNum;
   let email=this.authService.getUserInfo()?.email;
 
 
   this.loading = true;
 
-    this.compaignDetailsService.listCampaignMessages(this.compaignId,email,shows,pageNum).subscribe(
+    this.compaignDetailsService.listCampaignMessages(this.compaignId,email,shows,this.pageNum).subscribe(
       (res)=>{
         this.loading = false;
 
@@ -74,8 +80,8 @@ export class RecipientActivitiesComponent implements OnInit, AfterViewInit,OnDes
 
   onPageChange(event){
     this.compaignDetailsService.display=event.pageSize;
-    this.compaignDetailsService.pageNum=event.pageIndex;
-
+    this.pageNum=event.pageIndex;
+    this.compaignsService.updateDisplayNumber(event.pageSize)
 
     this.getComMessages();
   }

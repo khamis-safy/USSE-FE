@@ -279,10 +279,10 @@ else{
   changeModal(ev){
     this.selectedTab = this.tabs[ev.index];
     this.updateQueryParams();
-    this.listService.display=10;
-    this.listService.pageNum=0;
-    this.listService.orderedBy='';
-    this.listService.search='';
+    // this.listService.display=10;
+    // this.listService.pageNum=0;
+    // this.listService.orderedBy='';
+    // this.listService.search='';
 
  
   }
@@ -317,10 +317,10 @@ else{
     )
   }
   ngOnDestroy(): void {
-    this.listService.display=10;
-    this.listService.pageNum=0;
-    this.listService.orderedBy='';
-    this.listService.search='';
+    // this.listService.display=10;
+    // this.listService.pageNum=0;
+    // this.listService.orderedBy='';
+    // this.listService.search='';
     this.routingObservable.unsubscribe()
   }
 }

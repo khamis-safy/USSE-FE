@@ -189,4 +189,10 @@ exportFileData(file){
  link.click();
 
    }
+   updateDisplayNumber(displayNum){
+    displayNum=this.display;
+   }
+  getUpdatedDisplayNumber(){
+    return this.display
+  }
 }

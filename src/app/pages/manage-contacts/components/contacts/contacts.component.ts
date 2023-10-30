@@ -52,7 +52,8 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   isSearch: boolean;
   noData: boolean=false;
   notFound: boolean=false;
-
+  display: number;
+  pageNum:number;
 
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
@@ -61,11 +62,11 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
     private translate: TranslateService,
     private authService:AuthService
   ) {
+    this.display=listService.getUpdatedDisplayNumber()
+    this.pageNum=this.listService.pageNum;
+
     }
   ngAfterViewInit() {
-    // fromEvent(this.search.nativeElement,'keyup').pipe{
-    //   map()
-    // }
   }
 
 
@@ -126,14 +127,13 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
 
   getContacts(){
   let shows=this.listService.display;
-  let pageNum=this.listService.pageNum;
   let email=this.authService.getUserInfo()?.email;
   let orderedBy=this.listService.orderedBy;
   let search=this.listService.search;
   let isCanceled=this.isUnsubscribe;
   this.loading = true;
 
-   let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNum,orderedBy,search,this.listId).subscribe(
+   let sub1= this.listService.getContacts(email,this.isCanceled,shows,this.pageNum,orderedBy,search,this.listId).subscribe(
       (res)=>{
         this.numRows=res.length;
         this.loading = false;
@@ -175,10 +175,9 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   }
 
 
-
-
   contactsCount(){
     let email=this.authService.getUserInfo()?.email;
+    this.loading=true;
 
     let sub2=this.listService.contactsCount(email,this.isCanceled).subscribe(
 
@@ -269,9 +268,9 @@ this.subscribtions.push(sub2)
   }
   onPageChange(event){
     this.listService.display=event.pageSize;
-    this.listService.pageNum=event.pageIndex;
+    this.pageNum=event.pageIndex;
+    this.listService.updateDisplayNumber(event.pageSize)
     this.selection.clear();
-
     this.getContacts();
 
   }

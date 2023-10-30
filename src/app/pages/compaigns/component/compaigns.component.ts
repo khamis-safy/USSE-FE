@@ -44,7 +44,12 @@ export class CompaignsComponent implements AfterViewInit ,OnInit,OnDestroy {
   });
   deviceId:string;
   permission:DevicesPermissions[];
-  constructor(private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router,private authService:AuthService){}
+  display: number;
+  pageNum: number;
+  constructor(private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router,private authService:AuthService){
+    this.display=compaignsService.getUpdatedDisplayNumber();
+    this.pageNum=this.compaignsService.pageNum;
+  }
 
 
   ngOnInit() {
@@ -171,11 +176,10 @@ this.getCompaigns(this.deviceId);
   getCompaigns(deviceId:string){
 
     let shows=this.compaignsService.display;
-    let pageNum=this.compaignsService.pageNum;
     let email=this.authService.getUserInfo()?.email;
     let search=this.compaignsService.search;
     this.loading = true;
-    this.compaignsService.getCampaigns(email,shows,pageNum,search,deviceId).subscribe(
+    this.compaignsService.getCampaigns(email,shows,this.pageNum,search,deviceId).subscribe(
       (res)=>{
         this.loading = false;
         this.dataSource=new MatTableDataSource<compaignDetails>(res);
@@ -231,8 +235,8 @@ compaignsCount(deviceId){
 
   onPageChange(event){
     this.compaignsService.display=event.pageSize;
-    this.compaignsService.pageNum=event.pageIndex;
-
+    this.pageNum=event.pageIndex;
+    this.compaignsService.updateDisplayNumber(event.pageSize)
     this.getCompaigns(this.deviceId);
 
   }
@@ -290,9 +294,9 @@ compaignsCount(deviceId){
     this.getCompaigns(this.deviceId);
   }
   ngOnDestroy(): void {
-    this.compaignsService.display=10;
-    this.compaignsService.pageNum=0;
-    this.compaignsService.search='';
+    // this.compaignsService.display=10;
+    // this.compaignsService.pageNum=0;
+    // this.compaignsService.search='';
   }
 }
 

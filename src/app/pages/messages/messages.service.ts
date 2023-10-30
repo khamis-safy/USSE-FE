@@ -102,5 +102,10 @@ sendWhatsappBusinessMessage( deviceid: string,targetPhoneNumber: string[],msgBod
   return this.http.post<any>(`${this.api}Message/sendWhatsappBusinessMessage`,data)
 
 }
-
+updateDisplayNumber(displayNum){
+  displayNum=this.display;
+ }
+getUpdatedDisplayNumber(){
+  return this.display
+}
 }

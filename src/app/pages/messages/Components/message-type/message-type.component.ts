@@ -20,7 +20,7 @@ import { TranslationService } from 'src/app/shared/services/translation.service'
   templateUrl: './message-type.component.html',
   styleUrls: ['./message-type.component.scss']
 })
-export class MessageTypeComponent implements OnInit ,OnDestroy {
+export class MessageTypeComponent implements OnInit ,OnDestroy ,AfterViewInit{
 
   length:number=0;
   numRows;
@@ -51,13 +51,19 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   notFound: boolean;
   isUser: boolean;
   permission:DevicesPermissions[];
+  pageNum: number;
+  display: number;
   constructor(public cdr: ChangeDetectorRef ,
     public dialog: MatDialog,
     private messageService:MessagesService,
     private authService:AuthService,
-    private translationService:TranslationService){}
+    private translationService:TranslationService){
+      this.display=this.messageService.getUpdatedDisplayNumber()
+      this.pageNum=this.messageService.pageNum;
+    }
   ngOnInit() {
-
+    
+  
     this.columns=new FormControl(this.displayedColumns)
 
     this.selection.changed.subscribe(
@@ -85,7 +91,9 @@ else{
 
 
     }
-
+    ngAfterViewInit(): void {
+      this.paginator.pageSize=this.messageService.display;
+      }
     getDevicePermission(deviceId:string){
       if(this.permission && this.isUser){
 
@@ -205,12 +213,11 @@ else{
 
     getMessages(deviceId:string){
       let shows=this.messageService.display;
-      let pageNum=this.messageService.pageNum;
       let email=this.messageService.email;
       let msgCategory=this.msgCategory;
       let search=this.messageService.search;
       this.loading = true;
-      let messagesSub=this.messageService.getMessages(email,msgCategory,shows,pageNum,search,deviceId).subscribe(
+      let messagesSub=this.messageService.getMessages(email,msgCategory,shows,this.pageNum,search,deviceId).subscribe(
         (res)=>{
           this.numRows=res.length;
 
@@ -314,7 +321,8 @@ else{
 
   onPageChange(event){
     this.messageService.display=event.pageSize;
-    this.messageService.pageNum=event.pageIndex;
+    this.pageNum=event.pageIndex;
+    this.messageService.updateDisplayNumber(event.pageSize)
     this.selection.clear();
 
     this.getMessages(this.deviceId);

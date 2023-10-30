@@ -91,13 +91,12 @@ else{
     }
   changeModal(ev){
     this.tab=this.tabs[ev.index];
-    this.listService.display=10;
-    this.listService.pageNum=0;
+    
     this.listContacts.selection.clear();
     if(this.listContacts.length){
 
-      this.listContacts.paginator.pageSize=this.listService.display;
-      this.listContacts.paginator.pageIndex=this.listService.pageNum;
+      // this.listContacts.paginator.pageSize=this.listService.display;
+      // this.listContacts.paginator.pageIndex=this.listService.pageNum;
     }
   }
   backTolists(){
@@ -238,9 +237,9 @@ exportSelectedContacts(){
   )
 }
 ngOnDestroy(): void {
-  this.listService.display=10;
-  this.listService.pageNum=0;
-  this.listService.orderedBy='';
-  this.listService.search='';
+  // this.listService.display=10;
+  // this.listService.pageNum=0;
+  // this.listService.orderedBy='';
+  // this.listService.search='';
 }
 }
