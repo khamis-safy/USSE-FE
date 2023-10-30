@@ -8,18 +8,21 @@
     <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
   </div>
 
-  <div  class="host {{class}} w-100" style="width:98%;min-width:11rem;padding: 2px;" [attr.data-count]="value?.length"
+  <div  class="host {{class}} w-100" style="width:98%;min-width:13rem;padding: 2px;" [attr.data-count]="value?.length"
     [ngClass]="{'multi': value?.length, 'disabled': isDisabled, 'error': isError, grouped, 'actions': actions && !grouped}">
     <ng-container *ngIf="!isMulti">
       <!-- Toggler -->
       <button #toggler type="button" class="toggler {{sizeInGroup}} {{orderInGroup}}" (click)="toggleDropdown()"
         [disabled]="isDisabled" [ngClass]="{'focus': isOpen && !actions , 'action-icon' : actionsIcon, isSearchable, hasBackground}">
         <i *ngIf="leadingIcon" class="icon_before {{leadingIcon}}"></i>
+        <img *ngIf="isListDevicesDropdown && value.deviceIcon" [src]="value.deviceIcon | deviceType" alt="" style="width: 10%;max-width: 17px;">
+
         <span class="placeholder text-netural-2 txt txt-sm" *ngIf="(isPlaceholderFixed || !value?.value || actions) && !actionsIcon"
           [ngClass]="{'black': value?.value || actions}">{{ placeholder }}
         </span>
         <i *ngIf="actionsIcon" class="si-more-horizotnal-outline actions-icon-class" [ngStyle]="{'order': 2}"></i>
         <span class="placeholder_selected" *ngIf="!isPlaceholderFixed && value?.value && !actions">
+
           <p class="placeholder_title txt txt-sm font-w-500">{{value?.title}}</p>
           <p *ngIf="value.caption" class="placeholder_caption txt txt-sm font-w-500">{{value.caption}}</p>
         </span>
@@ -60,6 +63,7 @@
             <ng-container *ngIf="value && selectionOnTop">
               <li class="list_item item_selected">
                 <sr-radio *ngIf="!isIndicatorDisabled" [disableControl]="true" state="checked"></sr-radio>
+                
                 <ng-container *ngIf="!value?.custom; else custom">
                   <p class="txt txt-sm">{{ value?.title }}</p>
                   <span *ngIf="value?.isDefault" class="lite">{{defaultOptionText}}</span>
@@ -75,6 +79,8 @@
               <li *ngIf="(!isSelected(option) && !option.label) || (!selectionOnTop && !option.label)" class="list_item"
                 (click)="onOptionSelected(option)" [ngClass]="{'item_selected': isSelected(option), 'list_item_disabled': option.isDisabled}">
                 <sr-radio *ngIf="!isIndicatorDisabled" [disableControl]="true" [disabled]="option.isDisabled" [state]="isSelected(option) ? 'checked' : ''"></sr-radio>
+                <img *ngIf="isListDevicesDropdown" [src]="option.deviceIcon | deviceType" alt="" style="width: 10%;max-width: 17px;">
+
                 <ng-container *ngIf="!option.custom; else custom">
                   <p class="txt txt-sm">{{ option?.title }}</p>
                   <span *ngIf="option?.isDefault" class="lite">{{defaultOptionText}}</span>

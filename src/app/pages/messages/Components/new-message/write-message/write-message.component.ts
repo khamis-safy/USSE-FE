@@ -53,7 +53,6 @@ export class WriteMessageComponent implements OnInit {
     this.templateService.getTemplates(this.templateService.email,10,0,"","").subscribe(
       (res)=>{
         this.allTemplates=res;
-        console.log(this.allTemplates)
         this.templates = this.allTemplates.map(res=>{
           return {
             title:res.templateName,
@@ -118,7 +117,6 @@ export class WriteMessageComponent implements OnInit {
 
 
   onFileChange(e){
-    console.log(this.fileData);
     this.files=true;
     this.emptyMessageAndFiles.emit(!this.form.valid && !this.files)
 

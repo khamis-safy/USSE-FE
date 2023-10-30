@@ -117,7 +117,8 @@ this.getDevices();
       this.devices = alldevices.map(res=>{
         return {
           title:res.deviceName,
-          value:res.id
+          value:res.id,
+          deviceIcon:res.deviceType
         }
       });
       if(this.devices.length==0){ 
@@ -137,7 +138,8 @@ this.getDevices();
         this.form.patchValue({
         devicesData: {
         title:alldevices[0]?.deviceName,
-        value:alldevices[0]?.id
+        value:alldevices[0]?.id,
+        deviceIcon:alldevices[0].deviceType
         }
 
         })
@@ -148,7 +150,8 @@ this.getDevices();
         this.form.patchValue({
           devicesData: {
           title:selected.title,
-          value:selected?.value
+          value:selected?.value,
+          deviceIcon:selected.deviceIcon
           }
 
           })

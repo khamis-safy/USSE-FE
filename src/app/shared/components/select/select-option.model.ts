@@ -30,6 +30,7 @@ export interface SelectOption {
   label?: string;
   color?: 'primary' | 'success' | 'warning' | 'danger';
   tooltip?: Tooltip;
+  deviceIcon?:any;
 }
 
 interface Tooltip {

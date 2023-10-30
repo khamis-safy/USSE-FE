@@ -52,7 +52,7 @@
           max-width: 512px;">
             <form [formGroup]="form"class="d-flex" style=" margin-inline: 20px;">
               <us-select
-
+                [isListDevicesDropdown]="true"
                 [data]="devices"
                 formControlName="devicesData"
                 [multiSelect]="false"

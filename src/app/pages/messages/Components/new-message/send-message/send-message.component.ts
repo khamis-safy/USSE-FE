@@ -75,7 +75,8 @@ else{
         this.devices = activeDevices.map(res=>{
           return {
             title:res.deviceName,
-            value:res.id
+            value:res.id,
+            deviceIcon:res.deviceType
           }
         });
         

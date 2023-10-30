@@ -8,9 +8,10 @@ import { RadioButtonModule } from '../radio-button/radio-button.module';
 import { SelectComponent } from './component/select.component';
 import { DynamicRendererComponent } from './component/dynamic-renderer/dynamic-renderer.component';
 import { TooltipModule } from '../tooltip/tooltip.module';
+import { DeviceType } from '../../pipes/deviceType.pipe';
 
 @NgModule({
-  declarations: [SelectComponent, SearchPipe, DynamicRendererComponent],
+  declarations: [SelectComponent, SearchPipe, DynamicRendererComponent,DeviceType],
   imports: [
     CommonModule,
     FormsModule,
