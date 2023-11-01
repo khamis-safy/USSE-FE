@@ -8,6 +8,8 @@ import { CompaignsDetailsService } from '../../compaignsDetails.service';
 import { RECEPEINTHEADERS } from 'src/app/pages/compaigns/constants/contstants';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ResendMessagesComponent } from 'src/app/pages/messages/Components/resendMessages/resendMessages.component';
 
 
 
@@ -19,7 +21,7 @@ import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
 export class RecipientActivitiesComponent implements OnInit, AfterViewInit,OnDestroy {
   columns :FormControl;
   displayed: string[] = RECEPEINTHEADERS;
-  displayedColumns: string[] = ['Mobile Number', 'Name', 'Updated At', 'Status'];
+  displayedColumns: string[] = ['Mobile Number', 'Name', 'Updated At', 'Status',"Ation"];
   loading;
   length:number=0;
 
@@ -30,7 +32,7 @@ export class RecipientActivitiesComponent implements OnInit, AfterViewInit,OnDes
   @ViewChild(MatPaginator) paginator: MatPaginator;
   display: number;
   pageNum: number;
-  constructor(private compaignDetailsService:CompaignsDetailsService,
+  constructor(private compaignDetailsService:CompaignsDetailsService,public dialog: MatDialog,
     private compaignsService:CompaignsService,
     private authService:AuthService) {
       this.display=compaignsService.getUpdatedDisplayNumber();
@@ -44,12 +46,12 @@ export class RecipientActivitiesComponent implements OnInit, AfterViewInit,OnDes
 
 
   getComMessages(){
-    this.getComMessagesCount();
   let shows=this.compaignDetailsService.display;
   let email=this.authService.getUserInfo()?.email;
 
 
   this.loading = true;
+  this.getComMessagesCount();
 
     this.compaignDetailsService.listCampaignMessages(this.compaignId,email,shows,this.pageNum).subscribe(
       (res)=>{
@@ -90,7 +92,30 @@ export class RecipientActivitiesComponent implements OnInit, AfterViewInit,OnDes
 
 
   }
-
+  reSendCampaingMessage(campaignID,failedMsg){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='465px';
+    dialogConfig.data ={
+      from:"CampaignDetails",
+      data: {
+        campaignId: campaignID,
+        messageIds:[failedMsg],
+        email: this.authService.getUserInfo().email,
+        resentAllFailedMessages: false
+      }
+    }
+    
+    const dialogRef = this.dialog.open(ResendMessagesComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.getComMessages();
+      }
+    });
+  }
   ngOnDestroy(): void {
     this.compaignDetailsService.display=10;
     this.compaignDetailsService.pageNum=0;

@@ -29,4 +29,7 @@ export class CompaignsDetailsService {
   listCampaignMessagesCount(id:string):Observable<number>{
     return this.http.get<number>(`${this.api}Message/listCampaignMessagesCount?id=${id}`);
   }
+  resendCampaignFailedMessages(data):Observable<any>{
+    return this.http.post<any>(`${this.api}Message/resendCampaignFailedMessages`,data);
+  }
 }

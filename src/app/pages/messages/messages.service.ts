@@ -108,4 +108,7 @@ updateDisplayNumber(displayNum){
 getUpdatedDisplayNumber(){
   return this.display
 }
+ressendFailedMessages(data):Observable<any>{
+  return this.http.post<any>(`${this.api}Message/resendFailedMessages`,data);
+}
 }

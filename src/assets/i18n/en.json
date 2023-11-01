@@ -473,7 +473,11 @@
 "contacts have no lists":"contacts have no lists",
 "open":"open",
 "already_uploaded":"already uploaded.",
-"File_Size_Warning":"file size should be less than or equal"
+"File_Size_Warning":"file size should be less than or equal",
+"Resend All Items":"Resend All Items",
+"Resend_Message_hint":"Are you sure you want to resend?",
+"resend":"resend",
+"Resend Selected Items":"Resend Selected Items"
 
 
 

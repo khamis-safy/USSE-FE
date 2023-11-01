@@ -20,6 +20,19 @@
         [appearance]="'danger'"
         (clicked)="openDeleteModal()">
       </us-button>
+      <us-button
+      *ngIf="isChecked && isMessages && selectedTab == 'failed'"
+      class="m-2"
+      [label]="'Resend Selected Items' | translate"
+      img="assets/icons/icon resend.svg"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'primary'"
+      (clicked)="resendSelectedMessages()"
+  >
+  </us-button>
       <us-button *ngIf="isMessages"
         class="m-2"
         label="{{ 'NEW_MESSAGE_LABEL' | translate }}"

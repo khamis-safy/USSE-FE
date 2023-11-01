@@ -14,6 +14,7 @@ import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { FAILED, INBOXHEADER, OUTBOX } from '../constants/messagesConst';
 import { TranslationService } from 'src/app/shared/services/translation.service';
+import { ResendMessagesComponent } from '../resendMessages/resendMessages.component';
 
 @Component({
   selector: 'app-message-type',
@@ -30,7 +31,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy ,AfterViewInit{
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef
   @Input() canEdit: boolean;
-
+  cellClick:boolean=false;
   // devices
   devices:SelectOption[];
   deviceLoadingText:string='Loading ...';
@@ -215,10 +216,10 @@ else{
 
 }
 
-    getMessages(deviceId:string){
+    getMessages(deviceId:string,msgCat?){
       let shows=this.messageService.display;
       let email=this.messageService.email;
-      let msgCategory=this.msgCategory;
+      let msgCategory=msgCat? msgCat : this.msgCategory;
       let search=this.messageService.search;
       this.loading = true;
       let messagesSub=this.messageService.getMessages(email,msgCategory,shows,this.pageNum,search,deviceId).subscribe(
@@ -239,7 +240,7 @@ else{
             }
         }
         else{
-          this.getMessagesCount(deviceId);
+          this.getMessagesCount(deviceId,msgCategory);
 
 
         }
@@ -253,10 +254,10 @@ else{
       )
       this.subscribtions.push(messagesSub)
     }
-    getMessagesCount(deviceId){
+    getMessagesCount(deviceId,msgCategory){
       this.loading=true
       let email=this.messageService.email;
-      let msgCategory=this.msgCategory;
+      
       this.messageService.getMessagesCount(email,msgCategory,deviceId).subscribe(
         (res)=>{
           this.length=res;
@@ -343,7 +344,7 @@ else{
       this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
     }
     else if(this.msgCategory=='failed'){
-      this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At'];
+      this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At',"Ation"];
       this.displayed = FAILED;
 
     }
@@ -351,6 +352,8 @@ else{
 
   }
   displayMessage(row){
+    if(!this.cellClick){
+
     const currentLang=this.translationService.getCurrentLanguage()
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='100vh';
@@ -368,7 +371,31 @@ else{
       }
 
     });
-
+  }
+  }
+  reSendMessage(msgId){
+   
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='465px';
+    dialogConfig.data ={
+      from:"messages",
+      data: {
+        messageIds:[msgId],
+        email: this.authService.getUserInfo().email,
+        deviceId: this.authService.selectedDeviceId
+      }
+    }
+  
+    const dialogRef = this.dialog.open(ResendMessagesComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.getMessages(this.authService.selectedDeviceId,"failed")
+      }
+    });
   }
   ngOnDestroy(){
     this.selection.clear()

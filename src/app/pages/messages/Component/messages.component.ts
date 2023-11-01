@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { ScheduledComponent } from '../Components/scheduled/scheduled.component';
 import { InitPaginationService } from 'src/app/shared/services/initPagination.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ResendMessagesComponent } from '../Components/resendMessages/resendMessages.component';
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
@@ -101,6 +102,30 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
       let id=this.messageType.deviceId
       this.messageType.getMessages(id);
 
+    });
+  }
+  resendSelectedMessages(){
+   const messagesIDs=this.isChecked.map((res)=>res.id)
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='465px';
+    dialogConfig.data ={
+      from:"messages",
+      data: {
+        messageIds:messagesIDs,
+        email: this.authService.getUserInfo().email,
+        deviceId: this.authService.selectedDeviceId
+      }
+    }
+   
+    const dialogRef = this.dialog.open(ResendMessagesComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.messageType.getMessages(this.authService.selectedDeviceId,"failed")
+      }
     });
   }
   onChecked(e){

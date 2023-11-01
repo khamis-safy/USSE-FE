@@ -10,6 +10,19 @@
         <p class="txt-xs mb-2" style="font-weight: 500; color: rgba(134, 134, 134, 1)">{{ compaign?.createdAt | toLocalTime | date: 'h:mm a , M/d/y ' }}</p>
       </div>
     </div>
+    <us-button
+    *ngIf="selectedTab=='activity'"
+    class="m-2"
+    [label]="'Resend All Items' | translate"
+    img="assets/icons/icon resend.svg"
+    [fill]="true"
+    [size]="'md'"
+    [loading]="false"
+    [disabled]="false"
+    [appearance]="'primary'"
+    (clicked)="resendAllCampaigns()"
+  >
+  </us-button>
   </div>
 
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent" (selectedTabChange)="resetTableData($event)">

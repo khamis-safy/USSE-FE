@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { compaignDetails } from '../../../campaigns';
@@ -7,6 +7,9 @@ import { CompaignsService } from '../../../compaigns.service';
 import { ReportSummaryComponent } from '../components/reportSummary/reportSummary.component';
 import { CompaignsDetailsService } from '../compaignsDetails.service';
 import { RecipientActivitiesComponent } from '../components/recipientActivities/recipientActivities.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
+import { ResendMessagesComponent } from 'src/app/pages/messages/Components/resendMessages/resendMessages.component';
 
 @Component({
   selector: 'app-compaignsDetails',
@@ -22,8 +25,9 @@ export class CompaignsDetailsComponent implements OnInit ,AfterViewInit{
   tabs=["summary","activity"]
   constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     private compaignsService:CompaignsService,
-    private compaignDetailsService:CompaignsDetailsService,
+    private campaignDetailsService:CompaignsDetailsService,
     private toaster: ToasterServices,
+    private authService:AuthService,
     private router:Router) {
     activeRoute.paramMap.subscribe((data)=>
     {
@@ -58,7 +62,30 @@ export class CompaignsDetailsComponent implements OnInit ,AfterViewInit{
       }
       )
     }
-
+    resendAllCampaigns(){
+      
+      const dialogConfig=new MatDialogConfig();
+      dialogConfig.disableClose = true;
+      dialogConfig.height='50vh';
+      dialogConfig.width='35vw';
+      dialogConfig.maxWidth='100%';
+      dialogConfig.minWidth='465px';
+      dialogConfig.data ={
+        from:"CampaignDetails",
+        data: {
+          campaignId: this.compaignId,
+          email: this.authService.getUserInfo().email,
+          resentAllFailedMessages: true
+        }
+      }
+     
+      const dialogRef = this.dialog.open(ResendMessagesComponent,dialogConfig);
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+        this.recipientActivitiesComponent.getComMessages()
+        }
+      });
+    }
     backToCompaigns(){
       this.router.navigateByUrl('compaigns')
         }
