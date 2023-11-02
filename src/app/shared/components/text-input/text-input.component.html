@@ -108,7 +108,7 @@
         (keyup.enter)="submit.emit(value)"
         (oncopy)="copy.emit(value)"
         (onpaste)="paste.emit(value)"
-        (click)="clicked.emit($event)"
+        (click)="getCursorPosition($event);clicked.emit($event)"
         (input)="input.emit($event)"
       >
       </textarea>
@@ -125,6 +125,22 @@
       >
       </i>
     </div>
+    <ng-container *ngIf="isEmoji">
+      <div class="d-flex flex-column position-relative">
+        <button style="width: fit-content;" mat-raised-button (click)="showEmoji=!showEmoji">emo</button>
+        <emoji-mart
+          class="position-absolute start-0 top-0"
+          style="margin-top: 40px;z-index: 10;"
+          (emojiClick)="addEmoji($event)"
+          *ngIf="showEmoji"
+          [darkMode]="false"
+          set="google"
+          [showPreview]="false"
+          ></emoji-mart>
+      </div>
+    </ng-container>
+
+
     <!-- Hint / caption -->
     <div *ngIf="hintText" class="hint mt-2" [ngClass]="{ error }">
       <i [class]="hintIcon"></i>

@@ -69,6 +69,7 @@ z
   // e.g. input:number that has a max limit and you wanna reset the value if it exceeded the limit
   @Input() validators?: Function[];
   @Input() isTextArea?: boolean;
+  @Input() isEmoji?: boolean = false;
 
   // Native Events
   @Output() keyup = new EventEmitter();
@@ -82,6 +83,7 @@ z
   @Output() submit = new EventEmitter(); // on enter click
   @Output() onIconClick = new EventEmitter(); // on icon click e.g. search-icon
 
+  showEmoji = false;
   get value(): any {
     return this.val;
   }
@@ -112,5 +114,17 @@ z
 
   onValueChange(element: any) {
     if (this.validators?.length) this.validators.forEach((fn) => fn(element));
+  }
+  addEmoji(e){
+    let val = this.value ? this.value : ""
+    let sym = e.emoji.unified.split('-')
+    let codesArray = []
+    sym.forEach(el => codesArray.push('0x' + el))
+    let emoji = String.fromCodePoint(...codesArray);
+    this.value =  val.slice(0, this.curPos) + emoji + val.slice(this.curPos)
+  }
+  curPos = 0;
+  getCursorPosition(e){
+    this.curPos = e.target.selectionStart;
   }
 }
