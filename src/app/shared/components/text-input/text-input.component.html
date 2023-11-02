@@ -126,16 +126,22 @@
       </i>
     </div>
     <ng-container *ngIf="isEmoji">
-      <div class="d-flex flex-column position-relative">
-        <button style="width: fit-content;" mat-raised-button (click)="showEmoji=!showEmoji">emo</button>
+      <div class="emo-con mx-2 mt-2 d-flex flex-column position-relative" (mouseover)="showEmoji=true" (mouseleave)="showEmoji=false" style="width: fit-content;">
+        <button class="btn rounded-3 shadow-sm bg-white d-flex justify-content-center align-items-center p-2">
+          <mat-icon class="material-symbols-outlined text-secondary" style="height: 21px;font-size: 23px;">
+            sentiment_satisfied
+          </mat-icon>
+        </button>
         <emoji-mart
           class="position-absolute start-0 top-0"
-          style="margin-top: 40px;z-index: 10;"
+          style="margin-top: 39px;z-index: 10;"
           (emojiClick)="addEmoji($event)"
           *ngIf="showEmoji"
+          [enableSearch]="false"
           [darkMode]="false"
           set="google"
           [showPreview]="false"
+          color="var(--clr-primary-600)"
           ></emoji-mart>
       </div>
     </ng-container>
