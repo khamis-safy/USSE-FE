@@ -292,7 +292,7 @@ else{
       this.loading=true
       let email=this.messageService.email;
       
-      this.messageService.getMessagesCount(email,msgCategory,deviceId).subscribe(
+      this.messageService.getMessagesCount(email,msgCategory,deviceId,filterdItems).subscribe(
         (res)=>{
           this.length=res;
           this.loading=false
