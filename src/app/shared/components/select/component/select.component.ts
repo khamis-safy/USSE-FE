@@ -40,6 +40,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
     return this._options;
   }
   /* Optional [ Settings ] */
+  @Input() forFiteringOnly: boolean = false;
   @Input() badgesLimit: number = 4;
   @Input() isSearchOnly: boolean = false;
   @Input() isListDevicesDropdown: boolean = false;
@@ -92,7 +93,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input() hasBackground?: boolean;
   // @ Add a class to identify the first and last buttons in group to adjust styles @ //
   @Input() orderInGroup?: 'first' | 'last';
-
+  @Input() fullWidth: boolean = false;
   // Outputs
   @Output() onSelect = new EventEmitter<SelectOption | null>();
   @Output() onDeSelect = new EventEmitter<SelectOption>();
@@ -190,6 +191,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
 
   // Main Methods
   toggleDropdown(): void {
+    console.log("from Toggle dropdown")
     this.isOpen = !this.isOpen;
     this.isTouched = true;
     if (!this.isOpen) {
@@ -242,11 +244,13 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   }
 
   onOptionSelected(o: SelectOption | null,child?:any): void {
-    if(o?.children) this.onOpenNestedList.emit(o);
-    if (this.isMulti && o) this.handleMultiSelect(o,child);
-    else this.handleSingleSelect(o);
-    this.onChange(this.cloneData(this.value));
-    this.handleTouched();
+console.log("on option selected")
+      if(o?.children) this.onOpenNestedList.emit(o);
+      if (this.isMulti && o) this.handleMultiSelect(o,child);
+      else this.handleSingleSelect(o);
+      this.onChange(this.cloneData(this.value));
+      this.handleTouched();
+    
   }
 
   onActionClicked(o: SelectOption): void {

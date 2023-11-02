@@ -1,5 +1,5 @@
-<section class="d-flex flex-lg-row flex-column align-items-center flex-nowrap gap-lg-4" >
-  <div class="d-none d-lg-block label-widget w-25 " *ngIf="optional || label" style=" min-width: 25%;">
+<section [ngClass]="{fullWidth}" class="us-select-container d-flex flex-lg-row flex-column align-items-center flex-nowrap gap-lg-4" >
+  <div class="d-none d-lg-block label-widget w-25 " *ngIf="optional || label" [style]="forFiteringOnly? 'min-width: 0' : 'min-width: 25%'">
     <label class="txt txt-sm text-nowrap d-flex" (click)="toggleDropdown()"><span class="text-wrap text-black txt txt-sm">{{label}}</span> <span style="color: red;">{{optional ? '' :"*"}}</span></label>
     <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
   </div>
@@ -8,7 +8,7 @@
     <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
   </div>
 
-  <div  class="host {{class}} w-100" style="width:98%;min-width:13rem;padding: 2px;" [attr.data-count]="value?.length"
+  <div  class="host {{class}} w-100"  style="width:98%;min-width:13rem;padding: 2px;" [attr.data-count]="value?.length"
     [ngClass]="{'multi': value?.length, 'disabled': isDisabled, 'error': isError, grouped, 'actions': actions && !grouped}">
     <ng-container *ngIf="!isMulti">
       <!-- Toggler -->
@@ -110,11 +110,23 @@
       <button type="button" class="toggler {{sizeInGroup}} {{orderInGroup}}"
         (click)="toggleDropdown()" [disabled]="isDisabled" #toggler
         [ngClass]="{'has-badges': !isPlaceholderFixed && !badgesNumberOnly && setCount(), 'focus': isOpen, isSearchable}">
-        <span *ngIf="leadingIcon" class="icon_before {{leadingIcon}}"></span>
-        <span class="placeholder txt txt-sm" [ngClass]="{'black': setCount()}"
-          *ngIf="(isPlaceholderFixed || !setCount())">{{ placeholder }}
-        </span>
-        <ng-container *ngIf="(togglerSearch && !isOpen) || !togglerSearch">
+        
+          <ng-container *ngIf="!forFiteringOnly">
+            <span *ngIf="leadingIcon" class="icon_before {{leadingIcon}}"></span>
+            <span class="placeholder txt txt-sm" [ngClass]="{'black': setCount()}"
+              *ngIf="(isPlaceholderFixed || !setCount())">{{ placeholder }}
+            </span>
+
+          </ng-container>
+
+        <span *ngIf="forFiteringOnly" class=" txt txt-sm" 
+        >
+         <span class="icon_before mx-2 "> <img src="assets/icons/filter.svg" alt=""></span>
+ 
+         <span>{{ placeholder }}</span>
+       </span>
+
+        <ng-container *ngIf="(togglerSearch && !isOpen && !forFiteringOnly) || !togglerSearch && !forFiteringOnly">
           <div class="badges" *ngIf="isMulti && !isPlaceholderFixed && setCount()">
             <ng-container *ngIf="!badgesNumberOnly">
               <ng-container *ngFor="let option of value; let i = index">
@@ -130,7 +142,7 @@
           </div>
         </ng-container>
         <i class="icon_after {{trailingIcon || 'si-down'}}" [ngClass]="{'flip-v': isOpen}"></i>
-        <input #searchbar *ngIf="isSearchable && togglerSearch && isOpen" type="text" [(ngModel)]="searchText"
+        <input #searchbar *ngIf="isSearchable && togglerSearch && isOpen && !forFiteringOnly" type="text" [(ngModel)]="searchText"
         (keyup.space)="$event.preventDefault()" (click)="$event.stopPropagation()" (ngModelChange)="search()" [placeholder]="searchPlaceholder">
       </button>
 

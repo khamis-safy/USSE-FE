@@ -24,7 +24,7 @@ export class DevicesComponent implements OnInit,OnDestroy{
   length:number;
   active:boolean=false;
   numRows;
-  loading;
+  loading:boolean = true;
   delay:number;
   @Input() isCanceled:boolean;
   noData: boolean;

@@ -31,7 +31,7 @@ sortBy;
 @Output() allContactsFromChild = new EventEmitter<any>;
 
   selectedListsNum:number=0;
-
+  LoadingText:string=this.translate.instant('Loading')
   contacts: Contacts[] = [];
   addedContacts: Contacts[] = [];
   allContactsData:Contacts[] = [];
@@ -535,6 +535,9 @@ getAllContacts(search?:string){
             }
           })
         })
+        if(this.allContactsData.length==0){
+          this.LoadingText=this.translate.instant('No Results')
+        }
       }
       else{
         this.allContacts=[];

@@ -26,7 +26,10 @@ export class InputComponent {
 
   onChange: any = () => {};
   onTouched: any = () => {};
-
+  isPasswordVisible: boolean = false;
+  togglePasswordVisibility() {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
@@ -81,7 +84,7 @@ export class InputComponent {
   // Custom Events
   @Output() submit = new EventEmitter(); // on enter click
   @Output() onIconClick = new EventEmitter(); // on icon click e.g. search-icon
-
+  @Input() inputType: 'text' | 'password' = 'text';
   get value(): any {
     return this.val;
   }

@@ -23,6 +23,7 @@ export class CompaignsDetailsComponent implements OnInit ,AfterViewInit{
   @ViewChild(RecipientActivitiesComponent) recipientActivitiesComponent:RecipientActivitiesComponent;
   selectedTab="summary";
   tabs=["summary","activity"]
+  length: number;
   constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     private compaignsService:CompaignsService,
     private campaignDetailsService:CompaignsDetailsService,
@@ -88,6 +89,9 @@ export class CompaignsDetailsComponent implements OnInit ,AfterViewInit{
     }
     backToCompaigns(){
       this.router.navigateByUrl('compaigns')
+        }
+        getTabLength(ev){
+          this.length=ev
         }
   }
 

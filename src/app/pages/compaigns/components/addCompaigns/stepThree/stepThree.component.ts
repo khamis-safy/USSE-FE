@@ -5,6 +5,7 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { DatePipe } from '@angular/common';
 import { CompaignsService, DevicesPermissions } from '../../../compaigns.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stepThree',
@@ -12,7 +13,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./stepThree.component.scss']
 })
 export class StepThreeComponent implements OnInit ,OnDestroy{
-  deviceLoadingText:string='Loading ...';
+  deviceLoadingText:string=this.translate.instant('Loading')
   @ViewChild("dateTime") dateTime!: ElementRef;
 
   permission:DevicesPermissions[];
@@ -34,7 +35,7 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   @Output() formValidityChange = new EventEmitter<boolean>(true);
   @Output() isSelectedDevices = new EventEmitter<boolean>(true);
 
-  constructor(private devicesService:DevicesService,private datePipe: DatePipe,private compaignsService:CompaignsService,private authService:AuthService) { }
+  constructor( private translate:TranslateService,private devicesService:DevicesService,private datePipe: DatePipe,private compaignsService:CompaignsService,private authService:AuthService) { }
   ngOnDestroy(): void {
 
     this.timeSub$.unsubscribe()
@@ -121,11 +122,11 @@ else{
         // }
         // console.log(this.devices)
         if(activeDevices.length==0){
-          this.deviceLoadingText='No Results'
+          this.deviceLoadingText=this.translate.instant('No Results')
         }
        },
        (err)=>{
-        this.deviceLoadingText='No Results'
+        this.deviceLoadingText=this.translate.instant('No Results')
 
        })
   }

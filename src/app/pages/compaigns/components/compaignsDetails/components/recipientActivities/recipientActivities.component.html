@@ -1,5 +1,20 @@
 <section class="py-3 d-flex flex-column gap-3">
-  <div class="d-flex justify-content-end align-items-center ">
+  <div class="d-flex justify-content-end gap-4 align-items-center ">
+    <form [formGroup]="filteringForm" class="d-flex" style="width: 230px;">
+      <us-select
+      class="mx-3"
+        [data]="filters"
+        formControlName="filterdData"
+        [multiSelect]="true"
+        [isDisabled]="false"
+        (onSelect)="selectFilter($event)"
+        (onDeSelect)="deselectFilter($event)"
+        [optional]="true"
+        [forFiteringOnly]="true"
+        [placeholder]="'filter' |translate"
+        [fullWidth]="true"
+      ></us-select>
+    </form>
     <mat-form-field class="us-select ">
       <mat-label class="txt-caption">
         <img src="assets/icons/display.svg" alt="" class="m-2" width="15">
@@ -9,6 +24,7 @@
         <mat-option *ngFor="let topping of displayed" [value]="topping.value">{{ topping.title | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
+   
   </div>
   <ng-container *ngIf="length > 0">
     <section class="table-wrapper">

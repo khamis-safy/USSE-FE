@@ -477,7 +477,14 @@
 "Resend All Items":"Resend All Items",
 "Resend_Message_hint":"Are you sure you want to resend?",
 "resend":"resend",
-"Resend Selected Items":"Resend Selected Items"
+"Resend Selected Items":"Resend Selected Items",
+"filter":"filter",
+"Loading":"Loading...",
+"No Results":"No Results",
+"Campaign Settings":"Campaign Settings",
+"Randomize interval":"Randomize interval",
+"Max recipients per day":"Max recipients per day",
+"Sending out time":"Sending out time"
 
 
 

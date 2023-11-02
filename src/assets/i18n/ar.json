@@ -474,7 +474,14 @@
 "Resend All Items":"إعادة إرسال كافة العناصر",
 "Resend_Message_hint":"هل أنت متأكد أنك تريد إعادة الإرسال؟",
 "resend":"إعادة الإرسال",
-"Resend Selected Items":"إعادة إرسال العناصر المحددة"
+"Resend Selected Items":"إعادة إرسال العناصر المحددة",
+"filter":"فلتره",
+"Loading":"جاري التحميل...",
+"No Results":"لا توجد نتائج",
+"Campaign Settings":"إعدادات الحملة",
+"Randomize interval":"الفاصل الزمني العشوائي",
+"Max recipients per day":"الحد الأقصى للمستلمين في اليوم",
+"Sending out time":"وقت الإرسال"
 
 
 }

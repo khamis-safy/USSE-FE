@@ -15,6 +15,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { FAILED, INBOXHEADER, OUTBOX } from '../constants/messagesConst';
 import { TranslationService } from 'src/app/shared/services/translation.service';
 import { ResendMessagesComponent } from '../resendMessages/resendMessages.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-message-type',
@@ -28,6 +29,8 @@ export class MessageTypeComponent implements OnInit ,OnDestroy ,AfterViewInit{
   loading:boolean=true;
   @Input() msgCategory:string="inbox"
   @Output() isChecked = new EventEmitter<Message[]>;
+  @Output() selectedDeviceId = new EventEmitter<string>;
+
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef
   @Input() canEdit: boolean;
@@ -39,6 +42,13 @@ export class MessageTypeComponent implements OnInit ,OnDestroy ,AfterViewInit{
   form = new FormGroup({
     devicesData:this.devicesData,
   });
+
+
+  filterdData :any= new FormControl([]);
+  filteringForm= new FormGroup({
+    filterdData:this.filterdData,
+  });
+filters:any;
   deviceId:string;
 
   columns :FormControl;
@@ -58,12 +68,33 @@ export class MessageTypeComponent implements OnInit ,OnDestroy ,AfterViewInit{
     public dialog: MatDialog,
     private messageService:MessagesService,
     private authService:AuthService,
+    private translate:TranslateService,
     private translationService:TranslationService){
       this.display=this.messageService.getUpdatedDisplayNumber()
       this.pageNum=this.messageService.pageNum;
+
+      this.filters=[
+        {title:this.translate.instant("Pending") ,value:1},
+        {title:this.translate.instant("Sent") ,value:2},
+        {title:this.translate.instant("Delivered") ,value:3},
+        {title:this.translate.instant("Read") ,value:4}
+      
+      ]
     }
-  ngOnInit() {
+    selectedItems:any=[
+      {title:this.translate.instant("Pending") ,value:1},
+      {title:this.translate.instant("Sent") ,value:2},
+      {title:this.translate.instant("Delivered") ,value:3},
+      {title:this.translate.instant("Read") ,value:4}
     
+    ]
+
+  ngOnInit() {
+    this.filteringForm.patchValue({
+      filterdData:this.selectedItems
+    }
+    
+    )
   
     this.columns=new FormControl(this.displayedColumns)
 
@@ -176,6 +207,7 @@ else{
         this.noData=false
 
         this.deviceId=res[0].id;
+        this.selectedDeviceId.emit(this.deviceId)
 
       this.getDevicePermission(this.deviceId);
 
@@ -194,6 +226,8 @@ else{
         else{
           let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
           this.deviceId=this.authService.selectedDeviceId;
+          this.selectedDeviceId.emit(this.deviceId)
+
           this.form.patchValue({
             devicesData: {
             title:selected.title,
@@ -206,7 +240,8 @@ else{
         }
         this.getMessages(this.deviceId);
 
-    }},
+    }
+  },
     (err)=>{
       this.loading = false;
       this.length=0;
@@ -216,13 +251,13 @@ else{
 
 }
 
-    getMessages(deviceId:string,msgCat?){
+    getMessages(deviceId:string,msgCat?,filterdItems?){
       let shows=this.messageService.display;
       let email=this.messageService.email;
       let msgCategory=msgCat? msgCat : this.msgCategory;
       let search=this.messageService.search;
       this.loading = true;
-      let messagesSub=this.messageService.getMessages(email,msgCategory,shows,this.pageNum,search,deviceId).subscribe(
+      let messagesSub=this.messageService.getMessages(email,msgCategory,shows,this.pageNum,search,deviceId,filterdItems).subscribe(
         (res)=>{
           this.numRows=res.length;
 
@@ -240,8 +275,7 @@ else{
             }
         }
         else{
-          this.getMessagesCount(deviceId,msgCategory);
-
+          this.getMessagesCount(deviceId,msgCategory,filterdItems);
 
         }
         },
@@ -254,7 +288,7 @@ else{
       )
       this.subscribtions.push(messagesSub)
     }
-    getMessagesCount(deviceId,msgCategory){
+    getMessagesCount(deviceId,msgCategory,filterdItems?){
       this.loading=true
       let email=this.messageService.email;
       
@@ -274,6 +308,8 @@ else{
     onSelect(device){
       this.selection.clear()
       this.deviceId=device.value;
+      this.selectedDeviceId.emit(this.deviceId)
+
       this.authService.selectedDeviceId=device.value
       this.getMessages(this.deviceId);
       this.getDevicePermission(this.deviceId);
@@ -386,7 +422,7 @@ else{
       data: {
         messageIds:[msgId],
         email: this.authService.getUserInfo().email,
-        deviceId: this.authService.selectedDeviceId
+        deviceId: this.deviceId
       }
     }
   
@@ -400,6 +436,16 @@ else{
   ngOnDestroy(){
     this.selection.clear()
     this.subscribtions.map(e=>e.unsubscribe());
+  }
+  selectFilter(item){
+  // this.selectedItems.push(item);
+      let selected= this.selectedItems.map((sel)=>sel.value-1)
+  this.getMessages(this.deviceId,"outbox",selected )  
+  }
+  deselectFilter(item){
+      let selected= this.selectedItems.map((sel)=>sel.value-1)
+    this.getMessages(this.deviceId,"outbox",selected )   
+
   }
 }
 

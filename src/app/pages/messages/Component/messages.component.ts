@@ -45,6 +45,7 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
   isChecked;
   isMessages:boolean=true;
   canEdit:boolean;
+  deviceID:string;
   @ViewChild(MessageTypeComponent) messageType:MessageTypeComponent;
   @ViewChild(ScheduledComponent) scheduled:ScheduledComponent;
   routingObservable;
@@ -85,6 +86,9 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     // this.messageType.getDevices("inbox");
 
   }
+  setDeviceIdFromChild(devid){
+    this.deviceID=devid
+  }
   openDeleteModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -117,7 +121,7 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
       data: {
         messageIds:messagesIDs,
         email: this.authService.getUserInfo().email,
-        deviceId: this.authService.selectedDeviceId
+        deviceId: this.deviceID
       }
     }
    

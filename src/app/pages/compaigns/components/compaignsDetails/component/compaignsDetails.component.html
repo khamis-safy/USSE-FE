@@ -11,7 +11,7 @@
       </div>
     </div>
     <us-button
-    *ngIf="selectedTab=='activity'"
+    *ngIf="selectedTab=='activity' && length>0"
     class="m-2"
     [label]="'Resend All Items' | translate"
     img="assets/icons/icon resend.svg"
@@ -39,7 +39,7 @@
         <img src="assets/icons/recip-activite.svg" alt="" class="px-2">
         {{ 'recipientActivitiesLabel' | translate }}
       </ng-template>
-      <app-recipientActivities *ngIf="selectedTab=='activity'" [compaignId]="compaignId" [compaign]="compaign"></app-recipientActivities>
+      <app-recipientActivities *ngIf="selectedTab=='activity'" (tableDataLength)="getTabLength($event)" [compaignId]="compaignId" [compaign]="compaign"></app-recipientActivities>
     </mat-tab>
   </mat-tab-group>
 </section>
