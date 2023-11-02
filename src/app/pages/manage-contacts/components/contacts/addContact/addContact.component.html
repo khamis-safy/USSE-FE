@@ -110,6 +110,7 @@
         ></us-input>
 
         <us-select
+          *ngIf="!isFromListDetails"
           [data]="listsArr"
           formControlName="selectedLists"
           [multiSelect]="true"

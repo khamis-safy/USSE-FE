@@ -66,7 +66,7 @@ oldData;
 invalidName:boolean;
 additionalParameters:{name:string, value:string}[]=[];
 cachedFields:{name:string, value:string}[]=[];
-
+isFromListDetails:boolean;
 subscribe:Subscription;
 showInputs:boolean=false;
   // listsIds:string[]=[""];
@@ -90,7 +90,12 @@ showInputs:boolean=false;
     })
     this.getLists();
     if(this.data){
-
+      if(this.data.listDetails){
+        this.isFromListDetails=true;
+      }
+      else{
+        this.isFromListDetails=false;
+      }
       this.isEdit = true
       this.fillingData();
       // this.listsIds=this.data.lists.map((e)=>e.id)
@@ -261,7 +266,6 @@ checkIfFieldFound(name){
       companyName:this.form.value.cnName || "",
       note: this.form.value.note || "",
       email: this.email,
-      newListId:listsIds,
       additionalContactParameters: this.additionalParameters
 
     }
