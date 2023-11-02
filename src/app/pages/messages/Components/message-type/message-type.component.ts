@@ -429,7 +429,8 @@ else{
     const dialogRef = this.dialog.open(ResendMessagesComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.getMessages(this.authService.selectedDeviceId,"failed")
+        this.getMessages(this.deviceId,"failed");
+        
       }
     });
   }

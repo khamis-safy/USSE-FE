@@ -128,7 +128,8 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     const dialogRef = this.dialog.open(ResendMessagesComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.messageType.getMessages(this.authService.selectedDeviceId,"failed")
+        this.messageType.selection.clear();
+        this.messageType.getMessages(this.deviceID,"failed")
       }
     });
   }
