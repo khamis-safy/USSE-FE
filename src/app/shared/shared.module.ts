@@ -47,13 +47,14 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptorService } from '../interceptors/error-interceptor.service';
 import { ClickOutsideDirective } from './directives/clickOutside.directive';
 import { ConfirmLogOutComponent } from './components/side-bar/components/confirmLogOut/confirmLogOut.component';
-
 export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE_SERVICE');
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
 @NgModule({
   imports: [
+    PickerModule,
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
@@ -84,8 +85,7 @@ export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE
     DragZoneModule,
     NbTimepickerModule,
     NbDatepickerModule,
-    TranslateModule
-
+    TranslateModule,
   ],
   declarations: [
     SideBarComponent,
@@ -100,7 +100,7 @@ export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE
     WriteMessageComponent,
     ClickOutsideDirective,
     ConfirmLogOutComponent,
-    
+
   ],
   exports:[
     SideBarComponent,

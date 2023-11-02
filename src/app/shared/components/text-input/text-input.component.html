@@ -34,7 +34,6 @@
       </div>
 
       <input
-      style="position: relative;"
         #srInputEl
         [(ngModel)]="value"
         [ngClass]="{
@@ -42,7 +41,7 @@
           has_icon_trailing: iconClass && trailingIcon
         }"
         [id]="key"
-        [type]="type === 'password' && isPasswordVisible ? 'text' : type"
+        [type]="type"
         [placeholder]="placeholder"
         [required]="!optional"
         [disabled]="isDisabled"
@@ -64,15 +63,14 @@
       <div *ngIf="suffix" class="suffix">
         <p class="txt txt-sm">{{ suffix }}</p>
       </div>
-      <!-- <i
-      *ngIf="type === 'password'"
-      class="icon"
-      [ngClass]="isPasswordVisible ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash'"
-      (click)="togglePasswordVisibility()"
-    ></i>  -->
-    <div  *ngIf="type === 'password'" style="position: absolute;right: 6%; cursor:pointer" (click)="togglePasswordVisibility()">
-      <img [src]="isPasswordVisible? 'assets/icons/showPass.svg':'assets/icons/hidePass.svg'" style="max-width: 20px;">
-    </div>
+
+      <i
+        *ngIf="iconClass"
+        class="icon {{ iconClass }}"
+        [ngStyle]="{ order: trailingIcon ? 1 : -1 }"
+        (click)="onIconClick.emit()"
+      >
+      </i>
 
       <div *ngIf="type == 'number'" class="steppers">
         <button (click)="increment()"><i class="si-up"></i></button>
@@ -110,7 +108,7 @@
         (keyup.enter)="submit.emit(value)"
         (oncopy)="copy.emit(value)"
         (onpaste)="paste.emit(value)"
-        (click)="clicked.emit($event)"
+        (click)="getCursorPosition($event);clicked.emit($event)"
         (input)="input.emit($event)"
       >
       </textarea>
@@ -127,6 +125,28 @@
       >
       </i>
     </div>
+    <ng-container *ngIf="isEmoji">
+      <div class="emo-con mx-2 mt-2 d-flex flex-column position-relative" (mouseover)="showEmoji=true" (mouseleave)="showEmoji=false" style="width: fit-content;">
+        <button class="btn rounded-3 shadow-sm bg-white d-flex justify-content-center align-items-center p-2">
+          <mat-icon class="material-symbols-outlined text-secondary" style="height: 21px;font-size: 23px;">
+            sentiment_satisfied
+          </mat-icon>
+        </button>
+        <emoji-mart
+          class="position-absolute start-0 top-0"
+          style="margin-top: 39px;z-index: 10;"
+          (emojiClick)="addEmoji($event)"
+          *ngIf="showEmoji"
+          [enableSearch]="false"
+          [darkMode]="false"
+          set="google"
+          [showPreview]="false"
+          color="var(--clr-primary-600)"
+          ></emoji-mart>
+      </div>
+    </ng-container>
+
+
     <!-- Hint / caption -->
     <div *ngIf="hintText" class="hint mt-2" [ngClass]="{ error }">
       <i [class]="hintIcon"></i>
