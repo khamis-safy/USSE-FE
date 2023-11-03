@@ -191,7 +191,6 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
 
   // Main Methods
   toggleDropdown(): void {
-    console.log("from Toggle dropdown")
     this.isOpen = !this.isOpen;
     this.isTouched = true;
     if (!this.isOpen) {
@@ -244,7 +243,6 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   }
 
   onOptionSelected(o: SelectOption | null,child?:any): void {
-console.log("on option selected")
       if(o?.children) this.onOpenNestedList.emit(o);
       if (this.isMulti && o) this.handleMultiSelect(o,child);
       else this.handleSingleSelect(o);

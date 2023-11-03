@@ -27,7 +27,7 @@ interface CheckedCont{
 })
 export class AddContactComponent implements OnInit,OnDestroy{
 // isChanged:boolean=false;
-listsLoadingText:string='Loading ...';
+listsLoadingText:string=this.translate.instant('Loading')
 email:string=this.authService.getUserInfo()?.email;
   // lists: ListData[] ;
   listsArr:SelectOption[]
@@ -200,12 +200,13 @@ checkIfFieldFound(name){
         })
       }
       if(res.length==0){
-        this.listsLoadingText='No Results'
+        this.listsLoadingText=this.translate.instant('No Results')
       }
       },
       (err)=>{
         // this.onClose(false);
         // this.toaster.error("Error")
+        this.listsLoadingText=this.translate.instant('No Results')
 
       })
   }
@@ -326,5 +327,8 @@ checkIfFieldFound(name){
   }
   ngOnDestroy() {
     this.subscribe.unsubscribe()
+  }
+  onSearch(){
+    this.listsLoadingText=this.translate.instant('No Results')
   }
 }

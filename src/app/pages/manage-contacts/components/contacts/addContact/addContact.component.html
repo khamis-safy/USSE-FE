@@ -120,7 +120,9 @@
           [optional]="true"
           [loadingText]="listsLoadingText"
           [enableSearch]="true"
-          [searchbarOnToggler]="true"
+          (onSearch)="onSearch()"
+          [showSelectionOnTop]="true"
+          [searchbarOnToggler]="false"
           [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
           [maxListItemsWithoutSearch]="5"
         ></us-select>
