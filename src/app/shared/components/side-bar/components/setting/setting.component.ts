@@ -158,7 +158,7 @@ export class SettingComponent implements OnInit{
       document.execCommand('copy');
       alert('API token copied to clipboard!');
     } catch (err) {
-      console.error('Unable to copy API token:', err);
+      // console.error('Unable to copy API token:', err);
       alert('An error occurred while copying the API token. Please copy it manually.');
     } finally {
       // Remove the temporary input element

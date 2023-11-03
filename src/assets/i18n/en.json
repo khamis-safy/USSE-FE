@@ -471,7 +471,20 @@
 "CONFIRM_LOGOUT_MSG":"are you sure you want to log out?",
 "versions":"Versions",
 "contacts have no lists":"contacts have no lists",
-"open":"open"
+"open":"open",
+"already_uploaded":"already uploaded.",
+"File_Size_Warning":"file size should be less than or equal",
+"Resend All Items":"Resend All Items",
+"Resend_Message_hint":"Are you sure you want to resend?",
+"resend":"resend",
+"Resend Selected Items":"Resend Selected Items",
+"filter":"filter",
+"Loading":"Loading...",
+"No Results":"No Results",
+"Campaign Settings":"Campaign Settings",
+"Randomize interval":"Randomize interval",
+"Max recipients per day":"Max recipients per day",
+"Sending out time":"Sending out time"
 
 
 

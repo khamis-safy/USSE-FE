@@ -33,7 +33,7 @@ interface DeviceData {
 
 export class AuthService {
   private api: string = environment.api;
-
+  allowedFileSize:any;
   selectedDeviceId:string="";
   code!:string;
   email:string;
@@ -87,6 +87,13 @@ constructor(private loginService:LoginService,
             
           }
           this.updateUserInfo(data);
+          if(res.customerId!=""){
+            this.setFileSizeBasedOnSubscription("S");
+          }
+          else{
+            const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
+            this.setFileSizeBasedOnSubscription(subType);
+          }
           resolve(this.userInfo);
         },
         (error) => {
@@ -304,4 +311,15 @@ devicesPermissions(permissions:PermissionData[],name:string){
   return this.http.get<any>(`${this.api}Auth/getVersion`)
 }
 
+setFileSizeBasedOnSubscription(subscripionType:string){
+  if(subscripionType=="T"){
+    this.allowedFileSize=5
+  }
+  else{
+    this.allowedFileSize=15
+  }
+}
+getAllowedFileSize(){
+  return this.allowedFileSize
+}
   }

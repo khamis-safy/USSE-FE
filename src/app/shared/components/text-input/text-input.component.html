@@ -41,7 +41,7 @@
           has_icon_trailing: iconClass && trailingIcon
         }"
         [id]="key"
-        [type]="type"
+        [type]="type === 'password' && isPasswordVisible ? 'text' : type"
         [placeholder]="placeholder"
         [required]="!optional"
         [disabled]="isDisabled"
@@ -64,13 +64,16 @@
         <p class="txt txt-sm">{{ suffix }}</p>
       </div>
 
-      <i
+      <div  *ngIf="type === 'password'" style="position: absolute;right: 6%; cursor:pointer" (click)="togglePasswordVisibility()">
+        <img [src]="isPasswordVisible? 'assets/icons/showPass.svg':'assets/icons/hidePass.svg'" style="max-width: 20px;">
+      </div>
+      <!-- <i
         *ngIf="iconClass"
         class="icon {{ iconClass }}"
         [ngStyle]="{ order: trailingIcon ? 1 : -1 }"
         (click)="onIconClick.emit()"
       >
-      </i>
+      </i> -->
 
       <div *ngIf="type == 'number'" class="steppers">
         <button (click)="increment()"><i class="si-up"></i></button>
@@ -123,7 +126,7 @@
         [ngStyle]="{ order: trailingIcon ? 1 : -1 }"
         (click)="onIconClick.emit()"
       >
-      </i>
+      </i> 
     </div>
     <ng-container *ngIf="isEmoji">
       <div class="emo-con mx-2 mt-2 d-flex flex-column position-relative" (mouseover)="showEmoji=true" (mouseleave)="showEmoji=false" style="width: fit-content;">
@@ -133,8 +136,7 @@
           </mat-icon>
         </button>
         <emoji-mart
-          class="position-absolute start-0 top-0"
-          style="margin-top: 39px;z-index: 10;"
+          class="position-absolute start-0 top-0 emoji-pick"
           (emojiClick)="addEmoji($event)"
           *ngIf="showEmoji"
           [enableSearch]="false"

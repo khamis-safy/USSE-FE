@@ -38,7 +38,6 @@ recipients:any;
       }
       else{
        this.userName= this.data.message.chat.chatName.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
-        console.log(this.data.message.chat.chatName.split(" ",2))
       }
       this.message=this.data.message;
     }

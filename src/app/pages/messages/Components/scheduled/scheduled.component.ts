@@ -22,7 +22,7 @@ import { TranslationService } from 'src/app/shared/services/translation.service'
   templateUrl: './scheduled.component.html',
   styleUrls: ['./scheduled.component.scss']
 })
-export class ScheduledComponent implements OnInit  {
+export class ScheduledComponent implements OnInit ,AfterViewInit {
   length:number=0;
   numRows;
   loading:boolean=true;
@@ -47,12 +47,20 @@ export class ScheduledComponent implements OnInit  {
   noData: boolean;
   isUser: boolean;
   permission:DevicesPermissions[];
+  pageNum: number;
+  display: number;
   constructor(private messageService:MessagesService,
     public dialog: MatDialog,
     private authService:AuthService,
-    private translationService:TranslationService){}
+    private translationService:TranslationService){
+      this.display=this.messageService.getUpdatedDisplayNumber()
+      this.pageNum=this.messageService.pageNum;
+    }
+  ngAfterViewInit(): void {
+    this.paginator.pageSize=this.messageService.display;
+    }
   ngOnInit() {
-
+   
     this.columns=new FormControl(this.displayedColumns)
 
     this.selection.changed.subscribe(
@@ -100,13 +108,14 @@ export class ScheduledComponent implements OnInit  {
       this.devices = alldevices.map(res=>{
         return {
           title:res.deviceName,
-          value:res.id
+          value:res.id,
+          deviceIcon:res.deviceType
         }
       });
       if(this.devices.length==0){
-        this.deviceLoadingText='No Results';
-        // set no data design
-        this.noData=true
+        this.loading = false;
+        this.length=0;
+        this.noData=true;
       }
       else{
         this.noData=false
@@ -118,7 +127,8 @@ export class ScheduledComponent implements OnInit  {
           this.form.patchValue({
           devicesData: {
           title:alldevices[0]?.deviceName,
-          value:alldevices[0]?.id
+          value:alldevices[0]?.id,
+          deviceIcon:alldevices[0].deviceType
           }
 
           })
@@ -129,7 +139,8 @@ export class ScheduledComponent implements OnInit  {
           this.form.patchValue({
             devicesData: {
             title:selected.title,
-            value:selected?.value
+            value:selected?.value,
+            deviceIcon:selected.deviceIcon
             }
 
             })
@@ -152,10 +163,9 @@ export class ScheduledComponent implements OnInit  {
     getMessages(deviceId:string){
       this.getMessagesCount(deviceId);
       let shows=this.messageService.display;
-      let pageNum=this.messageService.pageNum;
       let email=this.messageService.email;
       this.loading=true;
-      let messagesSub=this.messageService.getScheduledMessages(email,shows,pageNum,deviceId).subscribe(
+      let messagesSub=this.messageService.getScheduledMessages(email,shows,this.pageNum,deviceId).subscribe(
         (res)=>{
           this.numRows=res.length;
           this.loading = false;
@@ -218,9 +228,9 @@ export class ScheduledComponent implements OnInit  {
 
       onPageChange(event){
         this.messageService.display=event.pageSize;
-        this.messageService.pageNum=event.pageIndex;
         this.selection.clear();
-
+        this.pageNum=event.pageIndex;
+        this.messageService.updateDisplayNumber(event.pageSize)
         this.getMessages(this.deviceId);
 
       }

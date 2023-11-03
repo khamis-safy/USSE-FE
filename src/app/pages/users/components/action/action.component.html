@@ -35,6 +35,7 @@
       <!-- device -->
       <form [formGroup]="form" class="my-2">
         <us-select
+        [isListDevicesDropdown]="true"
           [data]="devices"
           formControlName="devicesData"
           [multiSelect]="false"

@@ -48,6 +48,7 @@
                   ? ('INVALID_EMAIL' | translate)
                   : ''
               "
+
             ></us-input>
           </div>
           <!-- passward -->
@@ -83,6 +84,7 @@
               [appearance]="'primary'"
               (clicked)="login()"
               [fullWidth]="true"
+
             ></us-button>
           </div>
           <div *ngIf="invalid" class="hint error mt-2">

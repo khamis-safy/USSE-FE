@@ -31,7 +31,7 @@ sortBy;
 @Output() allContactsFromChild = new EventEmitter<any>;
 
   selectedListsNum:number=0;
-
+  LoadingText:string=this.translate.instant('Loading')
   contacts: Contacts[] = [];
   addedContacts: Contacts[] = [];
   allContactsData:Contacts[] = [];
@@ -317,12 +317,7 @@ onSelectList(state,listContacts:ListContacts){
     }
 
   }
-  console.log({
-    shoudBeClosed: listContacts.list.shoudBeClosed,
-    isChecked:listContacts.list.isChecked,
-    
-  },
-  (listContacts.list.isChecked ==='' && listContacts.list.shoudBeClosed))
+  
 
 }
 onClose(event:string){
@@ -540,6 +535,9 @@ getAllContacts(search?:string){
             }
           })
         })
+        if(this.allContactsData.length==0){
+          this.LoadingText=this.translate.instant('No Results')
+        }
       }
       else{
         this.allContacts=[];

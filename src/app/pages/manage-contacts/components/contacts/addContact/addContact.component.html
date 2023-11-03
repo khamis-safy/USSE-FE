@@ -110,6 +110,7 @@
         ></us-input>
 
         <us-select
+          *ngIf="!isFromListDetails"
           [data]="listsArr"
           formControlName="selectedLists"
           [multiSelect]="true"
@@ -134,6 +135,7 @@
           formControlName="note"
           label="{{ 'NOTES' | translate }}"
           [isTextArea]="true"
+          [isEmoji]="true"
         ></us-input>
       </div>
     </form>

@@ -53,7 +53,6 @@ export class FileFieldsComponent implements OnInit {
       })
 
     }
-    console.log("row data",this.rowsData)
   }
   change(item:FilesData){
     item.contactsData=this.contactsData.map((res)=>{return {title:res,value:this.contactsData.indexOf(res)+1}})
@@ -63,7 +62,6 @@ export class FileFieldsComponent implements OnInit {
     const mobileSelected = rows.some((row) => row.selected && row.selected.title === 'Mobile Number');
     const contactNameSelected = rows.some((row) => row.selected && row.selected.title === 'Contact Name');
     this.valid = mobileSelected && contactNameSelected;
-    console.log("valid", this.valid,mobileSelected);
   }
   onSelect(event,item:FilesData){
 
@@ -85,7 +83,6 @@ export class FileFieldsComponent implements OnInit {
       }
     });
     this.checkValidation(this.rowsData)
-    console.log(filterdRows)
 
   //   this.selectedHeaders.push(event.title)
   //   let filterdContacts=this.contactsData.filter((contact)=>!this.selectedHeaders.includes(contact));
@@ -136,12 +133,12 @@ export class FileFieldsComponent implements OnInit {
     let noteIndex=noteRow?noteRow.columnIndex:-1;
     let companyIndex=compNameRow?compNameRow.columnIndex:-1;
 
-    console.log({
-      name:conNameRow,
-      mobile:mobileRow,
-      company:compNameRow,
-      note:noteRow
-    })
+    // console.log({
+    //   name:conNameRow,
+    //   mobile:mobileRow,
+    //   company:compNameRow,
+    //   note:noteRow
+    // })
     const fileData={
       file:this.data.base64,
       email:this.authService.getUserInfo()?.email,
@@ -169,7 +166,6 @@ export class FileFieldsComponent implements OnInit {
       }
     )
 
-    console.log(filteredFileData)
     // mobileNumberIndex:this.contactsData.indexOf("Mobile Number"),
     // contactNameIndex:this.contactsData.indexOf("Contact Name"),
     // noteIndex:this.contactsData.indexOf("Note"),

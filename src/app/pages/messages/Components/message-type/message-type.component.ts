@@ -14,23 +14,27 @@ import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { FAILED, INBOXHEADER, OUTBOX } from '../constants/messagesConst';
 import { TranslationService } from 'src/app/shared/services/translation.service';
+import { ResendMessagesComponent } from '../resendMessages/resendMessages.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-message-type',
   templateUrl: './message-type.component.html',
   styleUrls: ['./message-type.component.scss']
 })
-export class MessageTypeComponent implements OnInit ,OnDestroy {
+export class MessageTypeComponent implements OnInit ,OnDestroy ,AfterViewInit{
 
   length:number=0;
   numRows;
   loading:boolean=true;
   @Input() msgCategory:string="inbox"
   @Output() isChecked = new EventEmitter<Message[]>;
+  @Output() selectedDeviceId = new EventEmitter<string>;
+
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef
   @Input() canEdit: boolean;
-
+  cellClick:boolean=false;
   // devices
   devices:SelectOption[];
   deviceLoadingText:string='Loading ...';
@@ -38,6 +42,13 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   form = new FormGroup({
     devicesData:this.devicesData,
   });
+
+
+  filterdData :any= new FormControl([]);
+  filteringForm= new FormGroup({
+    filterdData:this.filterdData,
+  });
+filters:any;
   deviceId:string;
 
   columns :FormControl;
@@ -51,13 +62,40 @@ export class MessageTypeComponent implements OnInit ,OnDestroy {
   notFound: boolean;
   isUser: boolean;
   permission:DevicesPermissions[];
+  pageNum: number;
+  display: number;
   constructor(public cdr: ChangeDetectorRef ,
     public dialog: MatDialog,
     private messageService:MessagesService,
     private authService:AuthService,
-    private translationService:TranslationService){}
-  ngOnInit() {
+    private translate:TranslateService,
+    private translationService:TranslationService){
+      this.display=this.messageService.getUpdatedDisplayNumber()
+      this.pageNum=this.messageService.pageNum;
 
+      this.filters=[
+        {title:this.translate.instant("Pending") ,value:1},
+        {title:this.translate.instant("Sent") ,value:2},
+        {title:this.translate.instant("Delivered") ,value:3},
+        {title:this.translate.instant("Read") ,value:4}
+      
+      ]
+    }
+    selectedItems:any=[
+      {title:this.translate.instant("Pending") ,value:1},
+      {title:this.translate.instant("Sent") ,value:2},
+      {title:this.translate.instant("Delivered") ,value:3},
+      {title:this.translate.instant("Read") ,value:4}
+    
+    ]
+
+  ngOnInit() {
+    this.filteringForm.patchValue({
+      filterdData:this.selectedItems
+    }
+    
+    )
+  
     this.columns=new FormControl(this.displayedColumns)
 
     this.selection.changed.subscribe(
@@ -85,7 +123,9 @@ else{
 
 
     }
-
+    ngAfterViewInit(): void {
+      this.paginator.pageSize=this.messageService.display;
+      }
     getDevicePermission(deviceId:string){
       if(this.permission && this.isUser){
 
@@ -151,22 +191,23 @@ else{
         }
         )
       }
-
       this.devices = alldevices.map(res=>{
         return {
           title:res.deviceName,
-          value:res.id
+          value:res.id,
+          deviceIcon:res.deviceType
         }
       });
       if(this.devices.length==0){
-        this.deviceLoadingText='No Results';
-        // set no data design
-        this.noData=true
+        this.loading = false;
+        this.length=0;
+        this.noData=true;
       }
       else{
         this.noData=false
 
         this.deviceId=res[0].id;
+        this.selectedDeviceId.emit(this.deviceId)
 
       this.getDevicePermission(this.deviceId);
 
@@ -175,7 +216,9 @@ else{
           this.form.patchValue({
           devicesData: {
           title:alldevices[0]?.deviceName,
-          value:alldevices[0]?.id
+          value:alldevices[0]?.id,
+          deviceIcon:alldevices[0].deviceType
+
           }
 
           })
@@ -183,17 +226,22 @@ else{
         else{
           let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
           this.deviceId=this.authService.selectedDeviceId;
+          this.selectedDeviceId.emit(this.deviceId)
+
           this.form.patchValue({
             devicesData: {
             title:selected.title,
-            value:selected?.value
+            value:selected?.value,
+            deviceIcon:selected.deviceIcon
+
             }
 
             })
         }
         this.getMessages(this.deviceId);
 
-    }},
+    }
+  },
     (err)=>{
       this.loading = false;
       this.length=0;
@@ -203,14 +251,13 @@ else{
 
 }
 
-    getMessages(deviceId:string){
+    getMessages(deviceId:string,msgCat?,filterdItems?){
       let shows=this.messageService.display;
-      let pageNum=this.messageService.pageNum;
       let email=this.messageService.email;
-      let msgCategory=this.msgCategory;
+      let msgCategory=msgCat? msgCat : this.msgCategory;
       let search=this.messageService.search;
       this.loading = true;
-      let messagesSub=this.messageService.getMessages(email,msgCategory,shows,pageNum,search,deviceId).subscribe(
+      let messagesSub=this.messageService.getMessages(email,msgCategory,shows,this.pageNum,search,deviceId,filterdItems).subscribe(
         (res)=>{
           this.numRows=res.length;
 
@@ -228,8 +275,7 @@ else{
             }
         }
         else{
-          this.getMessagesCount(deviceId);
-
+          this.getMessagesCount(deviceId,msgCategory,filterdItems);
 
         }
         },
@@ -242,11 +288,11 @@ else{
       )
       this.subscribtions.push(messagesSub)
     }
-    getMessagesCount(deviceId){
+    getMessagesCount(deviceId,msgCategory,filterdItems?){
       this.loading=true
       let email=this.messageService.email;
-      let msgCategory=this.msgCategory;
-      this.messageService.getMessagesCount(email,msgCategory,deviceId).subscribe(
+      
+      this.messageService.getMessagesCount(email,msgCategory,deviceId,filterdItems).subscribe(
         (res)=>{
           this.length=res;
           this.loading=false
@@ -262,6 +308,8 @@ else{
     onSelect(device){
       this.selection.clear()
       this.deviceId=device.value;
+      this.selectedDeviceId.emit(this.deviceId)
+
       this.authService.selectedDeviceId=device.value
       this.getMessages(this.deviceId);
       this.getDevicePermission(this.deviceId);
@@ -314,7 +362,8 @@ else{
 
   onPageChange(event){
     this.messageService.display=event.pageSize;
-    this.messageService.pageNum=event.pageIndex;
+    this.pageNum=event.pageIndex;
+    this.messageService.updateDisplayNumber(event.pageSize)
     this.selection.clear();
 
     this.getMessages(this.deviceId);
@@ -331,7 +380,7 @@ else{
       this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
     }
     else if(this.msgCategory=='failed'){
-      this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At'];
+      this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At',"Ation"];
       this.displayed = FAILED;
 
     }
@@ -339,6 +388,8 @@ else{
 
   }
   displayMessage(row){
+    if(!this.cellClick){
+
     const currentLang=this.translationService.getCurrentLanguage()
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='100vh';
@@ -356,11 +407,46 @@ else{
       }
 
     });
-
+  }
+  }
+  reSendMessage(msgId){
+   
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='465px';
+    dialogConfig.data ={
+      from:"messages",
+      data: {
+        messageIds:[msgId],
+        email: this.authService.getUserInfo().email,
+        deviceId: this.deviceId
+      }
+    }
+  
+    const dialogRef = this.dialog.open(ResendMessagesComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.getMessages(this.deviceId,"failed");
+        
+      }
+    });
   }
   ngOnDestroy(){
     this.selection.clear()
     this.subscribtions.map(e=>e.unsubscribe());
+  }
+  selectFilter(item){
+  // this.selectedItems.push(item);
+      let selected= this.selectedItems.map((sel)=>sel.value-1)
+  this.getMessages(this.deviceId,"outbox",selected )  
+  }
+  deselectFilter(item){
+      let selected= this.selectedItems.map((sel)=>sel.value-1)
+    this.getMessages(this.deviceId,"outbox",selected )   
+
   }
 }
 

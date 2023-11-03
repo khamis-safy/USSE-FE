@@ -245,7 +245,8 @@ getDevices(){
       this.devices = res.map(res=>{
         return {
           title:res.deviceName,
-          value:res.id
+          value:res.id,
+          deviceIcon:res.deviceType
         }
       });
      
@@ -258,7 +259,8 @@ getDevices(){
           this.form.patchValue({
             devicesData: {
               title:devicesData[0]?.deviceName,
-              value:devicesData[0]?.id
+              value:devicesData[0]?.id,
+              deviceIcon:devicesData[0].deviceType
             }
 
    })

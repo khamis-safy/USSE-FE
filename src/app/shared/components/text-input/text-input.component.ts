@@ -23,10 +23,13 @@ export class InputComponent {
   // VALUE_ACCESSOR Methods & Properties
   private val: any = null;
   @Input() isDisabled: boolean;
-z
+
   onChange: any = () => {};
   onTouched: any = () => {};
-
+  isPasswordVisible: boolean = false;
+  togglePasswordVisibility() {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }

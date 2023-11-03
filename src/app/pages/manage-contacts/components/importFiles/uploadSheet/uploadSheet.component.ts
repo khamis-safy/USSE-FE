@@ -151,7 +151,6 @@ this.listId=event.value
   }
   onFileChange(e){
     this.isDisabled=false;
-    console.log(this.fileData);
   }
   onFileDelete(e){
     if(e){

@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { ScheduledComponent } from '../Components/scheduled/scheduled.component';
 import { InitPaginationService } from 'src/app/shared/services/initPagination.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ResendMessagesComponent } from '../Components/resendMessages/resendMessages.component';
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
@@ -44,6 +45,7 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
   isChecked;
   isMessages:boolean=true;
   canEdit:boolean;
+  deviceID:string;
   @ViewChild(MessageTypeComponent) messageType:MessageTypeComponent;
   @ViewChild(ScheduledComponent) scheduled:ScheduledComponent;
   routingObservable;
@@ -76,14 +78,16 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     this.router.navigateByUrl("/messages?tab="+this.selectedTab)
   }
   ngOnInit() {
-    let permission =this.messageService.messageasPermission
-    let customerId=this.authService.getUserInfo()?.customerId;
+   
 
 
   }
   ngAfterViewInit() {
     // this.messageType.getDevices("inbox");
 
+  }
+  setDeviceIdFromChild(devid){
+    this.deviceID=devid
   }
   openDeleteModal(){
     const dialogConfig=new MatDialogConfig();
@@ -104,6 +108,31 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
 
     });
   }
+  resendSelectedMessages(){
+   const messagesIDs=this.isChecked.map((res)=>res.id)
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='50vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='465px';
+    dialogConfig.data ={
+      from:"messages",
+      data: {
+        messageIds:messagesIDs,
+        email: this.authService.getUserInfo().email,
+        deviceId: this.deviceID
+      }
+    }
+   
+    const dialogRef = this.dialog.open(ResendMessagesComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.messageType.selection.clear();
+        this.messageType.getMessages(this.deviceID,"failed")
+      }
+    });
+  }
   onChecked(e){
     this.isChecked=e;
 
@@ -113,19 +142,19 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
 
     this.selectedTab = this.tabs[ev.index]
     this.updateQueryParams();
-    this.messageService.display=10;
-    this.messageService.pageNum=0;
-    this.messageService.orderedBy='';
-    this.messageService.search='';
+    // this.messageService.display=10;
+    // this.messageService.pageNum=0;
+    // this.messageService.orderedBy='';
+    // this.messageService.search='';
   }
   openNewMessage(){
     this.isMessages=false;
   }
   ngOnDestroy(): void {
     this.routingObservable.unsubscribe();
-    this.messageService.display=10;
-    this.messageService.pageNum=0;
-    this.messageService.orderedBy='';
-    this.messageService.search='';
+    // this.messageService.display=10;
+    // this.messageService.pageNum=0;
+    // this.messageService.orderedBy='';
+    // this.messageService.search='';
   }
 }

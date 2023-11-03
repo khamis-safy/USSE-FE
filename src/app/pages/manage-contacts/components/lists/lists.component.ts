@@ -44,7 +44,8 @@ subscribtions:Subscription[]=[];
   selection = new SelectionModel<any>(true, []);
   @Input()canEdit:boolean;
   cellClick:boolean;
-
+  display: number;
+  pageNum:number;
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -52,6 +53,8 @@ subscribtions:Subscription[]=[];
     private translate: TranslateService,
     private authService:AuthService,
     private router:Router) {
+      this.display=this.listService.getUpdatedDisplayNumber();
+      this.pageNum=this.listService.pageNum;
   }
 
   @Output() isDelete = new EventEmitter<ListData[]>;
@@ -80,6 +83,8 @@ subscribtions:Subscription[]=[];
   ngAfterViewInit() {
   }
 getListsCount(){
+  this.loading=true;
+
   let email=this.authService.getUserInfo()?.email;
 
  let sub1= this.listService.ListsCount(email).subscribe(
@@ -106,7 +111,7 @@ getListsCount(){
 getListData(){
 
   let shows=this.listService.display;
-  let pageNum=this.listService.pageNum;
+ 
   let email=this.authService.getUserInfo()?.email;
   let orderedBy=this.listService.orderedBy;
   let search=this.listService.search;
@@ -115,10 +120,9 @@ getListData(){
 
 
 
- let sub2= this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
+ let sub2= this.listService.getList(email,shows,this.pageNum,orderedBy,search).subscribe(
      (res)=>{
       this.loading = false;
-      console.log(res)
 
         this.numRows=res.length;
   this.dataSource=new MatTableDataSource<ListData>(res);
@@ -241,9 +245,10 @@ getListData(){
   onPageChange(event){
 
     this.listService.display=event.pageSize;
-    this.listService.pageNum=event.pageIndex;
+    this.pageNum=event.pageIndex;
     this.selection.clear();
 
+    this.listService.updateDisplayNumber(event.pageSize)
 
     this.getListData();
   }

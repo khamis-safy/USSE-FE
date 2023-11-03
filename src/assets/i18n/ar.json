@@ -468,7 +468,20 @@
 "CONFIRM_LOGOUT_MSG":"هل أنت متأكد أنك تريد تسجيل الخروج؟",
 "versions":"الإصدارات",
 "contacts have no lists":"جهات الاتصال لا تحتوي على قوائم",
-"open":"فتح"
+"open":"فتح",
+"already_uploaded":"تم تحميلها بالفعل.",
+"File_Size_Warning":"يجب أن يكون حجم الملف أقل من أو يساوي",
+"Resend All Items":"إعادة إرسال كافة العناصر",
+"Resend_Message_hint":"هل أنت متأكد أنك تريد إعادة الإرسال؟",
+"resend":"إعادة الإرسال",
+"Resend Selected Items":"إعادة إرسال العناصر المحددة",
+"filter":"فلتره",
+"Loading":"جاري التحميل...",
+"No Results":"لا توجد نتائج",
+"Campaign Settings":"إعدادات الحملة",
+"Randomize interval":"الفاصل الزمني العشوائي",
+"Max recipients per day":"الحد الأقصى للمستلمين في اليوم",
+"Sending out time":"وقت الإرسال"
 
 
 }

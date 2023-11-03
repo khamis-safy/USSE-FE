@@ -1396,7 +1396,13 @@ mat-expansion-panel-body{
     }
   }
 }
+.emoji-pick{
+  margin-top: 39px;
+  z-index: 10;}
 .rtl{
+  .emoji-pick{
+right: 0 !important;
+  }
   .buttons_{
     flex-direction: row-reverse;
   }

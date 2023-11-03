@@ -76,7 +76,13 @@ unsubscribe$ = new Subject<void>();
     }
 
     
-
+    if(res.customerId!=""){
+      this.authService.setFileSizeBasedOnSubscription("S");
+    }
+    else{
+      const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
+      this.authService.setFileSizeBasedOnSubscription(subType);
+    }
     // check autheraization
 
     if(!res.isEmailAuthonticated){
@@ -91,8 +97,8 @@ unsubscribe$ = new Subject<void>();
    else if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
       // update local storage
       this.authService.saveDataToLocalStorage(this.userInfo);
-      this.authService.updateUserInfo(this.userInfo)
-
+      this.authService.updateUserInfo(this.userInfo);
+  
       this.loginService.storeRefreshTokenInCookie(res.refreshToken);
  
 

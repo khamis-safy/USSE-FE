@@ -61,10 +61,9 @@ else{
     const selectedTime =timecontrol.value;
     if (selectedTime) {
       this.utcDateTime = this.datePipe.transform(selectedTime,`yyyy-MM-ddTHH:mm:ss`, 'UTC');
-      console.log('UTC Time:', this.utcDateTime);
     }
     else {
-      console.error('Selected time is null or undefined');
+      
     }
   }
   getDevices(){
@@ -76,7 +75,8 @@ else{
         this.devices = activeDevices.map(res=>{
           return {
             title:res.deviceName,
-            value:res.id
+            value:res.id,
+            deviceIcon:res.deviceType
           }
         });
         

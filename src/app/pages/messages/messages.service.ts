@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Message, Shceduled } from './message';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PermissionData } from '../users/users';
@@ -64,15 +64,48 @@ constructor(private http:HttpClient,private authService:AuthService) {
 }
 
 
-getMessages(email:string,msgCategory:string,showsNum:number,pageNum:number,search:string,deviceId:string):Observable<Message[]>{
-  return this.http.get<Message[]>(`${this.api}Message/listMessages?email=${email}&msgCategory=${msgCategory}&take=${showsNum}&scroll=${pageNum}&search=${search}&deviceId=${deviceId}`)
+getMessages(email: string, msgCategory: string, showsNum: number, pageNum: number, search: string, deviceId: string, StatusFilters?: number[]): Observable<Message[]> {
+  let params = new HttpParams()
+    .set('email', email)
+    .set('msgCategory', msgCategory)
+    .set('take', showsNum.toString())
+    .set('scroll', pageNum.toString())
+    .set('search', search)
+    .set('deviceId', deviceId);
+
+  // Check if StatusFilters is provided and is an array
+  if (StatusFilters && Array.isArray(StatusFilters)) {
+    StatusFilters.forEach((filter) => {
+      params = params.append('StatusFilters', filter.toString());
+    });
+  }
+
+  const apiUrl = `${this.api}Message/listMessages`;
+
+  return this.http.get<Message[]>(apiUrl, { params: params });
 }
+getMessagesCount(email: string, msgCategory: string, deviceId: string, StatusFilters?: number[]): Observable<number> {
+  let params = new HttpParams()
+    .set('email', email)
+    .set('msgCategory', msgCategory)
+    .set('deviceId', deviceId);
+
+  // Check if StatusFilters is provided and is an array
+  if (StatusFilters && Array.isArray(StatusFilters)) {
+    StatusFilters.forEach((filter) => {
+      params = params.append('StatusFilters', filter.toString());
+    });
+  }
+
+  const apiUrl = `${this.api}Message/listMessagesCount`;
+
+  return this.http.get<number>(apiUrl, { params: params });
+}
+
 getScheduledMessages(email:string,showsNum:number,pageNum:number,deviceId:string):Observable<Shceduled[]>{
   return this.http.get<Shceduled[]>(`${this.api}Message/listScheduledMessages?email=${email}&take=${showsNum}&scroll=${pageNum}&deviceId=${deviceId}`)
 }
-getMessagesCount(email:string,msgCategory:string,deviceId:string):Observable<number>{
-  return this.http.get<number>(`${this.api}Message/listMessagesCount?email=${email}&msgCategory=${msgCategory}&deviceId=${deviceId}`)
-}
+
 listScheduledMessagesCount(email:string,deviceId:string):Observable<number>{
   return this.http.get<number>(`${this.api}Message/listScheduledMessagesCount?email=${email}&deviceId=${deviceId}`)
 }
@@ -102,5 +135,13 @@ sendWhatsappBusinessMessage( deviceid: string,targetPhoneNumber: string[],msgBod
   return this.http.post<any>(`${this.api}Message/sendWhatsappBusinessMessage`,data)
 
 }
-
+updateDisplayNumber(displayNum){
+  displayNum=this.display;
+ }
+getUpdatedDisplayNumber(){
+  return this.display
+}
+ressendFailedMessages(data):Observable<any>{
+  return this.http.post<any>(`${this.api}Message/resendFailedMessages`,data);
+}
 }

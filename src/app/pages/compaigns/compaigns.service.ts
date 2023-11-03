@@ -159,4 +159,10 @@ getCampaignById(id:string):Observable<compaignDetails>{
 deleteWhatsappBusinessCampaign(id:string,email:string):Observable<any>{
   return this.http.put<any>(`${this.api}Message/deleteWhatsappBusinessCampaign?id=${id}&email=${email}`,'')
 }
+updateDisplayNumber(displayNum){
+  displayNum=this.display;
+ }
+getUpdatedDisplayNumber(){
+  return this.display
+}
 }
