@@ -37,8 +37,10 @@
               "./node_modules/animate.css/animate.css",
               "./node_modules/wow.js/css/libs/animate.css",
               "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+
               "./node_modules/@ctrl/ngx-emoji-mart/picker.css",
               "src/styles.scss"
+
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
