@@ -275,6 +275,7 @@ else{
             }
         }
         else{
+          this.notFound=false;
           this.getMessagesCount(deviceId,msgCategory,filterdItems);
 
         }
@@ -296,6 +297,9 @@ else{
         (res)=>{
           this.length=res;
           this.loading=false
+          if(this.length ==0){
+            this.notFound=true;
+          }
         }
         ,(err)=>{
           this.length=0;

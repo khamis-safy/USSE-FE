@@ -1,6 +1,6 @@
 <section class="h-100 d-flex flex-column " style="overflow: hidden; overflow-y: auto;">
   <div
-  class="d-flex justify-content-center w-100 align-items-center position-relative"
+  class="d-flex justify-content-center align-items-center position-relative"
   style="height: 5%"
 >
 
@@ -13,31 +13,31 @@
 
   <ng-container *ngIf="!isLoading && steps && !addDevice && !scanDevice">
 
-  <div class="steps-container mt-3 p-4 position-relative" style=" height:100%;">
+  <div class="steps-container " >
 
-    <div class="d-flex justify-content-center align-items-center position-relative  " style="height: 40%;">
-      <div class="  images-steps-img mx-lg-3 image-container" style="width:15%">
+    <div class="d-flex justify-content-center align-items-center position-relative  " >
+      <div class="  images-steps-img mx-lg-3 image-container" >
           <img src="../../../../../assets/images/1.svg" alt="" class="w-100" style="object-fit: contain;">
       </div>
       <div class="images-steps-arrows image-container" style="width:8%">
           <img src="../../../../../assets/images/path3035.svg" alt="" class="w-100" style="object-fit: contain;">
       </div>
-      <div class=" images-steps-img image-container mx-lg-3" style="width:15%">
+      <div class=" images-steps-img image-container mx-lg-3" >
           <img src="../../../../../assets/images/2.svg" alt="" class="w-100" style="object-fit: contain;">
       </div>
       <div class="  images-steps-arrows image-container " style="width:8%">
           <img src="../../../../../assets/images/path3035.svg" alt="" class="w-100" style="object-fit: contain;">
       </div>
-      <div class=" images-steps-img image-container mx-lg-3" style="width:15%">
+      <div class=" images-steps-img image-container mx-lg-3" >
           <img src="../../../../../assets/images/3.svg" alt="" class="w-100" style="object-fit: contain;">
       </div>
 
   </div>
-  <div class="steps-details-container d-flex justify-content-center align-items-center flex-row-reverse my-3" style="height: 44%;">
-    <div class=" image-container" style="width: 34%;">
-        <img src="../../../../../assets/images/Rectangle 110863.svg" alt="" class="w-100" style="object-fit: contain;">
+  <div class="steps-details-container d-flex justify-content-center flex-row-reverse" style="width:79% ;">
+    <div class=" image-container" >
+          <img src="../../../../../assets/images/QR Screen.svg" alt="" class="w-100" style="object-fit: contain;">
     </div>
-    <div style="width: 33%; " class="steps">
+    <div  class="steps">
         <h3 style="color:  black;   " class="mb-0 mt-0 pt-0">{{ 'steps' | translate }}</h3>
         <ol type="1" class="circles">
             <li class="pb-1">
@@ -66,17 +66,17 @@
     right: 8%;">
       <img src="../../../../../assets/images/Group.svg" alt="" class="w-100" style="object-fit: contain;">
   </div>
-  <div class="image-container" style="    position: absolute;
+  <!-- <div class="image-container" style="    position: absolute;
   bottom: 0%;
   right: 17%;
   width: 24%;
   filter: blur(1px);" class="hand-img">
       <img src="../../../../../assets/images/Group 1171276337.svg" alt="" class="w-100" style="object-fit: contain;">
-  </div>
+  </div> -->
   </div>
   <div class="modal-footer justify-content-center gap-3" style="position: absolute;
   bottom: 5%;
-  left: 50%;">
+  left: 46%;">
     <us-button class="m-2" label="{{ 'scan_now' | translate }}" [fill]="true" [size]="'sm'" [loading]="false" [disabled]="false"
         [appearance]="'primary'" (clicked)="scanCode()"></us-button>
 </div>

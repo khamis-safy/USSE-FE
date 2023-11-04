@@ -88,23 +88,24 @@ getListsCount(){
   let email=this.authService.getUserInfo()?.email;
 
  let sub1= this.listService.ListsCount(email).subscribe(
-    (res)=>{
-      this.loading=false;
-      this.length=res;
-      // this.length=0;
-      if(this.length==0){
-        this.noData=true
-      }
-      else{
-        this.noData=false
-      }
+  (res)=>{
+    this.length=res;
+    this.loading = false;
+    if( this.length==0){
+    this.noData=true;
 
     }
-    ,(err)=>{
-      this.loading=false;
-
-      this.length=0;}
-  );
+    else{
+      this.noData=false;
+    }
+    },
+    (err)=>{
+     
+     this.loading = false;
+     this.length=0;
+     this.noData=true;
+    });
+ 
   this.subscribtions.push(sub1)
 }
 
@@ -126,16 +127,17 @@ getListData(){
 
         this.numRows=res.length;
   this.dataSource=new MatTableDataSource<ListData>(res);
-        if(search!=""){
-          this.length=res.length;
-          if(this.length==0){
-            this.notFound=true;
-          }
-          else{
-            this.notFound=false;
-          }
-      }
-      else{
+  if(search!=""){
+    this.length=res.length;
+    if(this.length==0){
+      this.notFound=true;
+    }
+    else{
+      this.notFound=false;
+    }
+}
+else{
+  this.notFound=false;
         this.getListsCount();
 
       }

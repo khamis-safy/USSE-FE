@@ -282,7 +282,7 @@ else{
     // this.listService.display=10;
     // this.listService.pageNum=0;
     // this.listService.orderedBy='';
-    // this.listService.search='';
+    this.listService.search='';
 
  
   }
@@ -320,7 +320,7 @@ else{
     // this.listService.display=10;
     // this.listService.pageNum=0;
     // this.listService.orderedBy='';
-    // this.listService.search='';
+    this.listService.search='';
     this.routingObservable.unsubscribe()
   }
 }

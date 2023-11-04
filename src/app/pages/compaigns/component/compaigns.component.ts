@@ -196,6 +196,7 @@ this.getCompaigns(this.deviceId);
             }
         }
         else{
+          this.notFound=false;
           this.compaignsCount(deviceId);
 
 
@@ -214,8 +215,11 @@ compaignsCount(deviceId){
   let email=this.authService.getUserInfo()?.email;
   this.compaignsService.compaignsCount(email,deviceId).subscribe(
     (res)=>{
-      this.length=res;
       this.loading = false;
+      this.length=res;
+      if(this.length ==0){
+        this.notFound=true;
+      }
     }
     ,(err)=>{
 
@@ -227,12 +231,18 @@ compaignsCount(deviceId){
   )
 
 }
+backToCampaign(){
+  this.isCompagins=true;
+  this.getCompaigns(this.deviceId)
+
+}
   changeColumns(event){
 
     this.displayedColumns=this.canEdit?[...event,"Action"]: [...event]
     }
 
   addCampaigns(){
+    this.compaignsService.search='';
     this.isCompagins=false;
   }
 
@@ -299,7 +309,7 @@ compaignsCount(deviceId){
   ngOnDestroy(): void {
     // this.compaignsService.display=10;
     // this.compaignsService.pageNum=0;
-    // this.compaignsService.search='';
+    this.compaignsService.search='';
   }
 }
 

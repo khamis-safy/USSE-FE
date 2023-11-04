@@ -155,11 +155,9 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
           else{
             this.notFound=false;
           }
-          this.isSearch=true;
-
       }
       else{
-        this.isSearch=false;
+        this.notFound=false;
 
         this.contactsCount();
 
@@ -182,22 +180,25 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
     let sub2=this.listService.contactsCount(email,this.isCanceled).subscribe(
 
       (res)=>{
-        this.loading=false;
-
         this.length=res;
-        if(this.length==0){
-          this.noData=true
+        this.loading = false;
+        if( this.length==0){
+         this.noData=true;
+ 
+       
+       }
+       else{
+          this.noData=false;
+ 
+      
         }
-        else{
-          this.noData=false
-        }
-      }
-      ,(err)=>{
-        this.loading=false;
-
-        this.length=0;
-      }
-    )
+        },
+        (err)=>{
+         
+         this.loading = false;
+         this.length=0;
+         this.noData=true;
+        })
 this.subscribtions.push(sub2)
 
   }

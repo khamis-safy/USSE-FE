@@ -145,16 +145,18 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     // this.messageService.display=10;
     // this.messageService.pageNum=0;
     // this.messageService.orderedBy='';
-    // this.messageService.search='';
+    this.messageService.search='';
   }
   openNewMessage(){
     this.isMessages=false;
+    this.messageService.search='';
+
   }
   ngOnDestroy(): void {
     this.routingObservable.unsubscribe();
     // this.messageService.display=10;
     // this.messageService.pageNum=0;
     // this.messageService.orderedBy='';
-    // this.messageService.search='';
+    this.messageService.search='';
   }
 }

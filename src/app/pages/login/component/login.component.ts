@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PluginsService } from 'src/app/services/plugins.service';
 import { UserData } from '../../users/users';
-import { UsersService } from '../../users/users.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
+import { TranslationService } from 'src/app/shared/services/translation.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +29,7 @@ unsubscribe$ = new Subject<void>();
     private authService:AuthService,
     private loginService:LoginService,
     private router:Router,
-    private userServiece:UsersService) {
+    private languageService:TranslationService) {
 
   }
   ngOnInit() {
@@ -105,6 +105,8 @@ unsubscribe$ = new Subject<void>();
         setInterval(() => {
           this.refreshToken();
         }, 60 * 60 * 1000); // 1 hour in milliseconds
+        this.languageService.setAppDirection();
+        
         this.router.navigateByUrl('devices')
 
 

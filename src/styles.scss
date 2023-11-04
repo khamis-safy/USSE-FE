@@ -1400,6 +1400,17 @@ mat-expansion-panel-body{
   margin-top: 39px;
   z-index: 10;}
 .rtl{
+  .steps-details-container {
+    .image-container{
+      left: 14% !important;
+      right: unset !important;
+
+    }
+  }
+  ol.circles > li {
+   
+    padding: 0 0 0 1.5rem !important;
+  }
   .emoji-pick{
 right: 0 !important;
   }

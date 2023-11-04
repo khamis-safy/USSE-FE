@@ -5,6 +5,7 @@ import { LoginService } from '../../login.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UsersService } from 'src/app/pages/users/users.service';
+import { TranslationService } from 'src/app/shared/services/translation.service';
 
 @Component({
   selector: 'app-verify',
@@ -22,7 +23,8 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
     private router:Router,
     private formBuilder: FormBuilder,
     private userServiece:UsersService,
-    private verificatioinService:VerifyService) {
+    private verificatioinService:VerifyService,
+    private languageService:TranslationService) {
     this.verificationForm = this.formBuilder.group({
       digit0: ['', Validators.required],
       digit1: ['', Validators.required],
@@ -145,6 +147,7 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
             setInterval(() => {
               this.refreshToken();
             }, 60 * 60 * 1000); // 1 hour in milliseconds
+            this.languageService.setAppDirection();
 
             this.router.navigateByUrl('devices')
           },
