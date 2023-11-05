@@ -22,7 +22,7 @@
               <div class="d-flex justify-content-center  flex-column">
                 <h2 class="mb-0">{{message?.chat.chatName}}</h2>
 
-                <span class="txt-xs text-neutral-500">{{message?.chat.targetPhoneNumber}}</span>
+                <span class="txt-xs text-neutral-500" style="    text-align: start !important;">{{message?.chat.targetPhoneNumber}}</span>
 
               </div>
             </div>
@@ -47,19 +47,18 @@
 
 
             <ng-container *ngSwitchCase="false">
+              <div style="    max-width: 96%;
+              ">
+                <p  class="txt-md ms-3 mb-2 text-neutral-900 message">{{message?.msgBody}}</p>
 
-              <p  class="txt-md ms-3 mb-2 text-neutral-900 message">{{message?.msgBody}}</p>
-
-              <ng-container *ngIf="message.fileName">
-
-                <ng-container [ngSwitch]="(message.fileName | type)">
-                  <img *ngSwitchCase="'image'"  class="mx-1 w-100" [src]="message.fileUrl" alt="">
-                  <a *ngSwitchCase="'document'" class="pointer " [href]="message.fileUrl" target="_blank" [title]="'open' | translate" ><img   class="media" src="assets/images/doc.svg" alt=""></a>
-                  <a *ngSwitchCase="'video'" class="pointer " [href]="message.fileUrl" target="_blank" [title]="'open' | translate"><img  class="media" src="assets/images/vid.svg" alt=""></a>
+                <ng-container *ngIf="message.fileName">
+                    <img *ngIf="(message.fileName | type )=='assets/images/image.svg' else otherType"  class="mx-1 mb-1 w-100" [src]="message.fileUrl" alt="">
+                    <ng-template #otherType>
+                      <a  class="pointer " [href]="message.fileUrl" target="_blank" [title]="'open' | translate" ><img   class="media" [src]="message.fileName | type" alt=""></a>
+  
+                    </ng-template>
                 </ng-container>
-
-
-                </ng-container>
+              </div>
 
               <ng-container *ngIf="message?.status!=null ">
               <ng-container *ngIf="message.status!=3 && message.status!=4">

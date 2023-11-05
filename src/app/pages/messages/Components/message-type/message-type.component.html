@@ -166,14 +166,15 @@
               <div class="d-flex justify-content-center align-items-center flex-column">
                 <p style="max-width: 100%;" class="overflow-line-4">{{ element.msgBody }}</p>
               </div>
-              <ng-container *ngIf="element?.fileName">
-                <ng-container [ngSwitch]="(element.fileName | type)">
-                  <img *ngSwitchCase="'image'" class="ms-1" src="assets/images/image.svg" alt="">
-                  <img *ngSwitchCase="'document'" class="ms-1" src="assets/images/document.svg" alt="">
-                  <img *ngSwitchCase="'video'" class="ms-1" src="assets/images/vid.svg" alt="" style="width:135px">
+              <div *ngIf="element?.fileName" class="text-start ms-4 pt-2 pb-3">
+                <img *ngIf="(element.fileName | type )=='assets/images/image.svg' else otherType"  [src]="element.fileName | type" alt="" style=" width: 80px;">
+                <ng-template #otherType>
+                  <img  [src]="element.fileName | type" alt="" style="    width: 123px;
+                  ">
 
-                </ng-container>
-              </ng-container>
+                </ng-template>
+              </div>
+              
             </div>
           </td>
         </ng-container>

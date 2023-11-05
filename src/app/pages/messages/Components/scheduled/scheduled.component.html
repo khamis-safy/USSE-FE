@@ -65,12 +65,16 @@
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'MESSAGES_LABEL' | translate }}</th>
           <td class="text-center" mat-cell *matCellDef="let element">
             {{ element.msgBody }}
-            <div *ngIf="element?.fileName=='image'" class="text-start ms-4 pt-2 pb-3">
-              <img src="assets/images/image.svg" alt="">
+            <div *ngIf="element?.fileName" class="text-start ms-4 pt-2 pb-3">
+              <img *ngIf="(element.fileName | type )=='assets/images/image.svg' else otherType"  [src]="element.fileName | type" alt="" style=" width: 80px;">
+              <ng-template #otherType>
+                <img  [src]="element.fileName | type" alt="" style="     width: 123px;
+                ">
+
+              </ng-template>
             </div>
-            <div *ngIf="element?.fileName=='document'" class="text-start ms-4 pt-2 pb-3">
-              <img src="assets/images/document.svg" alt="">
-            </div>
+            
+            
           </td>
         </ng-container>
 
