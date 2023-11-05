@@ -11,6 +11,12 @@
   </div>
 
   <!-- modal body  -->
+  <div class="d-flex position-relative w-100 m-0">
+    <input #search type="text" class="form-control ps-5 w-100 txt-xs" id="search" placeholder="{{ 'searchPlaceholder' | translate }}" (keyup)="onSearch(search)">
+    <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
+      <img src="assets/icons/search.svg" alt="" width="14">
+    </div>
+  </div>
   <div class="table-container " style="height: 80%;">
     <div class="table-inner-container">
 
@@ -38,7 +44,7 @@
         </ng-container>
         <!-- My Lists Column -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'MY_LISTS' | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{isFromListDetails? ('Contacts' | translate): 'MY_LISTS' | translate }}</th>
           <td mat-cell *matCellDef="let element">{{ element.name }}</td>
         </ng-container>
   
