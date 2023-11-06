@@ -173,17 +173,17 @@ else{
     });
   }
 
-  openImportModal(){
+  openImportModal(filetype){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='80vh';
     dialogConfig.width='60vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='465px';
     dialogConfig.disableClose = true;
-
+    dialogConfig.data={filetype:filetype}
 
     const dialogRef = this.dialog.open(UploadSheetComponent,dialogConfig);
-
+    
     this.contacts.selection.clear();
     dialogRef.afterClosed().subscribe(result => {
       if(result){
@@ -286,10 +286,21 @@ else{
 
  
   }
-  exportAllContacts(){
-    this.listService.exportAllContacts().subscribe(
+  // exportAllContacts(){
+  //   this.listService.exportAllContacts().subscribe(
+  //     (res)=>{
+  //       this.listService.exportFileData(res);
+
+  //   },
+  //     (err)=>{
+  //     }
+
+  //   )
+  // }
+  exportAllAs(fileType){
+    this.listService.exportAllContacts(fileType).subscribe(
       (res)=>{
-        this.listService.exportFileData(res);
+        this.listService.exportFileData(res,fileType);
 
     },
       (err)=>{
@@ -297,25 +308,41 @@ else{
 
     )
   }
-
-  exportSelectedContacts(){
+  exportSelectedContactsAs(fileType){
     let exporedContacts=this.isChecked.map((contact)=>{
       return{
         name: contact.name,
         mobileNumber: contact.mobileNumber,
-        companyName:contact.companyName ,
-        note: contact.note
+   
       }
     })
-    this.listService.exportSelectedContacts(exporedContacts).subscribe(
+    this.listService.exportSelectedContacts(exporedContacts,fileType).subscribe(
       (res)=>{
-        this.listService.exportFileData(res);
+        this.listService.exportFileData(res,fileType);
         this.contacts.selection.clear()
       },
       (err)=>{
       }
     )
   }
+  // exportSelectedContacts(){
+  //   let exporedContacts=this.isChecked.map((contact)=>{
+  //     return{
+  //       name: contact.name,
+  //       mobileNumber: contact.mobileNumber,
+  //       companyName:contact.companyName ,
+  //       note: contact.note
+  //     }
+  //   })
+  //   this.listService.exportSelectedContacts(exporedContacts).subscribe(
+  //     (res)=>{
+  //       this.listService.exportFileData(res);
+  //       this.contacts.selection.clear()
+  //     },
+  //     (err)=>{
+  //     }
+  //   )
+  // }
   ngOnDestroy(): void {
     // this.listService.display=10;
     // this.listService.pageNum=0;

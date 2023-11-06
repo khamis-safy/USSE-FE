@@ -24,6 +24,7 @@ export interface files{
 export class UploadSheetComponent implements OnInit {
   fileData:files[]=[];
   isLoading:boolean;
+  loading:boolean;
   listId:string;
   showLists:boolean=true;
   listsArr:SelectOption[]
@@ -34,31 +35,54 @@ export class UploadSheetComponent implements OnInit {
   addNewList:boolean=false;
   selectedLists:any = new FormControl([]);
   listName = new FormControl('',Validators.required);
-  addedList:ListData
+  addedList:ListData;
+  vcfFile:boolean;
   form = new FormGroup({
     selectedLists:this.selectedLists,
     listName:this.listName
 
   });
+  fileType:string;
   constructor(  private toaster: ToasterServices,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data:any,
     private listService:ManageContactsService,
     private translate: TranslateService,
     private authService:AuthService,
-    public dialogRef: MatDialogRef<UploadSheetComponent>) { }
+    public dialogRef: MatDialogRef<UploadSheetComponent>,
+    ) { }
 
   ngOnInit() {
     if(this.data){
-      this.listId=this.data;
-      this.showLists=false;
-    }
-    else{
-      this.showLists=true;
-      this.getLists();
+ 
+        if(this.data.filetype =='vcf'){
+          this.fileType='vcf'
+          this.vcfFile=true
+        }
+        else{  
+          this.vcfFile=false;
+          this.fileType='.xlsx, .xls'
 
+         
+        }
+
+
+        if(this.data.listId){
+
+          this.listId=this.data.listId;
+          this.showLists=false;
+        }
+        else{
+          this.showLists=true;
+          this.getLists();
+        }
+      
+      }
+      
+    
     }
-  }
+ 
+  
   getLists(lisname?:string){
     this.listService.getList(this.authService.getUserInfo()?.email,100,0,"","").subscribe(
        (res)=>{
@@ -93,8 +117,38 @@ export class UploadSheetComponent implements OnInit {
         })
     }
 
-  uploadFile(){
-
+  uploadVCFfile(){
+  
+    let data;
+    if(this.listId){
+      data={
+        file:this.fileData[0].url,
+        email:this.authService.getUserInfo()?.email,
+        fileType:"vcf",
+        listId:[this.listId],
+      }
+    }
+    else{
+      data={
+        file:this.fileData[0].url,
+        email:this.authService.getUserInfo()?.email,
+        fileType:"vcf",
+      }
+    }
+    this.listService.importFile(data).subscribe(
+      (res)=>{
+        this.loading=false;
+        this.onClose(true)
+        this.toaster.success(this.translate.instant("COMMON.SUCC_MSG"))
+      },
+      (err)=>{
+        this.loading=false;
+        this.onClose();
+      }
+    )
+    
+  }
+    goToFileSetting(){
       const dialogConfig=new MatDialogConfig();
       dialogConfig.height='80vh';
       dialogConfig.width='60vw';

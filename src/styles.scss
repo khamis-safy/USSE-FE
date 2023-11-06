@@ -1583,7 +1583,24 @@ right: 0 !important;
     max-width: 200px !important;
   }
 }
+
+.import-button , .export-button{
+  height: 51px  !important;
+  padding: 19px 18px;
+  .mat-mdc-menu-content.mdc-list {
+    min-width: 148px !important;
+  }
+}
+.mdc-button {
+  padding: 0 15px 0 13px  !important;
+}
+
 @media (max-width: 1700px) {
+  .import-button , .export-button{  
+    height: 39px !important;
+    font-size: 11px !important;
+
+  }
 .close-icon{
   img{
     width: 24px !important;

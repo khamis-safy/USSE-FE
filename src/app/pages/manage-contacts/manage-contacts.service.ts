@@ -138,25 +138,26 @@ unDeleteList(email:string,ids:string[]):Observable<ErrSucc>{
 unDeleteContact(email:string,ids:string[]):Observable<ErrSucc>{
   return this.http.put<ErrSucc>(`${this.api}Contacts/unDeleteContact?email=${email}`,ids)
 }
-exportSelectedContacts(data): Observable<Blob> {
+exportSelectedContacts(data: any, fileType: string): Observable<Blob> {
   const url = `${this.api}Contacts/exportSelectedContacts`;
-
-  // Make the HTTP request and set responseType to 'blob' to expect a binary response
-  return this.http.post(url, data, { responseType: 'blob' });
+  const params = new HttpParams().set('fileType', fileType);
+  return this.http.post(url, data, { responseType: 'blob', params });
 }
-exportAllContacts():Observable<Blob> {
+
+exportAllContacts(fileType: string): Observable<Blob> {
   const url = `${this.api}Contacts/exportAllContacts`;
-  const params = new HttpParams().set('email', this.email);
+  const params = new HttpParams().set('email', this.email).set('fileType', fileType);
 
   return this.http.post(url, {}, { responseType: 'blob', params });
 }
 
-exportContactsInList(listId: string): Observable<Blob> {
+
+exportContactsInList(listId: string,fileType:string): Observable<Blob> {
   // Create a URL-encoded query parameter string
   const queryParams = new HttpParams()
     .set('listId', listId)
-    .set('email', this.email);
-
+    .set('email', this.email)
+    .set('fileType', fileType);
   const url = `${this.api}Contacts/exportContactsInList`;
 
   // Set responseType to 'blob' to expect a binary response
@@ -171,8 +172,9 @@ importFile(data):Observable<any>{
 
 }
 
-exportFileData(file){
+exportFileData(file , type){
   const now = new Date(); // Create a new Date object representing the current date and time
+  let fileType = type=='excel'? 'xlsx':'vcf'
 
  // Extract date components (day, month, year)
  const day = now.getDate().toString().padStart(2, '0');
@@ -185,7 +187,7 @@ exportFileData(file){
  var downloadURL = window.URL.createObjectURL(file);
  var link = document.createElement('a');
  link.href = downloadURL;
- link.download = `Contacts-${formattedDate}.xlsx`;
+ link.download = `Contacts-${formattedDate}.${fileType}`;
  link.click();
 
    }

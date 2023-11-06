@@ -4,7 +4,7 @@
       <img src="assets/icons/manage-contacts.svg" alt="" class="px-2">
       <span class="txt-lg main-heading">{{ 'MANAGE_CONTACTS' | translate }}</span>
     </div>
-    <div class="buttons_ d-flex flex-wrap">
+    <div class="buttons_ d-flex flex-wrap align-items-center">
       <us-button
         *ngIf="isChecked && !isCanceled && canEdit"
         class="m-2"
@@ -59,7 +59,23 @@
         (clicked)="selectedTab=='contacts'?openAddContactModal():selectedTab=='lists'?openAddListModal():openunsubscribeModal()"
       ></us-button>
 
-      <us-button
+      <button *ngIf="selectedTab=='contacts'"  mat-button [matMenuTriggerFor]="menu" class="mx-1 export-button text-neutral-0 bg-primary-800 rounded-3 ">
+        <div class="export-menu d-flex align-items-center justify-content-center gap-3">
+          <div class="icon">
+            <img src="assets/icons/import.svg" alt="" style="width:19px"/>
+          </div>
+          {{ 'IMPORT_FILE' | translate }}
+          <div class="icon">
+            <img src="assets/icons/polygon.svg" alt=""  />
+          </div>
+        </div>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openImportModal('excel')"><img src="assets/icons/Excel.svg" alt="" /> Excel</button>
+        <button mat-menu-item (click)="openImportModal('vcf')"><img src="assets/icons/vcf.svg" alt="" /> vcf</button>
+      </mat-menu>
+
+      <!-- <us-button
         *ngIf="selectedTab=='contacts'"
         class="m-2"
         [label]="'IMPORT_FILE' | translate"
@@ -69,10 +85,25 @@
         [loading]="false"
         [disabled]="false"
         [appearance]="'primary'"
-        (clicked)="openImportModal()"
-      ></us-button>
+        (clicked)="openImportModal('')"
+      ></us-button> -->
+      <button *ngIf="selectedTab=='contacts'" mat-button [matMenuTriggerFor]="menu2" class="mx-2 import-button text-neutral-0 bg-primary-800 rounded-3 ">
+        <div class="import-menu d-flex align-items-center justify-content-center gap-3">
+          <div class="icon">
+            <img src="assets/icons/export.svg" alt="" style="width:14px"/>
+          </div>
+          {{ isChecked?('EXPORT_SELECTED' | translate):'EXPORT_ALL' | translate}}
+          <div class="icon">
+            <img src="assets/icons/polygon.svg" alt="" />
+          </div>
+        </div>
+      </button>
+      <mat-menu #menu2="matMenu">
+        <button mat-menu-item (click)="isChecked ? exportSelectedContactsAs('excel') :exportAllAs('excel')"><img src="assets/icons/Excel.svg" alt="" /> Excel</button>
+        <button mat-menu-item (click)="isChecked ? exportSelectedContactsAs('vcf') :exportAllAs('vcf')"><img src="assets/icons/vcf.svg" alt="" /> vcf</button>
+      </mat-menu>
 
-      <us-button
+      <!-- <us-button
         *ngIf="selectedTab=='contacts'"
         class="m-2"
         [label]="isChecked?('EXPORT_SELECTED' | translate):'EXPORT_ALL' | translate"
@@ -82,8 +113,8 @@
         [loading]="false"
         [disabled]="false"
         [appearance]="'primary'"
-        (clicked)="isChecked ? exportSelectedContacts() : exportAllContacts()"
-      ></us-button>
+        (clicked)="isChecked ? exportSelectedContactsAs() : exportAllContacts()"
+      ></us-button> -->
     </div>
   </div>
 
