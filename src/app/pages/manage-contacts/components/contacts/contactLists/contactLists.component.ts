@@ -36,7 +36,7 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
   contactsIds:string[];
   contacts:boolean=false;
   selection = new SelectionModel<any>(true, []);
-
+  noData:boolean=false;
   constructor(
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -118,10 +118,19 @@ getListData(searchVal?){
       (res)=>{
         this.loading=false;
         this.numRows=res.length;
+        if(res.length == 0){
+          this.noData=true;
+        }
+        else{
+          this.noData=false;
+
+        }
   this.dataSource=new MatTableDataSource<ListData>(res)
       },
       (err)=>{
         this.loading=false;
+        this.noData=true;
+
         this.onClose();
       })
 }
@@ -135,9 +144,15 @@ getContactsData(searchVal?){
     let sub1= this.listService.getContacts(email,false,shows,pageNum,orderedBy,search,"").subscribe(
       (res)=>{
         this.loading=false;
-        const filterdContacts = res.filter((obj) => !this.contactsIds.includes(obj.id));
+        const filterdContacts = res.filter((obj) => !this.data.contacts.map(res=>res.id).includes(obj.id));
         this.contactsIds=filterdContacts.map((e)=>e.id);
+        if(filterdContacts.length == 0){
+          this.noData=true;
+        }
+        else{
+          this.noData=false;
 
+        }
 
         if(this.data.listDetails){
           this.numRows=this.contactsIds.length;
@@ -152,6 +167,8 @@ getContactsData(searchVal?){
       },
       (err)=>{
         this.loading=false;
+        this.noData=true;
+
         this.onClose();
       })
 }
