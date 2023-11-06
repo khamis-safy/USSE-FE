@@ -11,7 +11,6 @@ import { SendMessageComponent } from './Components/new-message/send-message/send
 import { MessageTypeComponent } from './Components/message-type/message-type.component';
 import { NbTimepickerModule, NbDatepickerModule } from '@nebular/theme';
 import { DisplayMessageComponent } from './Components/display-message/display-message.component';
-import { TypePipe } from './type.pipe';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { ResendMessagesComponent } from './Components/resendMessages/resendMessages.component';
 
@@ -31,7 +30,6 @@ import { ResendMessagesComponent } from './Components/resendMessages/resendMessa
     // WriteMessageComponent,
     SendMessageComponent,
     MessageTypeComponent,
-      TypePipe,
       ResendMessagesComponent
    ],
    exports:[

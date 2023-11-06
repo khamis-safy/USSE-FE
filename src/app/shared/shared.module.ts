@@ -51,6 +51,7 @@ export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { TranslationService } from './services/translation.service';
+import { TypePipe } from '../pages/messages/type.pipe';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -102,6 +103,7 @@ import { TranslationService } from './services/translation.service';
     WriteMessageComponent,
     ClickOutsideDirective,
     ConfirmLogOutComponent,
+    TypePipe
 
   ],
   exports:[
@@ -142,7 +144,8 @@ import { TranslationService } from './services/translation.service';
     NbTimepickerModule,
     NbDatepickerModule,
     NbToggleModule,
-    TranslateModule
+    TranslateModule,
+    TypePipe
 
   ],
   

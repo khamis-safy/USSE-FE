@@ -28,7 +28,7 @@ export interface compaignDetails{
   sendingoutFrom:  string,
   sendingoutTo: string,
   maxPerDay: number,
-  attachments: [],
+  attachments: {fileName:string,fileUrl:string}[],
   lists: {listId:string}[],
   msgBody:string,
   isStopped: boolean,

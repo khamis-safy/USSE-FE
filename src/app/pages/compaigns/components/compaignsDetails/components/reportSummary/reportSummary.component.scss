@@ -79,6 +79,11 @@
 .summary-state-content{
     height: 80%;
 }
+.media{
+    width: 20% !important;
+    max-width: 200px;
+  }
+
 @media(max-width:1700px){
     .summary-icon{
 
@@ -91,7 +96,10 @@
         height: 142px !important;
     }
     h4.total-delevired {
-        font-size: 24px !important;
+        font-size: 22px !important;
+    }
+    .sending-out{
+        width:160px !important
     }
     .campaign-setting{
 

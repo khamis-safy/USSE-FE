@@ -446,7 +446,7 @@ cursor: pointer;
   }
 }
 .txt-lg{
-  font-size: 28px !important;
+  font-size: 24px !important;
   @media only screen and (max-width: 1024px)  and (min-width: 600px) {
     font-size: 21px !important;
   }
@@ -1780,6 +1780,12 @@ button.button-size-md{
   padding-inline: 28px !important;
 
 }
+.table-wrapper{
+  .status {
+    width: 12px !important;
+    height: 12px !important;
+}
+}
 // .info-input{
 // .txt-sm {
 //   font-size: 10px !important;
@@ -1788,7 +1794,8 @@ button.button-size-md{
 //   font-size: 10px !important;
 // }
 // }
-  }
+  
+}
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {  }

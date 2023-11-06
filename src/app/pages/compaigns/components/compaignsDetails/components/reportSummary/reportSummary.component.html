@@ -1,4 +1,4 @@
-<div class="d-flex gap-5 mt-5 flex-column component-container">
+<div class="d-flex gap-4 mt-5 flex-column component-container">
   <div class="d-flex mt-3 w-100 gap-3">
   <div class=" summary-state d-flex justify-content-between pending align-items-center px-4 py-2" >
     <div class="d-flex gap-4 flex-column summary-state-content">
@@ -6,7 +6,7 @@
       <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.pindingCount }}</p>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center ms-3 summary-icon" >
+    <div class="d-flex justify-content-center align-items-center  summary-icon" >
       <img src="assets/icons/4.svg" alt="" class="w-100" />
     </div>
   </div>
@@ -18,7 +18,7 @@
       <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.sentCount }}</p>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center ms-3 summary-icon" >
+    <div class="d-flex justify-content-center align-items-center  summary-icon" >
       <img src="assets/icons/sent.svg" alt="" class="w-100"  />
     </div>
   </div>
@@ -30,7 +30,7 @@
       <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.deliveredCount }}</p>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center ms-3 summary-icon" >
+    <div class="d-flex justify-content-center align-items-center  summary-icon" >
       <img src="assets/icons/delivered.svg" alt="" class="w-100"  />
     </div>
   </div>
@@ -42,7 +42,7 @@
       <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.readCount }}</p>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center ms-3 summary-icon" >
+    <div class="d-flex justify-content-center align-items-center  summary-icon" >
       <img src="assets/icons/2.svg" alt="" class="w-100" />
     </div>
   </div>
@@ -54,7 +54,7 @@
       <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.undeliveredCount }}</p>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center ms-3 summary-icon" >
+    <div class="d-flex justify-content-center align-items-center  summary-icon" >
       <img src="assets/icons/5.svg" alt="" class="w-100" />
     </div>
   </div>
@@ -71,13 +71,23 @@
       <p>
         {{ statics?.messageContent | translate }}
       </p>
+      <div class="d-flex w-100 gap-2 flex-wrap" *ngIf="compaign?.attachments">
+        <ng-container *ngFor="let attachment of compaign?.attachments">
+          <a  class="pointer " 
+          [href]="attachment.fileUrl" 
+          target="_blank" 
+          [title]="'open' | translate" >
+          <img   [src]="attachment.fileName | type" alt="">
+          </a>
+        </ng-container>
+      </div>
     </div>
     <div class="line my-5">
     </div>
     <div class="campaign-setting mb-2" style="width: 725px;">
       <h4 class="txt-lg mb-5" style="font-weight: 600">{{ 'Campaign Settings' | translate }}</h4>
-      <div class="interval d-flex justify-content-between mb-4 txt-md" style="width: 437px;">
-        <span style="font-weight: 500; display: inline-flex ;     width: 235px;">{{ 'Randomize interval' | translate }}</span> 
+      <div class="interval d-flex justify-content-between mb-4 txt-md" style="width: 470px;">
+        <span style="font-weight: 500; display: inline-flex ;  width: 260px;">{{ 'Randomize interval' | translate }}</span> 
         <div class="d-flex justify-content-between " style="width: 150px;">
           <span>{{compaign?.intervalFrom}}</span> 
           <span class="mx-3">:</span>
@@ -85,16 +95,17 @@
         </div>
       </div>
 
-      <div class="max-recepient d-flex justify-content-between  mb-4 txt-md" style="width: 41%;
-      min-width: 311px;">
-        <span style="font-weight: 500; display: inline-flex ;width: 77%;">{{ 'Max recipients per day' | translate }}</span> 
+      <div class="max-recepient d-flex justify-content-between  mb-4 txt-md" style="width: 335px;">
+        <span style="font-weight: 500; display: inline-flex ; width: 260px;">{{ 'Max recipients per day' | translate }}</span> 
         <span>{{compaign?.maxPerDay}}</span> 
+
       </div>
 
 
-      <div class="sending-time  d-flex justify-content-between mb-4 txt-md" style="width: 433px;">
-        <span style="font-weight: 500; display: inline-flex ; width: 235px;">{{ 'Sending out time' | translate }}</span> 
-        <div class="d-flex justify-content-between " style="    width: 150px;">
+      <div class="sending-time  d-flex justify-content-between mb-4 txt-md" style="width: 470px;">
+        <span style="font-weight: 500; display: inline-flex ;width: 260px;">{{ 'Sending out time' | translate }}</span> 
+        <div class="d-flex justify-content-between sending-out" style="       width: 170px;
+        ;">
           <span>{{compaign?.sendingoutFrom}}</span> 
           <span class="mx-3">:</span>
           <span>{{compaign?.sendingoutTo}}</span> 
