@@ -57,11 +57,32 @@ export class CompaignsDetailsComponent implements OnInit ,AfterViewInit{
       this.compaignsService.getCampaignById(this.compaignId).subscribe(
       (res)=>{
           this.compaign=res;
+          this.compaign.sendingoutFrom=this.convertUTCToLocal(this.compaign.sendingoutFrom)
+          this.compaign.sendingoutTo=this.convertUTCToLocal(this.compaign.sendingoutTo)
+
       },
       (err)=>{
 
       }
       )
+    }
+    convertUTCToLocal(utcTime: string): string {
+      const [hoursStr, minutesStr] = utcTime.split(':');
+      const hours = parseInt(hoursStr, 10);
+      const minutes = parseInt(minutesStr, 10);
+  
+      // Get the current date and time in UTC
+      const utcDate = new Date(Date.UTC(0, 0, 0, hours, minutes));
+  
+      // Get the local time zone offset in minutes
+      const timezoneOffset = new Date().getTimezoneOffset();
+  
+      // Adjust hours and minutes for the local time zone offset
+      const localHours = (utcDate.getUTCHours() - Math.floor(timezoneOffset / 60)).toString().padStart(2, '0');
+      const localMinutes = (utcDate.getUTCMinutes() - (timezoneOffset % 60)).toString().padStart(2, '0');
+  
+      // Return local hours and minutes as a string
+      return `${localHours}:${localMinutes}`;
     }
     resendAllCampaigns(){
       

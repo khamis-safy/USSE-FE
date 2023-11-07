@@ -42,10 +42,25 @@ export class AddCompaignsComponent implements OnInit {
 step2:boolean=false;
 step3:boolean=false;
 step4:boolean=false;
+sendingTimeOutFrom:any;
+sendingTimeOutTo:any;
+lastCampaignData:{
+  intervalFrom:number,
+  intervalTo:number,
+  repeatedDays:number,
+  isRepeatable:boolean,
+  isInterval:boolean,
+  maxPerDay:number,
+  sendingoutFrom:any,
+  sendingoutTo:any
+
+};
+
+
   constructor(private compaignsService:CompaignsService,private toasterService:ToasterServices,private authService:AuthService){
   }
   ngOnInit() {
-
+this.getLastCampaignData();
   }
   getLists(listsData){
     this.lists=listsData.map((list)=>list.id);
@@ -78,12 +93,25 @@ toThirdStep(data){
   // this.attachments=this.writeMessage.fileData.map((file)=>file.url);
 
 }
+getLastCampaignData(){
+  this.compaignsService.getLastCampaign(this.authService.getUserInfo().email).subscribe(
+    (res)=>{
+      if(res){
+       this.lastCampaignData=res;
+       this.lastCampaignData.sendingoutFrom=this.convertUTCToLocal(this.lastCampaignData.sendingoutFrom)
+       this.lastCampaignData.sendingoutTo=this.convertUTCToLocal(this.lastCampaignData.sendingoutTo)
+      }
+ 
+      
+    }
+  )
+}
 toLastStep(){
   this.step4=true;
   this.deviceId=this.stepThreeComponent.deviceId?this.stepThreeComponent.deviceId:"";
   this.dateTime=`${this.stepThreeComponent.utcDateTime}Z`;
   this.compaignName=this.stepThreeComponent.form.value.compainName;
-
+ 
 }
 addCampaign(){
   this.isLoading = true;
@@ -158,6 +186,16 @@ this.compaignsService.addMewCampain(data).subscribe(
 )
 
 }
+convertUTCToLocal(utcTime: string): Date {
+  const [hoursStr, minutesStr] = utcTime.split(':');
+  const hours = parseInt(hoursStr, 10);
+  const minutes = parseInt(minutesStr, 10);
 
+  const utcDate = new Date();
+  utcDate.setUTCHours(hours, minutes);
+  console.log(utcDate,"date:",new Date())
+  // Convert UTC time to local time
+  return utcDate;
+}
   }
 
