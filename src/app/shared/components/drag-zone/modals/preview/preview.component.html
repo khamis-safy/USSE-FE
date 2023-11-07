@@ -1,10 +1,19 @@
-<div class="d-flex justify-content-end w-100 position-relative">
+<div class="d-flex justify-content-end " style="    position: fixed;
+width: fit-content !important;
+display: flex;
+justify-content: center;
+left: 10%;
+    top:8%;
+    max-width: 40px;
+    min-width: 30px;
+    width: 3% !important;">
   <img
-  class="position-absolute top-0 end-0 m-3"
+  class="w-100"
   src="assets/icons/close-circle.svg"
   (click)="onClose()"
   alt="close-icon"
   style="cursor: pointer;"
 />
 </div>
-<img class="w-100 h-100" style="object-fit: contain;" [src]="data |safeURL" alt="">
+<img class="w-100 h-100" style="object-fit: contain;
+max-width: 1030px ;" [src]="data |safeURL" alt="">

@@ -202,12 +202,9 @@ async onChangeFile(e) {
   }
   openPreviewModal(url){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='80vh';
-    dialogConfig.width='80vw';
-    dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='80vw';
-    dialogConfig.maxHeight='80vh';
-    dialogConfig.disableClose = true;
+    dialogConfig.height='fit-content';
+    dialogConfig.width='fit-content';
+    dialogConfig.disableClose = false;
     dialogConfig.data= url;
     this.dialog.open(PreviewComponent,dialogConfig);
   }
