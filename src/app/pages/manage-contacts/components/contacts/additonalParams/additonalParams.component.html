@@ -1,0 +1,40 @@
+<section class="additional-params-container position-relative d-flex flex-column">
+
+  <div class="position-absolute end-0 pointer ranslate-middle-y mx-3 zi-3 " style="height: 5%; top:14px ">
+    <img
+      src="assets/icons/close-circle.svg"
+      (click)="onClose()"
+      alt="close-icon"
+      style="cursor: pointer; width: 20px;"
+    />
+  </div>
+  <!-- modal heading -->
+<div class="align-items-end d-flex justify-content-between  mt-5 mb-4 w-100">
+  <!-- contact name -->
+  <div class="d-flex justify-content-center  flex-column">
+    <span class="contact  cont-name mb-4">{{contact?.name}}</span>
+
+    <span class="contact">{{contact?.mobileNumber}}</span>
+
+  </div>
+  <div class="date-time d-flex justify-content-center ">
+    <span class="txt-sm text-neutral-500 ">{{contact?.createdAt  | toLocalTime | date: ' d/M/yy , h:mm a '}}</span>
+  </div>
+</div>
+
+<div  *ngIf="contact?.lists"  class="lists d-flex gap-3 align-items-center my-2">
+  <div *ngFor="let item of contact?.lists" [title]="item.name" class="listName bg-white text-nowrap px-2 py-1">
+    {{item.name}}
+  </div> 
+</div>
+<div  class="line my-4"></div>
+<div class="additional-params">
+  <h1 class="text-primary-800 mb-4" style="font-weight: 500;"> {{ 'Additional Parameters' | translate }}</h1>
+  <div  *ngFor="let param of contact.additionalContactParameter"  style="    width: 90%;
+  max-width: 360px;" class="d-flex justify-content-between mb-2 align-items-center">
+    <span class="param-name" style="font-weight: 500;">{{param.name}}</span>
+    <span class="param-value" style="font-weight: 300;">{{param.value}}</span>
+  </div>
+
+</div>
+</section>

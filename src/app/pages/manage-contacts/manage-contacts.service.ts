@@ -74,20 +74,18 @@ getNonListContacts(email:string,isCanceled:boolean,showsNum:number,pageNum:numbe
   return this.http.get<Contacts[]>(`${this.api}Contacts/listContactsWithNoLists?email=${email}&isCanceled=${isCanceled}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }
 
-addContact(name:string,mobileNumber:string,companyName:string,note:string,email:string,listId:string[],additionalContactParameters?:{name:string,value:string}[]):Observable<Contacts>{
+addContact(name:string,mobileNumber:string,email:string,listId:string[],additionalContactParameters?:{name:string,value:string}[]):Observable<Contacts>{
   const data=additionalContactParameters && additionalContactParameters.length>0?{
     name:name,
     mobileNumber:mobileNumber,
-    companyName:companyName,
-    note:note,
+   
     email: email,
     listId:listId,
     additionalContactParameters: additionalContactParameters
   }:{
     name:name,
     mobileNumber:mobileNumber,
-    companyName:companyName,
-    note:note,
+   
     email: email,
     listId:listId,
   }

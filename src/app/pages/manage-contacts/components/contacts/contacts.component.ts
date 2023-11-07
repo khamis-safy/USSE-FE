@@ -16,6 +16,8 @@ import { Subscription, fromEvent, map } from 'rxjs';
 import { CONTACTSHEADER } from '../../constants/constants';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { TranslationService } from 'src/app/shared/services/translation.service';
+import { AdditonalParamsComponent } from './additonalParams/additonalParams.component';
 
 @Component({
 
@@ -27,6 +29,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   length:number;
   numRows;
   loading:boolean=true;
+  cellClick:boolean=false;
 
   @Input() isCanceled:boolean;
   @Output() isDelete = new EventEmitter<Contacts[]>;
@@ -41,7 +44,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   deletedContacts:string[]=[];
   columns :FormControl;
   displayed: any[] = CONTACTSHEADER;
-  displayedColumns: string[] = ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At","action"];
+  displayedColumns: string[] = ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At","action"];
   dataSource:MatTableDataSource<Contacts>;
   selection = new SelectionModel<Contacts>(true, []);
   subscribtions:Subscription[]=[];
@@ -60,7 +63,8 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
     private listService:ManageContactsService,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
-    private authService:AuthService
+    private authService:AuthService,
+    private translationService:TranslationService
   ) {
     this.display=listService.getUpdatedDisplayNumber()
     this.pageNum=this.listService.pageNum;
@@ -74,7 +78,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
 
   ngOnInit() {
     if(!this.canEdit){
-      this.displayedColumns = ['Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At"];
+      this.displayedColumns = ['Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
 
     }
 
@@ -138,7 +142,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
         this.numRows=res.length;
         this.loading = false;
         if(this.isCanceled){
-          this.displayedColumns= ['select','Name', 'Mobile', 'Notes', "Lists",'Company Name',"Create At"];
+          this.displayedColumns= ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
 
         }
         res.forEach(contact => {
@@ -341,6 +345,27 @@ else{
   this.displayedColumns=[...event]
 
 }
+}
+showAdditionalParams(contacts,length){
+  if(!this.cellClick && length > 0){
+    const currentLang=this.translationService.getCurrentLanguage()
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='100vh';
+    dialogConfig.width='25vw';
+    dialogConfig.maxWidth='100%';
+    // dialogConfig.minWidth='200px';
+    dialogConfig.disableClose = true;
+    dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
+    dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
+    dialogConfig.data=contacts;
+    const dialogRef = this.dialog.open(AdditonalParamsComponent,dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+      }
+
+    });
+  }
 }
 ngOnDestroy(){
   this.selection.clear();

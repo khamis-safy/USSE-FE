@@ -57,10 +57,10 @@
       </ng-container>
 
       <!-- Notes Column -->
-      <ng-container matColumnDef="Notes">
+      <!-- <ng-container matColumnDef="Notes">
         <th mat-header-cell *matHeaderCellDef > {{ 'NOTES' | translate }}</th>
         <td mat-cell *matCellDef="let element"> {{element.note}} </td>
-      </ng-container>
+      </ng-container> -->
 
       <!-- Lists Column -->
       <ng-container matColumnDef="Lists">
@@ -88,10 +88,10 @@
       </ng-container>
 
       <!-- Company Name Column -->
-      <ng-container matColumnDef="Company Name">
+      <!-- <ng-container matColumnDef="Company Name">
         <th mat-header-cell *matHeaderCellDef > {{ 'COMPANY_NAME' | translate }} </th>
         <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
-      </ng-container>
+      </ng-container> -->
 
       <!-- Create At Column -->
       <ng-container matColumnDef="Create At">
@@ -99,11 +99,21 @@
         <td mat-cell *matCellDef="let element"> {{element.createdAt | toLocalTime | date: 'h:mm a , M/d/y '}} </td>
       </ng-container>
 
+        <!-- Additional Parameters Column -->
+      <ng-container matColumnDef="Additional Parameters">
+        <th mat-header-cell *matHeaderCellDef > {{ 'Additional Parameters' | translate }} </th>
+        <td mat-cell *matCellDef="let element" > 
+          <div *ngIf="element?.additionalContactParameter?.length" class="d-flex justify-content-center align-items-center w-100 zi-4">
+            <span class="txt-sm total">{{ element?.additionalContactParameter?.length }}</span>
+          </div>
+        </td>
+      </ng-container>
+
       <!-- Action Column -->
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> {{ 'ACTION' | translate }} </th>
         <td mat-cell *matCellDef="let element">
-            <div class="d-flex align-items-center pointer justify-content-center text-primary-800" (click)="openEditModal(element)">
+            <div class="d-flex align-items-center pointer justify-content-center text-primary-800" (click)="openEditModal(element);cellClick=true">
                 <mat-icon class="mat-icon" color="primary" >edit</mat-icon>
                 <span class="txt-sm edit">{{ 'EDIT' | translate }}</span>
             </div>
@@ -114,6 +124,9 @@
       <ng-container *ngIf="!loading">
 
       <tr  mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
+      (click)="showAdditionalParams(row,row?.additionalContactParameter?.length);
+      cellClick=false" 
+      class="pointer"
         [ngClass]="{'active-row':selection.isSelected(row)}"
         >
       </tr>
