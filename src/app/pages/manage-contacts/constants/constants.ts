@@ -8,16 +8,12 @@ export const CONTACTSHEADER: any[] = [
     value:"Mobile"
   },
   {
-    title:"NOTES",
-    value:"Notes"
-  },
-  {
     title:"LISTS",
     value:"Lists"
   },
   {
-    title:"COMPANY_NAME",
-    value:"Company Name"
+    title:"variables",
+    value:"Additional Parameters"
   },
   {
     title:"CREATE_AT",
@@ -44,13 +40,14 @@ export const LISTDETAILSHEADERS: any[] = [
     title:"NAME",
     value:"Name"
   },
-
+  
+  {
+    title:"variables",
+    value:"Additional Parameters"
+  },
   {
     title:"CREATE_AT",
     value:"Create At"
   },
-  {
-    title:"COMPANY",
-    value:"Company Name"
-  },
+  
 ];
