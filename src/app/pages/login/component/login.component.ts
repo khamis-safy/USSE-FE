@@ -74,7 +74,25 @@ unsubscribe$ = new Subject<void>();
       timeZone:res.timeZone,
       roles:res.roles[0],
     }
+let isTrialUser:boolean;
+    if(res.customerId!=""){
+      isTrialUser=false;
+    }
+    else{
+      const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
+      if(subType=="T"){
+        isTrialUser=true;
+      }
+      else{
+        isTrialUser=false;
+      }
+    }
+    this.authService.setSubscriptionState({
+      isTrail:isTrialUser,
+      trialEndDate:res.trialEndDate,
+      messageCount:res.messageCount
 
+    })
     
     if(res.customerId!=""){
       this.authService.setFileSizeBasedOnSubscription("S");

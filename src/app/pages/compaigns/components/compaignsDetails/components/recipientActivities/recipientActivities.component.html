@@ -49,7 +49,7 @@
         <ng-container matColumnDef="Updated At">
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'updatedAtLabel' | translate }}</th>
           <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element?.updatedAt | toLocalTime  | date: 'h:mm a , M/d/y ' }}
+            {{ element?.updatedAt | toLocalTime    }}
           </td>
         </ng-container>
 

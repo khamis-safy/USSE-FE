@@ -182,13 +182,13 @@
         <!-- Received at Column -->
         <ng-container matColumnDef="Received At">
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'RECEIVED_AT_LABEL' | translate }}</th>
-          <td class="text-center" mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime | date: 'h:mm a, M/d/y' }}</td>
+          <td class="text-center" mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime  }}</td>
         </ng-container>
 
         <!-- Updated At Column -->
         <ng-container matColumnDef="Updated At">
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'UPDATED_AT_LABEL' | translate }}</th>
-          <td class="text-center" mat-cell *matCellDef="let element">{{ element.updatedAt | toLocalTime | date: 'h:mm a, M/d/y' }}</td>
+          <td class="text-center" mat-cell *matCellDef="let element">{{ element.updatedAt | toLocalTime  }}</td>
         </ng-container>
 
         <!-- Status Column -->

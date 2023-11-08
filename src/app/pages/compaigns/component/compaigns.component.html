@@ -119,7 +119,7 @@
             <!-- Start Date Column -->
             <ng-container matColumnDef="Start Date">
               <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'startDateColumn' | translate }}</th>
-              <td class="text-center" mat-cell *matCellDef="let element">{{ element?.scheduledAt | toLocalTime | date: 'h:mm a , M/d/y ' }}</td>
+              <td class="text-center" mat-cell *matCellDef="let element">{{ element?.scheduledAt | toLocalTime  }}</td>
             </ng-container>
 
             <!-- Action Column -->

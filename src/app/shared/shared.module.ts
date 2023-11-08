@@ -52,6 +52,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { TranslationService } from './services/translation.service';
 import { TypePipe } from '../pages/messages/type.pipe';
+import { HintMessageComponent } from './components/hint-message/hint-message.component';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -103,7 +104,8 @@ import { TypePipe } from '../pages/messages/type.pipe';
     WriteMessageComponent,
     ClickOutsideDirective,
     ConfirmLogOutComponent,
-    TypePipe
+    TypePipe,
+    HintMessageComponent
 
   ],
   exports:[
@@ -145,7 +147,8 @@ import { TypePipe } from '../pages/messages/type.pipe';
     NbDatepickerModule,
     NbToggleModule,
     TranslateModule,
-    TypePipe
+    TypePipe,
+    HintMessageComponent
 
   ],
   

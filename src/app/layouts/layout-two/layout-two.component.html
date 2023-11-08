@@ -5,6 +5,7 @@
   <div class="d-flex justify-content-space-between flex-column vh-91" style="width: 92vw !important;">
     <!-- <app-header class="navbar-comp d-flex align-items-center rounded-3" (toggleSidebar)="sidebarTogg()"></app-header> -->
     <div class="vh-92 overflow-auto" >
+      <app-hint-message *ngIf="showTrialHintMessage" (hideMessage)="hideMessage()"></app-hint-message>
       <!-- [@routeAnimations]="prepareRoute(outlet)" -->
       <router-outlet #outlet="outlet"></router-outlet>
     </div>

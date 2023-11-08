@@ -487,7 +487,10 @@
 "Max recipients per day":"الحد الأقصى للمستلمين في اليوم",
 "Sending out time":"وقت الإرسال",
 "Additional Parameters":"معلمات إضافية",
-"variables":"متغيرات"
+"variables":"متغيرات",
+"trialEndMessage": "تنتهي الفترة التجريبية المجانية في {{specificDate}}، استخدمت {{messagesCount}}/100 رسائل. للخطة المدفوعة، تواصل مع الدعم على "
+
+
 
 
 

@@ -77,7 +77,7 @@
           <!-- Create At Column -->
           <ng-container matColumnDef="Create At">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'CREATE_AT' | translate }}</th>
-            <td mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime | date: 'h:mm a , M/d/y ' }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime   }}</td>
           </ng-container>
           <!-- Status Column -->
           <ng-container matColumnDef="Status">

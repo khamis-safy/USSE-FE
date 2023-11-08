@@ -43,6 +43,12 @@ export class AuthService {
   userData!:UserData;
   resfreshToken!:string;
 userInfo!:UserData;
+subscriptionState:{
+  isTrail:boolean,
+  trialEndDate:string,
+  messageCount:number
+
+};
 unAuthorized:boolean=false;
 empty:number=0;
 userPermissions:Permission
@@ -321,5 +327,12 @@ setFileSizeBasedOnSubscription(subscripionType:string){
 }
 getAllowedFileSize(){
   return this.allowedFileSize
+}
+setSubscriptionState(state){
+this.subscriptionState=state
+}
+getSubscriptionState(){
+
+  return this.subscriptionState;
 }
   }

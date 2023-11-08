@@ -490,7 +490,10 @@
 "Max recipients per day":"Max recipients per day",
 "Sending out time":"Sending out time",
 "Additional Parameters":"Additional Parameters",
-"variables":"Variables"
+"variables":"Variables",
+"trialEndMessage": "Your free trial ends on {{specificDate}}, with {{messagesCount}}/100 messages used. For the paid plan, reach out to Support at"
+
+
 
 
 

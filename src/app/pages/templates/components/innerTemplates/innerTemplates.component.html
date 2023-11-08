@@ -57,7 +57,7 @@
         <!-- Created At Column -->
         <ng-container matColumnDef="Created At" >
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'CREATED_AT' | translate }}</th>
-          <td class="text-center" mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime | date: 'h:mm a , M/d/y ' }}</td>
+          <td class="text-center" mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime   }}</td>
         </ng-container>
 
         <!-- Action Column -->
