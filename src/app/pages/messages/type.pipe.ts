@@ -31,7 +31,7 @@ export class TypePipe implements PipeTransform {
       "mpeg"
     ];
   const fileTypesMapping = {
-      'txt': 'assets/images/document.svg',
+      'txt': 'assets/images/text.svg',
       'pdf': 'assets/images/document.svg',
       'doc': 'assets/images/word.svg',
       'docx': 'assets/images/word.svg',
