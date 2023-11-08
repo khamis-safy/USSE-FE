@@ -21,8 +21,8 @@
     <span class="txt-sm text-neutral-500 ">{{contact?.createdAt  | toLocalTime | date: ' d/M/yy , h:mm a '}}</span>
   </div>
 </div>
-
-<div  *ngIf="contact?.lists"  class="lists d-flex gap-3 align-items-center my-2">
+<!-- lists -->
+<div  *ngIf="contact?.lists"  class="lists d-flex gap-3 align-items-center flex-wrap my-2">
   <div *ngFor="let item of contact?.lists" [title]="item.name" class="listName bg-white text-nowrap px-2 py-1">
     {{item.name}}
   </div> 

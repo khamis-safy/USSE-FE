@@ -3,17 +3,14 @@ width: fit-content !important;
 display: flex;
 justify-content: center;
 left: 10%;
-    top:8%;
-    max-width: 40px;
-    min-width: 30px;
-    width: 3% !important;">
-  <img
-  class="w-100"
-  src="assets/icons/close-circle.svg"
-  (click)="onClose()"
-  alt="close-icon"
-  style="cursor: pointer;"
-/>
+top:8%;">
+<mat-icon  (click)="onClose()"
+style="
+font-size: 65px;
+color: black;
+cursor: pointer;
+width:100%;
+height: 100%;">highlight_off</mat-icon>
 </div>
 <img class="w-100 h-100" style="object-fit: contain;
 max-width: 1030px ;" [src]="data |safeURL" alt="">

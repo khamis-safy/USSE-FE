@@ -6,7 +6,7 @@
       <label style="width:30%">{{ 'randomizeIntervalLabel' | translate }}</label>
 
       <div style="width:20%" class="form-check form-switch">
-        <input [checked]="isIntervalChecked" (change)="isInterval=!isInterval; onSwitcherChange($event,[intFrom,intTo])" class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input [checked]="isIntervalChecked" (change)="isInterval=!isInterval; onSwitcherChange($event,[intervalFrom,intervalTo])" class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
       </div>
 
       <div style="width:42%; position: relative;" class="d-flex align-items-center justify-content-between">
@@ -18,7 +18,7 @@
             [fullWidth]="true"
             [min]="minNum"
             [max]="maxNum"
-            formControlName="intFrom"
+            formControlName="intervalFrom"
           ></us-input>
         </div>
         <span class="mx-3">{{ 'toLabel' | translate }}</span>
@@ -30,10 +30,10 @@
             [fullWidth]="true"
             [min]="minNum"
             [max]="maxNum"
-            formControlName="intTo"
+            formControlName="intervalTo"
           ></us-input>
         </div>
-        <div *ngIf="intFrom.value > maxNum || intTo.value > maxNum || intFrom.value > intTo.value" class="hint error" style="position: absolute; bottom: -31px;">
+        <div *ngIf="intervalFrom.value > maxNum || intervalTo.value > maxNum || intervalFrom.value > intervalTo.value" class="hint error" style="position: absolute; bottom: -31px;">
           <i class="si-info"></i>
           <p class="txt txt-xs">{{ 'invalidNumberHint' | translate }}</p>
         </div>
@@ -52,9 +52,9 @@
             [fullWidth]="true"
             [min]="minNum"
             [max]="maxNum"
-            formControlName="rNum"
+            formControlName="maxPerDay"
           ></us-input>
-          <div *ngIf="rNum.value > maxNum" class="hint error" style="position: absolute; bottom: -31px;">
+          <div *ngIf="maxPerDay.value > maxNum" class="hint error" style="position: absolute; bottom: -31px;">
             <i class="si-info"></i>
             <p class="txt txt-xs">{{ 'invalidNumberHint' | translate }}</p>
           </div>
@@ -66,7 +66,7 @@
     <div class="w-100  d-flex justify-content-between align-items-center">
       <label style="width:30%">{{ 'repeatEveryLabel' | translate }}</label>
       <div style="width:20%" class="form-check form-switch">
-        <input  [checked]="isRepeatable"  (change)="isRepeatable=!isRepeatable; changeValue(); onSwitcherChange($event,[repeate])" class="form-check-input me-5" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input  [checked]="isRepeatable"  (change)="isRepeatable=!isRepeatable; changeValue(); onSwitcherChange($event,[repeatedDays])" class="form-check-input me-5" type="checkbox" role="switch" id="flexSwitchCheckDefault">
       </div>
 
       <div style="width:42%" class="d-flex align-items-center gap-4">
@@ -78,9 +78,9 @@
             [fullWidth]="true"
             [min]="minNum"
             [max]="maxNum"
-            formControlName="repeate"
+            formControlName="repeatedDays"
           ></us-input>
-          <div *ngIf="repeate.value > maxNum" class="hint error" style="position: absolute; bottom: -31px;">
+          <div *ngIf="repeatedDays.value > maxNum" class="hint error" style="position: absolute; bottom: -31px;">
             <i class="si-info"></i>
             <p class="txt txt-xs">{{ 'invalidNumberHint' | translate }}</p>
           </div>

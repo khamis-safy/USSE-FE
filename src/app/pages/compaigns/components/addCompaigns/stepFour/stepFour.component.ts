@@ -46,10 +46,10 @@ export class StepFourComponent implements OnInit, OnDestroy ,AfterViewInit{
   toggleTime: boolean = false;
   time1: any = new FormControl({ value: '', disabled: true }, [Validators.required]);
   time2: any = new FormControl({ value: '', disabled: true }, [Validators.required]);
-  intFrom: any = new FormControl({ value: 15, disabled: false }, [Validators.required]);
-  intTo: any = new FormControl({ value: 30, disabled: false }, [Validators.required]);
-  rNum: any = new FormControl({ value: 100, disabled: false }, [Validators.required]);
-  repeate: any = new FormControl({ value: 0, disabled: true }, [Validators.required]);
+  intervalFrom: any = new FormControl({ value: 15, disabled: false }, [Validators.required]);
+  intervalTo: any = new FormControl({ value: 30, disabled: false }, [Validators.required]);
+  maxPerDay: any = new FormControl({ value: 100, disabled: false }, [Validators.required]);
+  repeatedDays: any = new FormControl({ value: 0, disabled: true }, [Validators.required]);
   selectedTime: Date = new Date();
   form: FormGroup;
 
@@ -60,10 +60,10 @@ export class StepFourComponent implements OnInit, OnDestroy ,AfterViewInit{
     private authService: AuthService) {
     this.form = this.fb.group(
       {
-        intFrom: this.intFrom,
-        intTo: this.intTo,
-        rNum: this.rNum,
-        repeate: this.repeate,
+        intervalFrom: this.intervalFrom,
+        intervalTo: this.intervalTo,
+        maxPerDay: this.maxPerDay,
+        repeatedDays: this.repeatedDays,
         time1: this.time1,
         time2: this.time2,
       },
@@ -80,7 +80,6 @@ export class StepFourComponent implements OnInit, OnDestroy ,AfterViewInit{
   }
   ngOnInit() {
     this.setDefaultTime();
-    this.getLastCampaign();
     this.form.valueChanges.subscribe(() => {
       this.formValidityChange.emit(this.form.valid);
     });
@@ -101,8 +100,8 @@ export class StepFourComponent implements OnInit, OnDestroy ,AfterViewInit{
   }
 
   intervalInvalid(formGroup: FormGroup) {
-    const intervalFrom = formGroup.get('intFrom')!.value;
-    const intervalTo = formGroup.get('intTo')!.value;
+    const intervalFrom = formGroup.get('intervalFrom')!.value;
+    const intervalTo = formGroup.get('intervalTo')!.value;
     if (intervalFrom && intervalTo) {
       if (intervalFrom < intervalTo || intervalTo > intervalFrom) {
         return null; // Valid
@@ -116,16 +115,19 @@ export class StepFourComponent implements OnInit, OnDestroy ,AfterViewInit{
   setDefaultTime() {
 if(this.lastCampaignData ){
   this.form.patchValue({
-    intFrom:this.lastCampaignData.intervalFrom,
-    intTo:this.lastCampaignData.intervalTo,
-    rNum:this.lastCampaignData.maxPerDay,
-    repeate:this.lastCampaignData.repeatedDays,
+    intervalFrom:this.lastCampaignData.intervalFrom,
+    intervalTo:this.lastCampaignData.intervalTo,
+    maxPerDay:this.lastCampaignData.maxPerDay,
+    repeatedDays:this.lastCampaignData.repeatedDays,
     time1:this.lastCampaignData.sendingoutFrom,
     time2:this.lastCampaignData.sendingoutTo
   }
 
   )
   this.isRepeatable=this.lastCampaignData.isRepeatable;
+  if(this.isRepeatable){
+    this.repeatedDays.enable();
+  }
   
   this.isInterval=this.lastCampaignData.isInterval;
   this.isIntervalChecked=this.lastCampaignData.isInterval;
@@ -144,26 +146,6 @@ else{
    
   }
 
-  getLastCampaign() {
-    this.campaignServeice.getLastCampaign(this.authService.getUserInfo().email).subscribe(
-      (res) => {
-        if (res) {
-      
-          this.form.patchValue({
-            intFrom: res.intervalFrom || 15,
-            intTo: res.intervalTo || 30,
-            rNum: res.maxPerDay || 100,
-            repeate: res.repeatedDays || 0,
-            
-          });
-          
-          this.isIntervalChecked = res.isInterval || true;
-          this.isRepeatable = res.isRepeatable || false;
-          this.isSendingOutTimeChecked = res.isInterval || false;
-        } 
-      }
-    );
-  }
 
   convertToUTC(timecontrol: any): any {
     const selectedTime = timecontrol.value;
@@ -207,9 +189,9 @@ else{
 
   changeValue() {
     if (this.isRepeatable) {
-      this.form.get('repeate')?.setValue(1);
+      this.form.get('repeatedDays')?.setValue(1);
     } else {
-      this.form.get('repeate')?.setValue(0);
+      this.form.get('repeatedDays')?.setValue(0);
     }
   }
 }

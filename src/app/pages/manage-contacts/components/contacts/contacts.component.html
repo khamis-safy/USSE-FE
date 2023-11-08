@@ -68,7 +68,7 @@
         <td mat-cell *matCellDef="let element" >
           <div class="lists-container w-100 d-flex justify-content-center">
 
-            <div  class=" position-relative lists " >
+            <div  class=" position-relative lists "    (click)="cellClick=true">
               <div class="d-flex gap-2 overflow-hidden lists-wrapper px-4 w-100" #listsWrapper >
                 <div *ngFor="let item of element.lists" [title]="item.name" class="listName bg-white text-nowrap px-2 py-1 rounded-2">
                   {{item.name}}
@@ -101,7 +101,7 @@
 
         <!-- Additional Parameters Column -->
       <ng-container matColumnDef="Additional Parameters">
-        <th mat-header-cell *matHeaderCellDef > {{ 'Additional Parameters' | translate }} </th>
+        <th mat-header-cell *matHeaderCellDef > {{ 'variables' | translate }} </th>
         <td mat-cell *matCellDef="let element" > 
           <div *ngIf="element?.additionalContactParameter?.length" class="d-flex justify-content-center align-items-center w-100 zi-4">
             <span class="txt-sm total">{{ element?.additionalContactParameter?.length }}</span>

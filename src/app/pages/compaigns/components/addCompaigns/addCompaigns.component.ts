@@ -118,12 +118,12 @@ addCampaign(){
 this.isRepeatable=this.stepFourComponent.isRepeatable;
 this.isInterval=this.stepFourComponent.isInterval;
 
-this.repeatedDays=this.stepFourComponent.form.get("repeate").value;
-this.intervalFrom=this.stepFourComponent.form.get("intFrom").value;
-this.intervalTo=this.stepFourComponent.form.get("intTo").value;
+this.repeatedDays=this.stepFourComponent.form.get("repeatedDays").value;
+this.intervalFrom=this.stepFourComponent.form.get("intervalFrom").value;
+this.intervalTo=this.stepFourComponent.form.get("intervalTo").value;
 this.blackoutFrom=this.stepFourComponent.utcTime1;
 this.blackoutTo=this.stepFourComponent.utcTime2;
-this.maxPerDay=this.stepFourComponent.form.get("rNum").value;
+this.maxPerDay=this.stepFourComponent.form.get("maxPerDay").value;
 this.stepFourComponent.convertToUTC(this.blackoutFrom);
 let data;
 if(this.attachments.length==0){
