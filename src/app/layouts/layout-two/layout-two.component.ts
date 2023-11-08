@@ -9,21 +9,17 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class LayoutTwoComponent implements OnInit {
   showTrialHintMessage:boolean=false;
-  trialEndDate:string;
-  messageCount:number;
   activeSidebar= false;
   constructor(private render:Renderer2, private authService:AuthService) { }
 
   ngOnInit(): void {
-    this.trialEndDate=this.authService.getSubscriptionState()?.trialEndDate;
+ 
     this.showTrialHintMessage=this.authService.getSubscriptionState().isTrail ? this.authService.getSubscriptionState()?.isTrail : false;
-    this.messageCount=this.authService.getSubscriptionState()?.messageCount;
-    setTimeout(() => {
-      this.hideMessage();      
-    }, 5000);
+
+   
   }
-  hideMessage(){
-    this.showTrialHintMessage=!this.showTrialHintMessage;
+  hideMessage(event){
+    this.showTrialHintMessage=event;
   }
   
   

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-hint-message',
@@ -7,29 +8,30 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./hint-message.component.scss']
 })
 export class HintMessageComponent implements OnInit , OnDestroy {
-  @Output() hideMessage = new EventEmitter<boolean>(false);
-  @Input() trialEndDate:string="";
-  @Input() messageCount:number=0;
   translatedMessage: string;
+  @Output() showMessage = new EventEmitter();
   sub:any
-  constructor(private translate:TranslateService) { 
+  constructor(private translate:TranslateService, private authService:AuthService) { 
+
     this.translateMessage();
+
   }
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
   translateMessage() {
-    const specificDate = this.trialEndDate || ""; // Replace this with your specific date variable
-    const messagesCount =this.messageCount; // Replace this with your messages count variable
+    const specificDate = this.authService.getSubscriptionState()?.trialEndDate ; 
+    const messagesCount =this.authService.getSubscriptionState()?.messageCount;
 
     this.sub= this.translate.get('trialEndMessage', { specificDate, messagesCount }).subscribe((res: string) => {
       this.translatedMessage = `${res} contact@qweira.com .`;
     });
   }
   ngOnInit() {
+    setTimeout(() => {
+      this.showMessage.emit(false)      
+    }, 6000);
   }
-  onClose(){
-    this.hideMessage.emit(true)
-  }
+ 
 
 }
