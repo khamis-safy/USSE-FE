@@ -81,7 +81,7 @@
     outline: none;
     box-sizing: border-box;
     color: $clr_neutral_900;
-
+    resize: vertical !important;
     &::placeholder {
       color: $clr_neutral_400;
     }
@@ -191,9 +191,12 @@
     }
   }
 }
-
+.start-from-left{
+  direction: ltr !important;
+}
 .input-wrapper:has(textarea) {
-  height: 90px !important;
+  resize: vertical;
+  min-height: 90px !important;
 }
 
 textarea {
@@ -220,7 +223,7 @@ textarea {
 
 
   .input-wrapper{
-    height: 35px !important;
+  
 
    input, textarea
     {

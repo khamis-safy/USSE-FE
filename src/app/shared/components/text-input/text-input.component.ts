@@ -1,9 +1,12 @@
 import {
+  AfterViewInit,
   Component,
+  ElementRef,
   EventEmitter,
   forwardRef,
   Input,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -19,15 +22,18 @@ const VALUE_ACCESSOR_CONFIG = {
   styleUrls: ['./text-input.component.scss'],
   providers: [VALUE_ACCESSOR_CONFIG],
 })
-export class InputComponent {
+export class InputComponent implements  AfterViewInit {
+
   // VALUE_ACCESSOR Methods & Properties
   private val: any = null;
   @Input() isDisabled: boolean;
+  @ViewChild('srInputEl') textarea: ElementRef;
 
   onChange: any = () => {};
   onTouched: any = () => {};
   isPasswordVisible: boolean = false;
-  togglePasswordVisibility() {
+  divHeight: string;
+    togglePasswordVisibility() {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
   registerOnChange(fn: any): void {
@@ -90,7 +96,9 @@ export class InputComponent {
   get value(): any {
     return this.val;
   }
-
+  ngAfterViewInit(): void {
+    this.updateDivHeight();
+  }
   increment() {
     // increase the value of the number input
     if (typeof this.max == 'number' && this.value >= this.max) {
@@ -129,5 +137,17 @@ export class InputComponent {
   curPos = 0;
   getCursorPosition(e){
     this.curPos = e.target.selectionStart;
+  }
+  updateDivHeight(): void {
+    const textareaElement = this.textarea.nativeElement;
+    const lineHeight = parseInt(window.getComputedStyle(textareaElement).lineHeight, 10);
+    const lines = textareaElement.value.split('\n').length;
+    const minHeight = 100; // Set your minimum height here
+
+    this.divHeight = Math.max(minHeight, lines * lineHeight) + 'px';
+  }
+  getInitialHeight(): number {
+    const resizableDiv = document.querySelector('.resizable-div') as HTMLElement;
+    return resizableDiv ? resizableDiv.offsetHeight : 100;
   }
 }

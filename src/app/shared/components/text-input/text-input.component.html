@@ -38,7 +38,8 @@
         [(ngModel)]="value"
         [ngClass]="{
           has_icon: iconClass,
-          has_icon_trailing: iconClass && trailingIcon
+          has_icon_trailing: iconClass && trailingIcon,
+          'start-from-left':type === 'password' || type === 'email'
         }"
         [id]="key"
         [type]="type === 'password' && isPasswordVisible ? 'text' : type"
@@ -82,15 +83,15 @@
     </div>
 
     <!-- textarea container ( contains: prefix, input, suffix, icon, steppers ) -->
-    <div
+    <div  
       *ngIf="isTextArea"
-      class="input-wrapper {{ orderInGroup }}"
+      [ngStyle]="{'height': divHeight}"
+      class="input-wrapper {{ orderInGroup }} resizable-div"
       [ngClass]="{ fullWidth, error, 'disabled': isDisabled, grouped}"
     >
       <div *ngIf="prefix" class="prefix">
         <p class="txt txt-sm">{{ prefix }}</p>
       </div>
-
       <textarea
         #srInputEl
         [(ngModel)]="value"
@@ -112,7 +113,7 @@
         (oncopy)="copy.emit(value)"
         (onpaste)="paste.emit(value)"
         (click)="getCursorPosition($event);clicked.emit($event)"
-        (input)="input.emit($event)"
+        (input)="input.emit($event);updateDivHeight()"
       >
       </textarea>
 
