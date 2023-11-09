@@ -100,7 +100,9 @@ export class SignupComponent implements OnInit ,OnDestroy{
           maskType:res.maskType,
           phoneNumber:res.phoneNumber,
           timeZone:res.timeZone,
-          roles:res.roles[0]
+          roles:res.roles[0],
+          countryCode:res.countryCode
+
         }
         let isTrialUser:boolean;
         if(res.customerId!=""){

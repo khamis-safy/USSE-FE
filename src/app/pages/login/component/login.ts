@@ -13,6 +13,7 @@ export interface Login {
   organisationName: string,
   trialEndDate: string,
   messageCount:number,
+  countryCode:string,
   isActive: boolean,
   isTrial: boolean,
   customerId: string,

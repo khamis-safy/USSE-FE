@@ -73,6 +73,8 @@ unsubscribe$ = new Subject<void>();
       phoneNumber:res.phoneNumber,
       timeZone:res.timeZone,
       roles:res.roles[0],
+      countryCode:res.countryCode
+
     }
 let isTrialUser:boolean;
     if(res.customerId!=""){
