@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
@@ -15,14 +15,14 @@ import { TIMEZONES } from './constants/constant';
     styleUrls: ['./setting.component.scss'],
 
 })
-export class SettingComponent implements OnInit{
+export class SettingComponent implements OnInit , OnDestroy{
   contactName:any = new FormControl('',[Validators.required]);
   apiToken:any = new FormControl({value:'',  disabled: true});
   mobile:any = new FormControl('');
   organisationName:any = new FormControl('',[Validators.required]);
   maskType:any=new FormControl([]);
   timeZone:any=new FormControl([]);
-
+  countryCode:any= new FormControl('')
   // ngx-intl-tel
   separateDialCode = true;
 	SearchCountryField = SearchCountryField;
@@ -36,13 +36,14 @@ export class SettingComponent implements OnInit{
     organisationName:this.organisationName,//from request
     maskType:this.maskType,//from request
     timeZone:this.timeZone,
-
+    countryCode:this.countryCode
   });
   selectedZone:any;
   timeZoneArr:SelectOption[];
   timeZones:any[] =TIMEZONES
   maskTypeArr:SelectOption[] ;
   loading;
+  subscribe:any;
   userInfo: any;
   isUser:boolean;
     constructor(public dialogRef: MatDialogRef<SettingComponent>,
@@ -63,7 +64,10 @@ export class SettingComponent implements OnInit{
     }})
    
      }
+  ngOnDestroy(): void {
+  }
   ngOnInit(): void {
+   
     // this.getUserByEmail()
     if(this.authService.getUserInfo()?.customerId==""){
       this.isUser=false;
@@ -84,7 +88,9 @@ export class SettingComponent implements OnInit{
         apiToken:this.authService.getUserInfo()?.apiToken,
         organisationName:this.authService.getUserInfo()?.organisationName,
         maskType:{title:this.translate.instant(this.maskValue.title),value:this.maskValue.value},
-
+        countryCode:!this.authService.getUserInfo()?.countryCode?''
+        :this.authService.getUserInfo()?.countryCode=='2'?
+        `+${this.authService.getUserInfo()?.countryCode}0`:`+${this.authService.getUserInfo()?.countryCode}`
       }
     )
     let timeZone=this.authService.getUserInfo()?.timezone
@@ -171,6 +177,9 @@ this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value;
 
         }
     submitSave() {
+      let code = this.form.value.countryCode=="20"?"2":this.form.value.countryCode;
+      
+
       this.loading=true;
       let mobile=this.form.value.mobile? this.form.value.mobile.e164Number:null;
       const data=this.selectedZone?{
@@ -180,20 +189,21 @@ this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value;
         organisationName: this.form.value.organisationName,
         timeZone: this.selectedZone,
         maskType: this.form.value.maskType.value,
-        phoneNumber: mobile
+        phoneNumber: mobile,
+        countryCode:code
       }:{
         token: this.authService.getRefreshToken(),
         apiToken: this.apiToken.value,
         contactName: this.form.value.contactName,
         organisationName: this.form.value.organisationName,
         maskType: this.form.value.maskType.value,
-        phoneNumber: mobile
-      }
+        phoneNumber: mobile,
+        countryCode:code
 
+      }
       this.authService.editProfile(data).subscribe(
         (res)=>{
           this.loading=false;
-
           this.toaster.success(this.translate.instant('COMMON.SUCC_MSG'));
           localStorage.setItem("timeZone",this.selectedZone);
           this.authService.userInfo.userName=res.contactName
@@ -202,21 +212,6 @@ this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value;
           this.authService.userInfo.maskType=res.maskType
           this.authService.userInfo.phoneNumber=res.phoneNumber
           this.authService.userInfo.apiToken=res.apiToken
-
-          // this.userInfo={userName:res.contactName,
-          //   organizationName:res.organisationName,
-          //   id:res.id,
-          //   email:res.email,
-          //   token:localStorage.getItem("token"),
-          //   customerId:res.customerId,
-          //   apiToken:res.apiToken,
-          //   maskType:res.maskType,
-          //   phoneNumber:res.phoneNumber,
-          //   timeZone:this.selectedZone
-          // }
-  
-      // this.authService.saveDataToLocalStorage(this.userInfo);
-      // this.authService.updateUserInfo(this.userInfo)
       this.onClose(true);
         },
         (err)=>{
@@ -224,7 +219,6 @@ this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value;
           this.onClose()
         }
       )
-        // this.onClose()
     }
 
     onClose(data?): void {

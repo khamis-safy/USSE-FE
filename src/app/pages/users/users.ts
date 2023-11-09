@@ -57,7 +57,8 @@ export interface UserData{
   phoneNumber:string;
   apiToken:string,
   timezone:string,
-  subscriptions: {name:string,value:string}[]
+  subscriptions: {name:string,value:string}[],
+  countryCode?:string
 
 }
 

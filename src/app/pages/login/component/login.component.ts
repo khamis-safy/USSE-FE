@@ -115,7 +115,7 @@ let isTrialUser:boolean;
       this.authService.updateUserInfo(this.userInfo);
   
       this.loginService.storeRefreshTokenInCookie(res.refreshToken);
- 
+      this.authService.setRefreshToken()
 
         setInterval(() => {
           this.refreshToken();

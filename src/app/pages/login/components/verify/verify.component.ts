@@ -144,6 +144,8 @@ export class VerifyComponent implements OnInit ,AfterViewInit,OnDestroy{
             this.authService.saveDataToLocalStorage(this.authService.getUserData());
             this.authService.updateUserInfo(this.authService.getUserData())
             this.loginService.storeRefreshTokenInCookie(token);
+            this.authService.setRefreshToken()
+
             setInterval(() => {
               this.refreshToken();
             }, 60 * 60 * 1000); // 1 hour in milliseconds

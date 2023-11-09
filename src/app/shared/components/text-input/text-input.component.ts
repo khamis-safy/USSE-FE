@@ -65,6 +65,8 @@ export class InputComponent implements  AfterViewInit {
   @Input() type: 'text' | 'number' = 'text'; // type [ text or number ]
   @Input() error?: boolean; // change styles for error appearance
   @Input() fullWidth?: boolean; // take full width of the parent
+  @Input() hideSteppers?: boolean=false; // hide steppers butttons
+
   @Input() trailingIcon?: boolean; // set icon to the END of the input [ in the START by default ]
   @Input() prefix?: string; // add a prefix
   @Input() suffix?: string; // add a suffix

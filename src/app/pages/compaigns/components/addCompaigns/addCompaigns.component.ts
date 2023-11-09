@@ -193,7 +193,6 @@ convertUTCToLocal(utcTime: string): Date {
 
   const utcDate = new Date();
   utcDate.setUTCHours(hours, minutes);
-  console.log(utcDate,"date:",new Date())
   // Convert UTC time to local time
   return utcDate;
 }

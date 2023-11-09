@@ -41,6 +41,17 @@
 
     }
   }
+  &.hideSteppers{
+    .steppers{
+      display: none !important;
+    }
+    &:hover{
+      .steppers{
+        display: none !important;
+      }
+    }
+   
+  }
   &.fullWidth
 {
     min-width: auto;
