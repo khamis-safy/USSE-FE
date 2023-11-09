@@ -18,9 +18,7 @@ export class LayoutTwoComponent implements OnInit {
 
    
   }
-  hideMessage(event){
-    this.showTrialHintMessage=event;
-  }
+ 
   
   
   sidebarTogg(){

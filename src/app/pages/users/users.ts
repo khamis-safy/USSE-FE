@@ -42,7 +42,7 @@ export interface Users  {
   accessFailedCount: number,
   token:string,
   roles:string
-
+  messageCount?:number
 }
 
 export interface UserData{

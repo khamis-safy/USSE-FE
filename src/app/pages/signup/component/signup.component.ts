@@ -101,6 +101,8 @@ export class SignupComponent implements OnInit ,OnDestroy{
         let isTrialUser:boolean;
         if(res.customerId!=""){
           isTrialUser=false;
+          this.authService.setFileSizeBasedOnSubscription("S");
+    
         }
         else{
           const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
@@ -110,6 +112,7 @@ export class SignupComponent implements OnInit ,OnDestroy{
           else{
             isTrialUser=false;
           }
+          this.authService.setFileSizeBasedOnSubscription(subType);
         }
         this.authService.setSubscriptionState({
           isTrail:isTrialUser,
@@ -117,13 +120,6 @@ export class SignupComponent implements OnInit ,OnDestroy{
           messageCount:res.messageCount
     
         })
-        if(res.customerId!=""){
-          this.authService.setFileSizeBasedOnSubscription("S");
-        }
-        else{
-          const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
-          this.authService.setFileSizeBasedOnSubscription(subType);
-        }
            // Store the refresh token in a cookie
 
           

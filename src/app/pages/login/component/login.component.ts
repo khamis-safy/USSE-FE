@@ -77,6 +77,8 @@ unsubscribe$ = new Subject<void>();
 let isTrialUser:boolean;
     if(res.customerId!=""){
       isTrialUser=false;
+      this.authService.setFileSizeBasedOnSubscription("S");
+
     }
     else{
       const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
@@ -86,6 +88,7 @@ let isTrialUser:boolean;
       else{
         isTrialUser=false;
       }
+      this.authService.setFileSizeBasedOnSubscription(subType);
     }
     this.authService.setSubscriptionState({
       isTrail:isTrialUser,
@@ -94,13 +97,7 @@ let isTrialUser:boolean;
 
     })
     
-    if(res.customerId!=""){
-      this.authService.setFileSizeBasedOnSubscription("S");
-    }
-    else{
-      const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
-      this.authService.setFileSizeBasedOnSubscription(subType);
-    }
+  
     // check autheraization
 
     if(!res.isEmailAuthonticated){

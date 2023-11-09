@@ -100,6 +100,30 @@ constructor(private loginService:LoginService,
             const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
             this.setFileSizeBasedOnSubscription(subType);
           }
+
+          let isTrialUser:boolean;
+          if(res.customerId!=""){
+            isTrialUser=false;
+            this.setFileSizeBasedOnSubscription("S");
+      
+          }
+          else{
+            const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
+            if(subType=="T"){
+              isTrialUser=true;
+            }
+            else{
+              isTrialUser=false;
+            }
+            this.setFileSizeBasedOnSubscription(subType);
+          }
+          this.setSubscriptionState({
+            isTrail:isTrialUser,
+            trialEndDate:res.trialEndDate,
+            messageCount:res.messageCount
+      
+          })
+
           resolve(this.userInfo);
         },
         (error) => {

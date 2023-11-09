@@ -9,7 +9,6 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HintMessageComponent implements OnInit , OnDestroy {
   translatedMessage: string;
-  @Output() showMessage = new EventEmitter();
   sub:any
   constructor(private translate:TranslateService, private authService:AuthService) { 
 
@@ -28,9 +27,7 @@ export class HintMessageComponent implements OnInit , OnDestroy {
     });
   }
   ngOnInit() {
-    setTimeout(() => {
-      this.showMessage.emit(false)      
-    }, 6000);
+   
   }
  
 
