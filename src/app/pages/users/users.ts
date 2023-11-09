@@ -13,6 +13,7 @@ export interface Users  {
   timezone: string,
   isDeleted: boolean,
   maskType: string,
+  countryCode:string,
   refreshTokens:
       {
           token:string,

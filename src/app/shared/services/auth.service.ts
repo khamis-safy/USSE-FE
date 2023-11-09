@@ -90,6 +90,7 @@ constructor(private loginService:LoginService,
             maskType:res.maskType,
             phoneNumber:res.phoneNumber,
             timezone:res.timezone,
+            countryCode:res.countryCode
             
           }
           this.updateUserInfo(data);

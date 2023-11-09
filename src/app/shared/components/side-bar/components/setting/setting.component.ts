@@ -81,6 +81,8 @@ export class SettingComponent implements OnInit , OnDestroy{
     let phoneNumber = this.authService.getUserInfo()?.phoneNumber;
 
     let mobileNum = phoneNumber !== null && phoneNumber !== undefined ? phoneNumber.slice(1) : "";
+
+
     this.form.patchValue(
       {
         contactName:this.authService.getUserInfo()?.userName,
@@ -88,9 +90,7 @@ export class SettingComponent implements OnInit , OnDestroy{
         apiToken:this.authService.getUserInfo()?.apiToken,
         organisationName:this.authService.getUserInfo()?.organisationName,
         maskType:{title:this.translate.instant(this.maskValue.title),value:this.maskValue.value},
-        countryCode:!this.authService.getUserInfo()?.countryCode?''
-        :this.authService.getUserInfo()?.countryCode=='2'?
-        `+${this.authService.getUserInfo()?.countryCode}0`:`+${this.authService.getUserInfo()?.countryCode}`
+        countryCode:this.authService.getUserInfo().countryCode =="2"?"20":this.authService.getUserInfo().countryCode
       }
     )
     let timeZone=this.authService.getUserInfo()?.timezone
@@ -211,7 +211,8 @@ this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value;
           this.authService.userInfo.timezone=res.timezone
           this.authService.userInfo.maskType=res.maskType
           this.authService.userInfo.phoneNumber=res.phoneNumber
-          this.authService.userInfo.apiToken=res.apiToken
+          this.authService.userInfo.apiToken=res.apiToken;
+          this.authService.userInfo.countryCode=code;
       this.onClose(true);
         },
         (err)=>{
