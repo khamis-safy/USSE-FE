@@ -19,8 +19,8 @@
   </div>
 </ng-container>
 
-  <ng-container *ngIf="length>0 && !noData || loading">
-    <section class="table-wrapper ">
+<ng-container *ngIf="length > 0 && !noData || loading">
+  <section class="table-wrapper ">
     <table matSort mat-table [dataSource]="dataSource" (matSortChange)="onSortChange($event)">
       <!-- Checkbox Column -->
       <ng-container  matColumnDef="select">
@@ -57,10 +57,10 @@
       </ng-container>
 
       <!-- Notes Column -->
-      <ng-container matColumnDef="Notes">
+      <!-- <ng-container matColumnDef="Notes">
         <th mat-header-cell *matHeaderCellDef > {{ 'NOTES' | translate }}</th>
         <td mat-cell *matCellDef="let element"> {{element.note}} </td>
-      </ng-container>
+      </ng-container> -->
 
       <!-- Lists Column -->
       <ng-container matColumnDef="Lists">
@@ -68,7 +68,7 @@
         <td mat-cell *matCellDef="let element" >
           <div class="lists-container w-100 d-flex justify-content-center">
 
-            <div  class=" position-relative lists " >
+            <div  class=" position-relative lists "    (click)="cellClick=true">
               <div class="d-flex gap-2 overflow-hidden lists-wrapper px-4 w-100" #listsWrapper >
                 <div *ngFor="let item of element.lists" [title]="item.name" class="listName bg-white text-nowrap px-2 py-1 rounded-2">
                   {{item.name}}
@@ -88,22 +88,32 @@
       </ng-container>
 
       <!-- Company Name Column -->
-      <ng-container matColumnDef="Company Name">
+      <!-- <ng-container matColumnDef="Company Name">
         <th mat-header-cell *matHeaderCellDef > {{ 'COMPANY_NAME' | translate }} </th>
         <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
-      </ng-container>
+      </ng-container> -->
 
       <!-- Create At Column -->
       <ng-container matColumnDef="Create At">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'CREATE_AT' | translate }} </th>
-        <td mat-cell *matCellDef="let element"> {{element.createdAt | toLocalTime | date: 'h:mm a , M/d/y '}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.createdAt | toLocalTime  }} </td>
+      </ng-container>
+
+        <!-- Additional Parameters Column -->
+      <ng-container matColumnDef="Additional Parameters">
+        <th mat-header-cell *matHeaderCellDef > {{ 'variables' | translate }} </th>
+        <td mat-cell *matCellDef="let element" > 
+          <div *ngIf="element?.additionalContactParameter?.length" class="d-flex justify-content-center align-items-center w-100 zi-4">
+            <span class="txt-sm total">{{ element?.additionalContactParameter?.length }}</span>
+          </div>
+        </td>
       </ng-container>
 
       <!-- Action Column -->
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> {{ 'ACTION' | translate }} </th>
         <td mat-cell *matCellDef="let element">
-            <div class="d-flex align-items-center pointer justify-content-center text-primary-800" (click)="openEditModal(element)">
+            <div class="d-flex align-items-center pointer justify-content-center text-primary-800" (click)="openEditModal(element);cellClick=true">
                 <mat-icon class="mat-icon" color="primary" >edit</mat-icon>
                 <span class="txt-sm edit">{{ 'EDIT' | translate }}</span>
             </div>
@@ -114,6 +124,9 @@
       <ng-container *ngIf="!loading">
 
       <tr  mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
+      (click)="showAdditionalParams(row,row?.additionalContactParameter?.length);
+      cellClick=false" 
+      class="pointer"
         [ngClass]="{'active-row':selection.isSelected(row)}"
         >
       </tr>
@@ -134,7 +147,7 @@
   </section>
 </ng-container>
 
-<ng-container *ngIf="(length == 0 && !loading) || ( notFound || noData)">
+<ng-container *ngIf="(length == 0 && !loading) && ( notFound || noData)">
 
   <div class="d-flex justify-content-center align-items-center flex-column gap-3 nodata-container  w-100" style="height: 500px;">
     <img src="assets/images/files.svg" alt="">

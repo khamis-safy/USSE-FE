@@ -13,6 +13,7 @@ export interface Users  {
   timezone: string,
   isDeleted: boolean,
   maskType: string,
+  countryCode:string,
   refreshTokens:
       {
           token:string,
@@ -42,7 +43,7 @@ export interface Users  {
   accessFailedCount: number,
   token:string,
   roles:string
-
+  messageCount?:number
 }
 
 export interface UserData{
@@ -57,7 +58,8 @@ export interface UserData{
   phoneNumber:string;
   apiToken:string,
   timezone:string,
-  subscriptions: {name:string,value:string}[]
+  subscriptions: {name:string,value:string}[],
+  countryCode?:string
 
 }
 

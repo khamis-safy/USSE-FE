@@ -165,14 +165,14 @@ this.router.navigateByUrl('contacts?tab=lists')
   }
 
 
-  openImportModal(){
+  openImportModal(filetype){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='80vh';
     dialogConfig.width='60vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='465px';
     dialogConfig.disableClose = true;
-    dialogConfig.data=this.listId
+    dialogConfig.data={filetype:filetype,listId:this.listId}
 
     const dialogRef = this.dialog.open(UploadSheetComponent,dialogConfig);
 
@@ -210,25 +210,24 @@ this.router.navigateByUrl('contacts?tab=lists')
 
     });
   }
-exportAllContacts(){
-  this.listService.exportContactsInList(this.listId).subscribe(
-    (res)=>{this.listService.exportFileData(res)},
+exportAllContactsAs(fileType){
+  this.listService.exportContactsInList(this.listId,fileType).subscribe(
+    (res)=>{this.listService.exportFileData(res,fileType)},
     (err)=>{}
   )
 }
 
-exportSelectedContacts(){
+exportSelectedContactsAs(fileType){
   let exporedContacts=this.isChecked.map((contact)=>{
     return{
       name: contact.name,
       mobileNumber: contact.mobileNumber,
-      companyName:contact.companyName ,
-      note: contact.note
+    
     }
   })
-  this.listService.exportSelectedContacts(exporedContacts).subscribe(
+  this.listService.exportSelectedContacts(exporedContacts,fileType).subscribe(
     (res)=>{
-      this.listService.exportFileData(res);
+      this.listService.exportFileData(res,fileType);
       this.listContacts.selection.clear();
 
     },

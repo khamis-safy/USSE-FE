@@ -43,6 +43,12 @@ export class AuthService {
   userData!:UserData;
   resfreshToken!:string;
 userInfo!:UserData;
+subscriptionState:{
+  isTrail:boolean,
+  trialEndDate:string,
+  messageCount:number
+
+};
 unAuthorized:boolean=false;
 empty:number=0;
 userPermissions:Permission
@@ -84,6 +90,7 @@ constructor(private loginService:LoginService,
             maskType:res.maskType,
             phoneNumber:res.phoneNumber,
             timezone:res.timezone,
+            countryCode:res.countryCode
             
           }
           this.updateUserInfo(data);
@@ -94,6 +101,30 @@ constructor(private loginService:LoginService,
             const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
             this.setFileSizeBasedOnSubscription(subType);
           }
+
+          let isTrialUser:boolean;
+          if(res.customerId!=""){
+            isTrialUser=false;
+            this.setFileSizeBasedOnSubscription("S");
+      
+          }
+          else{
+            const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
+            if(subType=="T"){
+              isTrialUser=true;
+            }
+            else{
+              isTrialUser=false;
+            }
+            this.setFileSizeBasedOnSubscription(subType);
+          }
+          this.setSubscriptionState({
+            isTrail:isTrialUser,
+            trialEndDate:res.trialEndDate,
+            messageCount:res.messageCount
+      
+          })
+
           resolve(this.userInfo);
         },
         (error) => {
@@ -321,5 +352,25 @@ setFileSizeBasedOnSubscription(subscripionType:string){
 }
 getAllowedFileSize(){
   return this.allowedFileSize
+}
+setSubscriptionState(state){
+this.subscriptionState=state;
+this.subscriptionState.trialEndDate=this.convertUtcDateToLocal(this.subscriptionState.trialEndDate)
+
+}
+getSubscriptionState(){
+
+  return this.subscriptionState;
+}
+convertUtcDateToLocal(utcDate){
+  if (utcDate) {
+    utcDate = utcDate.indexOf('Z') > -1 ? utcDate : (utcDate + 'Z');
+    const localDate = new Date(utcDate);
+    const options:any = { hour: 'numeric', minute: 'numeric', month: 'numeric', day: 'numeric', year: 'numeric' };
+    return localDate.toLocaleDateString(undefined, options);
+  }
+  else{
+    return ""
+  }
 }
   }

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { PluginsService } from 'src/app/services/plugins.service';
 import { LoginService } from '../../login/login.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { CountryService } from 'src/app/shared/services/country.service';
 
 @Component({
   selector: 'app-signup',
@@ -26,15 +27,17 @@ export class SignupComponent implements OnInit ,OnDestroy{
   loading;
   supscription: any;
   valid: boolean;
-
+  countryCode:string;
   constructor(private plugin:PluginsService,
     private signupService:SignupService,
     private router:Router,
     private authService:AuthService,
-    private loginService:LoginService
+    private loginService:LoginService,
+    private countryService:CountryService
     ) { }
 
   ngOnInit(): void {
+  this.getCountryCode();
     // controls
     this.initFormControles()
     //form creation
@@ -80,7 +83,8 @@ export class SignupComponent implements OnInit ,OnDestroy{
       contactName: this.contactName.value ,
       organisationName: this.contactName.value ,
       email: this.email.value ,
-      password: this.password.value
+      password: this.password.value,
+      countryCode:this.countryCode
     }
     this.signupService.register(data).subscribe(
       (res)=>{
@@ -96,16 +100,32 @@ export class SignupComponent implements OnInit ,OnDestroy{
           maskType:res.maskType,
           phoneNumber:res.phoneNumber,
           timeZone:res.timeZone,
-          roles:res.roles[0]
-        }
+          roles:res.roles[0],
+          countryCode:res.countryCode
 
+        }
+        let isTrialUser:boolean;
         if(res.customerId!=""){
+          isTrialUser=false;
           this.authService.setFileSizeBasedOnSubscription("S");
+    
         }
         else{
           const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
+          if(subType=="T"){
+            isTrialUser=true;
+          }
+          else{
+            isTrialUser=false;
+          }
           this.authService.setFileSizeBasedOnSubscription(subType);
         }
+        this.authService.setSubscriptionState({
+          isTrail:isTrialUser,
+          trialEndDate:res.trialEndDate,
+          messageCount:res.messageCount
+    
+        })
            // Store the refresh token in a cookie
 
           
@@ -122,7 +142,20 @@ export class SignupComponent implements OnInit ,OnDestroy{
     )
   }
 
-
+  getCountryCode(){
+    this.countryService.getCountryCode().subscribe(
+      (res:string)=>{
+        if(res=='+20'){
+        this.countryCode='2'
+        }
+        else{
+          this.countryCode=res.slice(1);
+        }
+       
+      
+      }
+    )
+  }
   // refreshToken() {
   //   let token=this.loginService.getCookieValue('refreshToken')
   //   this.loginService.refreshToken(token).subscribe(

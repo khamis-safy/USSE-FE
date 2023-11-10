@@ -166,14 +166,15 @@
               <div class="d-flex justify-content-center align-items-center flex-column">
                 <p style="max-width: 100%;" class="overflow-line-4">{{ element.msgBody }}</p>
               </div>
-              <ng-container *ngIf="element?.fileName">
-                <ng-container [ngSwitch]="(element.fileName | type)">
-                  <img *ngSwitchCase="'image'" class="ms-1" src="assets/images/image.svg" alt="">
-                  <img *ngSwitchCase="'document'" class="ms-1" src="assets/images/document.svg" alt="">
-                  <img *ngSwitchCase="'video'" class="ms-1" src="assets/images/vid.svg" alt="" style="width:135px">
+              <div *ngIf="element?.fileName" class="text-start ms-4 pt-2 pb-3">
+                <img *ngIf="(element.fileName | type )=='assets/images/image.svg' else otherType"  [src]="element.fileName | type" alt="" style=" width: 80px;">
+                <ng-template #otherType>
+                  <img  [src]="element.fileName | type" alt="" style="    width: 123px;
+                  ">
 
-                </ng-container>
-              </ng-container>
+                </ng-template>
+              </div>
+              
             </div>
           </td>
         </ng-container>
@@ -181,13 +182,13 @@
         <!-- Received at Column -->
         <ng-container matColumnDef="Received At">
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'RECEIVED_AT_LABEL' | translate }}</th>
-          <td class="text-center" mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime | date: 'h:mm a, M/d/y' }}</td>
+          <td class="text-center" mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime  }}</td>
         </ng-container>
 
         <!-- Updated At Column -->
         <ng-container matColumnDef="Updated At">
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'UPDATED_AT_LABEL' | translate }}</th>
-          <td class="text-center" mat-cell *matCellDef="let element">{{ element.updatedAt | toLocalTime | date: 'h:mm a, M/d/y' }}</td>
+          <td class="text-center" mat-cell *matCellDef="let element">{{ element.updatedAt | toLocalTime  }}</td>
         </ng-container>
 
         <!-- Status Column -->
@@ -264,7 +265,7 @@
     </section>
   </ng-container>
 
-  <ng-container *ngIf="(length == 0 && !loading) || ( notFound || noData)">
+  <ng-container *ngIf="(length == 0 && !loading) && ( notFound || noData)">
     <div class="d-flex justify-content-center align-items-center flex-column gap-3 nodata-container w-100" style="height: 500px;">
       <img src="assets/images/files.svg" alt="">
       <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA_TO_SHOW_LABEL' | translate }}</span>

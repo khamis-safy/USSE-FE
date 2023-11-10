@@ -47,23 +47,28 @@
           <td mat-cell *matCellDef="let element">{{ element.name }}</td>
         </ng-container>
 
+      <!-- Additional Parameters Column -->
+      <ng-container matColumnDef="Additional Parameters">
+        <th mat-header-cell *matHeaderCellDef > {{ 'variables' | translate }} </th>
+        <td mat-cell *matCellDef="let element" > 
+          <div *ngIf="element?.additionalContactParameter?.length" class="d-flex justify-content-center align-items-center w-100 zi-4">
+            <span class="txt-sm total">{{ element?.additionalContactParameter?.length }}</span>
+          </div>
+        </td>
+      </ng-container>
+
         <!-- Create At Column -->
         <ng-container matColumnDef="Create At">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'CREATE_AT' | translate }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime  | date: 'h:mm a , M/d/y ' }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime    }}</td>
         </ng-container>
 
-        <!-- Company Name Column -->
-        <ng-container matColumnDef="Company">
-          <th mat-header-cell *matHeaderCellDef>{{ 'COMPANY' | translate }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.companyName }}</td>
-        </ng-container>
 
         <!-- Action Column -->
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>{{ 'ACTION' | translate }}</th>
           <td mat-cell *matCellDef="let element">
-            <div class="d-flex align-items-center justify-content-center pointer text-primary-800" (click)="openEditModal(element)">
+            <div class="d-flex align-items-center justify-content-center pointer text-primary-800" (click)="openEditModal(element);cellClick=true">
               <mat-icon class="mat-icon" color="primary">edit</mat-icon>
               <span class="txt-sm edit">{{ 'EDIT' | translate }}</span>
             </div>
@@ -71,9 +76,13 @@
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
         <ng-container *ngIf="!loading">
-          <tr  mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
-            [ngClass]="{'active-row': selection.isSelected(row)}">
-          </tr>
+          <tr  mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"
+      (click)="showAdditionalParams(row,row?.additionalContactParameter?.length);
+      cellClick=false" 
+      class="pointer"
+        [ngClass]="{'active-row':selection.isSelected(row)}"
+        >
+      </tr>
         </ng-container>
       </table>
       <div *ngIf="loading" class="spinner-container p-3">

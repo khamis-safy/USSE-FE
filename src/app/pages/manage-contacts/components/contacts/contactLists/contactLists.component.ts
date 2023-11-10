@@ -28,7 +28,7 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
   numRows;
   dataSource:MatTableDataSource<ListData|Contacts>;
   @ViewChild(MatSort) sort=new MatSort;
-
+  isFromListDetails:boolean;
   displayedColumns: string[] = ['select', 'name', "totalContacts"];
   listTableData:ListData[]=[];
   loading:boolean=true;
@@ -36,7 +36,7 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
   contactsIds:string[];
   contacts:boolean=false;
   selection = new SelectionModel<any>(true, []);
-
+  noData:boolean=false;
   constructor(
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -62,19 +62,25 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
 
             if(this.data.listDetails){
               this.contactsIds=res.source.selected.map((e)=>e.id);
+              this.isFromListDetails=true;
             }
             else{
               this.listIds=res.source.selected.map((e)=>e.id);
+              this.isFromListDetails=false
             }
 
         }
         else{
           if(this.data.listDetails){
             this.contactsIds=[];
+            this.isFromListDetails=true;
+
 
           }
           else{
             this.listIds=[];
+            this.isFromListDetails=false;
+
           }
           this.contacts=false;
 
@@ -84,6 +90,8 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
     // if this component is opened from ListDetailsComponent
       if(this.data.listDetails)
       {
+        this.isFromListDetails=true;
+
         this.displayedColumns= ['select', 'name'];
         this.getContactsData();
         this.listIds=this.data.list;
@@ -91,6 +99,8 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
 
       else
       {
+        this.isFromListDetails=false;
+
         this.displayedColumns= ['select', 'name', "totalContacts"];
 
       this.getListData();
@@ -98,36 +108,51 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
 
       }
 
-getListData(){
+getListData(searchVal?){
   let shows=100;
   let pageNum=this.listService.pageNum;
   let email=this.authService.getUserInfo()?.email;
   let orderedBy="";
-  let search="";
+  let search=searchVal?searchVal:"";
   this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
       (res)=>{
         this.loading=false;
         this.numRows=res.length;
+        if(res.length == 0){
+          this.noData=true;
+        }
+        else{
+          this.noData=false;
+
+        }
   this.dataSource=new MatTableDataSource<ListData>(res)
       },
       (err)=>{
         this.loading=false;
+        this.noData=true;
+
         this.onClose();
       })
 }
-getContactsData(){
+getContactsData(searchVal?){
   let shows=50;
   let pageNum=this.listService.pageNum;
   let email=this.authService.getUserInfo()?.email;
   let orderedBy="";
-  let search="";
+  let search=searchVal?searchVal:"";
 
     let sub1= this.listService.getContacts(email,false,shows,pageNum,orderedBy,search,"").subscribe(
       (res)=>{
         this.loading=false;
-        const filterdContacts = res.filter((obj) => !this.contactsIds.includes(obj.id));
+        const filterdContacts = res.filter((obj) => !this.data.contacts.map(res=>res.id).includes(obj.id));
         this.contactsIds=filterdContacts.map((e)=>e.id);
+        if(filterdContacts.length == 0){
+          this.noData=true;
+        }
+        else{
+          this.noData=false;
 
+        }
 
         if(this.data.listDetails){
           this.numRows=this.contactsIds.length;
@@ -142,8 +167,24 @@ getContactsData(){
       },
       (err)=>{
         this.loading=false;
+        this.noData=true;
+
         this.onClose();
       })
+}
+
+
+
+onSearch(search){
+  
+
+    if(this.isFromListDetails){
+      this.getContactsData(search.value)
+    }
+    else{
+      this.getListData(search.value)
+    }
+  
 }
   onClose(data?): void {
 

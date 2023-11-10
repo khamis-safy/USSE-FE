@@ -27,7 +27,7 @@ interface CheckedCont{
 })
 export class AddContactComponent implements OnInit,OnDestroy{
 // isChanged:boolean=false;
-listsLoadingText:string='Loading ...';
+listsLoadingText:string=this.translate.instant('Loading')
 email:string=this.authService.getUserInfo()?.email;
   // lists: ListData[] ;
   listsArr:SelectOption[]
@@ -41,16 +41,12 @@ email:string=this.authService.getUserInfo()?.email;
   selectedLists = new FormControl([]);
   name:any = new FormControl('',[Validators.required,Validators.pattern(this.plugin.notStartWithSpaceReg)]);
   mobile:any = new FormControl('',[Validators.required]);
-  cnName:any = new FormControl('');
-  note:any=new FormControl('');
   fieldName:any=new FormControl('',[Validators.required]);
   value:any=new FormControl('',[Validators.required]);
 
   form = new FormGroup({
     name:this.name,
     mobile:this.mobile,
-    cnName:this.cnName,
-    note:this.note,
     selectedLists:this.selectedLists,
 
 
@@ -118,8 +114,7 @@ showInputs:boolean=false;
     this.form.patchValue({
       name: this.data.contacts.name,
       mobile:`+${this.data.contacts.mobileNumber}`,
-      cnName:this.data.contacts.companyName,
-      note:this.data.contacts.note,
+     
     });
     this.additionalParameters=this.data.contacts.additionalContactParameter;
 
@@ -200,12 +195,13 @@ checkIfFieldFound(name){
         })
       }
       if(res.length==0){
-        this.listsLoadingText='No Results'
+        this.listsLoadingText=this.translate.instant('No Results')
       }
       },
       (err)=>{
         // this.onClose(false);
         // this.toaster.error("Error")
+        this.listsLoadingText=this.translate.instant('No Results')
 
       })
   }
@@ -235,12 +231,11 @@ checkIfFieldFound(name){
     this.isLoading = true
     let email=this.email;
     let name =this.form.value.name;
-    let cnNName=this.form.value.cnName;
+   
     let mobile=this.form.value.mobile.e164Number;
-    let note = this.form.value.note;
     let listsIds = this.form.value.selectedLists.map((e)=>e.value);
 
-    this.listService.addContact(name,mobile,cnNName,note,email,listsIds,this.additionalParameters).subscribe(
+    this.listService.addContact(name,mobile,email,listsIds,this.additionalParameters).subscribe(
       (res)=>{
         this.isLoading = false
         this.onClose(true);
@@ -263,8 +258,6 @@ checkIfFieldFound(name){
       id:this.data.contacts.id,
       name :this.form.value.name,
       mobileNumber:this.form.value.mobile.e164Number,
-      companyName:this.form.value.cnName || "",
-      note: this.form.value.note || "",
       email: this.email,
       additionalContactParameters: this.additionalParameters
 
@@ -291,8 +284,7 @@ checkIfFieldFound(name){
         id:this.data.contacts.id,
         name :this.form.value.name,
         mobileNumber:this.form.value.mobile.e164Number,
-        companyName:this.form.value.cnName || "",
-        note: this.form.value.note || "",
+     
         email: this.email,
         newListId:listsIds,
         additionalContactParameters: this.additionalParameters
@@ -326,5 +318,8 @@ checkIfFieldFound(name){
   }
   ngOnDestroy() {
     this.subscribe.unsubscribe()
+  }
+  onSearch(){
+    this.listsLoadingText=this.translate.instant('No Results')
   }
 }

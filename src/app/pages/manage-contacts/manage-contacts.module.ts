@@ -13,6 +13,7 @@ import { AddContactComponent } from './components/contacts/addContact/addContact
 import { ContactListsComponent } from './components/contacts/contactLists/contactLists.component';
 import { UploadSheetComponent } from './components/importFiles/uploadSheet/uploadSheet.component';
 import { FileFieldsComponent } from './components/importFiles/fileFields/fileFields.component';
+import { AdditonalParamsComponent } from './components/contacts/additonalParams/additonalParams.component';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { FileFieldsComponent } from './components/importFiles/fileFields/fileFie
     FileFieldsComponent,
     AddListComponent,
     AddContactComponent,
+    AdditonalParamsComponent,
 
     ContactListsComponent,
 

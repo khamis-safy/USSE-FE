@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PluginsService } from 'src/app/services/plugins.service';
 import { UserData } from '../../users/users';
-import { UsersService } from '../../users/users.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
+import { TranslationService } from 'src/app/shared/services/translation.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +29,7 @@ unsubscribe$ = new Subject<void>();
     private authService:AuthService,
     private loginService:LoginService,
     private router:Router,
-    private userServiece:UsersService) {
+    private languageService:TranslationService) {
 
   }
   ngOnInit() {
@@ -73,16 +73,33 @@ unsubscribe$ = new Subject<void>();
       phoneNumber:res.phoneNumber,
       timeZone:res.timeZone,
       roles:res.roles[0],
-    }
+      countryCode:res.countryCode
 
-    
+    }
+let isTrialUser:boolean;
     if(res.customerId!=""){
+      isTrialUser=false;
       this.authService.setFileSizeBasedOnSubscription("S");
+
     }
     else{
       const subType=res.subscriptions.find((subs)=>subs.name=="SUBSCRIPTION").value
+      if(subType=="T"){
+        isTrialUser=true;
+      }
+      else{
+        isTrialUser=false;
+      }
       this.authService.setFileSizeBasedOnSubscription(subType);
     }
+    this.authService.setSubscriptionState({
+      isTrail:isTrialUser,
+      trialEndDate:res.trialEndDate,
+      messageCount:res.messageCount
+
+    })
+    
+  
     // check autheraization
 
     if(!res.isEmailAuthonticated){
@@ -100,11 +117,13 @@ unsubscribe$ = new Subject<void>();
       this.authService.updateUserInfo(this.userInfo);
   
       this.loginService.storeRefreshTokenInCookie(res.refreshToken);
- 
+      this.authService.setRefreshToken()
 
         setInterval(() => {
           this.refreshToken();
         }, 60 * 60 * 1000); // 1 hour in milliseconds
+        this.languageService.setAppDirection();
+        
         this.router.navigateByUrl('devices')
 
 

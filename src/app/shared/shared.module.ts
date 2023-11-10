@@ -49,6 +49,10 @@ import { ClickOutsideDirective } from './directives/clickOutside.directive';
 import { ConfirmLogOutComponent } from './components/side-bar/components/confirmLogOut/confirmLogOut.component';
 export const TRANSLATE_SERVICE = new InjectionToken<TranslateService>('TRANSLATE_SERVICE');
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { TranslationService } from './services/translation.service';
+import { TypePipe } from '../pages/messages/type.pipe';
+import { HintMessageComponent } from './components/hint-message/hint-message.component';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -100,6 +104,8 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
     WriteMessageComponent,
     ClickOutsideDirective,
     ConfirmLogOutComponent,
+    TypePipe,
+    HintMessageComponent
 
   ],
   exports:[
@@ -140,8 +146,23 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
     NbTimepickerModule,
     NbDatepickerModule,
     NbToggleModule,
-    TranslateModule
+    TranslateModule,
+    TypePipe,
+    HintMessageComponent
 
+  ],
+  
+  providers: [
+    {
+      provide: MAT_DIALOG_DEFAULT_OPTIONS,
+      useFactory: (translationService: TranslationService) => {
+        return {
+          hasBackdrop: true, // Set other default options if needed
+          dir: translationService.getLanguageDirection(), // Dynamic direction based on language
+        };
+      },
+      deps: [TranslationService]
+    }
   ],
 })
 export class SharedModule { }

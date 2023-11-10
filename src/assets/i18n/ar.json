@@ -133,12 +133,13 @@
 "EDIT": "تعديل",
 "NO_DATA": "لا تتوفر بيانات لعرضها",
 "FIELDS_IN_FILE": "حقول في الملف",
-"FIELDS_IN_WIZPULSE": "حقول في Qweira",
+"FIELDS_IN_Qweira": "حقول في Qweira",
 "COLUMN_NAME": "اسم العمود",
 "SAME_AS_FILE": "نفس الملف",
 "CHOOSE_AN_OPTION": "اختر خيارًا",
 "IMPORT": "استيراد",
 "UPLOAD_EXCEL_SHEET": "تحميل جدول Excel",
+"UPLOAD_VCF_SHEET":"تحميل جدول vcf",
 "UPLOAD_LISTS_MESSAGE": "قم بتحميل القوائم التي ترغب في إرسال الرسائل إليها",
 "ADD_TO_LIST_LABEL": "إضافة إلى القائمة",
 "CHOOSE_FROM_LISTS_LABEL": "اختر من القوائم",
@@ -256,7 +257,10 @@
 "FILE_SIZE_LIMIT": "حجم الملف لا يزيد عن",
 "SELECT_FILE": "اختر ملفًا",
 "PREVIEW": "معاينة",
-"INVALID_FILE_MESSAGE": "يرجى اختيار ملف Excel صالح بامتداد .xlsx أو .xls.",
+"INVALID_FILE_MESSAGE":{
+"excel":"يرجى اختيار ملف Excel صالح بامتداد .xlsx أو .xls.",
+"vcf":"الرجاء تحديد ملف vcf صالح بامتداد .vcf ."
+},
 "PATTERN_ERROR_MESSAGE": "نمط غير صالح",
 "SETTINGS": "الإعدادات",
 "LOGOUT": "تسجيل الخروج",
@@ -481,7 +485,14 @@
 "Campaign Settings":"إعدادات الحملة",
 "Randomize interval":"الفاصل الزمني العشوائي",
 "Max recipients per day":"الحد الأقصى للمستلمين في اليوم",
-"Sending out time":"وقت الإرسال"
+"Sending out time":"وقت الإرسال",
+"Additional Parameters":"معلمات إضافية",
+"variables":"متغيرات",
+"trialEndMessage": "تنتهي الفترة التجريبية المجانية في {{specificDate}}، استخدمت {{messagesCount}}/100 رسائل. للخطة المدفوعة، تواصل مع الدعم على "
+,"Automatic country code":"كود الدولة التلقائي "
+
+
+
 
 
 }

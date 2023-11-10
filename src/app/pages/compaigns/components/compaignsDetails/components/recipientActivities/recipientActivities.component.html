@@ -1,6 +1,6 @@
 <section class="py-3 d-flex flex-column gap-3">
   <div class="d-flex justify-content-end gap-4 align-items-center ">
-    <form [formGroup]="filteringForm" class="d-flex" style="width: 230px;">
+    <form [formGroup]="filteringForm" class="d-flex" style="width: 240px;">
       <us-select
       class="mx-3"
         [data]="filters"
@@ -49,7 +49,7 @@
         <ng-container matColumnDef="Updated At">
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'updatedAtLabel' | translate }}</th>
           <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element?.updatedAt | toLocalTime  | date: 'h:mm a , M/d/y ' }}
+            {{ element?.updatedAt | toLocalTime    }}
           </td>
         </ng-container>
 

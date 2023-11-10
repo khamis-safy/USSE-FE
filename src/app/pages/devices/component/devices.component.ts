@@ -87,8 +87,9 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
           else{
             this.notFound=false;
           }
-              }
+      }
       else{
+        this.notFound=false;
         this.getDevicesCount();
 
       }
@@ -96,6 +97,7 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
        (err)=>{
         this.loading = false;
         this.length=0;
+        this.noData=true;
        })
   }
 
@@ -114,19 +116,25 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
 
 
   getDevicesCount(){
+    this.loading = true;
     this.devicesService.getDevicesCount(this.authService.getUserInfo()?.email).subscribe(
       (res)=>{
        this.length=res;
+       this.loading = false;
        if( this.length==0){
         this.noData=true;
 
+      
       }
       else{
          this.noData=false;
 
+     
        }
        },
        (err)=>{
+        
+        this.loading = false;
         this.length=0;
         this.noData=true;
        })

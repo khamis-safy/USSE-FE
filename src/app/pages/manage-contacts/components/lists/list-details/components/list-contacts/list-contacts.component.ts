@@ -17,6 +17,8 @@ import { ContactsComponent } from '../../../../contacts/contacts.component';
 import { TotalContacts } from '../../totalContacts';
 import { LISTDETAILSHEADERS } from 'src/app/pages/manage-contacts/constants/constants';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { TranslationService } from 'src/app/shared/services/translation.service';
+import { AdditonalParamsComponent } from '../../../../contacts/additonalParams/additonalParams.component';
 
 @Component({
 selector: 'app-list-contacts',
@@ -29,6 +31,7 @@ length:number;
 active:boolean=false;
 ListContacts:Contacts[];
 numRows;
+cellClick:boolean=false;
 loading:boolean=false;
 subscribtions:Subscription[]=[];
 WrapperScrollLeft =0;
@@ -45,7 +48,7 @@ listTableData:ListData[]=[]
 deletedContacts:string[]=[];
 columns :FormControl;
 displayed: string[] = LISTDETAILSHEADERS;
-displayedColumns: string[] = ['select','Name',"Create At",'Company',"action"];
+displayedColumns: string[] = ['select','Name',"Create At",'Additional Parameters',"action"];
 dataSource:MatTableDataSource<Contacts>;
 // dataSource = new MatTableDataSource<any>(this.listTableData);
 selection = new SelectionModel<any>(true, []);
@@ -56,7 +59,9 @@ selection = new SelectionModel<any>(true, []);
 constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
   private toaster: ToasterServices,
   private listService:ManageContactsService,
-  private snackBar: MatSnackBar,    private authService:AuthService,
+  private snackBar: MatSnackBar, 
+  private authService:AuthService,
+  private translationService:TranslationService
   ) {
     this.display=listService.getUpdatedDisplayNumber()
     this.pageNum=this.listService.pageNum;
@@ -220,5 +225,26 @@ getContacts(){
         })
 
 
+    }
+    showAdditionalParams(contacts,length){
+      if(!this.cellClick && length > 0){
+        const currentLang=this.translationService.getCurrentLanguage()
+        const dialogConfig=new MatDialogConfig();
+        dialogConfig.height='100vh';
+        dialogConfig.width='25vw';
+        dialogConfig.maxWidth='100%';
+        // dialogConfig.minWidth='200px';
+        dialogConfig.disableClose = true;
+        dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
+        dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
+        dialogConfig.data=contacts;
+        const dialogRef = this.dialog.open(AdditonalParamsComponent,dialogConfig);
+    
+        dialogRef.afterClosed().subscribe(result => {
+          if(result){
+          }
+    
+        });
+      }
     }
 }

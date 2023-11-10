@@ -177,6 +177,20 @@
           [maxListItemsWithoutSearch]="5"
         ></us-select>
         </div>
+          <!-- code number -->
+          <div style="width:80%">
+            <us-input
+              formControlName="countryCode"
+              [isDisabled]="false"
+              value=""
+              [optional]="true"
+              type="number"
+              [label]="'Automatic country code' | translate"
+              [error]="false"
+              [fullWidth]="true"
+              [hideSteppers]="true"
+            ></us-input>
+            </div>
       </div>
     </form>
   </div>

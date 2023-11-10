@@ -1,7 +1,7 @@
 <section class="d-flex flex-column py-4 px-3 mx-auto gap-3 h-100" style="width: 90%;">
   <!-- modal header -->
   <div class="d-flex justify-content-center align-items-center position-relative mb-4 " style="height: 10%;">
-    <p class="txt-lg ms-4">{{ 'UPLOAD_EXCEL_SHEET' | translate }}</p>
+    <p class="txt-lg ms-4">{{vcfFile?('UPLOAD_VCF_SHEET'|translate): 'UPLOAD_EXCEL_SHEET' | translate }}</p>
     <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
       <img
         src="assets/icons/close-circle.svg"
@@ -19,7 +19,8 @@
     (onFileDelete)="onFileDelete($event)"
     [(ngModel)]="fileData"
     [multiple]="false"
-    [fileType]="'.xlsx, .xls'"
+    [isVcfFile]="vcfFile"
+    [fileType]="fileType"
     ></us-upload>
 
     <ng-container *ngIf="showLists">
@@ -107,6 +108,7 @@
       </form>
     </ng-container>
     <sr-checkbox
+    *ngIf="!vcfFile"
     class="zi-5 px-2"
     label="{{ 'FIRST_ROW_COLUMN_HEADER_LABEL' | translate }}"
     state="checked"
@@ -123,7 +125,8 @@
       [loading]="false"
       [fill]="true"
       [disabled]="isDisabled"
-      (clicked)="uploadFile()"
+      [loading]="loading"
+      (clicked)="vcfFile ? uploadVCFfile(): goToFileSetting()"
     ></us-button>
   </div>
 </section>

@@ -28,7 +28,7 @@ export class AppComponent implements OnInit ,OnDestroy {
     this.translate.use(this.currentLang);
     document.documentElement.dir=  this.currentLang === 'ar' ? 'rtl' : 'ltr'
     let body:any = document.querySelector('body');
-
+    body.classList.remove('rtl','ltr')
     body.classList.add(this.currentLang === 'ar' ? 'rtl' : 'ltr');
     initPaginationService.init();
 

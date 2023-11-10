@@ -87,7 +87,7 @@
             >
             </us-button>
           </button>
-<!-- [disabled]="!stepThreeValidate || !deviceSelected" -->
+
           <button class="rest-style" matStepperNext [disabled]="!stepThreeValidate || !deviceSelected">
             <us-button
               class="m-2"
@@ -110,7 +110,7 @@
       <ng-template matStepLabel>{{ 'settingLabel' | translate }}</ng-template>
       <ng-container *ngIf="step4">
       <div class="d-flex  position-relative  align-items-between flex-column justify-content-between " style="min-height: 100%;">
-        <app-stepFour (formValidityChange)="stepFourValidation($event)"></app-stepFour>
+        <app-stepFour [lastCampaignData]="lastCampaignData"(formValidityChange)="stepFourValidation($event)"></app-stepFour>
         <div class="d-flex buttons justify-content-end align-items-center" >
           <button class="rest-style" matStepperPrevious>
             <us-button

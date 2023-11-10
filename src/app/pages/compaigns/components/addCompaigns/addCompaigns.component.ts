@@ -42,10 +42,25 @@ export class AddCompaignsComponent implements OnInit {
 step2:boolean=false;
 step3:boolean=false;
 step4:boolean=false;
+sendingTimeOutFrom:any;
+sendingTimeOutTo:any;
+lastCampaignData:{
+  intervalFrom:number,
+  intervalTo:number,
+  repeatedDays:number,
+  isRepeatable:boolean,
+  isInterval:boolean,
+  maxPerDay:number,
+  sendingoutFrom:any,
+  sendingoutTo:any
+
+};
+
+
   constructor(private compaignsService:CompaignsService,private toasterService:ToasterServices,private authService:AuthService){
   }
   ngOnInit() {
-
+this.getLastCampaignData();
   }
   getLists(listsData){
     this.lists=listsData.map((list)=>list.id);
@@ -78,24 +93,37 @@ toThirdStep(data){
   // this.attachments=this.writeMessage.fileData.map((file)=>file.url);
 
 }
+getLastCampaignData(){
+  this.compaignsService.getLastCampaign(this.authService.getUserInfo().email).subscribe(
+    (res)=>{
+      if(res){
+       this.lastCampaignData=res;
+       this.lastCampaignData.sendingoutFrom=this.convertUTCToLocal(this.lastCampaignData.sendingoutFrom)
+       this.lastCampaignData.sendingoutTo=this.convertUTCToLocal(this.lastCampaignData.sendingoutTo)
+      }
+ 
+      
+    }
+  )
+}
 toLastStep(){
   this.step4=true;
   this.deviceId=this.stepThreeComponent.deviceId?this.stepThreeComponent.deviceId:"";
   this.dateTime=`${this.stepThreeComponent.utcDateTime}Z`;
   this.compaignName=this.stepThreeComponent.form.value.compainName;
-
+ 
 }
 addCampaign(){
   this.isLoading = true;
 this.isRepeatable=this.stepFourComponent.isRepeatable;
 this.isInterval=this.stepFourComponent.isInterval;
 
-this.repeatedDays=this.stepFourComponent.form.get("repeate").value;
-this.intervalFrom=this.stepFourComponent.form.get("intFrom").value;
-this.intervalTo=this.stepFourComponent.form.get("intTo").value;
+this.repeatedDays=this.stepFourComponent.form.get("repeatedDays").value;
+this.intervalFrom=this.stepFourComponent.form.get("intervalFrom").value;
+this.intervalTo=this.stepFourComponent.form.get("intervalTo").value;
 this.blackoutFrom=this.stepFourComponent.utcTime1;
 this.blackoutTo=this.stepFourComponent.utcTime2;
-this.maxPerDay=this.stepFourComponent.form.get("rNum").value;
+this.maxPerDay=this.stepFourComponent.form.get("maxPerDay").value;
 this.stepFourComponent.convertToUTC(this.blackoutFrom);
 let data;
 if(this.attachments.length==0){
@@ -158,6 +186,15 @@ this.compaignsService.addMewCampain(data).subscribe(
 )
 
 }
+convertUTCToLocal(utcTime: string): Date {
+  const [hoursStr, minutesStr] = utcTime.split(':');
+  const hours = parseInt(hoursStr, 10);
+  const minutes = parseInt(minutesStr, 10);
 
+  const utcDate = new Date();
+  utcDate.setUTCHours(hours, minutes);
+  // Convert UTC time to local time
+  return utcDate;
+}
   }
 

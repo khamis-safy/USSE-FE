@@ -446,7 +446,7 @@ cursor: pointer;
   }
 }
 .txt-lg{
-  font-size: 28px !important;
+  font-size: 24px !important;
   @media only screen and (max-width: 1024px)  and (min-width: 600px) {
     font-size: 21px !important;
   }
@@ -1219,7 +1219,7 @@ ngx-intl-tel-input .error {
     flex-direction: column;
     gap: 10px;
     top: 22px;
-    // pointer-events: none !important;
+    pointer-events: none !important;
 
 
 }
@@ -1400,6 +1400,22 @@ mat-expansion-panel-body{
   margin-top: 39px;
   z-index: 10;}
 .rtl{
+  .close-message{
+    left:0 !important;
+    right: unset !important;
+
+  }
+  .steps-details-container {
+    .image-container{
+      left: 14% !important;
+      right: unset !important;
+
+    }
+  }
+  ol.circles > li {
+   
+    padding: 0 0 0 1.5rem !important;
+  }
   .emoji-pick{
 right: 0 !important;
   }
@@ -1528,8 +1544,8 @@ right: 0 !important;
 
 
 .status {
-  width: 12px !important;
-  height: 12px !important;
+  width: 15px !important;
+  height: 15px !important;
 }
 
 .selected-dial-code{
@@ -1572,7 +1588,24 @@ right: 0 !important;
     max-width: 200px !important;
   }
 }
+
+.import-button , .export-button{
+  height: 51px  !important;
+  padding: 19px 18px;
+  .mat-mdc-menu-content.mdc-list {
+    min-width: 148px !important;
+  }
+}
+.mdc-button {
+  padding: 0 15px 0 13px  !important;
+}
+
 @media (max-width: 1700px) {
+  .import-button , .export-button{  
+    height: 39px !important;
+    font-size: 11px !important;
+
+  }
 .close-icon{
   img{
     width: 24px !important;
@@ -1660,11 +1693,11 @@ button.button-size-md{
   height: 37px !important;
 }
 .d-flex.position-relative.w-100{
-  width: 318px !important;
+  // width: 318px !important;
   #search {
     height: 32px !important;
     font-size: 12px !important;
-    width: 318px !important;
+    // width: 318px !important;
 
   }
 }
@@ -1752,6 +1785,12 @@ button.button-size-md{
   padding-inline: 28px !important;
 
 }
+.table-wrapper{
+  .status {
+    width: 12px !important;
+    height: 12px !important;
+}
+}
 // .info-input{
 // .txt-sm {
 //   font-size: 10px !important;
@@ -1760,7 +1799,8 @@ button.button-size-md{
 //   font-size: 10px !important;
 // }
 // }
-  }
+  
+}
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {  }

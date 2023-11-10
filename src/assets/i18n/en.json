@@ -131,12 +131,13 @@
 "EDIT": "Edit",
 "NO_DATA": "No data to show",
 "FIELDS_IN_FILE": "Fields in File",
-"FIELDS_IN_WIZPULSE": "Fields in Qweira",
+"FIELDS_IN_Qweira": "Fields in Qweira",
 "COLUMN_NAME": "Column Name",
 "SAME_AS_FILE": "Same as file",
 "CHOOSE_AN_OPTION": "Choose an option",
 "IMPORT": "Import",
 "UPLOAD_EXCEL_SHEET": "Upload Excel Sheet",
+"UPLOAD_VCF_SHEET": "Upload vcf Sheet",
 "UPLOAD_LISTS_MESSAGE": "Upload the lists you want to send messages to",
 "ADD_TO_LIST_LABEL": "Add To List",
 "CHOOSE_FROM_LISTS_LABEL": "Choose From Lists",
@@ -255,7 +256,10 @@
 "FILE_SIZE_LIMIT": "file size no more than",
 "SELECT_FILE": "Select File",
 "PREVIEW": "Preview",
-"INVALID_FILE_MESSAGE": "Please select a valid Excel file with .xlsx or .xls extension.",
+"INVALID_FILE_MESSAGE":{
+"excel":"Please select a valid Excel file with .xlsx or .xls extension.",
+"vcf":"Please select a valid vcf file with .vcf ."
+} ,
 "PATTERN_ERROR_MESSAGE": "Invalid pattern",
 "SETTINGS": "Settings",
 "LOGOUT": "Logout",
@@ -484,7 +488,13 @@
 "Campaign Settings":"Campaign Settings",
 "Randomize interval":"Randomize interval",
 "Max recipients per day":"Max recipients per day",
-"Sending out time":"Sending out time"
+"Sending out time":"Sending out time",
+"Additional Parameters":"Additional Parameters",
+"variables":"Variables",
+"trialEndMessage": "Your free trial ends on {{specificDate}}, with {{messagesCount}}/100 messages used. For the paid plan, reach out to Support at"
+,"Automatic country code":"Automatic country code"
+
+
 
 
 

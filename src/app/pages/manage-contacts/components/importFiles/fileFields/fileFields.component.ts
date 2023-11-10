@@ -22,7 +22,7 @@ interface FilesData{
 })
 export class FileFieldsComponent implements OnInit {
   fileHeaders:string[];
-  contactsData:string[]=['Contact Name', 'Mobile Number', 'Company Name', 'Note']
+  contactsData:string[]=['Contact Name', 'Mobile Number']
   selectedHeaders:string[]=[];
   rowsData:FilesData[]=[];
   valid:boolean;
@@ -124,14 +124,14 @@ export class FileFieldsComponent implements OnInit {
     let additionalParameters=this.rowsData.filter((row)=>row.swichOpened).map((filtered)=>{return{Name:filtered.columnName,index:filtered.columnIndex}})
     let mobileRow=this.rowsData.find((row)=>row.selected && row.selected.title=="Mobile Number");
     let conNameRow=this.rowsData.find((row)=>row.selected && row.selected.title=="Contact Name");
-    let compNameRow=this.rowsData.find((row)=>row.selected && row.selected.title=="Company Name");
-    let noteRow=this.rowsData.find((row)=>row.selected && row.selected.title=="Note");
+    // let compNameRow=this.rowsData.find((row)=>row.selected && row.selected.title=="Company Name");
+    // let noteRow=this.rowsData.find((row)=>row.selected && row.selected.title=="Note");
 
 
     let mobileIndex=mobileRow.columnIndex;
     let contactNameIndex=conNameRow.columnIndex;
-    let noteIndex=noteRow?noteRow.columnIndex:-1;
-    let companyIndex=compNameRow?compNameRow.columnIndex:-1;
+    // let noteIndex=noteRow?noteRow.columnIndex:-1;
+    // let companyIndex=compNameRow?compNameRow.columnIndex:-1;
 
     // console.log({
     //   name:conNameRow,
@@ -145,8 +145,6 @@ export class FileFieldsComponent implements OnInit {
       isFirstHeader:this.data.withHeader,
       mobileNumberIndex:mobileIndex,
       contactNameIndex:contactNameIndex,
-      noteIndex:noteIndex,
-      companyNameIndex:companyIndex,
       listId:[this.data.listId],
       additionalContactParametersIndexes:additionalParameters.length>0?additionalParameters:null
 
