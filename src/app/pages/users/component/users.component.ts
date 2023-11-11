@@ -59,15 +59,17 @@ export class UsersComponent implements OnInit ,OnDestroy{
 
     };
 
-    getUsers(){
+    getUsers(searchVal?){
       let shows=this.userService.display;
-      let pageNum=this.userService.pageNum;
+      let pageNum=searchVal ? 0: this.userService.pageNum;
       let orderedBy=this.userService.orderedBy;
-      let search=this.userService.search;
+      let search=searchVal?searchVal:"";
       let token=this.userService.token;
 
       this.loading = true;
-
+      if(searchVal){
+        this.paginator.pageIndex=0
+      }
 
       this.userService.listCustomersUsers(token,shows,pageNum,orderedBy,search).subscribe(
         (res)=>{
@@ -84,6 +86,7 @@ export class UsersComponent implements OnInit ,OnDestroy{
               }
           }
           else{
+            this.paginator.pageIndex=this.userService.pageNum
             this.UsersCount();
             this.isSearch=false;
 
@@ -145,9 +148,8 @@ export class UsersComponent implements OnInit ,OnDestroy{
     }
 
     onSearch(event: any) {
-        this.userService.search=event.value;
 
-        this.getUsers();
+        this.getUsers(event.value);
     }
 
     changeColumns(event) {
