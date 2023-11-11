@@ -346,9 +346,16 @@ getSubscriptionState(){
 convertUtcDateToLocal(utcDate){
   if (utcDate) {
     utcDate = utcDate.indexOf('Z') > -1 ? utcDate : (utcDate + 'Z');
-    const localDate = new Date(utcDate);
-    const options:any = { hour: 'numeric', minute: 'numeric', month: 'numeric', day: 'numeric', year: 'numeric' };
-    return localDate.toLocaleDateString(undefined, options);
+      const localDate = new Date(utcDate);
+      
+      const day = localDate.getDate();
+      const month = localDate.getMonth() + 1; // Months are 0-indexed, so add 1
+      const year = localDate.getFullYear();
+  
+      // Create a formatted date string
+      const formattedDate = `${day}/${month}/${year}`;
+  
+      return formattedDate;
   }
   else{
     return ""

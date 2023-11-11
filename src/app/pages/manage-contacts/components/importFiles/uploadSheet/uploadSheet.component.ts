@@ -118,7 +118,7 @@ export class UploadSheetComponent implements OnInit {
     }
 
   uploadVCFfile(){
-  
+    this.loading=true;
     let data;
     if(this.listId){
       data={
