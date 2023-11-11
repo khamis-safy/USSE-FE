@@ -33,6 +33,7 @@ interface DeviceData {
 
 export class AuthService {
   private api: string = environment.api;
+  redirectUrl :any;
   allowedFileSize:any;
   selectedDeviceId:string="";
   code!:string;
@@ -136,32 +137,12 @@ constructor(private loginService:LoginService,
     }
   });
 }
-
-//  getUserInfoFromRequest(){
-//   if(this.checkExistenceAndValidation()){
-//     const decryptedEmail = this.localStorageService.getDecryptedData("email")
-//     this.permissionService.getUserByEmail(decryptedEmail).subscribe(
-//       (res)=>{
-//         const data={
-//           userName:res.contactName,
-//           organisationName:res.organisationName,
-//           id:res.id,
-//           email:res.email,
-//           token:res.token,
-//           customerId:res.customerId,
-//           apiToken:res.apiToken,
-//           maskType:res.maskType,
-//           phoneNumber:res.phoneNumber,
-//           timezone:res.timezone,
-//           roles:res.roles[0],
-//           refreshToken:res.refreshTokens[0].token
-//         }
-//         this.updateUserInfo(data)
-//       }
-//     )
-//   }
-//  }
-
+setRedirectURL(routeName){
+this.redirectUrl=routeName
+}
+getRedirectURL(){
+  return this.redirectUrl
+}
  getUserInfo(){
   return this.userInfo
  }

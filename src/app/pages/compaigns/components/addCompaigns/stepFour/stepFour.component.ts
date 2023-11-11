@@ -130,6 +130,10 @@ if(this.lastCampaignData ){
   }
   
   this.isInterval=this.lastCampaignData.isInterval;
+  if(!this.isInterval){
+    this.intervalFrom.disable();
+    this.intervalTo.disable()
+  }
   this.isIntervalChecked=this.lastCampaignData.isInterval;
 
   this.isSendingOutTimeChecked=true;
