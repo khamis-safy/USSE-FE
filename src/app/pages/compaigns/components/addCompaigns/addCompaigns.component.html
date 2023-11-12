@@ -36,34 +36,6 @@
 
       <div class="d-flex   position-relative align-items-between flex-column justify-content-between " style="min-height: 100%;">
         <app-write-message (filesAndMessage)="toThirdStep($event)" style="height: 80%;"></app-write-message>
-        <!-- <div class="d-flex buttons justify-content-end align-items-center">
-          <button class="rest-style" matStepperPrevious>
-            <us-button
-              class="m-2"
-              label="{{ 'backLabel' | translate }}"
-              [fill]="false"
-              [size]="'md'"
-              [loading]="false"
-              [disabled]="false"
-              [appearance]="'primary'"
-            >
-            </us-button>
-          </button>
-
-          <button class="rest-style" matStepperNext [disabled]="stepTwoValidate">
-            <us-button
-              class="m-2"
-              label="{{ 'nextLabel' | translate }}"
-              [fill]="true"
-              [size]="'md'"
-              [loading]="false"
-              [disabled]="stepTwoValidate"
-              [appearance]="'primary'"
-              (clicked)="toThirdStep()"
-            >
-            </us-button>
-          </button>
-        </div> -->
       </div>
     </ng-container>
     </mat-step>
@@ -111,8 +83,10 @@
       <ng-container *ngIf="step4">
       <div class="d-flex  position-relative  align-items-between flex-column justify-content-between " style="min-height: 100%;">
         <app-stepFour [lastCampaignData]="lastCampaignData"(formValidityChange)="stepFourValidation($event)"></app-stepFour>
-        <div class="d-flex buttons justify-content-end align-items-center" >
-          <button class="rest-style" matStepperPrevious>
+        <div class=" buttons" >
+          <div class="d-flex  justify-content-end align-items-center" >
+
+          <button class="rest-style" matStepperPrevious   [disabled]="isLoading">
             <us-button
               class="m-2"
               label="{{ 'backLabel' | translate }}"
@@ -121,6 +95,7 @@
               [loading]="false"
               [disabled]="false"
               [appearance]="'primary'"
+              [disabled]="isLoading"
             >
             </us-button>
           </button>
@@ -138,6 +113,8 @@
             >
             </us-button>
           </button>
+        </div>
+          <p *ngIf="showWarningMsg">{{'waiting_msg' | translate}}</p>
         </div>
       </div>
     </ng-container>

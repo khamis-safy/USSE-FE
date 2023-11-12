@@ -36,6 +36,7 @@ sendMessageData:any;
   fileUrl:string;
   attachments:string[];
   stepTwoValidate: boolean = true;
+  showWarningMsg: boolean=false;
 
   constructor(private messageService:MessagesService,private toasterService:ToasterServices) { }
   ngAfterViewInit() {
@@ -76,7 +77,7 @@ sendMessageData:any;
     // this.attachments=this.writeMessage.fileData.map((file)=>file.url);
 
   }
-  toLastStep(){
+  sendMessages(){
     this.deviceId=this.sendMessage.deviceId;
     this.dateTime=`${this.sendMessage.utcDateTime}Z`;
 
@@ -90,7 +91,13 @@ sendMessageData:any;
     //   message:this.message
 
     // })
-
+    if(this.attachments.length>0){
+      this.showWarningMsg=true;
+    }
+    else{
+      this.showWarningMsg=false;
+    
+    }
     this.messageService.sendWhatsappBusinessMessage(this.deviceId,this.addedContacts,this.message,this.dateTime,this.messageService.email,this.attachments).subscribe(
       (res)=>{
         this.toasterService.success("Success");

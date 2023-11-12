@@ -55,6 +55,7 @@ lastCampaignData:{
   sendingoutTo:any
 
 };
+  showWarningMsg: boolean=false;
 
 
   constructor(private compaignsService:CompaignsService,private toasterService:ToasterServices,private authService:AuthService){
@@ -167,7 +168,13 @@ data={
 
 }
 //  console.log(data)
+if(this.attachments.length>0){
+  this.showWarningMsg=true;
+}
+else{
+  this.showWarningMsg=false;
 
+}
 this.compaignsService.addMewCampain(data).subscribe(
   (res)=>{
     this.toasterService.success("Success");

@@ -489,7 +489,9 @@
 "Additional Parameters":"معلمات إضافية",
 "variables":"متغيرات",
 "trialEndMessage": "تنتهي الفترة التجريبية المجانية في {{specificDate}}، استخدمت {{messagesCount}}/100 رسائل. للخطة المدفوعة، تواصل مع الدعم على "
-,"Automatic country code":"كود الدولة التلقائي "
+,"Automatic country code":"كود الدولة التلقائي ",
+"waiting_msg":"يرجى الانتظار، قد يستغرق تحميل الملف بعض الوقت.."
+
 
 
 

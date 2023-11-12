@@ -492,7 +492,8 @@
 "Additional Parameters":"Additional Parameters",
 "variables":"Variables",
 "trialEndMessage": "Your free trial ends on {{specificDate}}, with {{messagesCount}}/100 messages used. For the paid plan, reach out to Support at"
-,"Automatic country code":"Automatic country code"
+,"Automatic country code":"Automatic country code",
+"waiting_msg":"Please Wait, Uploading File Might Take Time.."
 
 
 
