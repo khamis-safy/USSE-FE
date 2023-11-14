@@ -48,7 +48,7 @@ listTableData:ListData[]=[]
 deletedContacts:string[]=[];
 columns :FormControl;
 displayed: string[] = LISTDETAILSHEADERS;
-displayedColumns: string[] = ['select','Name',"Create At",'Additional Parameters',"action"];
+displayedColumns: string[] = ['select','Name','Mobile',"Create At",'Additional Parameters',"action"];
 dataSource:MatTableDataSource<Contacts>;
 // dataSource = new MatTableDataSource<any>(this.listTableData);
 selection = new SelectionModel<any>(true, []);

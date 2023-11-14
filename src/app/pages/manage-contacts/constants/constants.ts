@@ -40,7 +40,10 @@ export const LISTDETAILSHEADERS: any[] = [
     title:"NAME",
     value:"Name"
   },
-  
+  {
+    title:"MOBILE",
+    value:"Mobile"
+  },
   {
     title:"variables",
     value:"Additional Parameters"
