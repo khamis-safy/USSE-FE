@@ -493,11 +493,27 @@
 "variables":"Variables",
 "trialEndMessage": "Your free trial ends on {{specificDate}}, with {{messagesCount}}/100 messages used. For the paid plan, reach out to Support at"
 ,"Automatic country code":"Automatic country code",
-"waiting_msg":"Please Wait, Uploading File Might Take Time.."
-
-
-
-
-
+"waiting_msg":"Please Wait, Uploading File Might Take Time..",
+"Inquiry":"Inquiry",
+"New Action":"New Action",
+"Subscribe_to_list":"Subscribe to list",
+"autoReply":"Auto Reply",
+"sendAndWait":"Send And Wait",
+"cancelContact":"Cancel Contact",
+"callURL":"Call URL",
+"Actions":"Actions",
+"Action_Name":"Action Name",
+"Operations":"Operations",
+"edit":"Edit",
+"delete":"Delete",
+"criteria":"Criteria",
+"ADD_CRITERIA":"Add Criteria",
+"condition":"Condition",
+"keyword":"Keyword",
+"full":"Full Match",
+"contain":"Contains",
+"start":"Start With",
+"end":"End With",
+"choose condition":"choose condition"
 
 }

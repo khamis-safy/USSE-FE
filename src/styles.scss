@@ -1825,3 +1825,7 @@ button.button-size-md{
 nz-date-picker{
   height: 37px !important;
 }
+
+.mat-mdc-menu-content.mdc-list {
+  min-width: 161px;
+}

@@ -4,6 +4,7 @@
       <mat-icon>check</mat-icon>
     </ng-template>
 
+<!-- step one -->
     <mat-step>
       <ng-template matStepLabel>{{ 'selectListsLabel' | translate }}</ng-template>
       <ng-container *ngIf="step1">
@@ -29,6 +30,7 @@
       </ng-container>
     </mat-step>
 
+<!-- step two -->
     <mat-step>
       <ng-template matStepLabel>{{ 'writeMessageLabel' | translate }}</ng-template>
       <ng-container *ngIf="step2">
@@ -40,6 +42,7 @@
     </ng-container>
     </mat-step>
 
+<!-- step three -->
     <mat-step>
       <ng-template matStepLabel>{{ 'informationLabel' | translate }}</ng-template>
       <ng-container *ngIf="step3">
@@ -59,17 +62,16 @@
             >
             </us-button>
           </button>
-
           <button class="rest-style" matStepperNext [disabled]="!stepThreeValidate || !deviceSelected">
             <us-button
               class="m-2"
               label="{{ 'nextLabel' | translate }}"
               [fill]="true"
               [size]="'md'"
+              [disabled]="!stepThreeValidate || !deviceSelected"
               [loading]="false"
               [appearance]="'primary'"
-              (clicked)="toLastStep()"
-              [disabled]="!stepThreeValidate || !deviceSelected"
+              (clicked)="toStepFour()"
             >
             </us-button>
           </button>
@@ -78,11 +80,54 @@
     </ng-container>
     </mat-step>
 
+<!-- step four -->
+<mat-step>
+  <ng-template matStepLabel>{{ 'settingLabel' | translate }}</ng-template>
+  <ng-container *ngIf="step4">
+  <div class="d-flex  position-relative  align-items-between flex-column justify-content-between " style="min-height: 100%;">
+    <app-stepFour [lastCampaignData]="lastCampaignData"(formValidityChange)="stepFourValidation($event)"></app-stepFour>
+    <div class=" buttons" >
+      <div class="d-flex  justify-content-end align-items-center" >
+
+      <button class="rest-style" matStepperPrevious   [disabled]="isLoading">
+        <us-button
+          class="m-2"
+          label="{{ 'backLabel' | translate }}"
+          [fill]="false"
+          [size]="'md'"
+          [loading]="false"
+          [disabled]="false"
+          [appearance]="'primary'"
+          [disabled]="isLoading"
+        >
+        </us-button>
+      </button>
+
+      <button class="rest-style" matStepperNext [disabled]="!stepFourValidate">
+        <us-button
+          class="m-2"
+          label="{{ 'nextLabel' | translate }}"
+          [fill]="true"
+          [size]="'md'"
+          [loading]="false"
+          [disabled]="!stepFourValidate"
+          [appearance]="'primary'"
+          (clicked)="toStepFive()"
+        >
+        </us-button>
+      </button>
+    </div>
+    </div>
+  </div>
+</ng-container>
+</mat-step>
+
+<!-- step five -->
     <mat-step>
-      <ng-template matStepLabel>{{ 'settingLabel' | translate }}</ng-template>
+      <ng-template matStepLabel>{{ 'Actions' | translate }}</ng-template>
       <ng-container *ngIf="step4">
       <div class="d-flex  position-relative  align-items-between flex-column justify-content-between " style="min-height: 100%;">
-        <app-stepFour [lastCampaignData]="lastCampaignData"(formValidityChange)="stepFourValidation($event)"></app-stepFour>
+        <app-campaignActions></app-campaignActions>
         <div class=" buttons" >
           <div class="d-flex  justify-content-end align-items-center" >
 
@@ -107,7 +152,7 @@
               [fill]="true"
               [size]="'md'"
               [loading]="isLoading"
-              [disabled]="isLoading || !stepFourValidate"
+              [disabled]="isLoading"
               [appearance]="'primary'"
               (clicked)="addCampaign()"
             >

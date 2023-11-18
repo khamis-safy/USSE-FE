@@ -6,6 +6,7 @@ import { StepThreeComponent } from './stepThree/stepThree.component';
 import { StepFourComponent } from './stepFour/stepFour.component';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { CampaignActionsComponent } from './campaign actions/component/campaignActions/campaignActions.component';
 // import { WriteMessageComponent } from 'src/app/pages/messages/Components/new-message/write-message/write-message.component';
 @Component({
   selector: 'app-addCompaigns',
@@ -18,6 +19,8 @@ export class AddCompaignsComponent implements OnInit {
   @ViewChild(WriteMessageComponent) writeMessage:WriteMessageComponent;
   @ViewChild(StepThreeComponent) stepThreeComponent:StepThreeComponent;
   @ViewChild(StepFourComponent) stepFourComponent:StepFourComponent;
+  @ViewChild(CampaignActionsComponent) campaignActions:CampaignActionsComponent;
+
   @Output() back = new EventEmitter<boolean>;
   isLoading = false;
   isRepeatable: boolean;
@@ -107,47 +110,29 @@ getLastCampaignData(){
     }
   )
 }
-toLastStep(){
+toStepFour(){
   this.step4=true;
   this.deviceId=this.stepThreeComponent.deviceId?this.stepThreeComponent.deviceId:"";
   this.dateTime=`${this.stepThreeComponent.utcDateTime}Z`;
   this.compaignName=this.stepThreeComponent.form.value.compainName;
  
 }
-addCampaign(){
-  this.isLoading = true;
-this.isRepeatable=this.stepFourComponent.isRepeatable;
-this.isInterval=this.stepFourComponent.isInterval;
-
-this.repeatedDays=this.stepFourComponent.form.get("repeatedDays").value;
-this.intervalFrom=this.stepFourComponent.form.get("intervalFrom").value;
-this.intervalTo=this.stepFourComponent.form.get("intervalTo").value;
-this.blackoutFrom=this.stepFourComponent.utcTime1;
-this.blackoutTo=this.stepFourComponent.utcTime2;
-this.maxPerDay=this.stepFourComponent.form.get("maxPerDay").value;
-this.stepFourComponent.convertToUTC(this.blackoutFrom);
-let data;
-if(this.attachments.length==0){
-  data={
-    campaignName: this.compaignName,
-    scheduledAt: this.dateTime,
-    isRepeatable: this.isRepeatable,
-    repeatedDays: this.repeatedDays,
-    intervalFrom: this.intervalFrom,
-    intervalTo: this.intervalTo,
-    sendingoutFrom: this.blackoutFrom,
-    sendingoutTo: this.blackoutTo,
-    maxPerDay: this.maxPerDay,
-    lists: this.lists,
-    email: this.authService.getUserInfo()?.email,
-    msgBody: this.message,
-    deviceId: this.deviceId,
-    isInterval: this.isInterval
-  }
+toStepFive(){
+  this.isRepeatable=this.stepFourComponent.isRepeatable;
+  this.isInterval=this.stepFourComponent.isInterval;
+  
+  this.repeatedDays=this.stepFourComponent.form.get("repeatedDays").value;
+  this.intervalFrom=this.stepFourComponent.form.get("intervalFrom").value;
+  this.intervalTo=this.stepFourComponent.form.get("intervalTo").value;
+  this.blackoutFrom=this.stepFourComponent.utcTime1;
+  this.blackoutTo=this.stepFourComponent.utcTime2;
+  this.maxPerDay=this.stepFourComponent.form.get("maxPerDay").value;
+  this.stepFourComponent.convertToUTC(this.blackoutFrom);
 }
-else{
+addCampaign(){
+this.isLoading = true;
 
-data={
+const data={
   campaignName: this.compaignName,
   scheduledAt: this.dateTime,
   isRepeatable: this.isRepeatable,
@@ -162,12 +147,26 @@ data={
   email: this.authService.getUserInfo()?.email,
   msgBody: this.message,
   deviceId: this.deviceId,
-  isInterval: this.isInterval
+  isInterval: this.isInterval,
+  sessionTimeOutMessage: "time out",
+  sessionTimeOutMinutes: 2,
+  actions:this.campaignActions.getActions()
 }
 
+// Filter the object keys based on values or non-empty arrays
+const filteredKeys = Object.keys(data).filter(key => {
+  const value = data[key];
 
-}
-//  console.log(data)
+  // Check if the value is not an empty array, not null, and not undefined
+  return !((Array.isArray(value) && value.length === 0) || value === null || value === undefined);
+});
+
+// Create a new object with only the filtered keys
+const filteredData = filteredKeys.reduce((acc, key) => {
+  acc[key] = data[key];
+  return acc;
+}, {});
+
 if(this.attachments.length>0){
   this.showWarningMsg=true;
 }
@@ -175,7 +174,9 @@ else{
   this.showWarningMsg=false;
 
 }
-this.compaignsService.addMewCampain(data).subscribe(
+// console.log(filteredData);
+
+this.compaignsService.addMewCampain(filteredData).subscribe(
   (res)=>{
     this.toasterService.success("Success");
     this.back.emit(true)

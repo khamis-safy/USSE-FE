@@ -490,11 +490,28 @@
 "variables":"متغيرات",
 "trialEndMessage": "تنتهي الفترة التجريبية المجانية في {{specificDate}}، استخدمت {{messagesCount}}/100 رسائل. للخطة المدفوعة، تواصل مع الدعم على "
 ,"Automatic country code":"كود الدولة التلقائي ",
-"waiting_msg":"يرجى الانتظار، قد يستغرق تحميل الملف بعض الوقت.."
-
-
-
-
+"waiting_msg":"يرجى الانتظار، قد يستغرق تحميل الملف بعض الوقت..",
+"Inquiry":"سؤال",
+"New Action":"اجراء جديد",
+"Subscribe_to_list":"اشترك في القائمة",
+"autoReply":"الرد التلقائي",
+"sendAndWait":"أرسل وانتظر",
+"cancelContact":"إلغاء جهة الاتصال",
+"callURL":"عنوان URL للاتصال",
+"Actions":"اجراءات",
+"Action_Name":"اسم الاجراء",
+"Operations":"العمليات",
+"edit":"تعديل",
+"delete":"حذف",
+"criteria":"المعايير",
+"ADD_CRITERIA":"إضافة معايير",
+"condition":"الحالة",
+"keyword":"الكلمة الرئيسية",
+"full":"تطابق كامل",
+"contain":"يحتوي على",
+"start":"يبدأ بـ",
+"end":"ينتهى بـ",
+"choose condition":"اختر حالة"
 
 
 }

@@ -1,0 +1,30 @@
+::ng-deep span.mdc-list-item__primary-text {
+    font-size: 14px !important;
+}
+.add-action-button{
+    height: 43px;}
+@media(max-width:1700px){
+.add-action-menu{
+font-size: 11px;
+
+}
+.add-action-button{
+    
+padding: 20px !important;
+}
+
+.mat-mdc-menu-content.mdc-list {
+padding-block: 2px !important;
+}
+::ng-deep {
+  span.mdc-list-item__primary-text {
+  font-size: 12px !important;
+  display: flex;
+  gap: 4px;
+
+}}
+
+}
+.nodata-container {
+  height: 40vh !important;
+}
