@@ -41,9 +41,9 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
 
   }
   editAction(element){
-    if(element.name == "autoReply") {
+    if(element.name == "autoReply" || element.name=="sendAndWait") {
     
-      this.openAutoReply(element)
+      this.openAutoReply(element.name , element.data)
     }
     
   }
