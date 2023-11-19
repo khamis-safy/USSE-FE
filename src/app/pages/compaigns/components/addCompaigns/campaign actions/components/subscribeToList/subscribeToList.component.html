@@ -1,3 +1,121 @@
-<p>
-  subscribeToList works!
-</p>
+<section class="d-flex flex-column p-3 px-2 mx-auto gap-3 h-100" style="width: 90%;">
+  <!-- modal header -->
+  <div class="d-flex justify-content-center align-items-center position-relative  " style="height: 10%;">
+    <p class="txt-lg ms-4">{{ 'subscribeToList' | translate }}</p>
+    <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
+      <img
+        src="assets/icons/close-circle.svg"
+        (click)="onClose()"
+        alt="close-icon"
+        style="cursor: pointer;"
+      />
+    </div>
+  </div>
+  <!-- modal body  -->
+  <div class="modal-body overflow-auto p-3 w-100"  style="height: 80%;">
+    <div class="my-2">
+      <app-criteria (allCriterias)="setCriterias($event)" [criteriaParameters]="criterias" (disableSaveButton)="isButtonDisabled($event)"></app-criteria>
+    </div>
+    <form  [formGroup]="form"  class="d-flex flex-column px-2 my-4 w-100">
+      <div class="d-flex justify-content-between mb-3">
+      <div class="me-3 " style="width:70% ">
+
+        <us-select
+        [data]="listsArr"
+        formControlName="selectedLists"
+        [multiSelect]="false"
+        [label]="'ADD_TO_LIST_LABEL' | translate"
+        [placeholder]="'CHOOSE_FROM_LISTS_LABEL' | translate"
+        [isDisabled]="addNewList"
+        [optional]="true"
+        [loadingText]="'LISTS_LOADING_TEXT' | translate"
+        (onSelect)="onSelect($event)"
+        [enableSearch]="true"
+        [searchbarOnToggler]="true"
+        [searchNoResultText]="'NO_RESULT_TEXT' | translate"
+        [maxListItemsWithoutSearch]="5"
+      ></us-select>
+      </div>
+      <us-button
+
+        label="{{ 'ADD_NEW_LIST_LABEL' | translate }}"
+        [matIcon]="'add'"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="addNewList"
+        [appearance]="'primary'"
+        (clicked)="addNewList=true"
+      ></us-button>
+</div>
+      <ng-container *ngIf="addNewList">
+        <div class="d-flex justify-content-end align-items-center">
+
+          <div class="new-list rounded-5 bg-white p-4  my-3 " style="width:80%">
+            <p class="txt-sm mb-3" style="font-weight: 500;">{{ 'ADD_NEW_LIST_NAME_LABEL' | translate }}</p>
+            <div class="d-flex justify-content-between">
+              <div style="width: 50%;">
+                <us-input
+                [isDisabled]="false"
+                value=""
+                placeholder="{{ 'ENTER_LIST_NAME_PLACEHOLDER' | translate }}"
+                type="text"
+                [error]="false"
+                [fullWidth]="true"
+                formControlName="listName"
+                [error]=" (listName.touched && listName.errors?.required)"
+                [hintText]=" listName.touched && listName.errors?.required ? ('REQUIRED_FIELD_HINT' | translate) : '' "
+              ></us-input>
+              </div>
+
+              <div class="d-flex align-items-center " >
+                <us-button
+                  class="mx-3"
+                label="{{ 'SAVE_LABEL' | translate }}"
+                [fill]="true"
+                [size]="'md'"
+                [loading]="isLoading"
+                [disabled]="isLoading || form.invalid"
+                [appearance]="'primary'"
+                (clicked)="submitAddList()"
+              ></us-button>
+
+              <us-button
+
+              label="{{ 'CANCEL_LABEL' | translate }}"
+              [fill]="false"
+              [size]="'md'"
+              [loading]="false"
+              [disabled]="false"
+              [appearance]="'primary'"
+              (clicked)="addNewList=false"
+            ></us-button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </form>
+  </div>
+  <!-- modal footer -->
+  <div class="modal-footer justify-content-end gap-3"  style="height: 10%;">
+    <us-button
+    label="{{ 'CANCEL' | translate }}"
+    size="sm"
+    appearance="primary"
+    [fill]="false"
+    (clicked)="onClose()"
+    [loading]="false"
+  ></us-button>
+  <us-button
+    label="{{ 'SAVE' | translate }}"
+    size="sm"
+    [loading]="isLoading"
+    [fill]="true"
+    (clicked)="submit()"
+    [disabled]="!listId || isLoading ||isDisabled"
+  ></us-button>
+ 
+  </div>
+</section>

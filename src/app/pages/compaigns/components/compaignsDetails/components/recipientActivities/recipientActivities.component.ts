@@ -155,7 +155,6 @@ filters:any;
   selectFilter(item){
     // this.selectedItems.push(item);
       let selected= this.selectedItems.map((sel)=>sel.value-1)
-      console.log("selected" , selected)
      this.getComMessages(selected)
     }
     deselectFilter(item){

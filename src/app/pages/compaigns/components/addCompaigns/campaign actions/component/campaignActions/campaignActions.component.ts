@@ -3,6 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AutoReplayComponent } from '../../components/autoReplay/autoReplay.component';
+import { SubscribeToListComponent } from '../../components/subscribeToList/subscribeToList.component';
  interface tableData {
   id:number;
   name: string;
@@ -43,27 +44,30 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
   editAction(element){
     if(element.name == "autoReply" || element.name=="sendAndWait") {
     
-      this.openAutoReply(element.name , element.data)
+      this.openAutoReply(element.name , element)
+    }
+    else if(element.name == "subscribeToList" ){
+      this.openSubscribeToList(element)
     }
     
   }
-  openAutoReply(actionName:string,data?){
+  openAutoReply(actionName:string,elementData?){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='90vh';
     dialogConfig.width='55vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='565px';
     dialogConfig.disableClose = true;
-    dialogConfig.data={data:data, actionName:actionName};
+    dialogConfig.data={data:elementData?.data, actionName:actionName};
     const dialogRef = this.dialog.open(AutoReplayComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
 
         this.id++;
-        if(data){
-        let foundElementFromTable = this.tableData.find((element)=>element.id == data.id);
-        foundElementFromTable.data=result.data;
+        if(elementData){
+        let foundElementFromTable = this.tableData.find((element)=>element.id == elementData.id);
+        foundElementFromTable.data=result;
       
         }
         else{
@@ -85,8 +89,43 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
 
     });
   }
-  opensendAndWait(){
+  openSubscribeToList(elementData?){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='90vh';
+    dialogConfig.width='55vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='565px';
+    dialogConfig.disableClose = true;
+    dialogConfig.data=elementData?.data;
+    const dialogRef = this.dialog.open(SubscribeToListComponent,dialogConfig);
 
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+
+        this.id++;
+        if(elementData){
+        let foundElementFromTable = this.tableData.find((element)=>element.id == elementData.id);
+        foundElementFromTable.data=result;
+
+        }
+        else{
+
+            this.tableData.push({
+            id:this.id,
+            name:"subscribeToList",
+            data:result
+            
+          })
+
+        }
+        this.setActions();
+        this.dataSource=new MatTableDataSource<any>(this.tableData)
+        this.length=this.tableData.length
+
+      
+      }
+
+    });
   }
   setActions(){
     this.actions=[];
@@ -98,9 +137,12 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
         })
       }
       
-      // else if (action.name == "subscribeToList"){
-
-      // }
+      else if (action.name == "subscribeToList"){
+        this.actions.push({
+          actionName:"subscribeToList",
+          subscribeToList:action.data
+        })
+      }
       else if (action.name == "sendAndWait"){
         this.actions.push({
           actionName:"sendAndWait",

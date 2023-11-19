@@ -493,7 +493,7 @@
 "waiting_msg":"يرجى الانتظار، قد يستغرق تحميل الملف بعض الوقت..",
 "Inquiry":"سؤال",
 "New Action":"اجراء جديد",
-"Subscribe_to_list":"اشترك في القائمة",
+"subscribeToList":"اشترك في القائمة",
 "autoReply":"الرد التلقائي",
 "sendAndWait":"أرسل وانتظر",
 "cancelContact":"إلغاء جهة الاتصال",
