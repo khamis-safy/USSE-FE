@@ -2,7 +2,7 @@
   <!-- lists and contacts with search -->
   <div class="col-5 d-flex gap-4 flex-column me-2">
     <div class="d-flex position-relative w-100 m-0">
-      <input #search type="text" class="form-control ps-5 w-100 txt-xs" id="search" placeholder="{{ 'searchPlaceholder' | translate }}" (keyup)="onSearch(search)">
+      <input #search type="text" class="form-control ps-5 w-100 txt-xs" id="search" placeholder="{{ 'searchPlaceholder' | translate }}" (input)="onSearch(search)">
       <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
         <img src="assets/icons/search.svg" alt="" width="14">
       </div>
