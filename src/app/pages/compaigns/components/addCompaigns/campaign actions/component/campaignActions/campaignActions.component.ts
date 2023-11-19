@@ -42,7 +42,7 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
 
   }
   editAction(element){
-    if(element.name == "autoReply" || element.name=="sendAndWait") {
+    if(element.name == "autoReply" || element.name=="sendAndWait" || element.name=="cancel" ) {
     
       this.openAutoReply(element.name , element)
     }
@@ -155,9 +155,12 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
       // else if (action.name == "email"){
         
       // }
-      // else if (action.name == "cancel"){
-        
-      // }
+      else if (action.name == "cancel"){
+        this.actions.push({
+          actionName:"cancel",
+          cancel:action.data
+        })
+      }
       // else if (action.name == "enqueryForm"){
         
       // }

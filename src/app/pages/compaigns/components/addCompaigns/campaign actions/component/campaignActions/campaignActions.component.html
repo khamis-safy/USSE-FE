@@ -17,7 +17,7 @@
         <button mat-menu-item (click)="openSubscribeToList()">{{'subscribeToList' |translate}}</button>
         <button mat-menu-item (click)="openAutoReply('autoReply')">{{'autoReply' |translate}}</button>
         <button mat-menu-item (click)="openAutoReply('sendAndWait')">{{'sendAndWait' |translate}}</button>
-        <button mat-menu-item >{{'cancelContact' |translate}}</button>
+        <button mat-menu-item (click)="openAutoReply('cancel')">{{'cancel' |translate}}</button>
         <button mat-menu-item >{{'callURL' |translate}}</button>
       </mat-menu>
     </div>

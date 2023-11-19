@@ -496,7 +496,7 @@
 "subscribeToList":"اشترك في القائمة",
 "autoReply":"الرد التلقائي",
 "sendAndWait":"أرسل وانتظر",
-"cancelContact":"إلغاء جهة الاتصال",
+"cancel":"إلغاء جهة الاتصال",
 "callURL":"عنوان URL للاتصال",
 "Actions":"اجراءات",
 "Action_Name":"اسم الاجراء",

@@ -27,13 +27,13 @@
       [error]="false"
       [fullWidth]="true"
       formControlName="messageBody"
-      label="{{ 'MESSAGE' | translate }}"
+      [label]="!isCancel? ('MESSAGE'| translate) :('autoReply' | translate) "
       [isTextArea]="true"
       [isEmoji]="true"
     ></us-input>
 
     </form>
-    <div class="form-group d-flex gap-lg-4 flex-column  flex-lg-row flex-nowrap">
+    <div *ngIf="!isCancel" class="form-group d-flex gap-lg-4 flex-column  flex-lg-row flex-nowrap">
       <label for="devicesData" class="w-25 d-none d-lg-block text-nowrap" style="min-width:25%"
         ><span class="txt txt-sm text-black text-wrap">{{ 'ATTACHMENTS' | translate }}</span>
       </label>

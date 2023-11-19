@@ -26,11 +26,15 @@ export class AutoReplayComponent implements OnInit {
   });
   actionName:string;
   isDisabled:boolean;
+  isCancel:boolean=false
   constructor( public dialogRef: MatDialogRef<AutoReplayComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any) { }
 
   ngOnInit() {
     this.actionName=this.data.actionName
+    if(this.actionName == "cancel"){
+      this.isCancel = true
+    }
     if(this.data.data){
       this.isEdit=true;
       this.fillData()
@@ -59,16 +63,25 @@ export class AutoReplayComponent implements OnInit {
   }
   submit(){
     this.isLoading=true;
-    this.onClose({
-      messageContent:this.form.value.messageBody,
-      criterias:this.criterias
-      // data:{
-      //   messageContent:this.form.value.messageBody,
-      //   attachment:this.fileData.map((file) => file.url),
-      //   criterias:this.criterias
+    if(this.isCancel){
+      this.onClose({
+        messageContent:this.form.value.messageBody,
+        criterias:this.criterias
+      })
+    }
+    else{
 
-      // }
-    })
+      this.onClose({
+        messageContent:this.form.value.messageBody,
+        criterias:this.criterias
+        // data:{
+        //   messageContent:this.form.value.messageBody,
+        //   attachment:this.fileData.map((file) => file.url),
+        //   criterias:this.criterias
+  
+        // }
+      })
+    }
 
   }
  
