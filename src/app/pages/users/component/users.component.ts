@@ -67,7 +67,7 @@ export class UsersComponent implements OnInit ,OnDestroy{
       let token=this.userService.token;
 
       this.loading = true;
-      if(searchVal){
+      if(searchVal && this.paginator){
         this.paginator.pageIndex=0
       }
 

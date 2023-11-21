@@ -16,7 +16,7 @@
     <div class="my-3">
       <app-criteria (allCriterias)="setCriterias($event)" [criteriaParameters]="criterias" (disableSaveButton)="isButtonDisabled($event)"></app-criteria>
     </div>
-    <form [formGroup]="form" class="w-100 m-auto">
+    <form [formGroup]="form" class="w-100 m-auto mb-5 mt-4">
 
       <us-input
       [isDisabled]="false"
@@ -33,18 +33,19 @@
     ></us-input>
 
     </form>
-    <div *ngIf="!isCancel" class="form-group d-flex gap-lg-4 flex-column  flex-lg-row flex-nowrap">
+    <!-- <div *ngIf="!isCancel" class="form-group d-flex gap-lg-4 flex-column  flex-lg-row flex-nowrap">
       <label for="devicesData" class="w-25 d-none d-lg-block text-nowrap" style="min-width:25%"
         ><span class="txt txt-sm text-black text-wrap">{{ 'ATTACHMENTS' | translate }}</span>
       </label>
 
       <us-upload  class="w-100"
       [isLoading]="loading"
-      [(ngModel)]="fileData"
+      [(ngModel)]="actionsFileData"
       (onFileChange)="onFileChange($event)"
       (onFileDelete)="onFileDelete($event)"
+      [multiple]="false"
       ></us-upload>
-    </div>
+    </div> -->
   </div>
   <!-- modal footer -->
   <div class="modal-footer justify-content-end gap-3"  style="height: 10%;">

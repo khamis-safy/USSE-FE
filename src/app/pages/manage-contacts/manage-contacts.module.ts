@@ -14,12 +14,14 @@ import { ContactListsComponent } from './components/contacts/contactLists/contac
 import { UploadSheetComponent } from './components/importFiles/uploadSheet/uploadSheet.component';
 import { FileFieldsComponent } from './components/importFiles/fileFields/fileFields.component';
 import { AdditonalParamsComponent } from './components/contacts/additonalParams/additonalParams.component';
+import { DragZoneModule } from 'src/app/shared/components/drag-zone/drag-zone.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ManageContactsRoutes,
-    SharedModule
+    SharedModule,
+    DragZoneModule
   ],
   declarations: [
     ManageContactsComponent,

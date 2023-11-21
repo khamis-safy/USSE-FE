@@ -118,7 +118,7 @@ getListData(searchVal?){
   this.loading = true;
 
 
-  if(searchVal){
+  if(searchVal && this.paginator){
     this.paginator.pageIndex=0
   }
   let sub2= this.listService.getList(email,shows,pageNumber,orderedBy,search).subscribe(

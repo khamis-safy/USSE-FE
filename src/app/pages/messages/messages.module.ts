@@ -13,13 +13,15 @@ import { NbTimepickerModule, NbDatepickerModule } from '@nebular/theme';
 import { DisplayMessageComponent } from './Components/display-message/display-message.component';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { ResendMessagesComponent } from './Components/resendMessages/resendMessages.component';
+import { WriteMessageModule } from './Components/new-message/write-message/writeMessage.module';
 
 @NgModule({
   imports: [
     CommonModule,
     MessagesRoutes,
     SharedModule,
-    NzDatePickerModule
+    NzDatePickerModule,
+    WriteMessageModule
   ],
   declarations: [
     MessagesComponent,

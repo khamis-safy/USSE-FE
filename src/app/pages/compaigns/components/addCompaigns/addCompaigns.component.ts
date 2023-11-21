@@ -153,19 +153,19 @@ const data={
   actions:this.campaignActions.getActions()
 }
 
-// Filter the object keys based on values or non-empty arrays
-const filteredKeys = Object.keys(data).filter(key => {
-  const value = data[key];
+// // Filter the object keys based on values or non-empty arrays
+// const filteredKeys = Object.keys(data).filter(key => {
+//   const value = data[key];
 
-  // Check if the value is not an empty array, not null, and not undefined
-  return !((Array.isArray(value) && value.length === 0) || value === null || value === undefined);
-});
+//   // Check if the value is not an empty array, not null, and not undefined
+//   return !((Array.isArray(value) && value.length === 0) || value === null || value === undefined);
+// });
 
-// Create a new object with only the filtered keys
-const filteredData = filteredKeys.reduce((acc, key) => {
-  acc[key] = data[key];
-  return acc;
-}, {});
+// // Create a new object with only the filtered keys
+// const filteredData = filteredKeys.reduce((acc, key) => {
+//   acc[key] = data[key];
+//   return acc;
+// }, {});
 
 if(this.attachments.length>0){
   this.showWarningMsg=true;
@@ -174,9 +174,9 @@ else{
   this.showWarningMsg=false;
 
 }
-// console.log(filteredData);
+// console.log(this.compaignsService.filteredObject(data));
 
-this.compaignsService.addMewCampain(filteredData).subscribe(
+this.compaignsService.addMewCampain(this.compaignsService.filteredObject(data)).subscribe(
   (res)=>{
     this.toasterService.success("Success");
     this.back.emit(true)

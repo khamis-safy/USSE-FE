@@ -26,7 +26,8 @@ export class AutoReplayComponent implements OnInit {
   });
   actionName:string;
   isDisabled:boolean;
-  isCancel:boolean=false
+  isCancel:boolean=false;
+
   constructor( public dialogRef: MatDialogRef<AutoReplayComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any) { }
 
@@ -44,7 +45,12 @@ export class AutoReplayComponent implements OnInit {
     this.criterias = this.data.data.criterias;
     this.form.patchValue({
       messageBody:this.data.data.messageContent,
-    })
+    });
+    // if(this.data.fileData){
+    //   this.loading=true;
+    //   this.fileData=this.data.fileData
+    //   this.loading=false;
+    // }
   }
   onClose(data?){
     this.dialogRef.close(data);
@@ -74,11 +80,12 @@ export class AutoReplayComponent implements OnInit {
       this.onClose({
         messageContent:this.form.value.messageBody,
         criterias:this.criterias
+        // fileData:this.fileData,
         // data:{
         //   messageContent:this.form.value.messageBody,
-        //   attachment:this.fileData.map((file) => file.url),
-        //   criterias:this.criterias
-  
+        //   criterias:this.criterias,
+        //   attachment:this.fileData[0].url,
+        //   filename:this.fileData[0].name
         // }
       })
     }

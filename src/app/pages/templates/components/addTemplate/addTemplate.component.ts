@@ -156,7 +156,6 @@ export class AddTemplateComponent implements OnInit , OnDestroy {
   (res)=>{
     this.loading=false;
       let attachments=res.result.attachments;
-      // console.log("attachment",attachments)
     this.fileData=attachments.map((attach)=>{
       let size=this.templatesService.calculateFileSizeInKB(attach.base64);
       let type = this.templatesService.extractTypeFromBase64(attach.base64)

@@ -36,8 +36,6 @@ import { TagModule } from './components/tag/tag.module';
 import { SelectModule } from './components/select/select.module';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { DragZoneModule } from './components/drag-zone/drag-zone.module';
-import { WriteMessageComponent } from '../pages/messages/Components/new-message/write-message/write-message.component';
 import { NbTimepickerModule, NbDatepickerModule, NbToggleModule } from '@nebular/theme';
 
 import { ToLocalTimePipe } from './pipes/toLocalTime.pipe';
@@ -53,6 +51,8 @@ import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { TranslationService } from './services/translation.service';
 import { TypePipe } from '../pages/messages/type.pipe';
 import { HintMessageComponent } from './components/hint-message/hint-message.component';
+import { UsButtonDirective } from '../directives/us-button.directive';
+import { UsButtonComponent } from './components/us-button/us-button.component';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -86,7 +86,6 @@ import { HintMessageComponent } from './components/hint-message/hint-message.com
     TooltipModule,
     SelectModule,
     MatExpansionModule,
-    DragZoneModule,
     NbTimepickerModule,
     NbDatepickerModule,
     TranslateModule,
@@ -101,12 +100,12 @@ import { HintMessageComponent } from './components/hint-message/hint-message.com
     NavComponent,
     ToasterServices,
     DeleteModalComponent,
-    WriteMessageComponent,
     ClickOutsideDirective,
     ConfirmLogOutComponent,
     TypePipe,
-    HintMessageComponent
-
+    HintMessageComponent,
+    UsButtonComponent,
+    UsButtonDirective
   ],
   exports:[
     SideBarComponent,
@@ -140,15 +139,15 @@ import { HintMessageComponent } from './components/hint-message/hint-message.com
     RadioButtonModule,
     TagModule,
     MatExpansionModule,
-    DragZoneModule,
-    WriteMessageComponent,
     TagModule,
     NbTimepickerModule,
     NbDatepickerModule,
     NbToggleModule,
     TranslateModule,
     TypePipe,
-    HintMessageComponent
+    HintMessageComponent,
+    UsButtonComponent,
+    UsButtonDirective
 
   ],
   

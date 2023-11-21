@@ -13,20 +13,18 @@ import { StepThreeComponent } from './components/addCompaigns/stepThree/stepThre
 import { StepFourComponent } from './components/addCompaigns/stepFour/stepFour.component';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { CampaignActionsComponent } from './components/addCompaigns/campaign actions/component/campaignActions/campaignActions.component';
-import { CriteriaComponent } from './components/addCompaigns/campaign actions/components/shared/criteria/criteria.component';
-import { InquiryComponent } from './components/addCompaigns/campaign actions/components/inquiry/inquiry.component';
-import { SubscribeToListComponent } from './components/addCompaigns/campaign actions/components/subscribeToList/subscribeToList.component';
-import { EmailComponent } from './components/addCompaigns/campaign actions/components/email/email.component';
-import { CancelContactsComponent } from './components/addCompaigns/campaign actions/components/cancel-contacts/cancel-contacts.component';
-import { AutoReplayComponent } from './components/addCompaigns/campaign actions/components/autoReplay/autoReplay.component';
+import { ActionsModule } from './components/addCompaigns/campaign actions/actions.module';
+import { WriteMessageModule } from '../messages/Components/new-message/write-message/writeMessage.module';
+
 @NgModule({
   imports: [
     CommonModule,
     CompaignsRoutes,
     SharedModule,
+    ActionsModule,
     NzTimePickerModule,
-    NzDatePickerModule
+    NzDatePickerModule,
+    WriteMessageModule
   ],
   declarations: [
     CompaignsComponent ,
@@ -34,13 +32,7 @@ import { AutoReplayComponent } from './components/addCompaigns/campaign actions/
     StepThreeComponent,
     StepFourComponent,
     AddCompaignsComponent ,
-    CampaignActionsComponent,
-    CriteriaComponent,
-    InquiryComponent,
-    SubscribeToListComponent,
-    EmailComponent,
-    CancelContactsComponent,
-    AutoReplayComponent
+  
 
 
 

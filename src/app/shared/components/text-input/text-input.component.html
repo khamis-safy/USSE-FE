@@ -131,25 +131,33 @@
       >
       </i> 
     </div>
-    <ng-container *ngIf="isEmoji">
-      <div class="emo-con mx-2 mt-2 d-flex flex-column position-relative" (mouseover)="showEmoji=true" (mouseleave)="showEmoji=false" style="width: fit-content;">
+    <ng-container (appClickOutside)="showEmoji = false" *ngIf="isEmoji">
+      <div class="emo-con mx-2 mt-2 d-flex flex-column position-relative" 
+           (mouseover)="!isEmojiClicked && (showEmoji=true)" 
+           (mouseleave)="!isEmojiClicked && (showEmoji=false)" 
+           (click)="isEmojiClicked = !isEmojiClicked"
+           style="width: fit-content;">
+    
         <button class="btn rounded-3 shadow-sm bg-white d-flex justify-content-center align-items-center p-2">
-          <mat-icon class="material-symbols-outlined text-secondary" style="height: 21px;font-size: 23px;">
+          <mat-icon class="material-symbols-outlined text-secondary" style="height: 21px; font-size: 23px;">
             sentiment_satisfied
           </mat-icon>
         </button>
+    
         <emoji-mart
           class="position-absolute start-0 top-0 emoji-pick"
           (emojiClick)="addEmoji($event)"
-          *ngIf="showEmoji"
+          *ngIf="showEmoji || isEmojiClicked"
           [enableSearch]="false"
           [darkMode]="false"
           set="google"
           [showPreview]="false"
-          color="var(--clr-primary-600)"
-          ></emoji-mart>
+          color="var(--clr-primary-600)">
+        </emoji-mart>
+    
       </div>
     </ng-container>
+    
 
 
     <!-- Hint / caption -->

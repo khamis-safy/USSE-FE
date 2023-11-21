@@ -491,14 +491,14 @@
 "trialEndMessage": "تنتهي الفترة التجريبية المجانية في {{specificDate}}، استخدمت {{messagesCount}}/100 رسائل. للخطة المدفوعة، تواصل مع الدعم على "
 ,"Automatic country code":"كود الدولة التلقائي ",
 "waiting_msg":"يرجى الانتظار، قد يستغرق تحميل الملف بعض الوقت..",
-"Inquiry":"سؤال",
-"New Action":"اجراء جديد",
+"Inquiry":"نموذج الاستفسار",
+"New Action":"آلية جديدة",
 "subscribeToList":"اشترك في القائمة",
 "autoReply":"الرد التلقائي",
 "sendAndWait":"أرسل وانتظر",
 "cancel":"إلغاء جهة الاتصال",
 "callURL":"عنوان URL للاتصال",
-"Actions":"اجراءات",
+"Actions":"آليات",
 "Action_Name":"اسم الاجراء",
 "Operations":"العمليات",
 "edit":"تعديل",
@@ -511,7 +511,13 @@
 "contain":"يحتوي على",
 "start":"يبدأ بـ",
 "end":"ينتهى بـ",
-"choose condition":"اختر حالة"
-
-
+"choose condition":"اختر حالة",
+"addQuestion":"إضافة سؤال",
+"addAQuestion":"أضف سؤالاً",
+"details":"التفاصيل",
+"question":"السؤال",
+"responses":"الردود",
+"acknowledgment":"الاقرار",
+"notifications":"إشعارات",
+"whatsapp":"واتساب"
 }

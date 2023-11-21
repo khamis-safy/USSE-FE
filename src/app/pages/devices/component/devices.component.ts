@@ -73,7 +73,7 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
     let search=searchVal?searchVal:"";
     this.loading = true;
     this.isReonnect=false;
-    if(searchVal){
+  if(searchVal && this.paginator){
       this.paginator.pageIndex=0
     }
     

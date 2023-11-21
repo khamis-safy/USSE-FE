@@ -257,7 +257,7 @@ else{
       let msgCategory=msgCat? msgCat : this.msgCategory;
       let search=searchVal?searchVal:"";
       let pageNumber=searchVal?0:this.pageNum
-      if(searchVal){
+      if(searchVal && this.paginator){
         this.paginator.pageIndex=0
       }
       this.loading = true;

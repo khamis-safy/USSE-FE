@@ -130,7 +130,7 @@ export class InnerTemplatesComponent implements OnInit {
         let search=searchVal?searchVal:"";
         let isCanceled=this.isUnsubscribe;
         this.loading = true;
-        if(searchVal){
+        if(searchVal && this.paginator){
           this.paginator.pageIndex=0
         }
          let sub1= this.templatesService.getTemplates(email,showsNum,pageNum,orderedBy,search).subscribe(

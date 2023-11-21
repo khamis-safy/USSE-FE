@@ -4,6 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AutoReplayComponent } from '../../components/autoReplay/autoReplay.component';
 import { SubscribeToListComponent } from '../../components/subscribeToList/subscribeToList.component';
+import { InquiryComponent } from '../../components/inquiry/inquiry.component';
+import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
  interface tableData {
   id:number;
   name: string;
@@ -29,7 +31,7 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
       this.dataSource.paginator = this.paginator;
     }
   }
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog , private campaignsService:CompaignsService) { }
 
   ngOnInit() {
   }
@@ -48,6 +50,10 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
     }
     else if(element.name == "subscribeToList" ){
       this.openSubscribeToList(element)
+    }
+    else if(element.name == "enqueryForm" ){
+      this.openInquiry(element)
+      
     }
     
   }
@@ -71,7 +77,7 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
       
         }
         else{
-
+          
           this.tableData.push({
             id:this.id,
             name:actionName,
@@ -127,6 +133,43 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
 
     });
   }
+  openInquiry(elementData?){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='90vh';
+    dialogConfig.width='55vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='565px';
+    dialogConfig.disableClose = true;
+    dialogConfig.data=elementData?.data;
+    const dialogRef = this.dialog.open(InquiryComponent,dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+
+        this.id++;
+        if(elementData){
+        let foundElementFromTable = this.tableData.find((element)=>element.id == elementData.id);
+        foundElementFromTable.data=result;
+
+        }
+        else{
+            this.tableData.push({
+            id:this.id,
+            name:"enqueryForm",
+            data:result
+            
+          })
+
+        }
+        this.setActions();
+        this.dataSource=new MatTableDataSource<any>(this.tableData)
+        this.length=this.tableData.length
+
+      
+      }
+
+    });
+  }
   setActions(){
     this.actions=[];
     this.tableData.map((action)=> {
@@ -161,9 +204,13 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
           cancel:action.data
         })
       }
-      // else if (action.name == "enqueryForm"){
-        
-      // }
+      else if (action.name == "enqueryForm"){
+        this.actions.push({
+          actionName:"enqueryForm",
+          enqueryForm:this.campaignsService.filteredObject(action.data)
+        })
+      }
+    
     })
   }
   getActions(){

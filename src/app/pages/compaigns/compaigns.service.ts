@@ -91,4 +91,18 @@ getLastCampaign(email):Observable<compaignDetails>{
     shareReplay()
   );
 }
+filteredObject(data){
+  const filteredKeys = Object.keys(data).filter(key => {
+    const value = data[key];
+  
+    // Check if the value is not an empty array, not null, and not undefined
+    return !((Array.isArray(value) && value.length === 0) || value === null || value === undefined || value === "");
+  });
+  
+  // Create a new object with only the filtered keys
+  return filteredKeys.reduce((acc, key) => {
+    acc[key] = data[key];
+    return acc;
+  }, {});
+}
 }

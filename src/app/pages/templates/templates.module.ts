@@ -7,12 +7,14 @@ import { TemplatesService } from './templates.service';
 import { AddTemplateComponent } from './components/addTemplate/addTemplate.component';
 import { InnerTemplatesComponent } from './components/innerTemplates/innerTemplates.component';
 import { OwaTemplatesComponent } from './components/owaTemplates/owaTemplates.component';
+import { DragZoneModule } from 'src/app/shared/components/drag-zone/drag-zone.module';
 
 @NgModule({
   imports: [
     CommonModule,
     TemplatesRoutes,
-    SharedModule
+    SharedModule,
+    DragZoneModule
   ],
   declarations: [
     TemplatesComponent,

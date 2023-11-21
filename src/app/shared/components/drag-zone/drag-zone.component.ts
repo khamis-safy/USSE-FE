@@ -35,6 +35,8 @@ export class DragZoneComponent implements OnInit {
   @Input() isLoading = false;
   @Input() multiple=true;
   @Input() isVcfFile:boolean=false;
+  @Input() isExcelfFile:boolean=false;
+
   @Input() isDisabled?: boolean; // force disable dropdown
   @Input("label") label ="Select a file or drag and drop here";
   @Input("fileSize") fileSize =10;
@@ -109,7 +111,7 @@ async onChangeFile(e) {
       } 
        else {
           // File is not already uploaded, add it to the list
-          if (this.fileType !== "" && !this.multiple && !this.isVcfFile) {
+          if (this.fileType !== "" && !this.multiple && this.isExcelfFile) {
               if (item.name.endsWith('.xlsx') || item.name.endsWith('.xls')) {
                   this.invalid = false;
                   const fileData = await this.readExcelData(item);
@@ -126,6 +128,10 @@ async onChangeFile(e) {
                 this.invalidMessage='INVALID_FILE_MESSAGE.excel'
 
                   this.invalid = true;
+                  this.filesList.pop();
+
+                  this.clearInputData();
+
               }
           } 
           else if (this.fileType !== "" && !this.multiple && this.isVcfFile) {
@@ -143,9 +149,11 @@ async onChangeFile(e) {
                         size: item.size
                     });
                 } else {
+
                   this.invalidMessage='INVALID_FILE_MESSAGE.vcf'
                   this.invalid = true;
-                   
+                  this.filesList.pop();
+                  this.clearInputData();
                 }
             
         }
@@ -215,9 +223,7 @@ async onChangeFile(e) {
     this.filesList.splice(index,1)
     this.onChange(this.filesList);
     this.onFileDelete.emit(true)
-  // Reset the input field to allow re-uploading the same file
-  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-  fileInput.value = ''; // Clear the input field value
+    this.clearInputData();
 
   }
   isFileSizeNotAllowed(fileSize,allowedSize){
@@ -236,5 +242,10 @@ async onChangeFile(e) {
       }
    
     
+  }
+  clearInputData(){
+  // Reset the input field to allow re-uploading the same file
+  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  fileInput.value = ''; // Clear the input field value
   }
 }

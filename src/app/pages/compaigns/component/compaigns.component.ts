@@ -183,7 +183,7 @@ this.getCompaigns(this.deviceId);
     let search=searchVal?searchVal:"";
     this.loading = true;
     let pageNumber=searchVal?0:this.pageNum
-    if(searchVal){
+    if(searchVal && this.paginator){
       this.paginator.pageIndex=0
     }
     this.compaignsService.getCampaigns(email,shows,pageNumber,search,deviceId).subscribe(

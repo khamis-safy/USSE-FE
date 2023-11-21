@@ -135,8 +135,8 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   let orderedBy=this.listService.orderedBy;
   let search=searchVal ? searchVal : "";
   let pageNumber=searchVal?0:this.pageNum
-  if(searchVal){
-    this.paginator.pageIndex=0
+  if(searchVal && this.paginator){
+      this.paginator.pageIndex=0
   }
  
   this.loading = true;
