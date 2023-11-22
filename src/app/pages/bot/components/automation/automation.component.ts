@@ -7,6 +7,7 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
+import { AutomationActionComponent } from '../automationAction/automationAction.component';
 
 @Component({
   selector: 'app-automation',
@@ -189,8 +190,40 @@ export class AutomationComponent implements OnInit {
       }
     });
   }
-  editAutomation(elemen){
+  editAutomation(element){
 
+  }
+  stopAutomation(element){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='45vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='465px';
+    dialogConfig.data ={id:element.id , action:'stop'}
+   
+    const dialogRef = this.dialog.open(AutomationActionComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.getAutomations(this.deviceId);
+      }
+    });
+  }
+  startAutomation(element){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='45vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='465px';
+    dialogConfig.data ={id:element.id , action:'start'}
+   
+    const dialogRef = this.dialog.open(AutomationActionComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.getAutomations(this.deviceId);
+      }
+    });
   }
   addAutomation(){
     this.openNewAutomation.emit(true)

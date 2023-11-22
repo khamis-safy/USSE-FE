@@ -530,6 +530,10 @@
 "AutomaionName":"اسم التشغيل الآلى",
 "enterAutomaionName":"أدخل اسم التشغيل الآلي",
 "MessageAfterTimeOut":"رسالة بعد انتهاء المهلة",
-"sessionTimeOut":"مهلة الجلسة (دقيقة)"
+"sessionTimeOut":"مهلة الجلسة (دقيقة)",
+"CONFIRM_START_MSG":"هل أنت متأكد أنك تريد بدء هذه الآلية؟",
+"CONFIRM_STOP_MSG":"هل أنت متأكد أنك تريد إيقاف هذه الآلية؟",
+"START":"بدء",
+"STOP":"ايقاف"
 
 }

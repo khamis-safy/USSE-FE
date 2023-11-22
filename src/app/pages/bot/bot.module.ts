@@ -9,6 +9,7 @@ import { NewAutomationComponent } from './components/new-automation/new-automati
 import { DetailsComponent } from './components/new-automation/steps/details/details.component';
 import { AutomationNameComponent } from './components/new-automation/steps/automation-name/automation-name.component';
 import { ActionsModule } from '../compaigns/components/addCompaigns/campaign actions/actions.module';
+import { AutomationActionComponent } from './components/automationAction/automationAction.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ActionsModule } from '../compaigns/components/addCompaigns/campaign act
  NewAutomationComponent,
  DetailsComponent,
  AutomationNameComponent,
+ AutomationActionComponent
 
 
   ],

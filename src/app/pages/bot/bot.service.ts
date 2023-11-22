@@ -28,4 +28,10 @@ constructor(private http:HttpClient,
   createNewAutomation(data:any):Observable<any>{
     return this.http.post<any>(`${this.api}Bot/createNewAutomation`,data)
   }
+  stopWhatsappBusinessAutomation(id:string,email:string):Observable<any>{
+    return this.http.put<any>(`${this.api}Bot/stopWhatsappBusinessAutomation?id=${id}&email=${email}`,null)
+  }
+  startWhatsappBusinessAutomation(id:string,email:string):Observable<any>{
+    return this.http.put<any>(`${this.api}Bot/startWhatsappBusinessAutomation?id=${id}&email=${email}`,null)
+  }
 }

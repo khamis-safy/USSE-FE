@@ -68,7 +68,10 @@
         <td class="text-center" mat-cell *matCellDef="let element">
           <div class="d-flex flex-row-reverse gap-2 justify-content-center " >
             <img class="pointer" (click)="deleteAutomation(element)" src="assets/icons/Actionsc.svg" alt="" [title]="'delete' | translate"/>
+            <mat-icon class="pointer text-primary-800" [title]="'START'|translate" *ngIf="element.isStopped == true" (click)="startAutomation(element)" >play_arrow</mat-icon>
             <!-- <img class="pointer" (click)="editAutomation(element);" src="assets/icons/edit-action.svg" alt=""  [title]="'edit' | translate" style="width: 17px;"/> -->
+            <img class="pointer" [title]="'STOP'|translate" *ngIf="element.isStopped == false" (click)="stopAutomation(element)" src="assets/icons/stop-compaigns.svg" alt="" />
+
           </div>
         </td>
       </ng-container>

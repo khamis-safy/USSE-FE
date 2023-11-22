@@ -533,5 +533,9 @@
 "AutomaionName":"Automaion Name",
 "enterAutomaionName":"Enter Automation Name",
 "MessageAfterTimeOut":"Message After TimeOut",
-"sessionTimeOut":"Session Timeout (min)"
+"sessionTimeOut":"Session Timeout (min)",
+"CONFIRM_START_MSG":"are you sure you want to start this automation",
+"CONFIRM_STOP_MSG":"are you sure you want to stop this automation",
+"START":"Start",
+"STOP":"Stop"
 }
