@@ -1,0 +1,83 @@
+<form [formGroup]="form" class="w-100  h-100 p-5 mt-5">
+  <div class="d-flex gap-5 flex-column">
+  
+    <us-select
+    [isListDevicesDropdown]="true"
+      [data]="devices"
+      formControlName="devicesData"
+      [multiSelect]="false"
+      [label]="'devicesLabel' | translate"
+      (onSelect)="onSelect($event)"
+      [loadingText]="deviceLoadingText"
+      [placeholder]="'SELECT_DEVICES' | translate"
+      [isDisabled]="false"
+      [optional]="true"
+      [enableSearch]="true"
+      [searchbarOnToggler]="true"
+      [searchNoResultText]="'NO_RESULT_FOUND' | translate"
+      [maxListItemsWithoutSearch]="5"
+    ></us-select>
+    <us-input
+    [isDisabled]="false"
+    placeholder="{{ 'Enter Your Message...' | translate }}"
+    [optional]="true"
+    type="text"
+    [error]="false"
+    [fullWidth]="true"
+    formControlName="message"
+    [label]="'MessageAfterTimeOut' | translate"
+    [isTextArea]="true"
+    [isEmoji]="true"
+  ></us-input>
+
+  <div class=" d-flex justify-content-between align-items-center" style="    width: 50%;
+  ">
+    <label style="width:30%">{{ 'sessionTimeOut' | translate }}</label>
+    <div style="width:42%" class="d-flex align-items-center justify-content-between">
+      <div class="d-flex  flex-column" style="width: 136px; position: relative;">
+        <us-input
+          value=""
+          type="number"
+          [error]="false"
+          [fullWidth]="true"
+          [min]="minNum"
+         
+          formControlName="sessionTimeOut"
+        ></us-input>
+        <!-- <div *ngIf="sessionTimeOut.value > maxNum" class="hint error" style="position: absolute; bottom: -31px;">
+          <i class="si-info"></i>
+          <p class="txt txt-xs">{{ 'invalidNumberHint' | translate }}</p>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  </div>
+</form>
+<div class="d-flex justify-content-end align-items-center buttons" style="width: 95%; ">
+  <button class="rest-style" matStepperPrevious>
+    <us-button
+      class="m-2"
+      label="{{ 'BACK' | translate }}"
+      [fill]="false"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'primary'"
+    >
+    </us-button>
+  </button>
+  <button class="rest-style" matStepperNext  [disabled]="deviceId==''">
+    <us-button
+      class="m-2"
+      label="{{ 'NEXT' | translate }}"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="deviceId==''"
+      [appearance]="'primary'"
+      
+    >
+    </us-button>
+  </button>
+</div>
+

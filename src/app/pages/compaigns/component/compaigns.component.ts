@@ -46,7 +46,10 @@ export class CompaignsComponent implements AfterViewInit ,OnInit,OnDestroy {
   permission:DevicesPermissions[];
   display: number;
   pageNum: number;
-  constructor(private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router,private authService:AuthService){
+  constructor(private compaignsService:CompaignsService,
+    public dialog: MatDialog, 
+    private router:Router,
+    private authService:AuthService){
     this.display=compaignsService.getUpdatedDisplayNumber();
     this.pageNum=this.compaignsService.pageNum;
   }
@@ -168,6 +171,7 @@ this.getDevices();
 }
 onSelect(device){
   this.deviceId=device.value;
+  this.authService.selectedDeviceId=device.value
   this.getCompaigns(this.deviceId)
   this.getDevicePermission(this.deviceId);
 }

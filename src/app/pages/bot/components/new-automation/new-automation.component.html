@@ -1,0 +1,67 @@
+<section class="stepper " >
+  <mat-stepper [linear]="true" #stepper>
+    <ng-template matStepperIcon="edit">
+      <mat-icon>check</mat-icon>
+    </ng-template>
+
+    <mat-step>
+      <ng-template matStepLabel>{{ 'trigger_setting' | translate }}</ng-template>
+      <div class="position-relative d-flex align-items-between flex-column justify-content-between" style="min-height: 100%;">
+        <!-- step one content -->
+        <app-automation-name></app-automation-name>
+      
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>{{ 'session_details' | translate }}</ng-template>
+      <div class="position-relative  d-flex align-items-between flex-column justify-content-between" style="min-height: 100%;">
+
+        <!-- step two content -->
+        <app-details></app-details>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>{{ 'Actions' | translate }}</ng-template>
+      <div class="position-relative d-flex align-items-between flex-column justify-content-between h-100" style="min-height: 100%;">
+        <!-- last step -->
+        <app-campaignActions (actionsData)="setActions($event)"></app-campaignActions>
+        <div class=" buttons" style="width: 95%; ">
+          <div class="d-flex justify-content-end align-items-center">
+
+        
+          <button class="rest-style" matStepperPrevious  [disabled]="isLoading">
+            <us-button
+              class="m-2"
+              label="{{ 'BACK' | translate }}"
+              [fill]="false"
+              [size]="'md'"
+              [loading]="false"
+              [disabled]="isLoading"
+              [appearance]="'primary'"
+            >
+            </us-button>
+          </button>
+          <button class="rest-style" matStepperNext  [disabled]="isLoading">
+            <us-button
+              class="m-2"
+              label="{{ 'ADD' | translate }}"
+              [fill]="true"
+              [size]="'md'"
+              [loading]="isLoading"
+              [appearance]="'primary'"
+              (clicked)="addAutomation()"
+              [disabled]="isLoading || botActions.length==0"
+            >
+            </us-button>
+          </button>
+      
+      </div>
+        </div>
+      </div>
+
+    </mat-step>
+  </mat-stepper>
+</section>
+

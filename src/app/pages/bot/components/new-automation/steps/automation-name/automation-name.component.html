@@ -1,0 +1,50 @@
+<div class="write-message-containter  w-100 h-100 p-5 mt-5">
+
+  <div class="d-flex gap-5 flex-column">
+     <form [formGroup]="form" class="d-flex gap-5 flex-column">
+      <us-input
+      [isDisabled]="false"
+      value=""
+      placeholder="{{ 'enterAutomaionName' | translate }}"
+      [optional]="false"
+      type="text"
+      [error]="false"
+      [fullWidth]="true"
+      formControlName="automationName"
+      [label]="'AutomaionName' | translate"
+      [error]="automationName.touched && automationName.errors?.required"
+      [hintText]="automationName.touched && automationName.errors?.required ? ('requiredFieldHint' | translate) : ''"
+    ></us-input>
+    </form> 
+    
+<app-criteria  (allCriterias)="setCriterias($event)"></app-criteria>
+  </div>
+  
+  <div class="d-flex justify-content-end align-items-center buttons" style="width: 95%; ">
+    <button class="rest-style" matStepperPrevious>
+      <us-button
+        class="m-2"
+        label="{{ 'BACK' | translate }}"
+        [fill]="false"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+      >
+      </us-button>
+    </button>
+    <button class="rest-style" matStepperNext  [disabled]="form.invalid || criterias.length==0">
+      <us-button
+        class="m-2"
+        label="{{ 'NEXT' | translate }}"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="form.invalid || criterias.length==0"
+        [appearance]="'primary'"
+        
+      >
+      </us-button>
+    </button>
+  </div>
+</div>

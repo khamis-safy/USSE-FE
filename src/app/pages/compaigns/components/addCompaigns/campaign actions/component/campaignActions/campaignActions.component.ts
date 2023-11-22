@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,6 +25,8 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   tableData:any=[];
   actions:any=[];
+  @Output() actionsData = new EventEmitter<any>
+
   ngAfterViewInit() {
     if(this.dataSource){
 
@@ -212,6 +214,7 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit {
       }
     
     })
+    this.actionsData.emit(this.actions)
   }
   getActions(){
     return this.actions

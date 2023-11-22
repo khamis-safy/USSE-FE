@@ -14,6 +14,7 @@ import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from 'src/app/pages/users/users.service';
 import { AuthService } from '../../services/auth.service';
+import { BotService } from 'src/app/pages/bot/bot.service';
 
 interface ComponentData {
   contactsData?: { contacts: Contacts[], remove: boolean },
@@ -22,7 +23,8 @@ interface ComponentData {
   listsData?: { contacts: Contacts[], list: string[], lists: ListData[] },
   messagesData?: { messages: Message[] },
   compaignData?: { compaignId: string, action: string },
-  users:{userEmail:string,customerEmail:string}
+  users?:{userEmail:string,customerEmail:string}
+  automationData?: { automationId: string },
 
 
 
@@ -50,7 +52,8 @@ export class DeleteModalComponent implements OnInit {
   isLists: boolean = false;
   isMessages: boolean = false;
   isCampaigns: boolean = false;
-  isUsers:boolean=false
+  isUsers:boolean=false;
+  isAutomation:boolean=false;
   constructor(
     private devicesService: DevicesService,
     private templatesService: TemplatesService,
@@ -60,6 +63,7 @@ export class DeleteModalComponent implements OnInit {
     private compaignsService: CompaignsService,
     private usersService:UsersService,
     private authService:AuthService,
+    private botService:BotService,
     public dialogRef: MatDialogRef<DeleteModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ComponentData,
     private translate:TranslateService,
@@ -157,6 +161,15 @@ export class DeleteModalComponent implements OnInit {
       this.isMessages = false;
       this.isUsers=true
     }
+    else if(this.data.automationData){
+      this.isContacts = false;
+      this.isDevices = false;
+      this.isTemplates = false;
+      this.isLists = false;
+      this.isMessages = false;
+      this.isUsers=false;
+      this.isAutomation=true;
+    }
     else {
       this.isContacts = false;
       this.isDevices = true;
@@ -201,7 +214,24 @@ export class DeleteModalComponent implements OnInit {
     )
   }
   // this.translate.instant("COMMON.SUCC_MSG")
+deleteAutomation(){
+this.botService.deleteAutomation(this.data.automationData.automationId,this.authService.getUserInfo()?.email).subscribe(
+  (res) => {
+    this.isLoading = false
 
+    this.onClose(true);
+
+    this.toaster.success(this.translate.instant("COMMON.DELETE_MESSAGES"))
+
+
+  },
+  (err) => {
+    this.isLoading = false
+    this.onClose();
+
+  }
+)
+}
   removeLists() {
     this.listService.removeContactsFromLists(this.body,this.authService.getUserInfo()?.email).subscribe(
       (res) => {
@@ -452,6 +482,9 @@ submit() {
 
 else if(this.isUsers){
   this.deleteUser();
+}
+else if(this.isAutomation){
+  this.deleteAutomation();
 }
     else {
       this.deleteDevice();

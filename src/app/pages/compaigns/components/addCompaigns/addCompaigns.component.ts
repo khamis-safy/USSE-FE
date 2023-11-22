@@ -61,7 +61,9 @@ lastCampaignData:{
   showWarningMsg: boolean=false;
 
 
-  constructor(private compaignsService:CompaignsService,private toasterService:ToasterServices,private authService:AuthService){
+  constructor(private compaignsService:CompaignsService,
+    private toasterService:ToasterServices,
+    private authService:AuthService){
   }
   ngOnInit() {
 this.getLastCampaignData();
@@ -185,7 +187,7 @@ this.compaignsService.addMewCampain(this.compaignsService.filteredObject(data)).
   },
   (err)=>{
 
-    this.back.emit(false)
+    this.back.emit(true)
     this.isLoading = false;
     
   }

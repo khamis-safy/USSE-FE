@@ -72,7 +72,12 @@ const routes: Routes = [
         loadChildren:()=>
         import("./../../pages/templates/templates.module").then((m)=>m.TemplatesModule)
       },
-
+      {
+        path: "bots",
+        canActivate:[AuthGuard],data:{name:"bots"},
+        loadChildren:()=>
+        import("./../../pages/bot/bot.module").then((m)=>m.BotModule)
+      }
 
 
 
