@@ -31,6 +31,7 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   });
   utcDateTime;
   timeSub$;
+  formSub$;
   isUser: boolean;
   @Output() formValidityChange = new EventEmitter<boolean>(true);
   @Output() isSelectedDevices = new EventEmitter<boolean>(true);
@@ -38,7 +39,9 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   constructor( private translate:TranslateService,private devicesService:DevicesService,private datePipe: DatePipe,private compaignsService:CompaignsService,private authService:AuthService) { }
   ngOnDestroy(): void {
 
-    this.timeSub$.unsubscribe()
+    this.timeSub$.unsubscribe();
+    this.formSub$.unsubscribe()
+
   }
 
 
@@ -46,7 +49,7 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
     this.getDevices()
     this.isSelectedDevices.emit(false);
 
-    this.form.valueChanges.subscribe(() => {
+    this.formSub$= this.form.valueChanges.subscribe(() => {
       this.formValidityChange.emit(this.form.valid);
 
     });

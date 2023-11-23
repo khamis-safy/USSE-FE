@@ -7,6 +7,11 @@ import { StepFourComponent } from './stepFour/stepFour.component';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CampaignActionsComponent } from './campaign actions/component/campaignActions/campaignActions.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { SelectOption } from 'src/app/shared/components/select/select-option.model';
+import { TranslateService } from '@ngx-translate/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ConfirmaionsComponent } from './confirmaions/confirmaions.component';
 // import { WriteMessageComponent } from 'src/app/pages/messages/Components/new-message/write-message/write-message.component';
 @Component({
   selector: 'app-addCompaigns',
@@ -58,11 +63,28 @@ lastCampaignData:{
   sendingoutTo:any
 
 };
+actions:any=[];
   showWarningMsg: boolean=false;
+  MessageAfterTimeOut : any = new FormControl('',Validators.required);
+  sessionTimeOut: any = new FormControl(15);
+  email:string=this.authService.getUserInfo()?.email
+  CampArr:SelectOption[]
+  selectedCampaigns = new FormControl([]);
+  form = new FormGroup({
+    MessageAfterTimeOut:this.MessageAfterTimeOut,
+    sessionTimeOut:this.sessionTimeOut,
+    selectedCampaigns:this.selectedCampaigns,
 
-
+  });
+  listsLoadingText:string=this.translate.instant('Loading')
+  selectedCampaignActions:any=[];
+  campaignId:string;
+  stepFiveValidate: boolean;
+  step5: boolean;
   constructor(private compaignsService:CompaignsService,
     private toasterService:ToasterServices,
+    private translate: TranslateService,
+    public dialog: MatDialog,
     private authService:AuthService){
   }
   ngOnInit() {
@@ -71,6 +93,7 @@ this.getLastCampaignData();
   getLists(listsData){
     this.lists=listsData.map((list)=>list.id);
   }
+
   filesUrls(e){
     this.attachments=e;
   }
@@ -82,6 +105,9 @@ this.getLastCampaignData();
   }
   stepFourValidation(validity: boolean) {
     this.stepFourValidate = validity;
+  }
+  stepFiveValidation(validity: boolean) {
+    this.stepFiveValidate = validity;
   }
 
 toSecondStep(){
@@ -130,7 +156,11 @@ toStepFive(){
   this.blackoutTo=this.stepFourComponent.utcTime2;
   this.maxPerDay=this.stepFourComponent.form.get("maxPerDay").value;
   this.stepFourComponent.convertToUTC(this.blackoutFrom);
+  this.step5=true;
 }
+setActions(event){
+  this.actions=event
+    }
 addCampaign(){
 this.isLoading = true;
 
@@ -150,9 +180,9 @@ const data={
   msgBody: this.message,
   deviceId: this.deviceId,
   isInterval: this.isInterval,
-  sessionTimeOutMessage: "time out",
-  sessionTimeOutMinutes: 2,
-  actions:this.campaignActions.getActions()
+  sessionTimeOutMessage:this.form.value.MessageAfterTimeOut,
+  sessionTimeOutMinutes: this.form.value.sessionTimeOut,
+  actions:this.actions
 }
 
 // // Filter the object keys based on values or non-empty arrays

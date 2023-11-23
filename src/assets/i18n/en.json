@@ -495,7 +495,7 @@
 "trialEndMessage": "Your free trial ends on {{specificDate}}, with {{messagesCount}}/100 messages used. For the paid plan, reach out to Support at"
 ,"Automatic country code":"Automatic country code",
 "waiting_msg":"Please Wait, Uploading File Might Take Time..",
-"Inquiry":"Inquiry Form",
+"enqueryForm":"Inquiry Form",
 "New Action":"New Action",
 "subscribeToList":"Subscribe to list",
 "autoReply":"Auto Reply",
@@ -537,5 +537,7 @@
 "CONFIRM_START_MSG":"are you sure you want to start this automation",
 "CONFIRM_STOP_MSG":"are you sure you want to stop this automation",
 "START":"Start",
-"STOP":"Stop"
+"STOP":"Stop",
+"CONFIRM_CLEAR":"are you sure you want to remove actions?",
+"CONFIRM_APPLY":"Are you sure you want to apply these actions?"
 }
