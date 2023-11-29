@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, FormControl ,Validators} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PluginsService } from 'src/app/services/plugins.service';
+import { noWhitespaceValidator } from 'src/app/shared/methods/noWhiteSpaceValidator';
 
 @Component({
   selector: 'app-inquiry',
@@ -58,7 +59,7 @@ export class InquiryComponent implements OnInit {
     
   }
   private createQuestionControl(initialValue: string) {
-    return this.fb.control(initialValue, Validators.required);
+    return this.fb.control(initialValue,  [Validators.required, noWhitespaceValidator]);
   }
   onClose(data?){
     this.dialogRef.close(data);

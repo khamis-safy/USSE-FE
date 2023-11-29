@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { noWhitespaceValidator } from 'src/app/shared/methods/noWhiteSpaceValidator';
+
 
 @Component({
   selector: 'app-criteria',
@@ -9,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class CriteriaComponent implements OnInit {
   showInputs:boolean;
-  criteria:any=new FormControl('',[Validators.required]);
+  criteria:any=new FormControl('',[Validators.required ,noWhitespaceValidator]);
   type:any=new FormControl([]);
   conditionsData:any;
  @Input() criteriaParameters:{criteria:string, type:string}[]=[];
@@ -62,6 +64,7 @@ export class CriteriaComponent implements OnInit {
     this.disableSaveButton.emit(this.showInputs)
     this.form.patchValue({
       keyWord:"",
+      conditionValue:null
     })
 
   }
