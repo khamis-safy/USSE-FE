@@ -22,6 +22,7 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   displayedColumns: string[] = ['Name', 'Operations'];
   dataSource :MatTableDataSource<any>;
   length:number=0;
+  id:number=-1;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   tableData:any=[];
   actions:any=[];
@@ -119,8 +120,11 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
 
   }
  fillTableData(actions:any[]){
+  this.id=-1;
   this.tableData=actions.map((action)=>{
+    this.id++;
     return{
+      id:this.id,
       name: action.actionName,
       data: action[action.actionName]
     }
@@ -138,10 +142,14 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
     this.hideApplyButton = false;
   }
   this.setActions();
-  this.form.patchValue({
-    selectedCampaigns:null
-  })
-  this.campaignId=null
+  this.id=-1;
+  if(this.isCampaignAction){
+
+    this.form.patchValue({
+      selectedCampaigns:null
+    })
+    this.campaignId=null
+  }
  }
  applyCampaignActions(){
   const dialogConfig=new MatDialogConfig();
@@ -211,8 +219,9 @@ clearAllActions(){
       
         }
         else{
-          
+          this.id++;
           this.tableData.push({
+            id:this.id,
             name:actionName,
             data:result
             
@@ -249,10 +258,11 @@ clearAllActions(){
 
         }
         else{
-
-            this.tableData.push({
-            name:"subscribeToList",
-            data:result
+          this.id++;
+          this.tableData.push({
+          id:this.id,
+          name:"subscribeToList",
+          data:result
             
           })
 
@@ -287,7 +297,9 @@ clearAllActions(){
 
         }
         else{
+            this.id++;
             this.tableData.push({
+            id:this.id,
             name:"enqueryForm",
             data:result
             
