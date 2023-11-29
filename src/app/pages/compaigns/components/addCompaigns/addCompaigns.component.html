@@ -129,42 +129,6 @@
       <div class="d-flex  position-relative  flex-column gap-3 " style="min-height: 100%;">
         <div class="step5-container">
 
-          <form  [formGroup]="form" class="w-100  h-100 px-5 mt-5">
-            <div class="d-flex gap-4 flex-column"> 
-              <us-input
-              *ngIf="actions.length!=0" 
-              [isDisabled]="false"
-              placeholder="{{ 'Enter Your Message...' | translate }}"
-              [optional]="false"
-              type="text"
-              [error]="false"
-              [fullWidth]="true"
-              formControlName="MessageAfterTimeOut"
-              [label]="'MessageAfterTimeOut' | translate"
-              [isTextArea]="true"
-              [isEmoji]="true"
-            ></us-input>
-          
-            <div  *ngIf="actions.length!=0"  class=" d-flex justify-content-between align-items-center" style=" width: 47%;
-            ">
-              <label style="width:30%">{{ 'sessionTimeOut' | translate }}</label>
-              <div style="width:42%" class="d-flex align-items-center justify-content-between">
-                <div class="d-flex  flex-column" style="width: 136px; position: relative;">
-                  <us-input
-                    value=""
-                    type="number"
-                    [error]="false"
-                    [fullWidth]="true"
-                    [min]="minNum"
-                    formControlName="sessionTimeOut"
-                  ></us-input>
-                </div>
-              </div>
-            </div>
-      
-            </div>
-            
-          </form>
           <app-campaignActions  [isCampaignAction]="true" [deviceId]="deviceId" (actionsData)="setActions($event)" ></app-campaignActions>
           
         </div>
@@ -189,13 +153,13 @@
           <button class="rest-style" matStepperNext [disabled]="isLoading">
             <us-button
               class="m-2"
-              label="{{ 'addLabel' | translate }}"
+              [label]="(actions.length==0) ? ('addLabel' | translate) :('nextLabel' | translate )"
               [fill]="true"
               [size]="'md'"
               [loading]="isLoading"
-              [disabled]="isLoading || (form.invalid && actions.length!=0)"
+              [disabled]="isLoading "
               [appearance]="'primary'"
-              (clicked)="addCampaign()"
+              (clicked)="(actions.length==0) ? addCampaign() : ''"
             >
             </us-button>
           </button>
@@ -205,6 +169,90 @@
       </div>
     </ng-container>
     </mat-step>
+
+<!-- step six -->
+<mat-step *ngIf="actions.length!=0">
+  <ng-template matStepLabel>{{ 'timeout' | translate }}</ng-template>
+  <ng-container >
+    <div class="d-flex  position-relative  align-items-between flex-column justify-content-between " style="min-height: 100%;">
+    
+
+      <form  [formGroup]="form" class=" px-5 mt-5 pt-5 mx-auto " style="width:88%;
+                                                                        max-height: 50vh;
+                                                                        overflow: auto; ">
+        <div class="d-flex gap-4 flex-column"> 
+          <us-input
+          *ngIf="actions.length!=0" 
+          [isDisabled]="false"
+          placeholder="{{ 'Enter Your Message...' | translate }}"
+          [optional]="false"
+          type="text"
+          [error]="false"
+          [fullWidth]="true"
+          formControlName="MessageAfterTimeOut"
+          [label]="'MessageAfterTimeOut' | translate"
+          [isTextArea]="true"
+          [isEmoji]="true"
+        ></us-input>
+      
+        <div  *ngIf="actions.length!=0"  class=" d-flex justify-content-between align-items-center" style=" width: 47%;
+        ">
+          <label style="width:30%">{{ 'sessionTimeOut' | translate }}</label>
+          <div style="width:42%" class="d-flex align-items-center justify-content-between">
+            <div class="d-flex  flex-column" style="width: 136px; position: relative;">
+              <us-input
+                value=""
+                type="number"
+                [error]="false"
+                [fullWidth]="true"
+                [min]="0"
+                formControlName="sessionTimeOut"
+              ></us-input>
+            </div>
+          </div>
+        </div>
+  
+        </div>
+        
+      </form>
+
+    
+    <div class=" buttons" >
+      <div class="d-flex  justify-content-end align-items-center" >
+
+      <button class="rest-style" matStepperPrevious   [disabled]="isLoading">
+        <us-button
+          class="m-2"
+          label="{{ 'backLabel' | translate }}"
+          [fill]="false"
+          [size]="'md'"
+          [loading]="false"
+          [disabled]="false"
+          [appearance]="'primary'"
+          [disabled]="isLoading || form.invalid"
+        >
+        </us-button>
+      </button>
+
+      <button class="rest-style" matStepperNext [disabled]="isLoading">
+        <us-button
+          class="m-2"
+          label="{{ 'addLabel' | translate }}"
+          [fill]="true"
+          [size]="'md'"
+          [loading]="isLoading"
+          [disabled]="isLoading || (form.invalid && actions.length!=0)"
+          [appearance]="'primary'"
+          (clicked)="addCampaign()"
+        >
+        </us-button>
+      </button>
+    </div>
+      <p *ngIf="showWarningMsg">{{'waiting_msg' | translate}}</p>
+    </div>
+  </div>
+</ng-container>
+</mat-step>
 
   </mat-stepper>
 </section>

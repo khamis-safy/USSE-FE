@@ -119,12 +119,12 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
 
   }
  fillTableData(actions:any[]){
-  actions.forEach((action) => {
-    this.tableData.push({
+  this.tableData=actions.map((action)=>{
+    return{
       name: action.actionName,
       data: action[action.actionName]
-    });
-  });
+    }
+  })
   this.dataSource=new MatTableDataSource<any>(this.tableData);
   this.dataSource.paginator = this.paginator;
   this.setActions();
@@ -138,7 +138,10 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
     this.hideApplyButton = false;
   }
   this.setActions();
-
+  this.form.patchValue({
+    selectedCampaigns:null
+  })
+  this.campaignId=null
  }
  applyCampaignActions(){
   const dialogConfig=new MatDialogConfig();
@@ -148,7 +151,6 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   dialogConfig.maxWidth='100%';
   dialogConfig.minWidth='465px';
   dialogConfig.data ={id:this.campaignId, action:'apply'}
- 
   const dialogRef = this.dialog.open(ConfirmaionsComponent,dialogConfig);
   dialogRef.afterClosed().subscribe(result => {
     if(result){

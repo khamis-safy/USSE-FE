@@ -889,9 +889,7 @@ section.table-wrapper {
 
 
   mat-paginator{
-    position: sticky;
-    bottom: 0;
-    left: 0;
+
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     .mat-mdc-paginator-container{

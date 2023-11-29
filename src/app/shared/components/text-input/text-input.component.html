@@ -1,4 +1,4 @@
-<section class=" us-input d-flex flex-column flex-lg-row align-items-center gap-lg-4">
+<section class=" us-input d-flex flex-column flex-lg-row gap-lg-4">
   <!-- Label & optional indicator -->
   <div
     class="label-widget text-start w-25 d-none d-lg-block input-label"
@@ -135,10 +135,10 @@
       <div class="emo-con mx-2 mt-2 d-flex flex-column position-relative" 
            (mouseover)="!isEmojiClicked && (showEmoji=true)" 
            (mouseleave)="!isEmojiClicked && (showEmoji=false)" 
-           (click)="isEmojiClicked = !isEmojiClicked"
+          
            style="width: fit-content;">
     
-        <button class="btn rounded-3 shadow-sm bg-white d-flex justify-content-center align-items-center p-2">
+        <button  (click)="isEmojiClicked = !isEmojiClicked" class="btn rounded-3 shadow-sm bg-white d-flex justify-content-center align-items-center p-2">
           <mat-icon class="material-symbols-outlined text-secondary" style="height: 21px; font-size: 23px;">
             sentiment_satisfied
           </mat-icon>
