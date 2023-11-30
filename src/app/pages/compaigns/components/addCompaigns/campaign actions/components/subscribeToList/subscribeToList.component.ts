@@ -6,6 +6,7 @@ import { ListData } from 'src/app/pages/manage-contacts/list-data';
 import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-contacts.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { noWhitespaceValidator } from 'src/app/shared/methods/noWhiteSpaceValidator';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -24,10 +25,14 @@ export class SubscribeToListComponent implements OnInit {
   addNewList:boolean=false;
   selectedLists:any = new FormControl([]);
   listName = new FormControl('',Validators.required);
+  askForName = new FormControl(this.translate.instant('WHATSYOURNAME'),[Validators.required, noWhitespaceValidator]);
+
   addedList:ListData;
   form = new FormGroup({
     selectedLists:this.selectedLists,
-    listName:this.listName
+    listName:this.listName,
+    askForName:this.askForName
+
 
   });
   allLists:any=[];
@@ -127,7 +132,8 @@ export class SubscribeToListComponent implements OnInit {
     this.isLoading=true;
     this.onClose({
       criterias:this.criterias,
-      listId: this.listId
+      listId: this.listId,
+      askForNameContent:this.form.value.askForName
     })
 
   }

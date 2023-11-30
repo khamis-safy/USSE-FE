@@ -17,6 +17,22 @@
       <app-criteria (allCriterias)="setCriterias($event)" [criteriaParameters]="criterias" (disableSaveButton)="isButtonDisabled($event)"></app-criteria>
     </div>
     <form  [formGroup]="form"  class="d-flex flex-column px-2 my-4 w-100">
+
+      <us-input
+      class="my-4"
+      [isDisabled]="false"
+      value=""
+      placeholder="{{ 'askForName' | translate }}"
+      [optional]="false"
+      type="text"
+      [error]="false"
+      [fullWidth]="true"
+      formControlName="askForName"
+      [label]="'askForName' | translate"
+      [error]="askForName.touched && askForName.errors?.['required']"
+      [hintText]="askForName.touched && askForName.errors?.['required'] ? ('requiredFieldHint' | translate) : ''"
+    ></us-input>
+
       <div class="d-flex justify-content-between mb-3">
       <div class="me-3 " style="width:70% ">
 
@@ -114,7 +130,7 @@
     [loading]="isLoading"
     [fill]="true"
     (clicked)="submit()"
-    [disabled]="!listId || isLoading ||isDisabled"
+    [disabled]="!listId || isLoading ||isDisabled || form.get('askForName').hasError('whitespace')"
   ></us-button>
  
   </div>
