@@ -113,8 +113,15 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
     this.dataSource.paginator = this.paginator;
 
     this.length=this.tableData.length;
-    if(this.campaignId &&  this.length==0){
-      this.hideApplyButton = false;
+    if(this.length==0){
+      this.id=-1;
+      if(this.isCampaignAction){
+    
+        this.form.patchValue({
+          selectedCampaigns:null
+        })
+        this.campaignId=null
+      }
     }
     this.setActions();
 

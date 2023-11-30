@@ -27,7 +27,7 @@
       [error]="false"
       [fullWidth]="true"
       formControlName="messageBody"
-      [label]="!isCancel? ('MESSAGE'| translate) :('autoReply' | translate) "
+      [label]="!isCancel? ('MESSAGE'| translate) :('acknowledgment' | translate) "
       [isTextArea]="true"
       [isEmoji]="true"
     ></us-input>
@@ -58,6 +58,7 @@
     [loading]="false"
   ></us-button>
   <us-button
+    *ngIf="!isCancel"
     label="{{ 'SAVE' | translate }}"
     size="sm"
     [loading]="isLoading"
@@ -65,6 +66,15 @@
     (clicked)="submit()"
     [disabled]="form.invalid || isLoading ||isDisabled"
   ></us-button>
- 
+
+    <us-button
+    *ngIf="isCancel"
+    label="{{ 'SAVE' | translate }}"
+    size="sm"
+    [loading]="isLoading"
+    [fill]="true"
+    (clicked)="submit()"
+    [disabled]="isLoading ||isDisabled"
+  ></us-button>
   </div>
 </section>
