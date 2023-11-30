@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Observable } from 'rxjs';
+import { Automation } from './interfaces/automation';
 
 
 @Injectable({
@@ -16,8 +17,8 @@ export class BotService  {
 constructor(private http:HttpClient,
   private authService:AuthService) {}
 
-  getAutomations(email:string,showsNum:number,pageNum:number,search:string,deviceId:string):Observable<any>{
-    return this.http.get<any>(`${this.api}Bot/listAutomations?email=${email}&deviceId=${deviceId}&take=${showsNum}&scroll=${pageNum}&search=${search}`)
+  getAutomations(email:string,showsNum:number,pageNum:number,search:string,deviceId:string):Observable<Automation[]>{
+    return this.http.get<Automation[]>(`${this.api}Bot/listAutomations?email=${email}&deviceId=${deviceId}&take=${showsNum}&scroll=${pageNum}&search=${search}`)
   }
   getAutomationsCount(email:string,deviceId:string):Observable<number>{
     return this.http.get<number>(`${this.api}Bot/listAutomationsCount?email=${email}&deviceId=${deviceId}`)

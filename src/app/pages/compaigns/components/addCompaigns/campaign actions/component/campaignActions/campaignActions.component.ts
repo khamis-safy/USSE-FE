@@ -73,7 +73,6 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
     this.campaignsService.getCampaigns(this.email,100,0,"",this.deviceId).subscribe(
       (res)=>{
         let campWithActions = res.filter((withActions)=>withActions.actionCount>0);
-        console.log(campWithActions)
         if(campWithActions.length==0){
           this.listsLoadingText=this.translate.instant('No Results')
         }
@@ -169,7 +168,6 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   const dialogRef = this.dialog.open(ConfirmaionsComponent,dialogConfig);
   dialogRef.afterClosed().subscribe(result => {
     if(result){
-      console.log("result",result)
       this.selecetedCampainsIDs.push(this.campaignId);
       this.hideApplyButton = true;
 

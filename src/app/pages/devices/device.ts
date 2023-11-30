@@ -11,7 +11,7 @@ export interface DeviceData {
     applicationUserId: string,
     host: string,
     password: string,
-    port: number,
+    port: any,
     systemID: string,
     lastUpdate: string,
     token: string

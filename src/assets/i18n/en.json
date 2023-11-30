@@ -540,5 +540,6 @@
 "STOP":"Stop",
 "CONFIRM_CLEAR":"are you sure you want to remove actions?",
 "CONFIRM_APPLY":"Are you sure you want to apply these actions?",
-"timeout":"Timeout"
+"timeout":"Timeout",
+"generateQR":"Create a QR code"
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { BotService } from '../../bot.service';
@@ -8,7 +8,10 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { AutomationActionComponent } from '../automationAction/automationAction.component';
-
+import * as QRCode from 'qrcode-generator';
+import { saveAs } from 'file-saver';
+import { DeviceData } from 'src/app/pages/devices/device';
+import { Automation } from '../../interfaces/automation';
 @Component({
   selector: 'app-automation',
   templateUrl: './automation.component.html',
@@ -35,20 +38,52 @@ export class AutomationComponent implements OnInit {
   noData: boolean;
   display:number=10;
   search:string="";
+  deviceNumber:string;
+  alldevices:DeviceData[]=[];
+
   constructor(private botService : BotService ,
     private authService:AuthService,
     public dialog: MatDialog, ) { }
 
   ngOnInit() {
     this.getDevices();
+ 
+  }
 
+  exportQRCode(element) {
+    // Generate QR code
+    const typeNumber = 4; // adjust as needed
+    const errorCorrectionLevel = 'L';
+    const qr = QRCode(typeNumber, errorCorrectionLevel);
+    qr.addData(this.generateQrString(element));
+    qr.make();
+
+    // Convert QR code to image data URL
+    const qrCodeDataUrl = qr.createDataURL(10, 0);
+
+    // Convert data URL to Blob
+    const byteCharacters = atob(qrCodeDataUrl.split(',')[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/png' });
+
+    // Save the Blob as a file using FileSaver.js
+    saveAs(blob, 'qrcode.png');
+  }
+  generateQrString(element:Automation){
+    let criteria=element.criterias[0].criteria
+    const qrData =`https://api.whatsapp.com/send?phone=${this.deviceNumber}&text=${criteria}`
+    return qrData
   }
    // get devices data
  getDevices(){
   this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
     (res)=>{
-      let alldevices=res;
-      this.devices = alldevices.map(res=>{
+      this.alldevices=res;
+      this.devices = this.alldevices.map(res=>{
         return {
           title:res.deviceName,
           value:res.id,
@@ -70,16 +105,19 @@ export class AutomationComponent implements OnInit {
 
           this.form.patchValue({
           devicesData: {
-          title:alldevices[0]?.deviceName,
-          value:alldevices[0]?.id,
-          deviceIcon:alldevices[0].deviceType
+          title:this.alldevices[0]?.deviceName,
+          value:this.alldevices[0]?.id,
+          deviceIcon:this.alldevices[0].deviceType
 
           }
 
           })
+          this.deviceNumber=this.alldevices[0].deviceNumber;
+
         }
         else{
-          let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
+          let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId);
+          let deviceSelectedAllData=this.alldevices.find((device)=>device.id==this.authService.selectedDeviceId);
           this.deviceId=this.authService.selectedDeviceId;
 
           this.form.patchValue({
@@ -91,6 +129,8 @@ export class AutomationComponent implements OnInit {
             }
 
             })
+            this.deviceNumber=deviceSelectedAllData.deviceNumber;
+
         }
       }
         this.getAutomations(this.deviceId);
@@ -167,6 +207,8 @@ export class AutomationComponent implements OnInit {
     )
   }
   onSelect(device){
+    let foundDevice=this.alldevices.find((dev)=>dev.id==device.value)
+    this.deviceNumber=foundDevice.deviceNumber;
     this.deviceId=device.value;
     this.authService.selectedDeviceId=device.value
     this.getAutomations(this.deviceId)
