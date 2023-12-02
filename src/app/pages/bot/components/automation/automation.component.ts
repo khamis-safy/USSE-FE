@@ -52,10 +52,11 @@ export class AutomationComponent implements OnInit {
 
   exportQRCode(element) {
     // Generate QR code
-    const typeNumber = 4; // adjust as needed
-    const errorCorrectionLevel = 'L';
+    const typeNumber = 8; // adjust as needed
+    const errorCorrectionLevel = 'M'; // adjust as needed
     const qr = QRCode(typeNumber, errorCorrectionLevel);
-    qr.addData(this.generateQrString(element));
+    const qrData = this.generateQrString(element);
+    qr.addData(qrData);
     qr.make();
 
     // Convert QR code to image data URL
@@ -75,7 +76,7 @@ export class AutomationComponent implements OnInit {
   }
   generateQrString(element:Automation){
     let criteria=element.criterias[0].criteria
-    const qrData =`https://api.whatsapp.com/send?phone=${this.deviceNumber}&text=${criteria}`
+    const qrData =`https://api.whatsapp.com/send?phone=${this.deviceNumber}&text=${encodeURIComponent(criteria)}`
     return qrData
   }
    // get devices data
