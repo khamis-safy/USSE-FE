@@ -1,15 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, FormControl ,Validators} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PluginsService } from 'src/app/services/plugins.service';
 import { noWhitespaceValidator } from 'src/app/shared/methods/noWhiteSpaceValidator';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-inquiry',
   templateUrl: './inquiry.component.html',
   styleUrls: ['./inquiry.component.scss']
 })
-export class InquiryComponent implements OnInit {
+export class InquiryComponent implements OnInit ,AfterViewInit{
   isLoading:boolean;
   isEdit:boolean=false;
   loading:boolean;
@@ -27,10 +28,17 @@ export class InquiryComponent implements OnInit {
     whatsapp:this.whatsapp
   });
   noQuestions:boolean=false;
+
+
+  @ViewChild('dialogElement') dialogElement: ElementRef;
   constructor(public dialogRef: MatDialogRef<InquiryComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any,
     private fb: FormBuilder,
-    private plugin:PluginsService) { }
+    private plugin:PluginsService,
+  ) { 
+ // Set up Dragula
+ 
+    }
 
   ngOnInit() {
     this.myForm = this.fb.group({
@@ -41,6 +49,52 @@ export class InquiryComponent implements OnInit {
       this.fillData();
     }
   }
+  ngAfterViewInit() {
+    // Set the appendTo option after the view has been initialized
+    const dialogElement = this.dialogElement.nativeElement;
+    const questionDragElements = document.querySelectorAll('.questions .question');
+
+    questionDragElements.forEach((el) => {
+      el.addEventListener('mousedown', () => {
+        this.dialogElement.nativeElement.style.zIndex = '9999999';
+      });
+
+      el.addEventListener('mouseup', () => {
+        this.dialogElement.nativeElement.style.zIndex = '';
+      });
+    });
+  }
+
+  private createQuestionControl(initialValue: string) {
+    return this.fb.control(initialValue,  [Validators.required, noWhitespaceValidator]);
+  }
+
+
+  get questions(): FormArray {
+    return this.myForm.get('questions') as FormArray;
+  }
+  addQuestion() {
+    const questionControl = this.fb.control('', Validators.required);
+    this.questions.push(questionControl);
+  }
+
+  removeQuestion(index: number) {
+    this.questions.removeAt(index);
+  }
+
+  // Define a custom function that moves an item in a FormArray to another position
+  moveItemInFormArray(formArray: FormArray, fromIndex: number, toIndex: number) {
+    const item = formArray.at(fromIndex);
+    formArray.removeAt(fromIndex);
+    formArray.insert(toIndex, item);
+  }
+
+  // Handle the drop event and update the FormArray accordingly
+  onDrop(event: CdkDragDrop<any>) {
+    this.moveItemInFormArray(this.questions, event.previousIndex, event.currentIndex);
+    console.log(this.questions.value)
+  }
+
   fillData(){
     if (this.myForm && this.myForm.get('questions')) {
       let allQuestions = this.data.questions.map((q) => q.question);
@@ -58,9 +112,6 @@ export class InquiryComponent implements OnInit {
     )
     
   }
-  private createQuestionControl(initialValue: string) {
-    return this.fb.control(initialValue,  [Validators.required, noWhitespaceValidator]);
-  }
   onClose(data?){
     this.dialogRef.close(data);
   }
@@ -70,18 +121,6 @@ export class InquiryComponent implements OnInit {
     isButtonDisabled(ev){
       this.isDisabled=ev;
     }
-
-  get questions(): FormArray {
-    return this.myForm.get('questions') as FormArray;
-  }
-  addQuestion() {
-    const questionControl = this.fb.control('', Validators.required);
-    this.questions.push(questionControl);
-  }
-
-  removeQuestion(index: number) {
-    this.questions.removeAt(index);
-  }
   addEmail(){
     if(this.form.value.email && this.plugin.emailReg.test(this.form.value.email)){
     
@@ -130,25 +169,3 @@ export class InquiryComponent implements OnInit {
   }
 }
 
-// "enqueryForm": {
-//   "id": 0,
-//   "questions": [
-//     {
-//       "id": 0,
-//       "question": "string",
-//       "orderNumber": 0
-//     }
-//   ],
-//   "criterias": [
-//     {
-//       "criteria": "string",
-//       "type": "string"
-//     }
-//   ],
-//   "completeMessage": "string",
-//   "attachment": "string",
-//   "filename": "string",
-//   "whatsappNumber": "string",
-//   "emailAddress": "string"
-// }
-// }

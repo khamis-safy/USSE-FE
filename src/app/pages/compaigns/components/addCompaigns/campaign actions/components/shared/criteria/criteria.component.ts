@@ -36,7 +36,7 @@ export class CriteriaComponent implements OnInit {
   }
 
   ngOnInit() {
-   
+    this.allCriterias.emit(this.criteriaParameters)
   }
   onSelect(event){
     this.selectedCondition={title:event.title , value:event.value - 1};

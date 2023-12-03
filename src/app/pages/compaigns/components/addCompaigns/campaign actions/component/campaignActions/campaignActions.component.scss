@@ -28,3 +28,10 @@ padding-block: 2px !important;
 .nodata-container {
   height: 40vh !important;
 }
+.draggable-row.cdk-drag-preview {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.draggable-row.cdk-drag-placeholder {
+  opacity: 0;
+}

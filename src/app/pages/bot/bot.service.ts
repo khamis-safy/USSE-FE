@@ -35,4 +35,13 @@ constructor(private http:HttpClient,
   startWhatsappBusinessAutomation(id:string,email:string):Observable<any>{
     return this.http.put<any>(`${this.api}Bot/startWhatsappBusinessAutomation?id=${id}&email=${email}`,null)
   }
+  reOrderAutomations(email:string,deviceId:string,data:{automationId: string,order: number}[]):Observable<any>{
+    return this.http.put<any>(`${this.api}Bot/reOrderAutomations?email=${email}&deviceId=${deviceId}`,data)
+  }
+  getAutomationById(id:string):Observable<any>{
+    return this.http.get<any>(`${this.api}Bot/getAutomationById?id=${id}`)
+  }
+  updateAutomation(data:any):Observable<any>{
+    return this.http.post<any>(`${this.api}Bot/updateAutomation`,data)
+  }
 }

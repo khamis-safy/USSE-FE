@@ -17,14 +17,14 @@
   
           {{ 'automation' | translate }}
         </ng-template>
-        <app-automation (openNewAutomation)="openNewAutomation($event)" ></app-automation>
+        <app-automation (openNewAutomation)="openNewAutomation($event)"  ></app-automation>
       </mat-tab>
   
      
     </mat-tab-group>
   </ng-container>
   <ng-container *ngIf="!isBots">
-    <app-new-automation (back)="backToBotComponent($event)"></app-new-automation>
+    <app-new-automation (back)="backToBotComponent($event)" [automationData]="automationData"></app-new-automation>
 
   </ng-container>
 </section>

@@ -12,14 +12,16 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ConfirmaionsComponent } from '../../../confirmaions/confirmaions.component';
 
-
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { BotService } from 'src/app/pages/bot/bot.service';
+import { Automation } from 'src/app/pages/bot/interfaces/automation';
 @Component({
   selector: 'app-campaignActions',
   templateUrl: './campaignActions.component.html',
   styleUrls: ['./campaignActions.component.scss']
 })
 export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy {
-  displayedColumns: string[] = ['Name', 'Operations'];
+  displayedColumns: string[] = ['Reorder','Name', 'Operations'];
   dataSource :MatTableDataSource<any>;
   length:number=0;
   id:number=-1;
@@ -35,7 +37,7 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   sessionTimeOut: any = new FormControl(15);
   email:string=this.authService.getUserInfo()?.email
   campArr:SelectOption[];
-  selectedCampaigns = new FormControl([]);
+  selectedCampaigns:any = new FormControl([]);
   form = new FormGroup({
 
     selectedCampaigns:this.selectedCampaigns,
@@ -44,10 +46,10 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   listsLoadingText:string=this.translate.instant('Loading')
   selectedCampaignActions:any=[];
   campaignId:string;
-
+  @Input() automationData:Automation
     selecetedCampainsIDs:string[]=[]
 
-
+    loading:boolean=false;
     ngOnDestroy(): void {
 
   
@@ -61,14 +63,73 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   constructor(private dialog: MatDialog ,
       private campaignsService:CompaignsService,
       private translate: TranslateService,
-      private authService:AuthService,) { }
+      private authService:AuthService,
+      private botService:BotService
+    ) {
+        
+}
 
   ngOnInit() {
     if(this.isCampaignAction){
       this.getCampaings()
     }
+    else{
+      this.getAutomations()
+    }
+    if(this.automationData){
+      if(this.automationData.botActionCount >0 && this.automationData.botActions){
+
+        this.fillTableData(this.automationData.botActions)
+      }
+    }
   
   }
+  
+  onListDrop(event: CdkDragDrop<string[]>) {
+    const data = [...this.dataSource.data];
+    moveItemInArray (data, event.previousIndex, event.currentIndex);
+    this.dataSource.data = data;
+    this.tableData=data;
+    this.setActions();
+  }
+  getAutomations(){
+    this.botService.getAutomations(this.email,100,0,"",this.deviceId).subscribe(
+      (res)=>{
+        let autWithActions = res.filter((withActions)=>withActions.botActionCount>0);
+        if(autWithActions.length==0){
+          this.listsLoadingText=this.translate.instant('No Results')
+        }
+        else{
+          this.campArr=autWithActions.map(res=>{
+            return {
+              title:res.name,
+              value:res.id,
+            
+            }
+          });
+          if(this.automationData){
+            let foundSelectedAutomation = autWithActions.find((action)=>action.id == this.automationData.id);
+            if(foundSelectedAutomation){
+              this.form.patchValue({
+                selectedCampaigns:{
+                  title:foundSelectedAutomation.name,
+                  value:foundSelectedAutomation.id
+                }
+              })
+              this.loading=true;
+              this.applyActionsFromAutomation(foundSelectedAutomation.id)
+            }
+          }
+        
+        
+        }
+        },
+        (err)=>{
+
+        this.listsLoadingText=this.translate.instant('No Results')
+
+        })
+    }
   getCampaings(){
     this.campaignsService.getCampaigns(this.email,100,0,"",this.deviceId).subscribe(
       (res)=>{
@@ -114,19 +175,21 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
     this.length=this.tableData.length;
     if(this.length==0){
       this.id=-1;
-      if(this.isCampaignAction){
+      
     
         this.form.patchValue({
           selectedCampaigns:null
         })
         this.campaignId=null
-      }
+      
     }
     this.setActions();
 
   }
  fillTableData(actions:any[]){
+  this.loading=true;
   this.id=-1;
+  this.tableData=[];
   this.tableData=actions.map((action)=>{
     this.id++;
     return{
@@ -138,7 +201,17 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   this.dataSource=new MatTableDataSource<any>(this.tableData);
   this.dataSource.paginator = this.paginator;
   this.setActions();
+  this.loading=false
 
+ }
+ applyActionsFromAutomation(autId){
+  this.botService.getAutomationById(autId).subscribe(
+    (res)=>{
+      let botActions=res.botActions;
+      
+      this.fillTableData(botActions)
+    }
+  )
  }
  clearTableData(){
   this.tableData=[];
@@ -149,13 +222,13 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   }
   this.setActions();
   this.id=-1;
-  if(this.isCampaignAction){
+ 
 
     this.form.patchValue({
       selectedCampaigns:null
     })
     this.campaignId=null
-  }
+  
  }
  applyCampaignActions(){
   const dialogConfig=new MatDialogConfig();
@@ -164,7 +237,7 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   dialogConfig.width='35vw';
   dialogConfig.maxWidth='100%';
   dialogConfig.minWidth='465px';
-  dialogConfig.data ={id:this.campaignId, action:'apply'}
+  dialogConfig.data ={id:this.campaignId, action:'apply' ,isCampaignAction:this.isCampaignAction}
   const dialogRef = this.dialog.open(ConfirmaionsComponent,dialogConfig);
   dialogRef.afterClosed().subscribe(result => {
     if(result){
@@ -291,6 +364,7 @@ clearAllActions(){
     dialogConfig.minWidth='565px';
     dialogConfig.disableClose = true;
     dialogConfig.data=elementData?.data;
+    dialogConfig.panelClass = 'custom-dialog-container';
     const dialogRef = this.dialog.open(InquiryComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {

@@ -10,6 +10,7 @@ import { DetailsComponent } from './components/new-automation/steps/details/deta
 import { AutomationNameComponent } from './components/new-automation/steps/automation-name/automation-name.component';
 import { ActionsModule } from '../compaigns/components/addCompaigns/campaign actions/actions.module';
 import { AutomationActionComponent } from './components/automationAction/automationAction.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { AutomationActionComponent } from './components/automationAction/automat
     CommonModule,
     BotRoutes,
     SharedModule,
+    DragDropModule,
     ActionsModule
   ],
   declarations: [

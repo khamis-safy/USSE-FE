@@ -1,5 +1,5 @@
 <section class="mt-5">
-  <div class="d-flex w-100 px-3  justify-content-between my-3 ">
+  <div class="d-flex w-100 px-3  justify-content-between my-3 " style="width: 98% !important">
     <div class="menu">
       <button mat-button [matMenuTriggerFor]="menu" class=" add-action-button text-neutral-0 bg-primary-800 rounded-3 p-4">
         <div class="add-action-menu d-flex align-items-center justify-content-center gap-3">
@@ -21,14 +21,14 @@
         <!-- <button mat-menu-item >{{'callURL' |translate}}</button> -->
       </mat-menu>
     </div>
-    <div class=" d-flex gap-4  align-items-center">
-      <form  [formGroup]="form" *ngIf="isCampaignAction" >
+    <div class=" d-flex gap-5  align-items-center">
+      <form  [formGroup]="form" >
         
         <us-select
         [data]="campArr"
         formControlName="selectedCampaigns"
         [multiSelect]="false"
-        [label]="'campaigns'"
+        [label]="isCampaignAction? ('campaigns' | translate): ('automations' | translate)"
         (onSelect)="onSelect($event)"
         [loadingText]="listsLoadingText"
         [isDisabled]="false"
@@ -39,9 +39,10 @@
         [maxListItemsWithoutSearch]="5"
       ></us-select>
     </form> 
+    <div class="d-flex gap-2">
       <us-button
       *ngIf="campaignId"
-      class="m-2"
+      class="mx-2"
       label="{{ 'CONFIRM' | translate }}"
       [fill]="false"
       [matIcon]="'add'"
@@ -55,7 +56,7 @@
       </us-button>
       <us-button
       *ngIf="actions.length > 0"
-      class="m-2"
+      class="mx-2"
       label="{{ 'clearLabel' | translate }}"
       [fill]="false"
       [matIcon]="'close'"
@@ -69,12 +70,19 @@
     >
     </us-button>
     </div>
+     
+    </div>
 
 
   
   </div>
-  <section class="table-wrapper" *ngIf="tableData.length > 0">
-    <table mat-table [dataSource]="dataSource" class="table-wrapper">
+  <section class="table-wrapper"  *ngIf="tableData.length > 0 || loading">
+    <table mat-table [dataSource]="dataSource" class="table-wrapper"  cdkDropList (cdkDropListDropped)="onListDrop($event)">
+
+      <ng-container matColumnDef="Reorder">
+        <th class="text-center" mat-header-cell *matHeaderCellDef></th>
+        <td class="text-center" mat-cell *matCellDef="let element"> <img style="cursor: move;"  src="assets/icons/reorder.svg" cdkDragHandle> </td>
+      </ng-container>
       <!-- name Column -->
       <ng-container matColumnDef="Name">
         <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'Action_Name' | translate }}</th>
@@ -93,10 +101,13 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
       <ng-container >
-        <tr class="pointer" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"></tr>
+        <tr class="draggable-row" cdkDrag [cdkDragData]="row" [cdkDragPreviewClass]="'custom-drag-preview'" 
+        mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"></tr>
       </ng-container>
     </table>
-
+    <div *ngIf="loading" class="spinner-container p-3">
+      <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
+    </div>
     <mat-paginator
       [pageSizeOptions]="[10, 50, 100]"
       showFirstLastButtons

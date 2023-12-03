@@ -543,5 +543,6 @@
 "timeout":"Timeout",
 "generateQR":"Create a QR code",
 "askForName":"Ask for name",
-"WHATSYOURNAME":"What is your name?"
+"WHATSYOURNAME":"What is your name?",
+"automations":"Automations"
 }

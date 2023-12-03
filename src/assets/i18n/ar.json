@@ -540,6 +540,7 @@
 "timeout":"وقت الانتهاء",
 "generateQR":"إنشاء رمز الاستجابة السريعة",
 "askForName":"اسأل عن الاسم",
-"WHATSYOURNAME":"ما اسم حضرتك؟"
+"WHATSYOURNAME":"ما اسم حضرتك؟",
+"automations":"آليات"
 
 }

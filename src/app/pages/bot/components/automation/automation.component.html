@@ -56,7 +56,12 @@
 
 <ng-container *ngIf="length > 0 && !noData || loading">
   <section class="table-wrapper" >
-    <table mat-table [dataSource]="dataSource" class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" class="table-wrapper" cdkDropList (cdkDropListDropped)="onListDrop($event)">
+
+      <ng-container matColumnDef="Reorder">
+        <th class="text-center" mat-header-cell *matHeaderCellDef></th>
+        <td class="text-center" mat-cell *matCellDef="let element"> <img style="cursor: move;"  src="assets/icons/reorder.svg" cdkDragHandle> </td>
+      </ng-container>
       <!-- name Column -->
       <ng-container matColumnDef="Name">
         <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'Action_Name' | translate }}</th>
@@ -69,7 +74,7 @@
           <div class="d-flex flex-row-reverse gap-2 justify-content-center " >
             <img class="pointer" (click)="deleteAutomation(element)" src="assets/icons/Actionsc.svg" alt="" [title]="'delete' | translate"/>
             <mat-icon class="pointer text-primary-800" [title]="'START'|translate" *ngIf="element.isStopped == true" (click)="startAutomation(element)" >play_arrow</mat-icon>
-            <!-- <img class="pointer" (click)="editAutomation(element);" src="assets/icons/edit-action.svg" alt=""  [title]="'edit' | translate" style="width: 17px;"/> -->
+            <img class="pointer" (click)="editAutomation(element);" src="assets/icons/edit-action.svg" alt=""  [title]="'edit' | translate" style="width: 17px;"/>
             <img class="pointer" (click)="exportQRCode(element)" src="assets/icons/generate-qr.svg" alt=""  [title]="'generateQR' | translate" style="width: 17px;"/>
                         <img class="pointer" [title]="'STOP'|translate" *ngIf="element.isStopped == false" (click)="stopAutomation(element)" src="assets/icons/stop-compaigns.svg" alt="" />
 
@@ -79,7 +84,7 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
       <ng-container >
-        <tr class="pointer" mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"></tr>
+        <tr class="draggable-row" cdkDrag [cdkDragData]="row" [cdkDragPreviewClass]="'custom-drag-preview'"  mat-row *matRowDef="let row; columns: displayedColumns;let i = index;"></tr>
       </ng-container>
     </table>
     <div *ngIf="loading" class="spinner-container p-3">

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
 import { CampaignActionsComponent } from 'src/app/pages/compaigns/components/addCompaigns/campaign actions/component/campaignActions/campaignActions.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -6,6 +6,7 @@ import { AutomationNameComponent } from './steps/automation-name/automation-name
 import { DetailsComponent } from './steps/details/details.component';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { BotService } from '../../bot.service';
+import { Automation } from '../../interfaces/automation';
 
 @Component({
   selector: 'app-new-automation',
@@ -16,14 +17,31 @@ export class NewAutomationComponent implements OnInit {
   @Output() back = new EventEmitter<boolean>;
   @ViewChild(AutomationNameComponent) automationNameComponent:AutomationNameComponent;
   @ViewChild(DetailsComponent) detailsComponent:DetailsComponent;
+  @ViewChild(CampaignActionsComponent) campaignActions:CampaignActionsComponent;
+  isCampaignAction:boolean=false;
   botActions:any=[];
   isLoading:boolean;
+  deviceID:string;
+  isEditAutomation:boolean;
+  @Input() automationData:Automation
   constructor(private authService:AuthService,
     private compaignsService:CompaignsService,
     private toasterService:ToasterServices,
     private botService:BotService) { }
 
   ngOnInit() {
+    if(this.automationData){
+      this.isEditAutomation=true
+    }
+    else{
+      this.isEditAutomation=false;
+    }
+  }
+  setDeviceId(event){
+    this.deviceID=event;
+ 
+    this.isCampaignAction=true;
+
   }
   setActions(event){
 this.botActions=event
@@ -31,7 +49,7 @@ this.botActions=event
   addAutomation(){
     this.isLoading = true;
 
-    const data={
+    let data:any={
       email:  this.authService.getUserInfo()?.email,
       name: this.automationNameComponent.form.value.automationName,
       deviceid: this.detailsComponent.deviceId,
@@ -41,22 +59,34 @@ this.botActions=event
       criterias:this.automationNameComponent.criterias
     }
     // console.log(this.compaignsService.filteredObject(data));
+if(this.automationData){
+  data.id=this.automationData.id;
+  data.sessionTimeOutResponseContent=this.detailsComponent.form.value.message || "" 
+  this.botService.updateAutomation(data).subscribe(
+    (res)=>{
+      this.toasterService.success("Success");
+      this.back.emit(true)
+      this.isLoading = false
+    },
+    (err)=>{
+      this.back.emit(true)
+      this.isLoading = false;
+    }
+  )
+}
+else{
+  this.botService.createNewAutomation(this.compaignsService.filteredObject(data)).subscribe(
+    (res)=>{
+      this.toasterService.success("Success");
+      this.back.emit(true)
+      this.isLoading = false
+    },
+    (err)=>{
+      this.back.emit(true)
+      this.isLoading = false;
+    }
+  )
+}
 
-this.botService.createNewAutomation(this.compaignsService.filteredObject(data)).subscribe(
-  (res)=>{
-    this.toasterService.success("Success");
-    this.back.emit(true)
-    this.isLoading = false
-    
-  },
-  (err)=>{
-
-    this.back.emit(true)
-    this.isLoading = false;
-    
-  }
-
-
-)
   }
 }

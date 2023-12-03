@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CompaignsService } from '../../../compaigns.service';
+import { BotService } from 'src/app/pages/bot/bot.service';
 
 @Component({
   selector: 'app-confirmaions',
@@ -13,7 +14,8 @@ export class ConfirmaionsComponent implements OnInit {
   isClear:boolean;
   constructor(public dialogRef: MatDialogRef<ConfirmaionsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private campainService:CompaignsService
+    private campainService:CompaignsService,
+    private botService:BotService
 ) { }
 
   ngOnInit() {
@@ -27,15 +29,27 @@ export class ConfirmaionsComponent implements OnInit {
     }
   }
   applyActions(){
-    this.campainService.getCampaignById(this.data.id).subscribe(
-      (res)=>{
-        let actions = res.actions;
-        this.isLoading = false;
-        console.log(actions)
-        this.onClose(actions)
-
-      }
-    )
+    if(this.data.isCampaignAction){
+      this.campainService.getCampaignById(this.data.id).subscribe(
+        (res)=>{
+          let actions = res.actions;
+          this.isLoading = false;
+          this.onClose(actions)
+  
+        }
+      )
+    }
+    else{
+      this.botService.getAutomationById(this.data.id).subscribe(
+        (res)=>{
+          let actions = res.botActions;
+          this.isLoading = false;
+          this.onClose(actions)
+  
+        }
+      )
+    }
+   
   }
   removeActions(){
     this.isLoading = false;

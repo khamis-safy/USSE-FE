@@ -12,21 +12,22 @@ import * as QRCode from 'qrcode-generator';
 import { saveAs } from 'file-saver';
 import { DeviceData } from 'src/app/pages/devices/device';
 import { Automation } from '../../interfaces/automation';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-automation',
   templateUrl: './automation.component.html',
   styleUrls: ['./automation.component.scss']
 })
 export class AutomationComponent implements OnInit {
-  displayedColumns: string[] = ['Name', 'Operations'];
+  displayedColumns: string[] = ['Reorder','Name', 'Operations'];
   dataSource :MatTableDataSource<any>;
   length:number=0;
   id:number=0;
   loading:boolean=true;
-  @Output() openNewAutomation = new EventEmitter<boolean>;
+  @Output() openNewAutomation = new EventEmitter<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   devices:SelectOption[];
-
+  email:string=this.authService.getUserInfo()?.email;
   deviceLoadingText:string='Loading ...';
   devicesData :any= new FormControl([]);
   form = new FormGroup({
@@ -48,6 +49,20 @@ export class AutomationComponent implements OnInit {
   ngOnInit() {
     this.getDevices();
  
+  }
+  onListDrop(event: CdkDragDrop<string[]>) {
+    const data = [...this.dataSource.data];
+    moveItemInArray (data, event.previousIndex, event.currentIndex);
+    this.dataSource.data = data;
+    let orderedData=this.dataSource.data.map((automation, index)=>{
+      return {
+        automationId:automation.id,
+        order:index
+      }
+    })
+    this.botService.reOrderAutomations(this.email,this.deviceId,orderedData).subscribe()
+    console.log(data)
+  
   }
 
   exportQRCode(element) {
@@ -72,7 +87,7 @@ export class AutomationComponent implements OnInit {
     const blob = new Blob([byteArray], { type: 'image/png' });
 
     // Save the Blob as a file using FileSaver.js
-    saveAs(blob, 'qrcode.png');
+    saveAs(blob, `${element.name} qrcode.png`);
   }
   generateQrString(element:Automation){
     let criteria=element.criterias[0].criteria
@@ -233,9 +248,7 @@ export class AutomationComponent implements OnInit {
       }
     });
   }
-  editAutomation(element){
 
-  }
   stopAutomation(element){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -260,7 +273,6 @@ export class AutomationComponent implements OnInit {
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='465px';
     dialogConfig.data ={id:element.id , action:'start'}
-   
     const dialogRef = this.dialog.open(AutomationActionComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
@@ -269,7 +281,11 @@ export class AutomationComponent implements OnInit {
     });
   }
   addAutomation(){
-    this.openNewAutomation.emit(true)
+    this.openNewAutomation.emit({openNewAutomation:true , editAutomationData:null})
+
+  }
+    editAutomation(element){
+    this.openNewAutomation.emit({openNewAutomation:true , editAutomationData:element})
   }
   onPageChange(event){
     this.display=event.pageSize;

@@ -7,7 +7,7 @@ export interface Automation {
     isStopped:string,
     isDeleted:string,
     botActionCount: number,
-    botActions: string,
+    botActions: any[],
     criterias:{criteria:string , type:string} [],
     deviceid:string,
     sessionTimeOutMinutes: number,

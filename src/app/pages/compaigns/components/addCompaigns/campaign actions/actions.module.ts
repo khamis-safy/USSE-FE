@@ -9,13 +9,14 @@ import { CriteriaComponent } from './components/shared/criteria/criteria.compone
 import { SubscribeToListComponent } from './components/subscribeToList/subscribeToList.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DragZoneModule } from 'src/app/shared/components/drag-zone/drag-zone.module';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    DragZoneModule
+    DragZoneModule,
+    DragDropModule
 
 ],
 

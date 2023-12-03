@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BotComponent implements OnInit {
   isBots:boolean =true;
+  automationData:any
   constructor() { }
 
   ngOnInit() {
@@ -15,7 +16,9 @@ export class BotComponent implements OnInit {
     this.isBots=true;
 }
 openNewAutomation(event){
-  this.isBots=!event;
+  this.isBots=!event.openNewAutomation;
+  this.automationData=event.editAutomationData;
+
 }
 backToBotComponent(event){
   this.isBots=event;
