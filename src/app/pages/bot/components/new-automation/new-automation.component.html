@@ -43,7 +43,7 @@
             >
             </us-button>
           </button>
-          <button class="rest-style" matStepperNext  [disabled]="isLoading">
+          <button class="rest-style" matStepperNext  [disabled]="isLoading || botActions.length==0">
             <us-button
               class="m-2"
               [label]="isEditAutomation? ('SAVE' | translate) : ('ADD' | translate)"

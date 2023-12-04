@@ -544,5 +544,6 @@
 "generateQR":"Create a QR code",
 "askForName":"Ask for name",
 "WHATSYOURNAME":"What is your name?",
-"automations":"Automations"
+"automations":"Automations",
+"campaignActions":"Campaign Actions"
 }

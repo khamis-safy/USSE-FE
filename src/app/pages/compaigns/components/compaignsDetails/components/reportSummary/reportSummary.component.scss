@@ -108,3 +108,33 @@
         }
     }
 }
+.campaign-setting-body{
+    border: 1px solid #C7C6C6;
+    border-radius: 16px;
+    min-width: 605px;
+    padding: 20px;
+    width: fit-content;
+}
+.table-container{
+    border-radius: 16px;
+    border:1px solid rgba(0, 0, 0, 0.12);
+    overflow: auto;
+    width: 60%;
+    min-width: 800px;
+    
+    table{
+      // background-color: transparent;
+  
+      .mdc-data-table__cell {
+        border-bottom: none !important ;
+      }
+      
+    }
+    .table-inner-container {
+        padding-inline: 25px;
+    }
+    th:not(.checkBox) , td:not(.checkBox){
+        text-align: center !important;
+      }
+  }
+  
