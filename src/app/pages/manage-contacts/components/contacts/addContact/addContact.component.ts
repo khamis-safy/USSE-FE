@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Inject, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -73,7 +73,7 @@ showInputs:boolean=false;
     public dialogRef: MatDialogRef<AddContactComponent>,
     private authService:AuthService,
     private translate: TranslateService,
-
+    private cdr: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data:CheckedCont,
   ) {
   }
@@ -209,14 +209,20 @@ checkIfFieldFound(name){
     this.cachedFields.push(this.additionalParameters[i]);
     this.additionalParameters.splice(i,1);
   }
-  save(){
-    this.showInputs=false;
-
-    this.additionalParameters.push({name:this.form2.value.fieldName,value:this.form2.value.value})
+  addParameters() {
+    this.showInputs = false;
+  
+    const newParameter = { name: this.form2.value.fieldName, value: this.form2.value.value };
+    this.additionalParameters = [...this.additionalParameters, newParameter];
+  
+    // Clear the form values
     this.form2.patchValue({
-      fieldName:"",
-      value:""
-    })
+      fieldName: "",
+      value: ""
+    });
+  
+    // Manually trigger change detection
+    this.cdr.detectChanges();
   }
   cancel(){
     
