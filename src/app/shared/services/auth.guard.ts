@@ -17,6 +17,7 @@ export class AuthGuard implements CanActivate {
   }
 async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const routeName = route.data['name'];
+
     if(routeName==="verification"){
       if(this.authService.getFromValue()){
         return true
@@ -40,7 +41,20 @@ async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
       }
     }
+    if(routeName=="login"){
+      if(this.authService.checkExistenceAndValidation()){
+        if (!this.authService.getRedirectURL() || this.authService.getRedirectURL() === "" ) {
+          this.router.navigate(['devices']);
+        }
+      
+        return false;
+      }
+      else{
+        this.authService.setRedirectURL( state.url.slice(state.url.lastIndexOf("/")))
+        return true;
 
+      }
+    }
     if(this.authService.checkExistenceAndValidation()){
 
       await this.authService.loadUserInfo().then(() => true);
@@ -57,10 +71,12 @@ async  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         }
         if( this.isAllowed )
         {
+          this.authService.setRedirectURL( state.url.slice(state.url.lastIndexOf("/")))
           return true;
         }
         else if(!this.isAllowed)
         {
+          this.authService.setRedirectURL( state.url.slice(state.url.lastIndexOf("/")))
           this.router.navigate(['messages'])
           return false;
         }

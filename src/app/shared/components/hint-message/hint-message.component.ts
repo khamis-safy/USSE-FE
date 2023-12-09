@@ -23,7 +23,7 @@ export class HintMessageComponent implements OnInit , OnDestroy {
     const messagesCount =this.authService.getSubscriptionState()?.messageCount;
 
     this.sub= this.translate.get('trialEndMessage', { specificDate, messagesCount }).subscribe((res: string) => {
-      this.translatedMessage = `${res} contact@qweira.com .`;
+      this.translatedMessage = res;
     });
   }
   ngOnInit() {

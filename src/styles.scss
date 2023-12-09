@@ -483,7 +483,7 @@ cursor: pointer;
 }
 
 a{
-  text-decoration: none;
+  text-decoration: none !important;
 }
 /*handle form floating*/
 // .input-group-icon {
@@ -787,7 +787,7 @@ section.table-wrapper {
   position: relative;
 
 
-  table{
+  table , mat-table{
     width: 100%;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -889,9 +889,7 @@ section.table-wrapper {
 
 
   mat-paginator{
-    position: sticky;
-    bottom: 0;
-    left: 0;
+
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     .mat-mdc-paginator-container{
@@ -1399,7 +1397,18 @@ mat-expansion-panel-body{
 .emoji-pick{
   margin-top: 39px;
   z-index: 10;}
+  .main_container{
+    min-height: 60vh;
+
+  }
 .rtl{
+  .steps-container{
+    width: 90% !important;
+    }
+  .steps_ {
+    max-width: 374px !important;
+    right: 52%;
+  }
   .close-message{
     left:0 !important;
     right: unset !important;
@@ -1754,7 +1763,7 @@ button.button-size-md{
       font-size: 13px !important;
     }
     section.table-wrapper {
-      table{
+      table,mat-table{
         th.mat-mdc-header-cell {
           font-size: 11px !important;
       }
@@ -1820,4 +1829,137 @@ button.button-size-md{
 // redesign ant design system************************************************************************
 nz-date-picker{
   height: 37px !important;
+}
+
+.mat-mdc-menu-content.mdc-list {
+  min-width: 161px;
+}
+// drage table rows************************************************************************
+/* Add this style to your component's stylesheet */
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  z-index: 1000 !important;
+  width: 100%; /* Adjust the width according to your dialog's width */
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.questions.cdk-drop-list-dragging .question:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+ul[dnd-list] .dndDragging {
+  transform: translateZ(0);
+}
+
+.custom-dialog-container {
+  z-index: 999; /* Adjust the value as needed */
+}
+
+
+.custom-drag-preview {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+.add-padding-to-dragged{
+  padding: 30px; // Any other style fixes needed.
+  box-shadow: none !important;
+
+}
+.drag-drop {
+  cursor: move;
+}
+// criterias design inside table *********************************************
+.pointer{
+  cursor: pointer;
+}
+
+#actionCriteria{
+  position: relative;
+
+
+}
+.arrow {
+  position: absolute;
+  right: 0%;
+  z-index: 3;
+  top: 0;
+  width: 38%;
+  height: 92%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(255 255 255 / 79%), rgb(255 255 255));
+
+  align-items: center;}
+  .action_criterias{
+    display: flex;
+    width: 149px;
+    overflow-x: auto;
+    background: transparent !important;
+    z-index: 2;
+    position: relative;
+
+
+
+}
+.criteriaName{
+  border: 1px solid var(--clr-primary-800);
+  color:var(--clr-primary-800);
+  width: 35%;
+  min-width:80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+  font-size: 13px;
+
+}
+.overflow-control{
+  &::after{
+    content: "";
+
+  }
+}
+.right-arrow{
+  cursor: pointer;
+  // background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(255 255 255 / 79%), rgb(255 255 255));
+  background-image: linear-gradient(90deg,transparent,#fff 90%);
+}
+.left-arrow{
+  cursor: pointer;
+  background-image: linear-gradient(90deg,#fff 70%,transparent);
+  img{
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+}
+}
+.criterias-wrapper{
+  scroll-behavior: smooth;
+}
+
+.criterias{
+  width: 200px;
+
+}
+.actions-container{
+  direction: ltr;
+}
+@media (max-width: 1700px) {
+.criteriaName{
+  padding: 3px 6px!important;
+  font-size: 10px !important;
+}
+
 }

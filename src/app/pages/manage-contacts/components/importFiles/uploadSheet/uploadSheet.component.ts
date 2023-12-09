@@ -37,6 +37,7 @@ export class UploadSheetComponent implements OnInit {
   listName = new FormControl('',Validators.required);
   addedList:ListData;
   vcfFile:boolean;
+  isExcelfFile:boolean;
   form = new FormGroup({
     selectedLists:this.selectedLists,
     listName:this.listName
@@ -57,10 +58,14 @@ export class UploadSheetComponent implements OnInit {
  
         if(this.data.filetype =='vcf'){
           this.fileType='vcf'
-          this.vcfFile=true
+          this.vcfFile=true;
+          this.isExcelfFile=false
+
         }
         else{  
           this.vcfFile=false;
+          this.isExcelfFile=true
+
           this.fileType='.xlsx, .xls'
 
          
@@ -118,7 +123,7 @@ export class UploadSheetComponent implements OnInit {
     }
 
   uploadVCFfile(){
-  
+    this.loading=true;
     let data;
     if(this.listId){
       data={

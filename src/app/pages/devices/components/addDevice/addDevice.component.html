@@ -14,6 +14,7 @@
   <div class="device-name" style="height: 20%; width: 55%;">
     <form [formGroup]="form">
       <us-input
+      class="mb-3"
         [isDisabled]="false"
         value=""
         placeholder="{{ 'enter_device_name' | translate }}"
@@ -26,6 +27,64 @@
         [error]="(deviceName.touched && deviceName.errors?.required) ? ('this_field_is_required' | translate) : ''"
         [hintText]="(deviceName.touched && deviceName.errors?.required) ? ('this_field_is_required' | translate) : ''"
       ></us-input>
+
+      <div
+          class="form-group d-flex gap-lg-4 flex-column flex-lg-row flex-nowrap mt-3" 
+        >
+          <div
+            class="label-widget text-start w-25 d-none d-lg-block"
+            style="min-width: 25%"
+          >
+            <label for="mobile" class="label txt txt-sm text-nowrap d-flex">
+              <span class="txt txt-sm text-black text-wrap">{{
+                "MOBILE_NUMBER" | translate
+              }}</span>
+            </label>
+          </div>
+          <div class="w-100">
+            <ngx-intl-tel-input
+              [cssClass]="
+                (mobile?.touched && mobile.invalid ? 'error' : '') +
+                ' rounded-pill border border-1py-2 txt-input w-100'
+              "
+              [enableAutoCountrySelect]="true"
+              [preferredCountries]="[CountryISO.UnitedArabEmirates]"
+              [enablePlaceholder]="true"
+              [searchCountryFlag]="true"
+              [searchCountryField]="[
+                SearchCountryField.Iso2,
+                SearchCountryField.Name
+              ]"
+              [selectFirstCountry]="false"
+              [selectedCountryISO]="CountryISO.Egypt"
+              [maxLength]="15"
+              [phoneValidation]="true"
+              [separateDialCode]="separateDialCode"
+              [numberFormat]="PhoneNumberFormat.National"
+              name="phone"
+              formControlName="mobile"
+            ></ngx-intl-tel-input>
+
+            <ng-container *ngIf="mobile?.touched && mobile?.errors?.required">
+              <div class="hint error">
+                <i class="si-info"></i>
+                <p class="txt txt-xs">{{ "REQUIRED_FIELD" | translate }}</p>
+              </div>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                mobile?.touched && mobile.invalid && !mobile?.errors?.required
+              "
+            >
+              <div class="hint error">
+                <i class="si-info"></i>
+                <p class="txt txt-xs">
+                  {{ "INCORRECT_PHONE_NUMBER" | translate }}
+                </p>
+              </div>
+            </ng-container>
+          </div>
+        </div>
     </form>
   </div>
 

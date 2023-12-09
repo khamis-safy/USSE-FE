@@ -136,7 +136,7 @@ getListData(searchVal?){
 }
 getContactsData(searchVal?){
   let shows=50;
-  let pageNum=this.listService.pageNum;
+  let pageNum=0;
   let email=this.authService.getUserInfo()?.email;
   let orderedBy="";
   let search=searchVal?searchVal:"";

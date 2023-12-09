@@ -33,12 +33,15 @@ export class DragZoneComponent implements OnInit {
    isTouched = false; // to handle on touched only once
    invalidMessage:string;
   @Input() isLoading = false;
-  @Input() multiple=true;
+  @Input() multiple;
   @Input() isVcfFile:boolean=false;
+  @Input() isExcelfFile:boolean=false;
+
   @Input() isDisabled?: boolean; // force disable dropdown
   @Input("label") label ="Select a file or drag and drop here";
   @Input("fileSize") fileSize =10;
   @Input("fileType") fileType ="";
+  @Input("id") id ="fileInput";
   invalid:boolean=false;
   @Input('data') set value(value) {
     this._value = value;
@@ -109,9 +112,10 @@ async onChangeFile(e) {
       } 
        else {
           // File is not already uploaded, add it to the list
-          if (this.fileType !== "" && !this.multiple && !this.isVcfFile) {
+          if (this.fileType !== "" && !this.multiple && this.isExcelfFile) {
               if (item.name.endsWith('.xlsx') || item.name.endsWith('.xls')) {
-                  this.invalid = false;
+                this.invalid=false;
+                this.filesList=[];
                   const fileData = await this.readExcelData(item);
                   this.filesList.push(
                       {
@@ -126,16 +130,16 @@ async onChangeFile(e) {
                 this.invalidMessage='INVALID_FILE_MESSAGE.excel'
 
                   this.invalid = true;
+                  this.filesList=[];
+                  this.clearInputData();
+
               }
           } 
           else if (this.fileType !== "" && !this.multiple && this.isVcfFile) {
             // Validation to check if the uploaded file is in VCF format
                 if (item.name.endsWith('.vcf')) {
                   this.invalid = false;
-
-                    // File is a VCF file, you can handle it accordingly
-                    // Your logic for processing VCF files goes here
-                    // For example, you can read the VCF file content or perform any specific actions
+                  this.filesList=[];
                     this.filesList.push({
                         name: item.name,
                         type: item.type,
@@ -143,9 +147,11 @@ async onChangeFile(e) {
                         size: item.size
                     });
                 } else {
+
                   this.invalidMessage='INVALID_FILE_MESSAGE.vcf'
                   this.invalid = true;
-                   
+                  this.filesList=[];
+                  this.clearInputData();
                 }
             
         }
@@ -175,7 +181,7 @@ async onChangeFile(e) {
   
 
   this.isLoading = false;
-  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  const fileInput = document.getElementById(this.id) as HTMLInputElement;
   fileInput.value = ''; // Clear the input field value
 }
 
@@ -215,9 +221,7 @@ async onChangeFile(e) {
     this.filesList.splice(index,1)
     this.onChange(this.filesList);
     this.onFileDelete.emit(true)
-  // Reset the input field to allow re-uploading the same file
-  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-  fileInput.value = ''; // Clear the input field value
+    this.clearInputData();
 
   }
   isFileSizeNotAllowed(fileSize,allowedSize){
@@ -236,5 +240,10 @@ async onChangeFile(e) {
       }
    
     
+  }
+  clearInputData(){
+  // Reset the input field to allow re-uploading the same file
+  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  fileInput.value = ''; // Clear the input field value
   }
 }

@@ -3,6 +3,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { DevicesService } from '../../devices.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
 
 @Component({
   selector: 'app-addDevice',
@@ -18,8 +19,17 @@ export class AddDeviceComponent implements OnInit {
   @Output() isClose = new EventEmitter<boolean>;
 
   deviceName:any = new FormControl('',[Validators.required]);
+  mobile:any = new FormControl('',[Validators.required]);
+ // ngx-intl-tel
+ separateDialCode = true;
+ SearchCountryField = SearchCountryField;
+ CountryISO = CountryISO;
+ PhoneNumberFormat = PhoneNumberFormat;
+ 
   form = new FormGroup({
-    deviceName:this.deviceName
+    deviceName:this.deviceName,
+    mobile:this.mobile
+
   });
   constructor(    private toaster: ToasterServices,
     private devicesService:DevicesService,private authService:AuthService) { }
@@ -30,7 +40,7 @@ export class AddDeviceComponent implements OnInit {
 
     this.isLoading=true;
     let deviceN=this.form.value.deviceName;
-    let phoneNumber="000";
+    let phoneNumber=this.form.value.mobile.e164Number;
     this.devicesService.addNewWhatsappBisunessDevice(this.authService.getUserInfo()?.email,deviceN,phoneNumber,this.token,this.sessionName,this.port,this.serverId).subscribe(
       (res)=>{
         this.isLoading = false;

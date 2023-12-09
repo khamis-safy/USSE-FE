@@ -46,7 +46,10 @@ export class CompaignsComponent implements AfterViewInit ,OnInit,OnDestroy {
   permission:DevicesPermissions[];
   display: number;
   pageNum: number;
-  constructor(private compaignsService:CompaignsService,public dialog: MatDialog, private router:Router,private authService:AuthService){
+  constructor(private compaignsService:CompaignsService,
+    public dialog: MatDialog, 
+    private router:Router,
+    private authService:AuthService){
     this.display=compaignsService.getUpdatedDisplayNumber();
     this.pageNum=this.compaignsService.pageNum;
   }
@@ -168,6 +171,7 @@ this.getDevices();
 }
 onSelect(device){
   this.deviceId=device.value;
+  this.authService.selectedDeviceId=device.value
   this.getCompaigns(this.deviceId)
   this.getDevicePermission(this.deviceId);
 }
@@ -176,13 +180,17 @@ backToCompaigns(event){
 this.isCompagins=event;
 this.getCompaigns(this.deviceId);
 }
-  getCompaigns(deviceId:string){
+  getCompaigns(deviceId:string,searchVal?){
 
     let shows=this.compaignsService.display;
     let email=this.authService.getUserInfo()?.email;
-    let search=this.compaignsService.search;
+    let search=searchVal?searchVal:"";
     this.loading = true;
-    this.compaignsService.getCampaigns(email,shows,this.pageNum,search,deviceId).subscribe(
+    let pageNumber=searchVal?0:this.pageNum
+    if(searchVal && this.paginator){
+      this.paginator.pageIndex=0
+    }
+    this.compaignsService.getCampaigns(email,shows,pageNumber,search,deviceId).subscribe(
       (res)=>{
         this.loading = false;
         this.dataSource=new MatTableDataSource<compaignDetails>(res);
@@ -196,6 +204,7 @@ this.getCompaigns(this.deviceId);
             }
         }
         else{
+          this.paginator.pageIndex=this.pageNum
           this.notFound=false;
           this.compaignsCount(deviceId);
 
@@ -302,9 +311,8 @@ backToCampaign(){
   }
 
   onSearch(event:any){
-    this.compaignsService.search=event.value;
 
-    this.getCompaigns(this.deviceId);
+    this.getCompaigns(this.deviceId,event.value);
   }
   ngOnDestroy(): void {
     // this.compaignsService.display=10;

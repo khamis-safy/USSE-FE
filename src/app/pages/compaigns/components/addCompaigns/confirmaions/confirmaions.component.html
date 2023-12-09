@@ -1,0 +1,29 @@
+<section class="d-flex flex-column gap-3 h-100 position-relative pt-5">
+  <!-- modal body -->
+  <div class="px-4 content d-flex justify-content-center align-items-center flex-column  gap-4" style="height: 50%;">
+    <!-- displayed message -->
+    <h3 style="font-weight: 500;">{{elementName}}</h3>
+    <p class="txt-lg my-2 text-center">{{isClear?('CONFIRM_CLEAR' | translate ): 'CONFIRM_APPLY' | translate }}</p>
+
+  </div>
+
+<!-- modal footer -->
+<div class="modal-footer justify-content-center position-absolute bottom-0 w-100 gap-3" style="height: 21%; background:#DBE9F2;">
+  <us-button
+    label="{{ 'CONFIRM' | translate }}"
+    size="sm"
+    [loading]="isLoading"
+    [fill]="true"
+    (clicked)="submit()"
+    [disabled]="isLoading"
+  ></us-button>
+
+  <us-button
+    label="{{ 'CANCEL' | translate }}"
+    size="sm"
+    [fill]="false"
+    (clicked)="onClose()"
+    [loading]="false"
+  ></us-button>
+</div>
+</section>

@@ -20,6 +20,7 @@
     [(ngModel)]="fileData"
     [multiple]="false"
     [isVcfFile]="vcfFile"
+    [isExcelfFile]="isExcelfFile"
     [fileType]="fileType"
     ></us-upload>
 
@@ -79,7 +80,7 @@
 
                 <div class="d-flex align-items-center " >
                   <us-button
-                    class="me-3"
+                    class="mx-3"
                   label="{{ 'SAVE_LABEL' | translate }}"
                   [fill]="true"
                   [size]="'md'"
@@ -122,9 +123,8 @@
     <us-button
       label="{{ 'UPLOAD_LABEL' | translate }}"
       size="sm"
-      [loading]="false"
       [fill]="true"
-      [disabled]="isDisabled"
+      [disabled]="isDisabled || loading"
       [loading]="loading"
       (clicked)="vcfFile ? uploadVCFfile(): goToFileSetting()"
     ></us-button>

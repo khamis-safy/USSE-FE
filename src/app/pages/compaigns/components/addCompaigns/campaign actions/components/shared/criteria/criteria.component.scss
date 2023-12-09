@@ -1,0 +1,74 @@
+:host .mat-mdc-dialog-container .mdc-dialog__surface {
+    border-radius: 25px;
+  }
+  h3{
+    font-size: 24px;
+  }
+  .icon{
+    cursor: pointer;
+  }
+  .criteria{
+
+    border: 0.5px dashed #A0A0A0;
+    border-radius: 20px;
+  }
+
+  .tbheader{
+    display: flex;
+    width: 45%;
+    justify-content: space-between;
+    margin-inline: 9%;
+  }
+  .tbBody{
+    margin-top: 10px;
+    max-height: 137px;
+    overflow-y: auto;
+  }
+  .tbrow{
+    margin-bottom: 5px;
+    padding-bottom: 4px;
+    display: flex;
+    align-items: center;
+    height: 30px;
+  
+  }
+  .tbBody .tbrow:not(:last-of-type){
+    border-bottom: 0.5px solid #bebbbb;
+  }
+  .inputs{
+      display: flex;
+      width: 61%;
+      justify-content: space-around;
+      gap: 42px;
+      margin-left: 43px;
+      margin-bottom: 25px;
+  
+  }
+ 
+  :host .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  
+    height: unset !important;
+  }
+  .field-name{
+    font-size: 16px;;
+  }
+  @media (max-width: 1700px) {
+    .d-flex.justify-content-between.align-items-center.mb-4 {
+      margin-bottom: 0 !important;
+  }
+    img {
+      width: 15px !important;
+  }
+  .d-flex.gap-4.flex-column.py-3 {
+    gap: 11px !important;
+  }
+  .contact-details-container{
+    gap: 1px !important;
+    padding: 10px 20px !important;
+  
+  }
+  .field-name{
+    font-size: 12px !important;
+  }
+  }
+  

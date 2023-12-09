@@ -65,15 +65,18 @@ else{
 this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Create At", "Status","Delay Interval(s)","action"]:['Device Name', 'Device Type', 'Number',"Create At", "Status"];
   }
 
-  getDevices(){
+  getDevices(searchVal?){
     let shows=this.devicesService.display;
-    let pageNum=this.devicesService.pageNum;
+    let pageNum=searchVal? 0 : this.devicesService.pageNum;
     let email=this.authService.getUserInfo()?.email;
     let orderedBy=this.devicesService.orderedBy;
-    let search=this.devicesService.search;
+    let search=searchVal?searchVal:"";
     this.loading = true;
     this.isReonnect=false;
-
+  if(searchVal && this.paginator){
+      this.paginator.pageIndex=0
+    }
+    
     this.devicesService.getDevices(email,shows,pageNum,orderedBy,search).subscribe(
       (res)=>{
         this.numRows=res.length;
@@ -89,6 +92,7 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
           }
       }
       else{
+        this.paginator.pageIndex=this.devicesService.pageNum
         this.notFound=false;
         this.getDevicesCount();
 
@@ -159,8 +163,7 @@ else{
 
   }
   onSearch(event:any){
-    this.devicesService.search=event.value;
-    this.getDevices();
+    this.getDevices(event.value);
   }
 
   reconnect(device:DeviceData){

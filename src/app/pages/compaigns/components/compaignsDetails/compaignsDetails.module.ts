@@ -15,17 +15,12 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [
     CommonModule,
     CompaignsDetailsRoutes,
-    SharedModule
+    SharedModule,
   ],
   declarations: [
     CompaignsDetailsComponent ,
     RecipientActivitiesComponent ,
     ReportSummaryComponent
-
-
-
-
-
 
   ],
   providers:[CompaignsDetailsService]

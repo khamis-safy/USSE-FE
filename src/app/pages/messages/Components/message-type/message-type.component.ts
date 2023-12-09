@@ -251,13 +251,17 @@ else{
 
 }
 
-    getMessages(deviceId:string,msgCat?,filterdItems?){
+    getMessages(deviceId:string,msgCat?,filterdItems?,searchVal?){
       let shows=this.messageService.display;
       let email=this.messageService.email;
       let msgCategory=msgCat? msgCat : this.msgCategory;
-      let search=this.messageService.search;
+      let search=searchVal?searchVal:"";
+      let pageNumber=searchVal?0:this.pageNum
+      if(searchVal && this.paginator){
+        this.paginator.pageIndex=0
+      }
       this.loading = true;
-      let messagesSub=this.messageService.getMessages(email,msgCategory,shows,this.pageNum,search,deviceId,filterdItems).subscribe(
+      let messagesSub=this.messageService.getMessages(email,msgCategory,shows,pageNumber,search,deviceId,filterdItems).subscribe(
         (res)=>{
           this.numRows=res.length;
 
@@ -275,6 +279,7 @@ else{
             }
         }
         else{
+          this.paginator.pageIndex=this.pageNum
           this.notFound=false;
           this.getMessagesCount(deviceId,msgCategory,filterdItems);
 
@@ -344,9 +349,8 @@ else{
   }
 
   onSearch(event:any){
-    this.messageService.search=event.value;
     this.selection.clear();
-    this.getMessages(this.deviceId);
+    this.getMessages(this.deviceId,null,null,event.value);
   }
 
   changeColumns(event){

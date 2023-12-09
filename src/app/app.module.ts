@@ -10,7 +10,6 @@ import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbThemeModule, NbLayoutModule, NbDatepickerModule, NbTimepickerModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ErrorInterceptorService } from './interceptors/error-interceptor.service';
 import { ToasterServices } from './shared/components/us-toaster/us-toaster.component';
 import { TRANSLATE_SERVICE } from './shared/shared.module';
@@ -44,7 +43,6 @@ import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
-    { provide: LocationStrategy, useClass: HashLocationStrategy},
     ToasterServices,
 
      {

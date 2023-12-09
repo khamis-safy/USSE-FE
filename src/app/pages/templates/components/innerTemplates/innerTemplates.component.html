@@ -9,7 +9,7 @@
             class="form-control ps-5 txt-xs"
             id="search"
             placeholder="{{ 'SEARCH' | translate }}"
-            (keyup)="onSearch(search)"
+            (input)="onSearch(search)"
           />
         </div>
         <div
@@ -32,7 +32,7 @@
       </mat-form-field>
     </div>
   </ng-container>
-  <ng-container *ngIf="length > 0 && !noData || loading">
+  <ng-container *ngIf="length > 0 && !noData || loading"> 
     <section class="table-wrapper">
       <table matSort mat-table [dataSource]="dataSource">
         <!-- Template Name Column -->
@@ -91,7 +91,7 @@
     </section>
   </ng-container>
 
-  <ng-container *ngIf="(length == 0 && !loading) ||notFound">
+  <ng-container *ngIf="(length == 0 && !loading) && ( notFound || noData)">
 
     <div class="d-flex justify-content-center align-items-center flex-column gap-3 nodata-container w-100" style="height: 500px;">
       <img src="assets/images/files.svg" alt="" />

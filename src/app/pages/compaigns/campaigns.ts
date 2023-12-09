@@ -36,7 +36,11 @@ export interface compaignDetails{
   device:DeviceData,
   message: string,
   campaignName:string,
-  isInterval: boolean
+  isInterval: boolean,
+  actionCount:number,
+  actions: any,
+  sessionTimeOutMinutes: any,
+  sessionTimeOutResponseContent: any
 }
 export interface CompaignStat{
   pindingCount: number,

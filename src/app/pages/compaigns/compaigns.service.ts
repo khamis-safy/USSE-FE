@@ -43,7 +43,6 @@ authService.getUserDataObservable().subscribe(permissions => {
             value:permission.value
           }
         })
-        console.log(this.devicesPermissions)
       }
 
     });
@@ -74,7 +73,9 @@ stopWhatsappBusinessCampaign(id:string,email:string):Observable<any>{
   return this.http.put<any>(`${this.api}Message/stopWhatsappBusinessCampaign?id=${id}&email=${email}`,'')
 }
 getCampaignById(id:string):Observable<compaignDetails>{
-  return this.http.get<compaignDetails>(`${this.api}Message/getCampaignById?id=${id}`);
+  return this.http.get<compaignDetails>(`${this.api}Message/getCampaignById?id=${id}`).pipe(
+    shareReplay()
+  )
 }
 
 deleteWhatsappBusinessCampaign(id:string,email:string):Observable<any>{
@@ -90,5 +91,19 @@ getLastCampaign(email):Observable<compaignDetails>{
   return this.http.get<compaignDetails>(`${this.api}Message/getLastCampaign?email=${email}`).pipe(
     shareReplay()
   );
+}
+filteredObject(data){
+  const filteredKeys = Object.keys(data).filter(key => {
+    const value = data[key];
+  
+    // Check if the value is not an empty array, not null, and not undefined
+    return !((Array.isArray(value) && value.length === 0) || value === null || value === undefined || value === "");
+  });
+  
+  // Create a new object with only the filtered keys
+  return filteredKeys.reduce((acc, key) => {
+    acc[key] = data[key];
+    return acc;
+  }, {});
 }
 }

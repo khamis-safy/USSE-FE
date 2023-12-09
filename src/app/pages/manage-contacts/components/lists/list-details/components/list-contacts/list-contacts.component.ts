@@ -48,7 +48,7 @@ listTableData:ListData[]=[]
 deletedContacts:string[]=[];
 columns :FormControl;
 displayed: string[] = LISTDETAILSHEADERS;
-displayedColumns: string[] = ['select','Name',"Create At",'Additional Parameters',"action"];
+displayedColumns: string[] = ['select','Name','Mobile',"Create At",'Additional Parameters',"action"];
 dataSource:MatTableDataSource<Contacts>;
 // dataSource = new MatTableDataSource<any>(this.listTableData);
 selection = new SelectionModel<any>(true, []);
@@ -87,15 +87,18 @@ this.selection.changed.subscribe(
     }
   });
 }
-getContacts(){
+getContacts(searchVal?){
 
   let shows=this.listService.display;
     let email=this.authService.getUserInfo()?.email;
     let orderedBy=this.listService.orderedBy;
-    let search=this.listService.search;
+    let search=searchVal ? searchVal : "";
+    let pageNumber=searchVal?0:this.pageNum
     this.loading = true;
-    let sub1= this.listService.getContacts(email,this.isCanceled,shows,this.pageNum,orderedBy,search,this.listId).subscribe(
+ 
+    let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNumber,orderedBy,search,this.listId).subscribe(
         (res)=>{
+        
           if(this.isCanceled){
             this.length=this.count?.totalCancelContacts;
           }
@@ -189,10 +192,9 @@ getContacts(){
 
     }
     onSearch(event:any){
-      this.listService.search=event.value;
       this.selection.clear();
 
-      this.getContacts();
+      this.getContacts(event.value);
     }
     toggleActive(data?){
       if(data){

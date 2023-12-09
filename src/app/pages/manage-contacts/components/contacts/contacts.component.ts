@@ -129,15 +129,19 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
 
 
 
-  getContacts(){
+  getContacts(searchVal?){
   let shows=this.listService.display;
   let email=this.authService.getUserInfo()?.email;
   let orderedBy=this.listService.orderedBy;
-  let search=this.listService.search;
-  let isCanceled=this.isUnsubscribe;
+  let search=searchVal ? searchVal : "";
+  let pageNumber=searchVal?0:this.pageNum
+  if(searchVal && this.paginator){
+      this.paginator.pageIndex=0
+  }
+ 
   this.loading = true;
 
-   let sub1= this.listService.getContacts(email,this.isCanceled,shows,this.pageNum,orderedBy,search,this.listId).subscribe(
+   let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNumber,orderedBy,search,this.listId).subscribe(
       (res)=>{
         this.numRows=res.length;
         this.loading = false;
@@ -161,6 +165,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
           }
       }
       else{
+        this.paginator.pageIndex=this.pageNum
         this.notFound=false;
 
         this.contactsCount();
@@ -280,10 +285,9 @@ this.subscribtions.push(sub2)
 
   }
   onSearch(event:any){
-    this.listService.search=event.value;
     this.selection.clear();
 
-    this.getContacts();
+    this.getContacts(event.value);
   }
 
   selectedRow(event){

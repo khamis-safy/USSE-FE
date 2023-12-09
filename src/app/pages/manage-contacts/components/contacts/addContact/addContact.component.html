@@ -96,18 +96,7 @@
             </ng-container>
           </div>
         </div>
-<!-- 
-        <us-input
-          [isDisabled]="false"
-          value=""
-          placeholder="{{ 'COMPANY_NAME' | translate }}"
-          [optional]="true"
-          type="text"
-          [error]="false"
-          [fullWidth]="true"
-          formControlName="cnName"
-          label="{{ 'COMPANY_NAME' | translate }}"
-        ></us-input> -->
+
 
         <us-select
           *ngIf="!isFromListDetails"
@@ -127,18 +116,6 @@
           [maxListItemsWithoutSearch]="5"
         ></us-select>
 
-        <!-- <us-input
-          [isDisabled]="false"
-          placeholder="{{ 'NOTES' | translate }}"
-          [optional]="true"
-          type="text"
-          [error]="false"
-          [fullWidth]="true"
-          formControlName="note"
-          label="{{ 'NOTES' | translate }}"
-          [isTextArea]="true"
-          [isEmoji]="true"
-        ></us-input> -->
       </div>
     </form>
       <!-- additional fields -->
@@ -178,7 +155,7 @@
                   style="display: inline-block; width: 34%;"
                   >{{ item.value }}</span
                 >
-                <span class="pointer" (click)="remove(i)" style="display: inline-block; width: 20%;"
+                <span class="remove pointer" (click)="remove(i)" style="display: inline-block; width: 20%;"
                   ><img src="assets/icons/delDev.svg" alt="" srcset=""
                 /></span>
               </div>
@@ -238,7 +215,7 @@
           size="sm"
           appearance="primary"
           [fill]="true"
-          (clicked)="save()"
+          (clicked)=" addParameters()"
           [loading]="false"
           [disabled]="form2.invalid || invalidName"
         ></us-button>

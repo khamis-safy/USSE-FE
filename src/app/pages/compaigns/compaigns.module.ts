@@ -13,13 +13,19 @@ import { StepThreeComponent } from './components/addCompaigns/stepThree/stepThre
 import { StepFourComponent } from './components/addCompaigns/stepFour/stepFour.component';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { ActionsModule } from './components/addCompaigns/campaign actions/actions.module';
+import { WriteMessageModule } from '../messages/Components/new-message/write-message/writeMessage.module';
+import { ConfirmaionsComponent } from './components/addCompaigns/confirmaions/confirmaions.component';
+
 @NgModule({
   imports: [
     CommonModule,
     CompaignsRoutes,
     SharedModule,
+    ActionsModule,
     NzTimePickerModule,
-    NzDatePickerModule
+    NzDatePickerModule,
+    WriteMessageModule
   ],
   declarations: [
     CompaignsComponent ,
@@ -27,6 +33,8 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     StepThreeComponent,
     StepFourComponent,
     AddCompaignsComponent ,
+    ConfirmaionsComponent
+  
 
 
 

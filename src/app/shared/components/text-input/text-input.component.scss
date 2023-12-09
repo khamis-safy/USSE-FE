@@ -207,7 +207,8 @@
 }
 .input-wrapper:has(textarea) {
   resize: vertical;
-  min-height: 90px !important;
+  height: 100px;
+  min-height: 100px !important;
 }
 
 textarea {

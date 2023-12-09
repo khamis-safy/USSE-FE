@@ -64,7 +64,10 @@
       <ng-template matStepLabel>{{ 'SEND_MESSAGE' | translate }}</ng-template>
       <div class="position-relative d-flex align-items-between flex-column justify-content-between h-100" style="min-height: 100%;">
         <app-send-message  (isSelectedDevices)="deviceSelected=$event" ></app-send-message>
-        <div class="d-flex justify-content-end align-items-center buttons" style="width: 98%; ">
+        <div class=" buttons" style="width: 95%; ">
+          <div class="d-flex justify-content-end align-items-center">
+
+        
           <button class="rest-style" matStepperPrevious>
             <us-button
               class="m-2"
@@ -72,7 +75,7 @@
               [fill]="false"
               [size]="'md'"
               [loading]="false"
-              [disabled]="false"
+              [disabled]="isLoading"
               [appearance]="'primary'"
             >
             </us-button>
@@ -85,11 +88,13 @@
               [size]="'md'"
               [loading]="isLoading"
               [appearance]="'primary'"
-              (clicked)="toLastStep()"
+              (clicked)="sendMessages()"
               [disabled]="isLoading || !deviceSelected"
             >
             </us-button>
           </button>
+        </div>
+          <p *ngIf="showWarningMsg">{{'waiting_msg' | translate}}</p>
         </div>
       </div>
     </mat-step>

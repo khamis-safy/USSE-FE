@@ -7,6 +7,7 @@ import {
   Input,
   Output,
   ViewChild,
+  HostListener
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -95,11 +96,15 @@ export class InputComponent implements  AfterViewInit {
   @Output() onIconClick = new EventEmitter(); // on icon click e.g. search-icon
 
   showEmoji = false;
+  isEmojiClicked: boolean = false;
+  constructor(private el: ElementRef) {}
   get value(): any {
     return this.val;
   }
   ngAfterViewInit(): void {
-    this.updateDivHeight();
+    setTimeout(() => {
+      this.updateDivHeight();
+    }, 0);
   }
   increment() {
     // increase the value of the number input
@@ -134,7 +139,16 @@ export class InputComponent implements  AfterViewInit {
     let codesArray = []
     sym.forEach(el => codesArray.push('0x' + el))
     let emoji = String.fromCodePoint(...codesArray);
-    this.value =  val.slice(0, this.curPos) + emoji + val.slice(this.curPos)
+    this.value =  val.slice(0, this.curPos) + emoji + val.slice(this.curPos);
+    this.isEmojiClicked = true;
+
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: any) {
+    if (!this.el.nativeElement.contains(event.target)) {
+      this.isEmojiClicked = false;
+    }
   }
   curPos = 0;
   getCursorPosition(e){

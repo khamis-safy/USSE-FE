@@ -31,7 +31,11 @@ utcDateTime;
 timeSub$;
 isUser: boolean;
   permission:DevicesPermissions[];
-  constructor(private devicesService:DevicesService,private dateService:NbDateService<Date>,private datePipe: DatePipe,private messageService:MessagesService,private authService:AuthService) {
+  constructor(private devicesService:DevicesService,
+    private dateService:NbDateService<Date>,
+    private datePipe: DatePipe,
+    private messageService:MessagesService,
+    private authService:AuthService) {
 
     // this.selectedDate=dateService.today();
    }
@@ -120,7 +124,7 @@ else{
   }
   onSelect(event){
     this.deviceId=event.value;
-    this.authService.selectedDeviceId=event.value
+    // this.authService.selectedDeviceId=event.value
 
     this.isSelectedDevices.emit(true);
 

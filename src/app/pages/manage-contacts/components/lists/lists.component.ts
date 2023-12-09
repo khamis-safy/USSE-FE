@@ -60,9 +60,7 @@ subscribtions:Subscription[]=[];
   @Output() isDelete = new EventEmitter<ListData[]>;
 
   ngOnInit() {
-    // this.getListsCount();
     this.getListData();
-    // this.length=10
     if(!this.canEdit){
       this.displayedColumns = ['select', 'Name', 'Create At', 'Total Contacts'];
 
@@ -109,20 +107,22 @@ getListsCount(){
   this.subscribtions.push(sub1)
 }
 
-getListData(){
+getListData(searchVal?){
 
   let shows=this.listService.display;
- 
   let email=this.authService.getUserInfo()?.email;
   let orderedBy=this.listService.orderedBy;
-  let search=this.listService.search;
+  let search=searchVal ? searchVal : "";
+  let pageNumber=searchVal?0:this.pageNum
 
   this.loading = true;
 
 
-
- let sub2= this.listService.getList(email,shows,this.pageNum,orderedBy,search).subscribe(
-     (res)=>{
+  if(searchVal && this.paginator){
+    this.paginator.pageIndex=0
+  }
+  let sub2= this.listService.getList(email,shows,pageNumber,orderedBy,search).subscribe(
+    (res)=>{
       this.loading = false;
 
         this.numRows=res.length;
@@ -137,7 +137,8 @@ getListData(){
     }
 }
 else{
-  this.notFound=false;
+        this.paginator.pageIndex=this.pageNum
+        this.notFound=false;
         this.getListsCount();
 
       }
@@ -255,10 +256,9 @@ else{
     this.getListData();
   }
   onSearch(event:any){
-    this.listService.search=event.value;
     this.selection.clear();
 
-    this.getListData();
+    this.getListData(event.value);
   }
   toggleActive(data?){
     if(data){

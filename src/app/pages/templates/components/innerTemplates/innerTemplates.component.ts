@@ -122,15 +122,17 @@ export class InnerTemplatesComponent implements OnInit {
   }
 
 
-  getTemplates(){
+  getTemplates(searchVal?){
         let showsNum=this.templatesService.showsNum;
-        let pageNum=this.templatesService.pageNum;
+        let pageNum=searchVal?0 :this.templatesService.pageNum;
         let email=this.templatesService.email;
         let orderedBy=this.templatesService.orderedBy;
-        let search=this.templatesService.search;
+        let search=searchVal?searchVal:"";
         let isCanceled=this.isUnsubscribe;
         this.loading = true;
-
+        if(searchVal && this.paginator){
+          this.paginator.pageIndex=0
+        }
          let sub1= this.templatesService.getTemplates(email,showsNum,pageNum,orderedBy,search).subscribe(
             (res)=>{
               this.numRows=res.length;
@@ -148,10 +150,10 @@ export class InnerTemplatesComponent implements OnInit {
                 }
             }
             else{
+              this.paginator.pageIndex=this.templatesService.pageNum
+              this.notFound=false;
               this.templatesCount();
               this.isSearch=false;
-
-
             }
               this.dataSource=new MatTableDataSource<Templates>(res)
               this.loading = false;
@@ -179,7 +181,7 @@ export class InnerTemplatesComponent implements OnInit {
               this.length=res;
               if(this.length==0){
                 this.noData=true
-                               this.loading = false;
+                this.loading = false;
 
               }
               else{
@@ -202,9 +204,8 @@ export class InnerTemplatesComponent implements OnInit {
 
 
      onSearch(event: any) {
-    this.templatesService.search = event.value;
 
-    this.getTemplates();
+    this.getTemplates( event.value);
   }
 
 

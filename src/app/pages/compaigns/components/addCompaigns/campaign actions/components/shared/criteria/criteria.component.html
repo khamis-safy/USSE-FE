@@ -1,0 +1,107 @@
+<h3>{{'criteria' | translate}}</h3>
+<div class="criteria p-3 mt-3">
+
+    <div class="criteriatb">
+      <div *ngIf="showInputs || criteriaParameters?.length != 0" class="tbheader mb-2">
+        <span class="field-name" style="font-weight: 500">{{ 'condition' | translate }}            
+          <em class="text-danger">*</em>
+        </span>
+        <span class="field-name" style="font-weight: 500">{{ 'keyword' | translate }}            
+          <em class="text-danger">*</em>
+        </span>
+      </div>
+      <ng-container *ngIf="criteriaParameters && criteriaParameters?.length != 0">
+        <div class="tbBody">
+          <div
+            class="tbrow"
+            *ngFor="let item of criteriaParameters; let i = index"
+          >
+            <span
+              class="txt-md"
+              style="
+                    font-weight: 500;
+                    width: 9%;
+                    display: flex;
+                    justify-content: center;
+              "
+              >{{ i + 1 }}</span
+            >
+            <span
+              class="txt-sm"
+              style="display: inline-block; width: 34%;"
+              >{{ item.type  | translate}}</span
+            >
+            <span
+              class="txt-sm"
+              style="display: inline-block; width: 34%;"
+              >{{ item.criteria }}</span
+            >
+            <span class="pointer" (click)="remove(i)" style="display: inline-block; width: 20%;"
+              ><img src="assets/icons/delDev.svg" alt="" srcset=""
+            /></span>
+          </div>
+        </div>
+      </ng-container>
+      </div>
+    <ng-container *ngIf="showInputs">
+      <form [formGroup]="form" class="inputs">
+        <div class="name"> 
+          <us-select
+          [data]="conditionsData"
+          [multiSelect]="false"
+          formControlName="conditionValue"
+          [placeholder]="'choose condition' |translate"
+          (onSelect)="onSelect($event)"
+        ></us-select>
+        
+        </div>
+        <div class="value">
+          <us-input
+            [isDisabled]="false"
+            placeholder=""
+            formControlName="keyWord"
+            [isDisabled]="false"
+            [optional]="false"
+            type="text"
+            [fullWidth]="true"
+          
+          ></us-input>
+        </div>
+      </form>
+      <div class=" d-flex justify-content-center gap-3">
+  
+      <us-button
+      label="{{ 'CANCEL' | translate }}"
+      size="sm"
+      [loading]="false"
+        [fill]="false"
+        (clicked)="cancel()"
+      ></us-button>
+  
+      <us-button
+      label="{{ 'SAVE' | translate }}"
+      size="sm"
+      appearance="primary"
+      [fill]="true"
+      (clicked)="save()"
+      [loading]="false"
+      [disabled]="form.invalid || invalidName || !selectedCondition"
+    ></us-button>
+      </div>
+    </ng-container>
+  
+    <div *ngIf="!showInputs" class="w-100 d-flex justify-content-center">
+      <us-button
+        class="m-2"
+        label="{{ 'ADD_CRITERIA' | translate }}"
+        [matIcon]="'add'"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+        (clicked)="show()"
+      ></us-button>
+  </div>
+
+</div>
