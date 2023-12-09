@@ -43,7 +43,6 @@ authService.getUserDataObservable().subscribe(permissions => {
             value:permission.value
           }
         })
-        console.log(this.devicesPermissions)
       }
 
     });
@@ -74,7 +73,9 @@ stopWhatsappBusinessCampaign(id:string,email:string):Observable<any>{
   return this.http.put<any>(`${this.api}Message/stopWhatsappBusinessCampaign?id=${id}&email=${email}`,'')
 }
 getCampaignById(id:string):Observable<compaignDetails>{
-  return this.http.get<compaignDetails>(`${this.api}Message/getCampaignById?id=${id}`);
+  return this.http.get<compaignDetails>(`${this.api}Message/getCampaignById?id=${id}`).pipe(
+    shareReplay()
+  )
 }
 
 deleteWhatsappBusinessCampaign(id:string,email:string):Observable<any>{

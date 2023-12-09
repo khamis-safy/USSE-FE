@@ -23,7 +23,8 @@ export class NewAutomationComponent implements OnInit {
   isLoading:boolean;
   deviceID:string;
   isEditAutomation:boolean;
-  @Input() automationData:Automation
+  @Input() automationData:Automation;
+  automationName:string="";
   constructor(private authService:AuthService,
     private compaignsService:CompaignsService,
     private toasterService:ToasterServices,
@@ -31,7 +32,8 @@ export class NewAutomationComponent implements OnInit {
 
   ngOnInit() {
     if(this.automationData){
-      this.isEditAutomation=true
+      this.isEditAutomation=true;
+      this.automationName=this.automationData.name;
     }
     else{
       this.isEditAutomation=false;

@@ -41,6 +41,7 @@ export class DragZoneComponent implements OnInit {
   @Input("label") label ="Select a file or drag and drop here";
   @Input("fileSize") fileSize =10;
   @Input("fileType") fileType ="";
+  @Input("id") id ="fileInput";
   invalid:boolean=false;
   @Input('data') set value(value) {
     this._value = value;
@@ -180,7 +181,7 @@ async onChangeFile(e) {
   
 
   this.isLoading = false;
-  const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  const fileInput = document.getElementById(this.id) as HTMLInputElement;
   fileInput.value = ''; // Clear the input field value
 }
 

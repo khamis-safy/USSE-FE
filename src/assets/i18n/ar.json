@@ -542,6 +542,21 @@
 "askForName":"اسأل عن الاسم",
 "WHATSYOURNAME":"ما اسم حضرتك؟",
 "automations":"آليات",
-"campaignActions":"إجراءات الحملة"
+"campaignActions":"إجراءات الحملة",
+"plan_details":"تفاصيل خطتك",
+"info":"معلومات",
+"subscriptions":"الاشتراكات",
+"reconnect":"إعادة الاتصال",
+"export-chats" : "تصدير محادثات الواتس اب",
+"total_price":"السعر الكلي",
+"subscription":"الاشتراك",
+"Automations":"الآليات",
+"API Support":"دعم API",
+"Additional Users":"مستخدمون إضافيون",
+"Additional Devices":"أجهزة إضافية",
+"Additional Automations":"آليات إضافية",
+"Additional AiBots":"بوت ذكى",
+"Enabled":"مفعل",
+"Disabled":"غير مفعل"
 
 }

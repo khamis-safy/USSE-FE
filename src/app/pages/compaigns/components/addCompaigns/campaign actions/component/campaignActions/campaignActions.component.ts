@@ -25,6 +25,7 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   dataSource :MatTableDataSource<any>;
   length:number=0;
   id:number=-1;
+  selectedElementName:string;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   tableData:any=[];
   actions:any=[];
@@ -32,20 +33,19 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   @Input() deviceId:string;
   @Input() isCampaignAction:boolean=false;
   @Output() formValidityChange = new EventEmitter<boolean>(true);
-  hideApplyButton:boolean=false;
   MessageAfterTimeOut : any = new FormControl('',Validators.required);
   sessionTimeOut: any = new FormControl(15);
   email:string=this.authService.getUserInfo()?.email
   campArr:SelectOption[];
-  selectedCampaigns:any = new FormControl([]);
+  selectedActions:any = new FormControl([]);
   form = new FormGroup({
 
-    selectedCampaigns:this.selectedCampaigns,
+    selectedActions:this.selectedActions,
 
   });
   listsLoadingText:string=this.translate.instant('Loading')
   selectedCampaignActions:any=[];
-  campaignId:string;
+  selectedElementID:string;
   @Input() automationData:Automation
     selecetedCampainsIDs:string[]=[]
 
@@ -111,13 +111,16 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
             let foundSelectedAutomation = autWithActions.find((action)=>action.id == this.automationData.id);
             if(foundSelectedAutomation){
               this.form.patchValue({
-                selectedCampaigns:{
+                selectedActions:{
                   title:foundSelectedAutomation.name,
                   value:foundSelectedAutomation.id
                 }
               })
+              this.selectedElementID=foundSelectedAutomation.id;
               this.loading=true;
-              this.applyActionsFromAutomation(foundSelectedAutomation.id)
+              this.applyActionsFromAutomation(foundSelectedAutomation.id);
+            
+
             }
           }
         
@@ -157,14 +160,12 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
     this.listsLoadingText=this.translate.instant('No Results')
   }
   onSelect(event){
-  this.campaignId=event.value;
-  if(this.selecetedCampainsIDs.includes(event.value)){
-    this.hideApplyButton = true;
-  }
-  else{
-    this.hideApplyButton = false;
+    if( this.selectedElementID !== event.value){
+      this.selectedElementID=event.value;
+      this.selectedElementName=event.title;
+      this.applyCampaignActions();
+    }
 
-  }
   }
   deleteAction(element){
     let foundElementFromTable = this.tableData.find((data)=>data.id == element.id);
@@ -178,16 +179,16 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
       
     
         this.form.patchValue({
-          selectedCampaigns:null
+          selectedActions:null
         })
-        this.campaignId=null
+        this.selectedElementID=null
       
     }
     this.setActions();
 
   }
  fillTableData(actions:any[]){
-  this.loading=true;
+
   this.id=-1;
   this.tableData=[];
   this.tableData=actions.map((action)=>{
@@ -201,7 +202,6 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   this.dataSource=new MatTableDataSource<any>(this.tableData);
   this.dataSource.paginator = this.paginator;
   this.setActions();
-  this.loading=false
 
  }
  applyActionsFromAutomation(autId){
@@ -210,6 +210,7 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
       let botActions=res.botActions;
       
       this.fillTableData(botActions)
+      this.loading=false;
     }
   )
  }
@@ -217,17 +218,15 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   this.tableData=[];
   this.dataSource=new MatTableDataSource<any>(this.tableData);
   this.dataSource.paginator = this.paginator;
-  if(this.campaignId){
-    this.hideApplyButton = false;
-  }
+
   this.setActions();
   this.id=-1;
- 
+
 
     this.form.patchValue({
-      selectedCampaigns:null
+      selectedActions:null
     })
-    this.campaignId=null
+    this.selectedElementID=null
   
  }
  applyCampaignActions(){
@@ -237,14 +236,18 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   dialogConfig.width='35vw';
   dialogConfig.maxWidth='100%';
   dialogConfig.minWidth='465px';
-  dialogConfig.data ={id:this.campaignId, action:'apply' ,isCampaignAction:this.isCampaignAction}
+  dialogConfig.data ={id:this.selectedElementID, action:'apply' ,isCampaignAction:this.isCampaignAction , name:this.selectedElementName}
   const dialogRef = this.dialog.open(ConfirmaionsComponent,dialogConfig);
   dialogRef.afterClosed().subscribe(result => {
     if(result){
-      this.selecetedCampainsIDs.push(this.campaignId);
-      this.hideApplyButton = true;
-
+      this.selecetedCampainsIDs.push(this.selectedElementID);
       this.fillTableData(result);
+    }
+    else{
+      this.form.patchValue({
+        selectedActions:null
+      })
+      this.selectedElementID=""
     }
   });
 }
@@ -266,7 +269,6 @@ clearAllActions(){
 }
   editAction(element){
     if(element.name == "autoReply" || element.name=="sendAndWait" || element.name=="cancel" ) {
-    
       this.openAutoReply(element.name , element)
     }
     else if(element.name == "subscribeToList" ){
@@ -400,10 +402,31 @@ clearAllActions(){
     this.actions=[];
     this.tableData.map((action)=> {
       if(action.name == "autoReply"){
-        this.actions.push({
-          actionName:"autoReply",
-          autoReply:action.data
-        })
+        const autoReplyObj: any = {
+          actionName: "autoReply",
+          autoReply: {
+            criterias: action.data.criterias,
+          },
+        };
+      
+        if (action.data.messageContent) {
+          if (typeof action.data.messageContent === 'string' && action.data.messageContent.trim() !== '') {
+            autoReplyObj.autoReply.messageContent = action.data.messageContent;
+          }
+        }
+      
+        if (action.data.fileData && action.data.fileData.length > 0) {
+          autoReplyObj.autoReply.attachments = action.data.fileData.map((file) => {
+            return {
+              fileUrl: file.url,
+              fileName: file.name,
+            };
+          });
+        }
+        if(action.data.attachments){
+          autoReplyObj.autoReply.attachments = action.data.attachments
+        }
+        this.actions.push(autoReplyObj);
       }
       
       else if (action.name == "subscribeToList"){
@@ -413,10 +436,32 @@ clearAllActions(){
         })
       }
       else if (action.name == "sendAndWait"){
-        this.actions.push({
-          actionName:"sendAndWait",
-          sendAndWait:action.data
-        })
+        const sendAndWaitObj:any = {
+          actionName: "sendAndWait",
+          sendAndWait: {
+            criterias: action.data.criterias,
+          },
+        };
+      if(action.data.messageContent ){
+
+        if (typeof action.data.messageContent === 'string' && action.data.messageContent.trim() !== '') {
+          sendAndWaitObj.sendAndWait.messageContent = action.data.messageContent;
+        }
+      }
+      
+      if (action.data.fileData && action.data.fileData.length > 0) {
+        sendAndWaitObj.sendAndWait.attachments = action.data.fileData.map((file) => {
+          return {
+            fileUrl: file.url,
+            fileName: file.name,
+          };
+        });
+      }
+      if(action.data.attachments){
+        sendAndWaitObj.sendAndWait.attachments =action.data.attachments
+      }
+      
+        this.actions.push(sendAndWaitObj);
       }
       // else if (action.name == "forwardedNumbers"){
         
@@ -433,7 +478,7 @@ clearAllActions(){
       else if (action.name == "enqueryForm"){
         this.actions.push({
           actionName:"enqueryForm",
-          enqueryForm:this.campaignsService.filteredObject(action.data)
+          enqueryForm:action.data
         })
       }
     

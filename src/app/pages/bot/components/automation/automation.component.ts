@@ -62,7 +62,6 @@ export class AutomationComponent implements OnInit {
       }
     })
     this.botService.reOrderAutomations(this.email,this.deviceId,orderedData).subscribe()
-    console.log(data)
   
   }
 

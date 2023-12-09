@@ -33,7 +33,7 @@
     ></us-input>
 
     </form>
-    <!-- <div *ngIf="!isCancel" class="form-group d-flex gap-lg-4 flex-column  flex-lg-row flex-nowrap">
+    <div *ngIf="!isCancel" class="form-group d-flex gap-lg-4 flex-column  flex-lg-row flex-nowrap">
       <label for="devicesData" class="w-25 d-none d-lg-block text-nowrap" style="min-width:25%"
         ><span class="txt txt-sm text-black text-wrap">{{ 'ATTACHMENTS' | translate }}</span>
       </label>
@@ -43,9 +43,10 @@
       [(ngModel)]="actionsFileData"
       (onFileChange)="onFileChange($event)"
       (onFileDelete)="onFileDelete($event)"
-      [multiple]="false"
+      [id]="'actionFileData'"
+      [multiple]="true"
       ></us-upload>
-    </div> -->
+    </div>
   </div>
   <!-- modal footer -->
   <div class="modal-footer justify-content-end gap-3"  style="height: 10%;">
@@ -64,7 +65,7 @@
     [loading]="isLoading"
     [fill]="true"
     (clicked)="submit()"
-    [disabled]="form.invalid || isLoading ||isDisabled"
+    [disabled]="(form.invalid && actionsFileData.length==0) || isLoading ||isDisabled"
   ></us-button>
 
     <us-button

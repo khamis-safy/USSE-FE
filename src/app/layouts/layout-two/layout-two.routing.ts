@@ -77,6 +77,12 @@ const routes: Routes = [
         canActivate:[AuthGuard],data:{name:"bots"},
         loadChildren:()=>
         import("./../../pages/bot/bot.module").then((m)=>m.BotModule)
+      },
+      {
+        path:"info",
+        canActivate:[AuthGuard],data:{name:"info"},
+        loadChildren:()=>
+        import('./../../pages/info/info.module').then((m)=>m.InfoModule)
       }
 
 

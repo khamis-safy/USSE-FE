@@ -12,6 +12,7 @@ export class ConfirmaionsComponent implements OnInit {
   isLoading:boolean;
   isApply:boolean;
   isClear:boolean;
+  elementName:string="";
   constructor(public dialogRef: MatDialogRef<ConfirmaionsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private campainService:CompaignsService,
@@ -27,6 +28,7 @@ export class ConfirmaionsComponent implements OnInit {
       this.isApply=false;
       this.isClear=true;
     }
+    this.elementName=this.data.name;
   }
   applyActions(){
     if(this.data.isCampaignAction){

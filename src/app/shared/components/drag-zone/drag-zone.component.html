@@ -1,4 +1,4 @@
-<label [ngClass]="{'opacity-50 context-cursor': isDisabled}" class="rounded-5 bg-white px-2 py-4 w-100" for="fileInput" (drop)="onChangeFile($event)" (dragover)="test($event)">
+<label [ngClass]="{'opacity-50 context-cursor': isDisabled}" class="rounded-5 bg-white px-2 py-4 w-100" [for]="id" (drop)="onChangeFile($event)" (dragover)="test($event)">
   <div class="row m-0 gap-2 gap-md-0">
     <div class="col-12 col-md-7 d-flex flex-column flex-md-row align-items-center gap-2">
       <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 28 23" fill="none">
@@ -37,4 +37,4 @@
 </div>
 <div *ngIf="invalid" class="hint error mt-2" > <i class="si-info"></i>
   <p class="txt hint error  txt-xs">{{ invalidMessage |translate }}</p></div>
-<input [multiple]="multiple" [disabled]="isLoading || isDisabled" (change)="onChangeFile($event)" id="fileInput" class="d-none" type="file" accept="{{ fileType }}">
+<input [multiple]="multiple" [disabled]="isLoading || isDisabled" (change)="onChangeFile($event)" [id]="id" class="d-none" type="file" accept="{{ fileType }}">

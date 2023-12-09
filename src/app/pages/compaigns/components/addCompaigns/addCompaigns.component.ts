@@ -65,7 +65,7 @@ lastCampaignData:{
 };
 actions:any=[];
   showWarningMsg: boolean=false;
-  MessageAfterTimeOut : any = new FormControl('',Validators.required);
+  MessageAfterTimeOut : any = new FormControl('');
   sessionTimeOut: any = new FormControl(15);
   email:string=this.authService.getUserInfo()?.email
   CampArr:SelectOption[]

@@ -185,7 +185,7 @@
           *ngIf="actions.length!=0" 
           [isDisabled]="false"
           placeholder="{{ 'Enter Your Message...' | translate }}"
-          [optional]="false"
+          [optional]="true"
           type="text"
           [error]="false"
           [fullWidth]="true"
@@ -229,7 +229,7 @@
           [loading]="false"
           [disabled]="false"
           [appearance]="'primary'"
-          [disabled]="isLoading || form.invalid"
+          [disabled]="isLoading"
         >
         </us-button>
       </button>
@@ -241,7 +241,7 @@
           [fill]="true"
           [size]="'md'"
           [loading]="isLoading"
-          [disabled]="isLoading || (form.invalid && actions.length!=0)"
+          [disabled]="isLoading "
           [appearance]="'primary'"
           (clicked)="addCampaign()"
         >

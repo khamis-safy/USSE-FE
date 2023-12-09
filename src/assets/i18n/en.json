@@ -545,5 +545,20 @@
 "askForName":"Ask for name",
 "WHATSYOURNAME":"What is your name?",
 "automations":"Automations",
-"campaignActions":"Campaign Actions"
+"campaignActions":"Campaign Actions",
+"plan_details":"Your Plan Details",
+"info":"Info",
+"subscriptions":"Subscriptions",
+"reconnect":"reconnect",
+"export-chats" : "Export whatsapp chats",
+"total_price":"Total price",
+"subscription":"subscription",
+"Automations":"Automations",
+"API Support":"API Support",
+"Additional Users":"Additional Users",
+"Additional Devices":"Additional Devices",
+"Additional Automations":"Additional Automations",
+"Additional AiBots":"Additional AiBots",
+"Enabled":"Enabled",
+"Disabled":"Disabled"
 }

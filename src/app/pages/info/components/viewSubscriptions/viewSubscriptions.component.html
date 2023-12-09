@@ -1,0 +1,38 @@
+<section class="py-3 component-container d-flex flex-column gap-3">
+
+    <div class="info-card-container ">
+        <div class="info-card-body row">
+            <div class="plan-details col-4 p-2">
+                <h3 class="text-center my-4">{{'plan_details' | translate}}</h3>
+
+                <ul class="plans">
+                    <li class="d-flex justify-content-between mb-4 align-items-center">
+                        <span class="plan-name info-name">{{userSubscripitons?.subscribtionName}}</span>
+                        <span class="plan-price">{{userSubscripitons?.subscriptionPrice}}<small>$</small></span>
+                    </li>
+                    <li *ngFor="let item of extraParameters" class="d-flex   justify-content-between mb-4 align-items-center">
+                        <span class="plan-name info-name">{{item.name  |translate}}</span>
+                        <span class="plan-price">{{item.price}}<small>$</small></span>
+                    </li>
+
+                    <div class="line my-4"></div>
+                    <li class="d-flex justify-content-between mb-3 align-items-center">
+                        <span class="info-name">{{'total_price' |translate }}</span>
+                        <span class="plan-price">{{totalPrice}}<small>$</small></span>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="full-details col-8 bg-white mt-2">
+                    <ul class="mt-4">
+                        <li  *ngFor="let item of fullDetails" class="detail d-flex justify-content-between mb-4 align-items-center">
+                            <span class="info-name">{{item.name  |translate}}</span>
+                            <span class="info-value">{{item.value  |translate}}</span>
+                        </li>
+                    </ul>
+            </div>
+
+        </div>
+    </div>
+</section>

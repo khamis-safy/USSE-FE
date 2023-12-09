@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DragFileServiceService } from 'src/app/shared/components/drag-zone/services/dragFileService.service';
 interface files {
   name: string;
   type: string;
@@ -14,7 +15,7 @@ interface files {
 })
 export class AutoReplayComponent implements OnInit {
   isEdit:boolean=false;
-  fileData: files[] = [];
+  actionsFileData: files[] = [];
   loading:boolean;
   isLoading:boolean;
   messageBody: any = new FormControl('' , Validators.required);
@@ -27,8 +28,8 @@ export class AutoReplayComponent implements OnInit {
   actionName:string;
   isDisabled:boolean;
   isCancel:boolean=false;
-
   constructor( public dialogRef: MatDialogRef<AutoReplayComponent>,
+    private dragFileService:DragFileServiceService,
     @Inject(MAT_DIALOG_DATA) public data:any) { }
 
   ngOnInit() {
@@ -46,11 +47,24 @@ export class AutoReplayComponent implements OnInit {
     this.form.patchValue({
       messageBody:this.data.data.messageContent,
     });
-    // if(this.data.fileData){
-    //   this.loading=true;
-    //   this.fileData=this.data.fileData
-    //   this.loading=false;
-    // }
+    if(this.data.data.fileData){
+      
+      this.loading=true;
+      this.actionsFileData=this.data.data.fileData
+      this.loading=false;
+    }
+    if(this.data.data.attachments){
+      this.actionsFileData=this.data.data.attachments.map((attach)=>{
+        let size=this.dragFileService.calculateFileSizeInKB(attach.fileUrl);
+        let type = this.dragFileService.extractTypeFromBase64(attach.fileUrl)
+        return{
+          name:attach.fileName,
+          type:type,
+          url:attach.fileUrl,
+          size:size
+        }
+      })
+    }
   }
   onClose(data?){
     this.dialogRef.close(data);
@@ -76,11 +90,11 @@ export class AutoReplayComponent implements OnInit {
       })
     }
     else{
-
+      
       this.onClose({
         messageContent:this.form.value.messageBody,
-        criterias:this.criterias
-        // fileData:this.fileData,
+        criterias:this.criterias,
+        fileData:this.actionsFileData
         // data:{
         //   messageContent:this.form.value.messageBody,
         //   criterias:this.criterias,

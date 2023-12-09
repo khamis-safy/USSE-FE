@@ -72,7 +72,6 @@ export class DetailsComponent implements OnInit {
             )
             this.deviceId=this.automationData.deviceid
             this.deviceIdToParent.emit(this.deviceId)
-            console.log("device id from details",this.deviceId)
         }
       },
       (err)=>{
