@@ -560,5 +560,7 @@
 "Additional Automations":"Additional Automations",
 "Additional AiBots":"Additional AiBots",
 "Enabled":"Enabled",
-"Disabled":"Disabled"
+"Disabled":"Disabled",
+"contacts_count_warning":"The number of contacts should not exceed 20 contacts",
+"continue":"Continue"
 }

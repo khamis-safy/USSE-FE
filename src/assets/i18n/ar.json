@@ -557,6 +557,8 @@
 "Additional Automations":"آليات إضافية",
 "Additional AiBots":"بوت ذكى",
 "Enabled":"مفعل",
-"Disabled":"غير مفعل"
+"Disabled":"غير مفعل",
+"contacts_count_warning":"يجب ألا يتجاوز عدد جهات الاتصال 20 جهة اتصال ",
+"continue":"استمر"
 
 }

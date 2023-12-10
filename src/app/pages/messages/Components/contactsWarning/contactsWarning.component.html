@@ -1,0 +1,31 @@
+<section class="d-flex flex-column gap-3 h-100 position-relative pt-4">
+  <!-- modal header -->
+  <div class="px-4">
+    <div class="d-flex justify-content-center align-items-center flex-column "style="height: 60%;">
+      <img src="assets/icons/warning-icon.svg" alt="" style="width: 84px;">
+    </div>
+    <!-- modal body -->
+    <div class="content d-flex justify-content-center align-items-center flex-column  gap-4" style="height: 50%;">
+   
+      <!-- displayed message -->
+      <p class=" my-4 text-center" style="line-height: 1.5; text-transform: capitalize;font-size: 24px">{{ 'contacts_count_warning' | translate }}</p>
+
+    </div>
+  </div>
+
+  <!-- modal footer -->
+  <div class="modal-footer justify-content-center position-absolute bottom-0 w-100 gap-3" style="height: 21%; background:#DBE9F2;">
+    
+    <div style="width:158px; height: 44px;">
+      <us-button
+      label="{{ 'continue' | translate }}"
+      size="sm"
+      [fill]="true"
+      (clicked)="onClose()"
+      [counter]="5"
+      [fullWidth]="true"
+    ></us-button>
+    </div>
+    
+  </div>
+</section>
