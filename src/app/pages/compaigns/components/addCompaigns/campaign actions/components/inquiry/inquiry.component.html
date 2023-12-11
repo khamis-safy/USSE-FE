@@ -58,7 +58,9 @@
             </div>
             
             <div class="d-flex align-items-center p-2  gap-2">
-              <img (click)="addQuestion()" class="pointer" src="assets/icons/addQ.svg" alt="" />
+              <button (click)="addQuestion()" class="rest-style pointer" [disabled]="!myForm.valid ">
+                <img src="assets/icons/addQ.svg" alt="" />
+              </button>
               <span>{{ 'addAQuestion' | translate }} </span>
             </div>
           </form>
