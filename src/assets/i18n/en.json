@@ -561,6 +561,10 @@
 "Additional AiBots":"Additional AiBots",
 "Enabled":"Enabled",
 "Disabled":"Disabled",
-"contacts_count_warning":"The number of contacts should not exceed 20 contacts",
-"continue":"Continue"
+"contacts_count_warning":"Please be aware that sending a large number of messages may result in a ban, so it's preferable to send messages through advertising campaigns.",
+"continue":"Continue",
+"invalidIntervalHint":"invalid range",
+"interval_warning":"Please note that it's advisable not to reduce the delay interval between messages to 100-180, as it may lead to a ban.",
+"close_interval_warning":"Disabling the time interval may result in your WhatsApp account being banned.",
+"time_difference_warning_msg":"Kindly be aware that it's advisable to have a minimum time difference of 80 seconds between messages to avoid a ban."
 }

@@ -485,6 +485,7 @@ showWarningModal(){
   dialogConfig.width='35vw';
   dialogConfig.maxWidth='100%';
   dialogConfig.minWidth='465px';
+  dialogConfig.data='contacts_count_warning';
   const dialogRef = this.dialog.open(ContactsWarningComponent,dialogConfig);
  
 }

@@ -4,6 +4,9 @@ import { DatePipe } from '@angular/common';
 import { CompaignsService } from '../../../compaigns.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { parse, addMinutes } from 'date-fns';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ContactsWarningComponent } from 'src/app/pages/messages/Components/contactsWarning/contactsWarning.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-stepFour',
@@ -52,12 +55,27 @@ export class StepFourComponent implements OnInit, OnDestroy ,AfterViewInit{
   repeatedDays: any = new FormControl({ value: 0, disabled: true }, [Validators.required]);
   selectedTime: Date = new Date();
   form: FormGroup;
+  showCloseIntervalWarning:boolean=false;
+  showIntervalRangeWarning:boolean=false;
+  showTimeDifferenceWarning:boolean=false;
 
+
+  fromLastCampaignSettings:{
+    closeIntervalWarning:boolean,
+    itervalRangeWarning:boolean,
+    timeDifferenceWarning:boolean}=
+    {
+    closeIntervalWarning:false,
+    itervalRangeWarning:false,
+    timeDifferenceWarning:false,
+  }
   @Output() formValidityChange = new EventEmitter<boolean>(true);
-
+  formSubscription:Subscription;
+  
   constructor(private fb: FormBuilder, private datePipe: DatePipe,
     private campaignServeice: CompaignsService,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private dialog: MatDialog) {
     this.form = this.fb.group(
       {
         intervalFrom: this.intervalFrom,
@@ -80,7 +98,10 @@ export class StepFourComponent implements OnInit, OnDestroy ,AfterViewInit{
   }
   ngOnInit() {
     this.setDefaultTime();
-    this.form.valueChanges.subscribe(() => {
+    this.formSubscription = this.form.valueChanges.subscribe(() => {
+      
+      this.checkValidIntervalRange(this.form.get("intervalFrom").value,this.form.get("intervalTo").value)
+     
       this.formValidityChange.emit(this.form.valid);
     });
 
@@ -88,69 +109,185 @@ export class StepFourComponent implements OnInit, OnDestroy ,AfterViewInit{
     this.utcTime2 = this.convertToUTC(this.time2);
     this.time1Sub$ = this.time1.valueChanges.subscribe(res => {
       this.utcTime1 = this.convertToUTC(this.time1);
+      this.checkValidTimeDifference(this.time1,this.time2)
     });
     this.time2Sub$ = this.time2.valueChanges.subscribe(res => {
       this.utcTime2 = this.convertToUTC(this.time2);
+      this.checkValidTimeDifference(this.time1,this.time2)
+
     });
+  }
+// set default campain settings
+setDefaultTime() {
+  if(this.lastCampaignData ){
+      this.form.patchValue({
+        intervalFrom:this.lastCampaignData.intervalFrom,
+        intervalTo:this.lastCampaignData.intervalTo,
+        maxPerDay:this.lastCampaignData.maxPerDay,
+        repeatedDays:this.lastCampaignData.repeatedDays,
+        time1:this.lastCampaignData.sendingoutFrom,
+        time2:this.lastCampaignData.sendingoutTo
+      }
+    
+      )
+      this.isRepeatable=this.lastCampaignData.isRepeatable;
+      if(this.isRepeatable){
+        this.repeatedDays.enable();
+      }
+      
+      this.isInterval=this.lastCampaignData.isInterval;
+      if(!this.isInterval){
+        this.intervalFrom.disable();
+        this.intervalTo.disable();
+        if(!this.showCloseIntervalWarning){
+          this.fromLastCampaignSettings.closeIntervalWarning=true;
+          // warning modal will open with message close interval warning
+          this.showCloseIntervalWarning=true;
+        }
+      }
+          // warning modal will open with message invalid interval range warning
+      this.checkValidIntervalRange(this.form.get("intervalFrom").value,this.form.get("intervalTo").value , true)
+    
+      this.isIntervalChecked=this.lastCampaignData.isInterval;
+      if(this.timesAreSame(this.time1,this.time2)){
+        this.isSendingOutTimeChecked=false;
+        this.time1.disable();
+        this.time2.disable();
+      }
+      else{
+        this.isSendingOutTimeChecked=true;
+        this.time1.enable();
+        this.time2.enable();
+        // warning modal will open with message time difference warning
+      this.checkValidTimeDifference(this.time1,this.time2 , true);
+      
+      
+      }
+  
+    this.showModalsInParallel()
+  }
+
+  else{
+    this.isRepeatable= false;
+    this.isInterval= true;
+    const defaultTime = new Date();
+    defaultTime.setHours(9, 0, 0); 
+    
+    this.time1.setValue(defaultTime);
+    this.time2.setValue(defaultTime);
+  }
   }
 
   ngOnDestroy(): void {
     this.time1Sub$.unsubscribe();
     this.time2Sub$.unsubscribe();
+    this.formSubscription.unsubscribe();
   }
 
   intervalInvalid(formGroup: FormGroup) {
     const intervalFrom = formGroup.get('intervalFrom')!.value;
     const intervalTo = formGroup.get('intervalTo')!.value;
-    if (intervalFrom && intervalTo) {
-      if (intervalFrom < intervalTo || intervalTo > intervalFrom) {
-        return null; // Valid
-      } else {
-        return { intervalInvalid: true }; // Invalid
+  
+    if (intervalFrom && intervalTo && parseInt(intervalFrom, 10) < parseInt(intervalTo, 10)) {
+      return null; // Valid
+    } else {
+      return { intervalInvalid: true }; // Invalid
+    }
+  }
+  checkValidIntervalRange(intFrom , intTo , fromLastCamp?){
+    if((intFrom < 100|| intTo < 180 ) && !this.showIntervalRangeWarning){
+      this.showIntervalRangeWarning=true;
+      if(fromLastCamp){
+        this.fromLastCampaignSettings.itervalRangeWarning=true;
+      }
+      else{
+        this.showWarningModal('interval_warning');
       }
     }
-    return null; // No comparison if values are not set
   }
-
-  setDefaultTime() {
-if(this.lastCampaignData ){
-  this.form.patchValue({
-    intervalFrom:this.lastCampaignData.intervalFrom,
-    intervalTo:this.lastCampaignData.intervalTo,
-    maxPerDay:this.lastCampaignData.maxPerDay,
-    repeatedDays:this.lastCampaignData.repeatedDays,
-    time1:this.lastCampaignData.sendingoutFrom,
-    time2:this.lastCampaignData.sendingoutTo
-  }
-
-  )
-  this.isRepeatable=this.lastCampaignData.isRepeatable;
-  if(this.isRepeatable){
-    this.repeatedDays.enable();
-  }
-  
-  this.isInterval=this.lastCampaignData.isInterval;
-  if(!this.isInterval){
-    this.intervalFrom.disable();
-    this.intervalTo.disable()
-  }
-  this.isIntervalChecked=this.lastCampaignData.isInterval;
-
-  this.isSendingOutTimeChecked=true;
-  this.time1.enable();
-  this.time2.enable();
-
-}
-else{
-  this.isRepeatable= false;
-  this.isInterval= true;
-  this.time1.setValue(new Date());
-  this.time2.setValue(new Date());
-}
+  showWarningModal(warningMsg,onCloseCallback?){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height='45vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='465px';
+    dialogConfig.data=warningMsg;
+    const dialogRef = this.dialog.open(ContactsWarningComponent,dialogConfig);
+    // Subscribe to the afterClosed event to execute the callback function after closing the modal
+  dialogRef.afterClosed().subscribe(() => {
+    if (onCloseCallback) {
+      onCloseCallback();
+    }
+  });
    
   }
+ 
 
+  showModalsInParallel() {
+    const modalFlags = [
+      { flag: 'closeIntervalWarning', message: 'close_interval_warning' },
+      { flag: 'itervalRangeWarning', message: 'interval_warning' },
+      { flag: 'timeDifferenceWarning', message: 'time_difference_warning_msg' }
+    ];
+  
+    // Process the modal flags one by one
+    this.processModalFlags(modalFlags);
+  }
+  
+  // Recursive function to process modal flags one by one
+  processModalFlags(modalFlags: { flag: string, message: string }[]) {
+    if (modalFlags.length === 0) {
+      // All modals processed
+      return;
+    }
+  
+    const { flag, message } = modalFlags[0];
+  
+    if (this.fromLastCampaignSettings[flag]) {
+      this.showWarningModal(message, () => {
+        // Continue to the next modal in the sequence
+        modalFlags.shift(); // Remove the processed flag
+        this.processModalFlags(modalFlags);
+      });
+  
+      // Set the flag to false after showing the modal
+      this.fromLastCampaignSettings[flag] = false;
+    } else {
+      // Move to the next modal in the sequence
+      modalFlags.shift();
+      this.processModalFlags(modalFlags);
+    }
+  }
 
+  timesAreSame(time1: FormControl, time2: FormControl): boolean {
+    const date1: Date = time1.value;
+    const date2: Date = time2.value;
+  
+    return (
+      date1.getHours() === date2.getHours() &&
+      date1.getMinutes() === date2.getMinutes() &&
+      date1.getSeconds() === date2.getSeconds()
+    );
+  }
+  checkValidTimeDifference(time1: FormControl, time2: FormControl , fromLastCamp?) {
+  
+    const date1: Date = time1.value;
+    const date2: Date = time2.value;
+  
+    const timeDifference = Math.abs(date1.getTime() - date2.getTime()) / 1000; // Difference in seconds
+  
+    if (timeDifference < 80 && !this.showTimeDifferenceWarning && !this.timesAreSame(time1, time2)) {
+      this.showTimeDifferenceWarning = true;
+      if(fromLastCamp){
+        this.fromLastCampaignSettings.timeDifferenceWarning=true;
+      }
+      else{
+        this.showWarningModal('time_difference_warning_msg');
+
+      }
+    }
+  }
   convertToUTC(timecontrol: any): any {
     const selectedTime = timecontrol.value;
 
@@ -173,13 +310,19 @@ else{
   
     const utcDate = new Date();
     utcDate.setUTCHours(hours, minutes);
-    console.log(utcDate,"date:",new Date())
     // Convert UTC time to local time
     return utcDate;
   }
   onSwitcherChange(e, data) {
     for (let item of data) {
       e.target.checked ? item.enable() : item.disable();
+   
+    }
+    if(!this.isInterval){
+      if(!this.showCloseIntervalWarning){
+        this.showWarningModal('close_interval_warning');
+        this.showCloseIntervalWarning=true;
+      }
     }
   }
 

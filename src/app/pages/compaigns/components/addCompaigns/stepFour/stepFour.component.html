@@ -17,7 +17,6 @@
             [error]="false"
             [fullWidth]="true"
             [min]="minNum"
-            [max]="maxNum"
             formControlName="intervalFrom"
           ></us-input>
         </div>
@@ -29,13 +28,12 @@
             [error]="false"
             [fullWidth]="true"
             [min]="minNum"
-            [max]="maxNum"
             formControlName="intervalTo"
           ></us-input>
         </div>
-        <div *ngIf="intervalFrom.value > maxNum || intervalTo.value > maxNum || intervalFrom.value > intervalTo.value" class="hint error" style="position: absolute; bottom: -31px;">
+        <div *ngIf="form.hasError('intervalInvalid')" class="hint error" style="position: absolute; bottom: -31px;">
           <i class="si-info"></i>
-          <p class="txt txt-xs">{{ 'invalidNumberHint' | translate }}</p>
+          <p class="txt txt-xs">{{ 'invalidIntervalHint' | translate }}</p>
         </div>
       </div>
     </div>
