@@ -12,6 +12,8 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ConfirmaionsComponent } from './confirmaions/confirmaions.component';
+import { ExpectedCampEndTimeComponent } from './expectedCampEndTime/expectedCampEndTime.component';
+import { MatStepper } from '@angular/material/stepper';
 // import { WriteMessageComponent } from 'src/app/pages/messages/Components/new-message/write-message/write-message.component';
 @Component({
   selector: 'app-addCompaigns',
@@ -35,7 +37,7 @@ export class AddCompaignsComponent implements OnInit {
   intervalTo: number;
   blackoutFrom: any;
   blackoutTo: any;
-  maxPerDay: number;
+  // maxPerDay: number;
   message:string="";
   lists:string[]=[];
   dateTime:string;
@@ -58,7 +60,7 @@ lastCampaignData:{
   repeatedDays:number,
   isRepeatable:boolean,
   isInterval:boolean,
-  maxPerDay:number,
+  // maxPerDay:number,
   sendingoutFrom:any,
   sendingoutTo:any
 
@@ -81,6 +83,8 @@ actions:any=[];
   campaignId:string;
   stepFiveValidate: boolean;
   step5: boolean;
+  @ViewChild('stepper') stepper: MatStepper;
+  totalContacts:number=0;
   constructor(private compaignsService:CompaignsService,
     private toasterService:ToasterServices,
     private translate: TranslateService,
@@ -91,7 +95,11 @@ actions:any=[];
 this.getLastCampaignData();
   }
   getLists(listsData){
-    this.lists=listsData.map((list)=>list.id);
+    this.lists=listsData.map((list:ListData)=>{
+      this.totalContacts += list.totalContacts
+      return list.id
+    }
+    );
   }
 
   filesUrls(e){
@@ -154,10 +162,90 @@ toStepFive(){
   this.intervalTo=this.stepFourComponent.form.get("intervalTo").value;
   this.blackoutFrom=this.stepFourComponent.utcTime1;
   this.blackoutTo=this.stepFourComponent.utcTime2;
-  this.maxPerDay=this.stepFourComponent.form.get("maxPerDay").value;
+  // this.maxPerDay=this.stepFourComponent.form.get("maxPerDay").value;
   this.stepFourComponent.convertToUTC(this.blackoutFrom);
-  this.step5=true;
+
+  this.calulateCampExpectedTime()
+
+
 }
+
+calulateCampExpectedTime(){
+  let startDate=this.stepFourComponent.time1;
+  let endDate =this.stepFourComponent.time2;
+  console.log('start time : ' , startDate , 'end time' , endDate)
+  let timeDiff = !this.stepFourComponent.timesAreSame(startDate,endDate) ? this.calculateTimeDifference(startDate.value , endDate.value) : 24;
+
+  let intervalAvg = this.isInterval ? (this.intervalFrom + this.intervalTo) /2 : 1 ;
+  let result = (intervalAvg * this.totalContacts / timeDiff / 60 / 60  );
+  console.log( 'intervalAverage: ' ,intervalAvg)
+
+  // Extracting the integer part using Math.floor
+  let numOfDays = Math.floor(result);
+  let numOfHours = (result - numOfDays) * 24;
+
+  // Calculate minutes
+  let numOfMinutes = Math.round((numOfHours - Math.floor(numOfHours)) * 60);
+
+  // Format the result as a string
+  let formattedTime = '';
+
+  if (numOfDays > 0) {
+    formattedTime += `${numOfDays} ${this.translate.instant('days')} `;
+  }
+
+  if (Math.floor(numOfHours) > 0) {
+    formattedTime += `${Math.floor(numOfHours)} ${this.translate.instant('hours')} `;
+  }
+
+  if (numOfMinutes > 0) {
+    formattedTime += `${numOfMinutes} ${this.translate.instant('minutes')}`;
+  }
+
+  console.log("numOfDays",numOfDays ,"numOfHours " , numOfHours , 'formattedTime' , formattedTime)
+
+  this.openCampExpectedTimeModal(formattedTime);
+}
+
+calculateTimeDifference(startDate: Date, endDate: Date): number {
+  // Make a copy of the start date to avoid modifying the original object
+  const start = new Date(startDate);
+
+  // If end date is before start date, assume it's on the next day
+  if (endDate < startDate) {
+    endDate.setDate(endDate.getDate() + 1);
+  }
+  
+  // Calculate the difference in milliseconds
+  const timeDiff = Math.abs(endDate.getTime() - start.getTime());
+
+  // Convert the difference to seconds
+  const secondsDiff = timeDiff / 1000;
+  console.log('from calculateTimeDifference , time difference in seconds :' ,secondsDiff );
+
+  return secondsDiff;
+}
+openCampExpectedTimeModal(data){
+
+  const dialogConfig=new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.height='49vh';
+  dialogConfig.width='55vw';
+  dialogConfig.minHeight='350px';
+  dialogConfig.maxWidth='100%';
+  dialogConfig.minWidth='585px';
+  dialogConfig.data=data;
+  const dialogRef = this.dialog.open(ExpectedCampEndTimeComponent,dialogConfig);
+  dialogRef.afterClosed().subscribe(result => {
+    if(result){
+      this.step5=true;
+      this.stepper.next();
+    }
+  
+  });
+
+}
+
 setActions(event){
   this.actions=event
     }
@@ -173,7 +261,7 @@ const data={
   intervalTo: this.intervalTo,
   sendingoutFrom: this.blackoutFrom,
   sendingoutTo: this.blackoutTo,
-  maxPerDay: this.maxPerDay,
+  maxPerDay: 100000,
   attachments: this.attachments,
   lists: this.lists,
   email: this.authService.getUserInfo()?.email,
