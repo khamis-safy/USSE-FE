@@ -58,7 +58,7 @@
             </div>
             
             <div class="d-flex align-items-center p-2  gap-2">
-              <button (click)="addQuestion()" class="rest-style pointer" [disabled]="!myForm.valid ">
+              <button (click)="addQuestion()" class="rest-style pointer" [disabled]="!myForm.valid || myForm.get('questions').hasError('whitespace')">
                 <img src="assets/icons/addQ.svg" alt="" />
               </button>
               <span>{{ 'addAQuestion' | translate }} </span>

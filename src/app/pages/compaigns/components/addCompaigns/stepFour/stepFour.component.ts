@@ -41,7 +41,7 @@ export class StepFourComponent implements OnInit, OnDestroy ,AfterViewInit{
     repeatedDays:number,
     isRepeatable:boolean,
     isInterval:boolean,
-    maxPerDay:number,
+    // maxPerDay:number,
     sendingoutFrom:string,
     sendingoutTo:string
   
@@ -49,9 +49,9 @@ export class StepFourComponent implements OnInit, OnDestroy ,AfterViewInit{
   toggleTime: boolean = false;
   time1: any = new FormControl({ value: '', disabled: true }, [Validators.required]);
   time2: any = new FormControl({ value: '', disabled: true }, [Validators.required]);
-  intervalFrom: any = new FormControl({ value: 15, disabled: false }, [Validators.required]);
-  intervalTo: any = new FormControl({ value: 30, disabled: false }, [Validators.required]);
-  maxPerDay: any = new FormControl({ value: 100, disabled: false }, [Validators.required]);
+  intervalFrom: any = new FormControl({ value: 100, disabled: false }, [Validators.required]);
+  intervalTo: any = new FormControl({ value: 180, disabled: false }, [Validators.required]);
+  // maxPerDay: any = new FormControl({ value: 100, disabled: false }, [Validators.required]);
   repeatedDays: any = new FormControl({ value: 0, disabled: true }, [Validators.required]);
   selectedTime: Date = new Date();
   form: FormGroup;
@@ -80,7 +80,7 @@ export class StepFourComponent implements OnInit, OnDestroy ,AfterViewInit{
       {
         intervalFrom: this.intervalFrom,
         intervalTo: this.intervalTo,
-        maxPerDay: this.maxPerDay,
+        // maxPerDay: this.maxPerDay,
         repeatedDays: this.repeatedDays,
         time1: this.time1,
         time2: this.time2,
@@ -123,7 +123,7 @@ setDefaultTime() {
       this.form.patchValue({
         intervalFrom:this.lastCampaignData.intervalFrom,
         intervalTo:this.lastCampaignData.intervalTo,
-        maxPerDay:this.lastCampaignData.maxPerDay,
+        // maxPerDay:this.lastCampaignData.maxPerDay,
         repeatedDays:this.lastCampaignData.repeatedDays,
         time1:this.lastCampaignData.sendingoutFrom,
         time2:this.lastCampaignData.sendingoutTo
@@ -209,6 +209,7 @@ setDefaultTime() {
     const dialogConfig=new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.height='45vh';
+    dialogConfig.minHeight='380px';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='465px';

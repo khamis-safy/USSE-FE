@@ -483,6 +483,7 @@ showWarningModal(){
   dialogConfig.disableClose = true;
   dialogConfig.height='45vh';
   dialogConfig.width='35vw';
+  dialogConfig.minHeight='380px';
   dialogConfig.maxWidth='100%';
   dialogConfig.minWidth='465px';
   dialogConfig.data='contacts_count_warning';
