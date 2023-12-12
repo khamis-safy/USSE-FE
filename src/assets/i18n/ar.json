@@ -567,7 +567,10 @@
 "campaign_timeExpected_msg":"سوف تستمر حملتك/تستغرق",
 "days":"يوم",
 "hours":"ساعة",
-"minutes":"دقيقة"
+"minutes":"دقيقة",
+"This number alraedy exists":"هذا الرقم موجود بالفعل",
+"criteria_already_exist":"هذا المعيار موجود بالفعل",
+"repeated_question":"هذا السؤال مكرر"
 
 
 }

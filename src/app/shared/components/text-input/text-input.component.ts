@@ -48,6 +48,10 @@ export class InputComponent implements  AfterViewInit {
   }
   writeValue(value: any): void {
     this.val = value;
+    if (this.isTextArea) {
+      // Update the character count for the initial value
+      this.charCount = this.val ? this.val.length : 0;
+    }
   }
   // ================================
 
@@ -65,6 +69,7 @@ export class InputComponent implements  AfterViewInit {
   @Input() hintIcon = 'si-info'; // the icon before the hint
   @Input() type: 'text' | 'number' = 'text'; // type [ text or number ]
   @Input() error?: boolean; // change styles for error appearance
+  @Input() warning?: boolean=false; // change styles for warning appearance
   @Input() fullWidth?: boolean; // take full width of the parent
   @Input() hideSteppers?: boolean=false; // hide steppers butttons
 
@@ -100,11 +105,16 @@ export class InputComponent implements  AfterViewInit {
   isEmojiClicked: boolean = false;
   constructor(private el: ElementRef) {}
   get value(): any {
+
     return this.val;
   }
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.updateDivHeight();
+      if (this.isTextArea) {
+        // Emit the initial character count
+        this.input.emit(this.val);
+      }
     }, 0);
   }
   increment() {

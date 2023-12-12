@@ -570,6 +570,9 @@
 "campaign_timeExpected_msg":"Your campaign will last/take",
 "days":"Day",
 "hours":"Hours",
-"minutes":"Minutes"
+"minutes":"Minutes",
+"This number alraedy exists":"This number alraedy exists",
+"criteria_already_exist":"This criteria already exist",
+"repeated_question":"This question is repeated"
 
 }

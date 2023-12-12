@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { noWhitespaceValidator } from 'src/app/shared/methods/noWhiteSpaceValidator';
 
 
@@ -25,7 +26,8 @@ export class CriteriaComponent implements OnInit {
   criteriaConditions:string[] = ["full" , "start","end","contain"]
 
   selectedCondition:{title:string, value:number};
-  constructor(private translate:TranslateService) { 
+  constructor(private translate:TranslateService,
+              private toaster:ToasterServices) { 
     this.conditionsData=[
       {title:translate.instant('full') , value:1},
       {title:translate.instant('start') , value:2},
@@ -48,16 +50,21 @@ export class CriteriaComponent implements OnInit {
   save(){
     this.showInputs=false;
     this.disableSaveButton.emit(this.showInputs)
+    if(this.criteriaParameters.find((criteria)=> criteria.criteria == this.form.value.keyWord && criteria.type == this.criteriaConditions[this.selectedCondition.value])){
+      this.toaster.warning(this.translate.instant('criteria_already_exist'))
+    }
+    else{
     this.criteriaParameters.push({
       criteria:this.form.value.keyWord,
       type:this.criteriaConditions[this.selectedCondition.value]
       
     })
+    this.allCriterias.emit(this.criteriaParameters)
+   }
     this.form.patchValue({
       keyWord:"",
       conditionValue:null
     })
-    this.allCriterias.emit(this.criteriaParameters)
   }
   cancel(){
     this.showInputs=false;

@@ -501,7 +501,7 @@ addHocNumber(){
   let contactsNum=this.addedContacts.map((contact)=>{return contact.mobileNumber});
   let foundContact=contactsNum.find((cont)=>this.form.value.mobile.e164Number.substring(1)==cont)
   if(foundContact){
-    this.toaster.warning("This number alraedy exists")
+    this.toaster.warning(`${this.translate.instant('This number alraedy exists')}`)
 
 }
 
@@ -509,6 +509,10 @@ else{
   if(!this.addHocs.find((hoc)=>this.form.value.mobile.e164Number.substring(1)==hoc)){
 
     this.addHocs.push(this.form.value.mobile.e164Number.substring(1));
+  }
+  else{
+    this.toaster.warning(`${this.translate.instant('This number alraedy exists')}`)
+
   }
   this.form.patchValue({
     mobile:''

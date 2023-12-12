@@ -29,7 +29,6 @@ export class InquiryComponent implements OnInit ,AfterViewInit{
   });
   noQuestions:boolean=false;
 
-
   @ViewChild('dialogElement') dialogElement: ElementRef;
   constructor(public dialogRef: MatDialogRef<InquiryComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any,
@@ -48,6 +47,10 @@ export class InquiryComponent implements OnInit ,AfterViewInit{
     if (this.data) {
       this.fillData();
     }
+  }
+   isQuestionRepeated(index: number): boolean {
+    const currentQuestion = this.questions.at(index).value;
+    return this.questions.value.slice(0, index).includes(currentQuestion);
   }
   ngAfterViewInit() {
     // Set the appendTo option after the view has been initialized
@@ -74,7 +77,7 @@ export class InquiryComponent implements OnInit ,AfterViewInit{
     return this.myForm.get('questions') as FormArray;
   }
   addQuestion() {
-    const questionControl = this.fb.control('', Validators.required);
+    const questionControl = this.fb.control('',  [Validators.required, noWhitespaceValidator]);
     this.questions.push(questionControl);
   }
 

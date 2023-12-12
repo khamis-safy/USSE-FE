@@ -45,6 +45,8 @@
                         type="text"
                         [label]="('question' |translate) +' ' + (i+1)"
                         [error]="false"
+                        [warning]="isQuestionRepeated(i)"
+                        [hintText]=" isQuestionRepeated(i) ? ('repeated_question' | translate) :''"
                         [fullWidth]="true"
                       ></us-input>
                       </div>
@@ -54,6 +56,9 @@
                         <img class="pointer" (click)="removeQuestion(i)"  src="assets/icons/delDev.svg" alt="delete question" />
                       </div>
                   </div>
+                  
+                 
+                
               </div>
             </div>
             

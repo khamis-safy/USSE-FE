@@ -170,10 +170,18 @@
     
 
 
-    <!-- Hint / caption -->
-    <div *ngIf="hintText" class="hint mt-2" [ngClass]="{ error }">
+    <!-- error Hint / caption -->
+    <div *ngIf="hintText && !warning " class="hint mt-2" [ngClass]="{ error }">
       <i [class]="hintIcon"></i>
       <p class="txt txt-xs hint mt-2" [ngClass]="{ error }">{{ hintText }}</p>
     </div>
+
+      <!-- warning Hint / caption -->
+   <div *ngIf="hintText && warning " class="hint mt-2" [ngClass]="{ warning }">
+    <i [class]="hintIcon"></i>
+    <p class="txt txt-xs hint mt-2" [ngClass]="{ warning }">{{ hintText }}</p>
   </div>
+  </div>
+
+ 
 </section>
