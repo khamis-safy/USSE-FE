@@ -82,7 +82,8 @@ export class InputComponent implements  AfterViewInit {
   @Input() validators?: Function[];
   @Input() isTextArea?: boolean;
   @Input() isEmoji?: boolean = false;
-
+  @Input() maxCharLimit?: number = 1600;
+  charCount: number = 0;
   // Native Events
   @Output() keyup = new EventEmitter();
   @Output() keydown = new EventEmitter();
@@ -132,6 +133,13 @@ export class InputComponent implements  AfterViewInit {
 
   onValueChange(element: any) {
     if (this.validators?.length) this.validators.forEach((fn) => fn(element));
+    if(this.isTextArea){
+        // Update the character count
+      this.charCount = this.value ? this.value.length : 0;
+
+      // Emit the input event
+      this.input.emit(this.value);
+    }
   }
   addEmoji(e){
     let val = this.value ? this.value : ""

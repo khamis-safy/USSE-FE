@@ -107,6 +107,7 @@
         [disabled]="isDisabled"
         [pattern]="pattern"
         (blur)="onTouched()"
+        [maxlength]="maxCharLimit"
         (ngModelChange)="onValueChange(srInputEl)"
         (change)="change.emit(value)"
         (keyup)="keyup.emit(value)"
@@ -118,6 +119,7 @@
         (input)="input.emit($event);updateDivHeight()"
       >
       </textarea>
+     
 
       <div *ngIf="suffix" class="suffix">
         <p class="txt txt-sm">{{ suffix }}</p>
@@ -131,32 +133,40 @@
       >
       </i> 
     </div>
-    <ng-container (appClickOutside)="showEmoji = false" *ngIf="isEmoji">
-      <div class="emo-con mx-2 mt-2 d-flex flex-column position-relative" 
-           (mouseover)="!isEmojiClicked && (showEmoji=true)" 
-           (mouseleave)="!isEmojiClicked && (showEmoji=false)" 
-          
-           style="width: fit-content;">
-    
-        <button  (click)="isEmojiClicked = !isEmojiClicked" class="btn rounded-3 shadow-sm bg-white d-flex justify-content-center align-items-center p-2">
-          <mat-icon class="material-symbols-outlined text-secondary" style="height: 21px; font-size: 23px;">
-            sentiment_satisfied
-          </mat-icon>
-        </button>
-    
-        <emoji-mart
-          class="position-absolute start-0 top-0 emoji-pick"
-          (emojiClick)="addEmoji($event)"
-          *ngIf="showEmoji || isEmojiClicked"
-          [enableSearch]="false"
-          [darkMode]="false"
-          set="google"
-          [showPreview]="false"
-          color="var(--clr-primary-600)">
-        </emoji-mart>
-    
+    <div class="d-flex justify-content-between  mx-2 mt-2" style="width: 98%;">
+      
+      <ng-container (appClickOutside)="showEmoji = false" *ngIf="isEmoji">
+        <div class="emo-con  d-flex flex-column position-relative" 
+             (mouseover)="!isEmojiClicked && (showEmoji=true)" 
+             (mouseleave)="!isEmojiClicked && (showEmoji=false)" 
+            
+             style="width: fit-content;">
+      
+          <button  (click)="isEmojiClicked = !isEmojiClicked" class="btn rounded-3 shadow-sm bg-white d-flex justify-content-center align-items-center p-2">
+            <mat-icon class="material-symbols-outlined text-secondary" style="height: 21px; font-size: 23px;">
+              sentiment_satisfied
+            </mat-icon>
+          </button>
+      
+          <emoji-mart
+            class="position-absolute start-0 top-0 emoji-pick"
+            (emojiClick)="addEmoji($event)"
+            *ngIf="showEmoji || isEmojiClicked"
+            [enableSearch]="false"
+            [darkMode]="false"
+            set="google"
+            [showPreview]="false"
+            color="var(--clr-primary-600)">
+          </emoji-mart>
+      
+        </div>
+      </ng-container>
+
+      <div *ngIf="isTextArea" class="char-count">
+        <span style="color: #868686;">{{ charCount }} / {{ maxCharLimit }}</span> 
       </div>
-    </ng-container>
+    </div>
+ 
     
 
 
