@@ -481,11 +481,11 @@ checkValidContactsCount(){
 showWarningModal(){
   const dialogConfig=new MatDialogConfig();
   dialogConfig.disableClose = true;
-  dialogConfig.height='45vh';
-  dialogConfig.width='35vw';
-  dialogConfig.minHeight='380px';
+  dialogConfig.height='50vh';
+  dialogConfig.width='44vw';
+  dialogConfig.minHeight='480px';
   dialogConfig.maxWidth='100%';
-  dialogConfig.minWidth='465px';
+  dialogConfig.minWidth='530px';
   dialogConfig.data='contacts_count_warning';
   const dialogRef = this.dialog.open(ContactsWarningComponent,dialogConfig);
  
