@@ -90,7 +90,7 @@ export class ScheduledComponent implements OnInit ,AfterViewInit {
     }
  // get devices data
  getDevices(){
-  this.authService.getDevices(this.messageService.email,10,0,"","").subscribe(
+  this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
     (res)=>{
       let alldevices=res;
       if(this.permission){
@@ -116,6 +116,7 @@ export class ScheduledComponent implements OnInit ,AfterViewInit {
         this.loading = false;
         this.length=0;
         this.noData=true;
+
       }
       else{
         this.noData=false

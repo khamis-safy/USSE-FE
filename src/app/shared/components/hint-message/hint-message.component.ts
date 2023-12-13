@@ -8,8 +8,12 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./hint-message.component.scss']
 })
 export class HintMessageComponent implements OnInit , OnDestroy {
-  translatedMessage: string;
-  sub:any
+  @Input() translatedMessage: string;
+  sub:any;
+  @Input() devicesWarning:boolean =false;
+  @Input() trialMessage:boolean = false;
+  @Output() closeWarning = new EventEmitter();
+  
   constructor(private translate:TranslateService, private authService:AuthService) { 
 
     this.translateMessage();
@@ -19,16 +23,23 @@ export class HintMessageComponent implements OnInit , OnDestroy {
     this.sub.unsubscribe();
   }
   translateMessage() {
-    const specificDate = this.authService.getSubscriptionState()?.trialEndDate ; 
-    const messagesCount =this.authService.getSubscriptionState()?.messageCount;
+    if(this.trialMessage){
 
-    this.sub= this.translate.get('trialEndMessage', { specificDate, messagesCount }).subscribe((res: string) => {
-      this.translatedMessage = res;
-    });
+      const specificDate = this.authService.getSubscriptionState()?.trialEndDate ; 
+      const messagesCount =this.authService.getSubscriptionState()?.messageCount;
+  
+      this.sub= this.translate.get('trialEndMessage', { specificDate, messagesCount }).subscribe((res: string) => {
+        this.translatedMessage = res;
+      });
+    }
+
+
   }
   ngOnInit() {
    
   }
- 
+  onClose(){
+    this.closeWarning.emit(true)
+  }
 
 }

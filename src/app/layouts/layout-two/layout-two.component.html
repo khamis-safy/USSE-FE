@@ -5,7 +5,17 @@
   <div class="d-flex justify-content-space-between flex-column vh-91" style="width: 92vw !important;">
     <!-- <app-header class="navbar-comp d-flex align-items-center rounded-3" (toggleSidebar)="sidebarTogg()"></app-header> -->
     <div class="vh-92 overflow-auto" >
-      <app-hint-message *ngIf="showTrialHintMessage"></app-hint-message>
+      <app-hint-message *ngIf="showTrialHintMessage" [trialMessage]="true"></app-hint-message>
+
+      <app-hint-message 
+      *ngIf="showDeviceWarningMessage" 
+      [devicesWarning]="true" 
+      [trialMessage]="false"
+      [translatedMessage]="warningMessage"
+      (closeWarning)="showDeviceWarningMessage = !$event"
+      >
+      </app-hint-message>
+
       <!-- [@routeAnimations]="prepareRoute(outlet)" -->
       <router-outlet #outlet="outlet"></router-outlet>
     </div>

@@ -196,8 +196,8 @@ else{
     dialogConfig.height='95vh';
     dialogConfig.width='70vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='465px';
-    dialogConfig.maxHeight='85vh';
+    dialogConfig.minWidth='987px';
+    dialogConfig.maxHeight='705px';
     dialogConfig.disableClose = true;
     if(data){
       dialogConfig.data=data

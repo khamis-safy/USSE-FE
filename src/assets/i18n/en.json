@@ -573,6 +573,8 @@
 "minutes":"Minutes",
 "This number alraedy exists":"This number alraedy exists",
 "criteria_already_exist":"This criteria already exist",
-"repeated_question":"This question is repeated"
+"repeated_question":"This question is repeated",
+"device_inactive_warning": "you have  {{numOfInactiveDev}} device/s inactive , go to devices page and activate it / them",
+"no_devices_warning":"You have not added any device yet. Go to the Devices page to add a new device."
 
 }

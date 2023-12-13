@@ -62,6 +62,7 @@ permissionSubject = new BehaviorSubject<Permission>({
   Contacts:true
     });
 userData$:Observable<any>;
+showWarning:number=0;
 constructor(private loginService:LoginService,
   private http:HttpClient,
   private permissionService:PermissionsService,
@@ -342,6 +343,12 @@ this.subscriptionState.trialEndDate=this.convertUtcDateToLocal(this.subscription
 getSubscriptionState(){
 
   return this.subscriptionState;
+}
+setShownNumber(num){
+  this.showWarning+=num;
+}
+getShownNumber(){
+  return this.showWarning
 }
 convertUtcDateToLocal(utcDate){
   if (utcDate) {
