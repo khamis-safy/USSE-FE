@@ -91,7 +91,7 @@
     <div class="w-100  d-flex justify-content-between align-items-center">
       <label style="width:30%">{{ 'sendingOutTimeLabel' | translate }}</label>
       <div style="width:20%" class="form-check form-switch">
-        <input [checked]="isSendingOutTimeChecked" (change)="onSwitcherChange($event,[time1,time2])" class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input [checked]="isSendingOutTimeChecked" (change)="isSendingOutTimeChecked = !isSendingOutTimeChecked ;onSwitcherChange($event,[time1,time2])" class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
       </div>
       <div class="d-flex  flex-column" style="width:42%; position: relative;">
         <div class="d-flex align-items-center justify-content-between">

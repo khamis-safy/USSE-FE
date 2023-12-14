@@ -48,7 +48,7 @@ export class InputComponent implements  AfterViewInit {
   }
   writeValue(value: any): void {
     this.val = value;
-    if (this.isTextArea) {
+    if (this.isTextArea && this.limitTextarea) {
       // Update the character count for the initial value
       this.charCount = this.val ? this.val.length : 0;
     }
@@ -87,7 +87,9 @@ export class InputComponent implements  AfterViewInit {
   @Input() validators?: Function[];
   @Input() isTextArea?: boolean;
   @Input() isEmoji?: boolean = false;
-  @Input() maxCharLimit?: number = 1600;
+  @Input() limitTextarea?: boolean = true;
+
+  @Input() maxCharLimit?: number;
   charCount: number = 0;
   // Native Events
   @Output() keyup = new EventEmitter();
@@ -111,7 +113,8 @@ export class InputComponent implements  AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.updateDivHeight();
-      if (this.isTextArea) {
+      if (this.isTextArea && this.limitTextarea) {
+        this.maxCharLimit=1600;
         // Emit the initial character count
         this.input.emit(this.val);
       }
@@ -143,7 +146,7 @@ export class InputComponent implements  AfterViewInit {
 
   onValueChange(element: any) {
     if (this.validators?.length) this.validators.forEach((fn) => fn(element));
-    if(this.isTextArea){
+    if(this.isTextArea && this.limitTextarea){
         // Update the character count
       this.charCount = this.value ? this.value.length : 0;
 

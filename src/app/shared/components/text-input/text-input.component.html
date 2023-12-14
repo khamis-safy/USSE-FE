@@ -162,7 +162,7 @@
         </div>
       </ng-container>
 
-      <div *ngIf="isTextArea" class="char-count">
+      <div *ngIf="isTextArea && limitTextarea" class="char-count">
         <span style="color: #868686;">{{ charCount }} / {{ maxCharLimit }}</span> 
       </div>
     </div>

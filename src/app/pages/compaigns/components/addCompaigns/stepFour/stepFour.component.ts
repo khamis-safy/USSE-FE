@@ -151,6 +151,7 @@ setDefaultTime() {
       this.isIntervalChecked=this.lastCampaignData.isInterval;
       if(this.timesAreSame(this.time1,this.time2)){
         this.isSendingOutTimeChecked=false;
+        this.setTimeToDefault()
         this.time1.disable();
         this.time2.disable();
       }
@@ -170,11 +171,7 @@ setDefaultTime() {
   else{
     this.isRepeatable= false;
     this.isInterval= true;
-    const defaultTime = new Date();
-    defaultTime.setHours(9, 0, 0); 
-    
-    this.time1.setValue(defaultTime);
-    this.time2.setValue(defaultTime);
+    this.setTimeToDefault()
   }
   }
 
@@ -183,7 +180,13 @@ setDefaultTime() {
     this.time2Sub$.unsubscribe();
     this.formSubscription.unsubscribe();
   }
-
+setTimeToDefault(){
+  const defaultTime = new Date();
+    defaultTime.setHours(9, 0, 0); 
+    
+    this.time1.setValue(defaultTime);
+    this.time2.setValue(defaultTime);
+}
   intervalInvalid(formGroup: FormGroup) {
     const intervalFrom = formGroup.get('intervalFrom')!.value;
     const intervalTo = formGroup.get('intervalTo')!.value;
@@ -324,6 +327,9 @@ setDefaultTime() {
         this.showWarningModal('close_interval_warning');
         this.showCloseIntervalWarning=true;
       }
+    }
+    if(!this.isSendingOutTimeChecked){
+      this.setTimeToDefault()
     }
   }
 
