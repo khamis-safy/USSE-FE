@@ -8,6 +8,7 @@ import { FileFieldsComponent } from '../fileFields/fileFields.component';
 import { ListData } from '../../../list-data';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { BulkOperations } from 'src/app/shared/interfaces/bulkOperations';
 
 export interface files{
   name:string,
@@ -141,10 +142,17 @@ export class UploadSheetComponent implements OnInit {
       }
     }
     this.listService.importFile(data).subscribe(
-      (res)=>{
+      (res : BulkOperations)=>{
         this.loading=false;
-        this.onClose(true)
-        this.toaster.success(this.translate.instant("COMMON.SUCC_MSG"))
+        
+       
+        if(res.numberOfErrors === 0){
+          this.onClose('noErrors');
+        }
+        else{
+          let errorObject =res;
+          this.onClose(errorObject);
+        }
       },
       (err)=>{
         this.loading=false;
@@ -182,7 +190,6 @@ export class UploadSheetComponent implements OnInit {
 
 
       });
-
 
   }
   onSelect(event){

@@ -3,8 +3,9 @@
   <div class="message-content">
     <p class="d-flex mb-0">
       <mat-icon class="mx-1">info</mat-icon>
-      {{translatedMessage}} 
-      <a *ngIf="trialMessage" href="mailto:contact@qweira.com" class="mx-1">contact@qweira.com</a>.
+      <span *ngIf="isTrialMessage"> {{trialMessage}}</span> 
+      <span *ngIf="devicesWarning"> {{translatedMessage}}</span> 
+      <a *ngIf="isTrialMessage" href="mailto:contact@qweira.com" class="mx-1">contact@qweira.com</a>.
     </p>
   </div>
 

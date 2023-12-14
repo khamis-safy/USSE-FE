@@ -1963,3 +1963,16 @@ ul[dnd-list] .dndDragging {
 }
 
 }
+.custom-mat-dialog-container{
+  .mat-dialog-container{
+    border-radius: 25px !important;
+  }
+  
+}
+.custom-mat-dialog-container{
+.mat-mdc-dialog-container
+ .mdc-dialog__surface{
+
+    border-radius: 25px !important;
+
+}}

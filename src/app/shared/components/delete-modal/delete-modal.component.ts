@@ -189,21 +189,13 @@ export class DeleteModalComponent implements OnInit {
     this.listService.deleteContact(this.authService.getUserInfo()?.email, this.body).subscribe(
       (res) => {
         this.isLoading = false
-
-        this.onClose(this.body);
-        let succ = res.numberOfSuccess;
-        let err = res.numberOfErrors;
-        if (succ == 0 && err > 0) {
-          this.toaster.error(`Error - ${err}`)
+        if(res.numberOfErrors === 0){
+          this.onClose({errors:'noErrors' , data:this.body});
         }
-
-        else if (succ > 0 && err > 0) {
-          this.toaster.warning(`${succ} Success ${err} Failed`)
-        }
-        else if (succ > 0 && err == 0) {
-          this.toaster.success(`${res.numberOfSuccess} ${this.translate.instant("COMMON.DELETE_MESSAGES")}`)
-
-        }
+        else{
+          let errorObject =res;
+          this.onClose({errors:errorObject , data:this.body});
+        }      
 
       },
       (err) => {
@@ -236,21 +228,13 @@ this.botService.deleteAutomation(this.data.automationData.automationId,this.auth
     this.listService.removeContactsFromLists(this.body,this.authService.getUserInfo()?.email).subscribe(
       (res) => {
         this.isLoading = false
-        this.onClose(this.body);
-
-        let succ = res.numberOfSuccess;
-        let err = res.numberOfErrors;
-        if (succ == 0 && err > 0) {
-          this.toaster.error(`Error - ${err}`)
+        if(res.numberOfErrors === 0){
+          this.onClose('noErrors');
         }
-
-        else if (succ > 0 && err > 0) {
-          this.toaster.warning(`${succ} Success ${err} Failed`)
-        }
-        else if (succ > 0 && err == 0) {
-          this.toaster.success(`${res.numberOfSuccess} ${this.translate.instant("COMMON.DELETE_MESSAGES")}`)
-
-        }
+        else{
+          let errorObject =res;
+          this.onClose(errorObject);
+        }      
 
       },
       (err) => {
@@ -358,20 +342,14 @@ this.botService.deleteAutomation(this.data.automationData.automationId,this.auth
     this.listService.deleteList(this.authService.getUserInfo()?.email, body).subscribe(
       (res) => {
         this.isLoading = false
-        this.onClose(body);
-        let succ = res.numberOfSuccess;
-        let err = res.numberOfErrors;
-        if (succ == 0 && err > 0) {
-          this.toaster.error(`Error - ${err}`)
-        }
-
-        else if (succ > 0 && err > 0) {
-          this.toaster.warning(`${succ} Success ${err} Failed`)
-        }
-        else if (succ > 0 && err == 0) {
-          this.toaster.success(`${res.numberOfSuccess} Deleted Successfully`)
+        if(res.numberOfErrors === 0){
+          this.onClose({errors:'noErrors' , data:body});
 
         }
+        else{
+          let errorObject =res;
+          this.onClose({errors:errorObject , data:body});
+        }      
 
       },
       (err) => {
@@ -385,20 +363,13 @@ this.botService.deleteAutomation(this.data.automationData.automationId,this.auth
     this.listService.removeContactsFromOneList(this.contacts, this.list,this.authService.getUserInfo()?.email).subscribe(
       (res) => {
         this.isLoading = false
-        this.onClose(true);
-        let succ = res.numberOfSuccess;
-        let err = res.numberOfErrors;
-        if (succ == 0 && err > 0) {
-          this.toaster.error(`Error - ${err}`)
+        if(res.numberOfErrors === 0){
+          this.onClose('noErrors');
         }
-
-        else if (succ > 0 && err > 0) {
-          this.toaster.warning(`${succ} Success ${err} Failed`)
-        }
-        else if (succ > 0 && err == 0) {
-          this.toaster.success(`${res.numberOfSuccess} ${this.translate.instant("COMMON.DELETE_MESSAGES")}`)
-
-        }
+        else{
+          let errorObject =res;
+          this.onClose(errorObject);
+        }      
 
       },
       (err) => {

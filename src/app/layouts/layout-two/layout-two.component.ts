@@ -42,7 +42,7 @@ export class LayoutTwoComponent implements OnInit {
     this.authService.getDevices(this.authService.getUserInfo()?.email,100,0,"","").subscribe(
       (res)=>{
         let alldevices=res;
-        let numberOfInactiveDevices = alldevices.map((dev)=>!dev.isConnected).length;
+        let numberOfInactiveDevices = alldevices.filter((dev)=>dev.isConnected == false).length;
         if(numberOfInactiveDevices > 0) {
           if(this.authService.getShownNumber() < 1){
             this.authService.setShownNumber(1);

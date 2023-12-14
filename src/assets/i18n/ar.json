@@ -572,7 +572,11 @@
 "criteria_already_exist":"هذا المعيار موجود بالفعل",
 "repeated_question":"هذا السؤال مكرر",
 "device_inactive_warning": "لديك {{numOfInactiveDev}}  جهاز غير نشط، انتقل إلى صفحة الأجهزة وقم بتنشيطه/هم",
-"no_devices_warning":"لم تقم بإضافة أي جهاز حتى الان . انتقل إلى صفحة الأجهزة لإضافة جهاز جديد."
-
+"no_devices_warning":"لم تقم بإضافة أي جهاز حتى الان . انتقل إلى صفحة الأجهزة لإضافة جهاز جديد.",
+"requestState":"حالة الطلب",
+"reviewErrors":"مراجعة الأخطاء",
+"error_items":"عناصر الخطأ",
+"objectName":"خطأ فى",
+"errorState":"سبب الخطأ"
 
 }

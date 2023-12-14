@@ -11,32 +11,36 @@ export class HintMessageComponent implements OnInit , OnDestroy {
   @Input() translatedMessage: string;
   sub:any;
   @Input() devicesWarning:boolean =false;
-  @Input() trialMessage:boolean = false;
+  @Input() isTrialMessage:boolean = false;
   @Output() closeWarning = new EventEmitter();
-  
+  trialMessage:string;
   constructor(private translate:TranslateService, private authService:AuthService) { 
 
-    this.translateMessage();
+    
 
   }
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    if(this.sub){
+      this.sub.unsubscribe();
+
+    }
   }
   translateMessage() {
-    if(this.trialMessage){
+    if(this.isTrialMessage){
 
       const specificDate = this.authService.getSubscriptionState()?.trialEndDate ; 
       const messagesCount =this.authService.getSubscriptionState()?.messageCount;
   
       this.sub= this.translate.get('trialEndMessage', { specificDate, messagesCount }).subscribe((res: string) => {
-        this.translatedMessage = res;
+        this.trialMessage = res;
       });
     }
 
+    
 
   }
   ngOnInit() {
-   
+    this.translateMessage();
   }
   onClose(){
     this.closeWarning.emit(true)

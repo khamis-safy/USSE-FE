@@ -1,0 +1,41 @@
+<section class="d-flex flex-column gap-3 h-100 position-relative pt-4">
+  <div class="position-absolute end-0 translate-middle-y mx-5" style="top: 20%;">
+    <img
+      src="assets/icons/close-circle.svg"
+      (click)="onClose()"
+      alt="close-icon"
+      style="cursor: pointer;width:32px"
+    />
+  </div>
+  <!-- modal body -->
+  <div style="height: 74%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;">
+    
+    <div class="d-flex justify-content-center align-items-center flex-column ">
+      <img src="assets/icons/warning-icon.svg" alt="" style="width: 51px;" class="mb-2">
+      <h3 class="mb-0">{{'requestState' | translate}}</h3>
+    </div>
+  
+    <div class="px-4 content d-flex justify-content-center align-items-center flex-column  gap-4" >
+      <!-- displayed message -->
+  
+      <p class=" my-4 text-center">{{message}}</p>
+  
+    </div>
+  </div>
+  
+
+<!-- modal footer -->
+<div class="modal-footer justify-content-center position-absolute bottom-0 w-100 gap-3" style="height: 36%;">
+  <us-button
+    label="{{ 'reviewErrors' | translate }}"
+    size="sm"
+    [fill]="true"
+    [loading]="false"
+    (clicked)="reviewError()"
+  ></us-button>
+  
+</div>
+</section>
