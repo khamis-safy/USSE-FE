@@ -560,5 +560,27 @@
 "Additional Automations":"Additional Automations",
 "Additional AiBots":"Additional AiBots",
 "Enabled":"Enabled",
-"Disabled":"Disabled"
+"Disabled":"Disabled",
+"contacts_count_warning":"Please be aware that sending a large number of messages may result in a ban, so it's preferable to send messages through advertising campaigns.",
+"continue":"Continue",
+"invalidIntervalHint":"invalid range",
+"interval_warning":"Please note that it's advisable not to reduce the delay interval between messages to 100-180, as it may lead to a ban.",
+"close_interval_warning":"Disabling the time interval may result in your WhatsApp account being banned.",
+"time_difference_warning_msg":"Kindly be aware that it's advisable to have a minimum time difference of 80 seconds between messages to avoid a ban.",
+"campaign_timeExpected_msg":"Your campaign will last/take",
+"days":"Day",
+"hours":"Hours",
+"minutes":"Minutes",
+"This number alraedy exists":"This number alraedy exists",
+"criteria_already_exist":"This criteria already exist",
+"repeated_question":"This question is repeated",
+"device_inactive_warning": "you have  {{numOfInactiveDev}} device/s inactive , go to devices page and activate it / them",
+"no_devices_warning":"You have not added any device yet. Go to the Devices page to add a new device.",
+"requestState":"Request State",
+"reviewErrors":"Review Errors",
+"error_items":"Error items",
+"objectName":"Object Name",
+"errorState":"Error State",
+"seconds":"seconds"
+
 }

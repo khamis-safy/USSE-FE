@@ -17,7 +17,6 @@
             [error]="false"
             [fullWidth]="true"
             [min]="minNum"
-            [max]="maxNum"
             formControlName="intervalFrom"
           ></us-input>
         </div>
@@ -29,19 +28,18 @@
             [error]="false"
             [fullWidth]="true"
             [min]="minNum"
-            [max]="maxNum"
             formControlName="intervalTo"
           ></us-input>
         </div>
-        <div *ngIf="intervalFrom.value > maxNum || intervalTo.value > maxNum || intervalFrom.value > intervalTo.value" class="hint error" style="position: absolute; bottom: -31px;">
+        <div *ngIf="form.hasError('intervalInvalid')" class="hint error" style="position: absolute; bottom: -31px;">
           <i class="si-info"></i>
-          <p class="txt txt-xs">{{ 'invalidNumberHint' | translate }}</p>
+          <p class="txt txt-xs">{{ 'invalidIntervalHint' | translate }}</p>
         </div>
       </div>
     </div>
 
     <!-- second line -->
-    <div class="w-100  d-flex justify-content-between align-items-center">
+    <!-- <div class="w-100  d-flex justify-content-between align-items-center">
       <label style="width:30%">{{ 'maxRecipientsLabel' | translate }}</label>
       <div style="width:42%" class="d-flex align-items-center justify-content-between">
         <div class="d-flex  flex-column" style="width: 136px; position: relative;">
@@ -60,7 +58,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- third line -->
     <div class="w-100  d-flex justify-content-between align-items-center">
@@ -93,13 +91,12 @@
     <div class="w-100  d-flex justify-content-between align-items-center">
       <label style="width:30%">{{ 'sendingOutTimeLabel' | translate }}</label>
       <div style="width:20%" class="form-check form-switch">
-        <input [checked]="isSendingOutTimeChecked" (change)="onSwitcherChange($event,[time1,time2])" class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input [checked]="isSendingOutTimeChecked" (change)="isSendingOutTimeChecked = !isSendingOutTimeChecked ;onSwitcherChange($event,[time1,time2])" class="form-check-input me-3" type="checkbox" role="switch" id="flexSwitchCheckDefault">
       </div>
       <div class="d-flex  flex-column" style="width:42%; position: relative;">
         <div class="d-flex align-items-center justify-content-between">
           <div style="width:250px">
-            <!-- <input #timePicker1 formControlName="time1" [nbTimepicker]="timepicker1" class="rounded-pill border border-1py-2 txt-input w-100 date" style="padding: 0 12px;">
-            <nb-timepicker #timepicker1></nb-timepicker> -->
+       
             <nz-time-picker
             style="padding: 0 12px;height: 33px;"
             class="rounded-pill border border-1py-2 txt-input w-100"
@@ -110,8 +107,7 @@
           </div>
           <span class="mx-2">{{ 'toLabel' | translate }}</span>
           <div style="width:250px">
-            <!-- <input #timePicker2 formControlName="time2" [nbTimepicker]="timepicker2" class="rounded-pill border border-1py-2 txt-input w-100 date" style="padding: 0 12px;">
-            <nb-timepicker #timepicker2></nb-timepicker> -->
+         
             <nz-time-picker
             style="padding: 0 12px;height: 33px;"
               class="rounded-pill border border-1 py-2 txt-input w-100"

@@ -25,7 +25,7 @@ export class SubscribeToListComponent implements OnInit {
   addNewList:boolean=false;
   selectedLists:any = new FormControl([]);
   listName = new FormControl('',Validators.required);
-  askForName = new FormControl(this.translate.instant('WHATSYOURNAME'),[Validators.required, noWhitespaceValidator]);
+  askForName = new FormControl('',[Validators.required, noWhitespaceValidator]);
 
   addedList:ListData;
   form = new FormGroup({
@@ -46,7 +46,14 @@ export class SubscribeToListComponent implements OnInit {
   ngOnInit() {
     if(this.data){
       this.criterias = this.data.criterias;
-
+      this.form.patchValue({
+        askForName:this.data.askForNameContent
+      })
+    }
+    else{
+      this.form.patchValue({
+        askForName:this.translate.instant('WHATSYOURNAME')
+      })
     }
     this.getLists();
   }

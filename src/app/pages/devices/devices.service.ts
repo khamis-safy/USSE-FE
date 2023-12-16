@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { CheckCon, DeviceData, Init } from './device';
@@ -82,5 +82,14 @@ addNewWhatsappBisunessDevice( email: string,deviceName: string,phoneNumber: stri
 
 updateDeviceDelay(email:string,id:string ,delayIntervalInSeconds:number):Observable<DeviceData>{
   return this.http.put<DeviceData>(`${this.api}Device/updateDeviceDelay?email=${email}&id=${id}&delay=${delayIntervalInSeconds}`,"")
+}
+extractChats(email: string, deviceId: string): Observable<any> {
+  const url = `${this.api}Device/extractChats?email=${email}&deviceId=${deviceId}`;
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+  return this.http.get(url, {
+    headers: headers,
+    responseType: 'blob', // Set the responseType to 'blob'
+  });
 }
 }

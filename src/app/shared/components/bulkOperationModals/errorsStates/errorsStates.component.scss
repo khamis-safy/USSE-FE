@@ -1,0 +1,18 @@
+.table-container{
+    border-radius: 16px;
+    border:1px solid rgba(0, 0, 0, 0.12);
+    overflow: auto;
+    table{
+      // background-color: transparent;
+    th , td{
+        text-align: center !important;
+    }
+    .table-inner-container {
+        padding-inline: 25px;
+    }
+    .mdc-data-table__cell {
+        border-bottom: none !important ;
+    }
+    
+    }
+}

@@ -16,6 +16,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { ActionsModule } from './components/addCompaigns/campaign actions/actions.module';
 import { WriteMessageModule } from '../messages/Components/new-message/write-message/writeMessage.module';
 import { ConfirmaionsComponent } from './components/addCompaigns/confirmaions/confirmaions.component';
+import { ExpectedCampEndTimeComponent } from './components/addCompaigns/expectedCampEndTime/expectedCampEndTime.component';
 
 @NgModule({
   imports: [
@@ -33,11 +34,8 @@ import { ConfirmaionsComponent } from './components/addCompaigns/confirmaions/co
     StepThreeComponent,
     StepFourComponent,
     AddCompaignsComponent ,
-    ConfirmaionsComponent
-  
-
-
-
+    ConfirmaionsComponent,
+    ExpectedCampEndTimeComponent
 
   ],
   providers:[

@@ -11,6 +11,9 @@ import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/del
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UploadSheetComponent } from '../components/importFiles/uploadSheet/uploadSheet.component';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorsStatesComponent } from 'src/app/shared/components/bulkOperationModals/errorsStates/errorsStates.component';
+import { RequestStateComponent } from 'src/app/shared/components/bulkOperationModals/requestState/requestState.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-manage-contacts',
@@ -61,7 +64,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit,OnDestroy{
     private router:Router,
     private activatedRouter:ActivatedRoute,
     private listService:ManageContactsService,
-    private authService:AuthService){
+    private authService:AuthService,
+    private translate:TranslateService){
       this.initRouting()
 
 
@@ -164,9 +168,18 @@ else{
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.lists.deletedLists=result;
-        this.lists.openSnackBar();
-        this.lists.getListData();
+        this.lists.deletedLists=result.data;
+        
+
+        if(result.errors == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.lists.openSnackBar();
+          this.lists.getListData();
+        }
+        else{
+          this.openRequestStateModal(result ,'deleteList');
+        }
+
       }
       this.lists.selection.clear();
 
@@ -187,14 +200,87 @@ else{
     this.contacts.selection.clear();
     dialogRef.afterClosed().subscribe(result => {
       if(result){
+        if(result == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.contacts.getContacts();
+        }
+        else{
+          this.openRequestStateModal(result ,'importContacts');
+        }
+        
 
-        this.contacts.getContacts();
+
 
       }
 
 
     });
   }
+  openRequestStateModal(data , operation){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='38vh';
+    dialogConfig.width='42vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='465px';
+    dialogConfig.minHeight='396px'
+    dialogConfig.disableClose = true;
+    dialogConfig.data=data;
+
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    const dialogRef = this.dialog.open(RequestStateComponent,dialogConfig);
+    
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.openErrorsViewrModal(data , operation)
+      }
+      else{
+        if(operation == 'importContacts' || operation ==  'addContactsToLists' || operation ==  'removeLists'){
+          this.contacts.getContacts();
+        }
+        if(operation == 'deleteContact'){
+          this.contacts.getContacts();
+          
+          this.contacts.openSnackBar();
+        }
+        if(operation == 'deleteList'){
+          this.lists.openSnackBar();
+          this.lists.getListData();
+        }
+
+      }
+    })
+
+    }
+  
+    openErrorsViewrModal(result , operation){
+      const dialogConfig=new MatDialogConfig();
+      dialogConfig.height='87vh';
+      dialogConfig.minHeight='560px'
+      dialogConfig.width='56vw';
+      dialogConfig.maxWidth='100%';
+      dialogConfig.minWidth='565px';
+      dialogConfig.disableClose = true;
+      dialogConfig.data=result
+  
+      const dialogRef = this.dialog.open(ErrorsStatesComponent,dialogConfig);
+      dialogRef.afterClosed().subscribe(result => {
+        if(operation == 'importContacts' || operation ==  'addContactsToLists' || operation ==  'removeLists'){
+          this.contacts.getContacts();
+        }
+
+        if(operation == 'deleteContact')
+        {
+          this.contacts.getContacts();
+          this.contacts.openSnackBar();
+        }
+        if(operation == 'deleteList'){
+          this.lists.openSnackBar();
+          this.lists.getListData();
+        }
+  
+      })
+    }
+
   openDeleteConModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='50vh';
@@ -214,9 +300,18 @@ else{
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.contacts.deletedContacts=result;
-        this.contacts.openSnackBar();
-        this.contacts.getContacts();
+        this.contacts.deletedContacts=result.data;
+        if(result.errors == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.contacts.getContacts();
+          
+          this.contacts.openSnackBar();
+        }
+        else{
+          this.openRequestStateModal(result ,'deleteContact');
+        }
+
+     
 
       }
 
@@ -242,7 +337,13 @@ else{
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.contacts.getContacts();
+        if(result == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.contacts.getContacts();
+        }
+        else{
+          this.openRequestStateModal(result ,'removeLists');
+        }
       }
 
       this.contacts.selection.clear();
@@ -263,7 +364,13 @@ else{
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.contacts.getContacts();
+        if(result == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.contacts.getContacts();
+        }
+        else{
+          this.openRequestStateModal(result ,'addContactsToLists');
+        }
 
       }
       this.contacts.selection.clear();

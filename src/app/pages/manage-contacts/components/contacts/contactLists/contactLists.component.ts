@@ -225,8 +225,14 @@ onSearch(search){
     this.listService.addOrMoveContacts(this.contactsIds,this.listIds,this.authService.getUserInfo()?.email).subscribe(
       (res)=>{
         this.isLoading = false
-        this.onClose(true);
-        this.toaster.success(`${res.numberOfSuccess} Added Successfully ${res.numberOfErrors} failed`)
+        if(res.numberOfErrors === 0){
+          this.onClose('noErrors');
+        }
+        else{
+          let errorObject =res;
+          this.onClose(errorObject);
+        }
+      
                   },
       (err)=>{
         this.isLoading = false

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { resetFakeAsyncZone } from '@angular/core/testing';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { TranslateService } from '@ngx-translate/core';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
@@ -9,6 +10,7 @@ import { ListData } from 'src/app/pages/manage-contacts/list-data';
 import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-contacts.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { ContactsWarningComponent } from '../../contactsWarning/contactsWarning.component';
 interface ListContacts {
   list: any,
   contacts: Contacts[],
@@ -22,7 +24,7 @@ export class SelectContactsComponent implements OnInit {
 
 allLists:ListContacts[]=[];
 allSelectedLists:ListContacts[]=[];
-
+warningShown:boolean=false;
 allContactsNumbers:string[]=[];
 hocsNums:string[]=[];
 shouldCloseAccordion:boolean=true;
@@ -60,7 +62,8 @@ sortBy;
   });
   constructor(private listService: ManageContactsService,
     private toaster:ToasterServices, 
-    private translate:TranslateService) { }
+    private translate:TranslateService,
+    private dialog: MatDialog ) { }
 
   ngOnInit() {
     this.getNonListContactsAndLists();
@@ -247,8 +250,6 @@ checkIfListFound(list){
 
 }
 resetSelectedLists(){
-
-
 
   this.allLists.map((listContact)=>{
     listContact.list.isChecked="";
@@ -467,11 +468,28 @@ addContactNumber(contact:Contacts){
 
         this.addHocs.splice(this.addHocs.indexOf(contact.mobileNumber),1)
     }
- 
-
+this.checkValidContactsCount();
 
 }
-
+checkValidContactsCount(){
+  let totalLength = [...this.addedContacts,...this.addHocs].length;
+  if(totalLength > 20 && !this.warningShown){
+    this.warningShown=true;
+    this.showWarningModal()
+  }
+}
+showWarningModal(){
+  const dialogConfig=new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.height='50vh';
+  dialogConfig.width='44vw';
+  dialogConfig.minHeight='480px';
+  dialogConfig.maxWidth='100%';
+  dialogConfig.minWidth='530px';
+  dialogConfig.data='contacts_count_warning';
+  const dialogRef = this.dialog.open(ContactsWarningComponent,dialogConfig);
+ 
+}
 filterContacts(contacts:Contacts[]){
   let filteredContacts=Array.from(new Set(contacts.map(obj => JSON.stringify(obj)))).map(str => JSON.parse(str));
 
@@ -483,7 +501,7 @@ addHocNumber(){
   let contactsNum=this.addedContacts.map((contact)=>{return contact.mobileNumber});
   let foundContact=contactsNum.find((cont)=>this.form.value.mobile.e164Number.substring(1)==cont)
   if(foundContact){
-    this.toaster.warning("This number alraedy exists")
+    this.toaster.warning(`${this.translate.instant('This number alraedy exists')}`)
 
 }
 
@@ -492,9 +510,14 @@ else{
 
     this.addHocs.push(this.form.value.mobile.e164Number.substring(1));
   }
+  else{
+    this.toaster.warning(`${this.translate.instant('This number alraedy exists')}`)
+
+  }
   this.form.patchValue({
     mobile:''
   })}
+  this.checkValidContactsCount();
   this.emitContacts();
 
   // this.hocsNum.emit(this.addHocs)
@@ -510,6 +533,7 @@ else{
       // Handle errors if needed
       throw error;
     }
+
   }
 getAllContacts(search?:string){
   let searchVal=search?search:""

@@ -155,8 +155,16 @@ export class FileFieldsComponent implements OnInit {
     this.listService.importFile(filteredFileData).subscribe(
       (res)=>{
         this.loading=false;
-        this.onClose(this.data)
-        this.toaster.success(this.translate.instant("COMMON.SUCC_MSG"))
+        if(res.numberOfErrors === 0){
+          this.onClose('noErrors');
+          
+
+        }
+        else{
+          let errorObject =res;
+          this.onClose(errorObject);
+        }
+   
       },
       (err)=>{
         this.loading=false;

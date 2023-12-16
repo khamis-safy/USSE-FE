@@ -189,6 +189,7 @@
       background: $clr_danger_50;
       border-color: $clr_danger_700;
     }
+  
   }
 
   &.disabled {
@@ -223,6 +224,9 @@ textarea {
 
   &.error {
     color: $clr_danger_700;
+  }
+  &.warning{
+    color: $clr_warning_700;
   }
 }
 @media (max-width:992x) {

@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -25,7 +25,7 @@ selector: 'app-list-contacts',
 templateUrl: './list-contacts.component.html',
 styleUrls: ['./list-contacts.component.scss']
 })
-export class ListContactsComponent implements OnInit {
+export class ListContactsComponent implements OnInit ,OnChanges {
 listId:string;
 length:number;
 active:boolean=false;
@@ -70,6 +70,11 @@ constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
   this.listId=data.get('id')
   })
 }
+  ngOnChanges() {
+      this.length=this.count?.totalContacts
+
+    
+  }
 
 ngOnInit() {
   this.getContacts();

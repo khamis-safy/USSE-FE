@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { DEVICESHEADERS } from '../constants/constants';
+import * as saveAs from 'file-saver';
 
 @Component({
   selector: 'app-devices',
@@ -40,6 +41,7 @@ export class DevicesComponent implements OnInit,OnDestroy{
   displayedColumns: string[] = ['Device Name', 'Device Type', 'Number',"Create At", "Status","Delay Interval(s)","action"];
   dataSource:MatTableDataSource<DeviceData>;
   canEdit: any;
+  email:string=this.authService.getUserInfo()?.email;
   constructor(public dialog: MatDialog,    private translate: TranslateService,
     private  toaster: ToasterServices,private authService:AuthService,private devicesService:DevicesService){
   }
@@ -165,11 +167,19 @@ else{
   onSearch(event:any){
     this.getDevices(event.value);
   }
-
+  exportChats(device:DeviceData){
+    this.devicesService.extractChats(this.email,device.id).subscribe(
+      (response: any) => {
+        // Use FileSaver.js to save the Excel file
+        const filename = `${device.deviceName} whatsapp chats.xlsx`; // Set your desired filename and extension
+        saveAs(response, filename);
+      }
+    )
+  }
   reconnect(device:DeviceData){
     this.loading=true;
     this.isReonnect=true;
-    this.devicesService.reconnectWPPDevice(device.id,this.authService.getUserInfo()?.email).subscribe(
+    this.devicesService.reconnectWPPDevice(device.id,this.email).subscribe(
       (res)=>{
 
         this.getDevices();
@@ -186,8 +196,8 @@ else{
     dialogConfig.height='95vh';
     dialogConfig.width='70vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='465px';
-    dialogConfig.maxHeight='85vh';
+    dialogConfig.minWidth='987px';
+    dialogConfig.maxHeight='705px';
     dialogConfig.disableClose = true;
     if(data){
       dialogConfig.data=data

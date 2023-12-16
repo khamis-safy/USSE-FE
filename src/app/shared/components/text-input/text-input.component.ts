@@ -48,6 +48,10 @@ export class InputComponent implements  AfterViewInit {
   }
   writeValue(value: any): void {
     this.val = value;
+    if (this.isTextArea && this.limitTextarea) {
+      // Update the character count for the initial value
+      this.charCount = this.val ? this.val.length : 0;
+    }
   }
   // ================================
 
@@ -65,6 +69,7 @@ export class InputComponent implements  AfterViewInit {
   @Input() hintIcon = 'si-info'; // the icon before the hint
   @Input() type: 'text' | 'number' = 'text'; // type [ text or number ]
   @Input() error?: boolean; // change styles for error appearance
+  @Input() warning?: boolean=false; // change styles for warning appearance
   @Input() fullWidth?: boolean; // take full width of the parent
   @Input() hideSteppers?: boolean=false; // hide steppers butttons
 
@@ -82,7 +87,10 @@ export class InputComponent implements  AfterViewInit {
   @Input() validators?: Function[];
   @Input() isTextArea?: boolean;
   @Input() isEmoji?: boolean = false;
+  @Input() limitTextarea?: boolean = true;
 
+  @Input() maxCharLimit?: number;
+  charCount: number = 0;
   // Native Events
   @Output() keyup = new EventEmitter();
   @Output() keydown = new EventEmitter();
@@ -99,11 +107,17 @@ export class InputComponent implements  AfterViewInit {
   isEmojiClicked: boolean = false;
   constructor(private el: ElementRef) {}
   get value(): any {
+
     return this.val;
   }
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.updateDivHeight();
+      if (this.isTextArea && this.limitTextarea) {
+        this.maxCharLimit=1600;
+        // Emit the initial character count
+        this.input.emit(this.val);
+      }
     }, 0);
   }
   increment() {
@@ -132,6 +146,13 @@ export class InputComponent implements  AfterViewInit {
 
   onValueChange(element: any) {
     if (this.validators?.length) this.validators.forEach((fn) => fn(element));
+    if(this.isTextArea && this.limitTextarea){
+        // Update the character count
+      this.charCount = this.value ? this.value.length : 0;
+
+      // Emit the input event
+      this.input.emit(this.value);
+    }
   }
   addEmoji(e){
     let val = this.value ? this.value : ""

@@ -45,6 +45,8 @@
                         type="text"
                         [label]="('question' |translate) +' ' + (i+1)"
                         [error]="false"
+                        [warning]="isQuestionRepeated(i)"
+                        [hintText]=" isQuestionRepeated(i) ? ('repeated_question' | translate) :''"
                         [fullWidth]="true"
                       ></us-input>
                       </div>
@@ -54,11 +56,16 @@
                         <img class="pointer" (click)="removeQuestion(i)"  src="assets/icons/delDev.svg" alt="delete question" />
                       </div>
                   </div>
+                  
+                 
+                
               </div>
             </div>
             
             <div class="d-flex align-items-center p-2  gap-2">
-              <img (click)="addQuestion()" class="pointer" src="assets/icons/addQ.svg" alt="" />
+              <button (click)="addQuestion()" class="rest-style pointer" [disabled]="!myForm.valid || myForm.get('questions').hasError('whitespace')">
+                <img src="assets/icons/addQ.svg" alt="" />
+              </button>
               <span>{{ 'addAQuestion' | translate }} </span>
             </div>
           </form>

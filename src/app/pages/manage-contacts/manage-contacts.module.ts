@@ -15,6 +15,8 @@ import { UploadSheetComponent } from './components/importFiles/uploadSheet/uploa
 import { FileFieldsComponent } from './components/importFiles/fileFields/fileFields.component';
 import { AdditonalParamsComponent } from './components/contacts/additonalParams/additonalParams.component';
 import { DragZoneModule } from 'src/app/shared/components/drag-zone/drag-zone.module';
+import { ErrorsStatesComponent } from 'src/app/shared/components/bulkOperationModals/errorsStates/errorsStates.component';
+import { RequestStateComponent } from 'src/app/shared/components/bulkOperationModals/requestState/requestState.component';
 
 @NgModule({
   imports: [
@@ -34,7 +36,8 @@ import { DragZoneModule } from 'src/app/shared/components/drag-zone/drag-zone.mo
     AdditonalParamsComponent,
 
     ContactListsComponent,
-
+    RequestStateComponent,
+    ErrorsStatesComponent
 
   ],
   providers:[ManageContactsService]

@@ -1,26 +1,22 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AfterViewInit, Component,  OnDestroy, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { Contacts } from 'src/app/pages/manage-contacts/contacts';
 import { ListData } from 'src/app/pages/manage-contacts/list-data';
 import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-contacts.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
-import { ContactsComponent } from '../../../contacts/contacts.component';
-import { AddContactComponent } from '../../../contacts/addContact/addContact.component';
-import { ListDetailsService } from '../list-details.service';
+
 import { ListContactsComponent } from '../components/list-contacts/list-contacts.component';
 import { ContactListsComponent } from '../../../contacts/contactLists/contactLists.component';
 import { TotalContacts } from '../totalContacts';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UploadSheetComponent } from '../../../importFiles/uploadSheet/uploadSheet.component';
+import { TranslateService } from '@ngx-translate/core';
+import { ErrorsStatesComponent } from 'src/app/shared/components/bulkOperationModals/errorsStates/errorsStates.component';
+import { RequestStateComponent } from 'src/app/shared/components/bulkOperationModals/requestState/requestState.component';
 
 
 @Component({
@@ -41,8 +37,9 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit , OnDestroy{
   constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private listService:ManageContactsService,
-    private toaster: ToasterServices,
-    private router:Router,private authService:AuthService) {
+    private router:Router,private authService:AuthService,
+    private translate:TranslateService,
+    private  toaster: ToasterServices) {
     activeRoute.paramMap.subscribe((data)=>
     {
     this.listId=data.get('id');
@@ -129,9 +126,14 @@ this.router.navigateByUrl('contacts?tab=lists')
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.getListData();
-        this.listContacts.getContacts();
-
+        if(result.errors == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.getListData();
+          this.listContacts.getContacts();        
+        }
+        else{
+          this.openRequestStateModal(result );
+        }
       }
 
       this.listContacts.selection.clear();
@@ -153,9 +155,15 @@ this.router.navigateByUrl('contacts?tab=lists')
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.getListData();
-
-        this.listContacts.getContacts();
+        if(result == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.getListData();
+          this.listContacts.getContacts();        
+        }
+        else{
+          this.openRequestStateModal(result );
+        }
+       
 
       }
       this.listContacts.selection.clear();
@@ -164,6 +172,50 @@ this.router.navigateByUrl('contacts?tab=lists')
 
   }
 
+  openRequestStateModal(data){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='38vh';
+    dialogConfig.width='42vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='465px';
+    dialogConfig.minHeight='396px'
+    dialogConfig.disableClose = true;
+    dialogConfig.data=data;
+
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    const dialogRef = this.dialog.open(RequestStateComponent,dialogConfig);
+    
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.openErrorsViewrModal(data)
+      }
+      else{
+         this.getListData();
+          this.listContacts.getContacts(); 
+        
+
+      }
+    })
+
+    }
+  
+    openErrorsViewrModal(result){
+      const dialogConfig=new MatDialogConfig();
+      dialogConfig.height='87vh';
+      dialogConfig.minHeight='560px'
+      dialogConfig.width='56vw';
+      dialogConfig.maxWidth='100%';
+      dialogConfig.minWidth='565px';
+      dialogConfig.disableClose = true;
+      dialogConfig.data=result
+  
+      const dialogRef = this.dialog.open(ErrorsStatesComponent,dialogConfig);
+      dialogRef.afterClosed().subscribe(result => {
+        this.getListData();
+        this.listContacts.getContacts(); 
+  
+      })
+    }
 
   openImportModal(filetype){
     const dialogConfig=new MatDialogConfig();
@@ -179,8 +231,15 @@ this.router.navigateByUrl('contacts?tab=lists')
     this.listContacts.selection.clear();
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-
-        this.listContacts.getContacts();
+        if(result == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.getListData();
+          this.listContacts.getContacts();
+    
+        }
+        else{
+          this.openRequestStateModal(result );
+        }
       }
 
 
@@ -202,8 +261,14 @@ this.router.navigateByUrl('contacts?tab=lists')
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.getListData();
-        this.listContacts.getContacts();
+        if(result == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.getListData();
+          this.listContacts.getContacts();        
+        }
+        else{
+          this.openRequestStateModal(result );
+        }
 
       }
       this.listContacts.selection.clear();

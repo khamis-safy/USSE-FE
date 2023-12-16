@@ -12,6 +12,8 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ConfirmaionsComponent } from './confirmaions/confirmaions.component';
+import { ExpectedCampEndTimeComponent } from './expectedCampEndTime/expectedCampEndTime.component';
+import { MatStepper } from '@angular/material/stepper';
 // import { WriteMessageComponent } from 'src/app/pages/messages/Components/new-message/write-message/write-message.component';
 @Component({
   selector: 'app-addCompaigns',
@@ -31,11 +33,11 @@ export class AddCompaignsComponent implements OnInit {
   isRepeatable: boolean;
   isInterval:boolean;
   repeatedDays: number;
-  intervalFrom: number;
-  intervalTo: number;
+  intervalFrom: any;
+  intervalTo: any;
   blackoutFrom: any;
   blackoutTo: any;
-  maxPerDay: number;
+  // maxPerDay: number;
   message:string="";
   lists:string[]=[];
   dateTime:string;
@@ -58,7 +60,7 @@ lastCampaignData:{
   repeatedDays:number,
   isRepeatable:boolean,
   isInterval:boolean,
-  maxPerDay:number,
+  // maxPerDay:number,
   sendingoutFrom:any,
   sendingoutTo:any
 
@@ -81,6 +83,8 @@ actions:any=[];
   campaignId:string;
   stepFiveValidate: boolean;
   step5: boolean;
+  @ViewChild('stepper') stepper: MatStepper;
+  totalContacts:number=0;
   constructor(private compaignsService:CompaignsService,
     private toasterService:ToasterServices,
     private translate: TranslateService,
@@ -91,7 +95,11 @@ actions:any=[];
 this.getLastCampaignData();
   }
   getLists(listsData){
-    this.lists=listsData.map((list)=>list.id);
+    this.lists=listsData.map((list:ListData)=>{
+      this.totalContacts += list.totalContacts
+      return list.id
+    }
+    );
   }
 
   filesUrls(e){
@@ -150,14 +158,130 @@ toStepFive(){
   this.isInterval=this.stepFourComponent.isInterval;
   
   this.repeatedDays=this.stepFourComponent.form.get("repeatedDays").value;
-  this.intervalFrom=this.stepFourComponent.form.get("intervalFrom").value;
+  this.intervalFrom = this.stepFourComponent.form.get("intervalFrom").value;
   this.intervalTo=this.stepFourComponent.form.get("intervalTo").value;
   this.blackoutFrom=this.stepFourComponent.utcTime1;
   this.blackoutTo=this.stepFourComponent.utcTime2;
-  this.maxPerDay=this.stepFourComponent.form.get("maxPerDay").value;
+  // this.maxPerDay=this.stepFourComponent.form.get("maxPerDay").value;
   this.stepFourComponent.convertToUTC(this.blackoutFrom);
-  this.step5=true;
+
+  this.calulateCampExpectedTime()
+
+
 }
+
+
+calulateCampExpectedTime(){
+  let startDate = this.stepFourComponent.time1;
+  let endDate = this.stepFourComponent.time2;
+
+  // Calculate the total time window in seconds
+  const timeDiffInHours = !this.stepFourComponent.timesAreSame(startDate,endDate) ? this.calculateTimeDifference(startDate.value , endDate.value) : 24;
+  
+  // Calculate the interval average
+  let intervalAvg = this.isInterval ? (parseInt(this.intervalFrom, 10) + parseInt(this.intervalTo, 10)) / 2 : 1;
+
+  // Calculate the expected time for sending messages within the time window
+  let expectedTimeInSeconds = this.totalContacts * intervalAvg;
+  
+   // Extracting the integer part using Math.floor
+   let numOfDays =this.calculateTime(expectedTimeInSeconds , timeDiffInHours).days;
+   let numOfHours = this.calculateTime(expectedTimeInSeconds , timeDiffInHours).remainingHours;
+   let numOfMinutes = this.calculateTime(expectedTimeInSeconds , timeDiffInHours).remainingMinutes;
+   let numOfSeconds =this.calculateTime(expectedTimeInSeconds , timeDiffInHours).remainingSeconds
+   // Format the result as a string
+  let formattedTime = '';
+ 
+   if (numOfDays > 0) {
+     formattedTime += `${numOfDays} ${this.translate.instant('days')} `;
+   }
+ 
+   if (numOfHours > 0) {
+     formattedTime += `${Math.floor(numOfHours)} ${this.translate.instant('hours')} `;
+   }
+ 
+   if (numOfMinutes > 0) {
+     formattedTime += `${numOfMinutes} ${this.translate.instant('minutes')}`;
+   }
+   if(numOfMinutes <= 0 && numOfSeconds > 0){
+    formattedTime += `${numOfMinutes} ${this.translate.instant('seconds')}`;
+
+   }
+   if(numOfMinutes <= 0 && numOfSeconds <= 0 ){
+    formattedTime += `0 ${this.translate.instant('seconds')}`;
+
+   }
+   
+
+  this.openCampExpectedTimeModal(formattedTime);
+}
+
+
+calculateTime(numberOfSeconds: number, hoursPerDay: number) {
+  // Given values
+  const secondsPerHour = 3600;
+  const secondsPerMinute = 60;
+
+  // Calculate estimated time in hours
+  const estimatedTimeInHours: number = numberOfSeconds / secondsPerHour;
+
+  // Calculate days, remaining hours, and remaining minutes
+  const days: number = Math.floor(estimatedTimeInHours / hoursPerDay);
+  const remainingHours: number = Math.floor(estimatedTimeInHours % hoursPerDay);
+  const remainingMinutes: number = Math.floor((estimatedTimeInHours % 1) * secondsPerHour / secondsPerMinute);
+
+  const remainingSeconds: number = Math.round((estimatedTimeInHours % 1) * secondsPerHour % secondsPerMinute);
+
+
+  // Return the result as an instance of the TimeResult interface
+  return {
+    days: days,
+    remainingHours: remainingHours,
+    remainingMinutes: remainingMinutes,
+    remainingSeconds: remainingSeconds
+  };
+}
+
+
+calculateTimeDifference(startDate: Date, endDate: Date): number {
+  // Make a copy of the start date to avoid modifying the original object
+  const start = new Date(startDate);
+
+  // If end date is before start date, assume it's on the next day
+  if (endDate < startDate) {
+    endDate.setDate(endDate.getDate() + 1);
+  }
+  
+  // Calculate the difference in milliseconds
+  const timeDiff = Math.abs(endDate.getTime() - start.getTime());
+
+  // Convert the difference to hours
+  const hoursDiff = timeDiff / (1000 * 60 * 60);
+  console.log('Time difference in hours:', hoursDiff);
+
+  return hoursDiff;
+}
+openCampExpectedTimeModal(data){
+
+  const dialogConfig=new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.height='49vh';
+  dialogConfig.width='55vw';
+  dialogConfig.minHeight='350px';
+  dialogConfig.maxWidth='100%';
+  dialogConfig.minWidth='585px';
+  dialogConfig.data=data;
+  const dialogRef = this.dialog.open(ExpectedCampEndTimeComponent,dialogConfig);
+  dialogRef.afterClosed().subscribe(result => {
+    if(result){
+      this.step5=true;
+      this.stepper.next();
+    }
+  
+  });
+
+}
+
 setActions(event){
   this.actions=event
     }
@@ -173,7 +297,7 @@ const data={
   intervalTo: this.intervalTo,
   sendingoutFrom: this.blackoutFrom,
   sendingoutTo: this.blackoutTo,
-  maxPerDay: this.maxPerDay,
+  maxPerDay: 100000,
   attachments: this.attachments,
   lists: this.lists,
   email: this.authService.getUserInfo()?.email,

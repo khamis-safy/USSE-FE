@@ -1,0 +1,31 @@
+<section class="d-flex flex-column gap-3 h-100 position-relative pt-3">
+  <!-- modal body -->
+  <div class="px-4 content d-flex justify-content-center align-items-center flex-column  gap-4" style="height: 60%;">
+    <!-- displayed message -->
+    <div class="d-flex align-items-center gap-3">
+      <img src="assets/icons/time.svg" alt="">
+      <span class="info text-primary-800" >{{'campaign_timeExpected_msg' |translate }}</span>
+    </div>
+    <p class=" my-4 text-center">{{timeTaken}}</p>
+
+  </div>
+
+<!-- modal footer -->
+<div class="modal-footer justify-content-center position-absolute bottom-0 w-100 gap-3" style="height: 36%;">
+  <us-button
+    label="{{ 'continue' | translate }}"
+    size="sm"
+    [loading]="isLoading"
+    [fill]="true"
+    (clicked)="continue()"
+    [disabled]="isLoading"
+  ></us-button>
+  <us-button
+    label="{{ 'CANCEL' | translate }}"
+    size="sm"
+    [fill]="false"
+    (clicked)="onClose()"
+    [loading]="false"
+  ></us-button>
+</div>
+</section>

@@ -177,7 +177,7 @@ else{
  // get devices data
  getDevices(megtype:string){
   this.msgCategory=megtype;
-  this.authService.getDevices(this.messageService.email,10,0,"","").subscribe(
+  this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
     (res)=>{
       let alldevices=res;
 
