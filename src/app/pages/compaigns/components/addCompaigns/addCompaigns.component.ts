@@ -174,11 +174,9 @@ toStepFive(){
 calulateCampExpectedTime(){
   let startDate = this.stepFourComponent.time1;
   let endDate = this.stepFourComponent.time2;
-  console.log('start time:', startDate, 'end time:', endDate);
 
   // Calculate the total time window in seconds
   const timeDiffInHours = !this.stepFourComponent.timesAreSame(startDate,endDate) ? this.calculateTimeDifference(startDate.value , endDate.value) : 24;
-console.log(timeDiffInHours)
   
   // Calculate the interval average
   let intervalAvg = this.isInterval ? (parseInt(this.intervalFrom, 10) + parseInt(this.intervalTo, 10)) / 2 : 1;
@@ -214,7 +212,6 @@ console.log(timeDiffInHours)
 
    }
    
-   console.log("numOfDays",numOfDays ,"numOfHours " , numOfHours , 'formattedTime' , formattedTime)
 
   this.openCampExpectedTimeModal(formattedTime);
 }
@@ -235,12 +232,7 @@ calculateTime(numberOfSeconds: number, hoursPerDay: number) {
 
   const remainingSeconds: number = Math.round((estimatedTimeInHours % 1) * secondsPerHour % secondsPerMinute);
 
-  console.log( {
-    days: days,
-    remainingHours: remainingHours,
-    remainingMinutes: remainingMinutes,
-    remainingSeconds: remainingSeconds
-  })
+
   // Return the result as an instance of the TimeResult interface
   return {
     days: days,
