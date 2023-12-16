@@ -577,6 +577,7 @@
 "reviewErrors":"مراجعة الأخطاء",
 "error_items":"عناصر الخطأ",
 "objectName":"خطأ فى",
-"errorState":"سبب الخطأ"
+"errorState":"سبب الخطأ",
+"seconds":"ثوانى"
 
 }

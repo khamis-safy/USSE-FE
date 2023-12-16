@@ -580,6 +580,7 @@
 "reviewErrors":"Review Errors",
 "error_items":"Error items",
 "objectName":"Object Name",
-"errorState":"Error State"
+"errorState":"Error State",
+"seconds":"seconds"
 
 }

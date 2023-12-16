@@ -170,42 +170,86 @@ toStepFive(){
 
 }
 
+
 calulateCampExpectedTime(){
-  let startDate=this.stepFourComponent.time1;
-  let endDate =this.stepFourComponent.time2;
-  console.log('start time : ' , startDate , 'end time' , endDate)
-  let timeDiff = !this.stepFourComponent.timesAreSame(startDate,endDate) ? this.calculateTimeDifference(startDate.value , endDate.value) : 24;
+  let startDate = this.stepFourComponent.time1;
+  let endDate = this.stepFourComponent.time2;
+  console.log('start time:', startDate, 'end time:', endDate);
 
-  let intervalAvg = this.isInterval ? (parseInt(this.intervalFrom , 10) + parseInt(this.intervalTo , 10) ) /2 : 1 ;
-  let result = (intervalAvg * this.totalContacts / timeDiff / 60 / 60  );
-  console.log( 'intervalAverage: ' ,intervalAvg)
+  // Calculate the total time window in seconds
+  const timeDiffInHours = !this.stepFourComponent.timesAreSame(startDate,endDate) ? this.calculateTimeDifference(startDate.value , endDate.value) : 24;
+console.log(timeDiffInHours)
+  
+  // Calculate the interval average
+  let intervalAvg = this.isInterval ? (parseInt(this.intervalFrom, 10) + parseInt(this.intervalTo, 10)) / 2 : 1;
 
-  // Extracting the integer part using Math.floor
-  let numOfDays = Math.floor(result);
-  let numOfHours = (result - numOfDays) * 24;
-
-  // Calculate minutes
-  let numOfMinutes = Math.round((numOfHours - Math.floor(numOfHours)) * 60);
-
-  // Format the result as a string
+  // Calculate the expected time for sending messages within the time window
+  let expectedTimeInSeconds = this.totalContacts * intervalAvg;
+  
+   // Extracting the integer part using Math.floor
+   let numOfDays =this.calculateTime(expectedTimeInSeconds , timeDiffInHours).days;
+   let numOfHours = this.calculateTime(expectedTimeInSeconds , timeDiffInHours).remainingHours;
+   let numOfMinutes = this.calculateTime(expectedTimeInSeconds , timeDiffInHours).remainingMinutes;
+   let numOfSeconds =this.calculateTime(expectedTimeInSeconds , timeDiffInHours).remainingSeconds
+   // Format the result as a string
   let formattedTime = '';
+ 
+   if (numOfDays > 0) {
+     formattedTime += `${numOfDays} ${this.translate.instant('days')} `;
+   }
+ 
+   if (numOfHours > 0) {
+     formattedTime += `${Math.floor(numOfHours)} ${this.translate.instant('hours')} `;
+   }
+ 
+   if (numOfMinutes > 0) {
+     formattedTime += `${numOfMinutes} ${this.translate.instant('minutes')}`;
+   }
+   if(numOfMinutes <= 0 && numOfSeconds > 0){
+    formattedTime += `${numOfMinutes} ${this.translate.instant('seconds')}`;
 
-  if (numOfDays > 0) {
-    formattedTime += `${numOfDays} ${this.translate.instant('days')} `;
-  }
+   }
+   if(numOfMinutes <= 0 && numOfSeconds <= 0 ){
+    formattedTime += `0 ${this.translate.instant('seconds')}`;
 
-  if (Math.floor(numOfHours) > 0) {
-    formattedTime += `${Math.floor(numOfHours)} ${this.translate.instant('hours')} `;
-  }
-
-  if (numOfMinutes > 0) {
-    formattedTime += `${numOfMinutes} ${this.translate.instant('minutes')}`;
-  }
-
-  console.log("numOfDays",numOfDays ,"numOfHours " , numOfHours , 'formattedTime' , formattedTime)
+   }
+   
+   console.log("numOfDays",numOfDays ,"numOfHours " , numOfHours , 'formattedTime' , formattedTime)
 
   this.openCampExpectedTimeModal(formattedTime);
 }
+
+
+calculateTime(numberOfSeconds: number, hoursPerDay: number) {
+  // Given values
+  const secondsPerHour = 3600;
+  const secondsPerMinute = 60;
+
+  // Calculate estimated time in hours
+  const estimatedTimeInHours: number = numberOfSeconds / secondsPerHour;
+
+  // Calculate days, remaining hours, and remaining minutes
+  const days: number = Math.floor(estimatedTimeInHours / hoursPerDay);
+  const remainingHours: number = Math.floor(estimatedTimeInHours % hoursPerDay);
+  const remainingMinutes: number = Math.floor((estimatedTimeInHours % 1) * secondsPerHour / secondsPerMinute);
+
+  const remainingSeconds: number = Math.round((estimatedTimeInHours % 1) * secondsPerHour % secondsPerMinute);
+
+  console.log( {
+    days: days,
+    remainingHours: remainingHours,
+    remainingMinutes: remainingMinutes,
+    remainingSeconds: remainingSeconds
+  })
+  // Return the result as an instance of the TimeResult interface
+  return {
+    days: days,
+    remainingHours: remainingHours,
+    remainingMinutes: remainingMinutes,
+    remainingSeconds: remainingSeconds
+  };
+}
+
 
 calculateTimeDifference(startDate: Date, endDate: Date): number {
   // Make a copy of the start date to avoid modifying the original object
@@ -219,11 +263,11 @@ calculateTimeDifference(startDate: Date, endDate: Date): number {
   // Calculate the difference in milliseconds
   const timeDiff = Math.abs(endDate.getTime() - start.getTime());
 
-  // Convert the difference to seconds
-  const secondsDiff = timeDiff / 1000;
-  console.log('from calculateTimeDifference , time difference in seconds :' ,secondsDiff );
+  // Convert the difference to hours
+  const hoursDiff = timeDiff / (1000 * 60 * 60);
+  console.log('Time difference in hours:', hoursDiff);
 
-  return secondsDiff;
+  return hoursDiff;
 }
 openCampExpectedTimeModal(data){
 
