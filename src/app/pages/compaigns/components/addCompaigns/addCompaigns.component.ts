@@ -33,8 +33,8 @@ export class AddCompaignsComponent implements OnInit {
   isRepeatable: boolean;
   isInterval:boolean;
   repeatedDays: number;
-  intervalFrom: number;
-  intervalTo: number;
+  intervalFrom: any;
+  intervalTo: any;
   blackoutFrom: any;
   blackoutTo: any;
   // maxPerDay: number;
@@ -158,7 +158,7 @@ toStepFive(){
   this.isInterval=this.stepFourComponent.isInterval;
   
   this.repeatedDays=this.stepFourComponent.form.get("repeatedDays").value;
-  this.intervalFrom=this.stepFourComponent.form.get("intervalFrom").value;
+  this.intervalFrom = this.stepFourComponent.form.get("intervalFrom").value;
   this.intervalTo=this.stepFourComponent.form.get("intervalTo").value;
   this.blackoutFrom=this.stepFourComponent.utcTime1;
   this.blackoutTo=this.stepFourComponent.utcTime2;
@@ -176,7 +176,7 @@ calulateCampExpectedTime(){
   console.log('start time : ' , startDate , 'end time' , endDate)
   let timeDiff = !this.stepFourComponent.timesAreSame(startDate,endDate) ? this.calculateTimeDifference(startDate.value , endDate.value) : 24;
 
-  let intervalAvg = this.isInterval ? (this.intervalFrom + this.intervalTo) /2 : 1 ;
+  let intervalAvg = this.isInterval ? (parseInt(this.intervalFrom , 10) + parseInt(this.intervalTo , 10) ) /2 : 1 ;
   let result = (intervalAvg * this.totalContacts / timeDiff / 60 / 60  );
   console.log( 'intervalAverage: ' ,intervalAvg)
 
