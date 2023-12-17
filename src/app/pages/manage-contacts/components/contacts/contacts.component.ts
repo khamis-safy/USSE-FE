@@ -261,7 +261,7 @@ this.subscribtions.push(sub2)
     dialogConfig.height='88vh';
     dialogConfig.width='45vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='465px';
+    dialogConfig.minWidth='833px';
     dialogConfig.disableClose = true;
 
     dialogConfig.data= {contacts:data,listDetails:false};

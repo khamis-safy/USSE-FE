@@ -120,17 +120,112 @@
     </form>
       <!-- additional fields -->
       <div class="additional p-3 mt-3">
-        <div class="additionaltb">
-          <div *ngIf="showInputs || additionalParameters?.length != 0" class="tbheader mb-2">
+        <form [formGroup]="form2"  class="additionaltb">
+          <!-- <div *ngIf="showInputs || additionalParameters?.length != 0" class="tbheader mb-2">
             <span class="field-name" style="font-weight: 500">{{ 'FIELD_NAME' | translate }}            
               <em class="text-danger">*</em>
             </span>
             <span class="field-name" style="font-weight: 500">{{ 'VALUE' | translate }}            
               <em class="text-danger">*</em>
             </span>
-          </div>
-          <ng-container *ngIf="additionalParameters && additionalParameters?.length != 0">
-            <div class="tbBody">
+          </div> -->
+          <ng-container *ngIf="showInputs || additionalParameters?.length != 0">
+
+            <table class="table w-100" >
+              <thead >
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">
+                    {{ 'FIELD_NAME' | translate }}            
+                    <em class="text-danger">*</em>
+                  </th>
+                  <th scope="col">
+                    {{ 'VALUE' | translate }}            
+                    <em class="text-danger">*</em>
+                  </th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody  >
+                
+                <tr class="row_content"  *ngFor="let item of additionalParameters; let i = index" [ngClass]="{'last-row': i === additionalParameters.length - 1}">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.value }}</td>
+                  <td><span class="remove pointer" (click)="remove(i)" style="display: inline-block; width: 20%;"
+                    ><img src="assets/icons/delDev.svg" alt="" srcset=""
+                  /></span></td>
+                </tr>
+
+                <tr class="inputs_row" *ngIf="showInputs">
+                  <th scope="row"></th>
+                  <td style="width:30%">
+                    <div class="name"> 
+                    <us-input
+                      [isDisabled]="false"
+                      [optional]="false"
+                      type="text"
+                      [error]="fieldName.touched && fieldName.errors?.required || invalidName"
+                      [hintText]="
+                      fieldName.touched && fieldName.errors?.required
+                        ? ('REQUIRED_FIELD' | translate)
+                        : invalidName?('EXIST_NAME' | translate):''
+                    "
+                      [fullWidth]="true"
+                      placeholder="{{ 'FIELD_NAME' | translate }}"
+                      formControlName="fieldName"
+                    ></us-input>
+                   
+                  </div>
+                </td>
+                  <td style="width:30%">
+                      <div class="value">
+                        <us-input
+                          [isDisabled]="false"
+                          placeholder="{{ 'VALUE' | translate }}"
+                          formControlName="value"
+                          [isDisabled]="false"
+                          [optional]="false"
+                          type="text"
+                          [fullWidth]="true"
+                          [error]="value.touched && value.errors?.required"
+                          [hintText]="
+                          value.touched && value.errors?.required
+                            ? ('REQUIRED_FIELD' | translate)
+                            : ''
+                        "
+                        ></us-input>
+                      </div>
+
+                    </td>
+
+                  <td>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div *ngIf="showInputs" class=" d-flex justify-content-center gap-3">
+
+              <us-button
+              label="{{ 'CANCEL' | translate }}"
+              size="sm"
+              [loading]="false"
+                [fill]="false"
+                (clicked)="cancel()"
+              ></us-button>
+    
+              <us-button
+              label="{{ 'SAVE' | translate }}"
+              size="sm"
+              appearance="primary"
+              [fill]="true"
+              (clicked)=" addParameters()"
+              [loading]="false"
+              [disabled]="form2.invalid || invalidName"
+            ></us-button>
+              </div>
+            <!-- <div class="tbBody">
               <div
                 class="tbrow"
                 *ngFor="let item of additionalParameters; let i = index"
@@ -159,11 +254,11 @@
                   ><img src="assets/icons/delDev.svg" alt="" srcset=""
                 /></span>
               </div>
-            </div>
+            </div> -->
           </ng-container>
-          </div>
+          </form>
 
-        <ng-container *ngIf="showInputs">
+        <!-- <ng-container *ngIf="showInputs">
           <form [formGroup]="form2" class="inputs">
             <div class="name"> 
               <us-input
@@ -220,7 +315,7 @@
           [disabled]="form2.invalid || invalidName"
         ></us-button>
           </div>
-        </ng-container>
+        </ng-container> -->
 
         <div *ngIf="!showInputs" class="w-100 d-flex justify-content-center">
           <us-button

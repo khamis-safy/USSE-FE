@@ -215,7 +215,7 @@ setTimeToDefault(){
     dialogConfig.minHeight='380px';
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='465px';
+    dialogConfig.minWidth='608px';
     dialogConfig.data=warningMsg;
     const dialogRef = this.dialog.open(ContactsWarningComponent,dialogConfig);
     // Subscribe to the afterClosed event to execute the callback function after closing the modal

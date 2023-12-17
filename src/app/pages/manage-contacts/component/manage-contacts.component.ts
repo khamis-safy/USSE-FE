@@ -130,7 +130,7 @@ else{
     dialogConfig.height='88vh';
     dialogConfig.width='45vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='465px';
+    dialogConfig.minWidth='833px';
     dialogConfig.disableClose = true;
 
     const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
