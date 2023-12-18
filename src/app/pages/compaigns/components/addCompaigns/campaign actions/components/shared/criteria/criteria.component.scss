@@ -36,12 +36,11 @@
     border-bottom: 0.5px solid #bebbbb;
   }
   .inputs{
-      display: flex;
-      width: 61%;
-      justify-content: space-around;
-      gap: 42px;
-      margin-left: 43px;
-      margin-bottom: 25px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 6%;
+    margin-bottom: 15px;
   
   }
  
@@ -71,4 +70,50 @@
     font-size: 12px !important;
   }
   }
+  thead{
+    tr{
+      border-bottom: none !important;
+      border-color: transparent !important;
   
+    }
+  }
+  .inputs_row{
+    border-bottom: none !important;
+    border-color: transparent !important;
+  
+  
+  }
+  
+  tr {
+    text-align: center;
+  }
+  td {
+    width: 25%;
+    text-align: center;
+    flex: 4%;
+  }
+  th {
+    flex: 2%;
+    
+  }
+  tbody {
+    display: flex;
+    flex-direction: column;
+    max-height: 140px;
+    overflow-y: auto;
+  }
+  
+  tr {
+    display: flex;
+    width: 100%;
+  }
+  
+  .table tbody tr.row_content.last-row {
+    border-bottom: none;
+    border-color: transparent !important;
+  
+  }
+  .criteria-container{
+    max-height: 360px;
+    overflow: auto;
+  }

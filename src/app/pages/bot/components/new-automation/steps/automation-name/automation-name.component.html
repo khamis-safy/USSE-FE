@@ -17,18 +17,18 @@
     ></us-input>
     </form> 
     
-<app-criteria  (allCriterias)="setCriterias($event)" [criteriaParameters]="automationData?.criterias || []"></app-criteria>
+<app-criteria  (allCriterias)="setCriterias($event)" (disableSaveButton)="disabled = $event" [criteriaParameters]="automationData?.criterias || []"></app-criteria>
   </div>
   
   <div class="d-flex justify-content-end align-items-center buttons" style="width: 95%; ">
-    <button class="rest-style" matStepperNext  [disabled]="form.invalid || criterias.length==0">
+    <button class="rest-style" matStepperNext  [disabled]="form.invalid || criterias.length==0 || disabled">
       <us-button
         class="m-2"
         label="{{ 'NEXT' | translate }}"
         [fill]="true"
         [size]="'md'"
         [loading]="false"
-        [disabled]="form.invalid || criterias.length==0"
+        [disabled]="form.invalid || criterias.length==0 || disabled"
         [appearance]="'primary'"
         
       >

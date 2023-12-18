@@ -238,9 +238,9 @@ textarea {
 @media (max-width: 1700px) {
 
 
-  .input-wrapper{
+  .input-wrapper.isCriteria{
   
-
+    height: 38px  !important;
    input, textarea
     {
     font-size: 12px !important;

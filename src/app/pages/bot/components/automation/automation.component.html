@@ -23,6 +23,7 @@
         <form [formGroup]="form"class="d-flex" style=" margin-inline: 20px;">
           <us-select
             [isListDevicesDropdown]="true"
+            [deviceLableGap]="true"
             [data]="devices"
             formControlName="devicesData"
             [multiSelect]="false"
