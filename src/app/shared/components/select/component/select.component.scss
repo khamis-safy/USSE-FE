@@ -100,7 +100,7 @@
     &.focus {
       transition: 0.2s box-shadow;
       border: 1px solid $clr_neutral_300;
-      box-shadow: 0 0 0 2px $clr_neutral_0, 0 0 0 4px $clr_primary_400;
+      box-shadow: 0 0 0 2px $clr_neutral_0, 0 0 0 4px var(--clr-primary-800);
     }
 
     /* Firefox */
