@@ -1991,3 +1991,12 @@ ul[dnd-list] .dndDragging {
 .mat-mdc-form-field-focus-overlay {
   background-color: transparent;
 }
+.mat-mdc-menu-item:hover:not([disabled]), .mat-mdc-menu-item.cdk-program-focused:not([disabled]), .mat-mdc-menu-item.cdk-keyboard-focused:not([disabled]), .mat-mdc-menu-item-highlighted:not([disabled]) {
+  background:var(--clr-primary-500) !important;
+}
+.my-full-width-menu {
+  width: 100%;
+}
+input:-internal-autofill-selected {
+  background-color: var(--clr-primary-500) !important;
+}

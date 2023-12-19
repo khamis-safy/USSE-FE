@@ -581,6 +581,8 @@
 "error_items":"Error items",
 "objectName":"Object Name",
 "errorState":"Error State",
-"seconds":"seconds"
+"seconds":"seconds",
+"Customer":"Customer",
+"User":"User"
 
 }
