@@ -1832,7 +1832,7 @@ nz-date-picker{
 }
 
 .mat-mdc-menu-content.mdc-list {
-  min-width: 161px;
+  min-width: 150px;
 }
 // drage table rows************************************************************************
 /* Add this style to your component's stylesheet */
@@ -1994,9 +1994,13 @@ ul[dnd-list] .dndDragging {
 .mat-mdc-menu-item:hover:not([disabled]), .mat-mdc-menu-item.cdk-program-focused:not([disabled]), .mat-mdc-menu-item.cdk-keyboard-focused:not([disabled]), .mat-mdc-menu-item-highlighted:not([disabled]) {
   background:var(--clr-primary-500) !important;
 }
-.my-full-width-menu {
-  width: 100%;
-}
+
 input:-internal-autofill-selected {
   background-color: var(--clr-primary-500) !important;
+}
+
+
+
+.mat-mdc-menu-panel.mat-mdc-menu-panel {
+  border-radius: 16px !important;;
 }

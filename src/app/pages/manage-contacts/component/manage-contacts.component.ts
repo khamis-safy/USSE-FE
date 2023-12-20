@@ -1,5 +1,5 @@
 import { ToasterServices } from './../../../shared/components/us-toaster/us-toaster.component';
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddListComponent } from '../components/lists/addList/addList.component';
 import { ListsComponent } from '../components/lists/lists.component';
@@ -56,6 +56,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit,OnDestroy{
   isChecked;
   @ViewChild(ListsComponent) lists:ListsComponent;
   @ViewChild(ContactsComponent) contacts:ContactsComponent;
+
+
   isCanceled:boolean;
   canEdit: boolean;
 
@@ -65,7 +67,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit,OnDestroy{
     private activatedRouter:ActivatedRoute,
     private listService:ManageContactsService,
     private authService:AuthService,
-    private translate:TranslateService){
+    private translate:TranslateService,
+    private renderer: Renderer2){
       this.initRouting()
 
 
@@ -84,10 +87,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit,OnDestroy{
       }
     })
   }
-  ngAfterViewInit(){
-    this.isCanceled=false;
-  }
+  ngAfterViewInit() {
 
+  }
+  getWidth(element: HTMLElement) {
+
+    return `${element.clientWidth}px`;
+ }
+ 
   ngOnInit() {
     let permission =this.listService.contactsPermissions
     let customerId=this.authService.getUserInfo()?.customerId;

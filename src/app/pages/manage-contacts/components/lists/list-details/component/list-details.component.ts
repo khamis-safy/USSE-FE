@@ -50,7 +50,10 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit , OnDestroy{
     this.listContacts.count=this.count;
     this.listContacts.getContacts();
         }
+        getWidth(element: HTMLElement) {
 
+          return `${element.clientWidth}px`;
+       }
   ngOnInit() {
     this.getListData();
     let permission =this.listService.contactsPermissions

@@ -54,6 +54,7 @@
     </div>
 
     <div class="menu">
+      <div #actionsMenu>
       <button mat-button [matMenuTriggerFor]="menu" class=" add-action-button text-neutral-0 bg-primary-800 rounded-3 p-4">
         <div class="add-action-menu d-flex align-items-center justify-content-center gap-3">
           
@@ -65,12 +66,13 @@
           </div>
         </div>
       </button>
+    </div>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openInquiry()">{{'enqueryForm' |translate}}</button>
-        <button mat-menu-item (click)="openSubscribeToList()">{{'subscribeToList' |translate}}</button>
-        <button mat-menu-item (click)="openAutoReply('autoReply')">{{'autoReply' |translate}}</button>
-        <button mat-menu-item (click)="openAutoReply('sendAndWait')">{{'sendAndWait' |translate}}</button>
-        <button mat-menu-item (click)="openAutoReply('cancel')">{{'cancel' |translate}}</button>
+        <button mat-menu-item (click)="openInquiry()" [ngStyle]="{'width':getWidth(actionsMenu)}">{{'enqueryForm' |translate}}</button>
+        <button mat-menu-item (click)="openSubscribeToList()" [ngStyle]="{'width':getWidth(actionsMenu)}">{{'subscribeToList' |translate}}</button>
+        <button mat-menu-item (click)="openAutoReply('autoReply')" [ngStyle]="{'width':getWidth(actionsMenu)}">{{'autoReply' |translate}}</button>
+        <button mat-menu-item (click)="openAutoReply('sendAndWait')" [ngStyle]="{'width':getWidth(actionsMenu)}">{{'sendAndWait' |translate}}</button>
+        <button mat-menu-item (click)="openAutoReply('cancel')" [ngStyle]="{'width':getWidth(actionsMenu)}">{{'cancel' |translate}}</button>
         <!-- <button mat-menu-item >{{'callURL' |translate}}</button> -->
       </mat-menu>
     </div>
