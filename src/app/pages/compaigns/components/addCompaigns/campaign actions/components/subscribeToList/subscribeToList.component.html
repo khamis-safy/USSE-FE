@@ -61,7 +61,7 @@
         [loading]="false"
         [disabled]="addNewList"
         [appearance]="'primary'"
-        (clicked)="addNewList=true"
+        (clicked)="openAddNewList()"
       ></us-button>
 </div>
       <ng-container *ngIf="addNewList">
@@ -91,7 +91,7 @@
                 [fill]="true"
                 [size]="'md'"
                 [loading]="isLoading"
-                [disabled]="isLoading || form.invalid || form.get('listName').hasError('whitespace')"
+                [disabled]="isLoading || form.invalid || form.get('listName').hasError('whitespace') "
                 [appearance]="'primary'"
                 (clicked)="submitAddList()"
               ></us-button>
@@ -130,7 +130,7 @@
     [loading]="isLoading"
     [fill]="true"
     (clicked)="submit()"
-    [disabled]="!listId || isLoading ||isDisabled || form.get('askForName').hasError('whitespace')"
+    [disabled]="!listId || isLoading ||isDisabled || form.get('askForName').hasError('whitespace') || addNewList"
   ></us-button>
  
   </div>

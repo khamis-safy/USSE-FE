@@ -202,11 +202,11 @@
     list-style: none;
     margin: 0;
     padding: 4px;
-    border-radius: $radius_xl !important;
-    -webkit-border-radius: $radius_xl !important;
-    -moz-border-radius: $radius_xl !important;
-    -ms-border-radius: $radius_xl !important;
-    -o-border-radius: $radius_xl !important;
+    border-radius: $radius_md !important;
+    -webkit-border-radius: $radius_md !important;
+    -moz-border-radius: $radius_md !important;
+    -ms-border-radius: $radius_md !important;
+    -o-border-radius: $radius_md !important;
     box-shadow: $depth_3;
     cursor: default;
     border: 1px solid $clr_neutral_300;
@@ -232,11 +232,11 @@
       overflow-y: auto;
       max-height: 300px;
       width: 100%;
-      border-radius: $radius_xl !important;
-      -webkit-border-radius: $radius_xl !important;
-      -moz-border-radius: $radius_xl !important;
-      -ms-border-radius: $radius_xl !important;
-      -o-border-radius: $radius_xl !important;
+      border-radius: $radius_md !important;
+      -webkit-border-radius: $radius_md !important;
+      -moz-border-radius: $radius_md !important;
+      -ms-border-radius: $radius_md !important;
+      -o-border-radius: $radius_md !important;
       overscroll-behavior: contain;
       padding: 0px;
 

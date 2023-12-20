@@ -68,7 +68,9 @@ export class SubscribeToListComponent implements OnInit {
   }
  
  
-
+  openAddNewList(){
+    this.addNewList=true;
+  }
   
   getLists(lisname?:string){
     this.listService.getList(this.authService.getUserInfo()?.email,100,0,"","").subscribe(
