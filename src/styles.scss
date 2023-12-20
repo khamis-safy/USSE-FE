@@ -1602,7 +1602,7 @@ right: 0 !important;
   height: 51px  !important;
   padding: 19px 18px;
   .mat-mdc-menu-content.mdc-list {
-    min-width: 148px !important;
+    min-width: 125px !important;
   }
 }
 .mdc-button {
@@ -1832,7 +1832,7 @@ nz-date-picker{
 }
 
 .mat-mdc-menu-content.mdc-list {
-  min-width: 150px;
+  min-width: 125px;
 }
 // drage table rows************************************************************************
 /* Add this style to your component's stylesheet */
@@ -2003,4 +2003,11 @@ input:-internal-autofill-selected {
 
 .mat-mdc-menu-panel.mat-mdc-menu-panel {
   border-radius: 16px !important;;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--clr-primary-500) inset !important;
+}
+
+input:-webkit-autofill::first-line {
+  font-size: inherit;
 }
