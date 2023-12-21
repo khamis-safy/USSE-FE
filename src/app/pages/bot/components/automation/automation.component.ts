@@ -66,17 +66,24 @@ export class AutomationComponent implements OnInit {
   }
 
   exportQRCode(element) {
-    // Generate QR code
-    const typeNumber = 8; // adjust as needed
-    const errorCorrectionLevel = 'M'; // adjust as needed
-    const qr = QRCode(typeNumber, errorCorrectionLevel);
+    const typeNumber = 16; // or adjust as needed
+    const errorCorrectionLevel = 'L'; // or adjust as needed
     const qrData = this.generateQrString(element);
-    qr.addData(qrData);
+  
+    // Convert the string to a Uint8Array using UTF-8 encoding
+    const utf8Bytes = new TextEncoder().encode(qrData);
+  
+    // Convert the Uint8Array to a string
+    const utf8String = String.fromCharCode.apply(null, utf8Bytes);
+  
+    // Generate QR code using the string
+    const qr = QRCode(typeNumber, errorCorrectionLevel);
+    qr.addData(utf8String, 'Byte');
     qr.make();
-
+  
     // Convert QR code to image data URL
     const qrCodeDataUrl = qr.createDataURL(10, 0);
-
+  
     // Convert data URL to Blob
     const byteCharacters = atob(qrCodeDataUrl.split(',')[1]);
     const byteNumbers = new Array(byteCharacters.length);
@@ -85,15 +92,16 @@ export class AutomationComponent implements OnInit {
     }
     const byteArray = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArray], { type: 'image/png' });
-
+  
     // Save the Blob as a file using FileSaver.js
-    saveAs(blob, `${element.name} qrcode.png`);
+    saveAs(blob, `${element.name}_qrcode.png`);
   }
-  generateQrString(element:Automation){
-    let criteria=element.criterias[0].criteria
-    const qrData =`https://api.whatsapp.com/send?phone=${this.deviceNumber}&text=${encodeURIComponent(criteria)}`
-    return qrData
+  
+  generateQrString(element: Automation): string {
+    let criteria = element.criterias[0].criteria;
+    return `https://api.whatsapp.com/send?phone=${this.deviceNumber}&text=${encodeURIComponent(criteria)}`;
   }
+  
    // get devices data
  getDevices(){
   this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
