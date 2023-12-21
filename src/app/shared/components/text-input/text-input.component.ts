@@ -154,7 +154,7 @@ export class InputComponent implements  AfterViewInit {
       this.input.emit(this.value);
     }
   }
-  addEmoji(e){
+  addEmojiToTextArea(e){
     let val = this.value ? this.value : ""
     let sym = e.emoji.unified.split('-')
     let codesArray = []
@@ -162,6 +162,22 @@ export class InputComponent implements  AfterViewInit {
     let emoji = String.fromCodePoint(...codesArray);
     this.value =  val.slice(0, this.curPos) + emoji + val.slice(this.curPos);
     this.isEmojiClicked = true;
+  }
+  addEmoji(e){
+    if (this.isTextArea && this.limitTextarea) {
+      if(this.charCount <this.maxCharLimit -1){
+      this.addEmojiToTextArea(e);
+      this.charCount = this.value ? this.value.length : 0;
+      this.input.emit(this.value);
+
+    
+      }
+    }
+    else{
+      this.addEmojiToTextArea(e)
+
+    }
+ 
 
   }
 
