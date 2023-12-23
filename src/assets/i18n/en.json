@@ -581,6 +581,17 @@
 "error_items":"Error items",
 "objectName":"Object Name",
 "errorState":"Error State",
-"seconds":"seconds"
+"seconds":"seconds",
+"Customer":"Customer",
+"User":"User",
+"UNCANCEL_MESSAGE":"are you sure you want to uncancel these contacts",
+"Item(s) UnCanceled":"Item(s) UnCanceled",
+"UnCancel":"UnCancel",
+"Error: Contact name or number already exists":"Error: Contact name or number already exists",
+"Error: the automation name is already exist!":"Error: the automation name is already exist!",
+"Error: Template name or number already exists":"Error: Template name or number already exists",
+"Error: Template name already exists":"Error: Template name already exists",
+"API token copied to clipboard!":"API token copied to clipboard!"
+
 
 }

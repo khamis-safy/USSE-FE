@@ -10,6 +10,7 @@
           <us-select
           class="mx-3"
             [isListDevicesDropdown]="true"
+            [deviceLableGap]="true"
             [data]="devices"
             formControlName="devicesData"
             [multiSelect]="false"
@@ -60,24 +61,30 @@
           </td>
         </ng-container>
 
-        <!-- Messages Column -->
-        <ng-container matColumnDef="Messages">
-          <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'MESSAGES_LABEL' | translate }}</th>
-          <td class="text-center" mat-cell *matCellDef="let element">
-            {{ element.msgBody }}
-            <div *ngIf="element?.fileName" class="text-start ms-4 pt-2 pb-3">
+    <!-- Messages Column -->
+    <ng-container matColumnDef="Messages">
+      <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'MESSAGES_LABEL' | translate }}</th>
+      <td mat-cell *matCellDef="let element" style="max-width: 135px;">
+        <div class="py-2">
+          <div class="d-flex justify-content-center align-items-center flex-column">
+            <p style="max-width: 100%;" class="overflow-line-4 mb-0">{{ element.msgBody }}</p>
+
+            <div *ngIf="element?.fileName" class="text-start  pt-2 pb-3">
               <img *ngIf="(element.fileName | type )=='assets/images/image.svg' else otherType"  [src]="element.fileName | type" alt="" style=" width: 80px;">
               <ng-template #otherType>
-                <img  [src]="element.fileName | type" alt="" style="     width: 123px;
+                <img  [src]="element.fileName | type" alt="" style="    width: 123px;
                 ">
 
               </ng-template>
             </div>
-            
-            
-          </td>
-        </ng-container>
 
+          </div>
+        
+         
+          
+        </div>
+      </td>
+    </ng-container>
         <!-- Created at Column -->
         <ng-container matColumnDef="Created At">
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'CREATED_AT' | translate }}</th>

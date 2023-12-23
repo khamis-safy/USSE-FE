@@ -85,7 +85,7 @@
                   [fill]="true"
                   [size]="'md'"
                   [loading]="isLoading"
-                  [disabled]="isLoading || form.invalid"
+                  [disabled]="isLoading || form.invalid || form.get('listName').hasError('whitespace')"
                   [appearance]="'primary'"
                   (clicked)="submitAddList()"
                 ></us-button>
@@ -124,7 +124,7 @@
       label="{{ 'UPLOAD_LABEL' | translate }}"
       size="sm"
       [fill]="true"
-      [disabled]="isDisabled || loading"
+      [disabled]="isDisabled || loading  || addNewList"
       [loading]="loading"
       (clicked)="vcfFile ? uploadVCFfile(): goToFileSetting()"
     ></us-button>

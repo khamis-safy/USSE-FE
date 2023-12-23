@@ -9,6 +9,7 @@ import { ListData } from '../../../list-data';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { BulkOperations } from 'src/app/shared/interfaces/bulkOperations';
+import { noWhitespaceValidator } from 'src/app/shared/methods/noWhiteSpaceValidator';
 
 export interface files{
   name:string,
@@ -35,7 +36,7 @@ export class UploadSheetComponent implements OnInit {
   containsHeadear:boolean=true;
   addNewList:boolean=false;
   selectedLists:any = new FormControl([]);
-  listName = new FormControl('',Validators.required);
+  listName = new FormControl('',[Validators.required , noWhitespaceValidator]);
   addedList:ListData;
   vcfFile:boolean;
   isExcelfFile:boolean;

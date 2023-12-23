@@ -7,6 +7,7 @@ import { DetailsComponent } from './steps/details/details.component';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { BotService } from '../../bot.service';
 import { Automation } from '../../interfaces/automation';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-new-automation',
@@ -28,6 +29,8 @@ export class NewAutomationComponent implements OnInit {
   constructor(private authService:AuthService,
     private compaignsService:CompaignsService,
     private toasterService:ToasterServices,
+    private translate:TranslateService,
+    private  toaster: ToasterServices,
     private botService:BotService) { }
 
   ngOnInit() {
@@ -66,7 +69,7 @@ if(this.automationData){
   data.sessionTimeOutResponseContent=this.detailsComponent.form.value.message || "" 
   this.botService.updateAutomation(data).subscribe(
     (res)=>{
-      this.toasterService.success("Success");
+      this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
       this.back.emit(true)
       this.isLoading = false
     },
@@ -79,7 +82,7 @@ if(this.automationData){
 else{
   this.botService.createNewAutomation(this.compaignsService.filteredObject(data)).subscribe(
     (res)=>{
-      this.toasterService.success("Success");
+      this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
       this.back.emit(true)
       this.isLoading = false
     },

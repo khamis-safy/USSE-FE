@@ -17,6 +17,7 @@ import { AdditonalParamsComponent } from './components/contacts/additonalParams/
 import { DragZoneModule } from 'src/app/shared/components/drag-zone/drag-zone.module';
 import { ErrorsStatesComponent } from 'src/app/shared/components/bulkOperationModals/errorsStates/errorsStates.component';
 import { RequestStateComponent } from 'src/app/shared/components/bulkOperationModals/requestState/requestState.component';
+import { UnCancelContactsComponent } from './components/contacts/unCancelContacts/unCancelContacts.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,7 @@ import { RequestStateComponent } from 'src/app/shared/components/bulkOperationMo
     AddListComponent,
     AddContactComponent,
     AdditonalParamsComponent,
-
+    UnCancelContactsComponent,
     ContactListsComponent,
     RequestStateComponent,
     ErrorsStatesComponent

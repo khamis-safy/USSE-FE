@@ -94,6 +94,8 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   // @ Add a class to identify the first and last buttons in group to adjust styles @ //
   @Input() orderInGroup?: 'first' | 'last';
   @Input() fullWidth: boolean = false;
+  @Input() deviceLableGap: boolean = false;
+
   // Outputs
   @Output() onSelect = new EventEmitter<SelectOption | null>();
   @Output() onDeSelect = new EventEmitter<SelectOption>();

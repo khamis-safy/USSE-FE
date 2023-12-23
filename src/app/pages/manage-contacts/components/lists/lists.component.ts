@@ -162,7 +162,7 @@ else{
 
 
   openSnackBar(){
-    let message = `${this.deletedLists.length} ${this.translate.instant("Item(s) Deleted")}`;
+    let message = `${this.deletedLists.length} ${this.translate.instant('Item(s) Deleted')}`;
     let action =this.translate.instant("Undo")
     let snackBarRef=this.snackBar.open(message,action,{duration:4000});
     snackBarRef.onAction().subscribe(()=>{

@@ -68,7 +68,10 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
     ) {
         
 }
+getWidth(element: HTMLElement) {
 
+  return `${element.clientWidth}px`;
+}
   ngOnInit() {
     if(this.isCampaignAction){
       this.getCampaings()

@@ -10,7 +10,8 @@ import { Automation } from 'src/app/pages/bot/interfaces/automation';
 export class AutomationNameComponent implements OnInit {
   automationName:any = new FormControl('',[Validators.required]);
   criterias:any=[];
-  @Input() automationData:Automation
+  @Input() automationData:Automation;
+  disabled:boolean=false;
   form = new FormGroup({
 
     automationName:this.automationName

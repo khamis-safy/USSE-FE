@@ -24,7 +24,7 @@ export class SubscribeToListComponent implements OnInit {
   listsLoadingText:string='Loading ...';
   addNewList:boolean=false;
   selectedLists:any = new FormControl([]);
-  listName = new FormControl('',Validators.required);
+  listName = new FormControl('',[Validators.required ,noWhitespaceValidator]);
   askForName = new FormControl('',[Validators.required, noWhitespaceValidator]);
 
   addedList:ListData;
@@ -68,7 +68,9 @@ export class SubscribeToListComponent implements OnInit {
   }
  
  
-
+  openAddNewList(){
+    this.addNewList=true;
+  }
   
   getLists(lisname?:string){
     this.listService.getList(this.authService.getUserInfo()?.email,100,0,"","").subscribe(

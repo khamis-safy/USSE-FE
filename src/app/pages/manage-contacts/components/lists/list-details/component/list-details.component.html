@@ -11,7 +11,7 @@
     </div>
     <div class="buttons_ d-flex flex-wrap align-items-center">
       <us-button
-      *ngIf="isChecked  && canEdit"
+      *ngIf="isChecked  && canEdit && tab=='contacts'"
         class="m-2"
         label="{{ 'DELETE' | translate }}"
         img="assets/icons/delete.svg"
@@ -37,7 +37,7 @@
         (clicked)="removeContacts()"
       ></us-button>
       <us-button
-      *ngIf="tab=='contacts'  && canEdit"
+      *ngIf="tab=='contacts'  && canEdit "
       class="m-2"
       label="{{ 'ADD_CONTACT' | translate }}"
       [matIcon]="'add'"
@@ -48,6 +48,20 @@
       [appearance]="'primary'"
       (clicked)="openContactLists()"
     ></us-button>
+    <us-button
+    *ngIf="tab=='canceled'  && canEdit && isChecked"
+    class="m-2"
+    [label]="'UnCancel' | translate"
+    [matIcon]="''"
+    [fill]="true"
+    [size]="'md'"
+    [loading]="false"
+    [disabled]="false"
+    [appearance]="'primary'"
+    (clicked)="openUnCancelContactsModal()"
+  ></us-button>
+  <ng-container  *ngIf="tab=='contacts'  && canEdit ">
+    <div #importMenu>
     <button mat-button [matMenuTriggerFor]="menu" class="mx-1 import-button text-neutral-0 bg-primary-800 rounded-3 ">
       <div class="import-menu d-flex align-items-center justify-content-center gap-3">
         <div class="icon">
@@ -59,22 +73,26 @@
         </div>
       </div>
     </button>
+  </div>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="openImportModal('excel')"><img src="assets/icons/Excel.svg" alt="" /> Excel</button>
-      <button mat-menu-item (click)="openImportModal('vcf')"><img src="assets/icons/vcf.svg" alt="" /> vcf</button>
+      <button mat-menu-item (click)="openImportModal('excel')" [ngStyle]="{'width':getWidth(importMenu)}">
+        <div class="d-flex align-items-center gap-2">
+          <img src="assets/icons/Excel.svg" alt="" /> 
+          <span>Excel Sheet</span>
+        </div>
+        
+      </button>
+      <button mat-menu-item (click)="openImportModal('vcf')" [ngStyle]="{'width':getWidth(importMenu)}">
+        <div class="d-flex align-items-center gap-2">
+          <img src="assets/icons/vcf.svg" alt="" />
+          <span>vcf file</span>
+        </div>
+      </button>
     </mat-menu>
-    
-    <!-- <us-button
-    class="m-2"
-    [label]="'IMPORT_FILE' | translate"
-    img="assets/icons/import.svg"
-    [fill]="true"
-    [size]="'md'"
-    [loading]="false"
-    [disabled]="false"
-    [appearance]="'primary'"
-    (clicked)="openImportModal('')"
-  ></us-button> -->
+  </ng-container>
+  <ng-container  *ngIf="tab=='contacts'">
+
+    <div #exportMenu  >
   <button  mat-button [matMenuTriggerFor]="menu2" class="mx-2  export-button text-neutral-0 bg-primary-800 rounded-3 ">
     <div class="export-menu d-flex align-items-center justify-content-center gap-3">
       <div class="icon">
@@ -86,10 +104,22 @@
       </div>
     </div>
   </button>
+  </div>
   <mat-menu #menu2="matMenu">
-    <button mat-menu-item (click)="isChecked ? exportSelectedContactsAs('excel') :exportAllContactsAs('excel')"><img src="assets/icons/Excel.svg" alt="" /> Excel</button>
-    <button mat-menu-item (click)="isChecked ? exportSelectedContactsAs('vcf') :exportAllContactsAs('vcf')"><img src="assets/icons/vcf.svg" alt="" /> vcf</button>
+    <button mat-menu-item (click)="isChecked ? exportSelectedContactsAs('excel') :exportAllContactsAs('excel')" [ngStyle]="{'width':getWidth(exportMenu)}">
+      <div class="d-flex align-items-center gap-2">
+        <img src="assets/icons/Excel.svg" alt="" /> 
+        <span>Excel Sheet</span>
+      </div>
+    </button>
+    <button mat-menu-item (click)="isChecked ? exportSelectedContactsAs('vcf') :exportAllContactsAs('vcf')" [ngStyle]="{'width':getWidth(exportMenu)}">
+      <div class="d-flex align-items-center gap-2">
+        <img src="assets/icons/vcf.svg" alt="" />
+        <span>vcf file</span>
+      </div>
+    </button>
   </mat-menu>
+  </ng-container>
 
       <!-- <us-button
         class="m-2"
@@ -109,7 +139,7 @@
 
     <mat-tab>
       <ng-template mat-tab-label>
-        <span class="text-primary-800 me-2" style="font-weight: 800;">{{totalContacts }}</span>
+        <span class="text-primary-800 mx-2" style="font-weight: 800;">{{totalContacts }}</span>
           {{ 'CONTACTS' | translate }}
 
       </ng-template>
@@ -118,6 +148,7 @@
 
     <mat-tab>
       <ng-template mat-tab-label >
+        <span class="text-primary-800 mx-2" style="font-weight: 800;">{{totalCanceledContacts }}</span>
 
           {{ 'CANCELED' | translate }}
 

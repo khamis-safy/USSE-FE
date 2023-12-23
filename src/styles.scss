@@ -1602,7 +1602,7 @@ right: 0 !important;
   height: 51px  !important;
   padding: 19px 18px;
   .mat-mdc-menu-content.mdc-list {
-    min-width: 148px !important;
+    min-width: 125px !important;
   }
 }
 .mdc-button {
@@ -1832,7 +1832,7 @@ nz-date-picker{
 }
 
 .mat-mdc-menu-content.mdc-list {
-  min-width: 161px;
+  min-width: 125px;
 }
 // drage table rows************************************************************************
 /* Add this style to your component's stylesheet */
@@ -1976,3 +1976,38 @@ ul[dnd-list] .dndDragging {
     border-radius: 25px !important;
 
 }}
+.mat-mdc-option:hover:not(.mdc-list-item--disabled), .mat-mdc-option:focus:not(.mdc-list-item--disabled), .mat-mdc-option.mat-mdc-option-active, .mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(.mdc-list-item--disabled) {
+  background-color: var(--clr-primary-500) !important;
+}
+.cdk-overlay-pane:not(.mat-mdc-select-panel-above) .mdc-menu-surface.mat-mdc-select-panel {
+  border-radius: 8px !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent;
+}
+
+// Manipulate background color on hover and focus
+.mat-mdc-form-field-focus-overlay {
+  background-color: transparent;
+}
+.mat-mdc-menu-item:hover:not([disabled]), .mat-mdc-menu-item.cdk-program-focused:not([disabled]), .mat-mdc-menu-item.cdk-keyboard-focused:not([disabled]), .mat-mdc-menu-item-highlighted:not([disabled]) {
+  background:var(--clr-primary-500) !important;
+}
+
+input:-internal-autofill-selected {
+  background-color: var(--clr-primary-500) !important;
+}
+
+
+
+.mat-mdc-menu-panel.mat-mdc-menu-panel {
+  border-radius: 16px !important;;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--clr-primary-500) inset !important;
+}
+
+input:-webkit-autofill::first-line {
+  font-size: inherit;
+}
