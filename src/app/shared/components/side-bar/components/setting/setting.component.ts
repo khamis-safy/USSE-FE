@@ -162,7 +162,8 @@ export class SettingComponent implements OnInit , OnDestroy{
       // Select and copy the text from the temporary input element
       tempInput.select();
       document.execCommand('copy');
-      alert('API token copied to clipboard!');
+      let message= this.translate.instant("API token copied to clipboard!")
+      alert(message);
     } catch (err) {
       // console.error('Unable to copy API token:', err);
       alert('An error occurred while copying the API token. Please copy it manually.');
