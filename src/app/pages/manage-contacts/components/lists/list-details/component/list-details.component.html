@@ -11,7 +11,7 @@
     </div>
     <div class="buttons_ d-flex flex-wrap align-items-center">
       <us-button
-      *ngIf="isChecked  && canEdit"
+      *ngIf="isChecked  && canEdit && tab=='contacts'"
         class="m-2"
         label="{{ 'DELETE' | translate }}"
         img="assets/icons/delete.svg"
@@ -37,7 +37,7 @@
         (clicked)="removeContacts()"
       ></us-button>
       <us-button
-      *ngIf="tab=='contacts'  && canEdit"
+      *ngIf="tab=='contacts'  && canEdit "
       class="m-2"
       label="{{ 'ADD_CONTACT' | translate }}"
       [matIcon]="'add'"
@@ -48,7 +48,19 @@
       [appearance]="'primary'"
       (clicked)="openContactLists()"
     ></us-button>
-
+    <us-button
+    *ngIf="tab=='canceled'  && canEdit && isChecked"
+    class="m-2"
+    [label]="'UnCancel' | translate"
+    [matIcon]="''"
+    [fill]="true"
+    [size]="'md'"
+    [loading]="false"
+    [disabled]="false"
+    [appearance]="'primary'"
+    (clicked)="openUnCancelContactsModal()"
+  ></us-button>
+  <ng-container  *ngIf="tab=='contacts'  && canEdit ">
     <div #importMenu>
     <button mat-button [matMenuTriggerFor]="menu" class="mx-1 import-button text-neutral-0 bg-primary-800 rounded-3 ">
       <div class="import-menu d-flex align-items-center justify-content-center gap-3">
@@ -77,7 +89,9 @@
         </div>
       </button>
     </mat-menu>
-    
+  </ng-container>
+  <ng-container  *ngIf="tab=='contacts'">
+
     <div #exportMenu  >
   <button  mat-button [matMenuTriggerFor]="menu2" class="mx-2  export-button text-neutral-0 bg-primary-800 rounded-3 ">
     <div class="export-menu d-flex align-items-center justify-content-center gap-3">
@@ -105,6 +119,7 @@
       </div>
     </button>
   </mat-menu>
+  </ng-container>
 
       <!-- <us-button
         class="m-2"
@@ -124,7 +139,7 @@
 
     <mat-tab>
       <ng-template mat-tab-label>
-        <span class="text-primary-800 me-2" style="font-weight: 800;">{{totalContacts }}</span>
+        <span class="text-primary-800 mx-2" style="font-weight: 800;">{{totalContacts }}</span>
           {{ 'CONTACTS' | translate }}
 
       </ng-template>
@@ -133,6 +148,7 @@
 
     <mat-tab>
       <ng-template mat-tab-label >
+        <span class="text-primary-800 mx-2" style="font-weight: 800;">{{totalCanceledContacts }}</span>
 
           {{ 'CANCELED' | translate }}
 

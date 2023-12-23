@@ -17,6 +17,7 @@ import { UploadSheetComponent } from '../../../importFiles/uploadSheet/uploadShe
 import { TranslateService } from '@ngx-translate/core';
 import { ErrorsStatesComponent } from 'src/app/shared/components/bulkOperationModals/errorsStates/errorsStates.component';
 import { RequestStateComponent } from 'src/app/shared/components/bulkOperationModals/requestState/requestState.component';
+import { UnCancelContactsComponent } from '../../../contacts/unCancelContacts/unCancelContacts.component';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit , OnDestroy{
   tab = this.tabs[0];
   canEdit: boolean;
   totalContacts:number;
+  totalCanceledContacts:number;
   constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private listService:ManageContactsService,
@@ -80,7 +82,8 @@ else{
         (res)=>{
         this.list=res;
         this.count={totalContacts:this.list.totalContacts,totalCancelContacts:this.list.totalCancelContacts};
-        this.totalContacts=this.list.totalContacts
+        this.totalContacts=this.list.totalContacts;
+        this.totalCanceledContacts=this.list.totalCancelContacts;
 
         },
 
@@ -91,7 +94,7 @@ else{
     }
   changeModal(ev){
     this.tab=this.tabs[ev.index];
-    
+  
     this.listContacts.selection.clear();
     if(this.listContacts.length){
 
@@ -175,7 +178,7 @@ this.router.navigateByUrl('contacts?tab=lists')
 
   }
 
-  openRequestStateModal(data){
+  openRequestStateModal(data,){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='38vh';
     dialogConfig.width='42vw';
@@ -303,6 +306,38 @@ exportSelectedContactsAs(fileType){
     }
   )
 }
+openUnCancelContactsModal(){
+  const dialogConfig=new MatDialogConfig();
+  dialogConfig.height='45vh';
+  dialogConfig.width='35vw';
+  dialogConfig.maxWidth='100%';
+  dialogConfig.minWidth='512px';
+  dialogConfig.disableClose = true;
+  dialogConfig.data =
+  {
+    contactsData: {contacts:this.isChecked}
+  }
+
+
+  const dialogRef = this.dialog.open(UnCancelContactsComponent,dialogConfig);
+
+  dialogRef.afterClosed().subscribe(result => {
+    if(result == 'noErrors'){
+      this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+      this.getListData();
+      this.listContacts.getContacts();        
+    }
+    else{
+      this.openRequestStateModal(result );
+    }
+    this.listContacts.selection.clear();
+
+    })
+
+ 
+
+}
+
 ngOnDestroy(): void {
   // this.listService.display=10;
   // this.listService.pageNum=0;

@@ -130,6 +130,12 @@ return this.http.put<ErrSucc>(`${this.api}Contacts/addOrMoveContactsFromLists`,d
 contactsCount(email:string,isCanceled:boolean):Observable<number>{
   return this.http.get<number>(`${this.api}Contacts/listContactsCount?email=${email}&isCanceled=${isCanceled}`)
 }
+cancelContacts(email:string,cantactsIds:string[]):Observable<any>{
+  return this.http.put<any>(`${this.api}Contacts/CancelContact?email=${email}`,cantactsIds)
+}
+unCancelContacts(email:string,cantactsIds:string[]):Observable<any>{
+  return this.http.put<any>(`${this.api}Contacts/unCancelContact?email=${email}`,cantactsIds)
+}
 unDeleteList(email:string,ids:string[]):Observable<ErrSucc>{
   return this.http.put<ErrSucc>(`${this.api}Contacts/unDeleteList?email=${email}`,ids)
 }

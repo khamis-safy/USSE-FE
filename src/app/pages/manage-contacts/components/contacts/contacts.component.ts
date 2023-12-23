@@ -42,6 +42,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
 @Input() canEdit:boolean;
   listTableData:ListData[]=[]
   deletedContacts:string[]=[];
+  canceledContacts:string[]=[];
   columns :FormControl;
   displayed: any[] = CONTACTSHEADER;
   displayedColumns: string[] = ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At","action"];
@@ -98,14 +99,38 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
       });
 
   }
+unCancelSnackBar(){
+  let message = `${this.canceledContacts.length} ${this.translate.instant('Item(s) UnCanceled')}`;
+  let action =this.translate.instant("Undo")
+  let snackBarRef=this.snackBar.open(message,action,{duration:4000});
+  snackBarRef.onAction().subscribe(()=>{
+    this.cancelContacts();
 
+  })
+}
   openSnackBar(){
-    let message = `${this.deletedContacts.length} Item(s) Deleted`;
-    let action ="Undo"
+    let message = `${this.deletedContacts.length} ${this.translate.instant('Item(s) Deleted')}`;
+    let action =this.translate.instant("Undo")
     let snackBarRef=this.snackBar.open(message,action,{duration:4000});
     snackBarRef.onAction().subscribe(()=>{
       this.undoDelete();
     })
+  }
+  cancelContacts(){
+    let email=this.authService.getUserInfo()?.email;
+    this.listService.cancelContacts(email,this.canceledContacts).subscribe(
+      (res)=>{
+
+        this.getContacts("",true);
+        this.canceledContacts=[];
+        this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+      },
+      (err)=>{
+
+
+
+      }
+    )
   }
   undoDelete(){
     let email=this.authService.getUserInfo()?.email;
@@ -129,7 +154,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
 
 
 
-  getContacts(searchVal?){
+  getContacts(searchVal? ,canceled?){
   let shows=this.listService.display;
   let email=this.authService.getUserInfo()?.email;
   let orderedBy=this.listService.orderedBy;
@@ -138,14 +163,14 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   if(searchVal && this.paginator){
       this.paginator.pageIndex=0
   }
- 
+ let isCanceledContacts=canceled? canceled :this.isCanceled
   this.loading = true;
 
-   let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNumber,orderedBy,search,this.listId).subscribe(
+   let sub1= this.listService.getContacts(email,isCanceledContacts,shows,pageNumber,orderedBy,search,this.listId).subscribe(
       (res)=>{
         this.numRows=res.length;
         this.loading = false;
-        if(this.isCanceled){
+        if(isCanceledContacts){
           this.displayedColumns= ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
 
         }
@@ -168,7 +193,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
         this.paginator.pageIndex=this.pageNum
         this.notFound=false;
 
-        this.contactsCount();
+        this.contactsCount(isCanceledContacts);
 
       }
 
@@ -182,11 +207,11 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   }
 
 
-  contactsCount(){
+  contactsCount(isCancel){
     let email=this.authService.getUserInfo()?.email;
     this.loading=true;
 
-    let sub2=this.listService.contactsCount(email,this.isCanceled).subscribe(
+    let sub2=this.listService.contactsCount(email,isCancel).subscribe(
 
       (res)=>{
         this.length=res;

@@ -14,6 +14,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorsStatesComponent } from 'src/app/shared/components/bulkOperationModals/errorsStates/errorsStates.component';
 import { RequestStateComponent } from 'src/app/shared/components/bulkOperationModals/requestState/requestState.component';
 import { TranslateService } from '@ngx-translate/core';
+import { UnCancelContactsComponent } from '../components/contacts/unCancelContacts/unCancelContacts.component';
 
 @Component({
   selector: 'app-manage-contacts',
@@ -58,7 +59,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit,OnDestroy{
   @ViewChild(ContactsComponent) contacts:ContactsComponent;
 
 
-  isCanceled:boolean;
+  isCanceled:boolean=false;
   canEdit: boolean;
 
   constructor(public dialog: MatDialog,
@@ -253,6 +254,11 @@ else{
           this.lists.openSnackBar();
           this.lists.getListData();
         }
+        if(operation == 'unCancelContacts'){
+          this.contacts.getContacts("",true);
+          
+          this.contacts.unCancelSnackBar();
+        }
 
       }
     })
@@ -284,7 +290,11 @@ else{
           this.lists.openSnackBar();
           this.lists.getListData();
         }
-  
+        if(operation == 'unCancelContacts'){
+          this.contacts.getContacts("",true);
+          
+          this.contacts.unCancelSnackBar();
+        }
       })
     }
 
@@ -386,12 +396,55 @@ else{
 
   }
 
+  openUnCancelContactsModal(){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='45vh';
+    dialogConfig.width='35vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='512px';
+    dialogConfig.disableClose = true;
+    dialogConfig.data =
+    {
+      contactsData: {contacts:this.isChecked}
+    }
 
+
+    const dialogRef = this.dialog.open(UnCancelContactsComponent,dialogConfig);
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.contacts.canceledContacts=result.data;
+        if(result.errors == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.contacts.getContacts("" ,true);
+          
+          this.contacts.unCancelSnackBar();
+        }
+        else{
+          this.openRequestStateModal(result ,'unCancelContacts');
+        }
+
+     
+
+      }
+
+      this.contacts.selection.clear();
+
+    });
+  }
   updateQueryParams(){
     this.router.navigateByUrl("/contacts?tab="+this.selectedTab)
   }
   changeModal(ev){
     this.selectedTab = this.tabs[ev.index];
+    if(this.selectedTab=="cancel"){
+      this.isCanceled=true;
+    }
+    else{
+      this.isCanceled=false;
+
+    }
     this.updateQueryParams();
     // this.listService.display=10;
     // this.listService.pageNum=0;

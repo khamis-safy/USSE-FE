@@ -20,7 +20,7 @@
       ></us-button>
 
       <us-button
-        *ngIf="(isChecked || isDelete) && canEdit"
+        *ngIf="(isChecked || isDelete) && canEdit && !isCanceled "
         class="m-2"
         [label]="'DELETE' | translate"
         img="assets/icons/delete.svg"
@@ -32,7 +32,7 @@
         [appearance]="'danger'"
         (clicked)="selectedTab=='contacts'?openDeleteConModal():selectedTab=='lists'?openDeleteModal():''"
       ></us-button>
-
+      
       <us-button
         *ngIf="isChecked && !isCanceled && canEdit"
         class="m-2"
@@ -58,6 +58,20 @@
         [appearance]="'primary'"
         (clicked)="selectedTab=='contacts'?openAddContactModal():selectedTab=='lists'?openAddListModal():openunsubscribeModal()"
       ></us-button>
+
+      <us-button
+      *ngIf="isChecked && isCanceled && canEdit"
+      class="m-2"
+      [label]="'UnCancel' | translate"
+      [matIcon]="''"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'primary'"
+      (clicked)="openUnCancelContactsModal()"
+    ></us-button>
+
       <div *ngIf="selectedTab=='contacts'">
         <div #importMenu>
           <button  mat-button [matMenuTriggerFor]="menu" class="mx-1 import-button text-neutral-0 bg-primary-800 rounded-3 ">

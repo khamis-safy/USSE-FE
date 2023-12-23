@@ -583,6 +583,10 @@
 "errorState":"Error State",
 "seconds":"seconds",
 "Customer":"Customer",
-"User":"User"
+"User":"User",
+"UNCANCEL_MESSAGE":"are you sure you want to uncancel these contacts",
+"Item(s) UnCanceled":"Item(s) UnCanceled",
+"UnCancel":"UnCancel"
+
 
 }
