@@ -95,17 +95,26 @@
           </td>
         </ng-container>
 
+      <!-- status Column -->
+      <ng-container matColumnDef="Status">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'status' | translate }}</th>
+        <td class="text-center" mat-cell *matCellDef="let element">
+          <div class="d-flex flex-row-reverse gap-2 justify-content-center " >
+            <div  class="form-check form-switch pointer">
+              <input [checked]="element.isStopped == false" (change)="onSwitcherChange($event,element)" class="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
       <!-- Operations Column -->
       <ng-container matColumnDef="Operations">
         <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'Operations' | translate }}</th>
         <td class="text-center" mat-cell *matCellDef="let element">
-          <div class="d-flex flex-row-reverse gap-2 justify-content-center " >
+          <div class="d-flex flex-row-reverse gap-3 justify-content-center " >
             <img class="pointer" (click)="deleteAutomation(element)" src="assets/icons/Actionsc.svg" alt="" [title]="'delete' | translate"/>
-            <mat-icon class="pointer text-primary-800" [title]="'START'|translate" *ngIf="element.isStopped == true" (click)="startAutomation(element)" >play_arrow</mat-icon>
             <img class="pointer" (click)="editAutomation(element);" src="assets/icons/edit-action.svg" alt=""  [title]="'edit' | translate" style="width: 17px;"/>
             <img class="pointer" (click)="exportQRCode(element)" src="assets/icons/generate-qr.svg" alt=""  [title]="'generateQR' | translate" style="width: 17px;"/>
-                        <img class="pointer" [title]="'STOP'|translate" *ngIf="element.isStopped == false" (click)="stopAutomation(element)" src="assets/icons/stop-compaigns.svg" alt="" />
-
           </div>
         </td>
       </ng-container>
@@ -136,4 +145,3 @@
 
 </ng-container>
 </section>
-<!-- https://api.whatsapp.com/send?phone=201206836206&text=hello -->

@@ -19,7 +19,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   styleUrls: ['./automation.component.scss']
 })
 export class AutomationComponent implements OnInit {
-  displayedColumns: string[] = ['Reorder','Name', 'Criterias','Operations'];
+  displayedColumns: string[] = ['Reorder','Name', 'Criterias','Status','Operations'];
   dataSource :MatTableDataSource<any>;
   length:number=0;
   id:number=0;
@@ -299,37 +299,6 @@ scrollLeft(element , wrapper){
     });
   }
 
-  stopAutomation(element){
-    const dialogConfig=new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.height='45vh';
-    dialogConfig.width='35vw';
-    dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='465px';
-    dialogConfig.data ={id:element.id , action:'stop'}
-   
-    const dialogRef = this.dialog.open(AutomationActionComponent,dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.getAutomations(this.deviceId);
-      }
-    });
-  }
-  startAutomation(element){
-    const dialogConfig=new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.height='45vh';
-    dialogConfig.width='35vw';
-    dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='465px';
-    dialogConfig.data ={id:element.id , action:'start'}
-    const dialogRef = this.dialog.open(AutomationActionComponent,dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.getAutomations(this.deviceId);
-      }
-    });
-  }
   addAutomation(){
     this.openNewAutomation.emit({openNewAutomation:true , editAutomationData:null})
 
@@ -346,5 +315,37 @@ scrollLeft(element , wrapper){
   onSearch(event:any){
 
     this.getAutomations(this.deviceId,event.value);
+  }
+  onSwitcherChange(e,automation){
+    e.target.checked ? this.startAutomation(automation):this.stopAutomation(automation)
+  }
+
+
+  stopAutomation(automation){
+    this.botService.stopWhatsappBusinessAutomation(automation.id, this.authService.getUserInfo()?.email).subscribe(
+      (res) => {
+      
+
+
+      },
+      (err) => {
+       
+      }
+    
+    )
+    
+  }
+  startAutomation(automation){
+    this.botService.startWhatsappBusinessAutomation(automation.id, this.authService.getUserInfo()?.email).subscribe(
+      (res) => {
+     
+
+
+      },
+      (err) => {
+     
+      }
+    
+    )
   }
 }
