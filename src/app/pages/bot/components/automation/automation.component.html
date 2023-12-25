@@ -77,7 +77,7 @@
             <div class="actions-container w-100 d-flex justify-content-center">
 
               <div  class=" position-relative criterias " >
-                <div class="d-flex gap-2 overflow-hidden criterias-wrapper px-4 w-100" #listsWrapper >
+                <div class="d-flex gap-2 overflow-hidden criterias-wrapper px-4 w-100" [ngClass]="{'justify-content-center' :element.criterias.length === 1 }" #listsWrapper >
                   <div *ngFor="let item of element.criterias" [title]="item.criteria" class="criteriaName bg-white text-nowrap px-2 py-1 rounded-2">
                     {{item.criteria}}
                   </div> 

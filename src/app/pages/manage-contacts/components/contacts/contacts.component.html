@@ -63,7 +63,7 @@
           <div class="lists-container w-100 d-flex justify-content-center">
 
             <div  class=" position-relative lists "    (click)="cellClick=true">
-              <div class="d-flex gap-2 overflow-hidden lists-wrapper px-4 w-100" #listsWrapper >
+              <div class="d-flex gap-2 overflow-hidden lists-wrapper px-4 w-100" [ngClass]="{'justify-content-center' :element.lists.length === 1 }" #listsWrapper >
                 <div *ngFor="let item of element.lists" [title]="item.name" class="listName bg-white text-nowrap px-2 py-1 rounded-2">
                   {{item.name}}
                 </div> 

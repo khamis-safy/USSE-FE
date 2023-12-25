@@ -2011,3 +2011,13 @@ input:-webkit-autofill {
 input:-webkit-autofill::first-line {
   font-size: inherit;
 }
+button.mat-mdc-menu-trigger {
+  min-height: 50px !important;
+}
+@media (max-width: 1700px)
+{
+
+button.mat-mdc-menu-trigger  {
+  min-height: 35px !important;
+}
+}
