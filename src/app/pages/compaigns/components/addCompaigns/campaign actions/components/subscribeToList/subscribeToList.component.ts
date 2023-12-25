@@ -119,20 +119,33 @@ export class SubscribeToListComponent implements OnInit {
 
     this.listService.addList(this.form.value.listName,this.authService.getUserInfo()?.email).subscribe(
       (res)=>{
+        this.clearForm();
         this.isLoading = false;
 
         this.addNewList=false;
                 this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
 
-        this.getLists(this.form.value.listName)
+        this.getLists(this.form.value.listName);
+       
+
       },
       (err)=>{
+        this.clearForm();
         this.addNewList=false;
 
         this.isLoading = false
       }
     )
 
+  }
+  clearForm(){
+    this.form.patchValue({
+      listName:""
+    })
+  }
+  cancelAddList(){
+    this.addNewList=false;
+    this.clearForm();
   }
   onSelect(event){
     this.listId=event.value
