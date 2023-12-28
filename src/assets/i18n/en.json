@@ -592,7 +592,9 @@
 "Error: Template name or number already exists":"Error: Template name or number already exists",
 "Error: Template name already exists":"Error: Template name already exists",
 "API token copied to clipboard!":"API token copied to clipboard!",
-"status":"Status"
+"status":"Status",
+"goBack":"Go Back",
+"page_not_found":"Page Not Found"
 
 
 }

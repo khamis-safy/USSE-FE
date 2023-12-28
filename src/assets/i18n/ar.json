@@ -590,6 +590,8 @@
 "Error: Template name or number already exists":"خطأ: اسم القالب أو الرقم موجود بالفعل",
 "Error: Template name already exists":"خطأ: اسم القالب موجود بالفعل",
 "API token copied to clipboard!":"تم نسخ رمز واجهة برمجة التطبيقات (API) إلى الحافظة!",
-"status":"الحالة"
+"status":"الحالة",
+"goBack":"العودة",
+"page_not_found":"الصفحة غير موجودة"
 
 }

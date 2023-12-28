@@ -18,11 +18,11 @@
 >
 
 <div class="content d-flex flex-wrap align-items-center justify-content-center">
-  <mat-icon *ngIf="matIcon" class="{{iconClass}} icon mx-1">{{matIcon}}</mat-icon>
+  <mat-icon *ngIf="matIcon" class="{{iconClass}} icon mx-1" [ngClass]="{'back-arrow':matIcon=='keyboard_backspace'}">{{matIcon}}</mat-icon>
   <img *ngIf="img" class="mx-2" width="17" src="{{img}}" >
   <span *ngIf="counter > 0" class=" mx-2">{{ counter }}</span>
 
-  <span class="btn-label mx-1">{{ label }}</span>
+  <span class="btn-label mx-1" [ngClass]="{'lable-lg' : size == 'lg'}">{{ label }}</span>
 </div>
   <!-- <span *ngIf="icon">
     <i class="fa-solid fa-file-export"></i>
