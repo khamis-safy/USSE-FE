@@ -1668,7 +1668,7 @@ right: 0 !important;
 }
   input#phone {
     font-size: 12px !important;
-    height: 31px !important;
+    height: 38px !important;
 
 }
 .selected-dial-code.ng-star-inserted {
@@ -1834,7 +1834,7 @@ button.button-size-md{
 
 // redesign ant design system************************************************************************
 nz-date-picker{
-  height: 37px !important;
+  height: 45px !important;
 }
 
 .mat-mdc-menu-content.mdc-list {
@@ -2025,5 +2025,14 @@ button.mat-mdc-menu-trigger {
 
 button.mat-mdc-menu-trigger  {
   min-height: 35px !important;
+}
+nz-time-picker.ant-picker.rounded-pill.txt-input {
+  height: 38px !important;
+}
+.ant-picker-input>input {
+  font-size: 12px !important;
+}
+nz-date-picker{
+  height: 38px !important;
 }
 }

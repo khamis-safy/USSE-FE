@@ -73,8 +73,8 @@
     ></us-button>
 
       <div *ngIf="selectedTab=='contacts'">
-        <div #importMenu>
-          <button  mat-button [matMenuTriggerFor]="menu" class="mx-1 import-button text-neutral-0 bg-primary-800 rounded-3 ">
+        <div #importMenu  class="mx-2">
+          <button  mat-button [matMenuTriggerFor]="menu" class=" import-button text-neutral-0 bg-primary-800 rounded-3 ">
             <div class="import-menu d-flex align-items-center justify-content-center gap-3">
               <div class="icon">
                 <img src="assets/icons/import.svg" alt="" style="width:19px"/>
@@ -105,10 +105,10 @@
       </div>
      
       <div *ngIf="selectedTab=='contacts'">
-        <div #exportMenu  >
+        <div #exportMenu  class="mx-2">
           <button 
           mat-button [matMenuTriggerFor]="menu2" 
-          class="mx-2 import-button text-neutral-0 bg-primary-800 rounded-3 ">
+          class=" import-button text-neutral-0 bg-primary-800 rounded-3 ">
             <div class="import-menu d-flex align-items-center justify-content-center gap-3">
               <div class="icon">
                 <img src="assets/icons/export.svg" alt="" style="width:14px"/>

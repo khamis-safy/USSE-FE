@@ -26,7 +26,7 @@
     <!-- Input container ( contains: prefix, input, suffix, icon, steppers ) -->
     <div
       *ngIf="!isTextArea"
-      class="input-wrapper  {{ orderInGroup }}"
+      class="input-wrapper txt-sm  {{ orderInGroup }}"
       [ngClass]="{ fullWidth,hideSteppers,isCriteria, error, 'disabled': isDisabled, grouped}"
     >
       <div *ngIf="prefix" class="prefix">
@@ -88,7 +88,7 @@
     <div  
       *ngIf="isTextArea"
       [ngStyle]="{'height': divHeight}"
-      class="input-wrapper {{ orderInGroup }} resizable-div"
+      class="input-wrapper {{ orderInGroup }} resizable-div  txt-sm"
       [ngClass]="{ fullWidth, error, 'disabled': isDisabled, grouped}"
     >
       <div *ngIf="prefix" class="prefix">

@@ -1,5 +1,8 @@
 <div class=" d-flex align-items-center justify-content-center mt-3 w-100" >
-  <form [formGroup]="form" class="campaign-setting-container d-flex gap-5 flex-column align-items-center justify-content-center " style="width:55%;height: 480px;">
+  <form [formGroup]="form" class="campaign-setting-container d-flex gap-5 flex-column align-items-center justify-content-center " style="    width: 60%;
+  height: 480px;
+  max-width: 640px;
+  min-width: 540px;">
 
     <!-- first line -->
     <div class="w-100  d-flex justify-content-between align-items-center">
@@ -68,7 +71,7 @@
       </div>
 
       <div style="width:42%" class="d-flex align-items-center gap-4">
-        <div class="d-flex  flex-column" style="width: 136px; position: relative;">
+        <div class="d-flex  flex-column" style="width: 40%; position: relative;">
           <us-input
             value=""
             type="number"
@@ -98,18 +101,19 @@
           <div style="width:250px">
        
             <nz-time-picker
-            style="padding: 0 12px;height: 33px;"
+            style="padding: 0 12px;"
             class="rounded-pill border border-1py-2 txt-input w-100"
             [nzUse12Hours]="true"
             formControlName="time1"
             nzFormat="h:mm a"
+            
           ></nz-time-picker>
           </div>
-          <span class="mx-2">{{ 'toLabel' | translate }}</span>
+          <span class="mx-3">{{ 'toLabel' | translate }}</span>
           <div style="width:250px">
          
             <nz-time-picker
-            style="padding: 0 12px;height: 33px;"
+            style="padding: 0 12px;"
               class="rounded-pill border border-1 py-2 txt-input w-100"
               [nzUse12Hours]="true"
               formControlName="time2"
