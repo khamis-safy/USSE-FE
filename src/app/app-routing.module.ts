@@ -10,7 +10,7 @@ export const routes: Routes = [
       import("./layouts/layouts.module").then((m) => m.LayoutsModule)
 
     },
-  { path: "**", pathMatch: 'full', redirectTo: "page-not-found" }
+
 ];
 
 const config: ExtraOptions = {

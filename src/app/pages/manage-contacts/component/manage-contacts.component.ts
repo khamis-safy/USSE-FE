@@ -80,7 +80,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit,OnDestroy{
       if(params["tab"]){
         this.selectedTab = params["tab"].replace(/[\s]/g)
         this.selectedTabIndex= this.tabs.indexOf(this.selectedTab)
-
+        if(this.selectedTab=="cancel"){
+          this.isCanceled=true;
+        }
+        else{
+          this.isCanceled=false;
+    
+        }
       }
       else{
         this.selectedTab = "contacts"
