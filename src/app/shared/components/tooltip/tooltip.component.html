@@ -1,11 +1,16 @@
 <div #parent class="sr-tooltip-parent">
   <div class="icon-container" *ngIf="!truncate; else showTruncate">
-    <i
+    <!-- <i
+    *ngIf="iconClass"
       class="icon"
       [ngClass]="iconClass"
       (mouseenter)="onMouseenter()"
       (mouseleave)="onMouseleave()"
-    ></i>
+    ></i> -->
+    <img style="width:90%" src="assets/icons/tooltip icon.svg" alt="tooltip"  
+    (mouseenter)="onMouseenter()"
+    (mouseleave)="onMouseleave()">
+
   </div>
 
   <ng-template #showTruncate>

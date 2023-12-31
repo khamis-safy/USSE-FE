@@ -88,6 +88,8 @@ export class InputComponent implements  AfterViewInit {
   @Input() isTextArea?: boolean;
   @Input() isEmoji?: boolean = false;
   @Input() limitTextarea?: boolean = true;
+  @Input() withTooltip?: boolean = false;
+  @Input() tooltipMsg:string='';
 
   @Input() maxCharLimit?: number;
   charCount: number = 0;

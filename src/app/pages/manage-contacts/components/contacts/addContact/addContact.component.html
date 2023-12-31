@@ -23,6 +23,8 @@
     <form [formGroup]="form" class="w-100 m-auto">
       <div class="d-flex gap-4 flex-column py-3">
         <us-input
+        [withTooltip]="true"
+        [tooltipMsg]="'enter the contact name'"
           [isDisabled]="false"
           value=""
           placeholder="{{ 'NAME' | translate }}"
@@ -99,6 +101,8 @@
 
 
         <us-select
+        [withTooltip]="true"
+        [tooltipMsg]="'add contact to one list or more'"
           *ngIf="!isFromListDetails"
           [data]="listsArr"
           formControlName="selectedLists"
@@ -174,6 +178,7 @@
                       [fullWidth]="true"
                       placeholder="{{ 'FIELD_NAME' | translate }}"
                       formControlName="fieldName"
+                  
                     ></us-input>
                    
                   </div>
@@ -345,6 +350,8 @@
       [loading]="false"
     ></us-button>
     <us-button
+    [withTooltip]="true"
+    [tooltipMsg]="'you should fill all required data to add contact'"
       *ngIf="!isEdit"
       label="{{ 'SAVE' | translate }}"
       size="sm"
@@ -354,6 +361,7 @@
       [disabled]="form.invalid || isLoading ||showInputs"
     ></us-button>
     <us-button
+
       *ngIf="isEdit"
       label="{{ 'SAVE' | translate }}"
       size="sm"

@@ -9,7 +9,15 @@
       ><span class="text-wrap text-black txt txt-sm" style=" line-height: 1.3; ">{{ label }}</span>
       <span style="color: red;margin-left: 2px;">{{
         optional ? "" : "*"
-      }}</span></label
+      }}</span>
+      <ng-container *ngIf="withTooltip">
+        <sr-tooltip
+        class="mx-2"
+        [text]="tooltipMsg"
+        >
+
+        </sr-tooltip>
+      </ng-container></label
     >
     <!-- <p class="optional txt txt-sm" *ngIf="optional">Optional</p> -->
   </div>
@@ -19,7 +27,14 @@
   >
     <label class="label txt txt-sm text-nowrap" [for]="key"
       ><span class="text-wrap text-black txt txt-sm">{{ label }}</span>
-      <span style="color: red">{{ optional ? "" : "*" }}</span></label
+      <span style="color: red">{{ optional ? "" : "*" }}</span>
+      <ng-container *ngIf="withTooltip">
+        <sr-tooltip
+        [text]="tooltipMsg"
+        >
+        </sr-tooltip>
+      </ng-container>
+      </label
     >
   </div>
   <div class="w-100">

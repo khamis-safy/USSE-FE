@@ -95,6 +95,8 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input() orderInGroup?: 'first' | 'last';
   @Input() fullWidth: boolean = false;
   @Input() deviceLableGap: boolean = false;
+  @Input() withTooltip?: boolean = false;
+  @Input() tooltipMsg:string='';
 
   // Outputs
   @Output() onSelect = new EventEmitter<SelectOption | null>();
