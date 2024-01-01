@@ -589,7 +589,7 @@
 "UnCancel":"UnCancel",
 "Error: Contact name or number already exists":"Error: Contact name or number already exists",
 "Error: the automation name is already exist!":"Error: the automation name is already exist!",
-"Error: Template name or number already exists":"Error: Template name or number already exists",
+"Error: Template name or number already exists":"Error: Template name already exists",
 "Error: Template name already exists":"Error: Template name already exists",
 "API token copied to clipboard!":"API token copied to clipboard!",
 "status":"Status",

@@ -136,6 +136,9 @@ export class InnerTemplatesComponent implements OnInit {
          let sub1= this.templatesService.getTemplates(email,showsNum,pageNum,orderedBy,search).subscribe(
             (res)=>{
               this.numRows=res.length;
+          
+              this.dataSource=new MatTableDataSource<Templates>(res)
+            
               if(this.isCanceled){
                 this.displayedColumns= ['Template Name', 'Message', "Create At" , 'Action'];
 
@@ -148,15 +151,14 @@ export class InnerTemplatesComponent implements OnInit {
                 else{
                   this.notFound=false;
                 }
-            }
+            } 
             else{
               this.paginator.pageIndex=this.templatesService.pageNum
               this.notFound=false;
               this.templatesCount();
               this.isSearch=false;
             }
-              this.dataSource=new MatTableDataSource<Templates>(res)
-              this.loading = false;
+             
 
              },
              (err)=>{

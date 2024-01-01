@@ -37,7 +37,7 @@
         (clicked)="removeContacts()"
       ></us-button>
       <us-button
-      *ngIf="tab=='contacts'  && canEdit "
+      *ngIf="tab=='contacts'  && canEdit && !isChecked"
       class="m-2"
       label="{{ 'ADD_CONTACT' | translate }}"
       [matIcon]="'add'"
@@ -60,7 +60,7 @@
     [appearance]="'primary'"
     (clicked)="openUnCancelContactsModal()"
   ></us-button>
-  <ng-container  *ngIf="tab=='contacts'  && canEdit ">
+  <ng-container  *ngIf="tab=='contacts' && !isChecked  && canEdit ">
     <div #importMenu  class="mx-2">
     <button mat-button [matMenuTriggerFor]="menu" class=" import-button text-neutral-0 bg-primary-800 rounded-3 ">
       <div class="import-menu d-flex align-items-center justify-content-center gap-3">

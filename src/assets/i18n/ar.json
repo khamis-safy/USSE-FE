@@ -587,7 +587,7 @@
 "Error: Contact name or number already exists":"خطأ: اسم جهة الاتصال أو الرقم موجود بالفعل",
 "Error: List name already exists":"خطأ: اسم القائمة موجود بالفعل",
 "Error: the automation name is already exist!":"خطأ: اسم التشغيل الآلي موجود بالفعل",
-"Error: Template name or number already exists":"خطأ: اسم القالب أو الرقم موجود بالفعل",
+"Error: Template name or number already exists":"خطأ: اسم القالب موجود بالفعل",
 "Error: Template name already exists":"خطأ: اسم القالب موجود بالفعل",
 "API token copied to clipboard!":"تم نسخ رمز واجهة برمجة التطبيقات (API) إلى الحافظة!",
 "status":"الحالة",
