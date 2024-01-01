@@ -1,4 +1,4 @@
-  <div class="d-flex align-items-center">
+  
   <button
   [disabled]="disabled"
   UsButton
@@ -34,10 +34,10 @@
   </span> -->
 </button>
 <ng-container *ngIf="withTooltip">
-  <sr-tooltip
+  <sr-tooltip 
+  style="display:inline-block"
   class="mx-2"
   [text]="tooltipMsg"
   >
   </sr-tooltip>
 </ng-container>
-</div>
