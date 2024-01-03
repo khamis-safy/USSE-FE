@@ -103,7 +103,6 @@
           </mat-menu>
           
       </div>
-     
       <div *ngIf="selectedTab=='contacts'">
         <div #exportMenu  class="mx-2">
           <button 
@@ -136,7 +135,6 @@
             </button>
           </mat-menu>
       </div>
-     
 
       <!-- <us-button
         *ngIf="selectedTab=='contacts'"
@@ -197,4 +195,5 @@
       <app-contacts [canEdit]="canEdit" [isCanceled]="true" (isChecked)="onChecked($event)"></app-contacts>
     </mat-tab> -->
   </mat-tab-group>
+
 </section>

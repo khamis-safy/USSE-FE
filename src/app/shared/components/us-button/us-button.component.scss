@@ -77,11 +77,23 @@ span.btn-label.lable-lg.mx-1{
 span.btn-label.mx-1 {
   font-size: 11px !important;
 }
-button.button-size-md[_ngcontent-lpr-c149] {
+button.button-size-md {
   min-width: 114px !important;
   min-height: 35px !important;
 }
 span.btn-label.lable-lg.mx-1{
   font-size: 14px !important;
 }
+}
+@media (max-width: 600px)
+{
+  button.button-size-md {
+    min-width: 90px !important;
+    min-height: 35px !important;
+  }
+  button{
+    .content{
+      flex-direction: column;
+    }
+  }
 }

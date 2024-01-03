@@ -1,9 +1,8 @@
 <nav class="d-flex justify-content-between px-5 align-items-center p-2 zi-5 bg-primary-800 text-neutral-0">
-  <img src="assets/images/white logo.svg" style="
-  width: 8%;
-  max-width: 88px !important;
-
-" alt="" srcset="">
+  <div>
+    <img src="assets/icons/bars.svg" class="bars-icon d-none" (click)="openSideNav()">
+    <img src="assets/images/white logo.svg" class="logo"  alt="" srcset="">
+  </div>
 
   <div class="menu">
     <button mat-button [matMenuTriggerFor]="menu" class="text-neutral-0">

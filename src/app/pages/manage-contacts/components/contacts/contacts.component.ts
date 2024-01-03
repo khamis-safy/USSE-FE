@@ -30,7 +30,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   numRows;
   loading:boolean=true;
   cellClick:boolean=false;
-
+  tableData:any=[]
   @Input() isCanceled:boolean;
   @Output() isDelete = new EventEmitter<Contacts[]>;
   @Output() isChecked = new EventEmitter<Contacts[]>;
@@ -179,7 +179,10 @@ unCancelSnackBar(){
           contact.hideRightArrow = false;
         });
         this.dataSource=new MatTableDataSource<Contacts>(res);
-        
+        this.tableData=res;
+        this.tableData.forEach(element => {
+      element.defaultExpanded = true; // Set to true or false based on your logic
+    });
         if(search!=""){
           this.length=res.length;
           if(this.length==0){

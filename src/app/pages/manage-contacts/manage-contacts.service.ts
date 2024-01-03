@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 import { ErrSucc, ListData } from './list-data';
 import { Contacts } from './contacts';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -53,10 +53,14 @@ deleteList(email:string,listArr:string[]): Observable<ErrSucc>{
   return this.http.put<ErrSucc>(`${this.api}Contacts/deleteList?email=${email}`,listArr)
 }
 getList(email:string,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<ListData[]>{
-  return this.http.get<ListData[]>(`${this.api}Contacts/listLists?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+  return this.http.get<ListData[]>(`${this.api}Contacts/listLists?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`).pipe(
+    shareReplay()
+  )
 }
 ListsCount(email:string):Observable<number>{
-  return this.http.get<number>(`${this.api}Contacts/listListsCount?email=${email}`)
+  return this.http.get<number>(`${this.api}Contacts/listListsCount?email=${email}`).pipe(
+    shareReplay()
+  )
 }
 
 
@@ -67,7 +71,9 @@ getListById(listId:string): Observable<ListData>{
 
 // contacts methods
 getContacts(email:string,isCanceled:boolean,showsNum:number,pageNum:number,orderedBy:string,search:string,listId?:string):Observable<Contacts[]>{
-  return this.http.get<Contacts[]>(`${this.api}Contacts/listContacts?email=${email}&listId=${listId}&isCanceled=${isCanceled}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
+  return this.http.get<Contacts[]>(`${this.api}Contacts/listContacts?email=${email}&listId=${listId}&isCanceled=${isCanceled}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`).pipe(
+    shareReplay()
+  )
 }
 
 getNonListContacts(email:string,isCanceled:boolean,showsNum:number,pageNum:number,orderedBy:string,search:string):Observable<Contacts[]>{
@@ -128,7 +134,9 @@ addOrMoveContacts(ids:string[],newListIds:string[],email:string): Observable<Err
 return this.http.put<ErrSucc>(`${this.api}Contacts/addOrMoveContactsFromLists`,data)
 }
 contactsCount(email:string,isCanceled:boolean):Observable<number>{
-  return this.http.get<number>(`${this.api}Contacts/listContactsCount?email=${email}&isCanceled=${isCanceled}`)
+  return this.http.get<number>(`${this.api}Contacts/listContactsCount?email=${email}&isCanceled=${isCanceled}`).pipe(
+    shareReplay()
+  )
 }
 cancelContacts(email:string,cantactsIds:string[]):Observable<any>{
   return this.http.put<any>(`${this.api}Contacts/CancelContact?email=${email}`,cantactsIds)

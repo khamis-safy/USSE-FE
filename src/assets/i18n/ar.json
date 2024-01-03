@@ -592,6 +592,6 @@
 "API token copied to clipboard!":"تم نسخ رمز واجهة برمجة التطبيقات (API) إلى الحافظة!",
 "status":"الحالة",
 "goBack":"العودة",
-"page_not_found":"الصفحة غير موجودة"
-
+"page_not_found":"الصفحة غير موجودة",
+"showLists":"عرض القوائم"
 }

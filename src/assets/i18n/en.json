@@ -594,7 +594,8 @@
 "API token copied to clipboard!":"API token copied to clipboard!",
 "status":"Status",
 "goBack":"Go Back",
-"page_not_found":"Page Not Found"
+"page_not_found":"Page Not Found",
+"showLists":"show lists"
 
 
 }

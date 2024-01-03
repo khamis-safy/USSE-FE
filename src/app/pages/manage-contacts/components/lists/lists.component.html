@@ -1,13 +1,21 @@
 <section class="py-3 component-container d-flex flex-column gap-3">
   <ng-container *ngIf="!noData">
     <div class="d-flex justify-content-between align-items-center ">
-      <div class="d-flex position-relative row m-0">
-        <div class=" col-12 col-lg-4 p-0">
-          <input #search type="text" class="form-control ps-5  txt-xs" id="search" placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}" (input)="onSearch(search)">
+      <div class="d-flex position-relative row m-0" style="width:31%; max-width: 389px;min-width: 180px;">
+        <div class="col-12 col-lg-4 p-0 w-100" >
+          <input
+            #search
+            type="text"
+            class="form-control ps-5 txt-xs w-100"
+            id="search"
+            placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
+            (input)="onSearch(search)"
+          />
         </div>
         <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
-          <img src="assets/icons/search.svg" alt="" width="14">
+          <img src="assets/icons/search.svg" alt="" width="14" />
         </div>
+      
       </div>
 
       <mat-form-field class="us-select"> 
