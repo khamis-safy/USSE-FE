@@ -24,6 +24,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 export class ListsComponent implements OnInit ,AfterViewInit  ,OnDestroy{
+  tableData:any=[]
 length:number=0;
 active:boolean=false;
 numRows;
@@ -127,6 +128,10 @@ getListData(searchVal?){
 
         this.numRows=res.length;
   this.dataSource=new MatTableDataSource<ListData>(res);
+  this.tableData=res;
+  this.tableData.forEach(element => {
+element.defaultExpanded = true; // Set to true or false based on your logic
+});
   if(search!=""){
     this.length=res.length;
     if(this.length==0){

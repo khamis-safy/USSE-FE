@@ -2067,104 +2067,118 @@ nz-date-picker{
     min-width: 180px !important;
     max-width: 230px !important;
 }
+
+.table-mobile-view{
+  display: none;
+}
+///////////////////////////////////////////////////////////////////////
 @media only screen and (max-width: 768px) {
-  .mat-mdc-tab.mdc-tab {
-  &.mdc-tab--active ,&:focus{
+    .mat-mdc-tab.mdc-tab {
+    &.mdc-tab--active ,&:focus{
     background:transparent !important;
-      &:hover {
-        background:transparent !important;
+    &:hover {
+    background:transparent !important;
 
-      }
+    }
 
-  }
-}
-.mat-mdc-tab-labels {
-  gap: 0px !important;
-}
-.mdc-tab {
-padding-inline:6px !important
-}
-.mat-mdc-tab-header-rtl .mat-mdc-tab-header-pagination-before, .mat-mdc-tab-header-pagination-after {
-  padding-right: 0px !important;
-}
-.mat-mdc-tab-header-pagination-before, .mat-mdc-tab-header-rtl .mat-mdc-tab-header-pagination-after {
-  padding-left: 0px !important;
-}
-.mat-mdc-tab-header-pagination {
-  min-width: 20px !important;
+    }
+    }
+    .mat-mdc-tab-labels {
+    gap: 0px !important;
+    }
+    .mdc-tab {
+    padding-inline:6px !important
+    }
+    .mat-mdc-tab-header-rtl .mat-mdc-tab-header-pagination-before, .mat-mdc-tab-header-pagination-after {
+    padding-right: 0px !important;
+    }
+    .mat-mdc-tab-header-pagination-before, .mat-mdc-tab-header-rtl .mat-mdc-tab-header-pagination-after {
+    padding-left: 0px !important;
+    }
+    .mat-mdc-tab-header-pagination {
+    min-width: 20px !important;
 
-}
-.mat-mdc-tab {
-  -webkit-tap-highlight-color: transparent !important;
-}
-.module-main-heading {
-  min-width: 162px !important;
+    }
+    .mat-mdc-tab {
+    -webkit-tap-highlight-color: transparent !important;
+    }
+    .module-main-heading {
+    min-width: 162px !important;
+    }
+
+    .table-mobile-view{
+    display: block !important;
+    }
+    .change-display{
+      display: none !important;
+    }
+    .table-large-screen {
+      display: none !important;
+    }
 }
 
-.table-mobile-view{
-  display: block !important;
-}
-}
-.ant-drawer-body {
-  padding: 0px !important;
-}
-.table-mobile-view{
+///////////////////////////////////////////////////////////////////////
+  .table-mobile-view{
   .mat-expansion-panel-spacing {
-    margin: 0px 0 !important;
-}
-.mat-accordion .mat-expansion-panel:first-of-type {
+  margin: 0px 0 !important;
+  }
+  .mat-accordion .mat-expansion-panel:first-of-type {
   border-top-right-radius: 15px !important;
   border-top-left-radius: 15px !important;
-}
-.mat-expansion-panel-header {
+  }
+  .mat-expansion-panel-header {
   padding: 0 20px !important;
-}
-.mat-expansion-indicator::after {
+  }
+  .mat-expansion-indicator::after {
   color: var(--clr-primary-800) !important;
-}
-.mdc-checkbox {
+  }
+  .mdc-checkbox {
   width: 5px  !important;
   height: 10px  !important;
   line-height: 0  !important;
 
-}
-.mat-expansion-panel-body{
+  }
+  .mat-expansion-panel-body{
   width: 106% !important;
   margin: auto !important;
-}
-.mat-expansion-panel-body {
+  }
+  .mat-expansion-panel-body {
   padding: 0 48px 16px !important;
-}
-.row.row-item {
+  }
+  .row.row-item {
   margin-bottom: 15px;
-}
-span.mat-content {
+  }
+  span.mat-content {
   display: flex !important;
   align-items: center !important;
-}
-.mat-icon {
+  }
+  .mat-icon {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   color: var(--clr-primary-800)!important;;
 
-}
-.material-icons {
+  }
+  .material-icons {
   font-size: 18px !important;
-}
-.mat-expansion-panel-header.mat-expanded {
+  }
+  .mat-expansion-panel-header.mat-expanded {
   height: 50px !important;
-}
+  }
+  }
+//////////////////////////////////////////////////////////////////////
+.ant-drawer-body {
+padding: 0px !important;
 }
 .mat-expansion-panel:not(.mat-expanded):not([aria-disabled=true]) .mat-expansion-panel-header:hover {
-  background:unset !important;
+background:unset !important;
 }
 .active-row{
-  background-color: var(--clr-primary-500) !important;
-  .mat-expansion-panel:not(.mat-expanded):not([aria-disabled=true]) .mat-expansion-panel-header:hover {
-    background: var(--clr-primary-500) !important;
+background-color: var(--clr-primary-500) !important;
+.mat-expansion-panel:not(.mat-expanded):not([aria-disabled=true]) .mat-expansion-panel-header:hover {
+background: var(--clr-primary-500) !important;
 }
 }
 .row-header{
-  font-weight: 500 !important;
+font-weight: 500 !important;
 }
