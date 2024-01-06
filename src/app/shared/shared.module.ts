@@ -7,7 +7,6 @@ import { SettingComponent } from './components/side-bar/components/setting/setti
 
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
-import { NavComponent } from './components/nav/nav.component';
 import {MatStepperModule} from '@angular/material/stepper';
 
 import { MatIconModule } from '@angular/material/icon';
@@ -97,7 +96,6 @@ import { UsButtonComponent } from './components/us-button/us-button.component';
     ToLocalTimePipe,
     HeaderComponent,
     InputComponent,
-    NavComponent,
     ToasterServices,
     DeleteModalComponent,
     ClickOutsideDirective,
@@ -115,7 +113,6 @@ import { UsButtonComponent } from './components/us-button/us-button.component';
     InputComponent,
     SelectModule,
     ToasterServices,
-    NavComponent,
     MatTabsModule,
     MatDialogModule,
     MatButtonModule,
@@ -147,7 +144,8 @@ import { UsButtonComponent } from './components/us-button/us-button.component';
     TypePipe,
     HintMessageComponent,
     UsButtonComponent,
-    UsButtonDirective
+    UsButtonDirective,
+    RouterModule
 
   ],
   

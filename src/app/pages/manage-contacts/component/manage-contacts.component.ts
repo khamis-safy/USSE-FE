@@ -74,19 +74,41 @@ export class ManageContactsComponent implements OnInit, AfterViewInit,OnDestroy{
 
 
   }
-  initRouting(){
-
-    this.routingObservable= this.activatedRouter.queryParams.subscribe(params=>{
-      if(params["tab"]){
-        this.selectedTab = params["tab"].replace(/[\s]/g)
-        this.selectedTabIndex= this.tabs.indexOf(this.selectedTab)
-
-      }
-      else{
-        this.selectedTab = "contacts"
+  initRouting() {
+    this.routingObservable = this.activatedRouter.queryParams.subscribe(params => {
+      if (params["tab"]) {
+        const requestedTab = params["tab"].replace(/[\s]/g);
+        const tabIndex = this.tabs.findIndex(tab => tab === requestedTab);
+  
+        if (tabIndex !== -1) {
+          // Valid tab, update accordingly
+          this.selectedTab = requestedTab;
+          this.selectedTabIndex = tabIndex;
+  
+          if (this.selectedTab === "cancel") {
+            this.isCanceled = true;
+          } else {
+            this.isCanceled = false;
+          }
+        } else {
+          // Invalid tab, default to the first tab
+          this.selectedTab = this.tabs[0];
+          this.selectedTabIndex = 0;
+          this.isCanceled = false;
+  
+          // Update the URL with the default tab
+          this.updateQueryParams();
+        }
+      } 
+      else {
+        // No tab parameter, default to the first tab
+        this.selectedTab = "contacts";
+        this.selectedTabIndex = 0;
+        this.isCanceled = false;
         this.updateQueryParams();
+
       }
-    })
+    });
   }
   ngAfterViewInit() {
 

@@ -47,7 +47,7 @@
         </mat-form-field>
       </div>
     </ng-container>
-    <ng-container *ngIf="length > 0 && !noData">
+    <ng-container *ngIf="length > 0 && !noData || loading ">
       <section class="table-wrapper">
         <table mat-table [dataSource]="dataSource">
           <!-- userIDEmail Column -->
@@ -100,7 +100,7 @@
         </mat-paginator>
       </section>
     </ng-container>
-    <ng-container *ngIf="length == 0 && (!loading || notFound)">
+    <ng-container *ngIf="(length == 0 && !loading) && ( notFound || noData)">
       <div class="d-flex justify-content-center align-items-center flex-column gap-3 nodata-container w-100" style="height: 500px;">
         <img src="assets/images/files.svg" alt="" />
         <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA' | translate }}</span>

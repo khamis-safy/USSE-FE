@@ -60,19 +60,33 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     this.initRouting()
   }
 
-  initRouting(){
-
-    this.routingObservable= this.activatedRouter.queryParams.subscribe(params=>{
-      if(params["tab"]){
-        this.selectedTab = params["tab"].replace(/[\s]/g)
-        this.selectedTabIndex= this.tabs.indexOf(this.selectedTab)
-
-      }
-      else{
-        this.selectedTab = "inbox"
+  initRouting() {
+    this.routingObservable = this.activatedRouter.queryParams.subscribe(params => {
+      if (params["tab"]) {
+        const requestedTab = params["tab"].replace(/[\s]/g);
+        const tabIndex = this.tabs.findIndex(tab => tab === requestedTab);
+  
+        if (tabIndex !== -1) {
+          // Valid tab, update accordingly
+          this.selectedTab = requestedTab;
+          this.selectedTabIndex = tabIndex;
+        } else {
+          // Invalid tab, default to the first tab
+          this.selectedTab = this.tabs[0];
+          this.selectedTabIndex = 0;
+  
+          // Update the URL with the default tab
+          this.updateQueryParams();
+        }
+      } else {
+        // No tab parameter, default to the first tab
+        this.selectedTab = "inbox";
+        this.selectedTabIndex = 0;
+  
+        // Update the URL with the default tab
         this.updateQueryParams();
       }
-    })
+    });
   }
   updateQueryParams(){
     this.router.navigateByUrl("/messages?tab="+this.selectedTab)

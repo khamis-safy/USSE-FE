@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LayoutTwoComponent } from './layout-two.component';
-import { RouterModule } from '@angular/router';
+import { PageNotFoundComponent } from './pageNotFound.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { LayoutTwoRoutes } from './layout-two.routing';
+import { PageNotFoundRoutes } from './pageNotFound.routing';
 import { NavModule } from 'src/app/shared/components/nav/nav.module';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    RouterModule,
     NavModule,
-    LayoutTwoRoutes
+    PageNotFoundRoutes
   ],
-  declarations: [LayoutTwoComponent]
+  declarations: [PageNotFoundComponent]
 })
-export class LayoutTwoModule { }
+export class PageNotFoundModule { }

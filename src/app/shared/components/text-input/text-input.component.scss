@@ -79,15 +79,18 @@
     border-start-end-radius: $radius_xl;
     border: 1px solid $clr_neutral_400;
   }
-
+  input{
+    padding: 0 12px;
+  }
+  textarea {
+    padding: 9px 15px 7px;
+  }
   input,
   textarea {
     height: 100%;
     width: 100%;
-    padding: 9px 15px 7px;
     background: transparent;
     line-height: $LH_body;
-    font-size: 16px;
     border: none;
     outline: none;
     box-sizing: border-box;
@@ -201,6 +204,11 @@
     textarea {
       color: $clr_neutral_400;
     }
+  }
+}
+@media (max-width: 1700px){
+  .input-wrapper {
+    height: 38px;
   }
 }
 .start-from-left{

@@ -6,6 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { LayoutTwoComponent } from './layout-two/layout-two.component';
 import { LayoutTwoModule } from './layout-two/layout-two.module';
+import { PageNotFoundModule } from './pageNotFound/pageNotFound.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { LayoutTwoModule } from './layout-two/layout-two.module';
   ],
   exports:[
     LayoutOneModule,
-    LayoutTwoModule
+    LayoutTwoModule,
+    PageNotFoundModule
   ]
 })
 export class LayoutsModule { }

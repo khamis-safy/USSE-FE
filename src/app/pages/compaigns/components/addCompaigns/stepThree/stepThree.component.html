@@ -20,8 +20,11 @@
         class="rounded-pill border border-1py-2 txt-input w-100 date"
         style="padding: 0 12px;"
           nzShowTime
-          nzFormat="yyyy-MM-dd HH:mm:ss"
+          nzFormat="yyyy-MM-dd HH:mm a"
           [formControl]="dateFormControl"
+          nzUse12Hours
+          [nzShowTime]="{ nzFormat: 'hh:mm a',nzUse12Hours: true }"
+
       ></nz-date-picker>
       </div>
     </div>

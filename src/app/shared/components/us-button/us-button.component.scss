@@ -13,8 +13,8 @@ button{
   }
 
   &.button-size-lg {
-    min-width: 150px;
-    min-height: 44px;
+    min-width: 165px;
+    min-height: 55px;
   }
 
   &.no-fill-primary{
@@ -69,13 +69,28 @@ button{
     height: fit-content;
   }
 }
+span.btn-label.lable-lg.mx-1{
+  font-size: 14px !important;
+}
 @media (max-width: 1700px)
 {
 span.btn-label.mx-1 {
   font-size: 11px !important;
 }
-button.button-size-md[_ngcontent-lpr-c149] {
-  min-width: 114px !important;
-  min-height: 35px !important;
+
+span.btn-label.lable-lg.mx-1{
+  font-size: 14px !important;
 }
+}
+@media (max-width: 600px)
+{
+  button.button-size-md {
+    min-width: 90px !important;
+    min-height: 35px !important;
+  }
+  button{
+    .content{
+      flex-direction: column;
+    }
+  }
 }

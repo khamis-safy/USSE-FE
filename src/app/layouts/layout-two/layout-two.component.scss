@@ -49,3 +49,11 @@ app-side-bar{
 .vh-92{
   height: 92vh;
 }
+@media(max-width:768px){
+  .side-bar{
+    display: none;
+  }
+  .module-container{
+    width: 100% !important;
+  }
+}

@@ -47,7 +47,7 @@
       ></us-button>
 
       <us-button
-        *ngIf="(selectedTab=='contacts' || selectedTab=='lists') && canEdit"
+        *ngIf="(selectedTab=='contacts' && !isChecked || selectedTab=='lists' && !isDelete ) && canEdit"
         class="m-2"
         [label]="selectedTab=='contacts'?('ADD_CONTACT'| translate) :('ADD_LIST' | translate)"
         [matIcon]="'add'"
@@ -72,9 +72,9 @@
       (clicked)="openUnCancelContactsModal()"
     ></us-button>
 
-      <div *ngIf="selectedTab=='contacts'">
-        <div #importMenu>
-          <button  mat-button [matMenuTriggerFor]="menu" class="mx-1 import-button text-neutral-0 bg-primary-800 rounded-3 ">
+      <div *ngIf="selectedTab=='contacts' && !isChecked">
+        <div #importMenu  class="mx-2">
+          <button  mat-button [matMenuTriggerFor]="menu" class=" import-button text-neutral-0 bg-primary-800 rounded-3 ">
             <div class="import-menu d-flex align-items-center justify-content-center gap-3">
               <div class="icon">
                 <img src="assets/icons/import.svg" alt="" style="width:19px"/>
@@ -103,12 +103,11 @@
           </mat-menu>
           
       </div>
-     
       <div *ngIf="selectedTab=='contacts'">
-        <div #exportMenu  >
+        <div #exportMenu  class="mx-2">
           <button 
           mat-button [matMenuTriggerFor]="menu2" 
-          class="mx-2 import-button text-neutral-0 bg-primary-800 rounded-3 ">
+          class=" import-button text-neutral-0 bg-primary-800 rounded-3 ">
             <div class="import-menu d-flex align-items-center justify-content-center gap-3">
               <div class="icon">
                 <img src="assets/icons/export.svg" alt="" style="width:14px"/>
@@ -136,7 +135,6 @@
             </button>
           </mat-menu>
       </div>
-     
 
       <!-- <us-button
         *ngIf="selectedTab=='contacts'"
@@ -197,4 +195,5 @@
       <app-contacts [canEdit]="canEdit" [isCanceled]="true" (isChecked)="onChecked($event)"></app-contacts>
     </mat-tab> -->
   </mat-tab-group>
+
 </section>

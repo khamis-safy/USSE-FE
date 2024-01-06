@@ -4,3 +4,22 @@ nav , nav a{
  nav{
   height: 8vh;
  }
+
+.logo{
+  width: 8%;
+  max-width: 88px !important;
+  min-width: 65px;
+}
+@media(max-width:768px){
+  .bars-icon{
+    display: inline-block !important;
+    cursor: pointer;
+    
+  }
+  .logo{
+    margin-inline: 18px
+  }
+  nav{
+    padding-inline:14px !important
+  }
+}

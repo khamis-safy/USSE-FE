@@ -42,10 +42,12 @@ export class DevicesComponent implements OnInit,OnDestroy{
   dataSource:MatTableDataSource<DeviceData>;
   canEdit: any;
   email:string=this.authService.getUserInfo()?.email;
+  isTrialCustomer:boolean;
   constructor(public dialog: MatDialog,    private translate: TranslateService,
     private  toaster: ToasterServices,private authService:AuthService,private devicesService:DevicesService){
   }
   ngOnInit() {
+    this.isTrialCustomer=this.authService.getSubscriptionState().isTrail ? this.authService.getSubscriptionState()?.isTrail : false;
     this.getDevices();
     this.columns=new FormControl(this.displayedColumns)
     let permission =this.devicesService.DevicesPermission

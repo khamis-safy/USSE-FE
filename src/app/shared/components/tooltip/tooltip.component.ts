@@ -29,7 +29,7 @@ export class TooltipComponent implements AfterViewInit, OnDestroy {
   @Input() set maxWidth(value: string) {
     if (value) this._maxWidth = value;
   }
-  private _maxWidth: string = '400px';
+  private _maxWidth: string = '250px';
 
   @ViewChild('parent') parent?: ElementRef<any>;
 
@@ -48,6 +48,7 @@ export class TooltipComponent implements AfterViewInit, OnDestroy {
       boundary: this.boundary,
       maxWidth: this._maxWidth,
     };
+
   }
 
   public onMouseenter() {

@@ -1,12 +1,12 @@
 <section class="py-3 component-container d-flex flex-column gap-3">
   <ng-container *ngIf="!noData">
     <div class="d-flex justify-content-between mb-1 align-items-center">
-      <div class="d-flex position-relative row m-0">
-        <div class="col-12 col-lg-4 p-0">
+      <div class="d-flex position-relative row m-0" style="width:31%; max-width: 389px;    min-width: 223px;">
+        <div class="col-12 col-lg-4 p-0 w-100" >
           <input
             #search
             type="text"
-            class="form-control ps-5 txt-xs"
+            class="form-control ps-5 txt-xs w-100"
             id="search"
             placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
             (input)="onSearch(search)"

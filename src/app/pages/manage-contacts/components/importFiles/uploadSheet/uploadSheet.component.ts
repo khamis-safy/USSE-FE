@@ -196,11 +196,18 @@ export class UploadSheetComponent implements OnInit {
   onSelect(event){
 this.listId=event.value
   }
+  clearForm(){
+    this.form.patchValue({
+      listName:""
+    })
+  }
   submitAddList(){
     this.isLoading = true
 
     this.listService.addList(this.form.value.listName,this.authService.getUserInfo()?.email).subscribe(
       (res)=>{
+        this.clearForm();
+
         this.isLoading = false;
 
         this.addNewList=false;
@@ -215,6 +222,10 @@ this.listId=event.value
       }
     )
 
+  }
+  cancelAddList(){
+    this.addNewList=false;
+    this.clearForm();
   }
   onFileChange(e){
     this.isDisabled=false;

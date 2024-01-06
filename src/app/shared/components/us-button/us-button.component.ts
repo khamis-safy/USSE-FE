@@ -6,7 +6,8 @@ import { Component, Input, OnInit , Output , EventEmitter, AfterViewInit  } from
   styleUrls: ['./us-button.component.scss']
 })
 export class UsButtonComponent implements OnInit ,AfterViewInit  {
-
+  @Input() withTooltip?: boolean = false;
+  @Input() tooltipMsg:string='';
   @Input() label:string = 'label';
   @Input() size:string = 'sm';
   @Input() matIcon:string = '';

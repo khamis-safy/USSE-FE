@@ -1,10 +1,30 @@
 <section [ngClass]="{fullWidth}" class="us-select-container d-flex flex-lg-row flex-column align-items-center flex-nowrap gap-lg-4" >
   <div class="d-none d-lg-block label-widget w-25 " [ngClass]="{deviceLableGap }" *ngIf="optional || label" [style]="forFiteringOnly? 'min-width: 0' : 'min-width: 25%'">
-    <label class="txt txt-sm text-nowrap d-flex" (click)="toggleDropdown()"><span class="text-wrap text-black txt txt-sm">{{label}}</span> <span style="color: red;">{{optional ? '' :"*"}}</span></label>
+    <label class="txt txt-sm text-nowrap d-flex" (click)="toggleDropdown()">
+      <span class="text-wrap text-black txt txt-sm">{{label}}</span>
+      <span style="color: red;">{{optional ? '' :"*"}}</span>
+      <ng-container *ngIf="withTooltip">
+        <sr-tooltip
+        class="mx-2"
+        [text]="tooltipMsg"
+        >
+        </sr-tooltip>
+      </ng-container>
+      </label>
     <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
   </div>
   <div class="d-block d-lg-none label-widget w-100" *ngIf="optional || label">
-    <label class="txt txt-sm text-nowrap" (click)="toggleDropdown()"><span class="text-wrap text-black txt txt-sm">{{label}}</span> <span style="color: red;">{{optional ? '' :"*"}}</span></label>
+    <label class="txt txt-sm text-nowrap" (click)="toggleDropdown()">
+      <span class="text-wrap text-black txt txt-sm">{{label}}</span> 
+      <span style="color: red;">{{optional ? '' :"*"}}</span>
+      <ng-container *ngIf="withTooltip">
+        <sr-tooltip
+        
+        [text]="tooltipMsg"
+        >
+        </sr-tooltip>
+      </ng-container>
+    </label>
     <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
   </div>
 

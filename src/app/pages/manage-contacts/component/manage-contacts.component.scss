@@ -5,5 +5,12 @@
   font-weight: 500;
 }
 
-
+@media only screen and (max-width: 600px) {
+  section{
+    padding-inline:10px;
+  }
+  .buttons_{
+    display:none !important;
+  }
+}
 

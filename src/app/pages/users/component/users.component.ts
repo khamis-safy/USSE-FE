@@ -30,11 +30,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class UsersComponent implements OnInit ,OnDestroy{
   isSearch:boolean=false;
 
-    noData: boolean=true;
+    noData: boolean=false;
     notFound: boolean=false;
     length: number=0;
     numRows;
-    loading;
+    loading :boolean=true;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     columns :FormControl;
     displayed: string[] = USERSHEADERS ;
@@ -86,7 +86,10 @@ export class UsersComponent implements OnInit ,OnDestroy{
               }
           }
           else{
-            this.paginator.pageIndex=this.userService.pageNum
+            if(this.paginator){
+              this.paginator.pageIndex=this.userService.pageNum
+            }
+
             this.UsersCount();
             this.isSearch=false;
 
@@ -95,9 +98,9 @@ export class UsersComponent implements OnInit ,OnDestroy{
 
         },
         (err)=>{
-         this.loading = false;
-         this.length=0;
-
+          this.loading = false;
+          this.length=0;
+          this.noData=true;
         }
 
 
@@ -107,24 +110,23 @@ export class UsersComponent implements OnInit ,OnDestroy{
 
     UsersCount(){
       let token=this.userService.token;
-
+      this.loading = true;
       this.userService.listCustomersUsersCount(token).subscribe(
         (res)=>{
-
           this.length=res;
-          if(this.length==0){
-            this.noData=true
+          this.loading = false;
+          if( this.length==0){
+            this.noData=true;
           }
           else{
-            this.noData=false
+            this.noData=false;
           }
-        }
-        ,(err)=>{
-          this.noData=true
-
-          this.length=0;
-        }
-       );
+          },
+          (err)=>{
+            this.loading = false;
+            this.length=0;
+            this.noData=true;
+          })
     }
     openActionModal(data?) {
         const dialogConfig = new MatDialogConfig();
