@@ -2182,3 +2182,21 @@ background: var(--clr-primary-500) !important;
 .row-header{
 font-weight: 500 !important;
 }
+.mat-mdc-tab-header{
+  overflow-x: scroll !important;
+  ::-webkit-scrollbar {
+    display: none  !important;
+  }
+}
+mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
+  display: none !important;
+}
+.mat-mdc-tab-label-container{
+  overflow: visible !important;
+}
+.mat-mdc-tab-header-pagination-controls-enabled .mat-mdc-tab-header-pagination {
+    display: none !important;
+}
+.mdc-tab__ripple:before, .mat-mdc-tab .mat-ripple-element, .mat-mdc-tab-header-pagination .mat-ripple-element, .mat-mdc-tab-link .mat-ripple-element {
+  background-color: transparent  !important;
+}

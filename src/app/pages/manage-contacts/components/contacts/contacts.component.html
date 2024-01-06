@@ -139,7 +139,7 @@
     <mat-accordion class="table-mobile-view " multi>
       <!-- Repeat the following code for each data item in your dataSource -->
       <mat-expansion-panel  *ngFor="let element of tableData" 
-      [expanded]="element.defaultExpanded" 
+      [expanded]="false" 
       [ngClass]="{'active-row':selection.isSelected(element)}">
         <mat-expansion-panel-header>
           <mat-checkbox
