@@ -17,14 +17,13 @@
       style="cursor: pointer ; width: 35px;"
     />
   </div>
-  <!-- [withTooltip]="true"
-  [tooltipMsg]="'enter the contact name'" -->
   <!-- modal body -->
   <div class="modal-body overflow-auto px-1" style="height: 80%">
     <form [formGroup]="form" class="w-100 m-auto">
       <div class="d-flex gap-4 flex-column py-3">
         <us-input
-
+        [withTooltip]="true"
+        [tooltipMsg]="'enter the contact name'"
           [isDisabled]="false"
           value=""
           placeholder="{{ 'NAME' | translate }}"
@@ -98,11 +97,10 @@
             </ng-container>
           </div>
         </div>
-        <!-- [withTooltip]="true"
-        [tooltipMsg]="'add contact to one list or more'" -->
 
         <us-select
-
+        [withTooltip]="true"
+        [tooltipMsg]="'add contact to one list or more'"
           *ngIf="!isFromListDetails"
           [data]="listsArr"
           formControlName="selectedLists"
@@ -349,10 +347,9 @@
       (clicked)="onClose()"
       [loading]="false"
     ></us-button>
-    <!-- [withTooltip]="true"
-    [tooltipMsg]="'you should fill all required data to add contact'" -->
     <us-button
-
+    [withTooltip]="true"
+    [tooltipMsg]="'you should fill all required data to add contact'" 
       *ngIf="!isEdit"
       label="{{ 'SAVE' | translate }}"
       size="sm"
