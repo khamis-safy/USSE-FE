@@ -87,7 +87,11 @@
 .txt-caption {
   color: $clr_neutral_600;
 }
-
+@media(max-width:768px){
+  .host {
+    margin-inline: 6px !important;
+  }
+}
 @media (max-width: 1700px)
 {
   .radio{

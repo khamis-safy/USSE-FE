@@ -54,3 +54,31 @@ export const LISTDETAILSHEADERS: any[] = [
   },
   
 ];
+export const CONTACTSHEADERMobile: any[] = [
+  {
+    title:"MOBILE",
+    value:"Mobile"
+  },
+  {
+    title:"LISTS",
+    value:"Lists"
+  },
+  {
+    title:"variables",
+    value:"Additional Parameters"
+  },
+  {
+    title:"CREATE_AT",
+    value:"Create At"
+  },
+];
+export const  LISTHEADERSMobile: any[] = [
+  {
+    title:"CREATE_AT",
+    value:"Create At"
+  },
+  {
+    title:"TOTAL_CONTACTS_COLUMN",
+    value:"Total Contacts"
+  },
+];

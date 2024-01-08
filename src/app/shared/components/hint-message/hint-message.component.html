@@ -2,10 +2,10 @@
   <mat-icon *ngIf="devicesWarning" class="close-message position-absolute top-0 end-0 m-2 mx-3 pointer" (click)="onClose()">close</mat-icon>
   <div class="message-content">
     <p class="d-flex mb-0">
-      <mat-icon class="mx-1">info</mat-icon>
-      <span *ngIf="isTrialMessage"> {{trialMessage}}</span> 
+      <mat-icon style="width: 32px;" class="mx-1">info</mat-icon>
+      <span *ngIf="isTrialMessage"> {{trialMessage}} <a href="mailto:contact@qweira.com" class="mx-1">contact@qweira.com</a>.</span> 
       <span *ngIf="devicesWarning"> {{translatedMessage}}</span> 
-      <a *ngIf="isTrialMessage" href="mailto:contact@qweira.com" class="mx-1">contact@qweira.com</a>.
+      
     </p>
   </div>
 

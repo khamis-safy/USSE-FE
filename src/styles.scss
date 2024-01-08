@@ -762,7 +762,7 @@ input#phone {
 // search
 #search{
   width: 389px;
-  height: 42px;
+  height: 40px;
   border-radius: 16px;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border: none;
@@ -1712,7 +1712,7 @@ button.button-size-md{
   {
     min-height: 40px !important;
     .mdc-list-item__primary-text {
-      font-size: 10px !important;
+      font-size: 10px ;
   }
   }
 .side-form{
@@ -1736,20 +1736,6 @@ button.button-size-md{
   
 }
 
-// Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) {  }
-
-// Medium devices (tablets, 768px and up)
-@media (min-width: 768px) {  }
-
-// Large devices (desktops, 992px and up)
-@media (min-width: 992px) {  }
-
-// X-Large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {  }
-
-// XX-Large devices (larger desktops, 1400px and up)
-@media (min-width: 1400px) {  }
 
 // redesign ant design system************************************************************************
 nz-date-picker{
@@ -2073,6 +2059,7 @@ nz-date-picker{
 }
 ///////////////////////////////////////////////////////////////////////
 @media only screen and (max-width: 768px) {
+  // tabs in small screen
     .mat-mdc-tab.mdc-tab {
     &.mdc-tab--active ,&:focus{
     background:transparent !important;
@@ -2106,6 +2093,8 @@ nz-date-picker{
     min-width: 162px !important;
     }
 
+
+
     .table-mobile-view{
     display: block !important;
     }
@@ -2116,16 +2105,43 @@ nz-date-picker{
       display: none !important;
     }
 }
-
+////////////////////////////////////////////////////
+.mat-mdc-form-field.mat-focused.mat-primary .mat-mdc-select-arrow {
+color: var(--clr-primary-800) !important;
+}
+.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+  color: var(--clr-primary-800) !important;
+}
+.mat-primary .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+  color: #292A32 !important;
+}
 ///////////////////////////////////////////////////////////////////////
+.small-screen-view{
+  
+  .mat-mdc-form-field {
+    width: 106px !important;
+    height: 39px !important;
+  }
+  .mat-mdc-text-field-wrapper {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  
   .table-mobile-view{
+    margin-top: 15px;
+    mat-expansion-panel.mat-expansion-panel:last-of-type  {
+      border-bottom-right-radius: 0px !important;
+      border-bottom-left-radius: 0px !important;
+      box-shadow: unset !important;
+  }
+    mat-expansion-panel.mat-expansion-panel:first-of-type  {
+      border-top-right-radius: 15px !important;
+      border-top-left-radius: 15px !important;
+  }
   .mat-expansion-panel-spacing {
   margin: 0px 0 !important;
   }
-  .mat-accordion .mat-expansion-panel:first-of-type {
-  border-top-right-radius: 15px !important;
-  border-top-left-radius: 15px !important;
-  }
+
   .mat-expansion-panel-header {
   padding: 0 20px !important;
   }
@@ -2139,8 +2155,9 @@ nz-date-picker{
 
   }
   .mat-expansion-panel-body{
-  width: 106% !important;
-  margin: auto !important;
+    width: 103% !important;
+    max-width: 743px !important;
+    min-width: 304px;
   }
   .mat-expansion-panel-body {
   padding: 0 48px 16px !important;
@@ -2166,6 +2183,18 @@ nz-date-picker{
   height: 50px !important;
   }
   }
+  .mat-mdc-icon-button.mat-mdc-button-base {
+    width: 15% !important;
+  }
+  .mat-mdc-paginator-range-label {
+    margin: 0 18px 0 18px !important;
+}
+mat-paginator .mat-mdc-paginator-container {
+  justify-content: space-around !important;
+}
+}
+
+ 
 //////////////////////////////////////////////////////////////////////
 .ant-drawer-body {
 padding: 0px !important;
@@ -2199,4 +2228,55 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
 }
 .mdc-tab__ripple:before, .mat-mdc-tab .mat-ripple-element, .mat-mdc-tab-header-pagination .mat-ripple-element, .mat-mdc-tab-link .mat-ripple-element {
   background-color: transparent  !important;
+}
+/***************************************************************************************/
+.small-screen-view{
+  display: none;
+}
+@media only screen and (max-width: 768px) {
+  .mat-primary .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full{
+    width: 16px !important;
+    height: 16px !important;
+}
+.mat-pseudo-checkbox {
+  width: 16px !important;
+  height: 16px !important;
+}
+  .mat-mdc-option.mdc-list-item {
+    padding-inline: 8px !important;
+}
+  .mat-pseudo-checkbox {
+    width: 15px !important;
+    height: 15px !important;
+}
+.mat-pseudo-checkbox-full.mat-pseudo-checkbox-checked::after {
+  width: 7px !important;
+  height: 4px !important;
+}
+.mat-mdc-option {
+  min-height: 35px !important;
+}
+.mat-mdc-option .mdc-list-item__primary-text {
+  font-size: 12px !important;
+}
+  .large-screen-view{
+    display: none !important;
+  }
+  .small-screen-view{
+    display: block !important;
+    .nodata-container {
+      height: 55vh !important;
+    }
+  }
+}
+.input-search-containter{
+  width: 31% ;
+  max-width: 389px;
+  min-width: 166px !important;
+  input{
+    width: 100% !important;
+  }
+  .col-12.col-lg-4{
+    width: 100% !important;
+  }
 }

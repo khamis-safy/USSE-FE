@@ -18,6 +18,8 @@ import { DragZoneModule } from 'src/app/shared/components/drag-zone/drag-zone.mo
 import { ErrorsStatesComponent } from 'src/app/shared/components/bulkOperationModals/errorsStates/errorsStates.component';
 import { RequestStateComponent } from 'src/app/shared/components/bulkOperationModals/requestState/requestState.component';
 import { UnCancelContactsComponent } from './components/contacts/unCancelContacts/unCancelContacts.component';
+import { ContactsMobileViewComponent } from './components/mobile view/contacts-mobileView/contacts-mobileView.component';
+import { ListsMobileViewComponent } from './components/mobile view/lists-mobileView/lists-mobileView.component';
 
 @NgModule({
   imports: [
@@ -38,7 +40,9 @@ import { UnCancelContactsComponent } from './components/contacts/unCancelContact
     UnCancelContactsComponent,
     ContactListsComponent,
     RequestStateComponent,
-    ErrorsStatesComponent
+    ErrorsStatesComponent,
+    ContactsMobileViewComponent,
+    ListsMobileViewComponent
 
   ],
   providers:[ManageContactsService]

@@ -164,7 +164,7 @@
 "SEARCH_PLACEHOLDER": "بحث",
 "DISPLAY_LABEL": "عرض",
 "NAME_COLUMN": "الاسم",
-"TOTAL_CONTACTS_COLUMN": "إجمالي الجهات الاتصال",
+"TOTAL_CONTACTS_COLUMN":"عدد جهات الاتصال",
 "ACTION_COLUMN": "الإجراء",
 "EDIT_ACTION": "تعديل",
 "BACK_ICON": "keyboard_backspace",
@@ -594,5 +594,8 @@
 "goBack":"العودة",
 "page_not_found":"الصفحة غير موجودة",
 "page_not_found_content":"الصفحة التى تحاول الوصول إليها غير موجودة!",
-"showLists":"عرض القوائم"
+"showLists":"عرض القوائم",
+"shows":"إظهار",
+"items":"عناصر"
 }
+

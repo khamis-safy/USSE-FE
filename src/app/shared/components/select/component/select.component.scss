@@ -171,17 +171,17 @@
     cursor: default !important;
     display: none;
 
-    @media screen and (max-width: 767px) {
-      display: unset;
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      background: $clr_neutral_900;
-      opacity: 0.7;
-      z-index: 998;
-    }
+    // @media screen and (max-width: 767px) {
+    //   display: unset;
+    //   position: fixed;
+    //   top: 0;
+    //   bottom: 0;
+    //   right: 0;
+    //   left: 0;
+    //   background: $clr_neutral_900;
+    //   opacity: 0.7;
+    //   z-index: 998;
+    // }
   }
 
   &.actions {
@@ -216,17 +216,17 @@
     min-width: 100%;
     overflow: hidden;
 
-    @media screen and (max-width: 768px) {
-      min-width: 90%;
-      width: 90%;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1rem;
-      box-shadow: $depth_5;
-      z-index: 999;
-    }
+    // @media screen and (max-width: 768px) {
+    //   min-width: 90%;
+    //   width: 90%;
+    //   position: fixed;
+    //   top: 50%;
+    //   left: 50%;
+    //   transform: translate(-50%, -50%);
+    //   font-size: 1rem;
+    //   box-shadow: $depth_5;
+    //   z-index: 999;
+    // }
 
     &_content {
       overflow-y: auto;
@@ -594,5 +594,30 @@
 @media (max-width: 1700px){
   .deviceLableGap{
     min-width: 18% !important;
+  }
+}
+.us-select-container.smallDropDown{
+  flex-direction: row !important;
+  gap: 5px !important;
+  .label-widget.w-25{
+    min-width: unset !important;
+    width: unset !important;
+  }
+  .host.w-100{
+    .list_item{
+      column-gap: 0px !important;
+      padding: 1px 5px !important;
+    }
+    min-width: 4rem !important;
+    width: 40% !important;
+    .toggler[_ngcontent-mft-c148] {
+      height: 33px !important;
+      padding: 0px 12px !important;
+      &.focus {
+        transition: 0.2s box-shadow;
+        border: unset !important;
+        box-shadow:unset !important;
+      }
+  }
   }
 }
