@@ -189,6 +189,9 @@ else{
     this.listService.display=event.value;
     this.listService.updateDisplayNumber(event.value)
     this.paginator.pageSize = event.value;
+    this.paginator.pageIndex=0;
+    this.pageNum=0; 
+    
     this.getListData();
 
   }
@@ -279,7 +282,6 @@ else{
   }
   onPageChange(event){
 
-    this.listService.display=event.pageSize;
     this.pageNum=event.pageIndex;
     this.selection.clear();
 

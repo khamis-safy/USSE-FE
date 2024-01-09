@@ -56,7 +56,6 @@ export class ContactsMobileViewComponent implements OnInit {
   noData: boolean=false;
   notFound: boolean=false;
   display: number;
-  pageNum:number;
 
 
   showsOptions:SelectOption[]=[
@@ -75,7 +74,7 @@ export class ContactsMobileViewComponent implements OnInit {
 
 
 
-
+  pageIndex:number=0;
 
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
@@ -86,7 +85,7 @@ export class ContactsMobileViewComponent implements OnInit {
     private translationService:TranslationService
   ) {
     this.display=listService.getUpdatedDisplayNumber()
-    this.pageNum=this.listService.pageNum;
+    this.pageIndex=this.listService.pageNum;
 
     }
   ngAfterViewInit() {
@@ -183,7 +182,10 @@ unCancelSnackBar(){
   onSelect(event){
     this.listService.display=event.value;
     this.listService.updateDisplayNumber(event.value)
+    this.pageIndex=0; 
+    
     this.paginator.pageSize = event.value;
+    this.paginator.pageIndex=0;
     this.getContacts();
 
   }
@@ -193,7 +195,7 @@ unCancelSnackBar(){
   let email=this.authService.getUserInfo()?.email;
   let orderedBy=this.listService.orderedBy;
   let search=searchVal ? searchVal : "";
-  let pageNumber=searchVal?0:this.pageNum
+  let pageNumber=searchVal?0:this.pageIndex
   if(searchVal && this.paginator){
       this.paginator.pageIndex=0
   }
@@ -227,7 +229,7 @@ unCancelSnackBar(){
           }
       }
       else{
-        this.paginator.pageIndex=this.pageNum
+        this.paginator.pageIndex=this.pageIndex
         this.notFound=false;
 
         this.contactsCount(isCanceledContacts);
@@ -339,7 +341,7 @@ this.subscribtions.push(sub2)
 
   }
   onPageChange(event){
-    this.pageNum=event.pageIndex;
+    this.pageIndex=event.pageIndex;
     this.selection.clear();
     this.getContacts();
 

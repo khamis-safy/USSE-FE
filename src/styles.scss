@@ -2280,3 +2280,6 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
     width: 100% !important;
   }
 }
+section.component-container {
+  min-height: 40vh;
+}
