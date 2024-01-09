@@ -20,6 +20,7 @@ import { RequestStateComponent } from 'src/app/shared/components/bulkOperationMo
 import { UnCancelContactsComponent } from './components/contacts/unCancelContacts/unCancelContacts.component';
 import { ContactsMobileViewComponent } from './components/mobile view/contacts-mobileView/contacts-mobileView.component';
 import { ListsMobileViewComponent } from './components/mobile view/lists-mobileView/lists-mobileView.component';
+import { ContactInfoComponent } from './components/mobile view/contact-info/contact-info.component';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { ListsMobileViewComponent } from './components/mobile view/lists-mobileV
     RequestStateComponent,
     ErrorsStatesComponent,
     ContactsMobileViewComponent,
-    ListsMobileViewComponent
+    ListsMobileViewComponent,
+    ContactInfoComponent
 
   ],
   providers:[ManageContactsService]

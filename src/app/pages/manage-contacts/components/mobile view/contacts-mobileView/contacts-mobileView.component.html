@@ -85,9 +85,9 @@
           <div class="col">{{element.mobileNumber}}</div>
         </div>
     
-        <div class="row row-item " *ngIf="displayedColumns.includes('Lists')">
+        <div class="row row-item " *ngIf="displayedColumns.includes('Lists')" (click)="showLists(element)">
           <div class="col row-header">{{ 'LISTS' | translate }}</div>
-          <div class="col"><a class="text-primary-800">{{'showLists' | translate}}</a> </div>
+          <div class="col"><a *ngIf="element.lists?.length > 0" class="text-primary-800">{{'showLists' | translate}}</a> </div>
         </div>
     
         <div class="row row-item "*ngIf="displayedColumns.includes('Create At')">
@@ -95,7 +95,7 @@
           <div class="col">{{element.createdAt | toLocalTime}}</div>
         </div>
     
-        <div class="row row-item " *ngIf="displayedColumns.includes('Additional Parameters')">
+        <div class="row row-item " *ngIf="displayedColumns.includes('Additional Parameters')" (click)="showAdditionalParameters(element)">
           <div class="col row-header">{{ 'variables' | translate }}</div>
           <div class="col">
             <div *ngIf="element?.additionalContactParameter?.length" class="d-flex  align-items-center w-100 zi-4">

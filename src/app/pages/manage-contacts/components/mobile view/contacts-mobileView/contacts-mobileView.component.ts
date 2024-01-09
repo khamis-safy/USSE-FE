@@ -18,7 +18,15 @@ import { ManageContactsService } from '../../../manage-contacts.service';
 import { AddContactComponent } from '../../contacts/addContact/addContact.component';
 import { AdditonalParamsComponent } from '../../contacts/additonalParams/additonalParams.component';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
-
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { ContactInfoComponent } from '../contact-info/contact-info.component';
+export interface ContactInfoContent {
+  additionalParameters: { name: string; value: string }[];
+  lists:string[];
+  contactName: string;
+  contactNumber: string;
+  title:string;
+}
 @Component({
   selector: 'app-contacts-mobileView',
   templateUrl: './contacts-mobileView.component.html',
@@ -82,7 +90,8 @@ export class ContactsMobileViewComponent implements OnInit {
     private snackBar: MatSnackBar,
     private translate: TranslateService,
     private authService:AuthService,
-    private translationService:TranslationService
+    private translationService:TranslationService,
+    private drawerService: NzDrawerService
   ) {
     this.display=listService.getUpdatedDisplayNumber()
     this.pageIndex=this.listService.pageNum;
@@ -415,27 +424,50 @@ else{
 
 }
 }
-showAdditionalParams(contacts,length){
-  if(!this.cellClick && length > 0){
-    const currentLang=this.translationService.getCurrentLanguage()
-    const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='100vh';
-    dialogConfig.width='25vw';
-    dialogConfig.maxWidth='100%';
-    // dialogConfig.minWidth='200px';
-    dialogConfig.disableClose = true;
-    dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
-    dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
-    dialogConfig.data=contacts;
-    const dialogRef = this.dialog.open(AdditonalParamsComponent,dialogConfig);
+showLists(element:Contacts){
+  if(element.lists && element.lists?.length > 0){
+    let listNames=element.lists.map((list)=>list.name)
+    const placement = 'bottom'; // Set the placement to 'bottom' for bottom-to-top transition
 
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
+    const drawerRef = this.drawerService.create<ContactInfoComponent, ContactInfoContent>({
+      nzHeight: '40vh',
+      nzWidth:'100vw',
+      nzClosable: true,
+      nzContent: ContactInfoComponent,
+      nzPlacement: placement,
+      nzWrapClassName: 'bottom-drawer',
+      nzContentParams: {
+        lists: listNames,
+        contactName: element.name,
+        contactNumber: element.mobileNumber,
+        title:"LISTS"
       }
-
     });
   }
+
 }
+showAdditionalParameters(element:Contacts){
+  if(element.additionalContactParameter && element.additionalContactParameter?.length > 0){
+    const placement = 'bottom'; // Set the placement to 'bottom' for bottom-to-top transition
+
+    const drawerRef = this.drawerService.create<ContactInfoComponent, ContactInfoContent>({
+      nzHeight: '40vh',
+      nzWidth:'100vw',
+      nzClosable: true,
+      nzContent: ContactInfoComponent,
+      nzPlacement: placement,
+      nzWrapClassName: 'bottom-drawer',
+      nzContentParams: {
+        additionalParameters: element.additionalContactParameter,
+        contactName: element.name,
+        contactNumber: element.mobileNumber,
+        title:"Additional Parameters"
+      }
+    });
+  }
+
+}
+
 ngOnDestroy(){
   this.selection.clear();
 

@@ -2283,3 +2283,27 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
 section.component-container {
   min-height: 40vh;
 }
+.tag-info{
+    width: fit-content;
+    height: 32px;
+    background: var(--clr-primary-400);
+    color:var(--clr-primary-800);
+    border-radius: 8px;
+    display: flex;
+    font-size: 16px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 15px;  
+}
+.ant-drawer-content-wrapper.bottom-drawer {
+  min-width: 100% !important;
+  border-radius: 16px !important;
+  .ant-drawer-header-title {
+
+    display: none !important;
+}
+  .ant-drawer-content {
+    border-radius: 16px !important;
+
+}
+}
