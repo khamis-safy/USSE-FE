@@ -248,7 +248,9 @@ this.subscribtions.push(sub2)
     const numRows =  this.numRows;
     return numSelected === numRows;
   }
-
+  changeSelection(event){
+    this.selection=event;
+  }
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     if (this.isAllSelected()) {

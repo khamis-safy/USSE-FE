@@ -67,7 +67,7 @@
         <mat-expansion-panel-header>
           <mat-checkbox
             color="ch-color"
-            (click)="$event.stopPropagation() && selectedRow($event)"
+            (click)="$event.stopPropagation()"
             (change)="$event ? selection.toggle(element) : null"
             [checked]="selection.isSelected(element)"
             [aria-label]="checkboxLabel(element)"
@@ -136,3 +136,4 @@
   </div>
 
 </ng-container>
+<div #dynamicComponentContainer></div>

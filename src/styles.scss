@@ -2234,6 +2234,12 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   display: none;
 }
 @media only screen and (max-width: 768px) {
+  button.mat-mdc-menu-item.mat-mdc-focus-indicator.mdc-list-item{
+    min-height: 36px !important;
+  }
+  span.mdc-list-item__primary-text {
+    font-size: 12px !important;
+}
   .mat-primary .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full{
     width: 16px !important;
     height: 16px !important;

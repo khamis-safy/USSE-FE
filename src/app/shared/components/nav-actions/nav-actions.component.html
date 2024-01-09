@@ -1,0 +1,15 @@
+<nav class="d-flex justify-content-between px-5 align-items-center p-2 zi-5 bg-primary-800 text-neutral-0">
+<div class="d-flex align-items-center gap-2" >
+    <mat-icon  class="text-neutral-0" (click)="onClose()">close</mat-icon>
+    <span>{{selectedItemsCount}}</span>
+</div>    
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon button with a horizontal three dot icon">
+    <mat-icon class="text-neutral-0" style="width: 15px;" >more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item *ngFor="let menuItem of menuItems" (click)="menuItem.function()">
+        {{ menuItem.name | translate}}
+        </button>
+    </mat-menu>
+</nav>

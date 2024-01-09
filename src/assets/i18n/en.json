@@ -598,7 +598,10 @@
 "page_not_found_content":"The page that you are looking for is not found!",
 "showLists":"show lists",
 "shows":"show",
-"items":"items"
+"items":"items",
+"Select_All":"Select All",
+"Remove_Lists":"Remove Lists"
+
 
 
 }

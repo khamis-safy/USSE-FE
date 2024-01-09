@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -20,6 +20,7 @@ import { AdditonalParamsComponent } from '../../contacts/additonalParams/additon
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { ContactInfoComponent } from '../contact-info/contact-info.component';
+import { NavActionsComponent } from 'src/app/shared/components/nav-actions/nav-actions.component';
 export interface ContactInfoContent {
   additionalParameters: { name: string; value: string }[];
   lists:string[];
@@ -40,7 +41,7 @@ export class ContactsMobileViewComponent implements OnInit {
   tableData:any=[]
   @Input() isCanceled:boolean;
   @Output() isDelete = new EventEmitter<Contacts[]>;
-  @Output() isChecked = new EventEmitter<Contacts[]>;
+  @Output() selectionData = new EventEmitter<any>;
 
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef
@@ -57,6 +58,7 @@ export class ContactsMobileViewComponent implements OnInit {
   selection = new SelectionModel<Contacts>(true, []);
   subscribtions:Subscription[]=[];
   @Input() listId:string="";
+  dynamicComponentRef: ComponentRef<NavActionsComponent>;
 
   WrapperScrollLeft =0;
   WrapperOffsetWidth =250;
@@ -80,6 +82,7 @@ export class ContactsMobileViewComponent implements OnInit {
    
   });
 
+  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
 
 
   pageIndex:number=0;
@@ -91,7 +94,8 @@ export class ContactsMobileViewComponent implements OnInit {
     private translate: TranslateService,
     private authService:AuthService,
     private translationService:TranslationService,
-    private drawerService: NzDrawerService
+    private drawerService: NzDrawerService,
+    private componentFactoryResolver: ComponentFactoryResolver
   ) {
     this.display=listService.getUpdatedDisplayNumber()
     this.pageIndex=this.listService.pageNum;
@@ -125,16 +129,63 @@ export class ContactsMobileViewComponent implements OnInit {
     this.selection.changed.subscribe(
       (res) => {
 
-        if(res.source.selected.length){
+        if(res.source.selected.length  > 0 && !this.dynamicComponentRef){
+          let selectedContactsIds=res.source.selected.map((item)=>item.id);
+          this.createDynamicComponent(selectedContactsIds);
+          // this.selectionData.emit(this.selection);
 
-          this.isChecked.emit(res.source.selected)
         }
-        else{
-          this.isChecked.emit()
+        else if(res.source.selected.length  === 0 && this.dynamicComponentRef){
+          this.dynamicComponentContainer.clear();
+          this.dynamicComponentRef = null;
+          // this.selectionData.emit(this.selection);
         }
+        if (this.dynamicComponentRef && res.source.selected.length  > 0 ) {
+          this.dynamicComponentRef.instance.selectedItemsCount = res.source.selected.length;
+        }
+      
       });
 
   }
+
+
+  
+  // Modify your existing method to handle selected row logic
+  selectedRow(event: Event, element: any) {
+    // Your existing selectedRow logic
+  }
+  selectAllRows(){
+    this.selection.select(...this.tableData);
+    // this.selectionData.emit(this.selection);
+  }
+  createDynamicComponent(selectedContactsIds) {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(NavActionsComponent);
+    this.dynamicComponentContainer.clear();
+  
+    const componentRef = this.dynamicComponentContainer.createComponent(componentFactory);
+    const navActionsComponentInstance: NavActionsComponent = componentRef.instance;
+    navActionsComponentInstance.selectedItems = selectedContactsIds;
+    navActionsComponentInstance.componentName = 'contacts';
+
+    // Assign the componentRef to this.dynamicComponentRef
+    this.dynamicComponentRef = componentRef;
+  
+    // Pass selected row data to the dynamic component
+    navActionsComponentInstance.selectAllEvent.subscribe(() => {
+      // Logic to handle "Select All" event
+      this.selectAllRows();
+    });
+  
+    navActionsComponentInstance.deselectAllEvent.subscribe((res) => {
+     if(res){
+      this.selection.clear();
+      this.dynamicComponentContainer.clear();
+      this.dynamicComponentRef = null;
+      // this.selectionData.emit(this.selection);
+    }
+    });
+  }
+
 unCancelSnackBar(){
   let message = `${this.canceledContacts.length} ${this.translate.instant('Item(s) UnCanceled')}`;
   let action =this.translate.instant("Undo")
@@ -364,8 +415,7 @@ this.subscribtions.push(sub2)
     this.getContacts(event.value);
   }
 
-  selectedRow(event){
-  }
+
   scrollRight(element, wrapper: HTMLElement) {
     element.hideLeftArrow = false;
   element.WrapperOffsetWidth = wrapper.offsetWidth;

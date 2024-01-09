@@ -52,6 +52,7 @@ import { TypePipe } from '../pages/messages/type.pipe';
 import { HintMessageComponent } from './components/hint-message/hint-message.component';
 import { UsButtonDirective } from '../directives/us-button.directive';
 import { UsButtonComponent } from './components/us-button/us-button.component';
+import { NavActionsComponent } from './components/nav-actions/nav-actions.component';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -103,7 +104,9 @@ import { UsButtonComponent } from './components/us-button/us-button.component';
     TypePipe,
     HintMessageComponent,
     UsButtonComponent,
-    UsButtonDirective
+    UsButtonDirective,
+    NavActionsComponent
+
   ],
   exports:[
     SideBarComponent,
@@ -145,7 +148,8 @@ import { UsButtonComponent } from './components/us-button/us-button.component';
     HintMessageComponent,
     UsButtonComponent,
     UsButtonDirective,
-    RouterModule
+    RouterModule,
+    NavActionsComponent
 
   ],
   
