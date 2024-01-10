@@ -42,7 +42,6 @@ export class ContactsMobileViewComponent implements OnInit {
   @Input() isCanceled:boolean;
   @Output() isDelete = new EventEmitter<Contacts[]>;
   @Output() selectionData = new EventEmitter<any>;
-
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef
   @ViewChild(MatSort) sort: MatSort;
@@ -81,7 +80,7 @@ export class ContactsMobileViewComponent implements OnInit {
     showsSelectedOptions:this.showsSelectedOptions,
    
   });
-
+  navActionSubscriptions:Subscription[]=[];
   @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
 
 
@@ -130,18 +129,17 @@ export class ContactsMobileViewComponent implements OnInit {
       (res) => {
 
         if(res.source.selected.length  > 0 && !this.dynamicComponentRef){
-          let selectedContactsIds=res.source.selected.map((item)=>item.id);
-          this.createDynamicComponent(selectedContactsIds);
+          // this.createDynamicComponent(res.source.selected);
           // this.selectionData.emit(this.selection);
 
         }
         else if(res.source.selected.length  === 0 && this.dynamicComponentRef){
-          this.dynamicComponentContainer.clear();
-          this.dynamicComponentRef = null;
+          // this.distroyDynamicComponent()
+
           // this.selectionData.emit(this.selection);
         }
         if (this.dynamicComponentRef && res.source.selected.length  > 0 ) {
-          this.dynamicComponentRef.instance.selectedItemsCount = res.source.selected.length;
+          // this.dynamicComponentRef.instance.selectedItemsCount = res.source.selected.length;
         }
       
       });
@@ -156,36 +154,70 @@ export class ContactsMobileViewComponent implements OnInit {
   }
   selectAllRows(){
     this.selection.select(...this.tableData);
-    // this.selectionData.emit(this.selection);
+    if (this.dynamicComponentRef && this.selection.selected.length  > 0 ) {
+      this.dynamicComponentRef.instance.selectedItems=this.selection.selected;
+      this.dynamicComponentRef.instance.selectedItemsCount = this.selection.selected.length;
+    }
   }
-  createDynamicComponent(selectedContactsIds) {
+  createDynamicComponent(selectedContacts) {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(NavActionsComponent);
     this.dynamicComponentContainer.clear();
   
     const componentRef = this.dynamicComponentContainer.createComponent(componentFactory);
     const navActionsComponentInstance: NavActionsComponent = componentRef.instance;
-    navActionsComponentInstance.selectedItems = selectedContactsIds;
+    navActionsComponentInstance.selectedItems = selectedContacts;
     navActionsComponentInstance.componentName = 'contacts';
 
     // Assign the componentRef to this.dynamicComponentRef
     this.dynamicComponentRef = componentRef;
   
     // Pass selected row data to the dynamic component
-    navActionsComponentInstance.selectAllEvent.subscribe(() => {
+    let sub1 = navActionsComponentInstance.selectAllEvent.subscribe(() => {
       // Logic to handle "Select All" event
       this.selectAllRows();
     });
-  
-    navActionsComponentInstance.deselectAllEvent.subscribe((res) => {
+    let sub2 = navActionsComponentInstance.deselectAllEvent.subscribe((res) => {
      if(res){
-      this.selection.clear();
-      this.dynamicComponentContainer.clear();
-      this.dynamicComponentRef = null;
+      this.distroyDynamicComponent();
       // this.selectionData.emit(this.selection);
     }
     });
-  }
+    let sub3 =  navActionsComponentInstance.updateData.subscribe((res) => {
+      if(res){
+        this.distroyDynamicComponent();
+        this.getContacts();
+      }
+    });
+    this.navActionSubscriptions.push(sub1,sub2,sub3)
 
+  }
+distroyDynamicComponent(){
+  this.selection.clear();
+  this.dynamicComponentContainer.clear();
+  this.dynamicComponentRef = null;
+  this.navActionSubscriptions.map((sub)=>sub.unsubscribe());
+}
+onCheckboxChange(event,element: any) {
+  if(event.checked == false && this.dynamicComponentRef){
+    this.dynamicComponentRef.instance.showContactsMenueItems();
+  }
+  if(this.selection.selected.length  > 0 && !this.dynamicComponentRef){
+    this.createDynamicComponent(this.selection.selected);
+    this.dynamicComponentRef.instance.selectedItemsCount = this.selection.selected.length;
+
+    // this.selectionData.emit(this.selection);
+
+  }
+  else if(this.selection.selected.length  === 0 && this.dynamicComponentRef){
+    this.distroyDynamicComponent()
+
+    // this.selectionData.emit(this.selection);
+  }
+  if (this.dynamicComponentRef && this.selection.selected.length  > 0 ) {
+    this.dynamicComponentRef.instance.selectedItems=this.selection.selected;
+    this.dynamicComponentRef.instance.selectedItemsCount = this.selection.selected.length;
+  }
+}
 unCancelSnackBar(){
   let message = `${this.canceledContacts.length} ${this.translate.instant('Item(s) UnCanceled')}`;
   let action =this.translate.instant("Undo")
