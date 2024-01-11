@@ -1,5 +1,5 @@
 <section class="py-3 component-container">
-  <div class="large-screen-view  d-flex flex-column gap-3">
+  <div *ngIf="!isSmallScreen" class="large-screen-view  d-flex flex-column gap-3">
     <ng-container *ngIf="!noData">
       <div class="d-flex justify-content-between align-items-center ">
   
@@ -160,8 +160,8 @@
   </div>
 
 
-<div class="small-screen-view">
-  <app-contacts-mobileView [isCanceled]="isCanceled" [canEdit]="canEdit"></app-contacts-mobileView>
+<div *ngIf="isSmallScreen" class="small-screen-view">
+  <app-contacts-mobileView [isCanceled]="isCanceled" [canEdit]="canEdit" ></app-contacts-mobileView>
 </div>
 
 </section>

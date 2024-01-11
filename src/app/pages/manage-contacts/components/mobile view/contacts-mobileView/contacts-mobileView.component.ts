@@ -83,7 +83,7 @@ export class ContactsMobileViewComponent implements OnInit {
   navActionSubscriptions:Subscription[]=[];
   @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
 
-
+  isChecked:boolean=false;
   pageIndex:number=0;
 
   constructor(public dialog: MatDialog,
@@ -128,15 +128,13 @@ export class ContactsMobileViewComponent implements OnInit {
     this.selection.changed.subscribe(
       (res) => {
 
-        if(res.source.selected.length  > 0 && !this.dynamicComponentRef){
-          // this.createDynamicComponent(res.source.selected);
-          // this.selectionData.emit(this.selection);
+        if(res.source.selected.length  > 0 ){
+        this.isChecked=true;
 
         }
-        else if(res.source.selected.length  === 0 && this.dynamicComponentRef){
-          // this.distroyDynamicComponent()
+        else{
+          this.isChecked=false;
 
-          // this.selectionData.emit(this.selection);
         }
         if (this.dynamicComponentRef && res.source.selected.length  > 0 ) {
           // this.dynamicComponentRef.instance.selectedItemsCount = res.source.selected.length;
@@ -146,7 +144,10 @@ export class ContactsMobileViewComponent implements OnInit {
 
   }
 
+  getWidth(element: HTMLElement) {
 
+    return `${element.clientWidth}px`;
+ }
   
   // Modify your existing method to handle selected row logic
   selectedRow(event: Event, element: any) {
@@ -166,7 +167,7 @@ export class ContactsMobileViewComponent implements OnInit {
     const componentRef = this.dynamicComponentContainer.createComponent(componentFactory);
     const navActionsComponentInstance: NavActionsComponent = componentRef.instance;
     navActionsComponentInstance.selectedItems = selectedContacts;
-    navActionsComponentInstance.componentName = 'contacts';
+    navActionsComponentInstance.componentName =this.isCanceled? 'canceledContacts' : 'contacts';
 
     // Assign the componentRef to this.dynamicComponentRef
     this.dynamicComponentRef = componentRef;

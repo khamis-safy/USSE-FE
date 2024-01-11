@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 import { ToasterServices } from '../us-toaster/us-toaster.component';
 import { Subscription } from 'rxjs';
+import { UnCancelContactsComponent } from 'src/app/pages/manage-contacts/components/contacts/unCancelContacts/unCancelContacts.component';
 
 @Component({
   selector: 'app-nav-actions',
@@ -34,7 +35,15 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
     if(this.componentName=='contacts'){
      this.showContactsMenueItems()
     }
+    if(this.componentName=='canceledContacts'){
+      this.showCanceledContactsMenueItems()
+
+    }
     
+  }
+  showCanceledContactsMenueItems(){
+    this.menuItems=[
+      {name: 'UnCancel', function: () => this.openUnCancelContactsModal()}]
   }
   showContactsMenueItems(){
     this.menuItems = [
@@ -112,6 +121,46 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
 
       }
 
+
+    });
+  }
+  openUnCancelContactsModal(){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='50vh';
+    dialogConfig.width='100vw';
+    dialogConfig.minHeight='428';
+    dialogConfig.maxWidth='100vw';
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    dialogConfig.data =
+    {
+      contactsData: {contacts:this.selectedItems}
+    }
+
+
+    const dialogRef = this.dialog.open(UnCancelContactsComponent,dialogConfig);
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.updateData.emit(true)
+
+        // this.contacts.canceledContacts=result.data;
+        // if(result.errors == 'noErrors'){
+        //   this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+        //   this.contacts.getContacts("" ,true);
+          
+        //   this.contacts.unCancelSnackBar();
+        // }
+        // else{
+        //   this.openRequestStateModal(result ,'unCancelContacts');
+        // }
+
+     
+
+      }
+
+      // this.contacts.selection.clear();
 
     });
   }

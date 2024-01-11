@@ -12,12 +12,13 @@ import { Contacts } from '../../contacts';
 import { AddContactComponent } from './addContact/addContact.component';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, fromEvent, map } from 'rxjs';
+import { Subject, Subscription, fromEvent, map, takeUntil } from 'rxjs';
 import { CONTACTSHEADER } from '../../constants/constants';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { TranslationService } from 'src/app/shared/services/translation.service';
 import { AdditonalParamsComponent } from './additonalParams/additonalParams.component';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
 
@@ -58,14 +59,18 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   notFound: boolean=false;
   display: number;
   pageNum:number;
-
+  isSmallScreen: boolean = false;
+  showComponent1 = true;
+  showComponent2 = false;
+  destroy$: Subject<void> = new Subject<void>();
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
     private authService:AuthService,
-    private translationService:TranslationService
+    private translationService:TranslationService,
+    private breakpointObserver: BreakpointObserver
   ) {
     this.display=listService.getUpdatedDisplayNumber()
     this.pageNum=this.listService.pageNum;
@@ -78,12 +83,22 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
     @Input('isUnsubscribe') isUnsubscribe = false;
 
   ngOnInit() {
+    this.breakpointObserver.observe(['(max-width: 768px)'])
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(result => {
+      this.isSmallScreen = result.matches;
+      if(!this.isSmallScreen){
+        this.selection.clear()
+        this.getContacts();
+
+      }
+    });
+  
     if(!this.canEdit){
       this.displayedColumns = ['Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
 
     }
 
-    this.getContacts();
     this.columns=new FormControl(this.displayedColumns)
 
     this.selection.changed.subscribe(
@@ -193,7 +208,10 @@ unCancelSnackBar(){
           }
       }
       else{
-        this.paginator.pageIndex=this.pageNum
+        if(this.paginator){
+          this.paginator.pageIndex=this.pageNum
+
+        }
         this.notFound=false;
 
         this.contactsCount(isCanceledContacts);
@@ -402,6 +420,8 @@ showAdditionalParams(contacts,length){
   }
 }
 ngOnDestroy(){
+  this.destroy$.next();
+  this.destroy$.complete();
   this.selection.clear();
 
   this.subscribtions.map(e=>e.unsubscribe());

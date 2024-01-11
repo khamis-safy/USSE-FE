@@ -2117,7 +2117,9 @@ color: var(--clr-primary-800) !important;
 }
 ///////////////////////////////////////////////////////////////////////
 .small-screen-view{
-  
+  .input-search-containter {
+    width: 60% !important;
+  }
   .mat-mdc-form-field {
     width: 106px !important;
     height: 39px !important;
@@ -2312,4 +2314,27 @@ section.component-container {
     border-radius: 16px !important;
 
 }
+}
+.operation-menu{
+  span{
+    font-size: 10px !important;
+  }
+  button{
+      span{
+          font-size: 12px !important;
+          font-weight: 500 !important;
+      }
+  }
+}
+.button-menu-item{
+  width: 138px !important;
+  span{
+    font-size: 10px !important;
+    font-weight: 500 !important;
+
+}
+}
+button.mat-mdc-menu-item.mat-mdc-focus-indicator.mdc-list-item.button-menu-item{
+  min-height: 30px !important;
+
 }

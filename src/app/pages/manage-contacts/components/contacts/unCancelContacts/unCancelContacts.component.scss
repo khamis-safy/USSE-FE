@@ -1,0 +1,50 @@
+p{
+    line-height: 1.9;
+    font-size: 28px;
+    font-weight: 500;
+    width: 80%;
+    min-width: 460px;
+
+    margin: auto;
+}
+@media(max-width:600px){
+    .modal-footer{
+      background:unset !important ;
+      height: 43% !important;
+  
+    }
+    .content{
+      height: 43% !important;
+      span{
+        font-size: 24px !important;
+      }
+  
+    }
+    .modal-header-icon{
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      .close-icon {
+        width: 58px !important ;
+        height: 58px !important ;
+          mat-icon {
+            height: 100%  !important;
+            width: 100%  !important;
+            font-size: 47px  !important;
+            display: flex  !important;
+            justify-content: center  !important;
+            align-items: center !important;
+            }
+      }
+  
+    }
+  p{
+    font-size: 24px !important;
+    min-width: unset !important;
+
+    }
+    section{
+      padding-block: 40px;
+    }
+  
+  }
