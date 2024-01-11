@@ -1,6 +1,6 @@
 
   
-  <div class="d-flex align-items-center mb-3">
+  <div class="d-flex align-items-center justify-content-between mb-3" >
 
     <div class="d-flex position-relative row m-0 input-search-containter" >
       <div class="col-12 col-lg-4 p-0 w-100" >
@@ -18,7 +18,17 @@
       </div>
     
     </div>
-  
+    <us-button
+    *ngIf="!isChecked && canEdit"
+    [label]="'ADD_LIST' | translate"
+    [matIcon]="'add'"
+    [fill]="true"
+    [size]="'md'"
+    [loading]="false"
+    [disabled]="false"
+    [appearance]="'primary'"
+    (clicked)="openAddOrUpdateList()"
+  ></us-button>
 
 
   
@@ -91,7 +101,7 @@
         <div class="row row-item" *ngIf="canEdit">
           <div class="col row-header">{{ 'ACTION_COLUMN' | translate }}</div>
           <div class="col">
-            <div class="d-flex align-items-center pointer text-primary-800" (click)="openEditModal(element); cellClick=true">
+            <div class="d-flex align-items-center pointer text-primary-800" (click)="openAddOrUpdateList(element); cellClick=true">
               <mat-icon class="mat-icon" color="primary">edit</mat-icon>
               <span class="txt-sm edit">{{ 'EDIT_ACTION' | translate }}</span>
             </div>

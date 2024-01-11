@@ -413,15 +413,18 @@ this.subscribtions.push(sub2)
   }
   onRowClick(row:any){}
 
-  openEditModal(data?){
+  addOrUpdateContact(data?){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='88vh';
+    dialogConfig.height='75vh';
     dialogConfig.width='45vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='833px';
+    dialogConfig.minWidth='100%';
     dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    if(data){
+      dialogConfig.data= {contacts:data,listDetails:false};
 
-    dialogConfig.data= {contacts:data,listDetails:false};
+    }
     const dialogRef = this.dialog.open(AddContactComponent,dialogConfig);
     this.selection.clear();
     dialogRef.afterClosed().subscribe(result => {

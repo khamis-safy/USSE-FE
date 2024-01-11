@@ -32,7 +32,7 @@
       
       
       <mat-menu #operations="matMenu">
-        <button mat-menu-item class="button-menu-item">
+        <button mat-menu-item class="button-menu-item" (click)="addOrUpdateContact()">
           <div class="d-flex align-items-center gap-1 w-100">
             <mat-icon style="margin-inline: 0;
             font-size: 19px;
@@ -186,7 +186,7 @@
         <div class="row row-item "  *ngIf="!isCanceled && canEdit && displayedColumns.includes('action')">
           <div class="col row-header">{{ 'ACTION' | translate }}</div>
           <div class="col">
-            <div class="d-flex align-items-center pointer  text-primary-800" (click)="openEditModal(element); cellClick=true">
+            <div class="d-flex align-items-center pointer  text-primary-800" (click)="addOrUpdateContact(element); cellClick=true">
               <mat-icon class="mat-icon" color="primary">edit</mat-icon>
               <span class="txt-sm edit">{{ 'EDIT' | translate }}</span>
             </div>

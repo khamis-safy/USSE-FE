@@ -134,3 +134,28 @@ tr {
   border-color: transparent !important;
 
 }
+@media only screen and (max-width: 768px) {
+.additional{
+  padding: 10px 0 !important;
+  margin: 0 !important;}
+th{
+  font-size: 12px !important;
+}
+.table>:not(caption)>*>* {
+  padding: 5px 2px !important;
+}
+.remove{
+ img {
+  width: 12px !important;
+}}
+table{
+  th,td{
+    flex:1% !important
+  }
+}
+table{
+  th.main-info,td.main-info{
+    flex:15% !important
+  }
+}
+}

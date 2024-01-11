@@ -1,4 +1,4 @@
-<section [ngClass]="{fullWidth , smallDropDown}"  class="us-select-container d-flex flex-lg-row flex-column align-items-center flex-nowrap gap-lg-4" >
+<section [ngClass]="{fullWidth , smallDropDown}"  class="us-select-container d-flex align-items-center flex-nowrap gap-lg-4" >
   <div class=" label-widget w-25 " [ngClass]="{deviceLableGap }" *ngIf="optional || label" [style]="forFiteringOnly? 'min-width: 0' : 'min-width: 25%'">
     <label class="txt txt-sm text-nowrap d-flex" (click)="toggleDropdown()">
       <span class="text-wrap text-black txt txt-sm">{{label}}</span>

@@ -56,7 +56,7 @@ subscribtions:Subscription[]=[];
       this.display=this.listService.getUpdatedDisplayNumber();
       this.pageNum=this.listService.pageNum;
   }
-
+  isChecked:boolean=false;
   @Output() isDelete = new EventEmitter<ListData[]>;
   showsOptions:SelectOption[]=[
     {title:'10',value:10},
@@ -163,7 +163,9 @@ element.defaultExpanded = true; // Set to true or false based on your logic
     }
 }
 else{
-        this.paginator.pageIndex=this.pageNum
+  if(this.paginator){
+    this.paginator.pageIndex=this.pageNum
+  }
         this.notFound=false;
         this.getListsCount();
 
@@ -260,21 +262,21 @@ else{
   }
   onRowClick(row:any){}
 
-  openEditModal(data?){
+  openAddOrUpdateList(data?){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='85vh';
-    dialogConfig.width='35vw';
+    dialogConfig.height='76vh';
+    dialogConfig.width='100vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='465px';
-    dialogConfig.maxHeight='85vh';
-    dialogConfig.data= data;
+    dialogConfig.minWidth='100%';
     dialogConfig.disableClose = true;
+      if(data){
+        dialogConfig.data= data;
 
+      }
     const dialogRef = this.dialog.open(AddListComponent,dialogConfig);
     this.selection.clear();
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.getListsCount();
         this.getListData()
       }
     });

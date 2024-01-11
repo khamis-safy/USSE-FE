@@ -1416,7 +1416,12 @@ right: 0 !important;
       // }
     }
   .us-toaster {
-    direction: ltr !important;
+    .mat-icon{
+      left: 0 !important;
+      right: unset !important;
+    }
+  
+    direction: rtl !important;
     right: 61% !important;
     margin-right: 31px!important;
 
@@ -2236,6 +2241,9 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   display: none;
 }
 @media only screen and (max-width: 768px) {
+  .close_modal_icon{
+    width: 24px !important;
+  }
   button.mat-mdc-menu-item.mat-mdc-focus-indicator.mdc-list-item{
     min-height: 36px !important;
   }

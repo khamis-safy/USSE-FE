@@ -1,7 +1,7 @@
-<section class=" us-input d-flex flex-column flex-lg-row gap-lg-4 " [ngClass]="{'align-items-center': !isTextArea }">
+<section class=" us-input d-flex gap-lg-4 " [ngClass]="{'align-items-center': !isTextArea }">
   <!-- Label & optional indicator -->
   <div
-    class="label-widget text-start w-25 d-none d-lg-block input-label"
+    class="label-widget text-start w-25 input-label"
     *ngIf="optional || label"
     style="min-width: 25%;"
   >
@@ -21,7 +21,7 @@
     >
     <!-- <p class="optional txt txt-sm" *ngIf="optional">Optional</p> -->
   </div>
-  <div
+  <!-- <div
     class="label-widget text-start w-100 d-block d-lg-none"
     *ngIf="optional || label"
   >
@@ -36,7 +36,7 @@
       </ng-container>
       </label
     >
-  </div>
+  </div> -->
   <div class="w-100">
     <!-- Input container ( contains: prefix, input, suffix, icon, steppers ) -->
     <div
