@@ -7,6 +7,7 @@ import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 import { ToasterServices } from '../us-toaster/us-toaster.component';
 import { Subscription } from 'rxjs';
 import { UnCancelContactsComponent } from 'src/app/pages/manage-contacts/components/contacts/unCancelContacts/unCancelContacts.component';
+import { ContactListsComponent } from 'src/app/pages/manage-contacts/components/contacts/contactLists/contactLists.component';
 
 @Component({
   selector: 'app-nav-actions',
@@ -22,14 +23,14 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
   @Output() selectAllEvent = new EventEmitter<boolean>();
   @Output() deselectAllEvent = new EventEmitter<boolean>();
   @Output() updateData = new EventEmitter<boolean>(); 
-
-  menuItems: { name: string; function: () => void }[] ;
+  openedDialogs:any=[];
+  showExportOptions:boolean=false;
+  menuItems: { name: string; function?: () => void ,submenu?:any }[] ;
   constructor(public dialog: MatDialog,
     private  toaster: ToasterServices,
     private listService:ManageContactsService,
     private authService:AuthService,
     private translate:TranslateService,) { }
- 
  
   ngOnInit() {
     if(this.componentName=='contacts'){
@@ -39,7 +40,16 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
       this.showCanceledContactsMenueItems()
 
     }
-    
+    if(this.componentName=='lists'){
+      this.showListsMenueItems()
+
+    }
+  }
+  showListsMenueItems(){
+    this.menuItems = [
+      { name: 'Select_All', function: () => this.selectAll() },
+      { name: 'delete', function: () => this.openDeleteModal()}
+    ];
   }
   showCanceledContactsMenueItems(){
     this.menuItems=[
@@ -49,29 +59,89 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
     this.menuItems = [
       { name: 'Select_All', function: () => this.selectAll() },
       { name: 'Remove_Lists', function: () => this.removeLists() },
-      { name: 'delete', function: () => this.openDeleteModal()}
+      { name: 'delete', function: () => this.openDeleteModal()},
+      { name: 'ADD_TO_LISTS', function: () => this.addContactToList()},
+      { name: 'EXPORT_SELECTED'}
     ];
+
+  }
+  exportSelectedContactsAs(fileType){
+    let exporedContacts=this.selectedItems.map((contact)=>{
+      return{
+        name: contact.name,
+        mobileNumber: contact.mobileNumber,
+   
+      }
+    })
+    this.listService.exportSelectedContacts(exporedContacts,fileType).subscribe(
+      (res)=>{
+        this.listService.exportFileData(res,fileType);
+        this.deselectAllEvent.emit(true)
+      },
+      (err)=>{
+      }
+    )
   }
   selectAll(){
     this.selectAllEvent.emit(true)
-    this.menuItems=[
-      { name: 'Remove_Lists', function: () => this.removeLists() },
-      {name: 'delete', function: () => this.deleteAll()}]
+    if(this.componentName== 'contacts'){
+      this.menuItems=[
+        { name: 'Remove_Lists', function: () => this.removeLists() },
+        {name: 'delete', function: () => this.openDeleteModal()},
+        { name: 'ADD_TO_LISTS', function: () => this.addContactToList()},
+        { name: 'EXPORT_SELECTED'}]
+        
+    }
+    if(this.componentName== 'lists')
+    {
+      this.menuItems=[
+        {name: 'delete', function: () => this.openDeleteModal()}]
+    }
   }
 
-  deleteAll(){
-    if(this.componentName== 'contacts')
-    {
-      this.openDeleteConModal();
-    }
-  }
+addContactToList(){
+  const dialogConfig=new MatDialogConfig();
+  dialogConfig.height='75vh';
+  dialogConfig.width='100%';
+  dialogConfig.maxWidth='100%';
+  dialogConfig.minWidth='100%';
+  dialogConfig.maxHeight='85vh';
+  dialogConfig.minHeight='470px'
+  dialogConfig.disableClose = true;
+  dialogConfig.panelClass = 'custom-mat-dialog-container';
+
+  dialogConfig.data = {contacts:this.selectedItems , listDetails:false};
+  const dialogRef = this.dialog.open(ContactListsComponent,dialogConfig);
+
+
+    let sub1=  dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        
+        this.updateData.emit(true)
+
+      }
+
+
+    });
+    this.subscriptions.push(sub1)
+    this.openedDialogs.push(dialogRef)
+    // dialogRef.afterClosed().subscribe(result => {
+    // if(result){
+    //   if(result == 'noErrors'){
+    //     this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+    //     this.contacts.getContacts();
+    //   }
+    //   else{
+    //     this.openRequestStateModal(result ,'addContactsToLists');
+    //   }
+
+    // }
+    // this.contacts.selection.clear();
+
+  
+// });
+}
   openDeleteModal(){
-    if(this.componentName== 'contacts')
-    {
-      this.openDeleteConModal();
-    }
-  }
-  openDeleteConModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='60vh';
     dialogConfig.width='100vw';
@@ -79,11 +149,19 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
     dialogConfig.maxWidth='100vw';
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
-
-    dialogConfig.data =
+    if(this.componentName== 'contacts')
     {
-      contactsData: {contacts:this.selectedItems,remove:false}
+      dialogConfig.data =
+      {
+        contactsData: {contacts:this.selectedItems,remove:false}
+      }
     }
+    if(this.componentName== 'lists')
+    {
+      dialogConfig.data = {
+        listsData:{lists:this.selectedItems}
+      };
+    }   
 
 
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
@@ -99,8 +177,11 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
 
     });
     this.subscriptions.push(sub1)
-  }
+    this.openedDialogs.push(dialogRef)
 
+   
+  }
+ 
   removeLists(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='60vh';
@@ -123,13 +204,15 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
 
 
     });
+    this.openedDialogs.push(dialogRef)
+
   }
   openUnCancelContactsModal(){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='50vh';
-    dialogConfig.width='100vw';
-    dialogConfig.minHeight='428';
-    dialogConfig.maxWidth='100vw';
+    dialogConfig.height='75vh';
+    dialogConfig.width='100%';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='100%';
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.data =
@@ -163,11 +246,18 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
       // this.contacts.selection.clear();
 
     });
+    this.openedDialogs.push(dialogRef)
+
   }
   onClose(){
     this.deselectAllEvent.emit(true)
   }
   ngOnDestroy() {
+    this.openedDialogs.forEach((dialog)=>{
+      if(dialog){
+        dialog.close();
+      }
+    })
   this.subscriptions.map((sub)=>sub.unsubscribe())
   }
 }

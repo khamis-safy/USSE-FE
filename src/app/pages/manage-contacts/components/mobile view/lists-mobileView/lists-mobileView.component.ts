@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -16,6 +16,7 @@ import { ListData } from '../../../list-data';
 import { ManageContactsService } from '../../../manage-contacts.service';
 import { AddListComponent } from '../../lists/addList/addList.component';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
+import { NavActionsComponent } from 'src/app/shared/components/nav-actions/nav-actions.component';
 
 @Component({
   selector: 'app-lists-mobileView',
@@ -24,11 +25,11 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 })
 export class ListsMobileViewComponent implements OnInit {
   tableData:any=[]
-length:number=0;
-active:boolean=false;
-numRows;
-loading:boolean=true;
-subscribtions:Subscription[]=[];
+  length:number=0;
+  active:boolean=false;
+  numRows;
+  loading:boolean=true;
+  subscribtions:Subscription[]=[];
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef;
   noData: boolean=false;
@@ -46,18 +47,23 @@ subscribtions:Subscription[]=[];
   cellClick:boolean;
   display: number;
   pageNum:number;
+  openedDialogs:any=[];
+  dynamicComponentRef: ComponentRef<NavActionsComponent>;
+  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
+  navActionSubscriptions:Subscription[]=[];
+
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
     private authService:AuthService,
-    private router:Router) {
+    private router:Router,
+    private componentFactoryResolver: ComponentFactoryResolver) {
       this.display=this.listService.getUpdatedDisplayNumber();
       this.pageNum=this.listService.pageNum;
   }
   isChecked:boolean=false;
-  @Output() isDelete = new EventEmitter<ListData[]>;
   showsOptions:SelectOption[]=[
     {title:'10',value:10},
     {title:'50',value:50},
@@ -92,10 +98,10 @@ subscribtions:Subscription[]=[];
     this.selection.changed.subscribe(
       (res) => {
         if(res.source.selected.length){
-          this.isDelete.emit(res.source.selected)
+          this.isChecked=true
         }
         else{
-          this.isDelete.emit()
+          this.isChecked=false;
         }
       });
   }
@@ -179,7 +185,72 @@ else{
       )
       this.subscribtions.push(sub2)
 }
+createDynamicComponent(selectedLists) {
+  const componentFactory = this.componentFactoryResolver.resolveComponentFactory(NavActionsComponent);
+  this.dynamicComponentContainer.clear();
 
+  const componentRef = this.dynamicComponentContainer.createComponent(componentFactory);
+  const navActionsComponentInstance: NavActionsComponent = componentRef.instance;
+  navActionsComponentInstance.selectedItems = selectedLists;
+  navActionsComponentInstance.componentName ='lists';
+
+  // Assign the componentRef to this.dynamicComponentRef
+  this.dynamicComponentRef = componentRef;
+
+  // Pass selected row data to the dynamic component
+  let sub1 = navActionsComponentInstance.selectAllEvent.subscribe(() => {
+    // Logic to handle "Select All" event
+    this.selectAllRows();
+  });
+  let sub2 = navActionsComponentInstance.deselectAllEvent.subscribe((res) => {
+   if(res){
+    this.distroyDynamicComponent();
+    // this.selectionData.emit(this.selection);
+  }
+  });
+  let sub3 =  navActionsComponentInstance.updateData.subscribe((res) => {
+    if(res){
+      this.distroyDynamicComponent();
+      this.getListData();
+    }
+  });
+  this.navActionSubscriptions.push(sub1,sub2,sub3)
+
+}
+distroyDynamicComponent(){
+this.selection.clear();
+this.dynamicComponentContainer.clear();
+this.dynamicComponentRef = null;
+this.navActionSubscriptions.map((sub)=>sub.unsubscribe());
+}
+onCheckboxChange(event,element: any) {
+if(event.checked == false && this.dynamicComponentRef){
+  this.dynamicComponentRef.instance.showListsMenueItems();
+}
+if(this.selection.selected.length  > 0 && !this.dynamicComponentRef){
+  this.createDynamicComponent(this.selection.selected);
+  this.dynamicComponentRef.instance.selectedItemsCount = this.selection.selected.length;
+
+  // this.selectionData.emit(this.selection);
+
+}
+else if(this.selection.selected.length  === 0 && this.dynamicComponentRef){
+  this.distroyDynamicComponent()
+
+  // this.selectionData.emit(this.selection);
+}
+if (this.dynamicComponentRef && this.selection.selected.length  > 0 ) {
+  this.dynamicComponentRef.instance.selectedItems=this.selection.selected;
+  this.dynamicComponentRef.instance.selectedItemsCount = this.selection.selected.length;
+}
+}
+selectAllRows(){
+  this.selection.select(...this.tableData);
+  if (this.dynamicComponentRef && this.selection.selected.length  > 0 ) {
+    this.dynamicComponentRef.instance.selectedItems=this.selection.selected;
+    this.dynamicComponentRef.instance.selectedItemsCount = this.selection.selected.length;
+  }
+}
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -280,6 +351,7 @@ else{
         this.getListData()
       }
     });
+    this.openedDialogs.push(dialogRef)
 
   }
   onPageChange(event){
@@ -316,13 +388,18 @@ else{
 
   }
   ngOnDestroy(){
+    this.openedDialogs.forEach((dialog)=>{
+      if(dialog){
+        dialog.close();
+      }
+    })
     this.selection.clear();
-
     this.subscribtions.map(e=>e.unsubscribe());
     this.dataSource.data=[];
   }
 
   navigateTo(id:string){
+  
     if(!this.cellClick){
     this.router.navigateByUrl(`list/${id}`)
     }

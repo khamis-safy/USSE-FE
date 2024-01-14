@@ -40,12 +40,10 @@ export class ContactsMobileViewComponent implements OnInit {
   cellClick:boolean=false;
   tableData:any=[]
   @Input() isCanceled:boolean;
-  @Output() isDelete = new EventEmitter<Contacts[]>;
-  @Output() selectionData = new EventEmitter<any>;
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef
   @ViewChild(MatSort) sort: MatSort;
-
+  openedDialogs:any=[];
 @Input() canEdit:boolean;
   listTableData:ListData[]=[]
   deletedContacts:string[]=[];
@@ -59,8 +57,7 @@ export class ContactsMobileViewComponent implements OnInit {
   @Input() listId:string="";
   dynamicComponentRef: ComponentRef<NavActionsComponent>;
 
-  WrapperScrollLeft =0;
-  WrapperOffsetWidth =250;
+ 
   isSearch: boolean;
   noData: boolean=false;
   notFound: boolean=false;
@@ -136,9 +133,7 @@ export class ContactsMobileViewComponent implements OnInit {
           this.isChecked=false;
 
         }
-        if (this.dynamicComponentRef && res.source.selected.length  > 0 ) {
-          // this.dynamicComponentRef.instance.selectedItemsCount = res.source.selected.length;
-        }
+     
       
       });
 
@@ -334,8 +329,8 @@ unCancelSnackBar(){
         this.loading = false;
         this.length=0;
 
-       })
-       this.subscribtions.push(sub1)
+      })
+      this.subscribtions.push(sub1)
   }
 
 
@@ -434,7 +429,7 @@ this.subscribtions.push(sub2)
 
 
     });
-
+this.openedDialogs.push(dialogRef)
   }
   onPageChange(event){
     this.pageIndex=event.pageIndex;
@@ -442,9 +437,7 @@ this.subscribtions.push(sub2)
     this.getContacts();
 
   }
-  changePageSize(pageSize){
 
-  }
   onSearch(event:any){
     this.selection.clear();
 
@@ -452,48 +445,18 @@ this.subscribtions.push(sub2)
   }
 
 
-  scrollRight(element, wrapper: HTMLElement) {
-    element.hideLeftArrow = false;
-  element.WrapperOffsetWidth = wrapper.offsetWidth;
+  exportAllAs(fileType){
+    this.listService.exportAllContacts(fileType).subscribe(
+      (res)=>{
+        this.listService.exportFileData(res,fileType);
 
-  // Calculate the total width of list items dynamically
-  const totalListWidth = Array.from(wrapper.querySelectorAll('.listName')).reduce((acc, listItem) => {
-    // Calculate the width of each list item and add it to the accumulator
-    const listItemWidth = listItem.clientWidth;
-    return acc + listItemWidth;
-  }, 0);
+    },
+      (err)=>{
+      }
 
-  
-
-  // Update hideRightArrow based on the scroll position
-  if (this.WrapperScrollLeft > totalListWidth - element.WrapperOffsetWidth) {
-    element.hideRightArrow = true;
-  } else {
-    element.hideRightArrow = false;
+    )
   }
-  this.WrapperScrollLeft = wrapper.scrollLeft + 100;
-  // Scroll to the calculated position
-  wrapper.scrollTo({
-    left: this.WrapperScrollLeft,
-    behavior: "smooth",
-  });
-  }
-  scrollLeft(element , wrapper){
-    element.hideRightArrow = false;
-    this.WrapperScrollLeft =wrapper.scrollLeft-100
-    if(this.WrapperScrollLeft<=5){
-      this.WrapperScrollLeft =0;
-      element.hideLeftArrow=true;
-      
-    }
-    wrapper.scrollTo({
-      left: this.WrapperScrollLeft,
-      behavior: "smooth",
-    })
-    
 
-
-}
 changeColumns(event){
   if(this.canEdit){
 
@@ -529,7 +492,10 @@ showLists(element:Contacts){
         title:"LISTS"
       }
     });
+    this.openedDialogs.push(drawerRef)
+
   }
+  
 
 }
 showAdditionalParameters(element:Contacts){
@@ -550,11 +516,17 @@ showAdditionalParameters(element:Contacts){
         title:"Additional Parameters"
       }
     });
+    this.openedDialogs.push(drawerRef)
   }
 
 }
 
 ngOnDestroy(){
+  this.openedDialogs.forEach((dialog)=>{
+    if(dialog){
+      dialog.close();
+    }
+  })
   this.selection.clear();
 
   this.subscribtions.map(e=>e.unsubscribe());

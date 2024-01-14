@@ -19,8 +19,8 @@
       </div>
     
       <div  *ngIf="!isChecked && !isCanceled" class="operation-menu">
-        <div #operaionButton class="operation-button">
-          <button mat-button [matMenuTriggerFor]="operations" class=" text-neutral-0 bg-primary-800 rounded-3 ">
+        <div #operaionButton class="operation-button" >
+          <button mat-button [matMenuTriggerFor]="operations" style=" width: 138px;" class=" text-neutral-0 bg-primary-800 rounded-3 ">
             <div class=" d-flex align-items-center justify-content-center gap-3">
               <span>{{'Operations' | translate}}</span>
               <div class="icon">
@@ -52,7 +52,7 @@
           </div>
         
         </button>
-        <button mat-menu-item [matMenuTriggerFor]="import" class="button-menu-item">
+        <button mat-menu-item [matMenuTriggerFor]="import" class="button-menu-item" >
           <div class=" d-flex align-items-center justify-content-center gap-3">
             <img src="assets/icons/import-black.svg" alt="" style="width:10px;"/>
             <span>{{'IMPORT_FILE' | translate}}</span>
@@ -63,7 +63,7 @@
       </mat-menu>
       
       <mat-menu #exportAll="matMenu">
-        <button mat-menu-item >
+        <button mat-menu-item (click)="exportAllAs('excel')">
           <div class="d-flex align-items-center gap-2">
             <img style="width: 10px;" src="assets/icons/Excel.svg" alt="" /> 
             <span style="font-size: 10px !important;font-weight: 500;">Excel Sheet</span>
@@ -71,7 +71,7 @@
           
         </button>
         <button mat-menu-item >
-          <div class="d-flex align-items-center gap-2">
+          <div class="d-flex align-items-center gap-2" (click)="exportAllAs('vcf')">
             <img style="width: 10px;" src="assets/icons/vcf.svg" alt="" />
             <span style="font-size: 10px !important;font-weight: 500;">vcf file</span>
           </div>
@@ -139,7 +139,6 @@
     </div>
   
     <mat-accordion class="table-mobile-view " multi>
-      <!-- Repeat the following code for each data item in your dataSource -->
       <mat-expansion-panel  *ngFor="let element of tableData" 
       [expanded]="false" 
       [ngClass]="{'active-row':selection.isSelected(element)}">
@@ -158,7 +157,6 @@
           </div>
         </mat-expansion-panel-header>
     
-        <!-- Replace the following code with your data rows -->
         <div class="row row-item" *ngIf="displayedColumns.includes('Mobile')">
           <div class="col row-header">{{ 'MOBILE' | translate }}</div>
           <div class="col">{{element.mobileNumber}}</div>

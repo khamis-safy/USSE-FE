@@ -60,8 +60,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   display: number;
   pageNum:number;
   isSmallScreen: boolean = false;
-  showComponent1 = true;
-  showComponent2 = false;
+
   destroy$: Subject<void> = new Subject<void>();
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,

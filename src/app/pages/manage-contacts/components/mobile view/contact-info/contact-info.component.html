@@ -6,7 +6,7 @@
 
 <div >
   <span class="title mb-2">{{title | translate}}</span>
-  <div class="d-flex align-items-center gap-3 flex-wrap" style="max-height: 85px; overflow: auto;">
+  <div class="d-flex align-items-center gap-2 flex-wrap" style="max-height: 85px; overflow: auto;">
     <ng-container *ngIf="additionalParameters">
       <span class="tag-info" *ngFor="let item of additionalParameters">{{item.name}} : {{item.value}}</span>
     </ng-container>

@@ -69,14 +69,13 @@
     </div>
 
     <mat-accordion class="table-mobile-view" multi>
-      <!-- Repeat the following code for each data item in your dataSource -->
       <mat-expansion-panel *ngFor="let element of tableData" 
       [expanded]="false" 
       [ngClass]="{'active-row':selection.isSelected(element)}">
         <mat-expansion-panel-header>
           <mat-checkbox color="ch-color"
-                        (click)="$event.stopPropagation() && selectedRow($event)"
-                        (change)="$event ? selection.toggle(element) : null"
+                        (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(element) : null; onCheckboxChange($event,element)"
                         [checked]="selection.isSelected(element)"
                         [aria-label]="checkboxLabel(element)">
           </mat-checkbox>
@@ -87,7 +86,6 @@
           </div>
         </mat-expansion-panel-header>
     
-        <!-- Replace the following code with your data rows -->
         <div class="row row-item" *ngIf=" displayedColumns.includes('Create At')">
           <div class="col row-header" >{{ 'CREATE_AT' | translate }}</div>
           <div class="col">{{ element.createdAt | toLocalTime }}</div>
@@ -129,3 +127,4 @@
     <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA_TO_SHOW' | translate }}</span>
   </div>
 </ng-container>
+<div  #dynamicComponentContainer></div>
