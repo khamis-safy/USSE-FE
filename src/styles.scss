@@ -1319,7 +1319,12 @@ mat-expansion-panel-body{
     min-height: 60vh;
 
   }
-.rtl{
+.rtl{ 
+  .small-screen-view .mat-mdc-form-field.sorting-dropdown 
+    {
+      max-width: 115px!important;
+  
+  }  
   .steps-container{
     width: 90% !important;
     }
@@ -2126,12 +2131,13 @@ color: var(--clr-primary-800) !important;
     width: 60% !important;
   }
   .mat-mdc-form-field {
-    width: 106px !important;
+    width: 100% !important;
+    max-width: 106px !important;
     height: 39px !important;
   }
   .mat-mdc-text-field-wrapper {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
   }
   
   .table-mobile-view{
@@ -2241,6 +2247,12 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   display: none;
 }
 @media only screen and (max-width: 768px) {
+  mat-icon.mat-icon.notranslate.material-icons.mat-ligature-font.mat-icon-no-color.ng-star-inserted {
+    font-size: 18px  !important;
+    display: flex  !important;
+    justify-content: center  !important;
+    align-items: center  !important;
+}
   .close_modal_icon{
     width: 24px !important;
   }
@@ -2344,5 +2356,44 @@ section.component-container {
 }
 button.mat-mdc-menu-item.mat-mdc-focus-indicator.mdc-list-item.button-menu-item{
   min-height: 30px !important;
+
+}
+.example-pseudo-checkbox {
+  margin-right: 8px;
+  color: green;
+}
+mat-option.sort_by_option {
+  mat-pseudo-checkbox.mat-pseudo-checkbox{
+    display: none !important;
+  }
+  mat-icon.mat-icon.notranslate.material-icons.mat-ligature-font.mat-icon-no-color {
+    color: var(--clr-primary-800);
+    margin-inline: 0px !important;
+  }
+  span.mdc-list-item__primary-text {
+    margin: 0 !important;
+    width: 100%  !important;
+  }
+}
+.sort_by_option.mat-mdc-option:hover:not(.mdc-list-item--disabled), .mat-mdc-option:focus:not(.mdc-list-item--disabled), .mat-mdc-option.mat-mdc-option-active, .mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(.mdc-list-item--disabled) {
+  background-color: unset !important;
+}
+.sorting-dropdown{
+  .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+    padding-top: 6px !important;
+}
+.mat-mdc-select-placeholder::before,
+span.mat-mdc-select-value-text::before {
+  content: url('assets/icons/sorting.svg'); /* Replace with the actual path to your image */
+}
+
+.mat-mdc-select-placeholder,
+span.mat-mdc-select-value-text {
+  color: #292A32 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  display: flex !important;
+  gap: 7px !important;
+}
 
 }

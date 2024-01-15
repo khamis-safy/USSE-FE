@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -51,7 +51,7 @@ export class ListsMobileViewComponent implements OnInit {
   dynamicComponentRef: ComponentRef<NavActionsComponent>;
   @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
   navActionSubscriptions:Subscription[]=[];
-
+  orderedBy: string='';
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -77,6 +77,15 @@ export class ListsMobileViewComponent implements OnInit {
     showsSelectedOptions:this.showsSelectedOptions,
    
   });
+
+  selectedSortingName:string='name';
+  selectedSortingType:string='ASC'
+
+  topSortingOptions:any=[{opitonName:'name' ,lable:`${this.translate.instant('nameLabel')}`, isSelected:true} 
+                          , {opitonName:'createdAt' , lable:`${this.translate.instant('CREATE_AT')}`,isSelected:false}]
+  
+bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('ASCENDING')}`, isSelected:true} ,
+                            {opitonName:'DEC' , lable:`${this.translate.instant('DESCENDING')}`,isSelected:false}]
 
   ngOnInit() {
     this.form.patchValue({
@@ -105,6 +114,24 @@ export class ListsMobileViewComponent implements OnInit {
         }
       });
   }
+
+  toggleTopSortingSelect(){
+    this.topSortingOptions.forEach((option:{opitonName:string,isSelected:boolean })=>option.isSelected=!option.isSelected);
+    this.selectedSortingName= this.topSortingOptions.find((option)=>option.isSelected).opitonName;
+    this.changeSorting(this.selectedSortingName , this.selectedSortingType)
+  }
+toggleBottomSortingSelect(){
+  this.bottomSortingOptions.forEach((option:{opitonName:string,isSelected:boolean })=>option.isSelected=!option.isSelected);
+  this.selectedSortingType= this.bottomSortingOptions.find((option)=>option.isSelected).opitonName;
+  this.changeSorting(this.selectedSortingName , this.selectedSortingType)
+
+}
+changeSorting(selectedSortingName ,selectedSortingType){
+let sorting=`${selectedSortingName}${selectedSortingType}`;
+this.orderedBy=sorting;
+this.selection.clear();
+this.getListData();
+}
 
   ngAfterViewInit() {
   }
@@ -139,7 +166,7 @@ getListData(searchVal?){
 
   let shows=this.listService.display;
   let email=this.authService.getUserInfo()?.email;
-  let orderedBy=this.listService.orderedBy;
+  let orderedBy=this.orderedBy;
   let search=searchVal ? searchVal : "";
   let pageNumber=searchVal?0:this.pageNum
 

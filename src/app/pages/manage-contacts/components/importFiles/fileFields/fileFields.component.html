@@ -1,6 +1,6 @@
 <section class="d-flex flex-column py-4 px-3 mx-auto gap-3 h-100" style="width: 90%;">
   <!-- modal header -->
-  <div class="d-flex justify-content-between align-items-center mb-4 " style="height: 10%;">
+  <div class="d-flex justify-content-between align-items-center mb-4 modal-header" style="height: 10%;">
     <p class="txt-lg ms-4">{{ 'FIELDS_IN_FILE' | translate }}</p>
     <p class="txt-lg me-5 pe-5">{{ 'FIELDS_IN_Qweira' | translate }}</p>
   </div>
@@ -8,7 +8,7 @@
   <div class="modal-body overflow-auto p-4 w-100"  style="height: 80%;">
     <ng-container *ngFor="let item of rowsData">
       <div class="d-flex w-100 justify-content-between mb-3 align-items-center">
-        <span class="txt-md" style="font-weight: 500; width: 20%;">{{item?.columnName}}</span>
+        <span class="txt-md field_name" style="font-weight: 500; width: 20%;">{{item?.columnName}}</span>
         <div class="switcher d-flex justify-content-between align-items-center" style="width: 20%;">
           <span class="txt-sm">{{ 'SAME_AS_FILE' | translate }}</span>
           <div  style="width:20%" class="form-check form-switch">
@@ -24,6 +24,7 @@
               [placeholder]="'CHOOSE_AN_OPTION' | translate"
               (onSelect)="onSelect($event,item)"
               [enableSearch]="true"
+              [fullWidth]="true"
               [searchbarOnToggler]="true"
               [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
               [maxListItemsWithoutSearch]="5"

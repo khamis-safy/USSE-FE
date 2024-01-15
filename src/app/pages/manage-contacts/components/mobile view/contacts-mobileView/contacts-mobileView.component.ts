@@ -21,6 +21,7 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { ContactInfoComponent } from '../contact-info/contact-info.component';
 import { NavActionsComponent } from 'src/app/shared/components/nav-actions/nav-actions.component';
+import { UploadSheetComponent } from '../../importFiles/uploadSheet/uploadSheet.component';
 export interface ContactInfoContent {
   additionalParameters: { name: string; value: string }[];
   lists:string[];
@@ -82,6 +83,15 @@ export class ContactsMobileViewComponent implements OnInit {
 
   isChecked:boolean=false;
   pageIndex:number=0;
+  selectedSortOption: string;
+  selectedSortingName:string='name';
+  selectedSortingType:string='ASC'
+  orderedBy: string='';
+  topSortingOptions:any=[{opitonName:'name' ,lable:`${this.translate.instant('nameLabel')}`, isSelected:true} 
+                          , {opitonName:'createdAt' , lable:`${this.translate.instant('CREATE_AT')}`,isSelected:false}]
+  
+bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('ASCENDING')}`, isSelected:true} ,
+                            {opitonName:'DEC' , lable:`${this.translate.instant('DESCENDING')}`,isSelected:false}]
 
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
@@ -139,6 +149,23 @@ export class ContactsMobileViewComponent implements OnInit {
 
   }
 
+  toggleTopSortingSelect(){
+    this.topSortingOptions.forEach((option:{opitonName:string,isSelected:boolean })=>option.isSelected=!option.isSelected);
+    this.selectedSortingName= this.topSortingOptions.find((option)=>option.isSelected).opitonName;
+    this.changeSorting(this.selectedSortingName , this.selectedSortingType)
+  }
+toggleBottomSortingSelect(){
+  this.bottomSortingOptions.forEach((option:{opitonName:string,isSelected:boolean })=>option.isSelected=!option.isSelected);
+  this.selectedSortingType= this.bottomSortingOptions.find((option)=>option.isSelected).opitonName;
+  this.changeSorting(this.selectedSortingName , this.selectedSortingType)
+
+}
+changeSorting(selectedSortingName ,selectedSortingType){
+let sorting=`${selectedSortingName}${selectedSortingType}`;
+this.orderedBy=sorting;
+this.selection.clear();
+this.getContacts();
+}
   getWidth(element: HTMLElement) {
 
     return `${element.clientWidth}px`;
@@ -281,7 +308,7 @@ unCancelSnackBar(){
   getContacts(searchVal? ,canceled?){
   let shows=this.listService.display;
   let email=this.authService.getUserInfo()?.email;
-  let orderedBy=this.listService.orderedBy;
+  let orderedBy=this.orderedBy;
   let search=searchVal ? searchVal : "";
   let pageNumber=searchVal?0:this.pageIndex
   if(searchVal && this.paginator){
@@ -520,7 +547,39 @@ showAdditionalParameters(element:Contacts){
   }
 
 }
+openImportModal(filetype){
+  const dialogConfig=new MatDialogConfig();
+  dialogConfig.height='80vh';
+  dialogConfig.width='45vw';
+  dialogConfig.maxWidth='100%';
+  dialogConfig.minWidth='100%';
+  dialogConfig.minHeight='470px';
+  dialogConfig.disableClose = true;
+  dialogConfig.panelClass = 'custom-mat-dialog-container';
+  dialogConfig.data={filetype:filetype,mobileView:true}
 
+  const dialogRef = this.dialog.open(UploadSheetComponent,dialogConfig);
+  
+  this.selection.clear();
+  dialogRef.afterClosed().subscribe(result => {
+    if(result){
+      this.getContacts();
+      // if(result == 'noErrors'){
+      //   this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+      //   this.getContacts();
+      // }
+      // else{
+      //   this.openRequestStateModal(result ,'importContacts');
+      // }
+      
+
+
+
+    }
+
+
+  });
+}
 ngOnDestroy(){
   this.openedDialogs.forEach((dialog)=>{
     if(dialog){

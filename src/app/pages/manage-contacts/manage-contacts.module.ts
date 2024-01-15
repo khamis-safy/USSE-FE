@@ -21,13 +21,16 @@ import { UnCancelContactsComponent } from './components/contacts/unCancelContact
 import { ContactsMobileViewComponent } from './components/mobile view/contacts-mobileView/contacts-mobileView.component';
 import { ListsMobileViewComponent } from './components/mobile view/lists-mobileView/lists-mobileView.component';
 import { ContactInfoComponent } from './components/mobile view/contact-info/contact-info.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   imports: [
     CommonModule,
     ManageContactsRoutes,
     SharedModule,
-    DragZoneModule
+    DragZoneModule,
+    MatDividerModule,
+    
   ],
   declarations: [
     ManageContactsComponent,
