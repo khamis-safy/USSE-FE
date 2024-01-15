@@ -1080,7 +1080,7 @@ background-color: #C1FFCF;
   width: 129px !important;
 }
 .mat-mdc-option .mdc-list-item__primary-text {
-  font-size: 12px !important;
+  font-size: 10px !important;
 }
 .mat-primary .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full{
   background: var(--clr-primary-800) !important;
@@ -1322,7 +1322,7 @@ mat-expansion-panel-body{
 .rtl{ 
   .small-screen-view .mat-mdc-form-field.sorting-dropdown 
     {
-      max-width: 115px!important;
+      max-width: 103px!important;
   
   }  
   .steps-container{
@@ -2132,7 +2132,7 @@ color: var(--clr-primary-800) !important;
   }
   .mat-mdc-form-field {
     width: 100% !important;
-    max-width: 106px !important;
+    max-width: 103px !important;
     height: 39px !important;
   }
   .mat-mdc-text-field-wrapper {
@@ -2287,7 +2287,8 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   min-height: 35px !important;
 }
 .mat-mdc-option .mdc-list-item__primary-text {
-  font-size: 12px !important;
+  font-size: 10px !important;
+
 }
   .large-screen-view{
     display: none !important;
@@ -2392,7 +2393,7 @@ span.mat-mdc-select-value-text::before {
 .mat-mdc-select-placeholder,
 span.mat-mdc-select-value-text {
   color: #292A32 !important;
-  font-size: 12px !important;
+  font-size: 10px !important;
   font-weight: 400 !important;
   display: flex !important;
   gap: 7px !important;

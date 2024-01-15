@@ -597,8 +597,12 @@
   }
 }
 .us-select-container.smallDropDown{
+  .txt-sm {
+    font-size: 10px !important;
+}
   flex-direction: row !important;
-  gap: 3px !important;
+  gap: 8px !important;
+  max-width: 125px !important;
   .label-widget.w-25{
     min-width: unset !important;
     width: unset !important;
@@ -610,9 +614,9 @@
     }
     min-width: 3rem !important;
     width: 40% !important;
-    .toggler[_ngcontent-mft-c148] {
+    .toggler {
       height: 33px !important;
-      padding: 0px 8px !important;
+      padding: 0 4px !important;
       &.focus {
         transition: 0.2s box-shadow;
         border: unset !important;

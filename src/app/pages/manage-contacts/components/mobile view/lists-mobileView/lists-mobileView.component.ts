@@ -422,7 +422,6 @@ selectAllRows(){
     })
     this.selection.clear();
     this.subscribtions.map(e=>e.unsubscribe());
-    this.dataSource.data=[];
   }
 
   navigateTo(id:string){
