@@ -2211,6 +2211,8 @@ mat-paginator .mat-mdc-paginator-container {
 //////////////////////////////////////////////////////////////////////
 .ant-drawer-body {
 padding: 0px !important;
+overflow: hidden !important;
+
 }
 .mat-expansion-panel:not(.mat-expanded):not([aria-disabled=true]) .mat-expansion-panel-header:hover {
 background:unset !important;
