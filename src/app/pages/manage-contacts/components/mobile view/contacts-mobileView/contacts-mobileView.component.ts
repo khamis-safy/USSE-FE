@@ -22,6 +22,8 @@ import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { ContactInfoComponent } from '../contact-info/contact-info.component';
 import { NavActionsComponent } from 'src/app/shared/components/nav-actions/nav-actions.component';
 import { UploadSheetComponent } from '../../importFiles/uploadSheet/uploadSheet.component';
+import { ErrorsStatesComponent } from 'src/app/shared/components/bulkOperationModals/errorsStates/errorsStates.component';
+import { RequestStateComponent } from 'src/app/shared/components/bulkOperationModals/requestState/requestState.component';
 export interface ContactInfoContent {
   additionalParameters: { name: string; value: string }[];
   lists:string[];
@@ -39,7 +41,8 @@ export class ContactsMobileViewComponent implements OnInit {
   numRows;
   loading:boolean=true;
   cellClick:boolean=false;
-  tableData:any=[]
+  tableData:any=[];
+  selectedItems:any=[]
   @Input() isCanceled:boolean;
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef
@@ -179,6 +182,7 @@ this.getContacts();
     this.selection.select(...this.tableData);
     if (this.dynamicComponentRef && this.selection.selected.length  > 0 ) {
       this.dynamicComponentRef.instance.selectedItems=this.selection.selected;
+      this.selectedItems=this.selection.selected;
       this.dynamicComponentRef.instance.selectedItemsCount = this.selection.selected.length;
     }
   }
@@ -189,6 +193,8 @@ this.getContacts();
     const componentRef = this.dynamicComponentContainer.createComponent(componentFactory);
     const navActionsComponentInstance: NavActionsComponent = componentRef.instance;
     navActionsComponentInstance.selectedItems = selectedContacts;
+    this.selectedItems=selectedContacts;
+
     navActionsComponentInstance.componentName =this.isCanceled? 'canceledContacts' : 'contacts';
 
     // Assign the componentRef to this.dynamicComponentRef
@@ -207,11 +213,26 @@ this.getContacts();
     });
     let sub3 =  navActionsComponentInstance.updateData.subscribe((res) => {
       if(res){
-        this.distroyDynamicComponent();
         this.getContacts();
+        this.distroyDynamicComponent();
+        
       }
     });
-    this.navActionSubscriptions.push(sub1,sub2,sub3)
+    let sub4 = navActionsComponentInstance.updateCanceledData.subscribe((res)=>{
+      if(res){
+        this.getContacts('',true);
+        this.distroyDynamicComponent();
+        this.unCancelSnackBar();
+      }
+    })
+    let sub5 = navActionsComponentInstance.unDoDeleteItem.subscribe((res)=>{
+      if(res){
+        this.getContacts();
+        this.distroyDynamicComponent();
+        this.openSnackBar()
+      }
+    })
+    this.navActionSubscriptions.push(sub1,sub2,sub3,sub4,sub5)
 
   }
 distroyDynamicComponent(){
@@ -238,59 +259,11 @@ onCheckboxChange(event,element: any) {
   }
   if (this.dynamicComponentRef && this.selection.selected.length  > 0 ) {
     this.dynamicComponentRef.instance.selectedItems=this.selection.selected;
+    this.selectedItems=this.selection.selected;
+
     this.dynamicComponentRef.instance.selectedItemsCount = this.selection.selected.length;
   }
 }
-unCancelSnackBar(){
-  let message = `${this.canceledContacts.length} ${this.translate.instant('Item(s) UnCanceled')}`;
-  let action =this.translate.instant("Undo")
-  let snackBarRef=this.snackBar.open(message,action,{duration:4000});
-  snackBarRef.onAction().subscribe(()=>{
-    this.cancelContacts();
-
-  })
-}
-  openSnackBar(){
-    let message = `${this.deletedContacts.length} ${this.translate.instant('Item(s) Deleted')}`;
-    let action =this.translate.instant("Undo")
-    let snackBarRef=this.snackBar.open(message,action,{duration:4000});
-    snackBarRef.onAction().subscribe(()=>{
-      this.undoDelete();
-    })
-  }
-  cancelContacts(){
-    let email=this.authService.getUserInfo()?.email;
-    this.listService.cancelContacts(email,this.canceledContacts).subscribe(
-      (res)=>{
-
-        this.getContacts("",true);
-        this.canceledContacts=[];
-        this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
-      },
-      (err)=>{
-
-
-
-      }
-    )
-  }
-  undoDelete(){
-    let email=this.authService.getUserInfo()?.email;
-    this.listService.unDeleteContact(email,this.deletedContacts).subscribe(
-      (res)=>{
-
-        this.getContacts();
-        this.deletedContacts=[];
-        this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
-      },
-      (err)=>{
-
-
-
-      }
-    )
-
-  }
 
 
 
@@ -360,7 +333,63 @@ unCancelSnackBar(){
       this.subscribtions.push(sub1)
   }
 
-
+  unCancelSnackBar(){
+    let selectedItems = this.selectedItems.map((cont)=>cont.id)
+    let message = `${selectedItems.length} ${this.translate.instant('Item(s) UnCanceled')}`;
+    let action =this.translate.instant("Undo")
+    let snackBarRef=this.snackBar.open(message,action,{duration:4000});
+    snackBarRef.onAction().subscribe(()=>{
+      this.cancelContacts();
+  
+    })
+  }
+    openSnackBar(){
+      let selectedItems = this.selectedItems.map((cont)=>cont.id)
+      let message = `${selectedItems.length} ${this.translate.instant('Item(s) Deleted')}`;
+      let action =this.translate.instant("Undo")
+      let snackBarRef=this.snackBar.open(message,action,{duration:4000});
+      snackBarRef.onAction().subscribe(()=>{
+        this.undoDelete();
+      })
+    }
+    cancelContacts(){
+      let email=this.authService.getUserInfo()?.email;
+      let selectedItems = this.selectedItems.map((cont)=>cont.id)
+      this.listService.cancelContacts(email,selectedItems).subscribe(
+        (res)=>{
+  
+          this.getContacts("",true);
+          this.selection.clear();
+          this.selectedItems=[]
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+        },
+        (err)=>{
+  
+  
+  
+        }
+      )
+    }
+    undoDelete(){
+      let email=this.authService.getUserInfo()?.email;
+      let selectedItems = this.selectedItems.map((cont)=>cont.id)
+      this.listService.unDeleteContact(email,selectedItems).subscribe(
+        (res)=>{
+  
+          this.getContacts();
+          this.selection.clear();
+          this.selectedItems=[]
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+        },
+        (err)=>{
+  
+  
+  
+        }
+      )
+  
+    }
+  
   contactsCount(isCancel){
     let email=this.authService.getUserInfo()?.email;
     this.loading=true;
@@ -563,23 +592,58 @@ openImportModal(filetype){
   this.selection.clear();
   dialogRef.afterClosed().subscribe(result => {
     if(result){
-      this.getContacts();
-      // if(result == 'noErrors'){
-      //   this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
-      //   this.getContacts();
-      // }
-      // else{
-      //   this.openRequestStateModal(result ,'importContacts');
-      // }
-      
-
-
-
+      if(result){
+        if(result == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.getContacts();
+        }
+        else{
+          this.openRequestStateModal(result);
+        }
+      }
     }
-
-
   });
 }
+openRequestStateModal(data ){
+  const dialogConfig=new MatDialogConfig();
+  dialogConfig.height='48vh';
+  dialogConfig.width='100%';
+  dialogConfig.maxWidth='330px';
+  dialogConfig.minWidth='100%';
+  dialogConfig.minHeight='320px'
+  dialogConfig.disableClose = true;
+  dialogConfig.data=data;
+  dialogConfig.panelClass = 'custom-mat-dialog-container';
+  const dialogRef = this.dialog.open(RequestStateComponent,dialogConfig);
+  
+  dialogRef.afterClosed().subscribe(result => {
+    if(result){
+      this.openErrorsViewrModal(data )
+    }
+    else{
+      this.getContacts();
+    }
+  })
+
+  }
+  openErrorsViewrModal(result){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='430px';
+    dialogConfig.width='100%';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='100%';
+    dialogConfig.disableClose = true;
+    dialogConfig.data=result
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+
+    const dialogRef = this.dialog.open(ErrorsStatesComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      this.getContacts();
+
+
+     
+    })
+  }
 ngOnDestroy(){
   this.openedDialogs.forEach((dialog)=>{
     if(dialog){

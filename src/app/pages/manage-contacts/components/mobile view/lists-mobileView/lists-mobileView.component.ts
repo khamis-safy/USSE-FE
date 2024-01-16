@@ -30,6 +30,7 @@ export class ListsMobileViewComponent implements OnInit {
   numRows;
   loading:boolean=true;
   subscribtions:Subscription[]=[];
+  selectedItems:any=[]
   @ViewChild(MatPaginator)  paginator!: MatPaginator;
   @ViewChild("search") search!:ElementRef;
   noData: boolean=false;
@@ -219,6 +220,7 @@ createDynamicComponent(selectedLists) {
   const componentRef = this.dynamicComponentContainer.createComponent(componentFactory);
   const navActionsComponentInstance: NavActionsComponent = componentRef.instance;
   navActionsComponentInstance.selectedItems = selectedLists;
+  this.selectedItems=selectedLists;
   navActionsComponentInstance.componentName ='lists';
 
   // Assign the componentRef to this.dynamicComponentRef
@@ -241,7 +243,14 @@ createDynamicComponent(selectedLists) {
       this.getListData();
     }
   });
-  this.navActionSubscriptions.push(sub1,sub2,sub3)
+  let sub4 = navActionsComponentInstance.unDoDeleteItem.subscribe((res)=>{
+    if(res){
+      this.getListData();
+      this.distroyDynamicComponent();
+      this.openSnackBar()
+    }
+  })
+  this.navActionSubscriptions.push(sub1,sub2,sub3,sub4)
 
 }
 distroyDynamicComponent(){
@@ -268,6 +277,8 @@ else if(this.selection.selected.length  === 0 && this.dynamicComponentRef){
 }
 if (this.dynamicComponentRef && this.selection.selected.length  > 0 ) {
   this.dynamicComponentRef.instance.selectedItems=this.selection.selected;
+  this.selectedItems=this.selection.selected;
+
   this.dynamicComponentRef.instance.selectedItemsCount = this.selection.selected.length;
 }
 }
@@ -275,6 +286,7 @@ selectAllRows(){
   this.selection.select(...this.tableData);
   if (this.dynamicComponentRef && this.selection.selected.length  > 0 ) {
     this.dynamicComponentRef.instance.selectedItems=this.selection.selected;
+    this.selectedItems=this.selection.selected;
     this.dynamicComponentRef.instance.selectedItemsCount = this.selection.selected.length;
   }
 }
@@ -297,7 +309,9 @@ selectAllRows(){
   }
 
   openSnackBar(){
-    let message = `${this.deletedLists.length} ${this.translate.instant('Item(s) Deleted')}`;
+    
+    let selectedItems = this.selectedItems.map((cont)=>cont.id)
+    let message = `${selectedItems.length} ${this.translate.instant('Item(s) Deleted')}`;
     let action =this.translate.instant("Undo")
     let snackBarRef=this.snackBar.open(message,action,{duration:4000});
     snackBarRef.onAction().subscribe(()=>{
@@ -306,13 +320,12 @@ selectAllRows(){
   }
   undoDelete(){
     let email=this.authService.getUserInfo()?.email;
-    this.listService.unDeleteList(email,this.deletedLists).subscribe(
+    let selectedItems = this.selectedItems.map((cont)=>cont.id)
+    this.listService.unDeleteList(email,selectedItems).subscribe(
       (res)=>{
-
-
-
         this.getListData();
-        this.deletedLists=[];
+        this.selectedItems=[]
+        this.selection.clear();
         this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
 
 
@@ -362,10 +375,11 @@ selectAllRows(){
 
   openAddOrUpdateList(data?){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='76vh';
+    dialogConfig.height='65vh';
     dialogConfig.width='100vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='100%';
+    dialogConfig.maxHeight='435px'
     dialogConfig.disableClose = true;
       if(data){
         dialogConfig.data= data;

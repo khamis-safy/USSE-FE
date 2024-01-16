@@ -8,6 +8,9 @@ import { ToasterServices } from '../us-toaster/us-toaster.component';
 import { Subscription } from 'rxjs';
 import { UnCancelContactsComponent } from 'src/app/pages/manage-contacts/components/contacts/unCancelContacts/unCancelContacts.component';
 import { ContactListsComponent } from 'src/app/pages/manage-contacts/components/contacts/contactLists/contactLists.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErrorsStatesComponent } from '../bulkOperationModals/errorsStates/errorsStates.component';
+import { RequestStateComponent } from '../bulkOperationModals/requestState/requestState.component';
 
 @Component({
   selector: 'app-nav-actions',
@@ -22,15 +25,22 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
   isAllChecked:boolean;
   @Output() selectAllEvent = new EventEmitter<boolean>();
   @Output() deselectAllEvent = new EventEmitter<boolean>();
-  @Output() updateData = new EventEmitter<boolean>(); 
+  @Output() updateData = new EventEmitter<boolean>();
+  @Output() updateCanceledData = new EventEmitter<boolean>();
+  @Output() unDoDeleteItem = new EventEmitter<boolean>();
+
   openedDialogs:any=[];
   showExportOptions:boolean=false;
+  deletedItems:any=[];
+  canceledContacts:any=[];
   menuItems: { name: string; function?: () => void ,submenu?:any }[] ;
   constructor(public dialog: MatDialog,
     private  toaster: ToasterServices,
     private listService:ManageContactsService,
     private authService:AuthService,
-    private translate:TranslateService,) { }
+    private translate:TranslateService,
+    private snackBar: MatSnackBar) { }
+    
  
   ngOnInit() {
     if(this.componentName=='contacts'){
@@ -116,8 +126,14 @@ addContactToList(){
 
     let sub1=  dialogRef.afterClosed().subscribe(result => {
       if(result){
+        if(result == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.updateData.emit(true)
+        }
+        else{
+          this.openRequestStateModal(result ,'addContactsToLists');
+        }
         
-        this.updateData.emit(true)
 
       }
 
@@ -125,21 +141,7 @@ addContactToList(){
     });
     this.subscriptions.push(sub1)
     this.openedDialogs.push(dialogRef)
-    // dialogRef.afterClosed().subscribe(result => {
-    // if(result){
-    //   if(result == 'noErrors'){
-    //     this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
-    //     this.contacts.getContacts();
-    //   }
-    //   else{
-    //     this.openRequestStateModal(result ,'addContactsToLists');
-    //   }
 
-    // }
-    // this.contacts.selection.clear();
-
-  
-// });
 }
   openDeleteModal(){
     const dialogConfig=new MatDialogConfig();
@@ -169,8 +171,18 @@ addContactToList(){
 
   let sub1=  dialogRef.afterClosed().subscribe(result => {
       if(result){
-        
-        this.updateData.emit(true)
+    
+        this.deletedItems=result.data;
+        if(result.errors == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.unDoDeleteItem.emit(true)
+          
+    
+        }
+        else{
+          this.openRequestStateModal(result ,'deleteContact');
+        }
+    
 
       }
 
@@ -181,7 +193,70 @@ addContactToList(){
 
    
   }
- 
+
+  openRequestStateModal(data , operation){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='38vh';
+    dialogConfig.width='42vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='465px';
+    dialogConfig.minHeight='396px'
+    dialogConfig.disableClose = true;
+    dialogConfig.data=data;
+  
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    const dialogRef = this.dialog.open(RequestStateComponent,dialogConfig);
+  
+      dialogRef.afterClosed().subscribe(result => {
+          if(result){
+            this.openErrorsViewrModal(data , operation)
+          }
+          else{
+            if(operation ==  'addContactsToLists' || operation ==  'removeLists'){
+              this.updateData.emit(true)
+            }
+        
+            if(operation == 'deleteContact' || operation == 'deleteList')
+            {
+              this.unDoDeleteItem.emit(true)
+            }
+          
+            if(operation == 'unCancelContacts'){
+              this.updateCanceledData.emit(true)
+              
+        }
+  
+          }
+      })
+  
+  }
+openErrorsViewrModal(result , operation){
+  const dialogConfig=new MatDialogConfig();
+  dialogConfig.height='87vh';
+  dialogConfig.minHeight='560px'
+  dialogConfig.width='56vw';
+  dialogConfig.maxWidth='100%';
+  dialogConfig.minWidth='565px';
+  dialogConfig.disableClose = true;
+  dialogConfig.data=result
+
+  const dialogRef = this.dialog.open(ErrorsStatesComponent,dialogConfig);
+  dialogRef.afterClosed().subscribe(result => {
+    if(operation ==  'addContactsToLists' || operation ==  'removeLists'){
+          this.updateData.emit(true)
+    }
+
+    if(operation == 'deleteContact' || operation == 'deleteList')
+    {
+      this.unDoDeleteItem.emit(true)
+    }
+   
+    if(operation == 'unCancelContacts'){
+      this.updateCanceledData.emit(true)
+      
+    }
+  })
+}
   removeLists(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='60vh';
@@ -198,8 +273,13 @@ addContactToList(){
 
     let sub2=   dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.updateData.emit(true)
-
+        if(result == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.updateData.emit(true)
+        }
+        else{
+          this.openRequestStateModal(result ,'removeLists');
+        }
       }
 
 
@@ -219,32 +299,20 @@ addContactToList(){
     {
       contactsData: {contacts:this.selectedItems}
     }
-
-
     const dialogRef = this.dialog.open(UnCancelContactsComponent,dialogConfig);
 
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.updateData.emit(true)
-
-        // this.contacts.canceledContacts=result.data;
-        // if(result.errors == 'noErrors'){
-        //   this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
-        //   this.contacts.getContacts("" ,true);
-          
-        //   this.contacts.unCancelSnackBar();
-        // }
-        // else{
-        //   this.openRequestStateModal(result ,'unCancelContacts');
-        // }
-
-     
-
+        this.canceledContacts=result.data;
+        if(result.errors == 'noErrors'){
+          this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          this.updateCanceledData.emit(true)
+                  }
+        else{
+          this.openRequestStateModal(result ,'unCancelContacts');
+        }
       }
-
-      // this.contacts.selection.clear();
-
     });
     this.openedDialogs.push(dialogRef)
 

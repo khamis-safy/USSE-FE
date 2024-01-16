@@ -7,10 +7,18 @@
 }
 
 @media(max-width:768px){
+  .modal-body {
+    height: 90% !important;
+}
   .row.m-0.d-flex.justify-content-center.align-items-center.my-5 {
-    margin-block: 10px !important;
+    margin-block: 25px !important;
+    .image-container{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     img{
-      width: 90%!important;
+      width: 75%!important;
 
     }
 }
