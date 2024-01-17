@@ -55,3 +55,15 @@
   height: 16px  !important;
 }
 }
+@media (max-width: 768px) {
+  .checkbox{
+    width: 15px !important;
+    height: 15px !important;
+    border-radius: 2px !important;
+
+  }
+  i.txt-md{
+    font-size: 20px !important;
+
+  }
+  }

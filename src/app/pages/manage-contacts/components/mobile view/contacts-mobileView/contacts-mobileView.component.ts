@@ -86,7 +86,7 @@ export class ContactsMobileViewComponent implements OnInit {
 
   isChecked:boolean=false;
   pageIndex:number=0;
-  selectedSortOption: string;
+  
   selectedSortingName:string='name';
   selectedSortingType:string='ASC'
   orderedBy: string='';
@@ -114,17 +114,13 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
   }
 
 
-    @Input('isUnsubscribe') isUnsubscribe = false;
 
   ngOnInit() {
     this.form.patchValue({
       showsSelectedOptions: {
       title:String(this.listService.getUpdatedDisplayNumber()),
       value:this.listService.getUpdatedDisplayNumber(),
-      
-
       }
-
       })
 
     if(!this.canEdit){
@@ -169,10 +165,7 @@ this.orderedBy=sorting;
 this.selection.clear();
 this.getContacts();
 }
-  getWidth(element: HTMLElement) {
 
-    return `${element.clientWidth}px`;
- }
   
   // Modify your existing method to handle selected row logic
   selectedRow(event: Event, element: any) {

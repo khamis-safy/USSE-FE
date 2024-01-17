@@ -596,6 +596,21 @@
     min-width: 18% !important;
   }
 }
+@media(max-width:768px){
+  .host .toggler input {
+    font-size: 11px !important;
+  }
+  .us-select-container.fullWidth  .host{
+    min-width: 7rem !important;
+  }
+  .host {
+    .list{
+      padding: 8px !important;
+
+    }
+  }
+}
+
 .us-select-container.smallDropDown{
   .txt-sm {
     font-size: 10px !important;
@@ -611,6 +626,10 @@
     .list_item{
       column-gap: 0px !important;
       padding: 1px 5px !important;
+    }
+    .list{
+      padding: 4px !important;
+
     }
     min-width: 3rem !important;
     width: 40% !important;

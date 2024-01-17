@@ -15,6 +15,8 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { ResendMessagesComponent } from './Components/resendMessages/resendMessages.component';
 import { WriteMessageModule } from './Components/new-message/write-message/writeMessage.module';
 import { ContactsWarningComponent } from './Components/contactsWarning/contactsWarning.component';
+import { MessagesMobileViewComponent } from './mobile-view/messages-mobileView/messages-mobileView.component';
+// import { ScheduledMobileViewComponent } from './mobile-view/scheduled-mobileView/scheduled-mobileView.component';
 
 @NgModule({
   imports: [
@@ -34,7 +36,9 @@ import { ContactsWarningComponent } from './Components/contactsWarning/contactsW
     SendMessageComponent,
     MessageTypeComponent,
     ResendMessagesComponent,
-    ContactsWarningComponent
+    ContactsWarningComponent,
+    MessagesMobileViewComponent,
+    // ScheduledMobileViewComponent
    ],
    exports:[
     // WriteMessageComponent

@@ -88,7 +88,7 @@
 
         <ng-container *ngIf="item.tab!='scheduled' else scheduledCom">
 
-          <app-message-type *ngIf="selectedTab == item.tab" (selectedDeviceId)="setDeviceIdFromChild($event)"  (isChecked)="onChecked($event)" [msgCategory]="item.tab"></app-message-type>
+          <app-message-type *ngIf="selectedTab == item.tab" (selectedDeviceId)="setDeviceIdFromChild($event)"  (isChecked)="onChecked($event)" [msgCategory]="item.tab" (isOpenNewMessage)="$event? openNewMessage():''"></app-message-type>
         </ng-container>
 
         <ng-template #scheduledCom>

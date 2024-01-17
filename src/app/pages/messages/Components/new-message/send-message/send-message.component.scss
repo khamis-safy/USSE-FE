@@ -8,3 +8,9 @@ input.rounded-pill.border.border-1.py-2.txt-input.w-100.date.ng-untouched.ng-pri
     gap: 20px !important;
 }
 }
+@media(max-width:768px){
+    form{
+        min-height: 62vh;
+
+    }
+}
