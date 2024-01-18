@@ -28,6 +28,7 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
   @Output() updateData = new EventEmitter<boolean>();
   @Output() updateCanceledData = new EventEmitter<boolean>();
   @Output() unDoDeleteItem = new EventEmitter<boolean>();
+  @Output() resendFailedMessages = new EventEmitter<boolean>();
 
   openedDialogs:any=[];
   showExportOptions:boolean=false;
@@ -54,6 +55,26 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
       this.showListsMenueItems()
 
     }
+    if(this.componentName=='failed'){
+      this.showFailedMsgMenueItems()
+    }
+    else{
+      this.showMessageMenueItems()
+
+    }
+  }
+  showFailedMsgMenueItems(){
+    this.menuItems = [
+      { name: 'Select_All', function: () => this.selectAll() },
+      { name: 'Resend Selected Items', function: () => this.resendMessages() },
+      { name: 'delete', function: () => this.openDeleteMessageModal()}
+    ];
+  }
+  showMessageMenueItems(){
+    this.menuItems = [
+      { name: 'Select_All', function: () => this.selectAll() },
+      { name: 'delete', function: () => this.openDeleteMessageModal()}
+    ];
   }
   showListsMenueItems(){
     this.menuItems = [
@@ -74,6 +95,31 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
       { name: 'EXPORT_SELECTED'}
     ];
 
+  }
+  resendMessages(){
+    this.resendFailedMessages.emit(true)
+  }
+  openDeleteMessageModal(){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='54vh';
+    dialogConfig.width='100vw';
+    dialogConfig.minHeight='428';
+    dialogConfig.maxWidth='100vw';
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    dialogConfig.data =
+    {
+      messagesData:{messages:this.selectedItems}
+    }
+    const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result)
+      {
+        this.updateData.emit(true);
+      }
+
+
+    });
   }
   exportSelectedContactsAs(fileType){
     let exporedContacts=this.selectedItems.map((contact)=>{
@@ -106,6 +152,18 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
     {
       this.menuItems=[
         {name: 'delete', function: () => this.openDeleteModal()}]
+    }
+    if(this.componentName=='failed')
+    {
+      this.menuItems = [
+        { name: 'Resend Selected Items', function: () => this.resendMessages() },
+        { name: 'delete', function: () => this.openDeleteMessageModal()}
+      ];
+    }
+    else{
+      this.menuItems = [
+        { name: 'delete', function: () => this.openDeleteMessageModal()}
+      ];
     }
   }
 

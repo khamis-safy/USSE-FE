@@ -1589,7 +1589,7 @@ right: 0 !important;
 }
 .mdc-checkbox__background {
   width: 16px !important;
-  height: 16px !important;
+  height: 15px !important;
 }
 .mat-mdc-tab.mdc-tab img {
   width: 30px !important;
@@ -2244,7 +2244,7 @@ color: var(--clr-primary-800) !important;
   }
   .mdc-checkbox {
   width: 5px  !important;
-  height: 10px  !important;
+  height: 15px  !important;
   line-height: 0  !important;
 
   }
@@ -2407,7 +2407,11 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
     display: none !important;
   }
   .small-screen-view{
+    .spinner-container {
+      margin-top: 1rem;
+    }
     display: block !important;
+    min-height: 60vh;
     .nodata-container {
       height: 55vh !important;
     }

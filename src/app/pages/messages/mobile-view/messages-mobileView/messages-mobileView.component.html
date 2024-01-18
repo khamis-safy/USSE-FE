@@ -135,19 +135,21 @@
             ></mat-checkbox>
       
             <!-- Device Name Column -->
-            <div class="row w-100" >
-              <div class="col row-header">{{ 'DEVICE_NAME_LABEL' | translate }}</div>
-              <div class="col" style="font-weight: normal;">{{ element.device?.deviceName }}</div>
+            <div class="row w-100" *ngIf="displayedColumns.includes(msgCategory == 'inbox' ? 'Sender' : 'Recipient')">
+              <div class="col row-header">
+                <ng-container *ngIf="msgCategory == 'inbox'">{{ 'SENDER_LABEL' | translate }}</ng-container>
+                <ng-container *ngIf="msgCategory != 'inbox'">{{ 'RECIPIENT_LABEL' | translate }}</ng-container>
+              </div>
+              <div class="col text-center">{{ element.chat.chatName }}</div>
+
+            
             </div>
           </mat-expansion-panel-header>
       
           <!-- Sender/Recipient Column -->
-          <div class="row row-item" *ngIf="displayedColumns.includes(msgCategory == 'inbox' ? 'Sender' : 'Recipient')">
-            <div class="col row-header">
-              <ng-container *ngIf="msgCategory == 'inbox'">{{ 'SENDER_LABEL' | translate }}</ng-container>
-              <ng-container *ngIf="msgCategory != 'inbox'">{{ 'RECIPIENT_LABEL' | translate }}</ng-container>
-            </div>
-            <div class="col text-center">{{ element.chat.chatName }}</div>
+          <div class="row row-item" *ngIf="displayedColumns.includes('Device Name')">
+            <div class="col row-header">{{ 'DEVICE_NAME_LABEL' | translate }}</div>
+            <div class="col" style="font-weight: normal;">{{ element.device?.deviceName }}</div>
           </div>
       
           <!-- Messages Column -->
@@ -205,7 +207,7 @@
           </div>
       
           <!-- Action Column -->
-          <div class="row row-item" *ngIf="displayedColumns.includes('Action') && canEdit">
+          <div class="row row-item" *ngIf="displayedColumns.includes('Action')">
             <div class="col row-header">{{ 'ACTION' | translate }}</div>
             <div class="col text-center">
               <div class="actions d-flex align-items-center justify-content-center">

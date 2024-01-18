@@ -81,7 +81,7 @@ messagesTableData:any=[]
     pageIndex:number=0;
     columns :FormControl;
     displayed: string[] ;
-    displayedColumns: string[] = ['select' , 'Sender', 'Messages', 'Received At','Updated At','Status','Ation'];
+    displayedColumns: string[] = ['select' , 'Sender', 'Messages', 'Received At','Updated At','Status','Action'];
     dataSource:MatTableDataSource<Message>;
     selection = new SelectionModel<Message>(true, []);
     navActionSubscriptions:Subscription[]=[];
@@ -210,28 +210,28 @@ this.getMessages(this.deviceId);
         }
   
       }
-    fillBasedOnPermissions(permission:string){
-      if(permission=="FullAccess"){
-        this.tableData()
+      fillBasedOnPermissions(permission:string){
+        if(permission=="FullAccess"){
+          this.tableData()
+        }
+        else{
+          if(this.msgCategory=='inbox'){
+            this.displayed = INBOXHEADER.filter((_, index) => index !== 1)
+            this.displayedColumns = ['Device Name', 'Sender', 'Messages', 'Received At'];
+          }
+          else if(this.msgCategory=='outbox'){
+            this.displayed = OUTBOX.filter((_, index) => index !== 1);
+            this.displayedColumns = ['Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
+          }
+          else if(this.msgCategory=='failed'){
+    
+            this.displayedColumns = ['Device Name', 'Recipient', 'Messages', 'Received At'];
+            this.displayed = FAILED.filter((_, index) => index !== 1);
+    
+          }
+        }
+        this.columns.setValue(this.displayedColumns)
       }
-      else{
-        if(this.msgCategory=='inbox'){
-          this.displayed = INBOXHEADER.slice(1)
-          this.displayedColumns = [ 'Sender', 'Messages', 'Received At'];
-        }
-        else if(this.msgCategory=='outbox'){
-          this.displayed = OUTBOX.slice(1);
-          this.displayedColumns = [ 'Recipient', 'Messages', 'Received At','Updated At','Status'];
-        }
-        else if(this.msgCategory=='failed'){
-  
-          this.displayedColumns = [ 'Recipient', 'Messages', 'Received At'];
-          this.displayed = FAILED.slice(1);
-  
-        }
-      }
-      this.columns.setValue(this.displayedColumns)
-    }
    // get devices data
    getDevices(megtype:string){
     this.msgCategory=megtype;
@@ -349,8 +349,10 @@ this.getMessages(this.deviceId);
         
       }
     });
-  
-    this.navActionSubscriptions.push(sub1,sub2,sub3)
+    let sub4 =  navActionsComponentInstance.resendFailedMessages.subscribe((res) => {
+      this.resendSelectedMessages();
+    });
+    this.navActionSubscriptions.push(sub1,sub2,sub3,sub4)
 
   }
 distroyDynamicComponent(){
@@ -359,9 +361,16 @@ distroyDynamicComponent(){
   this.dynamicComponentRef = null;
   this.navActionSubscriptions.map((sub)=>sub.unsubscribe());
 }
+
 onCheckboxChange(event,element: any) {
   if(event.checked == false && this.dynamicComponentRef){
-    this.dynamicComponentRef.instance.showContactsMenueItems();
+    if(this.msgCategory === 'failed'){
+      this.dynamicComponentRef.instance.showFailedMsgMenueItems();
+    }
+    else{
+      this.dynamicComponentRef.instance.showMessageMenueItems();
+    }
+    
   }
   if(this.selection.selected.length  > 0 && !this.dynamicComponentRef){
     this.createDynamicComponent(this.selection.selected);
@@ -498,7 +507,7 @@ onCheckboxChange(event,element: any) {
     changeColumns(event){
     //  change displayed column based on component type
     if(this.msgCategory=='failed' && this.canEdit){
-      this.displayedColumns=['select',...event,'Ation']
+      this.displayedColumns=['select',...event,'Action']
     }
     else if(this.msgCategory!='failed' && this.canEdit){
       this.displayedColumns=['select',...event]
@@ -518,17 +527,17 @@ onCheckboxChange(event,element: any) {
     }
     tableData(){
       if(this.msgCategory=='inbox'){
-  
-        this.displayed = INBOXHEADER.slice(1);
-        this.displayedColumns = ['select' , 'Sender', 'Messages', 'Received At'];
+
+        this.displayed = INBOXHEADER.filter((_, index) => index !== 1);
+        this.displayedColumns = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At'];
       }
       else if(this.msgCategory=='outbox'){
-        this.displayed = OUTBOX.slice(1);
-        this.displayedColumns = ['select' , 'Recipient', 'Messages', 'Received At','Updated At','Status'];
+        this.displayed = OUTBOX.filter((_, index) => index !== 1);;
+        this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
       }
       else if(this.msgCategory=='failed'){
-        this.displayedColumns = ['select' , 'Recipient', 'Messages', 'Received At',"Ation"];
-        this.displayed = FAILED.slice(1);
+        this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At',"Action"];
+        this.displayed = FAILED.filter((_, index) => index !== 1);;
   
       }
       this.columns.setValue(this.displayedColumns)
@@ -557,13 +566,14 @@ onCheckboxChange(event,element: any) {
     }
     }
     reSendMessage(msgId){
-     
       const dialogConfig=new MatDialogConfig();
+      dialogConfig.height='40vh';
+      dialogConfig.width='100vw';
+      dialogConfig.minHeight='428';
+      dialogConfig.maxWidth='100vw';
       dialogConfig.disableClose = true;
-      dialogConfig.height='50vh';
-      dialogConfig.width='35vw';
-      dialogConfig.maxWidth='100%';
-      dialogConfig.minWidth='465px';
+      dialogConfig.panelClass = 'custom-mat-dialog-container';
+
       dialogConfig.data ={
         from:"messages",
         data: {
@@ -581,6 +591,34 @@ onCheckboxChange(event,element: any) {
         }
       });
     }
+    resendSelectedMessages(){
+      const messagesIDs=this.selection.selected.map((res)=>res.id)
+       const dialogConfig=new MatDialogConfig();
+       dialogConfig.height='40vh';
+       dialogConfig.width='100vw';
+       dialogConfig.minHeight='428';
+       dialogConfig.maxWidth='100vw';
+       dialogConfig.disableClose = true;
+       dialogConfig.panelClass = 'custom-mat-dialog-container';
+       dialogConfig.data ={
+         from:"messages",
+         data: {
+           messageIds:messagesIDs,
+           email: this.authService.getUserInfo().email,
+           deviceId: this.deviceId
+         }
+       }
+      
+       const dialogRef = this.dialog.open(ResendMessagesComponent,dialogConfig);
+       dialogRef.afterClosed().subscribe(result => {
+         if(result){
+           this.selection.clear();
+           this.getMessages(this.deviceId,"failed");
+           this.distroyDynamicComponent();
+
+         }
+       });
+     }
     ngOnDestroy(){
      
         this.selection.clear();
