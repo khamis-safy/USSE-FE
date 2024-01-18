@@ -1,6 +1,6 @@
 
   
-  <div class="d-flex align-items-center justify-content-between mb-3" >
+  <div class="d-flex align-items-center justify-content-between my-3" >
 
     <div class="d-flex position-relative row m-0 input-search-containter" >
       <div class="col-12 col-lg-4 p-0 w-100" >
@@ -117,6 +117,7 @@
           <div class="row w-100">
             <div class="col row-header">{{ 'NAME_COLUMN' | translate }}</div>
             <div class="col" style="font-weight: normal;">{{ element.name }}</div>
+
           </div>
         </mat-expansion-panel-header>
     
@@ -135,7 +136,7 @@
           <div class="col">
             <div class="d-flex align-items-center pointer text-primary-800" (click)="openAddOrUpdateList(element); cellClick=true">
               <mat-icon class="mat-icon" color="primary">edit</mat-icon>
-              <span class="txt-sm edit">{{ 'EDIT_ACTION' | translate }}</span>
+              <span class=" edit">{{ 'EDIT_ACTION' | translate }}</span>
             </div>
           </div>
         </div>

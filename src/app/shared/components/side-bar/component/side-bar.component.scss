@@ -26,7 +26,7 @@ a {
  
   .icon{
     img{
-      filter: invert(22%) sepia(100%) saturate(3678%) hue-rotate(187deg) brightness(93%) contrast(100%);
+      filter:brightness(0) saturate(100%) invert(29%) sepia(82%) saturate(1332%) hue-rotate(175deg) brightness(95%) contrast(105%); 
     }   
   }
   .all-options-container {
@@ -183,5 +183,3 @@ height: 45px !important;
   }
 }
 }
-// invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);
-// filter : invert(20%) sepia(77%) saturate(814%) hue-rotate(159deg) brightness(39%) contrast(93%);

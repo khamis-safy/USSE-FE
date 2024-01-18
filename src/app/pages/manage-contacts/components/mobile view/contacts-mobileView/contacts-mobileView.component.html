@@ -1,5 +1,5 @@
   <ng-container *ngIf="!noData">
-    <div class="d-flex align-items-center justify-content-between mb-3" style="gap: 12px;">
+    <div class="d-flex align-items-center justify-content-between my-3" style="gap: 12px;">
 
       <div class="d-flex position-relative row m-0 input-search-containter" >
         <div class="col-12 col-lg-4 p-0 w-100" >
@@ -20,7 +20,7 @@
     
       <div  *ngIf="!isChecked && !isCanceled" class="operation-menu">
         <div #operaionButton class="operation-button" >
-          <button mat-button [matMenuTriggerFor]="operations" style=" width: 138px;" class=" text-neutral-0 bg-primary-800 rounded-3 ">
+          <button mat-button [matMenuTriggerFor]="operations" style=" width: 120px;" class=" text-neutral-0 bg-primary-800 rounded-3 ">
             <div class=" d-flex align-items-center justify-content-center gap-3">
               <span>{{'Operations' | translate}}</span>
               <div class="icon">
@@ -206,7 +206,7 @@
           <div class="col row-header">{{ 'variables' | translate }}</div>
           <div class="col">
             <div *ngIf="element?.additionalContactParameter?.length" class="d-flex  align-items-center w-100 zi-4">
-              <span class="txt-sm total">{{ element?.additionalContactParameter?.length }}</span>
+              <span class="total">{{ element?.additionalContactParameter?.length }}</span>
             </div>
           </div>
         </div>
@@ -216,7 +216,7 @@
           <div class="col">
             <div class="d-flex align-items-center pointer  text-primary-800" (click)="addOrUpdateContact(element); cellClick=true">
               <mat-icon class="mat-icon" color="primary">edit</mat-icon>
-              <span class="txt-sm edit">{{ 'EDIT' | translate }}</span>
+              <span class="edit">{{ 'EDIT' | translate }}</span>
             </div>
           </div>
         </div>

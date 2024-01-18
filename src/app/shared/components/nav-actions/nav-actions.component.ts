@@ -145,7 +145,7 @@ addContactToList(){
 }
   openDeleteModal(){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='60vh';
+    dialogConfig.height='54vh';
     dialogConfig.width='100vw';
     dialogConfig.minHeight='428';
     dialogConfig.maxWidth='100vw';
@@ -191,7 +191,6 @@ addContactToList(){
     this.subscriptions.push(sub1)
     this.openedDialogs.push(dialogRef)
 
-   
   }
 
   openRequestStateModal(data , operation){
@@ -289,10 +288,10 @@ openErrorsViewrModal(result , operation){
   }
   openUnCancelContactsModal(){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='75vh';
-    dialogConfig.width='100%';
-    dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='100%';
+    dialogConfig.height='39vh';
+    dialogConfig.width='100vw';
+    dialogConfig.minHeight='428';
+    dialogConfig.maxWidth='100vw';
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.data =
