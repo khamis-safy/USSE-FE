@@ -58,7 +58,7 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
     if(this.componentName=='failed'){
       this.showFailedMsgMenueItems()
     }
-    else{
+    if(this.componentName == 'inbox' || this.componentName == 'outbox'){
       this.showMessageMenueItems()
 
     }
@@ -160,7 +160,7 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
         { name: 'delete', function: () => this.openDeleteMessageModal()}
       ];
     }
-    else{
+    if(this.componentName == 'inbox' || this.componentName == 'outbox'){
       this.menuItems = [
         { name: 'delete', function: () => this.openDeleteMessageModal()}
       ];
