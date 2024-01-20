@@ -16,7 +16,7 @@ import { ResendMessagesComponent } from './Components/resendMessages/resendMessa
 import { WriteMessageModule } from './Components/new-message/write-message/writeMessage.module';
 import { ContactsWarningComponent } from './Components/contactsWarning/contactsWarning.component';
 import { MessagesMobileViewComponent } from './mobile-view/messages-mobileView/messages-mobileView.component';
-// import { ScheduledMobileViewComponent } from './mobile-view/scheduled-mobileView/scheduled-mobileView.component';
+import { ScheduledMobileViewComponent } from './mobile-view/scheduled-mobileView/scheduled-mobileView.component';
 
 @NgModule({
   imports: [
@@ -38,7 +38,7 @@ import { MessagesMobileViewComponent } from './mobile-view/messages-mobileView/m
     ResendMessagesComponent,
     ContactsWarningComponent,
     MessagesMobileViewComponent,
-    // ScheduledMobileViewComponent
+    ScheduledMobileViewComponent
    ],
    exports:[
     // WriteMessageComponent

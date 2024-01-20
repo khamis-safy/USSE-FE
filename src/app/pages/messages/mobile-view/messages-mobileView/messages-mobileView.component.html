@@ -185,7 +185,7 @@
           <!-- Status Column -->
           <div class="row row-item" *ngIf="displayedColumns.includes('Status')">
             <div class="col row-header">{{ 'STATUS_LABEL' | translate }}</div>
-            <div class="col text-center d-flex justify-content-center">
+            <div class="col text-center d-flex ">
               <span [ngSwitch]="element.status">
                 <div *ngSwitchCase="3" class="message-state read d-flex justify-content-center align-items-center">
                   {{ 'Read' | translate }}

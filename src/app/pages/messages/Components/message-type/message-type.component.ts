@@ -467,7 +467,6 @@ ngAfterViewInit(): void {
     
       this.subscribtions.map(e=>e.unsubscribe());
     this.selection.clear()
-    this.subscribtions.map(e=>e.unsubscribe());
   }
   selectFilter(item){
   // this.selectedItems.push(item);

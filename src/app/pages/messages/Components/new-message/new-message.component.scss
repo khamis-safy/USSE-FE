@@ -95,3 +95,18 @@
 .buttons {
   text-align: end !important;
 }
+@media(max-width:768px){
+
+
+  .buttons>div{
+    width: 100% !important;
+    position: unset !important;
+    justify-content: center !important;
+    margin-top: 20px;
+}
+p{
+  margin-top: 6px;
+  font-size: 13px;
+  text-align: center;
+}
+}

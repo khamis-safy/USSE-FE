@@ -2077,6 +2077,13 @@ span.mat-mdc-select-min-line{
 }
 ///////////////////////////////////////////////////////////////////////
 @media only screen and (max-width: 768px) {
+  .stepper .mat-stepper-horizontal {
+    border-radius:unset !important;
+    box-shadow:unset !important;
+}
+.mat-stepper-horizontal, .mat-stepper-vertical {
+  background-color: transparent !important;
+}
   section.component-container {
     padding-block: 0px !important;
   }
@@ -2233,7 +2240,7 @@ color: var(--clr-primary-800) !important;
   .mat-expansion-panel-header {
     // padding: 5px 20px !important;
     position: relative;
-    z-index: 23 !important;
+    z-index: 2 !important;
     height: fit-content !important;
     min-height: 45px !important;
 

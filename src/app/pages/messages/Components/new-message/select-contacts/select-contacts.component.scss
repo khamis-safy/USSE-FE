@@ -182,5 +182,21 @@ p.txt-md {
     margin-bottom: 40px;
 
   }
+  .mobile-num {
+    .mobile-num-container{
+      flex-direction: column;
+      align-items: end !important;
+    }
+    .add-button{
+      width: 30%;
+
+    }
+  
+  }
+  
+}
+.buttons{
+  position: unset !important;
+  margin-top: 20px;
 }
 }

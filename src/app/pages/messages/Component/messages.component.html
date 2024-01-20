@@ -92,13 +92,13 @@
         </ng-container>
 
         <ng-template #scheduledCom>
-          <app-scheduled *ngIf="selectedTab == item.tab"  (isChecked)="onChecked($event)"></app-scheduled>
+          <app-scheduled *ngIf="selectedTab == item.tab"  (isChecked)="onChecked($event)" (isOpenNewMessage)="$event? openNewMessage():''"></app-scheduled>
         </ng-template>
 
       </mat-tab>
     </mat-tab-group>
   </ng-container>
   <ng-container *ngIf="!isMessages">
-    <app-new-message (back)="isMessages=$event"></app-new-message>
+    <app-new-message (back)="isMessages=$event" ></app-new-message>
   </ng-container>
 </section>

@@ -1,5 +1,4 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -91,7 +90,6 @@ messagesTableData:any=[]
     notFound: boolean;
     isUser: boolean;
     permission:DevicesPermissions[];
-    pageNum: number;
     display: number;
     isSmallScreen: boolean = false;
     constructor(public cdr: ChangeDetectorRef ,
@@ -102,7 +100,7 @@ messagesTableData:any=[]
       private translationService:TranslationService,
       private drawerService: NzDrawerService,
     private componentFactoryResolver: ComponentFactoryResolver,
-      private breakpointObserver: BreakpointObserver){
+      ){
         this.display=this.messageService.getUpdatedDisplayNumber()
         this.pageIndex=this.messageService.pageNum;
   
@@ -157,7 +155,6 @@ messagesTableData:any=[]
   else{
     this.isUser=false;
   }
-  console.log(this.msgCategory)
   // get device's messages
   this.getDevices(this.msgCategory);
 
@@ -296,7 +293,6 @@ this.getMessages(this.deviceId);
   
               })
           }
-          console.log(this.deviceId)
           this.getMessages(this.deviceId);
   
       }
@@ -460,8 +456,11 @@ onCheckboxChange(event,element: any) {
         this.messageService.updateDisplayNumber(event.value)
         this.pageIndex=0; 
         
-        this.paginator.pageSize = event.value;
-        this.paginator.pageIndex=0;
+        if(this.paginator)
+          {
+            this.paginator.pageSize = event.value;
+            this.paginator.pageIndex=0;
+          }
         this.getMessages(this.deviceId);
 
       }
