@@ -31,11 +31,18 @@
         [isEmoji]="true"
       ></us-input>
     </form>
-    <div class="form-group d-flex gap-lg-4 gap-3 flex-lg-row flex-nowrap files-container">
-      <label for="devicesData" class="w-25 text-nowrap d-flex" style="min-width:25%"
-        ><span class="txt txt-sm text-black text-wrap">{{ 'Attachments' | translate }}</span>
-      </label>
+    <div class="form-group d-flex gap-lg-4 gap-3 flex-column flex-lg-row flex-nowrap files-container">
+      <div class="label-widget text-start w-25 d-none d-lg-block" style="min-width: 25%;">
+        <label for="files" class="w-25 text-nowrap d-flex" style="min-width:25%"
+          ><span class="txt txt-sm text-black text-wrap">{{ 'Attachments' | translate }}</span>
+        </label>
+      </div>
 
+      <div class="label-widget text-start w-100 d-block d-lg-none">
+        <label for="files" class="w-25 text-nowrap d-flex" style="min-width:25%"> 
+          <span class="txt  text-black text-wrap txt-sm">{{ 'Attachments' | translate }}</span>
+        </label>
+      </div>
       <us-upload class="w-100"
         (onFileChange)="onFileChange($event)"
         (onFileDelete)="onFileDelete($event)"

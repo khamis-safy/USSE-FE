@@ -281,6 +281,10 @@ $clr_warning_50: #FDF4DC;
 .rtl {
   direction: rtl;
   text-align: right;
+  
+.ant-picker-panel {
+  direction: rtl !important;
+}
 }
 .txt{
   margin: 0 !important;
@@ -1644,7 +1648,7 @@ button.button-size-md{
 .d-flex.position-relative.w-100{
   // width: 318px !important;
   #search {
-    height: 32px !important;
+    height: 38px !important;
     font-size: 12px !important;
     // width: 318px !important;
 
@@ -2094,7 +2098,7 @@ span.mat-mdc-select-min-line{
     margin-right: 5px !important;
 }
   .txt-sm {
-    font-size: 11px !important;
+    font-size: 12px !important;
 }
 // .txt-md  {
 //   font-size: 20px !important;
@@ -2337,6 +2341,14 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   display: none;
 }
 @media only screen and (max-width: 768px) {
+  .table-inner-container{
+    td,th{
+      font-size: 13px  !important;
+    }
+    .checkBox {
+      padding-inline: 6px  !important;
+    }
+  }
   .ant-picker-panel {
     width:100vw !important;
     left: 0 !important;
@@ -2346,7 +2358,7 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   left: 0 !important;
   right: unset !important;
   width: 100vw !important; 
-  max-width: 500px !important;
+  max-width:300px !important;
   overflow: auto !important;
   border-radius: 8px !important;
   /* Set your desired width */

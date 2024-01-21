@@ -597,6 +597,7 @@
   }
 }
 @media(max-width:768px){
+ 
   .host .toggler input {
     font-size: 11px !important;
   }
@@ -608,6 +609,9 @@
       padding: 8px !important;
 
     }
+  }
+  .txt-sm{
+    font-size: 12px !important;
   }
 }
 
@@ -626,6 +630,7 @@
     .list_item{
       column-gap: 0px !important;
       padding: 1px 5px !important;
+
     }
     .list{
       padding: 4px !important;
@@ -642,5 +647,9 @@
         box-shadow:unset !important;
       }
   }
+  }
+  .list_item{
+    min-height: 35px !important;
+
   }
 }

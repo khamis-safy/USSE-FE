@@ -376,9 +376,9 @@ selectAllRows(){
   openAddOrUpdateList(data?){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='65vh';
-    dialogConfig.width='100vw';
+    dialogConfig.width='90vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='100%';
+    dialogConfig.minWidth='80%';
     dialogConfig.maxHeight='435px'
     dialogConfig.disableClose = true;
       if(data){

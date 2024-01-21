@@ -1,6 +1,6 @@
 <section class="d-flex flex-column py-4 px-3 mx-auto gap-3 h-100" style="width: 90%;">
   <!-- modal header -->
-  <div class="d-flex justify-content-center align-items-center position-relative mb-4 " style="height: 10%;">
+  <div class="d-flex justify-content-center align-items-center position-relative mb-lg-4 mb-0 " style="height: 10%;">
     <p class="txt-lg ms-4">{{vcfFile?('UPLOAD_VCF_SHEET'|translate): 'UPLOAD_EXCEL_SHEET' | translate }}</p>
     <div class="position-absolute end-0 top-50 translate-middle-y mx-2">
       <img
@@ -27,10 +27,11 @@
     <ng-container *ngIf="showLists">
 
       <form  [formGroup]="form"  class="d-flex flex-column px-2 my-3 w-100">
-        <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex justify-content-between mb-3 add-list-container">
         <div class="me-3 lists " style="width:70% ">
 
           <us-select
+          [labelTopInMobileView]="false"
           [data]="listsArr"
           formControlName="selectedLists"
           [multiSelect]="false"
@@ -46,17 +47,20 @@
           [maxListItemsWithoutSearch]="5"
         ></us-select>
         </div>
-        <us-button
-
+        <div class="add-list">
+          <us-button
           label="{{ 'ADD_NEW_LIST_LABEL' | translate }}"
           [matIcon]="'add'"
           [fill]="true"
-          [size]="'md'"
+          [size]="'xl'"
+          [fullWidth]="true"
           [loading]="false"
           [disabled]="addNewList"
           [appearance]="'primary'"
           (clicked)="addNewList=true"
         ></us-button>
+        </div>
+    
   </div>
         <ng-container *ngIf="addNewList">
           <div class="d-flex justify-content-end align-items-center">

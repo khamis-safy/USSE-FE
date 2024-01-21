@@ -102,9 +102,10 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
   openDeleteMessageModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='54vh';
-    dialogConfig.width='100vw';
     dialogConfig.minHeight='428';
-    dialogConfig.maxWidth='100vw';
+    dialogConfig.width='90vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='80%';    
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.data =
@@ -170,9 +171,9 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
 addContactToList(){
   const dialogConfig=new MatDialogConfig();
   dialogConfig.height='75vh';
-  dialogConfig.width='100%';
+  dialogConfig.width='90vw';
   dialogConfig.maxWidth='100%';
-  dialogConfig.minWidth='100%';
+  dialogConfig.minWidth='80%'; 
   dialogConfig.maxHeight='85vh';
   dialogConfig.minHeight='470px'
   dialogConfig.disableClose = true;
@@ -204,9 +205,10 @@ addContactToList(){
   openDeleteModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='54vh';
-    dialogConfig.width='100vw';
+    dialogConfig.width='90vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='80%';
     dialogConfig.minHeight='428';
-    dialogConfig.maxWidth='100vw';
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     if(this.componentName== 'contacts')
@@ -317,9 +319,10 @@ openErrorsViewrModal(result , operation){
   removeLists(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='60vh';
-    dialogConfig.width='100vw';
+    dialogConfig.width='90vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='80%';
     dialogConfig.minHeight='428';
-    dialogConfig.maxWidth='100vw';
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.data =
@@ -347,9 +350,10 @@ openErrorsViewrModal(result , operation){
   openUnCancelContactsModal(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='39vh';
-    dialogConfig.width='100vw';
     dialogConfig.minHeight='428';
-    dialogConfig.maxWidth='100vw';
+    dialogConfig.width='90vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='80%';
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.data =

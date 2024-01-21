@@ -61,6 +61,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input() isDisabled?: boolean; // force disable dropdown
   @Input('custom') isCustom?: boolean;
   @Input() clearable?: boolean; // shows x icon to clear selection in single-select
+  @Input() labelTopInMobileView?: boolean=true; 
   /*
 	 ↓↓ use a custom css class to modify the styles in your platform ↓↓
 	 [ it's recommended to modify this class in the main styles.css file ]

@@ -460,9 +460,9 @@ this.subscribtions.push(sub2)
   addOrUpdateContact(data?){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='75vh';
-    dialogConfig.width='45vw';
+    dialogConfig.width='90vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='100%';
+    dialogConfig.minWidth='80%';
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     if(data){
