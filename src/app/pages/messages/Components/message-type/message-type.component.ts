@@ -420,9 +420,10 @@ ngAfterViewInit(): void {
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='100vh';
     dialogConfig.width='25vw';
-    dialogConfig.maxWidth='100%';
-    // dialogConfig.minWidth='200px';
+    dialogConfig.maxWidth='450px';
+    dialogConfig.minWidth='300px'
     dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
     dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
     dialogConfig.data={message:row};

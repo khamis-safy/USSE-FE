@@ -24,7 +24,6 @@ import { NavActionsComponent } from 'src/app/shared/components/nav-actions/nav-a
   styleUrls: ['./messages-mobileView.component.scss']
 })
 export class MessagesMobileViewComponent implements OnInit {
-
     length:number=0;
     numRows;
     loading:boolean=true;
@@ -92,6 +91,7 @@ messagesTableData:any=[]
     permission:DevicesPermissions[];
     display: number;
     isSmallScreen: boolean = false;
+    openedDialogs: any = [];
     constructor(public cdr: ChangeDetectorRef ,
       public dialog: MatDialog,
       private messageService:MessagesService,
@@ -100,6 +100,7 @@ messagesTableData:any=[]
       private translationService:TranslationService,
       private drawerService: NzDrawerService,
     private componentFactoryResolver: ComponentFactoryResolver,
+    
       ){
         this.display=this.messageService.getUpdatedDisplayNumber()
         this.pageIndex=this.messageService.pageNum;
@@ -543,18 +544,20 @@ onCheckboxChange(event,element: any) {
   
     }
     displayMessage(row){
-      if(!this.cellClick){
-  
+ 
       const currentLang=this.translationService.getCurrentLanguage()
       const dialogConfig=new MatDialogConfig();
-      dialogConfig.height='100vh';
-      dialogConfig.width='25vw';
+      dialogConfig.height='60vh';
+      dialogConfig.width='100vw';
       dialogConfig.maxWidth='100%';
-      // dialogConfig.minWidth='200px';
+      dialogConfig.minWidth='100%';
       dialogConfig.disableClose = true;
-      dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
+      dialogConfig.position = { bottom: '0'} ;
       dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
+      dialogConfig.panelClass ='bottom-to-top-dialog';
+
       dialogConfig.data={message:row};
+
       const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
   
       dialogRef.afterClosed().subscribe(result => {
@@ -562,7 +565,7 @@ onCheckboxChange(event,element: any) {
         }
   
       });
-    }
+    this.openedDialogs.push(dialogRef)
     }
     reSendMessage(msgId){
       const dialogConfig=new MatDialogConfig();
@@ -620,11 +623,14 @@ onCheckboxChange(event,element: any) {
      }
     ngOnDestroy(){
      
-        this.selection.clear();
-      
-        this.subscribtions.map(e=>e.unsubscribe());
-      this.selection.clear()
-      this.subscribtions.map(e=>e.unsubscribe());
+      this.openedDialogs.forEach((dialog) => {
+        if (dialog) {
+          dialog.close();
+        }
+      })
+      this.selection.clear();
+  
+      this.subscribtions.map(e => e.unsubscribe());
     }
     selectFilter(item){
     // this.selectedItems.push(item);

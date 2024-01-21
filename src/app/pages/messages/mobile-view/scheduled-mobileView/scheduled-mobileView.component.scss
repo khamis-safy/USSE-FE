@@ -1,0 +1,9 @@
+p,h1,h2,h3{
+    font-family: 'Poppins';
+}
+@media(max-width:768px){
+    p.overflow-line-2.mb-0 {
+        font-size: 12px !important;
+        color: black !important;
+    }
+}

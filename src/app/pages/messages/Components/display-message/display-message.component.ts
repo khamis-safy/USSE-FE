@@ -37,7 +37,9 @@ recipients:any;
         this.userName=this.data.message.chat.chatName.substring(this.data.message.targetPhoneNumber.length-2);
       }
       else{
-       this.userName= this.data.message.chat.chatName.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
+
+       this.userName= this.data.message.chat.chatName.trim().split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
+
       }
       this.message=this.data.message;
     }

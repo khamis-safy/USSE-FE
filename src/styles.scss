@@ -1889,7 +1889,7 @@ ul[dnd-list] .dndDragging {
 }
 
 }
-.custom-mat-dialog-container{
+.custom-mat-dialog-container {
   .mat-dialog-container{
     border-radius: 25px !important;
   }
@@ -2278,9 +2278,11 @@ color: var(--clr-primary-800) !important;
   .material-icons {
   font-size: 18px !important;
   }
-  // .mat-expansion-panel-header.mat-expanded {
-  // height: 50px !important;
-  // }
+  &.without-select{
+    .col:nth-child(1) {
+      padding-inline: 10px !important;
+  }
+  }
   }
   .mat-mdc-icon-button.mat-mdc-button-base {
     width: 15% !important;
@@ -2534,4 +2536,24 @@ span.mat-mdc-select-value-text {
 }
 .mdc-menu-surface {
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+.bottom-to-top-dialog {
+  .mat-mdc-dialog-container
+ .mdc-dialog__surface{
+  border-top-right-radius: 16px !important;
+  border-top-left-radius: 16px !important;
+
+ }
+  animation: slideInFromBottom .3s ease-out !important;
+
+  
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }

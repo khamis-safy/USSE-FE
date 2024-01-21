@@ -34,25 +34,26 @@
 
 
         <div class="date-time d-flex justify-content-center ">
-          <span class="txt-sm text-neutral-500 p-2">{{message?.createdAt  | toLocalTime | date: ' d/M/yy , h:mm a '}}</span>
+          <span class="txt-sm text-neutral-500 p-2">{{message?.createdAt  | toLocalTime}}</span>
         </div>
       </div>
       <div class="message-container">
 
-        <div class="mx-4">
+        <div class="mx-4 message-body-container">
 
           <ng-container [ngSwitch]="isScheduleM">
-
+            <div class="message-body" style="    max-width: 96%;
+            ">
             <p *ngSwitchCase="true" class="txt-md ms-3 text-neutral-900 message">{{schedule?.msgBody}}</p>
-
+            </div>
 
             <ng-container *ngSwitchCase="false">
-              <div style="    max-width: 96%;
+              <div class="message-body" style="    max-width: 96%;
               ">
                 <p  class="txt-md ms-3 mb-2 text-neutral-900 message">{{message?.msgBody}}</p>
-
+          
                 <ng-container *ngIf="message.fileName">
-                    <img *ngIf="(message.fileName | type )=='assets/images/image.svg' else otherType"  class="mx-1 mb-1 w-100" [src]="message.fileUrl" alt="">
+                    <img *ngIf="(message.fileName | type )=='assets/images/image.svg' else otherType"  class="mx-1 mb-1 w-100 image" [src]="message.fileUrl" alt="">
                     <ng-template #otherType>
                       <a  class="pointer " [href]="message.fileUrl" target="_blank" [title]="'open' | translate" ><img   class="media" [src]="message.fileName | type" alt=""></a>
   
@@ -93,13 +94,16 @@
   direction: ltr;
 ">
     <h2 class="ms-4 txt-lg">{{ 'RECIPIENT_LABEL' | translate }}</h2>
-    <ng-container *ngFor="let item of recipients">
-
-        <div class="recipient d-flex justify-content-between p-5 ">
+    <div class="recipients-container">
+      <ng-container *ngFor="let item of recipients">
+        <div class="recipient d-flex justify-content-between  ">
           <span class="txt-md ">{{item.name}}</span>
           <span class="txt-md "> {{item.number}}</span>
         </div>
         <div class="line"></div>
+        
     </ng-container>
+    </div>
+  
   </div>
 </section>

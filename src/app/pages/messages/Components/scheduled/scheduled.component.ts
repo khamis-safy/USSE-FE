@@ -258,14 +258,17 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
         const dialogConfig=new MatDialogConfig();
         dialogConfig.height='100vh';
         dialogConfig.width='25vw';
-        dialogConfig.maxWidth='100%';
+        dialogConfig.maxWidth='450px';
         dialogConfig.disableClose = true;
         dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
         dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
+        dialogConfig.minWidth='300px'
         dialogConfig.data={
           recipients:recipient,
           isScheduleN:true
         };
+        dialogConfig.panelClass = 'custom-mat-dialog-container';
+
         const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
 
         dialogRef.afterClosed().subscribe(result => {
@@ -281,9 +284,10 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
           const dialogConfig=new MatDialogConfig();
           dialogConfig.height='100vh';
           dialogConfig.width='25vw';
-          dialogConfig.maxWidth='100%';
-          // dialogConfig.minWidth='200px';
+          dialogConfig.maxWidth='450px';
+          dialogConfig.minWidth='300px'
           dialogConfig.disableClose = true;
+          dialogConfig.panelClass = 'custom-mat-dialog-container';
           dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
           dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
           dialogConfig.data={

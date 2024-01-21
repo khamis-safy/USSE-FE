@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -19,19 +19,18 @@ import { MessagesService } from '../../messages.service';
   templateUrl: './scheduled-mobileView.component.html',
   styleUrls: ['./scheduled-mobileView.component.scss']
 })
-export class ScheduledMobileViewComponent implements OnInit {
-
+export class ScheduledMobileViewComponent implements OnInit ,OnDestroy{
     length:number=0;
     numRows;
     loading:boolean=true;
     @Output() isChecked = new EventEmitter<Shceduled[]>;
     @Output() isOpenNewMessage = new EventEmitter<boolean>;
     @Output() selectedDeviceId = new EventEmitter<string>;
-
+    openedDialogs:any=[];
     @ViewChild(MatPaginator)  paginator!: MatPaginator;
     cellClick:boolean=false;
     columns :FormControl;
-    displayed: string[] = SCHEDULED.filter((_, index) => index !== 1);;
+    displayed: string[] = SCHEDULED.filter((_, index) => index !== SCHEDULED.length -1);;
     displayedColumns: string[] = ['Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
     dataSource:MatTableDataSource<Shceduled>;
     selection = new SelectionModel<Shceduled>(true, []);
@@ -269,40 +268,45 @@ export class ScheduledMobileViewComponent implements OnInit {
   
         }
   
-        onCellClick(recipient){
+        showRecepients(recipient){
           const currentLang=this.translationService.getCurrentLanguage()
-  
+
           const dialogConfig=new MatDialogConfig();
-          dialogConfig.height='100vh';
-          dialogConfig.width='25vw';
+          dialogConfig.height='60vh';
+          dialogConfig.width='100vw';
           dialogConfig.maxWidth='100%';
+          dialogConfig.minWidth='100%';
           dialogConfig.disableClose = true;
-          dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
+          dialogConfig.position = { bottom: '0'} ;
           dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
+          dialogConfig.panelClass ='bottom-to-top-dialog';
           dialogConfig.data={
             recipients:recipient,
             isScheduleN:true
           };
           const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
-  
+
           dialogRef.afterClosed().subscribe(result => {
             if(result){
             }
   
           });
+          this.openedDialogs.push(dialogRef)
         }
   
         displayMessage(row){
-          if(!this.cellClick){
+       
             const currentLang=this.translationService.getCurrentLanguage()
             const dialogConfig=new MatDialogConfig();
-            dialogConfig.height='100vh';
-            dialogConfig.width='25vw';
+            dialogConfig.height='60vh';
+            dialogConfig.width='100vw';
             dialogConfig.maxWidth='100%';
-            // dialogConfig.minWidth='200px';
+            dialogConfig.minWidth='100%';
             dialogConfig.disableClose = true;
-            dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
+            dialogConfig.position = { bottom: '0'} ;
             dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
+            dialogConfig.panelClass ='bottom-to-top-dialog';
+      
             dialogConfig.data={
               schedule:row,
               isScheduleM:true
@@ -314,9 +318,18 @@ export class ScheduledMobileViewComponent implements OnInit {
               }
   
             });
+            this.openedDialogs.push(dialogRef)
+
           }
   
-        }
+          ngOnDestroy(){
+            this.openedDialogs.forEach((dialog)=>{
+              if(dialog){
+                dialog.close();
+              }
+            })
+            this.subscribtions.map(e=>e.unsubscribe());
+          } 
   
   }
 

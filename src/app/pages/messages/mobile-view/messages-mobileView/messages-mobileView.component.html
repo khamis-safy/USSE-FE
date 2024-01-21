@@ -140,7 +140,7 @@
                 <ng-container *ngIf="msgCategory == 'inbox'">{{ 'SENDER_LABEL' | translate }}</ng-container>
                 <ng-container *ngIf="msgCategory != 'inbox'">{{ 'RECIPIENT_LABEL' | translate }}</ng-container>
               </div>
-              <div class="col text-center">{{ element.chat.chatName }}</div>
+              <div class="col ">{{ element.chat.chatName }}</div>
 
             
             </div>
@@ -152,40 +152,45 @@
             <div class="col" style="font-weight: normal;">{{ element.device?.deviceName }}</div>
           </div>
       
-          <!-- Messages Column -->
-          <div class="row row-item" *ngIf="displayedColumns.includes('Messages')">
-            <div class="col row-header">{{ 'MESSAGES_LABEL' | translate }}</div>
-            <div class="col text-center" >
-              <div class="py-2">
-                <div class="d-flex justify-content-center align-items-center flex-column">
-                  <p style="max-width: 150px;width: 140%;" class="overflow-line-2 mb-0">{{ element.msgBody }}</p>
-                   <div *ngIf="element?.fileName" class="text-start pt-2 pb-3">
-                    <img *ngIf="(element.fileName | type) == 'assets/images/image.svg' else otherType" [src]="element.fileName | type" alt="" style="width: 76px;">
-                    <ng-template #otherType>
-                      <img [src]="element.fileName | type" alt="" style="width: 96px;">
-                    </ng-template>
-                  </div>
+        <!-- Messages Column -->
+        <div class="row row-item" *ngIf="displayedColumns.includes('Messages')">
+          <div class="col row-header">{{ 'MESSAGES_LABEL' | translate }}</div>
+          <div class="col " >
+            <div class="py-2">
+              <div class="d-flex justify-content-center align-items-center flex-column">
+                <p style="max-width: 150px; width: 140%;" style="font-size: 12px;" class="mb-0">
+                  {{ element.msgBody?.length > 20 ? (element?.msgBody | slice:0:20) + '...' : element?.msgBody }}
+                  <span *ngIf="element.msgBody?.length > 20" class="text-primary-800" (click)="$event.stopPropagation() ; displayMessage(element)">
+                    {{ 'see_more' | translate }}
+                  </span>
+                </p>
+                 <div *ngIf="element?.fileName" class="text-start pt-2 pb-3">
+                  <img *ngIf="(element.fileName | type) == 'assets/images/image.svg' else otherType" [src]="element.fileName | type" alt="" style="width: 76px;">
+                  <ng-template #otherType>
+                    <img [src]="element.fileName | type" alt="" style="width: 96px;">
+                  </ng-template>
                 </div>
               </div>
             </div>
           </div>
+        </div>
       
           <!-- Received At Column -->
           <div class="row row-item" *ngIf="displayedColumns.includes('Received At')">
             <div class="col row-header">{{ 'RECEIVED_AT_LABEL' | translate }}</div>
-            <div class="col text-center">{{ element.createdAt | toLocalTime }}</div>
+            <div class="col ">{{ element.createdAt | toLocalTime }}</div>
           </div>
       
           <!-- Updated At Column -->
           <div class="row row-item" *ngIf="displayedColumns.includes('Updated At')">
             <div class="col row-header">{{ 'UPDATED_AT_LABEL' | translate }}</div>
-            <div class="col text-center">{{ element.updatedAt | toLocalTime }}</div>
+            <div class="col ">{{ element.updatedAt | toLocalTime }}</div>
           </div>
       
           <!-- Status Column -->
           <div class="row row-item" *ngIf="displayedColumns.includes('Status')">
             <div class="col row-header">{{ 'STATUS_LABEL' | translate }}</div>
-            <div class="col text-center d-flex ">
+            <div class="col  d-flex ">
               <span [ngSwitch]="element.status">
                 <div *ngSwitchCase="3" class="message-state read d-flex justify-content-center align-items-center">
                   {{ 'Read' | translate }}
@@ -209,7 +214,7 @@
           <!-- Action Column -->
           <div class="row row-item" *ngIf="displayedColumns.includes('Action')">
             <div class="col row-header">{{ 'ACTION' | translate }}</div>
-            <div class="col text-center">
+            <div class="col ">
               <div class="actions d-flex align-items-center justify-content-center">
                 <div class="retry pointer" title="{{ 'resend' | translate }}" (click)="reSendMessage(element.id); cellClick=true">
                   <img src="assets/icons/reload.svg" alt="">

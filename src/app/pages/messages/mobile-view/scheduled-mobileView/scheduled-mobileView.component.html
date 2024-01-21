@@ -102,38 +102,47 @@
         <path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
     </div>
  
-    <mat-accordion class="table-mobile-view" multi>
+    <mat-accordion class="table-mobile-view without-select" multi>
       <mat-expansion-panel *ngFor="let element of messagesTableData" [expanded]="false" [ngClass]="{'active-row': selection.isSelected(element)}">
         <mat-expansion-panel-header>
-     
-          <!-- Recipient Column -->
-          <div class="row w-100" >
-            <div class="col row-header">{{ 'RECIPIENT_LABEL' | translate }}</div>
-            <div class="col text-center" style="width: 250px;">
-              <div class="d-flex  align-items-center w-100 zi-4">
-                <span class="txt-sm total">{{ element?.targetPhoneNumber?.length }}</span>
-              </div>
-            </div>
-          </div>
+      <!-- Scheduled At Column -->
+       <div class="row w-100" >
+        <div class="col row-header">{{ 'SCHEDULED_AT' | translate }}</div>
+        <div class="col ">{{ element.scheduledAt | toLocalTime }}</div>
+      </div>
+        
         </mat-expansion-panel-header>
+
+      <!-- Recipient Column -->
+      <div class="row row-item" *ngIf="displayedColumns.includes('Recipient')">
+        <div class="col row-header">{{ 'RECIPIENT_LABEL' | translate }}</div>
+        <div class="col " style="width: 250px;">
+          <div class="d-flex  align-items-center w-100 zi-4">
+            <span class="txt-sm total" style="text-decoration: underline;" (click)="$event.stopPropagation() ;showRecepients(element?.targetPhoneNumber)">{{ element?.targetPhoneNumber?.length }}</span>
+          </div>
+        </div>
+      </div>
       <!-- Device Name Column -->
       <div class="row row-item" *ngIf="displayedColumns.includes('Device Name')">
         <div class="col row-header">{{ 'DEVICE_NAME_LABEL' | translate }}</div>
-        <div class="col text-center">{{ element.device?.deviceName }}</div>
+        <div class="col ">{{ element.device?.deviceName }}</div>
       </div>
         <!-- Messages Column -->
-        <div class="row row-item" *ngIf="displayedColumns.includes('Messages')">
+         <div class="row row-item" *ngIf="displayedColumns.includes('Messages')">
           <div class="col row-header">{{ 'MESSAGES_LABEL' | translate }}</div>
-          <div class="col text-center" style="max-width: 135px;">
+          <div class="col " >
             <div class="py-2">
               <div class="d-flex justify-content-center align-items-center flex-column">
-                <p style="max-width: 100%;" class="overflow-line-4 mb-0">{{ element.msgBody }}</p>
-    
-                <div *ngIf="element?.fileName" class="text-start pt-2 pb-3">
-                  <!-- Adjust image size as needed -->
-                  <img *ngIf="(element.fileName | type) == 'assets/images/image.svg' else otherType" [src]="element.fileName | type" alt="" style="width: 80px;">
+                <p style="max-width: 150px; width: 140%;" style="font-size: 12px;" class="mb-0">
+                  {{ element.msgBody?.length > 20 ? (element?.msgBody | slice:0:20) + '...' : element?.msgBody }}
+                  <span *ngIf="element.msgBody?.length > 20" class="text-primary-800" (click)="$event.stopPropagation() ; displayMessage(element)">
+                    {{ 'see_more' | translate }}
+                  </span>
+                </p>
+                 <div *ngIf="element?.fileName" class="text-start pt-2 pb-3">
+                  <img *ngIf="(element.fileName | type) == 'assets/images/image.svg' else otherType" [src]="element.fileName | type" alt="" style="width: 76px;">
                   <ng-template #otherType>
-                    <img [src]="element.fileName | type" alt="" style="width: 123px;">
+                    <img [src]="element.fileName | type" alt="" style="width: 96px;">
                   </ng-template>
                 </div>
               </div>
@@ -144,14 +153,10 @@
         <!-- Created At Column -->
         <div class="row row-item" *ngIf="displayedColumns.includes('Created At')">
           <div class="col row-header">{{ 'CREATED_AT' | translate }}</div>
-          <div class="col text-center">{{ element.createdAt | toLocalTime }}</div>
+          <div class="col ">{{ element.createdAt | toLocalTime }}</div>
         </div>
     
-        <!-- Scheduled At Column -->
-        <div class="row row-item" *ngIf="displayedColumns.includes('Scheduled At')">
-          <div class="col row-header">{{ 'SCHEDULED_AT' | translate }}</div>
-          <div class="col text-center">{{ element.scheduledAt | toLocalTime }}</div>
-        </div>
+      
     
       </mat-expansion-panel>
     </mat-accordion>
