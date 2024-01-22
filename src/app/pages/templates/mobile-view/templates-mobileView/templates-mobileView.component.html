@@ -74,7 +74,8 @@
   </div>
 
   <mat-accordion class="table-mobile-view without-select" multi>
-    <mat-expansion-panel *ngFor="let element of templatesTableData" [expanded]="false">
+    <mat-expansion-panel *ngFor="let element of templatesTableData" [expanded]="length > 1 ?false :true"
+      [ngClass]="{'radius-15':length==1}">
       <mat-expansion-panel-header>
         <!-- Template Name Column -->
         <div class="row w-100" >
@@ -120,7 +121,9 @@
   </mat-accordion>
   
 
-  <mat-paginator  [hidePageSize]="true"
+  <mat-paginator
+  *ngIf="length > 1"
+    [hidePageSize]="true"
   [pageSize]="display"
   (page)="onPageChange($event)"
   [length]="length"

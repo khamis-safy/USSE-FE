@@ -300,7 +300,9 @@ ngAfterViewInit(): void {
             }
         }
         else{
-          this.paginator.pageIndex=this.pageNum
+          if(this.paginator){
+            this.paginator.pageIndex=this.pageNum
+          }
           this.notFound=false;
           this.getMessagesCount(deviceId,msgCategory,filterdItems);
 

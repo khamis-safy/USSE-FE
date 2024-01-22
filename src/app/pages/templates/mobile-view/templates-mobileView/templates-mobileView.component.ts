@@ -159,8 +159,6 @@ export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
          let sub1= this.templatesService.getTemplates(email,showsNum,pageNum,orderedBy,search).subscribe(
             (res)=>{
               this.numRows=res.length;
-              this.loading = false;
-              // this.dataSource=new MatTableDataSource<Templates>(res)
               this.templatesTableData=res
               if(this.isCanceled){
                 this.displayedColumns= ['Template Name', 'Message', "Create At" , 'Action'];
@@ -168,6 +166,7 @@ export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
               }
               if(search!=""){
                 this.length=res.length;
+                this.loading = false;
                 if(this.length==0){
                   this.notFound=true;
                 }
@@ -176,7 +175,9 @@ export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
                 }
             }
             else{
-              this.paginator.pageIndex=this.pageIndex
+              if(this.paginator){
+                this.paginator.pageIndex=this.pageIndex
+              }
               this.notFound=false;
       
               this.templatesCount();
@@ -242,8 +243,11 @@ export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
   onPageSizeChange(event){
     this.templatesService.showsNum=event.value;
     this.pageIndex=0; 
-    this.paginator.pageSize = event.value;
-    this.paginator.pageIndex=0;
+    if(this.paginator){
+      this.paginator.pageSize = event.value;
+      this.paginator.pageIndex=0;
+    }
+    
     this.getTemplates();
 
   }

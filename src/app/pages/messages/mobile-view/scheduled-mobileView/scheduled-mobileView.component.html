@@ -104,7 +104,8 @@
     </div>
  
     <mat-accordion class="table-mobile-view without-select" multi>
-      <mat-expansion-panel *ngFor="let element of messagesTableData" [expanded]="false" [ngClass]="{'active-row': selection.isSelected(element)}">
+      <mat-expansion-panel *ngFor="let element of messagesTableData" [expanded]="length > 1 ?false :true" 
+        [ngClass]="{'radius-15':length==1}">
         <mat-expansion-panel-header>
       <!-- Scheduled At Column -->
        <div class="row w-100" >
@@ -162,7 +163,8 @@
       </mat-expansion-panel>
     </mat-accordion>
     
-    <mat-paginator  [hidePageSize]="true"
+    <mat-paginator *ngIf="length > 1"
+    [hidePageSize]="true"
     [pageSize]="display"
     (page)="onPageChange($event)"
     [length]="length"

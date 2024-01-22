@@ -180,7 +180,10 @@ this.getMessages(this.deviceId);
 } 
     
   ngAfterViewInit(): void {
-    this.paginator.pageSize=this.messageService.display;
+    if(this.paginator){
+      this.paginator.pageSize=this.messageService.display;
+
+    }
   }
       getDevicePermission(deviceId:string){
         if(this.permission && this.isUser){
@@ -403,22 +406,27 @@ onCheckboxChange(event,element: any) {
           (res)=>{
             this.numRows=res.length;
   
-            this.loading = false;
+            
             // this.dataSource=new MatTableDataSource<Message>(res)
             this.messagesTableData=res
             //
-            if(search!=""){
-              this.length=res.length;
-              if(this.length==0){
-                this.notFound=true;
-              }
-              else{
-                this.notFound=false;
-              }
+          if(search!=""){
+            this.length=res.length;
+            this.loading = false;
+
+            if(this.length==0){
+              this.notFound=true;
+            }
+            else{
+              this.notFound=false;
+            }
           }
           else{
+            if(this.paginator){
             this.paginator.pageIndex=this.pageIndex
+            }
             this.notFound=false;
+          
             this.getMessagesCount(deviceId,msgCategory,filterdItems);
   
           }

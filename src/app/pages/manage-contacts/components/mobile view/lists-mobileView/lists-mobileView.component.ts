@@ -179,7 +179,7 @@ getListData(searchVal?){
   }
   let sub2= this.listService.getList(email,shows,pageNumber,orderedBy,search).subscribe(
     (res)=>{
-      this.loading = false;
+      
 
         this.numRows=res.length;
   this.dataSource=new MatTableDataSource<ListData>(res);
@@ -189,6 +189,7 @@ element.defaultExpanded = true; // Set to true or false based on your logic
 });
   if(search!=""){
     this.length=res.length;
+    this.loading = false;
     if(this.length==0){
       this.notFound=true;
     }
@@ -300,8 +301,11 @@ selectAllRows(){
   onSelect(event){
     this.listService.display=event.value;
     this.listService.updateDisplayNumber(event.value)
-    this.paginator.pageSize = event.value;
-    this.paginator.pageIndex=0;
+    if(this.paginator){
+      this.paginator.pageSize = event.value;
+      this.paginator.pageIndex=0;
+    }
+   
     this.pageNum=0; 
     
     this.getListData();

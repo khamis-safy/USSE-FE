@@ -161,7 +161,10 @@ element.defaultExpanded = true; // Set to true or false based on your logic
     }
 }
 else{
-        this.paginator.pageIndex=this.pageNum
+  if(this.paginator){
+    this.paginator.pageIndex=this.pageNum
+
+  }
         this.notFound=false;
         this.getListsCount();
 

@@ -264,9 +264,11 @@ onCheckboxChange(event,element: any) {
     this.listService.display=event.value;
     this.listService.updateDisplayNumber(event.value)
     this.pageIndex=0; 
-    
-    this.paginator.pageSize = event.value;
-    this.paginator.pageIndex=0;
+    if(this.paginator){
+      this.paginator.pageSize = event.value;
+      this.paginator.pageIndex=0;
+    }
+  
     this.getContacts();
 
   }
@@ -286,7 +288,7 @@ onCheckboxChange(event,element: any) {
    let sub1= this.listService.getContacts(email,isCanceledContacts,shows,pageNumber,orderedBy,search,this.listId).subscribe(
       (res)=>{
         this.numRows=res.length;
-        this.loading = false;
+      
         if(isCanceledContacts){
           this.displayedColumns= ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
 
@@ -295,6 +297,7 @@ onCheckboxChange(event,element: any) {
         this.tableData=res;
         if(search!=""){
           this.length=res.length;
+          this.loading = false;
           if(this.length==0){
             this.notFound=true;
           }
@@ -303,7 +306,9 @@ onCheckboxChange(event,element: any) {
           }
       }
       else{
-        this.paginator.pageIndex=this.pageIndex
+        if(this.paginator){
+          this.paginator.pageIndex=this.pageIndex
+        }
         this.notFound=false;
 
         this.contactsCount(isCanceledContacts);
