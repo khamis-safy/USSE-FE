@@ -135,6 +135,9 @@ tr {
 
 }
 @media only screen and (max-width: 768px) {
+  .d-flex.gap-4.flex-column.py-3 {
+    gap: 20px !important;
+  }
 .additional{
   padding: 10px 0 !important;
   margin: 0 !important;}

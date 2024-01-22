@@ -1,5 +1,5 @@
-<section [ngClass]="{fullWidth , smallDropDown ,'flex-column flex-lg-row':labelTopInMobileView}"  class="us-select-container d-flex align-items-center flex-nowrap gap-lg-4 gap-3" >
-  <ng-container *ngIf="!labelTopInMobileView">
+<section [ngClass]="{fullWidth , smallDropDown ,'flex-column flex-lg-row  gap-lg-4 gap-2':labelTopInMobileView && !forFiteringOnly ,'gap-3':!labelTopInMobileView && !forFiteringOnly}"   class=" us-select-container d-flex align-items-center flex-nowrap" >
+  <ng-container *ngIf="!labelTopInMobileView || forFiteringOnly">
     <div  class=" label-widget w-25 " [ngClass]="{deviceLableGap }" *ngIf="optional || label" [style]="forFiteringOnly? 'min-width: 0' : 'min-width: 25%'">
     
     
@@ -19,7 +19,7 @@
 </ng-container>
 
 
-<ng-container *ngIf="labelTopInMobileView">
+<ng-container *ngIf="labelTopInMobileView && !forFiteringOnly">
   <div class="d-none d-lg-block label-widget w-25 " *ngIf="optional || label" style=" min-width: 25%;">
   
     <label class="txt txt-sm text-nowrap d-flex flex-row" (click)="toggleDropdown()">

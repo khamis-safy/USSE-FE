@@ -1,4 +1,4 @@
-<section class=" us-input d-flex gap-lg-4 gap-3 " [ngClass]="{'align-items-center': !isTextArea ,'flex-column flex-lg-row':labelTopInMobileView}">
+<section class=" us-input d-flex gap-lg-4 gap-2" [ngClass]="{'align-items-center': !isTextArea ,'flex-column flex-lg-row':labelTopInMobileView}">
   <!-- Label & optional indicator -->
   <ng-container *ngIf="!labelTopInMobileView">
   <div
@@ -215,13 +215,13 @@
 
 
     <!-- error Hint / caption -->
-    <div *ngIf="hintText && !warning " class="hint mt-2" [ngClass]="{ error }">
+    <div *ngIf="hintText && !warning " class="hint " [ngClass]="{ error }">
       <i [class]="hintIcon"></i>
       <p class="txt txt-xs hint mt-2" [ngClass]="{ error }">{{ hintText }}</p>
     </div>
 
       <!-- warning Hint / caption -->
-   <div *ngIf="hintText && warning " class="hint mt-2" [ngClass]="{ warning }">
+   <div *ngIf="hintText && warning " class="hint " [ngClass]="{ warning }">
     <i [class]="hintIcon"></i>
     <p class="txt txt-xs hint mt-2" [ngClass]="{ warning }">{{ hintText }}</p>
   </div>

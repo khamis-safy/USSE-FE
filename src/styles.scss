@@ -1093,7 +1093,7 @@ background-color: #C1FFCF;
 .hint {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
   color: $clr_neutral_600;
 
   &.error {
@@ -2187,7 +2187,7 @@ color: var(--clr-primary-800) !important;
   }
   
   .table-mobile-view{
-    margin-top: 1rem;
+    margin-top: 1.5rem;
    
     .col{
       font-size: 12px !important;
@@ -2213,6 +2213,8 @@ color: var(--clr-primary-800) !important;
     mat-expansion-panel.mat-expansion-panel:first-of-type  {
       border-top-right-radius: 15px !important;
       border-top-left-radius: 15px !important;
+      padding-top: 4px !important;
+
   }
   mat-expansion-panel.radius-15.mat-expansion-panel:first-of-type  {
    border-radius: 15px !important;
@@ -2344,6 +2346,9 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   display: none;
 }
 @media only screen and (max-width: 768px) {
+  section.emoji-mart {
+    width: 100% !important;
+}
   .table-inner-container{
     td,th{
       font-size: 13px  !important;

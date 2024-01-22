@@ -28,10 +28,9 @@
 
       <form  [formGroup]="form"  class="d-flex flex-column px-2 my-3 w-100">
         <div class="d-flex justify-content-between mb-3 add-list-container">
-        <div class="me-3 lists " style="width:70% ">
+        <div class="me-3 lists " style="width:40% ">
 
           <us-select
-          [labelTopInMobileView]="false"
           [data]="listsArr"
           formControlName="selectedLists"
           [multiSelect]="false"
