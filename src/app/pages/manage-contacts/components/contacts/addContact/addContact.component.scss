@@ -143,6 +143,8 @@ th{
 }
 .table>:not(caption)>*>* {
   padding: 5px 2px !important;
+  font-size: 12px;
+  max-width: 100px;
 }
 .remove{
  img {
@@ -158,4 +160,11 @@ table{
     flex:15% !important
   }
 }
+
+}
+/* Add this CSS to your styles file or component styles */
+.table th,
+.table td {
+  white-space: normal; /* Allow content to wrap to the next line */
+  word-wrap: break-word; /* Break words if they are too long */
 }

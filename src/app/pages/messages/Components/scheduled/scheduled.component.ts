@@ -63,6 +63,9 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
       this.pageNum=this.messageService.pageNum;
     }
   ngAfterViewInit(): void {
+    if(this.paginator){
+      this.paginator.pageSize=this.display
+    }
     }
   ngOnInit() {
    
@@ -95,6 +98,7 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
         if(!this.isSmallScreen){
           this.selection.clear()
           this.getDevices();
+          
         }
       });
   

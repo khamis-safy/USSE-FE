@@ -117,3 +117,8 @@
     max-height: 360px;
     overflow: auto;
   }
+  .table th,
+.table td {
+  white-space: normal; /* Allow content to wrap to the next line */
+  word-wrap: break-word; /* Break words if they are too long */
+}

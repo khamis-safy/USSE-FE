@@ -1,43 +1,31 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-  ViewChildren,
-  AfterViewInit,
-  OnDestroy,
-} from '@angular/core';
-import { TemplatesService } from '../../templates.service';
-import {AddTemplateComponent} from '../addTemplate/addTemplate.component'
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
-import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
-
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import { Templates } from '../../templates';
-import { SelectionModel } from '@angular/cdk/collections';
-import { FormControl } from '@angular/forms';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { TEMPLATESHEADERS } from '../constats/contstants';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
+import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
+import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { AddTemplateComponent } from '../../components/addTemplate/addTemplate.component';
+import { TEMPLATESHEADERS } from '../../components/constats/contstants';
+import { Templates } from '../../templates';
+import { TemplatesService } from '../../templates.service';
+import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 
 @Component({
-  selector: 'app-innerTemplates',
-  templateUrl: './innerTemplates.component.html',
-  styleUrls: ['./innerTemplates.component.scss'],
+  selector: 'app-templates-mobileView',
+  templateUrl: './templates-mobileView.component.html',
+  styleUrls: ['./templates-mobileView.component.scss']
 })
-export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
+export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
   length: number;
   delay: number = 5;
   active: boolean = false;
   numRows;
   loading:boolean=true;
   isSearch:boolean=false;
+  pageIndex:number=0;
 
     noData: boolean;
     notFound: boolean;
@@ -48,48 +36,54 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('search') search!: ElementRef;
-
+  subscriptions:Subscription[]=[]
   deletedContacts: string[] = [];
   columns: FormControl;
-  displayed: string[] = TEMPLATESHEADERS;
+  display: number;
+  displayed: string[] = TEMPLATESHEADERS.slice(1);
   displayedColumns: string[] = [
     'Template Name',
     'Message',
     'Created At',
     'Action',
   ];
-  isSmallScreen: boolean = false;
-
-  destroy$: Subject<void> = new Subject<void>();
-  
+  templatesTableData:any=[];
   dataSource: MatTableDataSource<Templates>;
+  showsOptions:SelectOption[]=[
+    {title:'10',value:10},
+    {title:'50',value:50},
+    {title:'100',value:100}
+
+
+  ];
+  showsSelectedOptions:any = new FormControl([]);
+
+  form = new FormGroup({
+    showsSelectedOptions:this.showsSelectedOptions,
+   
+  });
+  openedDialogs:any=[];
+
   constructor(
     public dialog: MatDialog,
     private toaster: ToasterServices,
-    private templatesService: TemplatesService,
-    private breakpointObserver: BreakpointObserver
-  ) {}
+    private templatesService: TemplatesService
+  ) {
+    this.display=templatesService.showsNum
+    this.pageIndex=templatesService.pageNum;
+  }
 
-  ngAfterViewInit(): void {
-    if(this.paginator){
-      this.paginator.pageSize=this.templatesService.showsNum
-    }
-    }
+
+
   ngOnInit() {
-
-    this.breakpointObserver.observe(['(max-width: 768px)'])
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(result => {
-      this.isSmallScreen = result.matches;
-      if(!this.isSmallScreen){
-        this.getTemplates();
-        if(this.paginator){
-          this.paginator.pageSize=this.templatesService.showsNum
-        }
+    this.form.patchValue({
+      showsSelectedOptions: {
+      title:String(this.templatesService.showsNum),
+      value:this.templatesService.showsNum,
       }
-      
-    });
-  
+      })
+
+    this.getTemplates();
     this.columns = new FormControl(this.displayedColumns);
     this.displayedColumns=this.canEdit?[
       'Template Name',
@@ -103,51 +97,58 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
 
   openDeleteModal(id:string){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.height='50vh';
-    dialogConfig.width='35vw';
+    dialogConfig.height='54vh';
+    dialogConfig.width='90vw';
     dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='465px';
+    dialogConfig.minWidth='80%';
+    dialogConfig.minHeight='428';
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.data =
     {
       templatesData:{templatesId:id}
     }
     const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
+    let sub = dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.getTemplates();
       }
     });
+    this.subscriptions.push(sub)
+    this.openedDialogs.push(dialogRef)
   }
 
 
 
 
 
-  openEditModal(data?){
-    const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='77vh';
-    dialogConfig.width='40vw';
-    dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='465px';
-    dialogConfig.maxHeight='85vh';
-    dialogConfig.disableClose = true;
 
-    dialogConfig.data=data ;
+  openAddOrEditModal(data?){
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='75vh';
+    dialogConfig.width='90vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='80%';
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    if(data){
+      dialogConfig.data=data ;
+    }
 
     const dialogRef = this.dialog.open(AddTemplateComponent,dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
+    let sub = dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.getTemplates();
-            }
+      }
     });
-
+    this.subscriptions.push(sub)
+    this.openedDialogs.push(dialogRef)
   }
 
 
   getTemplates(searchVal?){
         let showsNum=this.templatesService.showsNum;
-        let pageNum=searchVal?0 :this.templatesService.pageNum;
+        let pageNum= searchVal?0:this.pageIndex
         let email=this.templatesService.email;
         let orderedBy=this.templatesService.orderedBy;
         let search=searchVal?searchVal:"";
@@ -159,8 +160,12 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
             (res)=>{
               this.numRows=res.length;
               this.loading = false;
-              this.dataSource=new MatTableDataSource<Templates>(res)
-            
+              // this.dataSource=new MatTableDataSource<Templates>(res)
+              this.templatesTableData=res
+              if(this.isCanceled){
+                this.displayedColumns= ['Template Name', 'Message', "Create At" , 'Action'];
+
+              }
               if(search!=""){
                 this.length=res.length;
                 if(this.length==0){
@@ -171,7 +176,7 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
                 }
             }
             else{
-              this.paginator.pageIndex=this.templatesService.pageNum      
+              this.paginator.pageIndex=this.pageIndex
               this.notFound=false;
       
               this.templatesCount();
@@ -185,6 +190,7 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
             })
              this.subscribtions.push(sub1)
         }
+
 
         templatesCount(){
           let email=this.templatesService.email;
@@ -233,20 +239,27 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
 
     }
   }
+  onPageSizeChange(event){
+    this.templatesService.showsNum=event.value;
+    this.pageIndex=0; 
+    this.paginator.pageSize = event.value;
+    this.paginator.pageIndex=0;
+    this.getTemplates();
 
+  }
 
   onPageChange(event){
-    this.templatesService.showsNum=event.pageSize;
-    this.templatesService.pageNum=event.pageIndex;
-
+    this.pageIndex=event.pageIndex;
 
     this.getTemplates();
 
   }
-  ngOnDestroy(){
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.subscribtions.map(e=>e.unsubscribe());
+  ngOnDestroy() {
+    this.openedDialogs.forEach((dialog)=>{
+      if(dialog){
+        dialog.close();
+      }
+    })
+  this.subscriptions.map((sub)=>sub.unsubscribe())
   }
-  
 }

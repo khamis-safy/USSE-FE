@@ -138,14 +138,6 @@
       <!-- additional fields -->
       <div class="additional p-3 mt-3">
         <form [formGroup]="form2"  class="additionaltb">
-          <!-- <div *ngIf="showInputs || additionalParameters?.length != 0" class="tbheader mb-2">
-            <span class="field-name" style="font-weight: 500">{{ 'FIELD_NAME' | translate }}            
-              <em class="text-danger">*</em>
-            </span>
-            <span class="field-name" style="font-weight: 500">{{ 'VALUE' | translate }}            
-              <em class="text-danger">*</em>
-            </span>
-          </div> -->
           <ng-container *ngIf="showInputs || additionalParameters?.length != 0">
 
             <table class="table w-100" >

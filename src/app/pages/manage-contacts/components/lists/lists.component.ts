@@ -96,6 +96,9 @@ subscribtions:Subscription[]=[];
   }
 
   ngAfterViewInit() {
+    if(this.paginator){
+      this.paginator.pageSize=this.display
+    }
   }
 getListsCount(){
   this.loading=true;

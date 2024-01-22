@@ -8,6 +8,7 @@ import { AddTemplateComponent } from './components/addTemplate/addTemplate.compo
 import { InnerTemplatesComponent } from './components/innerTemplates/innerTemplates.component';
 import { OwaTemplatesComponent } from './components/owaTemplates/owaTemplates.component';
 import { DragZoneModule } from 'src/app/shared/components/drag-zone/drag-zone.module';
+import { TemplatesMobileViewComponent } from './mobile-view/templates-mobileView/templates-mobileView.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { DragZoneModule } from 'src/app/shared/components/drag-zone/drag-zone.mo
     TemplatesComponent,
     AddTemplateComponent ,
     InnerTemplatesComponent ,
-    OwaTemplatesComponent
+    OwaTemplatesComponent,
+    TemplatesMobileViewComponent
   ],
   providers:[TemplatesService]
 })

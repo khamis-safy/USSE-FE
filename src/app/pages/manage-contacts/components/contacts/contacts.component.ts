@@ -76,11 +76,10 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
 
     }
   ngAfterViewInit() {
+    if(this.paginator){
+      this.paginator.pageSize=this.display
+    }
   }
-
-
-    @Input('isUnsubscribe') isUnsubscribe = false;
-
   ngOnInit() {
     this.breakpointObserver.observe(['(max-width: 768px)'])
     .pipe(takeUntil(this.destroy$))
@@ -89,7 +88,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
       if(!this.isSmallScreen){
         this.selection.clear()
         this.getContacts();
-
+      
       }
     });
   

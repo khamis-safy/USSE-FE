@@ -130,6 +130,7 @@ this.breakpointObserver.observe(['(max-width: 768px)'])
       if(!this.isSmallScreen){
         this.selection.clear()
         this.getDevices(this.msgCategory);
+        
       }
     });
 
@@ -142,7 +143,9 @@ this.breakpointObserver.observe(['(max-width: 768px)'])
     }
   
 ngAfterViewInit(): void {
-  // this.paginator.pageSize=this.messageService.display;
+  if(this.paginator){
+    this.paginator.pageSize=this.display
+  }
 }
     getDevicePermission(deviceId:string){
       if(this.permission && this.isUser){

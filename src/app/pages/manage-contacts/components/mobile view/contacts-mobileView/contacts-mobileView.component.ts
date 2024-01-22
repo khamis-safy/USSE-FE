@@ -291,15 +291,8 @@ onCheckboxChange(event,element: any) {
           this.displayedColumns= ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
 
         }
-        res.forEach(contact => {
-          contact.hideLeftArrow = true;
-          contact.hideRightArrow = false;
-        });
-        this.dataSource=new MatTableDataSource<Contacts>(res);
+
         this.tableData=res;
-        this.tableData.forEach(element => {
-      element.defaultExpanded = true; // Set to true or false based on your logic
-    });
         if(search!=""){
           this.length=res.length;
           if(this.length==0){
