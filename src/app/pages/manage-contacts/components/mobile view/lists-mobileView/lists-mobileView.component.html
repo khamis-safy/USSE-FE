@@ -131,13 +131,18 @@
           <div class="col">{{ element.totalContacts }}</div>
         </div>
     
-        <div class="row row-item" *ngIf="canEdit">
+        <div class="row row-item">
           <div class="col row-header">{{ 'ACTION_COLUMN' | translate }}</div>
           <div class="col">
-            <div class="d-flex align-items-center pointer text-primary-800" (click)="openAddOrUpdateList(element); cellClick=true">
-              <mat-icon class="mat-icon" color="primary">edit</mat-icon>
-              <span class=" edit">{{ 'EDIT_ACTION' | translate }}</span>
-            </div>
+            <div class="d-flex gap-3 align-items-center">
+              <div  *ngIf="canEdit" class="d-flex align-items-center pointer text-primary-800" (click)="openAddOrUpdateList(element)">
+                <mat-icon class="mat-icon" color="primary">edit</mat-icon>
+                <span class=" edit">{{ 'EDIT_ACTION' | translate }}</span>
+              </div>
+              <div class="details" (click)="navigateTo(element.id)">
+                <span class="text-primary-800" >details</span>
+              </div>
+          </div>
           </div>
         </div>
     

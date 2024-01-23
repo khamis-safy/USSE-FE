@@ -1,4 +1,6 @@
-<section class="py-3 component-container d-flex flex-column gap-3">
+<section class="py-3 component-container">
+  <div *ngIf="!isSmallScreen" class="large-screen-view  d-flex flex-column gap-3">
+<ng-container *ngIf="!noData">
   <div class="d-flex justify-content-between align-items-center ">
     <div class="d-flex position-relative row m-0">
       <div class=" col-12 col-lg-4 p-0">
@@ -17,7 +19,9 @@
     </mat-form-field>
   </div>
 
-  <ng-container *ngIf="length > 0 || loading">
+</ng-container>
+ 
+  <ng-container *ngIf="length > 0 && !noData || loading">
     <section class="table-wrapper ">
       <table matSort mat-table [dataSource]="dataSource" (matSortChange)="onSortChange($event)">
         <!-- Checkbox Column -->
@@ -107,10 +111,15 @@
     </section>
   </ng-container>
 
-  <ng-container *ngIf="length == 0 && !loading">
+  <ng-container *ngIf="(length == 0 && !loading) && ( notFound || noData)">
     <div class="d-flex justify-content-center align-items-center flex-column gap-3 nodata-container w-100" style="height: 500px;">
       <img src="assets/images/files.svg" alt="">
       <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA_TO_SHOW' | translate }}</span>
     </div>
   </ng-container>
+  </div>
+  
+  <div *ngIf="isSmallScreen" class="small-screen-view">
+    <app-listDetails-mobileView [canEdit]="canEdit" [count]="count" [isCanceled]="isCanceled" (updatedCount)="updateTotalContacts($event)"></app-listDetails-mobileView>
+  </div>
 </section>

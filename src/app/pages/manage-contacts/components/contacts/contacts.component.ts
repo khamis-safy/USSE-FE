@@ -59,8 +59,8 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   notFound: boolean=false;
   display: number;
   pageNum:number;
+  
   isSmallScreen: boolean = false;
-
   destroy$: Subject<void> = new Subject<void>();
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
@@ -192,10 +192,7 @@ unCancelSnackBar(){
           contact.hideRightArrow = false;
         });
         this.dataSource=new MatTableDataSource<Contacts>(res);
-        this.tableData=res;
-        this.tableData.forEach(element => {
-      element.defaultExpanded = true; // Set to true or false based on your logic
-    });
+
         if(search!=""){
           this.length=res.length;
           if(this.length==0){

@@ -59,7 +59,6 @@ export class ContactsMobileViewComponent implements OnInit {
   selection = new SelectionModel<Contacts>(true, []);
   subscribtions:Subscription[]=[];
   @Input() listId:string="";
-  dynamicComponentRef: ComponentRef<NavActionsComponent>;
 
  
   isSearch: boolean;
@@ -67,7 +66,7 @@ export class ContactsMobileViewComponent implements OnInit {
   notFound: boolean=false;
   display: number;
 
-
+  dynamicComponentRef: ComponentRef<NavActionsComponent>;
   showsOptions:SelectOption[]=[
     {title:'10',value:10},
     {title:'50',value:50},
@@ -236,7 +235,12 @@ distroyDynamicComponent(){
 }
 onCheckboxChange(event,element: any) {
   if(event.checked == false && this.dynamicComponentRef){
-    this.dynamicComponentRef.instance.showContactsMenueItems();
+    if(this.isCanceled){
+      this.dynamicComponentRef.instance.showCanceledContactsMenueItems();
+    }
+    else{
+      this.dynamicComponentRef.instance.showContactsMenueItems();
+    }
   }
   if(this.selection.selected.length  > 0 && !this.dynamicComponentRef){
     this.createDynamicComponent(this.selection.selected);

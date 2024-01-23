@@ -29,7 +29,7 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
   @Output() updateCanceledData = new EventEmitter<boolean>();
   @Output() unDoDeleteItem = new EventEmitter<boolean>();
   @Output() resendFailedMessages = new EventEmitter<boolean>();
-
+  listId:any;
   openedDialogs:any=[];
   showExportOptions:boolean=false;
   deletedItems:any=[];
@@ -62,6 +62,9 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
       this.showMessageMenueItems()
 
     }
+    if(this.componentName == 'listDetails'){
+      this.showListDetailsMenueItems()
+    }
   }
   showFailedMsgMenueItems(){
     this.menuItems = [
@@ -84,6 +87,7 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
   }
   showCanceledContactsMenueItems(){
     this.menuItems=[
+      { name: 'Select_All', function: () => this.selectAll() },
       {name: 'UnCancel', function: () => this.openUnCancelContactsModal()}]
   }
   showContactsMenueItems(){
@@ -95,6 +99,14 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
       { name: 'EXPORT_SELECTED'}
     ];
 
+  }
+  showListDetailsMenueItems(){
+    this.menuItems = [
+      { name: 'Select_All', function: () => this.selectAll() },
+      { name: 'REMOVE_FROM_LIST', function: () => this.removeContacts() },
+      { name: 'delete', function: () => this.openDeleteModal()},
+      { name: 'EXPORT_SELECTED'}
+    ];
   }
   resendMessages(){
     this.resendFailedMessages.emit(true)
@@ -149,6 +161,14 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
         { name: 'EXPORT_SELECTED'}]
         
     }
+    if(this.componentName=='canceledContacts')
+    {
+      this.menuItems=[
+        {name: 'UnCancel', function: () => this.openUnCancelContactsModal()
+      }
+      ]
+    
+    }
     if(this.componentName== 'lists')
     {
       this.menuItems=[
@@ -166,6 +186,14 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
         { name: 'delete', function: () => this.openDeleteMessageModal()}
       ];
     }
+    if(this.componentName == 'listDetails'){
+      this.menuItems = [
+        { name: 'REMOVE_FROM_LIST', function: () => this.removeContacts() },
+        { name: 'delete', function: () => this.openDeleteModal()},
+        { name: 'EXPORT_SELECTED'}
+      ];
+    }
+    
   }
 
 addContactToList(){
@@ -211,7 +239,7 @@ addContactToList(){
     dialogConfig.minHeight='428';
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
-    if(this.componentName== 'contacts')
+    if(this.componentName== 'contacts' || this.componentName== 'listDetails')
     {
       dialogConfig.data =
       {
@@ -235,12 +263,26 @@ addContactToList(){
         this.deletedItems=result.data;
         if(result.errors == 'noErrors'){
           this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
-          this.unDoDeleteItem.emit(true)
-          
+          if(this.componentName== 'listDetails'){
+            this.updateData.emit(true)
+          }
+          else{
+            this.unDoDeleteItem.emit(true)
+
+          }
+         
+
+
     
         }
         else{
-          this.openRequestStateModal(result ,'deleteContact');
+          if(this.componentName== 'listDetails'){
+            this.openRequestStateModal(result ,'removeContactFromList');
+          }
+          else{
+            this.openRequestStateModal(result ,'deleteContactOrList');
+
+          }
         }
     
 
@@ -252,7 +294,37 @@ addContactToList(){
     this.openedDialogs.push(dialogRef)
 
   }
-
+removeContacts(){
+  const dialogConfig=new MatDialogConfig();
+      dialogConfig.height='50vh';
+      dialogConfig.width='35vw';
+      dialogConfig.maxWidth='100%';
+      dialogConfig.minWidth='465px';
+      dialogConfig.disableClose = true;
+  
+      dialogConfig.data = {
+        listsData:{contacts:this.selectedItems,list:[this.listId]}
+      };
+      const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
+  
+      let sub1=  dialogRef.afterClosed().subscribe(result => {
+        if(result){
+          if(result == 'noErrors'){
+            this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+            this.updateData.emit(true)
+          }
+          else{
+            this.openRequestStateModal(result ,'removeContactFromList');
+          }
+          
+  
+        }
+  
+  
+      });
+      this.subscriptions.push(sub1)
+      this.openedDialogs.push(dialogRef)
+    }
   openRequestStateModal(data , operation){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='38vh';
@@ -271,11 +343,11 @@ addContactToList(){
             this.openErrorsViewrModal(data , operation)
           }
           else{
-            if(operation ==  'addContactsToLists' || operation ==  'removeLists'){
+            if(operation ==  'addContactsToLists' || operation ==  'removeLists' || operation ==  'removeContactFromList'){
               this.updateData.emit(true)
             }
         
-            if(operation == 'deleteContact' || operation == 'deleteList')
+            if(operation == 'deleteContactOrList' )
             {
               this.unDoDeleteItem.emit(true)
             }
@@ -301,11 +373,11 @@ openErrorsViewrModal(result , operation){
 
   const dialogRef = this.dialog.open(ErrorsStatesComponent,dialogConfig);
   dialogRef.afterClosed().subscribe(result => {
-    if(operation ==  'addContactsToLists' || operation ==  'removeLists'){
-          this.updateData.emit(true)
+    if(operation ==  'addContactsToLists' || operation ==  'removeLists' || operation ==  'removeContactFromList'){
+      this.updateData.emit(true)
     }
 
-    if(operation == 'deleteContact' || operation == 'deleteList')
+    if(operation == 'deleteContactOrList')
     {
       this.unDoDeleteItem.emit(true)
     }

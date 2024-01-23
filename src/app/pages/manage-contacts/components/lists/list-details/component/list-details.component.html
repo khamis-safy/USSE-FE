@@ -143,18 +143,20 @@
           {{ 'CONTACTS' | translate }}
 
       </ng-template>
-      <app-list-contacts [count]="count" [isCanceled]="false" [listData]="list" (updatedCount)="updateTotalContacts($event)" (isChecked)="onChecked($event)"></app-list-contacts>
+      <ng-container *ngIf="tab == 'contacts'">
+        <app-list-contacts [canEdit]="canEdit" [count]="count" [isCanceled]="false" [listData]="list" (updatedCount)="updateTotalContacts($event)" (isChecked)="onChecked($event)"></app-list-contacts>
+      </ng-container>
     </mat-tab>
 
-    <mat-tab>
+    <!-- <mat-tab>
       <ng-template mat-tab-label >
         <span class="text-primary-800 mx-2" style="font-weight: 800;">{{totalCanceledContacts }}</span>
-
           {{ 'CANCELED' | translate }}
-
       </ng-template>
-      <app-list-contacts [count]="count" [isCanceled]="true" (updatedCount)="updateTotalContacts($event)"></app-list-contacts>
-    </mat-tab>
+      <ng-container *ngIf="tab == 'canceled'">
+      <app-list-contacts [canEdit]="canEdit" [count]="count" [isCanceled]="true" (updatedCount)="updateTotalContacts($event)"></app-list-contacts>
+      </ng-container>
+    </mat-tab> -->
   </mat-tab-group>
 
 </section>
