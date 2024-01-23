@@ -35,3 +35,19 @@
         box-shadow: 1px 3px 4px 0px rgba(0, 0, 0, 0.16);
     }
 }
+button.rest-style {
+
+    width: 130px !important;
+}
+.buttons {
+
+    gap: 12px !important;
+}
+@media(max-width:768px){
+    button.rest-style {
+        width: 45% !important;
+    } 
+    .buttons {
+        width: 95% !important;
+    }
+}

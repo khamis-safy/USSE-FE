@@ -115,8 +115,6 @@
   </ng-container>
   <ng-container *ngIf="length > 0 && !noData || loading">
     <section class="table-wrapper">
-
-
       <div *ngIf="loading" class="spinner-container p-3">
         <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style>
@@ -124,7 +122,7 @@
       </div>
       <mat-accordion class="table-mobile-view" multi>
         <mat-expansion-panel *ngFor="let element of messagesTableData" [expanded]="length > 1 ?false :true" 
-          [ngClass]="{'active-row': selection.isSelected(element),'radius-15':length==1}">
+          [ngClass]="{'active-row': selection.isSelected(element),'radius-15':length <= 10}">
           <mat-expansion-panel-header>
             <!-- Checkbox Column -->
             <mat-checkbox
@@ -227,7 +225,7 @@
         </mat-expansion-panel>
       </mat-accordion>
 
-      <mat-paginator *ngIf="length > 1"
+      <mat-paginator *ngIf="length > 10"
       [hidePageSize]="true"
       [pageSize]="display"
       (page)="onPageChange($event)"

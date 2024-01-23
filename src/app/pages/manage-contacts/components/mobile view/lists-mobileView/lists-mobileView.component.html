@@ -105,7 +105,7 @@
     <mat-accordion class="table-mobile-view" multi>
       <mat-expansion-panel *ngFor="let element of tableData" 
       [expanded]="length > 1 ?false :true"
-      [ngClass]="{'active-row':selection.isSelected(element),'radius-15':length==1}">
+      [ngClass]="{'active-row':selection.isSelected(element),'radius-15':length <= 10}">
         <mat-expansion-panel-header>
           <mat-checkbox color="ch-color"
                         (click)="$event.stopPropagation()"
@@ -145,7 +145,7 @@
     </mat-accordion>
     
     <mat-paginator
-    *ngIf="length > 1"
+    *ngIf="length > 10"
     [hidePageSize]="true"
     [pageSize]="display"
     (page)="onPageChange($event)"

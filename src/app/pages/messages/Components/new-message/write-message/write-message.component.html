@@ -56,6 +56,7 @@
     <button class="rest-style" matStepperPrevious>
       <us-button
         class="m-2"
+        [fullWidth]="true"
         label="{{ 'BACK' | translate }}"
         [fill]="false"
         [size]="'md'"
@@ -68,6 +69,7 @@
     <button class="rest-style" matStepperNext [disabled]="!form.valid && !files">
       <us-button
         class="m-2"
+        [fullWidth]="true"
         label="{{ 'NEXT' | translate }}"
         [fill]="true"
         [size]="'md'"
