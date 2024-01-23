@@ -74,7 +74,7 @@
   </div>
 
   <mat-accordion class="table-mobile-view without-select" multi>
-    <mat-expansion-panel *ngFor="let element of templatesTableData" [expanded]="length > 1 ?false :true"
+    <mat-expansion-panel *ngFor="let element of templatesTableData" [expanded]="length > 2 ?false :true"
       [ngClass]="{'radius-15':length <= 10}">
       <mat-expansion-panel-header>
         <!-- Template Name Column -->

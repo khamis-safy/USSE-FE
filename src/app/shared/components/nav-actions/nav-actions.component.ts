@@ -296,12 +296,13 @@ addContactToList(){
   }
 removeContacts(){
   const dialogConfig=new MatDialogConfig();
-      dialogConfig.height='50vh';
-      dialogConfig.width='35vw';
-      dialogConfig.maxWidth='100%';
-      dialogConfig.minWidth='465px';
-      dialogConfig.disableClose = true;
-  
+    dialogConfig.height='54vh';
+    dialogConfig.width='90vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='80%';
+    dialogConfig.minHeight='428';
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
       dialogConfig.data = {
         listsData:{contacts:this.selectedItems,list:[this.listId]}
       };

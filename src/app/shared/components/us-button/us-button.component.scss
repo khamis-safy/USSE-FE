@@ -85,6 +85,12 @@ span.btn-label.lable-lg.mx-1{
 }
 @media (max-width: 768px)
 {
+  button{
+    padding: 4px !important;
+  }
+  img{
+    width: 17%;
+  }
   button.button-size-md {
     min-width: 112px  !important;
     min-height: 35px !important;
