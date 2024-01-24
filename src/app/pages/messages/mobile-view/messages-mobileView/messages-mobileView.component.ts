@@ -65,7 +65,7 @@ export class MessagesMobileViewComponent implements OnInit {
     filteringForm= new FormGroup({
       filterdData:this.filterdData,
     });
-    selectedSortingName:string='name';
+  selectedSortingName:string='name';
   selectedSortingType:string='ASC'
   orderedBy: string='';
   topSortingOptions:any=[{opitonName:'name' ,lable:`${this.translate.instant('nameLabel')}`, isSelected:true} 
@@ -600,6 +600,8 @@ onCheckboxChange(event,element: any) {
           
         }
       });
+      this.openedDialogs.push(dialogRef)
+
     }
     resendSelectedMessages(){
       const messagesIDs=this.selection.selected.map((res)=>res.id)
@@ -628,6 +630,8 @@ onCheckboxChange(event,element: any) {
 
          }
        });
+       this.openedDialogs.push(dialogRef)
+
      }
     ngOnDestroy(){
      

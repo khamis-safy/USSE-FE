@@ -13,6 +13,7 @@ import { SCHEDULED } from '../../Components/constants/messagesConst';
 import { DisplayMessageComponent } from '../../Components/display-message/display-message.component';
 import { Shceduled } from '../../message';
 import { MessagesService } from '../../messages.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scheduled-mobileView',
@@ -58,6 +59,14 @@ export class ScheduledMobileViewComponent implements OnInit ,OnDestroy{
   
     ];
     showsSelectedOptions:any = new FormControl([]);
+    selectedSortingName:string='name';
+    selectedSortingType:string='ASC'
+    orderedBy: string='';
+    topSortingOptions:any=[{opitonName:'name' ,lable:`${this.translate.instant('nameLabel')}`, isSelected:true} 
+                            , {opitonName:'createdAt' , lable:`${this.translate.instant('CREATE_AT')}`,isSelected:false}]
+    
+  bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('ASCENDING')}`, isSelected:true} ,
+                              {opitonName:'DEC' , lable:`${this.translate.instant('DESCENDING')}`,isSelected:false}]
   
     displayForm = new FormGroup({
       showsSelectedOptions:this.showsSelectedOptions,
@@ -66,6 +75,7 @@ export class ScheduledMobileViewComponent implements OnInit ,OnDestroy{
     constructor(private messageService:MessagesService,
       public dialog: MatDialog,
       private authService:AuthService,
+      private translate:TranslateService,
       private translationService:TranslationService){
         this.display=this.messageService.getUpdatedDisplayNumber()
         this.pageIndex=this.messageService.pageNum;

@@ -19,16 +19,17 @@
     </div>
   
     <us-button
-    class="m-2"
-    label="{{ 'NEW_MESSAGE_LABEL' | translate }}"
-    img="assets/icons/new-message-icon.svg"
-    [fill]="true"
-    [size]="'md'"
-    [loading]="false"
-    [disabled]="false"
-    [appearance]="'primary'"
-    (clicked)="openNewMessage()">
-  </us-button>
+      class="m-2"
+      [label]="'newCampaign' | translate"
+      img="assets/icons/compagins-icon.svg"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'primary'"
+      (clicked)="addCampaigns()"
+    >
+    </us-button>
 
   
 </div>
@@ -84,10 +85,8 @@
     </mat-form-field>
   </form>
 
-
-
 </div>
-<div class="d-flex align-items-center justify-content-between dropdowns" style="row-gap: 6px; max-width: 394px;">
+<div class="d-flex align-items-center justify-content-between dropdowns " style="row-gap: 6px; max-width: 394px;">
 
   <form [formGroup]="form" class="d-flex">
     <us-select
@@ -110,16 +109,12 @@
 
     ></us-select>
   </form>
- 
-    
-    
-    </div>
+
+</div>
 
 </ng-container>
 <ng-container *ngIf="length > 0 && !noData || loading">
   <section class="table-wrapper">
-
-
     <div *ngIf="loading" class="spinner-container p-3">
       <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style>
@@ -130,58 +125,54 @@
       <mat-expansion-panel *ngFor="let element of messagesTableData" [expanded]="length > 2 ?false :true" 
         [ngClass]="{'radius-15':length <= 10}">
         <mat-expansion-panel-header>
-      <!-- Scheduled At Column -->
-       <div class="row w-100" >
-        <div class="col row-header">{{ 'SCHEDULED_AT' | translate }}</div>
-        <div class="col ">{{ element.scheduledAt | toLocalTime }}</div>
-      </div>
-        
+          <!-- Name Column -->
+          <div class="row w-100" >
+            <div class="col row-header">{{ 'NAME' | translate }}</div>
+            <div class="col ">{{ element.campaignName }}</div>
+          </div>
         </mat-expansion-panel-header>
 
-      <!-- Recipient Column -->
-      <div class="row row-item" *ngIf="displayedColumns.includes('Recipient')">
-        <div class="col row-header">{{ 'RECIPIENT_LABEL' | translate }}</div>
-        <div class="col " style="width: 250px;">
-          <div class="d-flex  align-items-center w-100 zi-4">
-            <span class="txt-sm total" style="text-decoration: underline;" (click)="$event.stopPropagation() ;showRecepients(element?.targetPhoneNumber)">{{ element?.targetPhoneNumber?.length }}</span>
+          <!-- Status Column -->
+          <div class="row row-item" *ngIf="displayedColumns.includes('Status')">
+            <div class="col row-header">{{ 'statusColumn' | translate }}</div>
+            <div class="col ">
+              <ng-container [ngSwitch]="element.isStopped">
+                <div *ngSwitchCase="false" class="d-flex gap-2 align-items-center justify-content-center">
+                  <span class="status active"></span>
+                  <p style="margin: 0 0 0 0;">{{ 'ACTIVE' | translate }}</p>
+                </div>
+                <div *ngSwitchCase="true" class="d-flex gap-2 align-items-center justify-content-center">
+                  <span class="status inactive"></span>
+                  <p style="margin: 0 0 0 0;">{{ 'Ended' | translate }}</p>
+                </div>
+              </ng-container>
+            </div>
           </div>
-        </div>
-      </div>
-      <!-- Device Name Column -->
-      <div class="row row-item" *ngIf="displayedColumns.includes('Device Name')">
-        <div class="col row-header">{{ 'DEVICE_NAME_LABEL' | translate }}</div>
-        <div class="col ">{{ element.device?.deviceName }}</div>
-      </div>
-        <!-- Messages Column -->
-         <div class="row row-item" *ngIf="displayedColumns.includes('Messages')">
-          <div class="col row-header">{{ 'MESSAGES_LABEL' | translate }}</div>
-          <div class="col " >
-            <div class="py-2">
-              <div class="d-flex justify-content-center align-items-center flex-column">
-                <p style="max-width: 150px; width: 140%;" style="font-size: 12px;" class="mb-0">
-                  {{ element.msgBody?.length > 20 ? (element?.msgBody | slice:0:20) + '...' : element?.msgBody }}
-                  <span *ngIf="element.msgBody?.length > 20" class="text-primary-800" (click)="$event.stopPropagation() ; displayMessage(element)">
-                    {{ 'see_more' | translate }}
-                  </span>
-                </p>
-                 <div *ngIf="element?.fileName" class="text-start pt-2 pb-3">
-                  <img *ngIf="(element.fileName | type) == 'assets/images/image.svg' else otherType" [src]="element.fileName | type" alt="" style="width: 76px;">
-                  <ng-template #otherType>
-                    <img [src]="element.fileName | type" alt="" style="width: 96px;">
-                  </ng-template>
+    
+          <!-- Creator Name Column -->
+          <div class="row row-item" *ngIf="displayedColumns.includes('Creator Name')">
+            <div class="col row-header">{{ 'creatorNameColumn' | translate }}</div>
+            <div class="col ">{{ element?.device.deviceName }}</div>
+          </div>
+    
+          <!-- Start Date Column -->
+          <div class="row row-item" *ngIf="displayedColumns.includes('Start Date')">
+            <div class="col row-header">{{ 'startDateColumn' | translate }}</div>
+            <div class="col ">{{ element?.scheduledAt | toLocalTime }}</div>
+          </div>
+    
+          <!-- Action Column -->
+          <div class="row row-item" *ngIf="displayedColumns.includes('Action')">
+            <div class="col row-header">{{ 'actionColumn' | translate }}</div>
+            <div class="col " (click)="cellClick=true;">
+              <div class="actions d-flex  w-100">
+                <div class="d-flex flex-row-reverse gap-2 " >
+                  <img (click)="deleteCampaign(element)" src="assets/icons/Actionsc.svg" alt="" />
+                  <img *ngIf="element.isStopped == false" (click)="stopCampaign(element);" src="assets/icons/stop-compaigns.svg" alt="" />
                 </div>
               </div>
             </div>
           </div>
-        </div>
-    
-        <!-- Created At Column -->
-        <div class="row row-item" *ngIf="displayedColumns.includes('Created At')">
-          <div class="col row-header">{{ 'CREATED_AT' | translate }}</div>
-          <div class="col ">{{ element.createdAt | toLocalTime }}</div>
-        </div>
-    
-      
     
       </mat-expansion-panel>
     </mat-accordion>
@@ -192,16 +183,15 @@
     (page)="onPageChange($event)"
     [length]="length"
     showFirstLastButtons
-    [pageIndex]="pageIndex"
+    [pageIndex]="pageNum"
       >
     </mat-paginator>
   </section>
 </ng-container>
 
-<ng-container *ngIf="(length == 0 && !loading) || noData">
+<ng-container *ngIf="(length == 0 && !loading) && ( notFound || noData)">
   <div class="d-flex justify-content-center align-items-center flex-column gap-3 nodata-container w-100" style="height: 500px;">
     <img src="assets/images/files.svg" alt="">
     <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA_TO_SHOW_LABEL' | translate }}</span>
   </div>
 </ng-container>
-<div  #dynamicComponentContainer></div>

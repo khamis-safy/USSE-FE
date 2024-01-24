@@ -570,7 +570,8 @@
       padding: 0 9px !important;
     }
     .list_item{
-      padding: 1px 0px !important;
+      padding: 1px 8px !important;
+
     }
   }
   .input-wrapper:has(textarea) {
@@ -613,6 +614,10 @@
   .txt-sm{
     font-size: 12px !important;
   }
+  .list_item{
+    padding: 1px 0px !important;
+
+  }
 }
 
 .us-select-container.smallDropDown{
@@ -640,7 +645,7 @@
     width: 40% !important;
     .toggler {
       height: 33px !important;
-      padding: 0px 6px !important;
+      padding: 0px 4px !important;
       &.focus {
         transition: 0.2s box-shadow;
         border: unset !important;

@@ -8,7 +8,7 @@
       style="cursor: pointer; width: 20px;"
     />
   </div>
-  <div *ngIf="!isScheduleN" class="d-flex gap-4 mt-4 flex-column" style="
+  <div *ngIf="!isScheduleN && !isTemplate" class="d-flex gap-4 mt-4 flex-column" style="
   direction: ltr;
 ">
       <div class="devData-container d-flex w-100 justify-content-between mt-2 px-4">
@@ -52,8 +52,8 @@
               ">
                 <p  class="txt-md ms-3 mb-2 text-neutral-900 message">{{message?.msgBody}}</p>
           
-                <ng-container *ngIf="message.fileName">
-                    <img *ngIf="(message.fileName | type )=='assets/images/image.svg' else otherType"  class="mx-1 mb-1 w-100 image" [src]="message.fileUrl" alt="">
+                <ng-container *ngIf="message?.fileName">
+                    <img *ngIf="(message?.fileName | type )=='assets/images/image.svg' else otherType"  class="mx-1 mb-1 w-100 image" [src]="message.fileUrl" alt="">
                     <ng-template #otherType>
                       <a  class="pointer " [href]="message.fileUrl" target="_blank" [title]="'open' | translate" ><img   class="media" [src]="message.fileName | type" alt=""></a>
   
@@ -89,8 +89,26 @@
         </div>
       </div>
   </div>
+  <div *ngIf="isTemplate">
+    <div class="message-container">
 
-  <div *ngIf="isScheduleN" class="mt-4" style="
+      <div class="mx-4 message-body-container">
+
+        <div class="message-body" style="    max-width: 96%;
+        ">
+          <p  class="txt-md ms-3 mb-2 mt-4 text-neutral-900 message">{{template?.messageBody}}</p>
+    
+          <!-- <ng-container *ngIf="message.fileName">
+              <img *ngIf="(template?.fileName | type )=='assets/images/image.svg' else otherType"  class="mx-1 mb-1 w-100 image" [src]="message.fileUrl" alt="">
+              <ng-template #otherType>
+                <a  class="pointer " [href]="message.fileUrl" target="_blank" [title]="'open' | translate" ><img   class="media" [src]="message.fileName | type" alt=""></a>
+              </ng-template>
+          </ng-container> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isScheduleN  && !isTemplate" class="mt-4" style="
   direction: ltr;
 ">
     <h2 class="ms-4 txt-lg">{{ 'RECIPIENT_LABEL' | translate }}</h2>

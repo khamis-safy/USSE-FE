@@ -12,6 +12,9 @@ import { TEMPLATESHEADERS } from '../../components/constats/contstants';
 import { Templates } from '../../templates';
 import { TemplatesService } from '../../templates.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
+import { DisplayMessageComponent } from 'src/app/pages/messages/Components/display-message/display-message.component';
+import { TranslationService } from 'src/app/shared/services/translation.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-templates-mobileView',
@@ -63,11 +66,21 @@ export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
    
   });
   openedDialogs:any=[];
+  selectedSortingName: string = 'name';
+  selectedSortingType: string = 'ASC'
+  orderedBy: string = '';
+  topSortingOptions: any = [{ opitonName: 'name', lable: `${this.translate.instant('nameLabel')}`, isSelected: true }
+    , { opitonName: 'createdAt', lable: `${this.translate.instant('CREATE_AT')}`, isSelected: false }]
+
+  bottomSortingOptions: any = [{ opitonName: 'ASC', lable: `${this.translate.instant('ASCENDING')}`, isSelected: true },
+  { opitonName: 'DEC', lable: `${this.translate.instant('DESCENDING')}`, isSelected: false }]
 
   constructor(
     public dialog: MatDialog,
     private toaster: ToasterServices,
-    private templatesService: TemplatesService
+    private templatesService: TemplatesService,
+    private translationService:TranslationService,
+    private translate: TranslateService,
   ) {
     this.display=templatesService.showsNum
     this.pageIndex=templatesService.pageNum;
@@ -94,7 +107,29 @@ export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
 
   }
 
+  displayMessage(row){
+    const currentLang=this.translationService.getCurrentLanguage()
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='60vh';
+    dialogConfig.width='100vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='100%';
+    dialogConfig.disableClose = true;
+    dialogConfig.position = { bottom: '0'} ;
+    dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
+    dialogConfig.panelClass ='bottom-to-top-dialog';
 
+    dialogConfig.data={template:row};
+
+    const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+      }
+
+    });
+  this.openedDialogs.push(dialogRef)
+  }
   openDeleteModal(id:string){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='54vh';

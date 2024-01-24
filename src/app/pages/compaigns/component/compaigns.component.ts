@@ -10,10 +10,9 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
-import { DevicesService } from '../../devices/devices.service';
 import { CAMPAIGNSHEADER } from '../constants/contstants';
-
-
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-compaigns',
@@ -36,7 +35,7 @@ export class CompaignsComponent implements AfterViewInit ,OnInit,OnDestroy {
   canEdit: boolean=true;
   // devices
   devices:SelectOption[];
-
+  subscribtions:Subscription[]=[]
   deviceLoadingText:string='Loading ...';
   devicesData :any= new FormControl([]);
   form = new FormGroup({
@@ -46,10 +45,14 @@ export class CompaignsComponent implements AfterViewInit ,OnInit,OnDestroy {
   permission:DevicesPermissions[];
   display: number;
   pageNum: number;
+  isSmallScreen: boolean = false;
+  destroy$: Subject<void> = new Subject<void>();
   constructor(private compaignsService:CompaignsService,
     public dialog: MatDialog, 
     private router:Router,
-    private authService:AuthService){
+    private authService:AuthService,
+    private breakpointObserver: BreakpointObserver
+    ){
     this.display=compaignsService.getUpdatedDisplayNumber();
     this.pageNum=this.compaignsService.pageNum;
   }
@@ -67,7 +70,15 @@ if(this.authService.getUserInfo()?.customerId!=""){
 else{
   this.isUser=false;
 }
-this.getDevices();
+this.breakpointObserver.observe(['(max-width: 768px)'])
+.pipe(takeUntil(this.destroy$))
+.subscribe(result => {
+  this.isSmallScreen = result.matches;
+  if(!this.isSmallScreen){
+    this.getDevices();
+  
+  }
+});
 
 
 
@@ -75,6 +86,9 @@ this.getDevices();
 
   }
   ngAfterViewInit() {
+    if(this.paginator){
+      this.paginator.pageSize=this.display
+    }
   }
 
   getDevicePermission(deviceId:string){
@@ -204,7 +218,9 @@ this.getCompaigns(this.deviceId);
             }
         }
         else{
-          this.paginator.pageIndex=this.pageNum
+          if(this.paginator){
+            this.paginator.pageIndex=this.pageNum
+          }
           this.notFound=false;
           this.compaignsCount(deviceId);
 
@@ -315,8 +331,11 @@ backToCampaign(){
     this.getCompaigns(this.deviceId,event.value);
   }
   ngOnDestroy(): void {
-    // this.compaignsService.display=10;
-    // this.compaignsService.pageNum=0;
+    this.destroy$.next();
+    this.destroy$.complete();
+  
+    this.subscribtions.map(e=>e.unsubscribe());
+
     this.compaignsService.search='';
   }
 }

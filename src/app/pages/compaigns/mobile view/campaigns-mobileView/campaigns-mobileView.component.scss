@@ -1,0 +1,21 @@
+.status{
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+  
+  }
+  .active{
+    background: rgba(37, 255, 98, 1);
+  
+  }
+  .inactive{
+    background: rgba(255, 181, 37, 1);
+  
+  }
+  span , p{
+    color: rgba(51,50,61 ,1)!important ;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+
+  }
+  

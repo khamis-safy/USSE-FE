@@ -61,10 +61,11 @@ a {
   }
   // border: 3px solid;
 .versions{
-  padding: 22px 15px 0;
+  padding: 0px 15px 0;
+  margin-top: 3px;
   img{
-    min-width: 19px;
-    margin-top: -2px;
+    min-width: 16px;
+    margin-top: -3px;
     filter:brightness(0) saturate(100%) invert(29%) sepia(82%) saturate(1332%) hue-rotate(175deg) brightness(95%) contrast(105%); 
 
   }

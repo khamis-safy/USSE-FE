@@ -60,7 +60,29 @@
       </mat-select>
     </mat-form-field>
   </div>
-
+  <form  >
+    <mat-form-field appearance="fill" class="sorting-dropdown">
+      <mat-select [placeholder]="'sortBy' |translate" multiple [disabled]="true">
+        
+        <mat-select-trigger>
+          {{'sortBy' |translate}}
+        </mat-select-trigger>
+        <mat-option class="sort_by_option" *ngFor="let option of topSortingOptions; let i = index" [value]="option.lable">
+          <div class="d-flex align-items-center justify-content-between" (click)="toggleTopSortingSelect()">
+            <span [ngClass]="{'text-primary-800': option.isSelected}">{{ option.lable }}</span>
+            <mat-icon *ngIf="option.isSelected">done</mat-icon>
+          </div>
+        </mat-option>
+        <mat-divider></mat-divider>
+        <mat-option class="sort_by_option" *ngFor="let option of bottomSortingOptions; let i = index" [value]="option.lable">
+          <div class="d-flex align-items-center justify-content-between" (click)="toggleBottomSortingSelect()">
+            <span [ngClass]="{'text-primary-800': option.isSelected}">{{ option.lable }}</span>
+            <mat-icon *ngIf="option.isSelected">done</mat-icon>
+          </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
 </div>
 
 
@@ -83,18 +105,28 @@
           <div class="col ">{{ element.templateName }}</div>
         </div>
       </mat-expansion-panel-header>
-        <!-- Message Column -->
-        <div class="row row-item" *ngIf="displayedColumns.includes('Message')">
-          <div class="col row-header">{{ 'MESSAGE' | translate }}</div>
-          <div class="col " style="max-width: 135px;">
+        <!-- Messages Column -->
+         <div class="row row-item" *ngIf="displayedColumns.includes('Message')">
+          <div class="col row-header">{{ 'MESSAGES_LABEL' | translate }}</div>
+          <div class="col " >
             <div class="py-2">
               <div class="d-flex justify-content-center align-items-center flex-column">
-                <p style="max-width: 100%" class="overflow-line-4">{{ element.messageBody }}</p>
+                <p style="max-width: 150px; width: 140%;" style="font-size: 12px;" class="mb-0">
+                  {{ element.messageBody?.length > 20 ? (element?.messageBody | slice:0:20) + '...' : element?.messageBody }}
+                  <span *ngIf="element.messageBody?.length > 20" class="text-primary-800" (click)="$event.stopPropagation() ; displayMessage(element)">
+                    {{ 'see_more' | translate }}
+                  </span>
+                </p>
+                 <div *ngIf="element?.fileName" class="text-start pt-2 pb-3">
+                  <img *ngIf="(element.fileName | type) == 'assets/images/image.svg' else otherType" [src]="element.fileName | type" alt="" style="width: 76px;">
+                  <ng-template #otherType>
+                    <img [src]="element.fileName | type" alt="" style="width: 96px;">
+                  </ng-template>
+                </div>
               </div>
             </div>
           </div>
         </div>
-  
         <!-- Created At Column -->
         <div class="row row-item" *ngIf="displayedColumns.includes('Created At')">
           <div class="col row-header">{{ 'CREATED_AT' | translate }}</div>
@@ -106,7 +138,7 @@
           <div class="col row-header">{{ 'ACTION' | translate }}</div>
           <div class="col ">
             <div class="d-flex align-items-center">
-              <div class="delete pointer mx-2">
+              <div class="delete pointer">
                 <img src="assets/icons/clear.svg" alt="" (click)="openDeleteModal(element.id)" />
               </div>
               <div class="edit pointer mx-2">
@@ -143,4 +175,3 @@
 </div>
 
 </ng-container>
-<div  #dynamicComponentContainer></div>

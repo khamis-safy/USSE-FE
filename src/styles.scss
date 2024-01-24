@@ -636,7 +636,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   transition: background 400ms;
   color: #fff;
   background-color: var(--clr-primary-800);
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif ;
   outline: 0;
   border: 0;
   border-radius: 0.25rem;
@@ -800,6 +800,8 @@ section.table-wrapper {
 
     th:not(.checkBox) , td:not(.checkBox){
       text-align: center !important;
+      font-family: 'Poppins', sans-serif;
+
     }
 
     td.mat-mdc-cell.mdc-data-table__cell.cdk-cell.cdk-column-Lists.mat-column-Lists.ng-star-inserted {
@@ -1076,9 +1078,9 @@ background-color: #C1FFCF;
   border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color)!important;
 
 }
-.mdc-text-field--filled.mdc-text-field--disabled{
-  background-color: $clr_neutral_200;
-}
+// .mdc-text-field--filled.mdc-text-field--disabled{
+//   background-color: $clr_neutral_200;
+// }
 .mat-mdc-form-field-subscript-wrapper {
     display: none;
 }
@@ -1089,7 +1091,7 @@ background-color: #C1FFCF;
   width: 129px !important;
 }
 .mat-mdc-option .mdc-list-item__primary-text {
-  font-size: 10px !important;
+  font-size: 12px !important;
 }
 .mat-primary .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full{
   background: var(--clr-primary-800) !important;
@@ -1716,8 +1718,16 @@ button.button-size-md{
     span.btn-label.mx-1 {
       font-size: 13px !important;
     }
+    .mat-mdc-table tbody, .mat-mdc-table tfoot, .mat-mdc-table thead, .mat-mdc-cell, .mat-mdc-footer-cell, .mat-mdc-header-row, .mat-mdc-row, .mat-mdc-footer-row, .mat-mdc-table .mat-mdc-header-cell {
+      font-family: 'Poppins', sans-serif ;
+
+    }   
     section.table-wrapper {
       table,mat-table{
+        th,td.mat-mdc-cell.mdc-data-table__cell.cdk-cell ,p,span{
+          font-family: 'Poppins', sans-serif ;
+        }
+
         th.mat-mdc-header-cell {
           font-size: 11px !important;
       }
@@ -1727,7 +1737,8 @@ button.button-size-md{
     .mat-icon.mat-primary{
       font-size: 15px !important;
     }
-      }
+      
+  }
     }
   section.component-container{
     padding-block: 8px !important;
@@ -2105,7 +2116,7 @@ span.mat-mdc-select-min-line{
     border-top-width: 1.5px !important;
 }
   mat-pseudo-checkbox.mat-pseudo-checkbox.mat-mdc-option-pseudo-checkbox.mat-pseudo-checkbox-full {
-    margin-right: 5px !important;
+    margin-right:6px !important;
 }
   .txt-sm {
     font-size: 12px !important;
@@ -2175,6 +2186,9 @@ color: var(--clr-primary-800) !important;
 }
 .mat-primary .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
   color: #292A32 !important;
+  font-family: 'Poppins', sans-serif ;
+  line-height: 1.5;
+
 }
 ///////////////////////////////////////////////////////////////////////
 .small-screen-view{
@@ -2204,7 +2218,7 @@ color: var(--clr-primary-800) !important;
       font-size: 12px !important;
       align-items: center;
       display: flex;
-      line-height: 1.2;
+      line-height: 1.5;
 
     }
     .row{
@@ -2436,7 +2450,7 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   height: 15px !important;
 }
   .mat-mdc-option.mdc-list-item {
-    padding-inline: 8px !important;
+    padding-inline: 5px !important;
 }
 
 .mat-pseudo-checkbox-full.mat-pseudo-checkbox-checked::after {
