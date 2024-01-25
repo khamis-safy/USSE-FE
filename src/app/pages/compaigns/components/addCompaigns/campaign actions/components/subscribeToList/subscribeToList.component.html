@@ -53,7 +53,7 @@
       ></us-select>
       </div>
       <us-button
-
+        class="add"
         label="{{ 'ADD_NEW_LIST_LABEL' | translate }}"
         [matIcon]="'add'"
         [fill]="true"
@@ -70,7 +70,7 @@
           <div class="new-list rounded-5 bg-white p-4  my-3 " style="width:80%">
             <p class="txt-sm mb-3" style="font-weight: 500;">{{ 'ADD_NEW_LIST_NAME_LABEL' | translate }}</p>
             <div class="d-flex justify-content-between">
-              <div style="width: 50%;">
+              <div class="list-name-input" style="width: 50%;">
                 <us-input
                 [isDisabled]="false"
                 value=""
@@ -84,7 +84,7 @@
               ></us-input>
               </div>
 
-              <div class="d-flex align-items-center " >
+              <div class="d-flex align-items-center button-actions" >
                 <us-button
                   class="mx-3"
                 label="{{ 'SAVE_LABEL' | translate }}"

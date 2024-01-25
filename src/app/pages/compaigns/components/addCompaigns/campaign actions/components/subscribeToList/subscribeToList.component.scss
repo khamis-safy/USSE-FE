@@ -1,3 +1,38 @@
 .new-list{
   border: 2px dashed #E0E0E0;
 }
+@media(max-width:768px){
+  .modal-body.overflow-auto.p-3.w-100 {
+    padding: 0 6px !important;
+    height: 100% !important;
+}
+form {
+  padding: 0 !important;
+}
+section{
+  width: 100% !important;
+
+}
+.add{
+  margin-top: 30px;
+}
+
+.new-list {
+  width: 100% !important;
+  .d-flex.justify-content-between{
+    flex-direction: column !important;
+    gap: 10px !important;
+    .list-name-input{
+      width: 100% !important;
+    }
+    .button-actions{
+      justify-content: center !important;
+      width: 93% !important;
+    }
+  }
+}
+.modal-footer{
+  width: 95% !important; 
+
+}
+}

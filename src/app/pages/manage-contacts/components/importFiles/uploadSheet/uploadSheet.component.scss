@@ -36,4 +36,18 @@
   
   
   }
+  .new-list {
+    width: 100% !important;
+    .d-flex.justify-content-between{
+      flex-direction: column !important;
+      gap: 10px !important;
+      .list-name-input{
+        width: 100% !important;
+      }
+      .button-actions{
+        justify-content: center !important;
+        width: 93% !important;
+      }
+    }
+  }
 }

@@ -270,6 +270,7 @@ openCampExpectedTimeModal(data){
   dialogConfig.minHeight='350px';
   dialogConfig.maxWidth='100%';
   dialogConfig.minWidth='585px';
+  dialogConfig.panelClass='custom-responsive-modal'
   dialogConfig.data=data;
   const dialogRef = this.dialog.open(ExpectedCampEndTimeComponent,dialogConfig);
   dialogRef.afterClosed().subscribe(result => {

@@ -119,6 +119,52 @@
   }
   .table th,
 .table td {
+  white-space: normal; 
+  word-wrap: break-word; 
+}
+@media(max-width:768px){
+  h3 {
+      font-size: 17px !important;
+      margin-bottom: 4px !important;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .d-flex.gap-4.flex-column.py-3 {
+    gap: 20px !important;
+  }
+.criteria{
+  padding: 14px 5px !important;
+}
+.value , .name {
+  width: 114px !important;
+}
+th{
+  font-size: 12px !important;
+}
+.table>:not(caption)>*>* {
+  padding: 5px 2px !important;
+  font-size: 12px;
+  max-width: 100px;
+}
+.remove{
+ img {
+  width: 12px !important;
+}}
+table{
+  th,td{
+    flex:1% !important
+  }
+}
+table{
+  th.main-info,td.main-info{
+    flex:15% !important
+  }
+}
+
+}
+/* Add this CSS to your styles file or component styles */
+.table th,
+.table td {
   white-space: normal; /* Allow content to wrap to the next line */
   word-wrap: break-word; /* Break words if they are too long */
 }

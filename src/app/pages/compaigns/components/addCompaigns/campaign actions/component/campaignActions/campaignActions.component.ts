@@ -15,6 +15,8 @@ import { ConfirmaionsComponent } from '../../../confirmaions/confirmaions.compon
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { BotService } from 'src/app/pages/bot/bot.service';
 import { Automation } from 'src/app/pages/bot/interfaces/automation';
+import { Subject, takeUntil } from 'rxjs';
+import { BreakpointObserver } from '@angular/cdk/layout';
 @Component({
   selector: 'app-campaignActions',
   templateUrl: './campaignActions.component.html',
@@ -26,6 +28,7 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   length:number=0;
   id:number=-1;
   selectedElementName:string;
+  accordionData:any=[]
   @ViewChild(MatPaginator) paginator: MatPaginator;
   tableData:any=[];
   actions:any=[];
@@ -38,11 +41,9 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
   email:string=this.authService.getUserInfo()?.email
   campArr:SelectOption[];
   selectedActions:any = new FormControl([]);
-  form = new FormGroup({
 
-    selectedActions:this.selectedActions,
-
-  });
+  pageNum:number=0;
+  display:any;
   listsLoadingText:string=this.translate.instant('Loading')
   selectedCampaignActions:any=[];
   selectedElementID:string;
@@ -50,21 +51,33 @@ export class CampaignActionsComponent implements OnInit ,AfterViewInit,OnDestroy
     selecetedCampainsIDs:string[]=[]
 
     loading:boolean=false;
-    ngOnDestroy(): void {
-
+    showsOptions:SelectOption[]=[
+      {title:'10',value:10},
+      {title:'50',value:50},
+      {title:'100',value:100}
   
-    }
-  ngAfterViewInit() {
-    if(this.dataSource){
+  
+    ];
+ 
+    showsSelectedOptions:any = new FormControl([]);
+    form = new FormGroup({
 
-      this.dataSource.paginator = this.paginator;
-    }
-  }
+      selectedActions:this.selectedActions,
+      showsSelectedOptions:this.showsSelectedOptions
+  
+    });
+ 
+  isSmallScreen: boolean = false;
+  destroy$: Subject<void> = new Subject<void>();
+  currentPage = 1;
+pageSize:number=10;
   constructor(private dialog: MatDialog ,
       private campaignsService:CompaignsService,
       private translate: TranslateService,
       private authService:AuthService,
-      private botService:BotService
+      private botService:BotService,
+      private breakpointObserver: BreakpointObserver
+
     ) {
         
 }
@@ -72,7 +85,32 @@ getWidth(element: HTMLElement) {
 
   return `${element.clientWidth}px`;
 }
+
+ngOnDestroy(): void {
+  this.destroy$.next();
+    this.destroy$.complete();
+  
+}
+ngAfterViewInit() {
+if(this.dataSource){
+
+  this.dataSource.paginator = this.paginator;
+}
+}
   ngOnInit() {
+    this.breakpointObserver.observe(['(max-width: 768px)'])
+.pipe(takeUntil(this.destroy$))
+.subscribe(result => {
+  this.isSmallScreen = result.matches;
+  
+});
+    this.form.patchValue({
+      showsSelectedOptions: {
+      title:'10',
+      value:10,
+      }
+      })
+
     if(this.isCampaignAction){
       this.getCampaings()
     }
@@ -87,12 +125,13 @@ getWidth(element: HTMLElement) {
     }
   
   }
-  
+
   onListDrop(event: CdkDragDrop<string[]>) {
     const data = [...this.dataSource.data];
     moveItemInArray (data, event.previousIndex, event.currentIndex);
     this.dataSource.data = data;
     this.tableData=data;
+    this.accordionData=data
     this.setActions();
   }
   getAutomations(){
@@ -170,10 +209,34 @@ getWidth(element: HTMLElement) {
     }
 
   }
+  onPageSizeChange(event){
+    this.pageNum=0; 
+    if(this.paginator){
+      this.paginator.pageSize = event.value;
+      this.paginator.pageIndex=0;
+    }
+    this.pageSize=event.value;
+    this.updateDisplayedData();
+  }
+  onPageChange(event): void {
+    this.currentPage = event.pageIndex + 1;
+    this.updateDisplayedData();
+  }
+  updateDisplayedData() {
+    this.dataSource.paginator=this.paginator;
+    // Update the displayed data based on the current page and page size
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+
+    // Use Array.slice to get the data for the current page
+    this.accordionData = this.tableData.slice(startIndex, endIndex);
+  }
+ 
   deleteAction(element){
     let foundElementFromTable = this.tableData.find((data)=>data.id == element.id);
     this.tableData.splice(this.tableData.indexOf(foundElementFromTable) , 1);
     this.dataSource=new MatTableDataSource<any>(this.tableData)
+    this.accordionData=this.tableData
     this.dataSource.paginator = this.paginator;
 
     this.length=this.tableData.length;
@@ -203,6 +266,8 @@ getWidth(element: HTMLElement) {
     }
   })
   this.dataSource=new MatTableDataSource<any>(this.tableData);
+  this.accordionData=this.tableData
+
   this.dataSource.paginator = this.paginator;
   this.setActions();
 
@@ -220,6 +285,8 @@ getWidth(element: HTMLElement) {
  clearTableData(){
   this.tableData=[];
   this.dataSource=new MatTableDataSource<any>(this.tableData);
+  this.accordionData=this.tableData
+
   this.dataSource.paginator = this.paginator;
 
   this.setActions();
@@ -238,6 +305,7 @@ getWidth(element: HTMLElement) {
   dialogConfig.height='45vh';
   dialogConfig.width='35vw';
   dialogConfig.maxWidth='100%';
+  dialogConfig.panelClass='custom-dialog-delete-style'
   dialogConfig.minWidth='465px';
   dialogConfig.data ={id:this.selectedElementID, action:'apply' ,isCampaignAction:this.isCampaignAction , name:this.selectedElementName}
   const dialogRef = this.dialog.open(ConfirmaionsComponent,dialogConfig);
@@ -261,6 +329,7 @@ clearAllActions(){
   dialogConfig.width='35vw';
   dialogConfig.maxWidth='100%';
   dialogConfig.minWidth='465px';
+  dialogConfig.panelClass='custom-dialog-delete-style'
   dialogConfig.data ={action:'clear'}
  
   const dialogRef = this.dialog.open(ConfirmaionsComponent,dialogConfig);
@@ -291,6 +360,7 @@ clearAllActions(){
     dialogConfig.minWidth='565px';
     dialogConfig.disableClose = true;
     dialogConfig.data={data:elementData?.data, actionName:actionName};
+    dialogConfig.panelClass = 'responsive-dialog-for-actions-style2';
     const dialogRef = this.dialog.open(AutoReplayComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -313,6 +383,8 @@ clearAllActions(){
         }
         this.setActions();
         this.dataSource=new MatTableDataSource<any>(this.tableData)
+        this.accordionData=this.tableData
+
         this.dataSource.paginator = this.paginator;
 
         this.length=this.tableData.length
@@ -330,6 +402,7 @@ clearAllActions(){
     dialogConfig.minWidth='565px';
     dialogConfig.disableClose = true;
     dialogConfig.data=elementData?.data;
+    dialogConfig.panelClass = 'responsive-dialog-for-actions-style2';
     const dialogRef = this.dialog.open(SubscribeToListComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -352,6 +425,8 @@ clearAllActions(){
         }
         this.setActions();
         this.dataSource=new MatTableDataSource<any>(this.tableData)
+        this.accordionData=this.tableData
+
         this.dataSource.paginator = this.paginator;
 
         this.length=this.tableData.length
@@ -369,7 +444,7 @@ clearAllActions(){
     dialogConfig.minWidth='565px';
     dialogConfig.disableClose = true;
     dialogConfig.data=elementData?.data;
-    dialogConfig.panelClass = 'custom-dialog-container';
+    dialogConfig.panelClass = 'responsive-dialog-for-actions';
     const dialogRef = this.dialog.open(InquiryComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -392,6 +467,8 @@ clearAllActions(){
         }
         this.setActions();
         this.dataSource=new MatTableDataSource<any>(this.tableData)
+        this.accordionData=this.tableData
+
         this.dataSource.paginator = this.paginator;
 
         this.length=this.tableData.length

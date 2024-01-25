@@ -35,8 +35,8 @@
             <div formArrayName="questions" class="questions " cdkDropList [cdkDropListData]="questions" (cdkDropListDropped)="onDrop($event)">
               <div *ngFor="let question of questions.controls; let i = index"  class="question"  cdkDrag [cdkDragPreviewContainer]="'parent'"
               [cdkDragPreviewClass]="'add-padding-to-dragged'" >
-                  <div class="d-flex justify-content-between mb-2 align-items-center">
-                      <div style="width:90%">
+                  <div class="d-flex justify-content-between mb-2 align-items-center questions-container">
+                      <div style="width:90%" class="question-input input-container">
                         <us-input
                         [formControl]="question"
                         [isDisabled]="false"
@@ -51,7 +51,7 @@
                       ></us-input>
                       </div>
                     
-                      <div style="width:10%" class="d-flex justify-content-end align-items-center gap-2"  >
+                      <div style="width:10%" class="d-flex justify-content-end align-items-center gap-2 operations"  >
                         <img style="cursor: move;"  src="assets/icons/reorder.svg" cdkDragHandle>
                         <img class="pointer" (click)="removeQuestion(i)"  src="assets/icons/Actionsc.svg" alt="delete question" />
                       </div>
@@ -63,7 +63,7 @@
             </div>
             
             <div class="d-flex align-items-center p-2  gap-2">
-              <button (click)="addQuestion()" class="rest-style pointer" [disabled]="!myForm.valid || myForm.get('questions').hasError('whitespace')">
+              <button (click)="addQuestion()" class="rest-style pointer add-button" [disabled]="!myForm.valid || myForm.get('questions').hasError('whitespace')">
                 <img src="assets/icons/addQ.svg" alt="" />
               </button>
               <span>{{ 'addAQuestion' | translate }} </span>
@@ -116,7 +116,7 @@
           <h3>{{ 'notifications' | translate }}</h3>
           <!-- emails -->
           <div class="d-flex justify-content-between mb-2 align-items-center">
-            <div style="width:90%">
+            <div style="width:90%" class="input-container">
               <us-input
               [isDisabled]="false"
               value=""
@@ -159,14 +159,14 @@
 
         <!-- whatsapp -->
           <div class="d-flex justify-content-between mb-2 align-items-center">
-            <div style="width:90%">
+            <div style="width:90%" class="input-container">
               <us-input
               formControlName="whatsapp"
               [isDisabled]="false"
               value=""
               [optional]="true"
               type="number"
-              [label]="'whatsapp' | translate"
+              [label]="'mobileNumberLabel' | translate"
               [error]="false"
               [fullWidth]="true"
               [hideSteppers]="true"

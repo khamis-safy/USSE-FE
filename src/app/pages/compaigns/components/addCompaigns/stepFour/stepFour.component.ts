@@ -217,6 +217,7 @@ setTimeToDefault(){
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='608px';
     dialogConfig.data=warningMsg;
+    dialogConfig.panelClass='custom-dialog-warning-modal'
     const dialogRef = this.dialog.open(ContactsWarningComponent,dialogConfig);
     // Subscribe to the afterClosed event to execute the callback function after closing the modal
   dialogRef.afterClosed().subscribe(() => {
@@ -278,19 +279,21 @@ setTimeToDefault(){
   
     const date1: Date = time1.value;
     const date2: Date = time2.value;
+    if(date1 && date2){
+      const timeDifference = Math.abs(date1.getTime() - date2.getTime()) / 1000; // Difference in seconds
   
-    const timeDifference = Math.abs(date1.getTime() - date2.getTime()) / 1000; // Difference in seconds
+      if (timeDifference < 80 && !this.showTimeDifferenceWarning && !this.timesAreSame(time1, time2)) {
+        this.showTimeDifferenceWarning = true;
+        if(fromLastCamp){
+          this.fromLastCampaignSettings.timeDifferenceWarning=true;
+        }
+        else{
+          this.showWarningModal('time_difference_warning_msg');
   
-    if (timeDifference < 80 && !this.showTimeDifferenceWarning && !this.timesAreSame(time1, time2)) {
-      this.showTimeDifferenceWarning = true;
-      if(fromLastCamp){
-        this.fromLastCampaignSettings.timeDifferenceWarning=true;
-      }
-      else{
-        this.showWarningModal('time_difference_warning_msg');
-
+        }
       }
     }
+   
   }
   convertToUTC(timecontrol: any): any {
     const selectedTime = timecontrol.value;

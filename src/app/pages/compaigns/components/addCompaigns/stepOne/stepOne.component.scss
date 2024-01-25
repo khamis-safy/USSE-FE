@@ -135,3 +135,19 @@ button.button-size-md {
   padding-inline: 20px !important;
 }
 }
+@media(max-width:768px){
+  .stepone-containter{
+    flex-direction: column;
+    place-content: unset !important;
+    .col-5.d-flex.gap-4.flex-column.me-2 {
+      gap: 18px !important;
+      width: 100%;
+      margin-bottom: 1.5rem;
+      margin-inline: 0 !important;
+
+  }
+  .col-6.d-flex.gap-4.flex-column {
+    width: 100%;
+}
+  }
+}

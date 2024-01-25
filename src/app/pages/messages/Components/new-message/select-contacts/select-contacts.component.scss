@@ -196,24 +196,24 @@ p.txt-md {
   }
   
 }
-.buttons{
-  position: unset !important;
-  margin-top: 20px;
+
 }
-}
+
 button.rest-style {
 
   width: 130px !important;
 }
 .buttons {
-
   gap: 12px !important;
 }
 @media(max-width:768px){
+  .buttons{
+    width: 95% !important;
+    position: unset !important;
+    margin-top: 20px;
+  }
   button.rest-style {
       width: 45% !important;
   } 
-  .buttons {
-      width: 95% !important;
-  }
+ 
 }
