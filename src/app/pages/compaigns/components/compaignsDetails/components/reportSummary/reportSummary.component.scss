@@ -1,3 +1,6 @@
+h1,h2,h3,h4,h5,h6,p{
+    font-family: 'Poppins', sans-serif ;
+}
 .summary-icon{
     align-self: start;
     padding: 15px 15px;
@@ -138,3 +141,138 @@
       }
   }
   
+@media(max-width:768px){
+    .summary-state-container {
+        display: flex;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+
+    }
+    
+    .summary-state {
+        padding: 5px 10px !important;
+        height: 104px !important;
+        width: 31%;
+        position: relative;
+    }
+    h4.txt-md {
+        font-size: 13px !important;
+    }
+    .summary-icon {
+        align-self: flex-end !important;
+        padding:  8px !important;
+        position: absolute;
+        bottom: 16px;
+        right: 9px;
+        img{
+            width: 20px !important;
+
+        }
+    }
+    
+    .summary-state.delivered .summary-icon,
+    .summary-state.sent .summary-icon {
+        padding: 3px 8px !important;
+    }
+    
+    .summary-state.delivered .summary-icon img {
+        position: relative;
+        top: -8px !important;
+
+    }
+    
+    .summary-state.sent .summary-icon img {
+        position: relative;
+        top: -7px !important;
+    }
+    p.fw-bold {
+        font-size: 18px !important;
+        margin-top: -20px;
+        max-width: 54px !important;
+        white-space: break-spaces;
+        word-wrap: break-word;
+    }
+    h4.total-delevired {
+        font-size: 16px !important;
+    }
+    .summary-container{
+        padding: 10px !important;
+        overflow: hidden !important;
+
+    }
+    .line {
+        margin-block: 12px !important;
+    }
+    .campaign-setting-body  {
+        border:none !important;
+        min-width: 84% !important;
+        padding: 0px !important;
+        width: 84vw !important;
+    }
+    .interval,.sending-time {
+        width: 100%  !important;
+
+    }
+    .campaign-setting.mb-2.p-3 {
+        width: 100% !important;
+        padding: 0 !important;
+
+    }
+    .interval{
+      div{
+        width: 80px !important;
+        gap: 0px !important;
+      }
+      span.mx-3 {
+        margin-inline: 0px !important;
+
+    }
+
+    }
+    .sending-time{
+       span{
+        width: 90% !important;
+
+       }
+        .sending-out{
+            width: 74px !important;
+            span.mx-3 {
+                margin-inline: 9px !important;
+
+            }
+        }
+    }
+    .max-recepient{
+        width:83%  !important;
+
+    }
+    .campaign-setting h4.txt-lg.mb-5 {
+        margin-bottom: 18px !important;
+    }
+    .attachment{
+        width: 33% !important;
+    }
+    .table-container  {
+        min-width: 100% !important;
+    }
+    .table-container  .table-inner-container  {
+        padding-inline: 0 !important;;
+    }
+    .d-flex.gap-2.overflow-hidden.criterias-wrapper.px-4.w-100 {
+        padding-inline: 0 !important;
+    }
+    .table-inner-container td, .table-inner-container th {
+        font-size: 12px !important;
+    }
+    .criterias {
+        width: fit-content !important;
+    }
+    .session-time-out{
+        width: 60% !important;
+
+    }
+    .d-flex.gap-4.mt-5.flex-column.component-container {
+        margin-top: 15px !important;
+        gap: 35px !important;
+    }
+}

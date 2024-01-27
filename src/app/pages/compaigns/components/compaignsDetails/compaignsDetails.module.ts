@@ -9,6 +9,7 @@ import { RecipientActivitiesComponent } from './components/recipientActivities/r
 import { ReportSummaryComponent } from './components/reportSummary/reportSummary.component';
 
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule,
     CompaignsDetailsRoutes,
     SharedModule,
+    MatDividerModule
   ],
   declarations: [
     CompaignsDetailsComponent ,

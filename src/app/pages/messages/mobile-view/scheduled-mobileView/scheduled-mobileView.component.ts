@@ -31,7 +31,7 @@ export class ScheduledMobileViewComponent implements OnInit ,OnDestroy{
     @ViewChild(MatPaginator)  paginator!: MatPaginator;
     cellClick:boolean=false;
     columns :FormControl;
-    displayed: string[] = SCHEDULED.filter((_, index) => index !== SCHEDULED.length -1);;
+    displayed: string[] = SCHEDULED.filter((_, index) => index !== SCHEDULED.length -1);
     displayedColumns: string[] = ['Device Name', 'Recipient', 'Messages', 'Created At','Scheduled At'];
     dataSource:MatTableDataSource<Shceduled>;
     selection = new SelectionModel<Shceduled>(true, []);

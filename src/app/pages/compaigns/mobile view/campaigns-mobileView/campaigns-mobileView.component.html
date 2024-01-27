@@ -166,9 +166,13 @@
             <div class="col row-header">{{ 'actionColumn' | translate }}</div>
             <div class="col " (click)="cellClick=true;">
               <div class="actions d-flex  w-100">
-                <div class="d-flex flex-row-reverse gap-2 " >
+                <div class="d-flex flex-row-reverse gap-3 " >
                   <img (click)="deleteCampaign(element)" src="assets/icons/Actionsc.svg" alt="" />
                   <img *ngIf="element.isStopped == false" (click)="stopCampaign(element);" src="assets/icons/stop-compaigns.svg" alt="" />
+                  <div class="details d-flex gap-1 align-items-center" (click)="campaignDetails(element)">
+                    <img src="assets/icons/details.svg">
+                    <span class="text-primary-800" >{{'details' | translate}}</span>
+                  </div>
                 </div>
               </div>
             </div>
