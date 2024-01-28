@@ -103,7 +103,7 @@
       </div>
       <div class="d-flex  flex-column" id="sendingOut" style="width:42%; position: relative;">
         <div class="d-flex align-items-center justify-content-between">
-          <div style="width:250px">
+          <div style="width:250px" class="time-picker">
        
             <nz-time-picker
             style="padding: 0 12px;"
@@ -111,12 +111,15 @@
             [nzUse12Hours]="true"
             formControlName="time1"
             nzFormat="h:mm a"
+            [nzPopupClassName]="'custom-panel'"
+
           ></nz-time-picker>
           </div>
           <span class="mx-3">{{ 'toLabel' | translate }}</span>
           <div style="width:250px">
          
             <nz-time-picker
+            [nzPopupClassName]="'custom-panel'"
             style="padding: 0 12px;"
               class="rounded-pill border border-1 py-2 txt-input w-100"
               [nzUse12Hours]="true"

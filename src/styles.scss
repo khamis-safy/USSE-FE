@@ -2497,7 +2497,6 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   max-width:300px !important;
   overflow: auto !important;
   border-radius: 8px !important;
-  /* Set your desired width */
 }
 
   .mat-stepper-horizontal .mat-horizontal-stepper-wrapper .mat-horizontal-stepper-header-container {
@@ -2724,4 +2723,27 @@ span.mat-mdc-select-value-text {
       left: 9px !important;
   }
   }
+
+  .custom-panel {
+    width: 180px !important;
+    left: 20% !important;
+ 
+  }
+  .ant-picker-panel-container .ant-picker-panel {
+    width: fit-content !important;
+  }
+  nz-time-picker{
+    .ant-picker-panel-container .ant-picker-panel {
+      vertical-align: top;
+      background: 0 0;
+      border-width: 0 0 1px;
+      border-radius: 0;
+      width: 180px !important;
+  }
+  }
+
+
+}
+.ant-picker-panel-container{
+  border-radius: 8px !important;
 }
