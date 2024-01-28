@@ -97,13 +97,15 @@
         <div class="message-body" style="    max-width: 96%;
         ">
           <p  class="txt-md ms-3 mb-2 mt-4 text-neutral-900 message">{{template?.messageBody}}</p>
-    
-          <!-- <ng-container *ngIf="message.fileName">
-              <img *ngIf="(template?.fileName | type )=='assets/images/image.svg' else otherType"  class="mx-1 mb-1 w-100 image" [src]="message.fileUrl" alt="">
+          <ng-container *ngFor="let attachment of template?.attachments">
+
+          <ng-container *ngIf="attachment.fileName">
+              <img *ngIf="(attachment?.fileName | type )=='assets/images/image.svg' else otherType"  class="mx-1 mb-1 w-100 image" [src]="attachment.fileUrl" alt="">
               <ng-template #otherType>
-                <a  class="pointer " [href]="message.fileUrl" target="_blank" [title]="'open' | translate" ><img   class="media" [src]="message.fileName | type" alt=""></a>
+                <a  class="pointer " [href]="attachment.fileUrl" target="_blank" [title]="'open' | translate" ><img   class="media" [src]="attachment.fileName | type" alt=""></a>
               </ng-template>
-          </ng-container> -->
+          </ng-container>
+          </ng-container>
         </div>
       </div>
     </div>

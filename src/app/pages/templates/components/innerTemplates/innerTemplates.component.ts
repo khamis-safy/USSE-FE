@@ -25,6 +25,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { TEMPLATESHEADERS } from '../constats/contstants';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { DisplayMessageComponent } from 'src/app/pages/messages/Components/display-message/display-message.component';
+import { TranslationService } from 'src/app/shared/services/translation.service';
 
 @Component({
   selector: 'app-innerTemplates',
@@ -38,7 +40,7 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
   numRows;
   loading:boolean=true;
   isSearch:boolean=false;
-
+  cellClick:boolean;
     noData: boolean;
     notFound: boolean;
   @Input() isCanceled: boolean;
@@ -67,7 +69,9 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
     public dialog: MatDialog,
     private toaster: ToasterServices,
     private templatesService: TemplatesService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private translationService:TranslationService,
+
   ) {}
 
   ngAfterViewInit(): void {
@@ -233,7 +237,29 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
 
     }
   }
+  displayMessage(row){
+    if(!this.cellClick){
 
+      const currentLang=this.translationService.getCurrentLanguage()
+      const dialogConfig=new MatDialogConfig();
+      dialogConfig.height='100vh';
+      dialogConfig.width='25vw';
+      dialogConfig.maxWidth='450px';
+      dialogConfig.minWidth='300px'
+      dialogConfig.disableClose = true;
+      dialogConfig.panelClass = 'custom-mat-dialog-container';
+      dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
+      dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
+      dialogConfig.data={template:row};
+      const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+        }
+  
+      });
+    }
+  }
 
   onPageChange(event){
     this.templatesService.showsNum=event.pageSize;

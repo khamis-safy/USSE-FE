@@ -1023,7 +1023,9 @@ ngx-intl-tel-input .iti{
 }
 }
 
-
+.mat-mdc-menu-item span {
+  font-size: 14px !important;
+}
 .spinner-container {
   display: flex;
   justify-content: center;
@@ -2404,7 +2406,12 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
       min-width: 90% !important;
       width: 90% !important;
   }
-  
+  .custom-dialog-preview{
+    width: 100%  !important;
+    height: fit-content  !important;
+    max-height: 80vh  !important;
+    max-width: 100%  !important;
+  }
   .custom-responsive-modal {
       height: 300px !important;
       min-height: unset !important;
@@ -2468,7 +2475,7 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   font-size: 11px !important;
 }
   section.emoji-mart {
-    width: 100% !important;
+    width: 270px !important;
 }
   .table-inner-container{
     td,th{

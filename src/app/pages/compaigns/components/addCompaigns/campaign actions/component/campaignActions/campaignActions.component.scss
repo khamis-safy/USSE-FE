@@ -48,6 +48,9 @@ padding: 20px !important;
   display: flex !important;
   align-items: end !important;
 }
+.nodata-container {
+  height: 43vh !important;
+}
 @media(max-width:768px){
   .small-screen-view{
     min-height: auto !important;
