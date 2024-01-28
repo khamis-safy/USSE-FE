@@ -1,4 +1,4 @@
-<div class="write-message-containter  w-100 h-100 p-5 mt-5">
+<div class="step1-containter  w-100 h-100 p-5 mt-5">
 
   <div class="d-flex gap-5 flex-column">
      <form [formGroup]="form" class="d-flex gap-5 flex-column">
@@ -20,11 +20,12 @@
 <app-criteria  (allCriterias)="setCriterias($event)" (disableSaveButton)="disabled = $event" [criteriaParameters]="automationData?.criterias || []"></app-criteria>
   </div>
   
-  <div class="d-flex justify-content-end align-items-center buttons" style="width: 95%; ">
+  <div class="d-flex justify-content-end align-items-center buttons">
     <button class="rest-style" matStepperNext  [disabled]="form.invalid || criterias.length==0 || disabled">
       <us-button
         class="m-2"
         label="{{ 'NEXT' | translate }}"
+        [fullWidth]="true"
         [fill]="true"
         [size]="'md'"
         [loading]="false"

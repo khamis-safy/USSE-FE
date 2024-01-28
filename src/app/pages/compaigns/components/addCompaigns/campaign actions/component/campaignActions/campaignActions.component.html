@@ -186,7 +186,7 @@
              <!-- Name Column -->
              <div class="row w-100">
                <div class="col row-header">{{ 'Action_Name' | translate }}</div>
-               <div class="col" style="font-weight: normal;">{{ element.name }}</div>
+               <div class="col" style="font-weight: normal;">{{ element.name | translate }}</div>
              </div>
          
            </mat-expansion-panel-header>
@@ -206,7 +206,7 @@
        </mat-accordion>
    </div>
     <mat-paginator 
-      *ngIf="isSmallScreen ? length >10 : true"
+    [ngClass]="{'d-none': isSmallScreen && length < 10}"
       [pageSizeOptions]="[10, 50, 100]"
       showFirstLastButtons
       [length]="length"

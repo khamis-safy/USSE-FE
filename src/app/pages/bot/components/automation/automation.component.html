@@ -1,7 +1,7 @@
-<section class="py-3 component-container d-flex flex-column gap-3">
+<section class="py-3 component-container d-flex flex-column gap-3"  [ngClass]="{'small-screen-view':isSmallScreen}">
 
 
-  <div class="d-flex justify-content-between mb-2 align-items-center">
+  <div  *ngIf="!isSmallScreen" class="d-flex justify-content-between mb-2 align-items-center">
     <div class="d-flex position-relative row m-0">
       <div class="col-12 col-lg-4 p-0">
         <input
@@ -52,11 +52,123 @@
     </div>
   </div>
 
+  <ng-container  *ngIf="isSmallScreen">
+    <div class="d-flex align-items-center justify-content-between my-3" style="gap: 12px;">
+
+      <div class="d-flex position-relative row m-0 input-search-containter" >
+        <div class="col-12 col-lg-4 p-0 w-100" >
+          <input
+            #search
+            type="text"
+            class="form-control ps-5 txt-xs w-100"
+            id="search"
+            placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
+            (input)="onSearch(search)"
+          />
+        </div>
+        <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
+          <img src="assets/icons/search.svg" alt="" width="14" />
+        </div>
+      
+      </div>
+    
+      <us-button
+      [label]="'new_automation' | translate"
+      [matIcon]="'add'"
+      [fill]="true"
+      [size]="'md'"
+      [loading]="false"
+      [disabled]="false"
+      [appearance]="'primary'"
+      (clicked)="addAutomation()"
+    ></us-button>
+    
+  </div>
+  
+  <div class="d-flex align-items-center justify-content-between dropdowns mb-3" style="row-gap: 6px; max-width: 394px;">
+    <form [formGroup]="displayForm" class="d-flex gap-5 flex-column" style="
+    min-width: 100px;">
+      <!-- show number of displayed items -->
+      <us-select
+        [data]="showsOptions"
+        formControlName="showsSelectedOptions"
+        [multiSelect]="false"
+        (onSelect)="onPageSizeChange($event)"
+        [label]="'shows' | translate"
+        [isDisabled]="false"
+        [optional]="true"
+        endLable="{{ 'items' | translate }}"
+        [smallDropDown]="true"
+      ></us-select>
+  
+     
+    </form>
+    <div class="display">
+      <mat-form-field class="us-select">
+        <mat-label class="txt-caption"> <img src="assets/icons/display.svg" alt="" class="m-2" width="15"> <span class="txt-caption" style="font-size: 12px !important;">{{ 'DISPLAY' | translate }}</span></mat-label>
+        <mat-select [formControl]="columns"  (selectionChange)="changeColumns($event.value)" multiple>
+          <mat-option *ngFor="let topping of displayed" [value]="topping.value">{{ topping.title | translate }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <form  >
+      <mat-form-field appearance="fill" class="sorting-dropdown">
+        <mat-select [placeholder]="'sortBy' |translate" multiple [disabled]="true">
+          
+          <mat-select-trigger>
+            {{'sortBy' |translate}}
+          </mat-select-trigger>
+          <mat-option class="sort_by_option" *ngFor="let option of topSortingOptions; let i = index" [value]="option.lable">
+            <div class="d-flex align-items-center justify-content-between" (click)="toggleTopSortingSelect()">
+              <span [ngClass]="{'text-primary-800': option.isSelected}">{{ option.lable }}</span>
+              <mat-icon *ngIf="option.isSelected">done</mat-icon>
+            </div>
+          </mat-option>
+          <mat-divider></mat-divider>
+          <mat-option class="sort_by_option" *ngFor="let option of bottomSortingOptions; let i = index" [value]="option.lable">
+            <div class="d-flex align-items-center justify-content-between" (click)="toggleBottomSortingSelect()">
+              <span [ngClass]="{'text-primary-800': option.isSelected}">{{ option.lable }}</span>
+              <mat-icon *ngIf="option.isSelected">done</mat-icon>
+            </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  
+  </div>
+  <div class="d-flex align-items-center justify-content-between dropdowns " style="row-gap: 6px; max-width: 394px;">
+  
+    <form [formGroup]="form" class="d-flex">
+      <us-select
+      [isListDevicesDropdown]="true"
+      [deviceLableGap]="true"
+      [labelTopInMobileView]="false"
+        [data]="devices"
+        formControlName="devicesData"
+        [multiSelect]="false"
+        [label]="'Devices' | translate"
+        (onSelect)="onSelect($event)"
+        [loadingText]="deviceLoadingText"
+        [placeholder]="'Select Devices' | translate"
+        [isDisabled]="false"
+        [optional]="true"
+        [enableSearch]="true"
+        [searchbarOnToggler]="true"
+        [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
+        [maxListItemsWithoutSearch]="5"
+  
+      ></us-select>
+    </form>
+  
+  </div>
+  
+  </ng-container>
 
 
 <ng-container *ngIf="length > 0 && !noData || loading">
   <section class="table-wrapper" >
-    <table mat-table [dataSource]="dataSource" class="table-wrapper" cdkDropList (cdkDropListDropped)="onListDrop($event)">
+    <table *ngIf="!isSmallScreen" mat-table [dataSource]="dataSource" class="table-wrapper" cdkDropList (cdkDropListDropped)="onListDrop($event)">
 
       <ng-container matColumnDef="Reorder">
         <th class="text-center" mat-header-cell *matHeaderCellDef></th>
@@ -126,8 +238,60 @@
     <div *ngIf="loading" class="spinner-container p-3">
       <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
     </div>
+    <div  *ngIf="isSmallScreen" class="small-screen-view">
+      <mat-accordion class="table-mobile-view with-reorder without-select" cdkDropList (cdkDropListDropped)="onListDrop($event)">
+         <mat-expansion-panel *ngFor="let element of accordionData" [expanded]="false" 
+        [ngClass]="{'radius-15':length <= 10}"
+        [cdkDragData]="element" cdkDrag [cdkDragPreviewClass]="'custom-drag-preview'">
+          <mat-expansion-panel-header>
+                    <!-- Reorder Column -->
+                    <div class="reorder">            
+                    <img style="cursor: move;width: 16px;" src="assets/icons/reorder.svg" cdkDragHandle>
+                  </div>
+          <!-- Name Column as Row Header -->
+          <div class="row w-100">
+            <div class="col row-header">{{ 'Action_Name' | translate }}</div>
+            <div class="col">{{ element.name | translate }}</div>
+          </div>
+        </mat-expansion-panel-header>
+    
+        <!-- Criterias Column -->
+      
+        <div class="row row-item " *ngIf="displayedColumns.includes('Criterias')" (click)="$event.stopPropagation();showCriterias(element)">
+          <div class="col row-header">{{ 'criteria' | translate }}</div>
+          <div class="col"><a *ngIf="element.criterias?.length > 0" class="text-primary-800">{{'showCriterias' | translate}}</a> </div>
+        </div>
+        <!-- Status Column -->
+        <div class="row row-item" *ngIf="displayedColumns.includes('Status')">
+          <div class="col row-header">{{ 'status' | translate }}</div>
+          <div class="col">
+            <div class="d-flex flex-row-reverse gap-2 justify-content-center">
+              <div class="form-check form-switch pointer">
+                <input [checked]="element.isStopped == false" (change)=" onSwitcherChange($event,element)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Operations Column -->
+        <div class="row row-item" *ngIf="displayedColumns.includes('Operations')">
+          <div class="col row-header">{{ 'Operations' | translate }}</div>
+          <div class="col">
+            <div class="d-flex flex-row-reverse gap-3 justify-content-center">
+              <img class="pointer" (click)="$event.stopPropagation(); deleteAutomation(element)" src="assets/icons/Actionsc.svg" alt="" [title]="'delete' | translate" />
+              <img class="pointer" (click)="$event.stopPropagation(); editAutomation(element);" src="assets/icons/edit-action.svg" alt="" [title]="'edit' | translate" style="width: 17px;" />
+              <img class="pointer" (click)="$event.stopPropagation(); exportQRCode(element)" src="assets/icons/generate-qr.svg" alt="" [title]="'generateQR' | translate" style="width: 17px;" />
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
     <mat-paginator
+    [ngClass]="{'d-none': isSmallScreen && length < 10}"
       [length]="length"
+      [hidePageSize]="isSmallScreen"
+      (page)="onPageChange($event)"
       [pageSizeOptions]="[10, 50, 100]"
       showFirstLastButtons
       aria-label="Select page of periodic elements">

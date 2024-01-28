@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { BotService } from '../../bot.service';
@@ -13,13 +13,35 @@ import { saveAs } from 'file-saver';
 import { DeviceData } from 'src/app/pages/devices/device';
 import { Automation } from '../../interfaces/automation';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject, takeUntil } from 'rxjs';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { ContactInfoComponent } from 'src/app/pages/manage-contacts/components/mobile view/contact-info/contact-info.component';
+import { ContactInfoContent } from 'src/app/pages/manage-contacts/components/mobile view/contacts-mobileView/contacts-mobileView.component';
 @Component({
   selector: 'app-automation',
   templateUrl: './automation.component.html',
   styleUrls: ['./automation.component.scss']
 })
-export class AutomationComponent implements OnInit {
+export class AutomationComponent implements OnInit,AfterViewInit ,OnDestroy {
   displayedColumns: string[] = ['Reorder','Name', 'Criterias','Status','Operations'];
+  displayed:any=[
+    {
+      title:"criteria",
+      value:"Criterias"
+    },
+    {
+      title:"status",
+      value:"Status"
+    },
+    {
+      title:"CREATE_AT",
+      value:"Operations"
+    },
+  ];
+  columns :FormControl;
+  openedDialogs:any=[]
   dataSource :MatTableDataSource<any>;
   length:number=0;
   id:number=0;
@@ -43,18 +65,83 @@ export class AutomationComponent implements OnInit {
   alldevices:DeviceData[]=[];
   WrapperScrollLeft =0;
   WrapperOffsetWidth =250;
+
+
+  showsOptions: SelectOption[] = [
+    { title: '10', value: 10 },
+    { title: '50', value: 50 },
+    { title: '100', value: 100 }
+
+
+  ];
+  showsSelectedOptions: any = new FormControl([]);
+
+  displayForm = new FormGroup({
+    showsSelectedOptions: this.showsSelectedOptions,
+
+  });
+  accordionData:any=[]
+  selectedSortingName: string = 'name';
+  selectedSortingType: string = 'ASC'
+  orderedBy: string = '';
+  topSortingOptions: any = [{ opitonName: 'name', lable: `${this.translate.instant('nameLabel')}`, isSelected: true }
+    , { opitonName: 'createdAt', lable: `${this.translate.instant('CREATE_AT')}`, isSelected: false }]
+
+  bottomSortingOptions: any = [{ opitonName: 'ASC', lable: `${this.translate.instant('ASCENDING')}`, isSelected: true },
+  { opitonName: 'DEC', lable: `${this.translate.instant('DESCENDING')}`, isSelected: false }]
+
+  isSmallScreen: boolean = false;
+  destroy$: Subject<void> = new Subject<void>();
   constructor(private botService : BotService ,
     private authService:AuthService,
-    public dialog: MatDialog, ) { }
+    public dialog: MatDialog, 
+    private translate: TranslateService,
+    private breakpointObserver: BreakpointObserver,
+    private drawerService: NzDrawerService,
 
+    ) { }
+    ngOnDestroy(): void {
+      this.destroy$.next();
+        this.destroy$.complete();
+      
+    }
+    ngAfterViewInit() {
+    if(this.dataSource){
+    
+      this.dataSource.paginator = this.paginator;
+    }
+    }
   ngOnInit() {
-    this.getDevices();
- 
+    this.breakpointObserver.observe(['(max-width: 768px)'])
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(result => {
+      this.isSmallScreen = result.matches;
+      this.getDevices();
+
+      if(!this.isSmallScreen){
+        this.openedDialogs.map((dialog)=>{
+          if(dialog){
+            dialog.close();
+          }
+        })
+
+      }
+      
+    });
+        this.displayForm.patchValue({
+          showsSelectedOptions: {
+          title:'10',
+          value:10,
+          }
+          })
+    this.columns=new FormControl(this.displayedColumns)
+
   }
   onListDrop(event: CdkDragDrop<string[]>) {
     const data = [...this.dataSource.data];
     moveItemInArray (data, event.previousIndex, event.currentIndex);
     this.dataSource.data = data;
+    this.accordionData=data
     let orderedData=this.dataSource.data.map((automation, index)=>{
       return {
         automationId:automation.id,
@@ -225,6 +312,7 @@ scrollLeft(element , wrapper){
         (res)=>{
           this.loading = false;
           this.dataSource=new MatTableDataSource<any>(res);
+          this.accordionData=res;
           if(search!=""){
             this.length=res.length;
             if(this.length==0){
@@ -287,6 +375,8 @@ scrollLeft(element , wrapper){
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='465px';
+    dialogConfig.panelClass='custom-dialog-delete-style'
+
     dialogConfig.data =
     {
       automationData:{automationId:element.id}
@@ -303,8 +393,44 @@ scrollLeft(element , wrapper){
     this.openNewAutomation.emit({openNewAutomation:true , editAutomationData:null})
 
   }
+  showCriterias(element){
+    if(element.criterias && element.criterias?.length > 0){
+      let listNames=element.criterias.map((item)=>item.criteria)
+      const placement = 'bottom'; // Set the placement to 'bottom' for bottom-to-top transition
+  
+      const drawerRef = this.drawerService.create<ContactInfoComponent, ContactInfoContent>({
+        nzHeight: '40vh',
+        nzWidth:'100vw',
+        nzClosable: true,
+        nzContent: ContactInfoComponent,
+        nzPlacement: placement,
+        nzWrapClassName: 'bottom-drawer',
+        nzContentParams: {
+          lists: listNames,
+          contactName: element.name,
+          contactNumber: element.mobileNumber,
+          title:"criteria"
+        }
+      });
+      this.openedDialogs.push(drawerRef)
+  
+    }
+    
+  }
     editAutomation(element){
     this.openNewAutomation.emit({openNewAutomation:true , editAutomationData:element})
+  }
+  onPageSizeChange(event) {
+
+    this.pageNum = 0;
+    this.display=event.value;
+
+    if (this.paginator) {
+      this.paginator.pageSize = event.value;
+      this.paginator.pageIndex = 0;
+    }
+    this.getAutomations(this.deviceId);
+
   }
   onPageChange(event){
     this.display=event.pageSize;
@@ -317,7 +443,7 @@ scrollLeft(element , wrapper){
     this.getAutomations(this.deviceId,event.value);
   }
   onSwitcherChange(e,automation){
-    e.target.checked ? this.startAutomation(automation):this.stopAutomation(automation)
+    e.target.checked ? this.startAutomation(automation):this.stopAutomation(automation);
   }
 
 
@@ -347,5 +473,10 @@ scrollLeft(element , wrapper){
       }
     
     )
+  }
+
+  changeColumns(event){
+    this.displayedColumns=[...event]
+
   }
 }

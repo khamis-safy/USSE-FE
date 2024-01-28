@@ -1,0 +1,31 @@
+@media(max-width:768px){
+    .step2-container{
+        min-height: 55vh;
+        padding: 20px 0 !important;
+    }
+    .step3-container {
+        max-height: unset !important;
+        height: auto !important;
+        overflow: hidden !important;
+        padding: 5px 0px !important;
+    }
+}
+button.rest-style {
+
+    width: 130px !important;
+}
+.buttons {
+
+    gap: 12px !important;
+}
+@media(max-width:768px){
+    button.rest-style {
+        width: 45% !important;
+    } 
+    .buttons{
+        width: 95% !important;
+        position: unset !important;
+        justify-content: center !important;
+        margin-top: 20px;
+    }
+}

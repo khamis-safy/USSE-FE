@@ -17,7 +17,7 @@
 
     <mat-step>
       <ng-template matStepLabel>{{ 'session_details' | translate }}</ng-template>
-      <div class="position-relative  d-flex align-items-between flex-column justify-content-between" style="min-height: 100%;">
+      <div class="position-relative step2-container d-flex align-items-between flex-column justify-content-between" style="min-height: 100%;">
 
         <!-- step two content -->
         <app-details (deviceIdToParent)="setDeviceId($event)" [automationData]="automationData"></app-details>
@@ -26,16 +26,14 @@
 
     <mat-step>
       <ng-template matStepLabel>{{ 'Actions' | translate }}</ng-template>
-      <div class="position-relative d-flex align-items-between flex-column justify-content-between h-100" style="min-height: 100%;">
+      <div class="position-relative d-flex align-items-between flex-column justify-content-between h-100 step3-container" style="min-height: 100%;">
         <!-- last step -->
         <app-campaignActions *ngIf="isCampaignAction" [deviceId]="deviceID" (actionsData)="setActions($event)" [automationData]="automationData"></app-campaignActions>
-        <div class=" buttons" style="width: 95%; ">
-          <div class="d-flex justify-content-end align-items-center">
-
-        
-          <button class="rest-style" matStepperPrevious  [disabled]="isLoading">
+          <div class="d-flex buttons justify-content-end align-items-center">
+            <button class="rest-style" matStepperPrevious  [disabled]="isLoading">
             <us-button
               class="m-2"
+              [fullWidth]="true"
               label="{{ 'BACK' | translate }}"
               [fill]="false"
               [size]="'md'"
@@ -48,6 +46,7 @@
           <button class="rest-style" matStepperNext  [disabled]="isLoading || botActions.length==0">
             <us-button
               class="m-2"
+              [fullWidth]="true"
               [label]="isEditAutomation? ('SAVE' | translate) : ('ADD' | translate)"
               [fill]="true"
               [size]="'md'"
@@ -59,7 +58,6 @@
             </us-button>
           </button>
       
-      </div>
         </div>
       </div>
 

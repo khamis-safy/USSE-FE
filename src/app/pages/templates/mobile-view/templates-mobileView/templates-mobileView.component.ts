@@ -40,7 +40,6 @@ export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('search') search!: ElementRef;
   subscriptions:Subscription[]=[]
-  deletedContacts: string[] = [];
   columns: FormControl;
   display: number;
   displayed: string[] = TEMPLATESHEADERS.slice(1);
@@ -132,7 +131,7 @@ export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
   }
   openDeleteModal(id:string){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='54vh';
+    dialogConfig.height='42vh';
     dialogConfig.width='90vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='80%';

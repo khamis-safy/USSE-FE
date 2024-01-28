@@ -20,12 +20,7 @@
     .files-container{
         margin-bottom: 40px !important;
     }
-    .buttons{
-        width: 100% !important;
-        position: unset !important;
-        justify-content: center !important;
-        margin-top: 20px;
-    }
+
     .message-container{
         min-height: 60vh;
         margin-block: 10px;
@@ -47,7 +42,10 @@ button.rest-style {
     button.rest-style {
         width: 45% !important;
     } 
-    .buttons {
+    .buttons{
         width: 95% !important;
+        position: unset !important;
+        justify-content: center !important;
+        margin-top: 20px;
     }
 }

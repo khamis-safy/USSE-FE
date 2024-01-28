@@ -247,8 +247,8 @@
 "ITEMS_SELECTED": "العناصر المحددة",
 "DELETE_DEVICE_MESSAGE": "هل أنت متأكد أنك تريد حذف هذا الجهاز؟",
 "DELETE_TEMPLATE_MESSAGE": "هل أنت متأكد أنك تريد حذف هذا القالب؟",
-"DELETE_CAMPAIGN_MESSAGE": "هل أنت متأكد أنك تريد حذف هذه الآلية",
-"DELETE_AUTOMATION_MESSAGE":"هل أنت متأكد أنك تريد حذف هذه الحملة؟",
+"DELETE_AUTOMATION_MESSAGE": "هل أنت متأكد أنك تريد حذف هذه الآلية",
+"DELETE_CAMPAIGN_MESSAGE":"هل أنت متأكد أنك تريد حذف هذه الحملة؟",
 "STOP_CAMPAIGN_MESSAGE": "هل أنت متأكد أنك تريد إيقاف هذه الحملة؟",
 "DELETE_SELECTED_ITEMS_MESSAGE": "هل أنت متأكد أنك تريد حذف العناصر المحددة؟",
 "CLEAR_LISTS_MESSAGE": "هل أنت متأكد أنك تريد مسح القوائم من هؤلاء الاتصالات؟",
@@ -600,6 +600,7 @@
 "Select_All":"اختيار الكل",
 "Remove_Lists":"حذف القوائم",
 "sortBy":"ترتيب حسب",
-"see_more":"قراءة المزيد"
+"see_more":"قراءة المزيد",
+"showCriterias":"عرض المعايير"
 }
 
