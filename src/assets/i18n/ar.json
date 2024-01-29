@@ -569,6 +569,7 @@
 "hours":"ساعة",
 "minutes":"دقيقة",
 "This number alraedy exists":"هذا الرقم موجود بالفعل",
+"This email alraedy exists":"هذا الإيميل موجود بالفعل",
 "criteria_already_exist":"هذا المعيار موجود بالفعل",
 "repeated_question":"هذا السؤال مكرر",
 "device_inactive_warning": "لديك {{numOfInactiveDev}}  جهاز غير نشط، انتقل إلى صفحة الأجهزة وقم بتنشيطه/هم",

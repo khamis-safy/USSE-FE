@@ -136,6 +136,7 @@ export class UsersComponent implements OnInit ,OnDestroy{
         dialogConfig.minWidth = '300px';
         dialogConfig.maxHeight = '87vh';
         dialogConfig.disableClose = true;
+        dialogConfig.panelClass='custom-dialog-user-actions'
         dialogConfig.data=data;
 
         const dialogRef = this.dialog.open(EditUserComponent, dialogConfig);
@@ -176,6 +177,7 @@ export class UsersComponent implements OnInit ,OnDestroy{
             dialogConfig.minWidth = '300px';
             dialogConfig.maxHeight = '87vh';
             dialogConfig.disableClose = true;
+            dialogConfig.panelClass='custom-dialog-user-actions'
 
 
             const dialogRef = this.dialog.open(AddUserComponent,dialogConfig);

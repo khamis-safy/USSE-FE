@@ -4,6 +4,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PluginsService } from 'src/app/services/plugins.service';
 import { noWhitespaceValidator } from 'src/app/shared/methods/noWhiteSpaceValidator';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TranslateService } from '@ngx-translate/core';
+import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 
 @Component({
   selector: 'app-inquiry',
@@ -34,8 +36,9 @@ export class InquiryComponent implements OnInit ,AfterViewInit{
     @Inject(MAT_DIALOG_DATA) public data:any,
     private fb: FormBuilder,
     private plugin:PluginsService,
+    private toaster:ToasterServices, 
+    private translate:TranslateService,
   ) { 
- // Set up Dragula
  
     }
 
@@ -126,12 +129,16 @@ export class InquiryComponent implements OnInit ,AfterViewInit{
     }
   addEmail(){
     if(this.form.value.email && this.plugin.emailReg.test(this.form.value.email)){
-    
+      if(this.emails.find((email)=>email == this.form.value.email)){
+        this.toaster.warning(`${this.translate.instant('This email alraedy exists')}`)
+      }
+      else{
         this.emails.push(this.form.value.email);
-        this.form.patchValue({
-          email:""
-        })
-        
+
+      }
+      this.form.patchValue({
+        email:""
+      })
     }
 
   }
@@ -141,10 +148,16 @@ export class InquiryComponent implements OnInit ,AfterViewInit{
   }
   addWhatsappNumber(){
     if(this.form.value.whatsapp){
-    this.whatsappNumbers.push(this.form.value.whatsapp);
-    this.form.patchValue({
-      whatsapp:""
-    })
+      if(this.whatsappNumbers.find((number)=>number == this.form.value.whatsapp)){
+        this.toaster.warning(`${this.translate.instant('This number alraedy exists')}`)
+      }
+      else{
+        this.whatsappNumbers.push(this.form.value.whatsapp);
+
+      }
+      this.form.patchValue({
+        whatsapp:""
+      })
   }
   }
   onTagClose(type:string , index:number){

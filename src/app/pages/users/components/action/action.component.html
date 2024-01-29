@@ -2,12 +2,12 @@
   <div class="d-flex flex-column">
     <!-- shared -->
     <span style="font-size: 16px; font-weight: 500; ">{{ 'APPLICATION_LEVELS' | translate }}</span>
-    <div *ngFor="let sharedSection of sharedPermisions" class="w-100 d-flex my-4">
-      <div class="d-flex align-content-center " style="width: 30%;">
+    <div *ngFor="let sharedSection of sharedPermisions" class="w-100 d-flex my-4 options-container">
+      <div class="d-flex align-content-center title" style="width: 30%;">
         <img width="15px" [src]="sharedSection.section.icon" alt="" class="mx-md-2">
         <span width="70%" class="txt-sm">{{ sharedSection.section.label | translate}}</span>
       </div>
-      <div class="d-flex align-content-center justify-content-around" style="width: 70%;">
+      <div class="d-flex align-content-center justify-content-around options" style="width: 70%;">
         <div *ngFor="let accessLevel of sharedSection.accessLevels">
           <sr-radio [label]="accessLevel.value| translate"
           [state]="accessLevel.checked?'checked':''"
@@ -31,11 +31,12 @@
     <!-- for each device -->
     <ng-container *ngIf="!noDevices">
       <div class="line my-2"></div>
-      <span style="font-size: 16px; font-weight: 500; margin-block: 20px 15px;">{{ 'DEVICE_LEVELS' | translate }}</span>
+      <span style="font-size: 16px; font-weight: 500; margin-block: 20px 15px;" id="device-lable">{{ 'DEVICE_LEVELS' | translate }}</span>
       <!-- device -->
       <form [formGroup]="form" class="my-2">
         <us-select
         [isListDevicesDropdown]="true"
+        [labelTopInMobileView]="false"
           [data]="devices"
           formControlName="devicesData"
           [multiSelect]="false"
@@ -51,12 +52,12 @@
           [maxListItemsWithoutSearch]="5"
         ></us-select>
       </form>
-      <div *ngFor="let sectionLevel of selectedDevice?.sectionsLevels" class="w-100 d-flex my-4">
-        <div class="d-flex align-content-center" style="width: 30%;">
+      <div *ngFor="let sectionLevel of selectedDevice?.sectionsLevels" class="w-100 d-flex my-4 options-container">
+        <div class="d-flex align-content-center title" style="width: 30%;">
           <img width="8%" [src]="sectionLevel?.section?.icon" alt="" class="mx-md-2">
           <span width="70%" class="txt-sm">{{ sectionLevel?.section?.label |translate }}</span>
         </div>
-        <div class="d-flex align-content-center justify-content-around" style="width: 70%;">
+        <div class="d-flex align-content-center justify-content-around options" style="width: 70%;">
           <div *ngFor="let accessLevel of sectionLevel?.accessLevels">
 
             <sr-radio [label]="accessLevel.value| translate"
