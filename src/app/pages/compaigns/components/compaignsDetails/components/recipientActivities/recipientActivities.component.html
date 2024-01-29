@@ -212,7 +212,7 @@
       <div  *ngIf="isSmallScreen" class="small-screen-view">
 
       <mat-accordion class="table-mobile-view without-select" multi>
-        <mat-expansion-panel *ngFor="let element of dataSource?.data" [expanded]="false" 
+        <mat-expansion-panel *ngFor="let element of dataSource?.data" [expanded]="length > 2 ? false :true" 
           [ngClass]="{'radius-15':length <= 10}">
           <mat-expansion-panel-header>
             <!-- Chat Name Column as Row Header -->
