@@ -68,15 +68,7 @@ a {
       }
     }
   }
-  @media(max-width : 1700px){
-    li {
-      a {
-       
-        span{
-          font-size: 12px !important;
-        }
-      }
-  }}
+
   // border: 3px solid;
 .versions{
   padding: 15px;
@@ -152,9 +144,7 @@ height: 45px !important;
       padding: 12px !important;
       // top: 13% !important;
       height: 112px !important;
-      span.txt-md {
-        font-size: 12px !important;
-    }
+   
   }
     a{
       padding: 10px !important;
@@ -172,6 +162,16 @@ height: 45px !important;
   } 
   ul.d-flex.flex-column.gap-3 {
     gap: 10px !important;
+    margin-block: 10px;
+
+}
+li {
+  a {
+
+    span{
+      font-size: 13px  !important;
+    }
+  }
 }
 .versions{
   height: 42px !important;
