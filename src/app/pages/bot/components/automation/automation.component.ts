@@ -298,8 +298,6 @@ scrollLeft(element , wrapper){
 
 }
   getAutomations(deviceId,searchVal?){
- 
-
     let shows=this.display;
     let email=this.authService.getUserInfo()?.email;
     let search=searchVal?searchVal:"";

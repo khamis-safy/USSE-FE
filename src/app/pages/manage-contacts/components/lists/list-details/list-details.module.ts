@@ -6,12 +6,14 @@ import { ListDetailsService } from './list-details.service';
 import { ListDetailsComponent } from './component/list-details.component';
 import { ListContactsComponent } from './components/list-contacts/list-contacts.component';
 import { ListDetailsMobileViewComponent } from './mobile-view/listDetails-mobileView/listDetails-mobileView.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   imports: [
     CommonModule,
     ListDetailsRoutes,
-    SharedModule
+    SharedModule,
+    MatDividerModule
   ],
   declarations: [ListDetailsComponent,
     ListContactsComponent,

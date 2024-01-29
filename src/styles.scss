@@ -1789,7 +1789,7 @@ nz-date-picker{
 }
 
 .mat-mdc-menu-content.mdc-list {
-  min-width: 125px;
+  min-width: 80px;
 }
 // drage table rows************************************************************************
 /* Add this style to your component's stylesheet */
@@ -2747,4 +2747,8 @@ span.mat-mdc-select-value-text {
 }
 .ant-picker-panel-container{
   border-radius: 8px !important;
+}
+
+.mat-mdc-menu-panel.mat-mdc-menu-panel {
+  min-width: 85px !important;
 }

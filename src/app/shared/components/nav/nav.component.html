@@ -4,7 +4,7 @@
     <img src="assets/images/white logo.svg" class="logo"  alt="" srcset="">
   </div>
 
-  <div class="menu">
+  <div #langSwitch class="menu">
     <button mat-button [matMenuTriggerFor]="menu" class="text-neutral-0">
       <div class="d-flex align-items-center gap-3">
         <div class="icon">
@@ -17,8 +17,8 @@
       </div>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="language='English';switchLanguage('en')">English</button>
-      <button mat-menu-item (click)="language='العربية';switchLanguage('ar')">العربية</button>
+      <button mat-menu-item (click)="language='English';switchLanguage('en')" [style.width]="getWidth(langSwitch)">English</button>
+      <button mat-menu-item (click)="language='العربية';switchLanguage('ar')" [style.width]="getWidth(langSwitch)">العربية</button>
     </mat-menu>
   </div> 
 

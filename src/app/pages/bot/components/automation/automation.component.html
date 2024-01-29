@@ -239,8 +239,8 @@
       <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style><path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/></svg>
     </div>
     <div  *ngIf="isSmallScreen" class="small-screen-view">
-      <mat-accordion class="table-mobile-view with-reorder without-select" cdkDropList (cdkDropListDropped)="onListDrop($event)">
-         <mat-expansion-panel *ngFor="let element of accordionData" [expanded]="false" 
+      <mat-accordion class="table-mobile-view with-reorder without-select" cdkDropList (cdkDropListDropped)="onListDrop($event)" multi>
+         <mat-expansion-panel *ngFor="let element of accordionData" [expanded]="length > 2 ? false :true" 
         [ngClass]="{'radius-15':length <= 10}"
         [cdkDragData]="element" cdkDrag [cdkDragPreviewClass]="'custom-drag-preview'">
           <mat-expansion-panel-header>

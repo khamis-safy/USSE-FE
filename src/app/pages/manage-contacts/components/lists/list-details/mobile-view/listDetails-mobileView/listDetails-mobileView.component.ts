@@ -114,7 +114,12 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
   }
     ngOnChanges() {
         this.length=this.count?.totalContacts
-  
+      if(this.length == 0){
+        this.noData=true
+      }
+      else{
+        this.noData=false;
+      }
       
     }
   
