@@ -49,6 +49,10 @@ unsubscribe$ = new Subject<void>();
       this.email.updateValueAndValidity();
     });
   }
+  getWidth(element: HTMLElement) {
+
+    return `${element.clientWidth}px`;
+  }
   switchLanguage(lang: string) {
     localStorage.setItem("currentLang",lang);
     location.reload()

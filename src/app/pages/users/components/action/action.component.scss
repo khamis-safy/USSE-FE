@@ -29,4 +29,10 @@ input[type="radio"] {
     margin-block: 14px 4px !important;
 
   }
+  .user-action-container{
+    padding: 15px !important;
+    max-height: 50vh;
+    overflow: auto;
+    padding: 8px;
+  }
 }

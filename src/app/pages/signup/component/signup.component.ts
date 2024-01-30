@@ -53,6 +53,10 @@ export class SignupComponent implements OnInit ,OnDestroy{
       }
       )
   }
+  getWidth(element: HTMLElement) {
+
+    return `${element.clientWidth}px`;
+  }
   switchLanguage(lang: string) {
     localStorage.setItem("currentLang",lang);
     location.reload()

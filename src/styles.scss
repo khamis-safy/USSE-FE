@@ -2400,7 +2400,8 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
 
   }
   .custom-responsive-modal,
-  .custom-dialog-user-actions,
+  .custom-dialog-edit-user-actions,
+  .custom-dialog-add-user-actions,
   .custom-dialog-warning-modal,
   .custom-dialog-delete-style,
   .responsive-dialog-for-actions-style2,
@@ -2424,7 +2425,7 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   }
   
   .custom-dialog-delete-style {
-      height: 151px !important;
+    height: 167px !important;
       min-height: 235px !important;
   }
   
@@ -2435,13 +2436,21 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   .responsive-dialog-for-actions,
   .custom-dialog-warning-modal,
   .responsive-dialog-for-actions-style2,
-  .custom-dialog-user-actions,
+  .custom-dialog-edit-user-actions,
+  .custom-dialog-add-user-actions,
   .custom-dialog-delete-style {
       .mat-mdc-dialog-container .mdc-dialog__surface {
           border-radius: 25px !important;
       }
   }
-  
+  .custom-dialog-add-user-actions{
+    height: 83vh !important;
+
+  }
+  .custom-dialog-edit-user-actions{
+    height: 73vh !important;
+
+  }
   .responsive-dialog-for-actions {
       height: 82vh !important;
   }
@@ -2753,4 +2762,21 @@ span.mat-mdc-select-value-text {
 
 .mat-mdc-menu-panel.mat-mdc-menu-panel {
   min-width: 85px !important;
+}
+//////////////////
+@media(max-width:768px){
+  .main-logo{
+    width: 53% !important;
+    margin-block: 27px 5px !important;
+  }
+  .inputs_main_container{
+    width: 100% !important;
+  }
+  .userActions{
+    .mat-stepper-horizontal-line{
+      margin: 0 -69px 0 -55px !important;
+
+    }
+
+  }
 }

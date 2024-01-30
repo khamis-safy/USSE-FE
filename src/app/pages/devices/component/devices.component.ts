@@ -149,7 +149,11 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
           }
       }
       else{
-        this.paginator.pageIndex=this.devicesService.pageNum
+        if(this.paginator)
+        {
+          this.paginator.pageIndex=this.devicesService.pageNum
+
+        }
         this.notFound=false;
         this.getDevicesCount();
 
