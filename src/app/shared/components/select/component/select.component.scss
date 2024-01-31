@@ -597,6 +597,12 @@
     min-width: 18% !important;
   }
 }
+@media (max-width:991px){
+
+  .us-select-container.fullWidth .host {
+    min-width: 8rem !important;
+}
+}
 @media(max-width:768px){
  
   .host .toggler input {

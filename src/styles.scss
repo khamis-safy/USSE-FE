@@ -2780,3 +2780,9 @@ span.mat-mdc-select-value-text {
 
   }
 }
+@media (max-width:991px){
+
+  #search {
+      max-width: 265px !important;
+  }
+}

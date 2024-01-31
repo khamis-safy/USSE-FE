@@ -29,10 +29,13 @@
 
   <section class=" d-flex flex-column gap-3"  [ngClass]="{'small-screen-view':isSmallScreen}">
     <ng-container *ngIf="!noData">
-    <div *ngIf="!isSmallScreen" class="d-flex justify-content-between align-items-center ">
-      <div class="d-flex position-relative row m-0">
-        <div class=" col-12 col-lg-4 p-0">
-          <input #search type="text" class="form-control ps-5  txt-xs" id="search" placeholder="{{ 'SEARCH' | translate }}" (input)="onSearch(search)">
+      <div *ngIf="!isSmallScreen" class="d-flex justify-content-between mb-1 align-items-center">
+        <div class="d-flex position-relative row m-0" style="width:31%; max-width: 389px;    min-width: 223px;">
+          <div class="col-12 col-lg-4 p-0 w-100" >
+            <input
+              #search
+              type="text"
+              class="form-control ps-5 txt-xs w-100" id="search" placeholder="{{ 'SEARCH' | translate }}" (input)="onSearch(search)">
         </div>
         <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
           <img src="assets/icons/search.svg" alt="" width="14">

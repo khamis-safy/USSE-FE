@@ -20,23 +20,22 @@
   </div>
   <section class="py-3 d-flex flex-column gap-3"  [ngClass]="{'small-screen-view':isSmallScreen}">
     <ng-container  *ngIf="!isSmallScreen">
-      <div  *ngIf="!noData" class="d-flex justify-content-between align-items-center">
-        <div class="d-flex position-relative row m-0">
-          <div class="col-12 col-lg-4 p-0">
+      <div  *ngIf="!noData"  class="d-flex justify-content-between mb-1 align-items-center">
+        <div class="d-flex position-relative row m-0" style="width:31%; max-width: 389px;    min-width: 223px;">
+          <div class="col-12 col-lg-4 p-0 w-100" >
             <input
               #search
               type="text"
-              class="form-control ps-5 txt-xs"
+              class="form-control ps-5 txt-xs w-100"
               id="search"
-              placeholder="{{ 'SEARCH' | translate }}"
+              placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
               (input)="onSearch(search)"
             />
           </div>
-          <div
-            class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y"
-          >
+          <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
             <img src="assets/icons/search.svg" alt="" width="14" />
           </div>
+         
         </div>
         <mat-form-field class="us-select">
           <mat-label class="txt-caption">
@@ -162,7 +161,7 @@
             <td class="text-center" mat-cell *matCellDef="let element">
               <div class="actions d-flex justify-content-center w-100">
                 <div class="d-flex  gap-3 justify-content-center " style="width: 25%;">
-                  <img class=" pointer " src="assets/icons/action-users-icon.svg" alt="edit-permissions" (click)="openActionModal(element)" />
+                  <img class=" pointer " src="assets/icons/action-users-icon.svg" style="width: 20px;" alt="edit-permissions" (click)="openActionModal(element)" />
                   <img class=" pointer " (click)="deleteUser(element)" src="assets/icons/Actionsc.svg" alt="delete-user" />
                 </div>
               </div>
