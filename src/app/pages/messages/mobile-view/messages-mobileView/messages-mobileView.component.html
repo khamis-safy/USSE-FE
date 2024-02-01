@@ -145,7 +145,7 @@
       </div>
       <mat-accordion class="table-mobile-view" multi>
         <mat-expansion-panel *ngFor="let element of messagesTableData" [expanded]="length > 2 ?false :true" 
-          [ngClass]="{'active-row': selection.isSelected(element),'radius-15':length <= 10}">
+          [ngClass]="{'active-row': selection.isSelected(element),'radius-15':length <= 10  , 'without-select' :!displayedColumns.includes('select')}">
           <mat-expansion-panel-header>
             <!-- Checkbox Column -->
             <mat-checkbox
@@ -158,7 +158,7 @@
             ></mat-checkbox>
       
             <!-- Device Name Column -->
-            <div class="row w-100" *ngIf="displayedColumns.includes(msgCategory == 'inbox' ? 'Sender' : 'Recipient')">
+            <div class="row w-100" >
               <div class="col row-header">
                 <ng-container *ngIf="msgCategory == 'inbox'">{{ 'SENDER_LABEL' | translate }}</ng-container>
                 <ng-container *ngIf="msgCategory != 'inbox'">{{ 'RECIPIENT_LABEL' | translate }}</ng-container>

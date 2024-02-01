@@ -105,9 +105,11 @@
     <mat-accordion class="table-mobile-view" multi>
       <mat-expansion-panel *ngFor="let element of tableData" 
       [expanded]="length > 2 ?false :true"
-      [ngClass]="{'active-row':selection.isSelected(element),'radius-15':length <= 10}">
+      [ngClass]="{'active-row':selection.isSelected(element),'radius-15':length <= 10  , 'without-select' :!displayedColumns.includes('select')}">
         <mat-expansion-panel-header>
-          <mat-checkbox color="ch-color"
+          <mat-checkbox 
+                      *ngIf="displayedColumns.includes('select')"
+                        color="ch-color"
                         (click)="$event.stopPropagation()"
                         (change)="$event ? selection.toggle(element) : null; onCheckboxChange($event,element)"
                         [checked]="selection.isSelected(element)"
@@ -139,7 +141,7 @@
                 <mat-icon class="mat-icon" color="primary">edit</mat-icon>
                 <span class=" edit">{{ 'EDIT_ACTION' | translate }}</span>
               </div>
-              <div class="details d-flex gap-1 align-items-center" (click)="navigateTo(element.id)">
+              <div class="details d-flex gap-1 pointer align-items-center" (click)="navigateTo(element.id)">
                 <img src="assets/icons/details.svg">
                 <span class="text-primary-800" >{{'details' | translate}}</span>
               </div>

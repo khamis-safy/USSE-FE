@@ -79,7 +79,7 @@ subscribtions:Subscription[]=[];
     });
   
     if(!this.canEdit){
-      this.displayedColumns = ['select', 'Name', 'Create At', 'Total Contacts'];
+      this.displayedColumns = [ 'Name', 'Create At', 'Total Contacts'];
 
     }
 

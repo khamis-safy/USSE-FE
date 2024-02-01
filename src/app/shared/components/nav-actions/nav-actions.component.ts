@@ -34,6 +34,7 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
   showExportOptions:boolean=false;
   deletedItems:any=[];
   canceledContacts:any=[];
+  canEdit:boolean;
   menuItems: { name: string; function?: () => void ,submenu?:any }[] ;
   constructor(public dialog: MatDialog,
     private  toaster: ToasterServices,
@@ -91,22 +92,40 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
       {name: 'UnCancel', function: () => this.openUnCancelContactsModal()}]
   }
   showContactsMenueItems(){
-    this.menuItems = [
-      { name: 'Select_All', function: () => this.selectAll() },
-      { name: 'Remove_Lists', function: () => this.removeLists() },
-      { name: 'delete', function: () => this.openDeleteModal()},
-      { name: 'ADD_TO_LISTS', function: () => this.addContactToList()},
-      { name: 'EXPORT_SELECTED'}
-    ];
+    if(this.canEdit){
+      this.menuItems = [
+        { name: 'Select_All', function: () => this.selectAll() },
+        { name: 'Remove_Lists', function: () => this.removeLists() },
+        { name: 'delete', function: () => this.openDeleteModal()},
+        { name: 'ADD_TO_LISTS', function: () => this.addContactToList()},
+        { name: 'EXPORT_SELECTED'}
+      ];
+    }
+    else{
+      this.menuItems = [
+        { name: 'Select_All', function: () => this.selectAll() },
+        { name: 'EXPORT_SELECTED'}
+      ];
+    }
+  
 
   }
   showListDetailsMenueItems(){
-    this.menuItems = [
-      { name: 'Select_All', function: () => this.selectAll() },
-      { name: 'REMOVE_FROM_LIST', function: () => this.removeContacts() },
-      { name: 'delete', function: () => this.openDeleteModal()},
-      { name: 'EXPORT_SELECTED'}
-    ];
+    if(this.canEdit){
+      this.menuItems = [
+        { name: 'Select_All', function: () => this.selectAll() },
+        { name: 'REMOVE_FROM_LIST', function: () => this.removeContacts() },
+        { name: 'delete', function: () => this.openDeleteModal()},
+        { name: 'EXPORT_SELECTED'}
+      ];
+    }
+    else{
+      this.menuItems = [
+        { name: 'Select_All', function: () => this.selectAll() },
+        { name: 'EXPORT_SELECTED'}
+      ];
+    }
+  
   }
   resendMessages(){
     this.resendFailedMessages.emit(true)
@@ -154,12 +173,20 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
   selectAll(){
     this.selectAllEvent.emit(true)
     if(this.componentName== 'contacts'){
-      this.menuItems=[
-        { name: 'Remove_Lists', function: () => this.removeLists() },
-        {name: 'delete', function: () => this.openDeleteModal()},
-        { name: 'ADD_TO_LISTS', function: () => this.addContactToList()},
-        { name: 'EXPORT_SELECTED'}]
-        
+      if(this.canEdit){
+        this.menuItems=[
+          { name: 'Remove_Lists', function: () => this.removeLists() },
+          {name: 'delete', function: () => this.openDeleteModal()},
+          { name: 'ADD_TO_LISTS', function: () => this.addContactToList()},
+          { name: 'EXPORT_SELECTED'}]
+          
+      }
+      else{
+        this.menuItems=[
+          { name: 'EXPORT_SELECTED'}]
+          
+      }
+    
     }
     if(this.componentName=='canceledContacts')
     {
@@ -187,11 +214,19 @@ export class NavActionsComponent implements OnInit ,OnDestroy{
       ];
     }
     if(this.componentName == 'listDetails'){
-      this.menuItems = [
-        { name: 'REMOVE_FROM_LIST', function: () => this.removeContacts() },
-        { name: 'delete', function: () => this.openDeleteModal()},
-        { name: 'EXPORT_SELECTED'}
-      ];
+      if(this.canEdit){
+        this.menuItems = [
+          { name: 'REMOVE_FROM_LIST', function: () => this.removeContacts() },
+          { name: 'delete', function: () => this.openDeleteModal()},
+          { name: 'EXPORT_SELECTED'}
+        ];
+      }
+      else{
+        this.menuItems = [
+          { name: 'EXPORT_SELECTED'}
+        ];
+      }
+   
     }
     
   }

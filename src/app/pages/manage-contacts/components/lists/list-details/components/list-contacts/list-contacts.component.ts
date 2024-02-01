@@ -100,7 +100,7 @@ ngOnInit() {
   });
   this.columns=new FormControl(this.displayedColumns)
   if(!this.canEdit){
-    this.displayedColumns = ['Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
+    this.displayedColumns= ['select','Name', 'Mobile','Additional Parameters',"Create At"];
 
   }
 this.selection.changed.subscribe(
@@ -258,10 +258,14 @@ getContacts(searchVal?){
       this.active=!this.active;
     }
     changeColumns(event){
-
-
+      if(this.canEdit){
         this.displayedColumns=['select',...event,'action']
-
+      }
+    
+    else{
+      this.displayedColumns=['select',...event]
+    
+    }
 
     }
     updateTotalContacts(event){

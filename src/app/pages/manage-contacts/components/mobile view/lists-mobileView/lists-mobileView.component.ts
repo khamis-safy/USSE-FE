@@ -100,7 +100,7 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
       })
     this.getListData();
     if(!this.canEdit){
-      this.displayedColumns = ['select', 'Name', 'Create At', 'Total Contacts'];
+      this.displayedColumns = [ 'Name', 'Create At', 'Total Contacts'];
 
     }
 

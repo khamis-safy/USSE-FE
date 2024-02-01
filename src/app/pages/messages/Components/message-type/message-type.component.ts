@@ -164,14 +164,13 @@ ngAfterViewInit(): void {
 
 
       }
-      if(!this.permission && this.isUser){
+      else if(!this.permission && this.isUser){
         this.fillBasedOnPermissions("ReadOnly")
         this.canEdit=false;
       }
       else{
         this.canEdit=true;
       }
-
     }
   fillBasedOnPermissions(permission:string){
     if(permission=="FullAccess"){

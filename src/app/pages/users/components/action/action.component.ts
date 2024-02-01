@@ -100,7 +100,8 @@ levels:any=LEVELS
 
     }
           this.sharedPermisions=this.isEdit?this.fillingSharedPermissions(this.data.permissions): this.setSharedSections();
-
+        
+        
       // this.sharedPermisions= this.setSharedSections();
       this.sharedPermissions.emit(this.sharedPermisions)
 
@@ -161,8 +162,7 @@ fillingSharedPermissions(permission:any){
 
     let accessLevel=shared.value;
     let section =this.sharedSections.find((sec)=>sec.label==sectionName)
-    this.noDevices=section.name=="devices" && accessLevel=="None"
-
+  
     return{
       section:section,
         accessLevels: [
@@ -255,7 +255,13 @@ getDevices(){
         this.deviceLoadingText='No Results'
       }
       else{
-        this.noDevices=false;
+        this.sharedPermisions.map((permission)=>{
+          if(permission.section.name == 'devices'){
+            
+            let noneState = permission.accessLevels.find((level)=>level.value == 'None')
+              this.noDevices =noneState.checked
+          }
+        })
           this.form.patchValue({
             devicesData: {
               title:devicesData[0]?.deviceName,

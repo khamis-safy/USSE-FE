@@ -91,12 +91,24 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
       
       }
     });
-  
+     if(this.isCanceled){
     if(!this.canEdit){
-      this.displayedColumns = ['Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
+        this.displayedColumns = ['Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
+
+      }
+      else{
+        this.displayedColumns= ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
+
+      }
 
     }
-
+    else{
+      if(!this.canEdit){
+        if(!this.canEdit){
+          this.displayedColumns= ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
+        }
+      }
+    }
     this.columns=new FormControl(this.displayedColumns)
 
     this.selection.changed.subscribe(
@@ -183,10 +195,7 @@ unCancelSnackBar(){
       (res)=>{
         this.numRows=res.length;
         this.loading = false;
-        if(isCanceledContacts){
-          this.displayedColumns= ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
-
-        }
+      
         res.forEach(contact => {
           contact.hideLeftArrow = true;
           contact.hideRightArrow = false;
@@ -389,7 +398,14 @@ changeColumns(event){
     }
   }
 else{
-  this.displayedColumns=[...event]
+  if(this.isCanceled){
+    this.displayedColumns=[...event]
+
+  }
+  else{
+    this.displayedColumns=['select',...event]
+
+  }
 
 }
 }

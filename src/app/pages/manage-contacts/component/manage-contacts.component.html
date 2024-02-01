@@ -72,7 +72,7 @@
       (clicked)="openUnCancelContactsModal()"
     ></us-button>
 
-      <div *ngIf="selectedTab=='contacts' && !isChecked">
+      <div *ngIf="selectedTab=='contacts' && !isChecked && canEdit">
         <div #importMenu  class="mx-2">
           <button  mat-button [matMenuTriggerFor]="menu" class=" import-button text-neutral-0 bg-primary-800 rounded-3 ">
             <div class="import-menu d-flex align-items-center justify-content-center gap-3">

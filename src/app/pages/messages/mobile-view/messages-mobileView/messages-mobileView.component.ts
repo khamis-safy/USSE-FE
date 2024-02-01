@@ -185,32 +185,32 @@ this.getMessages(this.deviceId);
 
     }
   }
-      getDevicePermission(deviceId:string){
-        if(this.permission && this.isUser){
-  
-          let devicePermissions=this.permission.find((e)=>e.deviceId==deviceId);
-          if(devicePermissions){
-  
-            let value=devicePermissions.value;
-            this.fillBasedOnPermissions(value);
-            this.canEdit=value=="ReadOnly"?false:true;
-          }
-          else{
-            this.fillBasedOnPermissions("ReadOnly")
-            this.canEdit=false;
-          }
-  
-  
-        }
-        if(!this.permission && this.isUser){
-          this.fillBasedOnPermissions("ReadOnly")
-          this.canEdit=false;
-        }
-        else{
-          this.canEdit=true;
-        }
-  
+  getDevicePermission(deviceId:string){
+    if(this.permission && this.isUser){
+
+      let devicePermissions=this.permission.find((e)=>e.deviceId==deviceId);
+      if(devicePermissions){
+
+        let value=devicePermissions.value;
+        this.fillBasedOnPermissions(value);
+        this.canEdit=value=="ReadOnly"?false:true;
       }
+      else{
+        this.fillBasedOnPermissions("ReadOnly")
+        this.canEdit=false;
+      }
+
+
+    }
+    else if(!this.permission && this.isUser){
+      this.fillBasedOnPermissions("ReadOnly")
+      this.canEdit=false;
+    }
+    else{
+      this.canEdit=true;
+    }
+
+  }
       fillBasedOnPermissions(permission:string){
         if(permission=="FullAccess"){
           this.tableData()
@@ -515,7 +515,7 @@ onCheckboxChange(event,element: any) {
     changeColumns(event){
     //  change displayed column based on component type
     if(this.msgCategory=='failed' && this.canEdit){
-      this.displayedColumns=['select',...event,'Action']
+      this.displayedColumns=['select',...event,'Ation']
     }
     else if(this.msgCategory!='failed' && this.canEdit){
       this.displayedColumns=['select',...event]
@@ -540,12 +540,12 @@ onCheckboxChange(event,element: any) {
         this.displayedColumns = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At'];
       }
       else if(this.msgCategory=='outbox'){
-        this.displayed = OUTBOX.filter((_, index) => index !== 1);;
+        this.displayed = OUTBOX.filter((_, index) => index !== 1);
         this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At','Updated At','Status'];
       }
       else if(this.msgCategory=='failed'){
         this.displayedColumns = ['select' ,'Device Name', 'Recipient', 'Messages', 'Received At',"Action"];
-        this.displayed = FAILED.filter((_, index) => index !== 1);;
+        this.displayed = FAILED.filter((_, index) => index !== 1);
   
       }
       this.columns.setValue(this.displayedColumns)

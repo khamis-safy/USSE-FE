@@ -130,10 +130,7 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
       value:this.listService.getUpdatedDisplayNumber(),
       }
       })
-      if(!this.canEdit){
-        this.displayedColumns = ['Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
-  
-      }
+    
     this.getContacts();
     this.columns=new FormControl(this.displayedColumns)
   
@@ -151,6 +148,10 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
      
       
       });
+      if(!this.canEdit){
+        this.displayedColumns= ['select','Name', 'Mobile','Additional Parameters',"Create At"];
+
+      }
 
   }
   toggleTopSortingSelect(){
@@ -186,6 +187,7 @@ createDynamicComponent(selectedContacts) {
   const navActionsComponentInstance: NavActionsComponent = componentRef.instance;
   navActionsComponentInstance.selectedItems = selectedContacts;
   this.selectedItems=selectedContacts;
+  navActionsComponentInstance.canEdit = this.canEdit;
 
   navActionsComponentInstance.componentName =this.isCanceled? 'canceledContacts' : 'listDetails';
   navActionsComponentInstance.listId=this.listId
@@ -496,9 +498,14 @@ toggleActive(data?){
 }
 changeColumns(event){
 
-
+  if(this.canEdit){
     this.displayedColumns=['select',...event,'action']
+  }
 
+else{
+  this.displayedColumns=['select',...event]
+
+}
 
 }
 getListData(){

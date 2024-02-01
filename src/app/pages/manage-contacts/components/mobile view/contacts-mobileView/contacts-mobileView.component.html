@@ -32,7 +32,7 @@
       
       
       <mat-menu #operations="matMenu">
-        <button mat-menu-item class="button-menu-item" (click)="addOrUpdateContact()">
+        <button *ngIf="canEdit" mat-menu-item class="button-menu-item" (click)="addOrUpdateContact()">
           <div class="d-flex align-items-center gap-1 w-100">
             <mat-icon style="margin-inline: 0;
             font-size: 19px;
@@ -52,7 +52,7 @@
           </div>
         
         </button>
-        <button mat-menu-item [matMenuTriggerFor]="import" class="button-menu-item" >
+        <button *ngIf="canEdit" mat-menu-item [matMenuTriggerFor]="import" class="button-menu-item" >
           <div class=" d-flex align-items-center justify-content-center gap-3">
             <img src="assets/icons/import-black.svg" alt="" style="width:10px;"/>
             <span>{{'IMPORT_FILE' | translate}}</span>
@@ -171,9 +171,10 @@
     <mat-accordion class="table-mobile-view " multi>
       <mat-expansion-panel  *ngFor="let element of tableData" 
       [expanded]="length > 2 ?false :true" 
-      [ngClass]="{'active-row':selection.isSelected(element),'radius-15':length <= 10}">
+      [ngClass]="{'active-row':selection.isSelected(element),'radius-15':length <= 10 , 'without-select' :!displayedColumns.includes('select')}">
         <mat-expansion-panel-header>
           <mat-checkbox
+          *ngIf="displayedColumns.includes('select')"
             color="ch-color"
             (click)="$event.stopPropagation()"
             (change)="$event ? selection.toggle(element) : null; onCheckboxChange($event,element)"

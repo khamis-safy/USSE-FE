@@ -121,10 +121,22 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
       value:this.listService.getUpdatedDisplayNumber(),
       }
       })
+      if(this.isCanceled){
+        if(!this.canEdit){
+            this.displayedColumns = ['Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
+    
+          }
+          else{
+            this.displayedColumns= ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
+    
+          }
+    
+        }
+    else{
+      if(!this.canEdit){
+        this.displayedColumns= ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
 
-    if(!this.canEdit){
-      this.displayedColumns = ['Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
-
+      }
     }
 
     this.getContacts();
@@ -186,6 +198,7 @@ this.getContacts();
     const navActionsComponentInstance: NavActionsComponent = componentRef.instance;
     navActionsComponentInstance.selectedItems = selectedContacts;
     this.selectedItems=selectedContacts;
+    navActionsComponentInstance.canEdit = this.canEdit;
 
     navActionsComponentInstance.componentName =this.isCanceled? 'canceledContacts' : 'contacts';
 
@@ -239,7 +252,10 @@ onCheckboxChange(event,element: any) {
       this.dynamicComponentRef.instance.showCanceledContactsMenueItems();
     }
     else{
-      this.dynamicComponentRef.instance.showContactsMenueItems();
+        this.dynamicComponentRef.instance.showContactsMenueItems();
+
+     
+
     }
   }
   if(this.selection.selected.length  > 0 && !this.dynamicComponentRef){
@@ -293,11 +309,6 @@ onCheckboxChange(event,element: any) {
       (res)=>{
         this.numRows=res.length;
       
-        if(isCanceledContacts){
-          this.displayedColumns= ['select','Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
-
-        }
-
         this.tableData=res;
         if(search!=""){
           this.length=res.length;
@@ -508,22 +519,29 @@ this.openedDialogs.push(dialogRef)
     )
   }
 
-changeColumns(event){
-  if(this.canEdit){
-
+  changeColumns(event){
+    if(this.canEdit){
+  
+      if(this.isCanceled){
+        this.displayedColumns=['select',...event]
+  
+      }
+      else{
+        this.displayedColumns=['select',...event,'action']
+      }
+    }
+  else{
     if(this.isCanceled){
-      this.displayedColumns=['select',...event]
-
+      this.displayedColumns=[...event]
+  
     }
     else{
-      this.displayedColumns=['select',...event,'action']
+      this.displayedColumns=['select',...event]
+  
     }
+  
   }
-else{
-  this.displayedColumns=[...event]
-
-}
-}
+  }
 showLists(element:Contacts){
   if(element.lists && element.lists?.length > 0){
     let listNames=element.lists.map((list)=>list.name)
