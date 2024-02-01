@@ -157,30 +157,67 @@
             </div>
         </div>
 
+        <div class="d-flex justify-content-between mb-2 align-items-center">
+        <div class="form-group d-flex flex-column flex-lg-row gap-lg-4 gap-2 flex-nowrap input-container"> 
+          <div class="label-widget text-start w-25 d-none d-lg-block"
+          style="min-width: 25%;">
+            <label for="mobile" class="label txt txt-sm text-nowrap d-flex">
+              <span class="txt txt-sm text-black text-wrap">
+                {{"MOBILE_NUMBER" | translate}}
+                <em class="text-danger">*</em>
+              </span>
+              
+            </label>
+        </div>
+          
+        <div
+        class="label-widget text-start w-100 d-block d-lg-none"
+      >
+      <label for="mobile" class="label txt text-nowrap d-flex">
+        <span class="txt text-black text-wrap txt-sm" >
+          {{"MOBILE_NUMBER" | translate}}
+          <em class="text-danger">*</em>
+        </span>
+        
+      </label>
+        
+      </div>
+          
+    
 
-        <!-- whatsapp -->
-          <div class="d-flex justify-content-between mb-2 align-items-center">
-            <div style="width:90%" class="input-container">
-              <us-input
+      <div class="w-100">
+            <ngx-intl-tel-input
+              [cssClass]="
+                (whatsapp?.touched && whatsapp.invalid ? 'error' : '') +
+                ' rounded-pill border border-1 py-2 txt-input w-100'
+              "
+              [enableAutoCountrySelect]="true"
+              [preferredCountries]="[CountryISO.UnitedArabEmirates]"
+              [enablePlaceholder]="true"
+              [searchCountryFlag]="true"
+              [searchCountryField]="[
+                SearchCountryField.Iso2,
+                SearchCountryField.Name
+              ]"
+              [selectFirstCountry]="false"
+              [selectedCountryISO]="CountryISO.Egypt"
+              [maxLength]="15"
+              [phoneValidation]="true"
+              [separateDialCode]="separateDialCode"
+              [numberFormat]="PhoneNumberFormat.National"
+              name="phone"
               formControlName="whatsapp"
-              [isDisabled]="false"
-              value=""
-              [optional]="true"
-              type="number"
-              [label]="'mobileNumberLabel' | translate"
-              [error]="false"
-              [fullWidth]="true"
-              [hideSteppers]="true"
-            ></us-input>
-            </div>
-
-            <div class="add-conatiner">
-              <div  class="pointer add" (click)="addWhatsappNumber()" >
-                <mat-icon class="add_icon">add</mat-icon>
-              </div>
-            </div>
+            ></ngx-intl-tel-input>
 
           </div>
+        </div>
+        <div class="add-conatiner">
+          <button  class="pointer add rest-style" (click)="addWhatsappNumber()" [disabled]="whatsapp.invalid" >
+            <mat-icon class="add_icon">add</mat-icon>
+          </button>
+        </div>
+      </div>
+
           <div class="tags-container">
               <div class="d-flex gap-2 align-items-center flex-wrap">
                   <div class="tag" *ngFor="let whatsappNumber of whatsappNumbers; let i = index">
