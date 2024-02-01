@@ -252,7 +252,7 @@
 "STOP_CAMPAIGN_MESSAGE": "هل أنت متأكد أنك تريد إيقاف هذه الحملة؟",
 "DELETE_SELECTED_ITEMS_MESSAGE": "هل أنت متأكد أنك تريد حذف العناصر المحددة؟",
 "CLEAR_LISTS_MESSAGE": "هل أنت متأكد أنك تريد مسح القوائم من هؤلاء الاتصالات؟",
-"REMOVE_CONTACTS_MESSAGE": "هل أنت متأكد أنك تريد إزالة هؤلاء الاتصالات؟",
+"REMOVE_CONTACTS_MESSAGE": "هل انت متاكد أنك تريد ازاله جهه/جهات الاتصال",
 "CONFIRM": "تأكيد",
 "LABEL": "اختر ملفًا",
 "FILE_SIZE_LIMIT": "حجم الملف لا يزيد عن",
