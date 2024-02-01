@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import {  Shceduled } from '../../message';
 import { MessagesService } from '../../messages.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -14,6 +14,7 @@ import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SCHEDULED } from '../constants/messagesConst';
 import { TranslationService } from 'src/app/shared/services/translation.service';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 
 
@@ -22,7 +23,7 @@ import { TranslationService } from 'src/app/shared/services/translation.service'
   templateUrl: './scheduled.component.html',
   styleUrls: ['./scheduled.component.scss']
 })
-export class ScheduledComponent implements OnInit ,AfterViewInit {
+export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
   length:number=0;
   numRows;
   loading:boolean=true;
@@ -49,15 +50,22 @@ export class ScheduledComponent implements OnInit ,AfterViewInit {
   permission:DevicesPermissions[];
   pageNum: number;
   display: number;
+ isSmallScreen: boolean = false;
+ destroy$: Subject<void> = new Subject<void>();
+ @Output() isOpenNewMessage= new EventEmitter<any>
+
   constructor(private messageService:MessagesService,
     public dialog: MatDialog,
     private authService:AuthService,
-    private translationService:TranslationService){
+    private translationService:TranslationService,
+    private breakpointObserver: BreakpointObserver){
       this.display=this.messageService.getUpdatedDisplayNumber()
       this.pageNum=this.messageService.pageNum;
     }
   ngAfterViewInit(): void {
-    this.paginator.pageSize=this.messageService.display;
+    if(this.paginator){
+      this.paginator.pageSize=this.display
+    }
     }
   ngOnInit() {
    
@@ -83,10 +91,22 @@ export class ScheduledComponent implements OnInit ,AfterViewInit {
       else{
         this.isUser=false;
       }
-// get device's messages
-    this.getDevices();
+      this.breakpointObserver.observe(['(max-width: 768px)'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        this.isSmallScreen = result.matches;
+        if(!this.isSmallScreen){
+          this.selection.clear()
+          this.getDevices();
+          
+        }
+      });
+  
 
 
+    }
+    openNewMessage(event){
+      this.isOpenNewMessage.emit(event)
     }
  // get devices data
  getDevices(){
@@ -242,14 +262,17 @@ export class ScheduledComponent implements OnInit ,AfterViewInit {
         const dialogConfig=new MatDialogConfig();
         dialogConfig.height='100vh';
         dialogConfig.width='25vw';
-        dialogConfig.maxWidth='100%';
+        dialogConfig.maxWidth='450px';
         dialogConfig.disableClose = true;
         dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
         dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
+        dialogConfig.minWidth='300px'
         dialogConfig.data={
           recipients:recipient,
           isScheduleN:true
         };
+        dialogConfig.panelClass = 'custom-mat-dialog-container';
+
         const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
 
         dialogRef.afterClosed().subscribe(result => {
@@ -265,9 +288,10 @@ export class ScheduledComponent implements OnInit ,AfterViewInit {
           const dialogConfig=new MatDialogConfig();
           dialogConfig.height='100vh';
           dialogConfig.width='25vw';
-          dialogConfig.maxWidth='100%';
-          // dialogConfig.minWidth='200px';
+          dialogConfig.maxWidth='450px';
+          dialogConfig.minWidth='300px'
           dialogConfig.disableClose = true;
+          dialogConfig.panelClass = 'custom-mat-dialog-container';
           dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
           dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
           dialogConfig.data={
@@ -284,7 +308,14 @@ export class ScheduledComponent implements OnInit ,AfterViewInit {
         }
 
       }
-
+      ngOnDestroy(){
+        this.destroy$.next();
+        this.destroy$.complete();
+        this.selection.clear();
+      
+        this.subscribtions.map(e=>e.unsubscribe());
+      this.selection.clear()
+    }
 }
 
 

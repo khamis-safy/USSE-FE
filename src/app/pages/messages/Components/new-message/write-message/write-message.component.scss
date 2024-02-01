@@ -12,3 +12,40 @@
         gap: 15px !important;
     }
 }
+@media(max-width:768px){
+    .write-message-containter{
+        padding: 20px 0 !important;
+
+    }
+    .files-container{
+        margin-bottom: 40px !important;
+    }
+
+    .message-container{
+        min-height: 60vh;
+        margin-block: 10px;
+        background-color: white !important;
+        padding: 30px 20px !important;
+        border-radius: 24px;
+        box-shadow: 1px 3px 4px 0px rgba(0, 0, 0, 0.16);
+    }
+}
+button.rest-style {
+
+    width: 130px !important;
+}
+.buttons {
+
+    gap: 15px !important;
+}
+@media(max-width:768px){
+    button.rest-style {
+        width: 45% !important;
+    } 
+    .buttons{
+        width: 95% !important;
+        position: unset !important;
+        justify-content: center !important;
+        margin-top: 20px;
+    }
+}

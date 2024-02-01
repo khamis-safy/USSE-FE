@@ -94,6 +94,10 @@ export class WriteMessageComponent implements OnInit {
               size:size
             }
           })
+          if(this.fileData.length > 0){
+            this.files=true;
+            this.emptyMessageAndFiles.emit(!this.form.valid && !this.files)
+          }
       },
       (err)=>{
         this.loading=false;
@@ -127,3 +131,4 @@ export class WriteMessageComponent implements OnInit {
 
   }
 }
+

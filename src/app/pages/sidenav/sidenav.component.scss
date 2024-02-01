@@ -53,7 +53,7 @@ a {
         .icon{
           img{
             
-            filter: invert(22%) sepia(100%) saturate(3678%) hue-rotate(187deg) brightness(93%) contrast(100%);
+            filter:brightness(0) saturate(100%) invert(29%) sepia(82%) saturate(1332%) hue-rotate(175deg) brightness(95%) contrast(105%); 
           }   
         }
       }
@@ -61,9 +61,13 @@ a {
   }
   // border: 3px solid;
 .versions{
-  padding: 15px;
+  padding: 0px 15px 0;
+  margin-top: 3px;
   img{
-    min-width: 19px;
+    min-width: 16px;
+    margin-top: -3px;
+    filter:brightness(0) saturate(100%) invert(29%) sepia(82%) saturate(1332%) hue-rotate(175deg) brightness(95%) contrast(105%); 
+
   }
 }
 

@@ -1,83 +1,85 @@
 <div class="d-flex gap-4 mt-5 flex-column component-container">
-  <div class="d-flex mt-3 w-100 gap-3">
-  <div class=" summary-state d-flex justify-content-between pending align-items-center px-4 py-2" >
-    <div class="d-flex gap-4 flex-column summary-state-content">
-      <h4 class="txt-md" style="font-weight: 500;">{{ 'PENDING' | translate }}</h4>
-      <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.pindingCount }}</p>
+  <div class="d-flex mt-3 w-100 gap-3 summary-state-container">
+    <div class=" summary-state d-flex justify-content-between pending align-items-center px-4 py-2" >
+      <div class="d-flex gap-4 flex-column summary-state-content">
+        <h4 class="txt-md" style="font-weight: 500;">{{ 'PENDING' | translate }}</h4>
+        <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.pindingCount }}</p>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center  summary-icon" >
+        <img src="assets/icons/4.svg" alt="" class="w-100" />
+      </div>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center  summary-icon" >
-      <img src="assets/icons/4.svg" alt="" class="w-100" />
+    <!-- Sent -->
+    <div class=" summary-state d-flex justify-content-between sent align-items-center px-4 py-2" >
+      <div class="d-flex gap-4 flex-column summary-state-content">
+        <h4 class="txt-md" style="font-weight: 500;">{{ 'SENT' | translate }}</h4>
+        <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.sentCount }}</p>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center  summary-icon" >
+        <img src="assets/icons/sent.svg" alt="" class="w-100"  />
+      </div>
     </div>
+
+    <!-- Delivered -->
+    <div class=" summary-state d-flex justify-content-between delivered align-items-center px-4 py-2" >
+      <div class="d-flex gap-4 flex-column summary-state-content">
+        <h4 class="txt-md" style="font-weight: 500;">{{ 'DELIVERED' | translate }}</h4>
+        <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.deliveredCount }}</p>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center  summary-icon" >
+        <img src="assets/icons/delivered.svg" alt="" class="w-100"  />
+      </div>
+    </div>
+
+    <!-- Read -->
+    <div class=" summary-state d-flex justify-content-between read align-items-center px-4 py-2" >
+      <div class="d-flex gap-4 flex-column summary-state-content">
+        <h4 class="txt-md" style="font-weight: 500;">{{ 'READ' | translate }}</h4>
+        <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.readCount }}</p>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center  summary-icon" >
+        <img src="assets/icons/2.svg" alt="" class="w-100" />
+      </div>
+    </div>
+
+    <!-- Undelivered -->
+    <div class=" summary-state d-flex justify-content-between undelivered align-items-center px-4 py-2">
+      <div class="d-flex gap-4 flex-column summary-state-content">
+        <h4 class="txt-md" style="font-weight: 500;">{{ 'UNDELIVERED' | translate }}</h4>
+        <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.undeliveredCount }}</p>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center  summary-icon" >
+        <img src="assets/icons/5.svg" alt="" class="w-100" />
+      </div>
+    </div>
+
   </div>
-
-  <!-- Sent -->
-  <div class=" summary-state d-flex justify-content-between sent align-items-center px-4 py-2" >
-    <div class="d-flex gap-4 flex-column summary-state-content">
-      <h4 class="txt-md" style="font-weight: 500;">{{ 'SENT' | translate }}</h4>
-      <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.sentCount }}</p>
-    </div>
-
-    <div class="d-flex justify-content-center align-items-center  summary-icon" >
-      <img src="assets/icons/sent.svg" alt="" class="w-100"  />
-    </div>
-  </div>
-
-  <!-- Delivered -->
-  <div class=" summary-state d-flex justify-content-between delivered align-items-center px-4 py-2" >
-    <div class="d-flex gap-4 flex-column summary-state-content">
-      <h4 class="txt-md" style="font-weight: 500;">{{ 'DELIVERED' | translate }}</h4>
-      <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.deliveredCount }}</p>
-    </div>
-
-    <div class="d-flex justify-content-center align-items-center  summary-icon" >
-      <img src="assets/icons/delivered.svg" alt="" class="w-100"  />
-    </div>
-  </div>
-
-  <!-- Read -->
-  <div class=" summary-state d-flex justify-content-between read align-items-center px-4 py-2" >
-    <div class="d-flex gap-4 flex-column summary-state-content">
-      <h4 class="txt-md" style="font-weight: 500;">{{ 'READ' | translate }}</h4>
-      <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.readCount }}</p>
-    </div>
-
-    <div class="d-flex justify-content-center align-items-center  summary-icon" >
-      <img src="assets/icons/2.svg" alt="" class="w-100" />
-    </div>
-  </div>
-
-  <!-- Undelivered -->
-  <div class=" summary-state d-flex justify-content-between undelivered align-items-center px-4 py-2">
-    <div class="d-flex gap-4 flex-column summary-state-content">
-      <h4 class="txt-md" style="font-weight: 500;">{{ 'UNDELIVERED' | translate }}</h4>
-      <p style="font-weight: 500; font-size: 32px;" class="fw-bold">{{ statics?.undeliveredCount }}</p>
-    </div>
-
-    <div class="d-flex justify-content-center align-items-center  summary-icon" >
-      <img src="assets/icons/5.svg" alt="" class="w-100" />
-    </div>
-  </div>
-</div>
-  <div>
+  <div >
     <h4 class="total-delevired" style="font-size: 32px; font-weight: 600; margin-bottom: 0 !important;" >
       {{ 'TOTAL' | translate }}: <span>{{ statics?.pindingCount + statics?.sentCount }}</span>
     </h4>
   </div>
 
-  <div class="w-100 p-4 mb-3 " style="background-color: white; border-radius: 16px; overflow-y: auto; box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);">
+  <div class="w-100 p-4 mb-3 summary-container " style="background-color: white; border-radius: 16px; overflow-y: auto; box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);">
     <div>
       <h4 class="txt-lg" style="font-weight: 600">{{ 'MESSAGE_CONTENT' | translate }}</h4>
       <p>
         {{ statics?.messageContent | translate }}
       </p>
       <div class="d-flex w-100 gap-2 flex-wrap" *ngIf="compaign?.attachments">
+        
         <ng-container *ngFor="let attachment of compaign?.attachments">
           <a  class="pointer " 
           [href]="attachment.fileUrl" 
           target="_blank" 
           [title]="'open' | translate" >
-          <img   [src]="attachment.fileName | type" alt="">
+          <img   [src]="attachment.fileName | type" alt="" class="attachment">
           </a>
         </ng-container>
       </div>
@@ -97,11 +99,11 @@
           </div>
         </div>
   
-        <div class="max-recepient d-flex justify-content-between  mb-4 txt-md" style="width: 335px;">
+        <!-- <div class="max-recepient d-flex justify-content-between  mb-4 txt-md" style="width: 335px;">
           <span style="font-weight: 500; display: inline-flex ; width: 260px;">{{ 'Max recipients per day' | translate }}</span> 
           <span>{{compaign?.maxPerDay}}</span> 
   
-        </div>
+        </div> -->
   
   
         <div class="sending-time  d-flex justify-content-between mb-4 txt-md" style="width: 470px;">
@@ -129,7 +131,7 @@
           <span>{{compaign?.sessionTimeOutResponseContent}}</span> 
         </div>
 
-        <div class=" d-flex justify-content-between  mb-4 txt-md" style="width: 335px;">
+        <div class=" d-flex justify-content-between  mb-4 txt-md session-time-out" style="width: 335px;">
           <span style="font-weight: 500; display: inline-flex ; width: 260px;">{{ 'sessionTimeOut' | translate }}</span> 
           <span>{{compaign?.sessionTimeOutMinutes}}</span> 
         </div>
@@ -162,10 +164,11 @@
                 <div *ngIf="element.actionCriteras.length>0 " class="actions-container w-100 d-flex justify-content-center">
 
                   <div  class=" position-relative criterias " >
-                    <div class="d-flex gap-2 overflow-hidden criterias-wrapper px-4 w-100" #listsWrapper >
+                    <div class="d-flex gap-2 overflow-hidden criterias-wrapper px-4 w-100" [ngClass]="{'justify-content-center' :element.actionCriteras.length === 1 }" #listsWrapper >
                       <div *ngFor="let item of element.actionCriteras" [title]="item" class="criteriaName bg-white text-nowrap px-2 py-1 rounded-2">
                         {{item}}
                       </div> 
+
                     </div>
                     <ng-container *ngIf="element.actionCriteras.length>2 ">
                       <div  *ngIf="!element.hideRightArrow"  (click)="scrollRight(element,listsWrapper)" class="right-arrow position-absolute end-0 top-0 h-100 d-flex justify-content-end align-items-center" style="width: 50%">

@@ -18,13 +18,19 @@ import { DragZoneModule } from 'src/app/shared/components/drag-zone/drag-zone.mo
 import { ErrorsStatesComponent } from 'src/app/shared/components/bulkOperationModals/errorsStates/errorsStates.component';
 import { RequestStateComponent } from 'src/app/shared/components/bulkOperationModals/requestState/requestState.component';
 import { UnCancelContactsComponent } from './components/contacts/unCancelContacts/unCancelContacts.component';
+import { ContactsMobileViewComponent } from './components/mobile view/contacts-mobileView/contacts-mobileView.component';
+import { ListsMobileViewComponent } from './components/mobile view/lists-mobileView/lists-mobileView.component';
+import { ContactInfoComponent } from './components/mobile view/contact-info/contact-info.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   imports: [
     CommonModule,
     ManageContactsRoutes,
     SharedModule,
-    DragZoneModule
+    DragZoneModule,
+    MatDividerModule,
+    
   ],
   declarations: [
     ManageContactsComponent,
@@ -38,7 +44,10 @@ import { UnCancelContactsComponent } from './components/contacts/unCancelContact
     UnCancelContactsComponent,
     ContactListsComponent,
     RequestStateComponent,
-    ErrorsStatesComponent
+    ErrorsStatesComponent,
+    ContactsMobileViewComponent,
+    ListsMobileViewComponent,
+    ContactInfoComponent
 
   ],
   providers:[ManageContactsService]

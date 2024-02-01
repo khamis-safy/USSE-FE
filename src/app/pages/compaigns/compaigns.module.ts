@@ -17,6 +17,7 @@ import { ActionsModule } from './components/addCompaigns/campaign actions/action
 import { WriteMessageModule } from '../messages/Components/new-message/write-message/writeMessage.module';
 import { ConfirmaionsComponent } from './components/addCompaigns/confirmaions/confirmaions.component';
 import { ExpectedCampEndTimeComponent } from './components/addCompaigns/expectedCampEndTime/expectedCampEndTime.component';
+import { CampaignsMobileViewComponent } from './mobile view/campaigns-mobileView/campaigns-mobileView.component';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { ExpectedCampEndTimeComponent } from './components/addCompaigns/expected
     StepFourComponent,
     AddCompaignsComponent ,
     ConfirmaionsComponent,
-    ExpectedCampEndTimeComponent
+    ExpectedCampEndTimeComponent,
+    CampaignsMobileViewComponent
 
   ],
   providers:[

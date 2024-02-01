@@ -267,3 +267,19 @@ textarea {
     color: var(--clr-primary-600) !important;
   }
 }
+@media(max-width:768px){
+  .char-count{
+    span{
+      font-size: 11px !important;
+    }
+  }
+  .material-symbols-outlined.text-secondary{
+    font-size: 19px !important;
+  }
+  .txt-sm{
+    font-size: 12px !important;
+  }
+  .input-wrapper input {
+    padding: 0px 9px !important;;
+}
+}

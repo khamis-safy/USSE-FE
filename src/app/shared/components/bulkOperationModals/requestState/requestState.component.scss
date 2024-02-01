@@ -8,3 +8,9 @@ p{
     font-size: 30px;
     color:#868686;
 }
+@media(max-width:768px){
+    .close-icon{
+        top: 40px !important;
+        margin-inline: 26px !important;
+    }
+}

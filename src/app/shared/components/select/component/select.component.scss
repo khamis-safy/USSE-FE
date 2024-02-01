@@ -171,17 +171,17 @@
     cursor: default !important;
     display: none;
 
-    @media screen and (max-width: 767px) {
-      display: unset;
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      background: $clr_neutral_900;
-      opacity: 0.7;
-      z-index: 998;
-    }
+    // @media screen and (max-width: 767px) {
+    //   display: unset;
+    //   position: fixed;
+    //   top: 0;
+    //   bottom: 0;
+    //   right: 0;
+    //   left: 0;
+    //   background: $clr_neutral_900;
+    //   opacity: 0.7;
+    //   z-index: 998;
+    // }
   }
 
   &.actions {
@@ -216,17 +216,17 @@
     min-width: 100%;
     overflow: hidden;
 
-    @media screen and (max-width: 768px) {
-      min-width: 90%;
-      width: 90%;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1rem;
-      box-shadow: $depth_5;
-      z-index: 999;
-    }
+    // @media screen and (max-width: 768px) {
+    //   min-width: 90%;
+    //   width: 90%;
+    //   position: fixed;
+    //   top: 50%;
+    //   left: 50%;
+    //   transform: translate(-50%, -50%);
+    //   font-size: 1rem;
+    //   box-shadow: $depth_5;
+    //   z-index: 999;
+    // }
 
     &_content {
       overflow-y: auto;
@@ -567,10 +567,11 @@
 
     .toggler{
       height: 32px !important;
-      padding: 0 12px !important;
+      padding: 0 9px !important;
     }
     .list_item{
-      padding: 1px 0px !important;
+      padding: 1px 8px !important;
+
     }
   }
   .input-wrapper:has(textarea) {
@@ -595,4 +596,72 @@
   .deviceLableGap{
     min-width: 18% !important;
   }
+}
+@media (max-width:991px){
+
+  .us-select-container.fullWidth .host {
+    min-width: 8rem !important;
+}
+}
+@media(max-width:768px){
+ 
+  .host .toggler input {
+    font-size: 11px !important;
+  }
+  .us-select-container.fullWidth  .host{
+    min-width: 7rem !important;
+  }
+  .host {
+    .list{
+      padding: 8px !important;
+
+    }
+  }
+  .txt-sm{
+    font-size: 12px !important;
+  }
+  .list_item{
+    padding: 1px 0px !important;
+
+  }
+}
+
+.us-select-container.smallDropDown{
+  .txt-sm {
+    font-size: 11px !important;
+}
+  flex-direction: row !important;
+  gap: 8px !important;
+  max-width: 125px !important;
+  .label-widget.w-25{
+    min-width: unset !important;
+    width: unset !important;
+  }
+  .host.w-100{
+    .list_item{
+      column-gap: 0px !important;
+      padding: 1px 5px !important;
+
+    }
+    .list{
+      padding: 4px !important;
+
+    }
+    min-width: 3rem !important;
+    width: 40% !important;
+    .toggler {
+      height: 33px !important;
+      padding: 0px 4px !important;
+      &.focus {
+        transition: 0.2s box-shadow;
+        border: unset !important;
+        box-shadow:unset !important;
+      }
+  }
+  }
+  .list_item{
+    min-height: 35px !important;
+
+  }
+
 }

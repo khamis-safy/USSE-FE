@@ -212,6 +212,7 @@ async onChangeFile(e) {
     dialogConfig.width='fit-content';
     dialogConfig.disableClose = false;
     dialogConfig.data= url;
+    dialogConfig.panelClass='custom-dialog-preview'
     this.dialog.open(PreviewComponent,dialogConfig);
   }
   deleteFile(file){

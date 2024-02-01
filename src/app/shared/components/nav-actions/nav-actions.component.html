@@ -1,0 +1,40 @@
+<nav class="d-flex justify-content-between px-5 align-items-center p-2 zi-5 bg-primary-800 text-neutral-0">
+<div class="d-flex align-items-center gap-2" >
+    <mat-icon  class="text-neutral-0" (click)="onClose()">close</mat-icon>
+    <span>{{selectedItemsCount}}</span>
+</div>    
+<button mat-icon-button [matMenuTriggerFor]="menu" style="width: 5% !important;">
+    <mat-icon class="text-neutral-0" style="width: 13px;
+    display: flex;
+    justify-content: center;" >more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+        <ng-container *ngFor="let menuItem of menuItems">
+          <button mat-menu-item *ngIf="menuItem.name !== 'EXPORT_SELECTED'" (click)="menuItem.function()">
+            {{ menuItem.name | translate }}
+          </button>
+          <button mat-menu-item *ngIf="menuItem.name === 'EXPORT_SELECTED'" [matMenuTriggerFor]="exportMenu">
+            {{ menuItem.name | translate }}
+          </button>
+        </ng-container>
+      </mat-menu>
+      
+
+      
+      <mat-menu #exportMenu="matMenu">
+        <button mat-menu-item (click)=" exportSelectedContactsAs('excel')">
+          <div class="d-flex align-items-center gap-2">
+            <img style="width: 10px;" src="assets/icons/Excel.svg" alt="" /> 
+            <span style="font-size: 10px !important;font-weight: 500;">Excel Sheet</span>
+          </div>
+          
+        </button>
+        <button mat-menu-item (click)=" exportSelectedContactsAs('vcf')">
+          <div class="d-flex align-items-center gap-2">
+            <img style="width: 10px;" src="assets/icons/vcf.svg" alt="" />
+            <span style="font-size: 10px !important;font-weight: 500;">vcf file</span>
+          </div>
+        </button>
+      </mat-menu>
+</nav>

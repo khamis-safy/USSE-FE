@@ -10,12 +10,12 @@
           <thead >
             <tr>
               <th scope="col"></th>
-              <th scope="col">
-                {{ 'condition' | translate }}            
+              <th scope="col"  class="main-info">
+                <span>{{ 'condition' | translate }}  </span>          
                 <em class="text-danger">*</em>
               </th>
-              <th scope="col">
-                {{ 'keyword' | translate }}            
+              <th scope="col"  class="main-info">
+                <span>{{ 'keyword' | translate }}  </span>          
                 <em class="text-danger">*</em>
               </th>
               <th scope="col"></th>
@@ -25,8 +25,8 @@
             
             <tr class="row_content"  *ngFor="let item of criteriaParameters; let i = index" [ngClass]="{'last-row': i === criteriaParameters?.length - 1}">
               <th scope="row">{{ i + 1 }}</th>
-              <td>{{ item.type  | translate}}</td>
-              <td>{{ item.criteria }}</td>
+              <td class="main-info">{{ item.type  | translate}}</td>
+              <td class="main-info">{{ item.criteria }}</td>
               <td><span class="remove pointer" (click)="remove(i)" style="display: inline-block; width: 20%;"
                 ><img src="assets/icons/Actionsc.svg" alt="" srcset=""
               /></span></td>
@@ -45,6 +45,7 @@
               formControlName="conditionValue"
               [placeholder]="'choose condition' |translate"
               (onSelect)="onSelect($event)"
+              [fullWidth]="true"
             ></us-select>
             
             </div>
@@ -53,6 +54,7 @@
                 [isCriteria]="true"
                 [isDisabled]="false"
                 placeholder=""
+                [maxCharLimit]="50"
                 formControlName="keyWord"
                 [isDisabled]="false"
                 [optional]="false"

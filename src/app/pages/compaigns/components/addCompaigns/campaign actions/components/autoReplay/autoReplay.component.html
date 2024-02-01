@@ -33,10 +33,18 @@
     ></us-input>
 
     </form>
-    <div *ngIf="!isCancel" class="form-group d-flex gap-lg-4 flex-column  flex-lg-row flex-nowrap">
-      <label for="devicesData" class="w-25 d-none d-lg-block text-nowrap" style="min-width:25%"
-        ><span class="txt txt-sm text-black text-wrap">{{ 'ATTACHMENTS' | translate }}</span>
-      </label>
+      <div  *ngIf="!isCancel" class="form-group d-flex gap-lg-4 gap-2 flex-column flex-lg-row flex-nowrap files-container">
+        <div class="label-widget text-start w-25 d-none d-lg-block" style="min-width: 25%;">
+          <label for="files" class="w-25 text-nowrap d-flex" style="min-width:25%"
+            ><span class="txt txt-sm text-black text-wrap">{{ 'Attachments' | translate }}</span>
+          </label>
+        </div>
+  
+        <div class="label-widget text-start w-100 d-block d-lg-none">
+          <label for="files" class="w-25 text-nowrap d-flex" style="min-width:25%"> 
+            <span class="txt  text-black text-wrap txt-sm">{{ 'Attachments' | translate }}</span>
+          </label>
+        </div>
 
       <us-upload  class="w-100"
       [isLoading]="loading"

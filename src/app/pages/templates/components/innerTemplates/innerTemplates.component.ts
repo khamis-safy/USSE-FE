@@ -8,6 +8,7 @@ import {
   ViewChild,
   ViewChildren,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 import { TemplatesService } from '../../templates.service';
 import {AddTemplateComponent} from '../addTemplate/addTemplate.component'
@@ -15,7 +16,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Templates } from '../../templates';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FormControl } from '@angular/forms';
@@ -23,22 +24,25 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { TEMPLATESHEADERS } from '../constats/contstants';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { DisplayMessageComponent } from 'src/app/pages/messages/Components/display-message/display-message.component';
+import { TranslationService } from 'src/app/shared/services/translation.service';
 
 @Component({
   selector: 'app-innerTemplates',
   templateUrl: './innerTemplates.component.html',
   styleUrls: ['./innerTemplates.component.scss'],
 })
-export class InnerTemplatesComponent implements OnInit {
+export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
   length: number;
   delay: number = 5;
   active: boolean = false;
   numRows;
   loading:boolean=true;
   isSearch:boolean=false;
-
-    noData: boolean=true;
-    notFound: boolean=false;
+  cellClick:boolean;
+    noData: boolean;
+    notFound: boolean;
   @Input() isCanceled: boolean;
   @Input() canEdit: boolean;
 
@@ -56,17 +60,40 @@ export class InnerTemplatesComponent implements OnInit {
     'Created At',
     'Action',
   ];
+  isSmallScreen: boolean = false;
+
+  destroy$: Subject<void> = new Subject<void>();
+  
   dataSource: MatTableDataSource<Templates>;
   constructor(
     public dialog: MatDialog,
     private toaster: ToasterServices,
-    private templatesService: TemplatesService
+    private templatesService: TemplatesService,
+    private breakpointObserver: BreakpointObserver,
+    private translationService:TranslationService,
+
   ) {}
 
-  @Input('isUnsubscribe') isUnsubscribe = false;
-
+  ngAfterViewInit(): void {
+    if(this.paginator){
+      this.paginator.pageSize=this.templatesService.showsNum
+    }
+    }
   ngOnInit() {
-    this.getTemplates();
+
+    this.breakpointObserver.observe(['(max-width: 768px)'])
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(result => {
+      this.isSmallScreen = result.matches;
+      if(!this.isSmallScreen){
+        this.getTemplates();
+        if(this.paginator){
+          this.paginator.pageSize=this.templatesService.showsNum
+        }
+      }
+      
+    });
+  
     this.columns = new FormControl(this.displayedColumns);
     this.displayedColumns=this.canEdit?[
       'Template Name',
@@ -128,7 +155,6 @@ export class InnerTemplatesComponent implements OnInit {
         let email=this.templatesService.email;
         let orderedBy=this.templatesService.orderedBy;
         let search=searchVal?searchVal:"";
-        let isCanceled=this.isUnsubscribe;
         this.loading = true;
         if(searchVal && this.paginator){
           this.paginator.pageIndex=0
@@ -136,13 +162,9 @@ export class InnerTemplatesComponent implements OnInit {
          let sub1= this.templatesService.getTemplates(email,showsNum,pageNum,orderedBy,search).subscribe(
             (res)=>{
               this.numRows=res.length;
-          
+              this.loading = false;
               this.dataSource=new MatTableDataSource<Templates>(res)
             
-              if(this.isCanceled){
-                this.displayedColumns= ['Template Name', 'Message', "Create At" , 'Action'];
-
-              }
               if(search!=""){
                 this.length=res.length;
                 if(this.length==0){
@@ -151,27 +173,22 @@ export class InnerTemplatesComponent implements OnInit {
                 else{
                   this.notFound=false;
                 }
-            } 
-            else{
-              this.paginator.pageIndex=this.templatesService.pageNum
-              this.notFound=false;
-              this.templatesCount();
-              this.isSearch=false;
             }
-             
-
+            else{
+              this.paginator.pageIndex=this.templatesService.pageNum      
+              this.notFound=false;
+      
+              this.templatesCount();
+      
+            }
              },
              (err)=>{
-               this.length=0;
-               this.noData=true
-               this.loading = false;
-
-             })
+              this.loading = false;
+              this.length=0;
+      
+            })
              this.subscribtions.push(sub1)
         }
-
-
-
 
         templatesCount(){
           let email=this.templatesService.email;
@@ -179,27 +196,25 @@ export class InnerTemplatesComponent implements OnInit {
 
           this.templatesService.listTemplatesCount(email).subscribe(
             (res)=>{
-
               this.length=res;
-              if(this.length==0){
-                this.noData=true
-                this.loading = false;
-
-              }
-              else{
-                this.noData=false
-              }
               this.loading = false;
-
-            }
-            ,(err)=>{
-              this.noData=true
-
-              this.length=0;
-              this.loading = false;
-
-            }
-           );
+              if( this.length==0){
+               this.noData=true;
+       
+             
+             }
+             else{
+                this.noData=false;
+       
+            
+              }
+              },
+              (err)=>{
+               
+               this.loading = false;
+               this.length=0;
+               this.noData=true;
+              })
         }
 
 
@@ -222,7 +237,29 @@ export class InnerTemplatesComponent implements OnInit {
 
     }
   }
+  displayMessage(row){
+    if(!this.cellClick){
 
+      const currentLang=this.translationService.getCurrentLanguage()
+      const dialogConfig=new MatDialogConfig();
+      dialogConfig.height='100vh';
+      dialogConfig.width='25vw';
+      dialogConfig.maxWidth='450px';
+      dialogConfig.minWidth='300px'
+      dialogConfig.disableClose = true;
+      dialogConfig.panelClass = 'custom-mat-dialog-container';
+      dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
+      dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
+      dialogConfig.data={template:row};
+      const dialogRef = this.dialog.open(DisplayMessageComponent,dialogConfig);
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+        }
+  
+      });
+    }
+  }
 
   onPageChange(event){
     this.templatesService.showsNum=event.pageSize;
@@ -232,5 +269,10 @@ export class InnerTemplatesComponent implements OnInit {
     this.getTemplates();
 
   }
-
+  ngOnDestroy(){
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.subscribtions.map(e=>e.unsubscribe());
+  }
+  
 }

@@ -11,20 +11,21 @@
       {{ "UPDATE_CONTACT" | translate }}
     </div>
     <img
+      class="close_modal_icon"
       src="assets/icons/close-circle.svg"
       (click)="onClose()"
       alt="{{ 'CLOSE_ICON_ALT_TEXT' | translate }}"
       style="cursor: pointer ; width: 35px;"
     />
   </div>
-  <!-- [withTooltip]="true"
-  [tooltipMsg]="'enter the contact name'" -->
   <!-- modal body -->
+  <!-- [withTooltip]="true"-->
   <div class="modal-body overflow-auto px-1" style="height: 80%">
     <form [formGroup]="form" class="w-100 m-auto">
       <div class="d-flex gap-4 flex-column py-3">
         <us-input
-
+        [tooltipMsg]="'enter the contact name'"
+        [maxCharLimit]="50"
           [isDisabled]="false"
           value=""
           placeholder="{{ 'NAME' | translate }}"
@@ -38,23 +39,37 @@
             name.touched && name.errors?.required
               ? ('REQUIRED_FIELD' | translate)
               : ''
-          "
+"
         ></us-input>
 
         <div
-          class="form-group d-flex gap-lg-4 flex-column flex-lg-row flex-nowrap"
-        > <div
-        class="label-widget text-start w-25 d-none d-lg-block"
-        style="min-width: 25%;"
+          class="form-group d-flex flex-column flex-lg-row gap-lg-4 gap-2 flex-nowrap"
+        > 
+          <div class="label-widget text-start w-25 d-none d-lg-block"
+          style="min-width: 25%;">
+            <label for="mobile" class="label txt txt-sm text-nowrap d-flex">
+              <span class="txt txt-sm text-black text-wrap">
+                {{"MOBILE_NUMBER" | translate}}
+                <em class="text-danger">*</em>
+              </span>
+              
+            </label>
+        </div>
+          
+        <div
+        class="label-widget text-start w-100 d-block d-lg-none"
       >
-          <label for="mobile" class="label txt txt-sm text-nowrap d-flex">
-            <span class="txt txt-sm text-black text-wrap">{{
-              "MOBILE_NUMBER" | translate
-            }}</span>
-            <em class="text-danger">*</em>
-          </label>
-</div>
-          <div class="w-100">
+      <label for="mobile" class="label txt text-nowrap d-flex">
+        <span class="txt text-black text-wrap txt-sm" >
+          {{"MOBILE_NUMBER" | translate}}
+          <em class="text-danger">*</em>
+        </span>
+        
+      </label>
+        
+      </div>
+
+<div class="w-100">
             <ngx-intl-tel-input
               [cssClass]="
                 (mobile?.touched && mobile.invalid ? 'error' : '') +
@@ -81,7 +96,7 @@
             <ng-container *ngIf="mobile?.touched && mobile?.errors?.required">
               <div class="hint error">
                 <i class="si-info"></i>
-                <p class="txt txt-xs">{{ "REQUIRED_FIELD" | translate }}</p>
+                <span class="txt txt-xs ">{{ "REQUIRED_FIELD" | translate }}</span>
               </div>
             </ng-container>
             <ng-container
@@ -91,18 +106,17 @@
             >
               <div class="hint error">
                 <i class="si-info"></i>
-                <p class="txt txt-xs">
+                <span class="txt txt-xs">
                   {{ "INCORRECT_PHONE_NUMBER" | translate }}
-                </p>
+                </span>
               </div>
             </ng-container>
           </div>
         </div>
-        <!-- [withTooltip]="true"
-        [tooltipMsg]="'add contact to one list or more'" -->
+  <!-- [withTooltip]="true"-->
 
         <us-select
-
+        [tooltipMsg]="'add contact to one list or more'"
           *ngIf="!isFromListDetails"
           [data]="listsArr"
           formControlName="selectedLists"
@@ -125,25 +139,17 @@
       <!-- additional fields -->
       <div class="additional p-3 mt-3">
         <form [formGroup]="form2"  class="additionaltb">
-          <!-- <div *ngIf="showInputs || additionalParameters?.length != 0" class="tbheader mb-2">
-            <span class="field-name" style="font-weight: 500">{{ 'FIELD_NAME' | translate }}            
-              <em class="text-danger">*</em>
-            </span>
-            <span class="field-name" style="font-weight: 500">{{ 'VALUE' | translate }}            
-              <em class="text-danger">*</em>
-            </span>
-          </div> -->
           <ng-container *ngIf="showInputs || additionalParameters?.length != 0">
 
             <table class="table w-100" >
               <thead >
                 <tr>
                   <th scope="col"></th>
-                  <th scope="col">
+                  <th scope="col" class="main-info">
                     {{ 'FIELD_NAME' | translate }}            
                     <em class="text-danger">*</em>
                   </th>
-                  <th scope="col">
+                  <th scope="col" class="main-info">
                     {{ 'VALUE' | translate }}            
                     <em class="text-danger">*</em>
                   </th>
@@ -154,8 +160,8 @@
                 
                 <tr class="row_content"  *ngFor="let item of additionalParameters; let i = index" [ngClass]="{'last-row': i === additionalParameters.length - 1}">
                   <th scope="row">{{ i + 1 }}</th>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.value }}</td>
+                  <td class="main-info">{{ item.name }}</td>
+                  <td class="main-info">{{ item.value }}</td>
                   <td><span class="remove pointer" (click)="remove(i)" style="display: inline-block; width: 20%;"
                     ><img src="assets/icons/Actionsc.svg" alt="" srcset=""
                   /></span></td>
@@ -163,10 +169,11 @@
 
                 <tr class="inputs_row" *ngIf="showInputs">
                   <th scope="row"></th>
-                  <td style="width:30%">
+                  <td class="main-info" style="width:30%">
                     <div class="name"> 
                     <us-input
                       [isDisabled]="false"
+                      [maxCharLimit]="50"
                       [optional]="false"
                       type="text"
                       [error]="fieldName.touched && fieldName.errors?.required || invalidName"
@@ -180,10 +187,10 @@
                       formControlName="fieldName"
                   
                     ></us-input>
-                   
+                  
                   </div>
                 </td>
-                  <td style="width:30%">
+                  <td class="main-info" style="width:30%">
                       <div class="value">
                         <us-input
                           [isDisabled]="false"
@@ -349,10 +356,10 @@
       (clicked)="onClose()"
       [loading]="false"
     ></us-button>
-    <!-- [withTooltip]="true"
-    [tooltipMsg]="'you should fill all required data to add contact'" -->
-    <us-button
+      <!-- [withTooltip]="true"-->
 
+    <us-button
+    [tooltipMsg]="'you should fill all required data to add contact'" 
       *ngIf="!isEdit"
       label="{{ 'SAVE' | translate }}"
       size="sm"

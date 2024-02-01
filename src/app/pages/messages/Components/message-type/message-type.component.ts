@@ -5,7 +5,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import { MessagesService } from '../../messages.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Message } from '../../message';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DisplayMessageComponent } from '../display-message/display-message.component';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
@@ -16,6 +16,7 @@ import { FAILED, INBOXHEADER, OUTBOX } from '../constants/messagesConst';
 import { TranslationService } from 'src/app/shared/services/translation.service';
 import { ResendMessagesComponent } from '../resendMessages/resendMessages.component';
 import { TranslateService } from '@ngx-translate/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-message-type',
@@ -42,7 +43,7 @@ export class MessageTypeComponent implements OnInit ,OnDestroy ,AfterViewInit{
   form = new FormGroup({
     devicesData:this.devicesData,
   });
-
+  @Output() isOpenNewMessage= new EventEmitter<Message[]>
 
   filterdData :any= new FormControl([]);
   filteringForm= new FormGroup({
@@ -56,6 +57,7 @@ filters:any;
   displayedColumns: string[] = ['select' ,'Device Name', 'Sender', 'Messages', 'Received At','Updated At','Status','Ation'];
   dataSource:MatTableDataSource<Message>;
   selection = new SelectionModel<Message>(true, []);
+  destroy$: Subject<void> = new Subject<void>();
 
   subscribtions:Subscription[]=[];
   noData: boolean;
@@ -64,12 +66,14 @@ filters:any;
   permission:DevicesPermissions[];
   pageNum: number;
   display: number;
+  isSmallScreen: boolean = false;
   constructor(public cdr: ChangeDetectorRef ,
     public dialog: MatDialog,
     private messageService:MessagesService,
     private authService:AuthService,
     private translate:TranslateService,
-    private translationService:TranslationService){
+    private translationService:TranslationService,
+    private breakpointObserver: BreakpointObserver){
       this.display=this.messageService.getUpdatedDisplayNumber()
       this.pageNum=this.messageService.pageNum;
 
@@ -119,13 +123,30 @@ else{
   this.isUser=false;
 }
 // get device's messages
-    this.getDevices(this.msgCategory);
+this.breakpointObserver.observe(['(max-width: 768px)'])
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(result => {
+      this.isSmallScreen = result.matches;
+      if(!this.isSmallScreen){
+        this.selection.clear()
+        this.getDevices(this.msgCategory);
+        
+      }
+    });
+
 
 
     }
-    ngAfterViewInit(): void {
-      this.paginator.pageSize=this.messageService.display;
-      }
+
+    openNewMessage(event){
+      this.isOpenNewMessage.emit(event)
+    }
+  
+ngAfterViewInit(): void {
+  if(this.paginator){
+    this.paginator.pageSize=this.display
+  }
+}
     getDevicePermission(deviceId:string){
       if(this.permission && this.isUser){
 
@@ -143,14 +164,13 @@ else{
 
 
       }
-      if(!this.permission && this.isUser){
+      else if(!this.permission && this.isUser){
         this.fillBasedOnPermissions("ReadOnly")
         this.canEdit=false;
       }
       else{
         this.canEdit=true;
       }
-
     }
   fillBasedOnPermissions(permission:string){
     if(permission=="FullAccess"){
@@ -279,7 +299,9 @@ else{
             }
         }
         else{
-          this.paginator.pageIndex=this.pageNum
+          if(this.paginator){
+            this.paginator.pageIndex=this.pageNum
+          }
           this.notFound=false;
           this.getMessagesCount(deviceId,msgCategory,filterdItems);
 
@@ -402,9 +424,10 @@ else{
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='100vh';
     dialogConfig.width='25vw';
-    dialogConfig.maxWidth='100%';
-    // dialogConfig.minWidth='200px';
+    dialogConfig.maxWidth='450px';
+    dialogConfig.minWidth='300px'
     dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.position =  currentLang=='en'?{ right: '2px'} :{ left: '2px'} ;
     dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
     dialogConfig.data={message:row};
@@ -443,8 +466,12 @@ else{
     });
   }
   ngOnDestroy(){
+      this.destroy$.next();
+      this.destroy$.complete();
+      this.selection.clear();
+    
+      this.subscribtions.map(e=>e.unsubscribe());
     this.selection.clear()
-    this.subscribtions.map(e=>e.unsubscribe());
   }
   selectFilter(item){
   // this.selectedItems.push(item);

@@ -85,3 +85,25 @@
 .pointer{
   cursor: pointer;
 }
+.toaster-icon{
+  margin-inline:0 5px ;
+
+}
+@media only screen and (max-width: 768px) {
+  .us-toaster {
+right: unset !important;
+left: 59vw;
+padding-block: 16px !important;
+width: 78vw !important;
+p{
+  font-size: 14px !important;
+}
+img {
+  width: 19px !important;
+}
+.mat-icon {
+  margin: 12px !important;
+}
+
+  }
+}

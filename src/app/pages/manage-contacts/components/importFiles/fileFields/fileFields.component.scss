@@ -13,3 +13,35 @@
   border-color: none !important;
   box-shadow:none !important;
 }
+@media (max-width:768px) {
+  section{
+    width: 100% !important;
+    padding: 10px !important;
+
+  }
+  .modal-body {
+    padding: 0 !important;
+  }
+  .d-flex.w-100.justify-content-between.mb-3.align-items-center{
+    justify-content: unset !important;
+    gap: 8px !important;
+}
+.form-switch .form-check-input {
+  width: 35px !important;
+  height: 18px !important;
+}
+.switcher {
+  width: 30% !important;
+}
+span{
+  font-size: 12px !important;
+}
+.field_name{
+  width: 24% !important;
+}
+.modal-header{
+  p{
+    margin-inline: 0 !important;
+  }
+}
+}

@@ -1,5 +1,5 @@
-<section class="py-3 component-container d-flex flex-column gap-3">
-  
+<section class="py-3 component-container ">
+  <div *ngIf="!isSmallScreen"  class="large-screen-view  d-flex flex-column gap-3">
     <div class="d-flex justify-content-between align-items-center ">
     <ng-container *ngIf="!noData">
       <div class="d-flex position-relative row m-0" style="width:31%; max-width: 389px;min-width: 180px;">
@@ -39,8 +39,8 @@
   
 
   <ng-container *ngIf="length > 0 && !noData || loading">
-    <section class="table-wrapper">
-      <table class="table-large-screen" matSort mat-table [dataSource]="dataSource" (matSortChange)="onSortChange($event)">
+    <section class="table-wrapper table-large-screen">
+      <table  matSort mat-table [dataSource]="dataSource" (matSortChange)="onSortChange($event)">
         <!-- Checkbox Column -->
         <ng-container  matColumnDef="select">
           <th class="checkBox" mat-header-cell *matHeaderCellDef>
@@ -109,48 +109,6 @@
         </svg>
       </div>
 
-      <mat-accordion class="table-mobile-view" multi>
-        <!-- Repeat the following code for each data item in your dataSource -->
-        <mat-expansion-panel *ngFor="let element of tableData" 
-        [expanded]="false" 
-        [ngClass]="{'active-row':selection.isSelected(element)}">
-          <mat-expansion-panel-header>
-            <mat-checkbox color="ch-color"
-                          (click)="$event.stopPropagation() && selectedRow($event)"
-                          (change)="$event ? selection.toggle(element) : null"
-                          [checked]="selection.isSelected(element)"
-                          [aria-label]="checkboxLabel(element)">
-            </mat-checkbox>
-      
-            <div class="row w-100">
-              <div class="col row-header">{{ 'NAME_COLUMN' | translate }}</div>
-              <div class="col" style="font-weight: normal;">{{ element.name }}</div>
-            </div>
-          </mat-expansion-panel-header>
-      
-          <!-- Replace the following code with your data rows -->
-          <div class="row row-item">
-            <div class="col row-header">{{ 'CREATE_AT' | translate }}</div>
-            <div class="col">{{ element.createdAt | toLocalTime }}</div>
-          </div>
-
-          <div class="row row-item">
-            <div class="col row-header">{{ 'TOTAL_CONTACTS_COLUMN' | translate }}</div>
-            <div class="col">{{ element.totalContacts }}</div>
-          </div>
-      
-          <div class="row row-item" *ngIf="canEdit">
-            <div class="col row-header">{{ 'ACTION_COLUMN' | translate }}</div>
-            <div class="col">
-              <div class="d-flex align-items-center pointer text-primary-800" (click)="openEditModal(element); cellClick=true">
-                <mat-icon class="mat-icon" color="primary">edit</mat-icon>
-                <span class="txt-sm edit">{{ 'EDIT_ACTION' | translate }}</span>
-              </div>
-            </div>
-          </div>
-      
-        </mat-expansion-panel>
-      </mat-accordion>
       
       <mat-paginator [pageSize]="display" 
       (page)="onPageChange($event)" 
@@ -169,4 +127,9 @@
       <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA_TO_SHOW' | translate }}</span>
     </div>
   </ng-container>
+</div>
+
+<div *ngIf="isSmallScreen" class="small-screen-view">
+  <app-lists-mobileView [canEdit]="canEdit"></app-lists-mobileView>
+</div>
 </section>

@@ -2,3 +2,28 @@ h3{
     font-size: 32px;
     color: var(--clr-primary-800);
 }
+@media(max-width:768px){
+    .modal-footer{
+        background:transparent !important;
+        height: 32% !important;
+
+    }
+    section{
+        padding-top: 10px !important;
+
+    }
+    p{
+        font-size: 22px !important;
+    line-height: 1.5;
+    }
+    h3 {
+        font-size: 23px !important;
+        margin-bottom: 0 !important;
+
+    }
+    .content{
+        height: 70% !important;
+        gap: 0px !important;
+
+    }
+}

@@ -5,7 +5,7 @@ import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster
 import { StepsComponent } from '../components/steps/steps.component';
 import { DeviceData } from '../device';
 import { SelectionModel } from '@angular/cdk/collections';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -15,6 +15,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { DEVICESHEADERS } from '../constants/constants';
 import * as saveAs from 'file-saver';
+import { SelectOption } from 'src/app/shared/components/select/select-option.model';
+import { Subject, takeUntil } from 'rxjs';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-devices',
@@ -43,10 +46,60 @@ export class DevicesComponent implements OnInit,OnDestroy{
   canEdit: any;
   email:string=this.authService.getUserInfo()?.email;
   isTrialCustomer:boolean;
-  constructor(public dialog: MatDialog,    private translate: TranslateService,
+
+
+  showsOptions: SelectOption[] = [
+    { title: '10', value: 10 },
+    { title: '50', value: 50 },
+    { title: '100', value: 100 }
+
+
+  ];
+  showsSelectedOptions: any = new FormControl([]);
+
+  displayForm = new FormGroup({
+    showsSelectedOptions: this.showsSelectedOptions,
+
+  });
+  accordionData:any=[]
+  selectedSortingName: string = 'name';
+  selectedSortingType: string = 'ASC'
+  orderedBy: string = '';
+  topSortingOptions: any = [{ opitonName: 'name', lable: `${this.translate.instant('nameLabel')}`, isSelected: true }
+    , { opitonName: 'createdAt', lable: `${this.translate.instant('CREATE_AT')}`, isSelected: false }]
+
+  bottomSortingOptions: any = [{ opitonName: 'ASC', lable: `${this.translate.instant('ASCENDING')}`, isSelected: true },
+  { opitonName: 'DEC', lable: `${this.translate.instant('DESCENDING')}`, isSelected: false }]
+
+  isSmallScreen: boolean = false;
+  destroy$: Subject<void> = new Subject<void>();
+
+  constructor(public dialog: MatDialog,
+        private translate: TranslateService,
+        private breakpointObserver: BreakpointObserver,
     private  toaster: ToasterServices,private authService:AuthService,private devicesService:DevicesService){
   }
   ngOnInit() {
+    this.breakpointObserver.observe(['(max-width: 768px)'])
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(result => {
+      this.isSmallScreen = result.matches;
+      if(this.isSmallScreen){
+        this.displayed=DEVICESHEADERS.slice(1)
+      }
+      else{
+        this.displayed=DEVICESHEADERS
+
+      }
+      this.getDevices();
+      
+    });
+        this.displayForm.patchValue({
+          showsSelectedOptions: {
+          title:'10',
+          value:10,
+          }
+          })
     this.isTrialCustomer=this.authService.getSubscriptionState().isTrail ? this.authService.getSubscriptionState()?.isTrail : false;
     this.getDevices();
     this.columns=new FormControl(this.displayedColumns)
@@ -73,7 +126,7 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
     let shows=this.devicesService.display;
     let pageNum=searchVal? 0 : this.devicesService.pageNum;
     let email=this.authService.getUserInfo()?.email;
-    let orderedBy=this.devicesService.orderedBy;
+    let orderedBy=this.orderedBy;
     let search=searchVal?searchVal:"";
     this.loading = true;
     this.isReonnect=false;
@@ -96,7 +149,11 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
           }
       }
       else{
-        this.paginator.pageIndex=this.devicesService.pageNum
+        if(this.paginator)
+        {
+          this.paginator.pageIndex=this.devicesService.pageNum
+
+        }
         this.notFound=false;
         this.getDevicesCount();
 
@@ -160,12 +217,37 @@ else{
 
   }
 
-  onPageChange(event){
-    this.devicesService.display=event.pageSize;
-    this.devicesService.pageNum=event.pageIndex;
-    this.getDevices();
+toggleTopSortingSelect(){
+  this.topSortingOptions.forEach((option:{opitonName:string,isSelected:boolean })=>option.isSelected=!option.isSelected);
+  this.selectedSortingName= this.topSortingOptions.find((option)=>option.isSelected).opitonName;
+  this.changeSorting(this.selectedSortingName , this.selectedSortingType)
+}
+toggleBottomSortingSelect(){
+  this.bottomSortingOptions.forEach((option:{opitonName:string,isSelected:boolean })=>option.isSelected=!option.isSelected);
+  this.selectedSortingType= this.bottomSortingOptions.find((option)=>option.isSelected).opitonName;
+  this.changeSorting(this.selectedSortingName , this.selectedSortingType)
 
+}
+changeSorting(selectedSortingName ,selectedSortingType){
+let sorting=`${selectedSortingName}${selectedSortingType}`;
+this.orderedBy=sorting;
+this.getDevices();
+}
+onPageSizeChange(event) {
+  this.devicesService.pageNum = 0;
+  this.devicesService.display=event.value;
+  if (this.paginator) {
+    this.paginator.pageSize = event.value;
+    this.paginator.pageIndex = 0;
   }
+  this.getDevices();
+}
+
+onPageChange(event){
+  this.devicesService.display=event.pageSize;
+  this.devicesService.pageNum=event.pageIndex;
+  this.getDevices();
+}
   onSearch(event:any){
     this.getDevices(event.value);
   }
@@ -243,6 +325,8 @@ else{
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='465px';
+    dialogConfig.panelClass='custom-dialog-delete-style'
+
     dialogConfig.data =
     {
       deviceData:{deviceId:id}
@@ -258,6 +342,8 @@ else{
     });
   }
   ngOnDestroy(){
+    this.destroy$.next();
+    this.destroy$.complete();
     this.devicesService.display=10;
     this.devicesService.pageNum=0;
     this.devicesService.orderedBy='';

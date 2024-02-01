@@ -1,0 +1,175 @@
+
+  
+  <div class="d-flex align-items-center  my-3"  [ngClass]="noData ?'justify-content-end' : 'justify-content-between'" >
+
+    <div *ngIf="!noData" class="d-flex position-relative row m-0 input-search-containter" >
+      <div  class="col-12 col-lg-4 p-0 w-100" >
+        <input
+          #search
+          type="text"
+          class="form-control ps-5 txt-xs w-100"
+          id="search"
+          placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
+          (input)="onSearch(search)"
+        />
+      </div>
+      <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
+        <img src="assets/icons/search.svg" alt="" width="14" />
+      </div>
+    
+    </div>
+    <us-button
+    *ngIf="!isChecked && canEdit"
+    [label]="'ADD_LIST' | translate"
+    [matIcon]="'add'"
+    [fill]="true"
+    [size]="'md'"
+    [loading]="false"
+    [disabled]="false"
+    [appearance]="'primary'"
+    (clicked)="openAddOrUpdateList()"
+  ></us-button>
+
+
+  
+</div>
+<div *ngIf="!noData" class="d-flex align-items-center justify-content-between dropdowns" style="row-gap: 6px; max-width: 394px;">
+  <form [formGroup]="form" class="d-flex gap-5 flex-column" style="
+  min-width: 100px;">
+    <!-- show number of displayed items -->
+    <us-select
+      [data]="showsOptions"
+      formControlName="showsSelectedOptions"
+      [multiSelect]="false"
+      (onSelect)="onSelect($event)"
+      [label]="'shows' | translate"
+      [isDisabled]="false"
+      [optional]="true"
+      endLable="{{ 'items' | translate }}"
+      [smallDropDown]="true"
+    ></us-select>
+
+   
+  </form>
+  <div class="display">
+    <mat-form-field class="us-select">
+      <mat-label class="txt-caption"> <img src="assets/icons/display.svg" alt="" class="m-2" width="15"> <span class="txt-caption" style="font-size: 12px !important;">{{ 'DISPLAY' | translate }}</span></mat-label>
+      <mat-select [formControl]="columns"  (selectionChange)="changeColumns($event.value)" multiple>
+        <mat-option *ngFor="let topping of displayed" [value]="topping.value">{{ topping.title | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+  <form  >
+    <mat-form-field appearance="fill" class="sorting-dropdown">
+      <mat-select [placeholder]="'sortBy' |translate" multiple>
+        
+        <mat-select-trigger>
+          {{'sortBy' |translate}}
+        </mat-select-trigger>
+        <mat-option class="sort_by_option" *ngFor="let option of topSortingOptions; let i = index" [value]="option.lable">
+          <div class="d-flex align-items-center justify-content-between" (click)="toggleTopSortingSelect()">
+            <span [ngClass]="{'text-primary-800': option.isSelected}">{{ option.lable }}</span>
+            <mat-icon *ngIf="option.isSelected">done</mat-icon>
+          </div>
+        </mat-option>
+        <mat-divider></mat-divider>
+        <mat-option class="sort_by_option" *ngFor="let option of bottomSortingOptions; let i = index" [value]="option.lable">
+          <div class="d-flex align-items-center justify-content-between" (click)="toggleBottomSortingSelect()">
+            <span [ngClass]="{'text-primary-800': option.isSelected}">{{ option.lable }}</span>
+            <mat-icon *ngIf="option.isSelected">done</mat-icon>
+          </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  
+  
+  
+
+
+
+</div>
+
+
+<ng-container *ngIf="length > 0 && !noData || loading">
+  <section class="table-wrapper">
+    <div *ngIf="loading" class="spinner-container p-3">
+      <svg width="70" height="70" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <style>.spinner_0XTQ{transform-origin:center; animation:spinner_y6GP .75s linear infinite}@keyframes spinner_y6GP{100%{transform:rotate(360deg)}}</style>
+        <path class="spinner_0XTQ" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"/>
+      </svg>
+    </div>
+
+    <mat-accordion class="table-mobile-view" multi>
+      <mat-expansion-panel *ngFor="let element of tableData" 
+      [expanded]="length > 2 ?false :true"
+      [ngClass]="{'active-row':selection.isSelected(element),'radius-15':length <= 10  , 'without-select' :!displayedColumns.includes('select')}">
+        <mat-expansion-panel-header>
+          <mat-checkbox 
+                      *ngIf="displayedColumns.includes('select')"
+                        color="ch-color"
+                        (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(element) : null; onCheckboxChange($event,element)"
+                        [checked]="selection.isSelected(element)"
+                        [aria-label]="checkboxLabel(element)">
+          </mat-checkbox>
+    
+          <div class="row w-100">
+            <div class="col row-header">{{ 'NAME_COLUMN' | translate }}</div>
+            <div class="col" style="font-weight: normal;">{{ element.name }}</div>
+
+          </div>
+        </mat-expansion-panel-header>
+    
+        <div class="row row-item" *ngIf=" displayedColumns.includes('Create At')">
+          <div class="col row-header" >{{ 'CREATE_AT' | translate }}</div>
+          <div class="col">{{ element.createdAt | toLocalTime }}</div>
+        </div>
+
+        <div class="row row-item" *ngIf=" displayedColumns.includes('Total Contacts')">
+          <div class="col row-header">{{ 'TOTAL_CONTACTS_COLUMN' | translate }}</div>
+          <div class="col">{{ element.totalContacts }}</div>
+        </div>
+    
+        <div class="row row-item">
+          <div class="col row-header">{{ 'ACTION_COLUMN' | translate }}</div>
+          <div class="col">
+            <div class="d-flex gap-3 align-items-center">
+              <div  *ngIf="canEdit" class="d-flex align-items-center pointer text-primary-800" (click)="openAddOrUpdateList(element)">
+                <mat-icon class="mat-icon" color="primary">edit</mat-icon>
+                <span class=" edit">{{ 'EDIT_ACTION' | translate }}</span>
+              </div>
+              <div class="details d-flex gap-1 pointer align-items-center" (click)="navigateTo(element.id)">
+                <img src="assets/icons/details.svg">
+                <span class="text-primary-800" >{{'details' | translate}}</span>
+              </div>
+          </div>
+          </div>
+        </div>
+    
+      </mat-expansion-panel>
+    </mat-accordion>
+    
+    <mat-paginator
+    *ngIf="length > 10"
+    [hidePageSize]="true"
+    [pageSize]="display"
+    (page)="onPageChange($event)"
+    [length]="length"
+    showFirstLastButtons
+    [pageIndex]="pageNum"
+      >
+    </mat-paginator>
+
+  </section>
+</ng-container>
+
+<ng-container *ngIf="(length == 0 && !loading) && ( notFound || noData)">
+  <div class="d-flex justify-content-center align-items-center flex-column gap-3 nodata-container w-100" style="height: 500px;">
+    <img src="assets/images/files.svg" alt="">
+    <span class="text-neutral-600" style="font-size: 20px; font-weight: 600;">{{ 'NO_DATA_TO_SHOW' | translate }}</span>
+  </div>
+</ng-container>
+<div  #dynamicComponentContainer></div>

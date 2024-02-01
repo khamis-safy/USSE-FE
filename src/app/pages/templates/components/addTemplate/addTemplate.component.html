@@ -21,6 +21,7 @@
       <div class="d-flex gap-4 flex-column py-3">
         <us-input
           [isDisabled]="false"
+          [maxCharLimit]="50"
           value=""
           [optional]="false"
           type="text"
@@ -50,11 +51,18 @@
 
     </form>
 
-    <div class="form-group d-flex gap-lg-4 flex-column  flex-lg-row flex-nowrap">
-      <label for="devicesData" class="w-25 d-none d-lg-block text-nowrap" style="min-width:25%"
-        ><span class="txt txt-sm text-black text-wrap">{{ 'ATTACHMENTS' | translate }}</span>
-      </label>
+    <div class="form-group d-flex gap-lg-4 gap-3 flex-column flex-lg-row flex-nowrap files-container">
+      <div class="label-widget text-start w-25 d-none d-lg-block" style="min-width: 25%;">
+        <label for="files" class="w-25 text-nowrap d-flex" style="min-width:25%"
+          ><span class="txt txt-sm text-black text-wrap">{{ 'Attachments' | translate }}</span>
+        </label>
+      </div>
 
+      <div class="label-widget text-start w-100 d-block d-lg-none">
+        <label for="files" class="w-25 text-nowrap d-flex" style="min-width:25%"> 
+          <span class="txt  text-black text-wrap txt-sm">{{ 'Attachments' | translate }}</span>
+        </label>
+      </div>
       <us-upload  class="w-100"
       [isLoading]="loading"
       [(ngModel)]="fileData"
@@ -66,7 +74,7 @@
   </div>
 
   <!-- modal footer -->
-  <div class="modal-footer justify-content-center gap-3"  style="height: 10%;">
+  <div class="modal-footer justify-content-center gap-2"  style="height: 10%;">
     <us-button  *ngIf="!isEdit"
     label="{{ 'SAVE' | translate }}"
     size="sm"

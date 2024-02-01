@@ -20,6 +20,10 @@ switchLanguage(lang: string) {
   location.reload()
 
 }
+getWidth(element: HTMLElement) {
+
+  return `${element.clientWidth}px`;
+}
 openSideNav() {
   const currentLang = localStorage.getItem("currentLang");
   const isRtl = currentLang === "ar";

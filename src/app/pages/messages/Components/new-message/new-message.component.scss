@@ -95,3 +95,39 @@
 .buttons {
   text-align: end !important;
 }
+@media(max-width:768px){
+
+
+  .buttons>div{
+    width: 100% !important;
+    position: unset !important;
+    justify-content: center !important;
+}
+p{
+  margin-top: 6px;
+  font-size: 13px;
+  text-align: center;
+}
+}
+button.rest-style {
+
+  width: 130px !important;
+}
+.buttons {
+
+  gap: 15px !important;
+}
+.bottons-container{
+  display: flex;
+  justify-content: end;
+  gap: 15px;
+  align-items: center;
+}
+@media(max-width:768px){
+  button.rest-style {
+      width: 45% !important;
+  } 
+  .buttons {
+      width: 95% !important;
+  }
+}

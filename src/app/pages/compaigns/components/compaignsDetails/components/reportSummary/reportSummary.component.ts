@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, } from '@angular/core';
 import { CompaignStat, compaignDetails } from 'src/app/pages/compaigns/campaigns';
 import { CompaignsService } from 'src/app/pages/compaigns/compaigns.service';
 import { CompaignsDetailsService } from '../../compaignsDetails.service';
@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './reportSummary.component.html',
   styleUrls: ['./reportSummary.component.scss']
 })
-export class ReportSummaryComponent implements OnInit , AfterViewInit {
+export class ReportSummaryComponent implements OnInit , AfterViewInit , OnChanges {
   @Input() compaign:compaignDetails;
   @Input() compaignId:string;
   campaignActions:{actionName:string, actionCriteras:any[]}[]=[];
@@ -25,13 +25,29 @@ export class ReportSummaryComponent implements OnInit , AfterViewInit {
     private authService:AuthService) {
 
   }
+  ngOnChanges(changes: SimpleChanges) {
+    if(this.compaign){
+      if(this.compaign?.actionCount > 0) {
+        this.campainHasActions=true;
+        this.campaignActions=this.compaign.actions.map((action)=>{
+        return{
+          actionName: action.actionName,
+          actionCriteras: action[action.actionName].criterias.map((criteria)=>criteria.criteria)
+        }
+        })
+    
+        this.dataSource=new MatTableDataSource<any>(this.campaignActions)
+      }
+    }
+  
+  }
   ngAfterViewInit() {
   
    
   }
   ngOnInit() {
 this.getStatics();
-this.getCompaignData();
+// this.getCompaignData();
 
   }
   getCompaignData(){

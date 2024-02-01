@@ -14,3 +14,23 @@
     line-height: 1.3;
     text-transform: capitalize;
   }
+  @media(max-width:768px){
+    section{
+      padding-top: 20px !important;
+    }
+    .resend-icon-container
+    {
+      width: 80px !important;
+      height: 80px !important;
+      img  {
+      width: 42% !important;
+    }
+    } 
+    .modal-footer.justify-content-center.position-absolute.bottom-0.w-100.gap-3 {
+      background: transparent !important;
+      height: 30% !important;
+  }
+  content.d-flex.justify-content-center.align-items-center.flex-column.gap-4 {
+    height: 37% !important;
+}
+  }

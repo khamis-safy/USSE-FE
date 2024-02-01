@@ -164,11 +164,25 @@ export class UploadSheetComponent implements OnInit {
   }
     goToFileSetting(){
       const dialogConfig=new MatDialogConfig();
-      dialogConfig.height='80vh';
-      dialogConfig.width='60vw';
-      dialogConfig.maxWidth='100%';
-      dialogConfig.minWidth='465px';
-      dialogConfig.disableClose = true;
+      if(this.data.mobileView)
+      {
+        dialogConfig.height='80vh';
+        dialogConfig.width='45vw';
+        dialogConfig.maxWidth='100%';
+        dialogConfig.minWidth='100%';
+        dialogConfig.minHeight='470px';
+        dialogConfig.disableClose = true;
+        dialogConfig.panelClass = 'custom-mat-dialog-container';
+
+      }
+      else{
+        dialogConfig.height='80vh';
+        dialogConfig.width='60vw';
+        dialogConfig.maxWidth='100%';
+        dialogConfig.minWidth='465px';
+        dialogConfig.disableClose = true;
+      }
+      
       dialogConfig.data={
         rowData:this.fileData[0].excelData[0],
         withHeader:this.containsHeadear,

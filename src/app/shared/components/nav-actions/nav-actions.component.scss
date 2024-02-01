@@ -1,0 +1,17 @@
+
+nav{
+height: 8vh;
+position: fixed;
+top: 0;
+z-index: 3;
+left: 0;
+width: 100%;
+}
+
+
+@media(max-width:768px){
+
+nav{
+    padding-inline:14px !important
+}
+}

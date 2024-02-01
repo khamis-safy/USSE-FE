@@ -2,3 +2,52 @@
 .new-list{
   border: 2px dashed $clr_neutral_300;
 }
+@media (max-width:768px) {
+  section{
+    width: 100% !important;
+    padding: 10px !important;
+
+  }
+  .lists{
+    margin: 0 !important;
+    width: 55% !important;
+    margin-bottom: 10px !important;
+
+  }
+  
+  .modal-body.overflow-auto.p-4.w-100 {
+    padding: 0 !important;
+  }
+  us-button{
+    margin-inline: 6px;
+  }
+  form{
+    padding: 0 !important;
+  }
+  .add-list-container{
+ align-items: center;
+
+    .add-list{
+      width: 42%;
+      display: flex;
+      height: 22px;
+
+    }
+  
+  
+  }
+  .new-list {
+    width: 100% !important;
+    .d-flex.justify-content-between{
+      flex-direction: column !important;
+      gap: 10px !important;
+      .list-name-input{
+        width: 100% !important;
+      }
+      .button-actions{
+        justify-content: center !important;
+        width: 93% !important;
+      }
+    }
+  }
+}

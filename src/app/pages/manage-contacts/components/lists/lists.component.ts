@@ -10,11 +10,12 @@ import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster
 import { ListData } from '../../list-data';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { LISTHEADERS } from '../../constants/constants';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-lists',
@@ -47,13 +48,18 @@ subscribtions:Subscription[]=[];
   cellClick:boolean;
   display: number;
   pageNum:number;
+  isSmallScreen: boolean = false;
+
+  destroy$: Subject<void> = new Subject<void>();
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
     private authService:AuthService,
-    private router:Router) {
+    private router:Router,
+    private breakpointObserver: BreakpointObserver
+    ) {
       this.display=this.listService.getUpdatedDisplayNumber();
       this.pageNum=this.listService.pageNum;
   }
@@ -61,9 +67,19 @@ subscribtions:Subscription[]=[];
   @Output() isDelete = new EventEmitter<ListData[]>;
 
   ngOnInit() {
-    this.getListData();
+    this.breakpointObserver.observe(['(max-width: 768px)'])
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(result => {
+      this.isSmallScreen = result.matches;
+      if(!this.isSmallScreen){
+        this.selection.clear()
+        this.getListData();
+
+      }
+    });
+  
     if(!this.canEdit){
-      this.displayedColumns = ['select', 'Name', 'Create At', 'Total Contacts'];
+      this.displayedColumns = [ 'Name', 'Create At', 'Total Contacts'];
 
     }
 
@@ -80,6 +96,9 @@ subscribtions:Subscription[]=[];
   }
 
   ngAfterViewInit() {
+    if(this.paginator){
+      this.paginator.pageSize=this.display
+    }
   }
 getListsCount(){
   this.loading=true;
@@ -142,7 +161,10 @@ element.defaultExpanded = true; // Set to true or false based on your logic
     }
 }
 else{
-        this.paginator.pageIndex=this.pageNum
+  if(this.paginator){
+    this.paginator.pageIndex=this.pageNum
+
+  }
         this.notFound=false;
         this.getListsCount();
 
@@ -285,10 +307,11 @@ else{
 
   }
   ngOnDestroy(){
+    this.destroy$.next();
+    this.destroy$.complete();
     this.selection.clear();
-
+  
     this.subscribtions.map(e=>e.unsubscribe());
-    this.dataSource.data=[];
   }
 
   navigateTo(id:string){

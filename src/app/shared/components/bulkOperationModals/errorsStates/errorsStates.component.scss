@@ -16,3 +16,14 @@
     
     }
 }
+@media(max-width:768px){
+    section{
+        padding: 15px !important;
+    }
+    table{
+        // background-color: transparent;
+      th , td{
+          font-size: 12px !important;
+      }
+    }
+}

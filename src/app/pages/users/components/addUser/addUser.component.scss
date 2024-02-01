@@ -10,4 +10,10 @@
 
 input[type="radio"] {
     transform: scale(1.2); /* Increase the size as needed */
-  }
+}
+@media(max-width:768px){
+section{
+    padding: 13px 8px 0px !important;
+
+}
+}

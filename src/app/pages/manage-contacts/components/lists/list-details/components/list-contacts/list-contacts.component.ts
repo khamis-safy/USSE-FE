@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Contacts } from 'src/app/pages/manage-contacts/contacts';
 import { ListData } from 'src/app/pages/manage-contacts/list-data';
 import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-contacts.service';
@@ -19,25 +19,27 @@ import { LISTDETAILSHEADERS } from 'src/app/pages/manage-contacts/constants/cons
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { TranslationService } from 'src/app/shared/services/translation.service';
 import { AdditonalParamsComponent } from '../../../../contacts/additonalParams/additonalParams.component';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
 selector: 'app-list-contacts',
 templateUrl: './list-contacts.component.html',
 styleUrls: ['./list-contacts.component.scss']
 })
-export class ListContactsComponent implements OnInit ,OnChanges {
+export class ListContactsComponent implements OnInit ,OnChanges ,AfterViewInit ,OnDestroy{
 listId:string;
 length:number;
 active:boolean=false;
 ListContacts:Contacts[];
 numRows;
 cellClick:boolean=false;
-loading:boolean=false;
+loading:boolean=true;
 subscribtions:Subscription[]=[];
 WrapperScrollLeft =0;
 WrapperOffsetWidth =250;
 @Output() isChecked = new EventEmitter<ListData[]>;
 @Input() isCanceled:boolean;
+@Input() canEdit:boolean;
 @Input() count:TotalContacts={totalContacts:0,totalCancelContacts:0};
 @Input() listData:any
 @ViewChild(MatPaginator)  paginator!: MatPaginator;
@@ -52,16 +54,23 @@ displayedColumns: string[] = ['select','Name','Mobile',"Create At",'Additional P
 dataSource:MatTableDataSource<Contacts>;
 // dataSource = new MatTableDataSource<any>(this.listTableData);
 selection = new SelectionModel<any>(true, []);
-
+notFound:boolean;
+noData:boolean;
 @ViewChild(ContactsComponent) contacts:ContactsComponent;
   display: number;
   pageNum: number;
+
+  isSmallScreen: boolean = false;
+  destroy$: Subject<void> = new Subject<void>();
+
 constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
   private toaster: ToasterServices,
   private listService:ManageContactsService,
   private snackBar: MatSnackBar, 
   private authService:AuthService,
-  private translationService:TranslationService
+  private translationService:TranslationService,
+  private breakpointObserver: BreakpointObserver
+
   ) {
     this.display=listService.getUpdatedDisplayNumber()
     this.pageNum=this.listService.pageNum;
@@ -72,14 +81,28 @@ constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
 }
   ngOnChanges() {
       this.length=this.count?.totalContacts
-
-    
   }
-
+  ngAfterViewInit() {
+    if(this.paginator){
+      this.paginator.pageSize=this.display
+    }
+  }
 ngOnInit() {
-  this.getContacts();
+  this.breakpointObserver.observe(['(max-width: 768px)'])
+  .pipe(takeUntil(this.destroy$))
+  .subscribe(result => {
+    this.isSmallScreen = result.matches;
+    if(!this.isSmallScreen){
+      this.selection.clear()
+      this.getContacts();
+    
+    }
+  });
   this.columns=new FormControl(this.displayedColumns)
+  if(!this.canEdit){
+    this.displayedColumns= ['select','Name', 'Mobile','Additional Parameters',"Create At"];
 
+  }
 this.selection.changed.subscribe(
   (res) => {
 
@@ -100,22 +123,50 @@ getContacts(searchVal?){
     let search=searchVal ? searchVal : "";
     let pageNumber=searchVal?0:this.pageNum
     this.loading = true;
- 
+    if(searchVal && this.paginator){
+      this.paginator.pageIndex=0
+  }
     let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNumber,orderedBy,search,this.listId).subscribe(
         (res)=>{
         
           if(this.isCanceled){
             this.length=this.count?.totalCancelContacts;
+          
           }
           else{
             this.length=this.count?.totalContacts;
-
+          }
+          if(this.length==0){
+            this.noData=true
+          }
+          else{
+            this.noData=false
           }
           this.numRows=res.length;
           this.loading = false;
           this.ListContacts=res;
           this.dataSource=new MatTableDataSource<Contacts>(res)
-          },
+          if(search!=""){
+            this.length=res.length;
+            if(this.length==0){
+              this.notFound=true;
+            }
+            else{
+              this.notFound=false;
+            }
+        }
+        else{
+          if(this.paginator){
+            this.paginator.pageIndex=this.pageNum
+  
+          }
+          this.notFound=false;
+  
+  
+        }
+
+
+        },
           (err)=>{
           this.loading = false;
 
@@ -207,10 +258,18 @@ getContacts(searchVal?){
       this.active=!this.active;
     }
     changeColumns(event){
-
-
+      if(this.canEdit){
         this.displayedColumns=['select',...event,'action']
+      }
+    
+    else{
+      this.displayedColumns=['select',...event]
+    
+    }
 
+    }
+    updateTotalContacts(event){
+      this.updatedCount.emit(event)
 
     }
     getListData(){
@@ -253,5 +312,12 @@ getContacts(searchVal?){
     
         });
       }
+    }
+    ngOnDestroy(){
+      this.destroy$.next();
+      this.destroy$.complete();
+      this.selection.clear();
+    
+      this.subscribtions.map(e=>e.unsubscribe());
     }
 }
