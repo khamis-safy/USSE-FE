@@ -269,9 +269,9 @@ addContactToList(){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='54vh';
     dialogConfig.width='90vw';
-    dialogConfig.maxWidth='100%';
+    dialogConfig.maxWidth='365px';
     dialogConfig.minWidth='80%';
-    dialogConfig.minHeight='428';
+    dialogConfig.maxHeight='290px';
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     if(this.componentName== 'contacts' || this.componentName== 'listDetails')
@@ -331,13 +331,13 @@ addContactToList(){
   }
 removeContacts(){
   const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='54vh';
-    dialogConfig.width='90vw';
-    dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='80%';
-    dialogConfig.minHeight='428';
-    dialogConfig.disableClose = true;
-    dialogConfig.panelClass = 'custom-mat-dialog-container';
+  dialogConfig.height='54vh';
+  dialogConfig.width='90vw';
+  dialogConfig.maxWidth='365px';
+  dialogConfig.minWidth='80%';
+  dialogConfig.maxHeight='290px';
+  dialogConfig.disableClose = true;
+  dialogConfig.panelClass = 'custom-mat-dialog-container';
       dialogConfig.data = {
         listsData:{contacts:this.selectedItems,list:[this.listId]}
       };
@@ -426,11 +426,11 @@ openErrorsViewrModal(result , operation){
 }
   removeLists(){
     const dialogConfig=new MatDialogConfig();
-    dialogConfig.height='60vh';
+    dialogConfig.height='54vh';
     dialogConfig.width='90vw';
-    dialogConfig.maxWidth='100%';
+    dialogConfig.maxWidth='365px';
     dialogConfig.minWidth='80%';
-    dialogConfig.minHeight='428';
+    dialogConfig.maxHeight='290px';
     dialogConfig.disableClose = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.data =
