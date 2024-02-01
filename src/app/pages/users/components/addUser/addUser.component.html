@@ -55,6 +55,7 @@
             <us-input
               [label]="'Username' | translate"
               [type]="'text'"
+              [maxCharLimit]="50"
               [placeholder]="'Enter your name'"
               formControlName="contactName"
               [error]=" (contactName.touched && contactName.errors?.required)"

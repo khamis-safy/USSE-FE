@@ -25,6 +25,7 @@
         <us-input
         [withTooltip]="true"
         [tooltipMsg]="'enter the contact name'"
+        [maxCharLimit]="50"
           [isDisabled]="false"
           value=""
           placeholder="{{ 'NAME' | translate }}"
@@ -38,7 +39,7 @@
             name.touched && name.errors?.required
               ? ('REQUIRED_FIELD' | translate)
               : ''
-          "
+"
         ></us-input>
 
         <div
@@ -172,6 +173,7 @@
                     <div class="name"> 
                     <us-input
                       [isDisabled]="false"
+                      [maxCharLimit]="50"
                       [optional]="false"
                       type="text"
                       [error]="fieldName.touched && fieldName.errors?.required || invalidName"

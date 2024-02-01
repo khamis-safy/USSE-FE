@@ -607,7 +607,8 @@
 "showCriterias":"Show Criterias",
 "Unauthorized_title":"Unauthorized Access Attempt",
 "Unauthorized_msg":"You don’t have right to access this page now, please contact your admin",
-"reload":"Reload"
+"reload":"Reload",
+"invalid_code":"invalid code"
 
 
 
