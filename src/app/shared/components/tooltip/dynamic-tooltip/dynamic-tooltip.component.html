@@ -5,7 +5,7 @@
   (mouseenter)="onMouseenter($event)"
   (mouseleave)="onMouseleave($event)"
 >
-  <p class="txt txt-caption">{{ text }}</p>
+  <p class="txt txt-caption">{{ text }}<span *ngIf="readMoreLink"> , <a class="text-primary-800">{{'read_more' |translate}}</a></span></p>
 </div>
 
 <svg

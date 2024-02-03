@@ -18,6 +18,7 @@ import { WriteMessageModule } from '../messages/Components/new-message/write-mes
 import { ConfirmaionsComponent } from './components/addCompaigns/confirmaions/confirmaions.component';
 import { ExpectedCampEndTimeComponent } from './components/addCompaigns/expectedCampEndTime/expectedCampEndTime.component';
 import { CampaignsMobileViewComponent } from './mobile view/campaigns-mobileView/campaigns-mobileView.component';
+import { TooltipModule } from 'src/app/shared/components/tooltip/tooltip.module';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { CampaignsMobileViewComponent } from './mobile view/campaigns-mobileView
     ActionsModule,
     NzTimePickerModule,
     NzDatePickerModule,
-    WriteMessageModule
+    WriteMessageModule,
+    TooltipModule
   ],
   declarations: [
     CompaignsComponent ,

@@ -22,6 +22,7 @@ import { ContactsMobileViewComponent } from './components/mobile view/contacts-m
 import { ListsMobileViewComponent } from './components/mobile view/lists-mobileView/lists-mobileView.component';
 import { ContactInfoComponent } from './components/mobile view/contact-info/contact-info.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { TooltipModule } from 'src/app/shared/components/tooltip/tooltip.module';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { MatDividerModule } from '@angular/material/divider';
     SharedModule,
     DragZoneModule,
     MatDividerModule,
+    TooltipModule
     
   ],
   declarations: [

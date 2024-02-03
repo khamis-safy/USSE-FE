@@ -90,6 +90,7 @@ export class InputComponent implements  AfterViewInit {
   @Input() limitTextarea?: boolean = true;
   @Input() withTooltip?: boolean = false;
   @Input() tooltipMsg:string='';
+  @Input() tooltipReadMoreLink:string=null;
   @Input() labelTopInMobileView?: boolean=true; 
 
   @Input() maxCharLimit?: number;
