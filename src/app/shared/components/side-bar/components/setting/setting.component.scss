@@ -4,3 +4,26 @@
     width: 6%;
     height: 44px;
 }
+@media(max-width:768px){
+    section{
+        padding: 10px !important;
+
+    }
+    .action{
+        border-radius: 7px !important;
+        width: 9% !important;
+        height: 28px !important;
+        margin-inline: 3px !important;
+        margin-bottom: 6px;
+        img{
+            width: 14px !important;
+        }
+    }
+    .api-token{
+        align-items: end !important;
+
+    }
+    .setting-input-container{
+        width: 100% !important;
+    }
+}

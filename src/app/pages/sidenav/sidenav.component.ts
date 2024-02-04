@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { environment } from '@env/environment';
 import { PluginsService } from 'src/app/services/plugins.service';
@@ -15,7 +15,7 @@ import { NzDrawerRef } from 'ng-zorro-antd/drawer';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent {
+export class SidenavComponent implements OnDestroy{
   userName:string=this.authService.getUserInfo()?.userName;
   chars:string=this.userName?.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
   frontVersion:string=environment.version;
@@ -26,11 +26,14 @@ export class SidenavComponent {
   displaySetting:boolean=false;
   permissions:Permission;
   isUser:boolean;
+  openedDialogs:any=[];
+
   constructor(public plugin:PluginsService,
      public dialog: MatDialog ,
      private authService:AuthService,
      private drawerRef: NzDrawerRef,
      private permissionService:PermissionsService) {}
+ 
   ngOnInit(): void {
    this.getBackEndVerison();
     if(this.authService.getUserInfo()?.customerId!=""){
@@ -76,33 +79,40 @@ this.permissions={
 
     //this.displaySetting=true;
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.height = this.isUser ? '83vh' : '50vw';
-    dialogConfig.width =  '55vw';
-    dialogConfig.maxWidth = '100%';
-    dialogConfig.minWidth = '300px';
-    dialogConfig.maxHeight = '87vh';
+    dialogConfig.height = this.isUser ? '50vh' : '77vh';
+    dialogConfig.width =  '90%';
+    dialogConfig.maxWidth = '400px';
+    dialogConfig.minWidth = '270px';
+    dialogConfig.maxHeight = '520px';
     dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+
     const dialogRef = this.dialog.open(SettingComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
      this.userName=this.authService.getUserInfo()?.userName
      this.chars=this.userName?.split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
     });
+
   }
 
   openLogOutConfirmation(){
 
     const dialogConfig=new MatDialogConfig();
+    dialogConfig.height='54vh';
+    dialogConfig.width='90vw';
+    dialogConfig.maxWidth='365px';
+    dialogConfig.minWidth='80%';
+    dialogConfig.maxHeight='290px';
     dialogConfig.disableClose = true;
-    dialogConfig.height='50vh';
-    dialogConfig.width='35vw';
-    dialogConfig.maxWidth='100%';
-    dialogConfig.minWidth='465px';
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
    
     const dialogRef = this.dialog.open(ConfirmLogOutComponent,dialogConfig);
-   
+
   }
   closeDrawerAndNavigate(){
     // Close the drawer
     this.drawerRef.close();
+  }
+  ngOnDestroy(): void {
   }
 }

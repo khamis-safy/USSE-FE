@@ -16,3 +16,15 @@
     line-height: 1.3;
     text-transform: capitalize;
   }
+  
+  @media(max-width:768px){
+    img{
+      width: 35%;
+
+    }
+    .modal-footer{
+      background: transparent !important;
+      height: 30% !important;
+
+    }
+  }
