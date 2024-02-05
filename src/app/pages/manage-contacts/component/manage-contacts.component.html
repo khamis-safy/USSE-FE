@@ -6,6 +6,8 @@
     </div>
     <div class="buttons_ d-flex flex-wrap align-items-center">
       <us-button
+        [withTooltip]="true"      
+        tooltipMsg="{{ 'remove_lists_tooltip' | translate }}"
         *ngIf="isChecked && !isCanceled && canEdit"
         class="m-2"
         [label]="'REMOVE_LISTS' | translate"

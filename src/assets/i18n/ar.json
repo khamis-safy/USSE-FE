@@ -606,7 +606,17 @@
 "Unauthorized_title":"محاولة وصول غير مصرح بها",
 "Unauthorized_msg":"ليس لديك الحق في الوصول إلى هذه الصفحة الآن، يرجى الاتصال بالمسؤول الخاص بك",
 "reload":"إعادة تحميل",
-"invalid_code":"الكود غير صحيح"
+"invalid_code":"الكود غير صحيح",
+"additional_field_name_tooltip":"الاسم المتغير الذي سيتم استخدامه في محتوى الرسالة",
+"additional_value_tooltip":"قيمة المتغير المراد استبدالها في محتوى الرسالة",
+"upload_add_to_list_tooltip":"أضف جهات الاتصال المستوردة إلى القائمة مباشرة.",
+"upload_first_row_with_header_check_tooltip":"قم بتمكين هذا إذا كان ملف Excel الخاص بك يحتوي على رأس في الصف الأول",
+"remove_lists_tooltip":"سيؤدي هذا الإجراء إلى إزالة جهات الاتصال المحددة التي لن يتم تضمينها في أي قائمة",
+"campaign_Randomize_interval_tooltip":"التأخير الذي سيتم تطبيقه بين الرسائل، سيكون تأخيرًا عشوائيًا بين القيم",
+"campaign_Repeat_every_tooltip":"سيتم تكرار هذه الحملة كل أيام محددة",
+"campaign_Sending_out_time_tooltip":"الحدود الزمنية التي يجب إرسال هذه الحملة فيها",
+"read_more":"اقرأ المزيد"
+
 
 }
 

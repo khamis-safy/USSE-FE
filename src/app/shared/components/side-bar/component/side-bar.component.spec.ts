@@ -2,8 +2,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { SideBarComponent } from './side-bar.component';
 
-import { SideBarComponent } from '../side-bar.component';
 
 describe('SideBarComponent', () => {
   let component: SideBarComponent;

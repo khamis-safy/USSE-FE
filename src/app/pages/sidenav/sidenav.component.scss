@@ -23,42 +23,46 @@ a {
   .all-options-container {
     height: 100%;
     overflow-y: auto !important;
-   
-  }
-  ul {
-    
-    li {
-      a {
-        gap: 12px;
-        font-weight: 500 !important;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border-top: 1px solid #C7C6C6;
-        padding-block: 18px;
-        span{
-          font-size: 14px !important;
-        }
-      }
+    padding-inline: 0 !important;
 
-      .icon{
-        img{
-          width: 100% !important;
+  }
+  .all-options-container{
+    ul {
+    
+      li {
+        a {
+          gap: 12px;
+          font-weight: 500 !important;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          border-top: 1px solid #C7C6C6;
+          padding-block: 18px;
+          span{
+            font-size: 14px !important;
+          }
         }
-        }
-      .active {
-        color: var(--clr-primary-800) !important;
-        font-weight: 500 !important;
+  
         .icon{
           img{
-            
-            filter:brightness(0) saturate(100%) invert(29%) sepia(82%) saturate(1332%) hue-rotate(175deg) brightness(95%) contrast(105%); 
-          }   
+            width: 100% !important;
+          }
+          }
+        .active {
+          color: var(--clr-primary-800) !important;
+          font-weight: 500 !important;
+          .icon{
+            img{
+              
+              filter:brightness(0) saturate(100%) invert(29%) sepia(82%) saturate(1332%) hue-rotate(175deg) brightness(95%) contrast(105%); 
+            }   
+          }
         }
       }
     }
   }
+
   // border: 3px solid;
 .versions{
   padding: 0px 15px 0;
@@ -107,5 +111,20 @@ a {
     height: 20px;
 
 
+  }
+}
+.arrow_down_icon{
+  position: absolute;
+  right: -28px;
+  cursor: pointer;
+}
+.user-info{
+  border-bottom: 1px solid #C7C6C6;
+  padding-bottom: 10px;
+
+}
+.opt{
+  a{
+    gap: 8px;
   }
 }

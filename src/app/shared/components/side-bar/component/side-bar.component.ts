@@ -76,11 +76,12 @@ this.permissions={
 
     //this.displaySetting=true;
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.height = this.isUser ? '83vh' : '50vw';
+    dialogConfig.height = this.isUser ? '50vw' : '83vh';
     dialogConfig.width =  '55vw';
     dialogConfig.maxWidth = '100%';
     dialogConfig.minWidth = '300px';
-    dialogConfig.maxHeight = '87vh';
+    dialogConfig.maxHeight = this.isUser ?'415px' : '650px';
+    dialogConfig.minHeight = this.isUser ?'415px' :  '620px';
     dialogConfig.disableClose = true;
     const dialogRef = this.dialog.open(SettingComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
@@ -97,6 +98,7 @@ this.permissions={
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='465px';
+    dialogConfig.maxHeight='355px'
    
     const dialogRef = this.dialog.open(ConfirmLogOutComponent,dialogConfig);
    

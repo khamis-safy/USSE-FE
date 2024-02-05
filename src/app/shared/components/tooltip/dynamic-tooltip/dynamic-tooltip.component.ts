@@ -21,6 +21,7 @@ export class DynamicTooltipComponent implements AfterContentInit {
   @Input() text: string = '';
   @Input() boundary: string = ''; // set to document by default
   @Input() maxWidth: string = '';
+  @Input() readMoreLink:string;
 
   @Output() tooltipMouseenter = new EventEmitter<MouseEvent>();
   @Output() tooltipMouseleave = new EventEmitter<MouseEvent>();

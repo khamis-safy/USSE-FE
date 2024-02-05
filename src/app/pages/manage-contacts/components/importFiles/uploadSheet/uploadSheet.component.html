@@ -28,9 +28,12 @@
 
       <form  [formGroup]="form"  class="d-flex flex-column px-2 my-3 w-100">
         <div class="d-flex justify-content-between mb-3 add-list-container">
-        <div class="me-3 lists " style="width:40% ">
+        <div class="mx-3 lists " style="width:70% ">
 
           <us-select
+          [withTooltip]="true"      
+          tooltipMsg="{{ 'upload_add_to_list_tooltip' | translate }}"
+          [readMoreLink]="null"
           [data]="listsArr"
           formControlName="selectedLists"
           [multiSelect]="false"
@@ -111,15 +114,24 @@
         </ng-container>
       </form>
     </ng-container>
-    <sr-checkbox
-    *ngIf="!vcfFile"
-    class="zi-5 px-2"
-    label="{{ 'FIRST_ROW_COLUMN_HEADER_LABEL' | translate }}"
-    state="checked"
-    (changed)="
-    onCheck($event)
-    "
-  ></sr-checkbox>
+    <div *ngIf="!vcfFile" class="d-flex align-items-center">
+      <sr-checkbox
+      class=" px-2"
+      label="{{ 'FIRST_ROW_COLUMN_HEADER_LABEL' | translate }}"
+      state="checked"
+      (changed)="
+      onCheck($event)
+      "
+    ></sr-checkbox>
+    <sr-tooltip
+    class="mx-2"
+    [text]="'upload_first_row_with_header_check_tooltip' | translate"
+    [readMoreLink]="'link'"
+    >
+  
+    </sr-tooltip>
+    </div>
+
   </div>
   <!-- modal footer -->
   <div class="modal-footer justify-content-end gap-3"  style="height: 10%;">

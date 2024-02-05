@@ -608,7 +608,16 @@
 "Unauthorized_title":"Unauthorized Access Attempt",
 "Unauthorized_msg":"You don’t have right to access this page now, please contact your admin",
 "reload":"Reload",
-"invalid_code":"invalid code"
+"invalid_code":"invalid code",
+"additional_field_name_tooltip":"variable name to be used in the message content",
+"additional_value_tooltip":"variable value to be replaced in the message content",
+"upload_add_to_list_tooltip":"add the imported contacts to a list directly.",
+"upload_first_row_with_header_check_tooltip":"enable this if your excel file contains a header in the first row",
+"remove_lists_tooltip":"this action will remove the selected contacts not be included in any list.",
+"campaign_Randomize_interval_tooltip":"the delay that will be applied between the messages, will be randomized delay between the values",
+"campaign_Repeat_every_tooltip":"this campaign will be repeated every specific days.",
+"campaign_Sending_out_time_tooltip":"the time boundaries that this campaign must be sent at",
+"read_more":"Read more"
 
 
 

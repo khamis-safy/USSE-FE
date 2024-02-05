@@ -93,3 +93,22 @@ span {
 
 }
 }
+@media(min-width:767px){
+  .lable-small-screen{
+    display: none !important;
+
+    }
+    .lable-large-screen{
+      display:flex !important ;
+    
+    }
+}
+@media(max-width:768px){
+  .lable-small-screen{
+    display: flex !important;
+    }
+.lable-large-screen{
+  display:none !important ;
+
+}
+}

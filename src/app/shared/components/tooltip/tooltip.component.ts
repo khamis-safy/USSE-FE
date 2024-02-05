@@ -26,6 +26,8 @@ export class TooltipComponent implements AfterViewInit, OnDestroy {
   @Input() text: string = '';
   @Input() truncate?: boolean = false;
   @Input() boundary: string = ''; // set to document by default
+  @Input() readMoreLink:string;
+
   @Input() set maxWidth(value: string) {
     if (value) this._maxWidth = value;
   }
@@ -45,6 +47,7 @@ export class TooltipComponent implements AfterViewInit, OnDestroy {
     this.dynamicTooltipInputs = {
       parent: this.parent,
       text: this.text,
+      readMoreLink:this.readMoreLink,
       boundary: this.boundary,
       maxWidth: this._maxWidth,
     };

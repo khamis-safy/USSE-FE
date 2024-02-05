@@ -22,7 +22,7 @@
     <form [formGroup]="form" class="w-100 m-auto">
       <div class="d-flex gap-4 flex-column py-3">
         <!-- Token -->
-      <div *ngIf="!isUser" class="d-flex align-items-center">
+      <div *ngIf="!isUser" class="d-flex align-items-center api-token">
         <div style="width:80% ">
           <us-input
           formControlName="apiToken"
@@ -58,7 +58,7 @@
   </div>
       </div>
         <!-- Time Zone -->
-        <div style="width:80%">
+        <div style="width:80%" class="setting-input-container">
         <us-select
           [data]="timeZoneArr"
           [multiSelect]="false"
@@ -76,7 +76,7 @@
         ></us-select>
 </div>
         <!-- Username -->
-        <div style="width:80%">
+        <div style="width:80%" class="setting-input-container">
         <us-input
           formControlName="contactName"
           [isDisabled]="false"
@@ -91,19 +91,28 @@
         </div>
         <!-- phone number -->
 
-        <div *ngIf="!isUser"
-          class="form-group d-flex gap-lg-4 flex-column flex-lg-row flex-nowrap" style="width:80%"
-        >
-          <div
-            class="label-widget text-start w-25 d-none d-lg-block"
-            style="min-width: 25%"
-          >
-            <label for="mobile" class="label txt txt-sm text-nowrap d-flex">
-              <span class="txt txt-sm text-black text-wrap">{{
-                "MOBILE_NUMBER" | translate
-              }}</span>
-            </label>
-          </div>
+        <div *ngIf="!isUser"class="form-group d-flex flex-column align-items-center flex-lg-row gap-lg-4 gap-2 setting-input-container " style="width:80%"> 
+        <div class="label-widget text-start w-25 d-none d-lg-block"
+        style="min-width: 25%;">
+          <label for="mobile" class="label txt txt-sm text-nowrap d-flex">
+            <span class="txt txt-sm text-black text-wrap">
+              {{"MOBILE_NUMBER" | translate}}
+            </span>
+            
+          </label>
+      </div>
+        
+      <div
+      class="label-widget text-start w-100 d-block d-lg-none"
+    >
+    <label for="mobile" class="label txt text-nowrap d-flex">
+      <span class="txt text-black text-wrap txt-sm" >
+        {{"MOBILE_NUMBER" | translate}}
+      </span>
+      
+    </label>
+      
+    </div>
           <div class="w-100">
             <ngx-intl-tel-input
               [cssClass]="
@@ -150,7 +159,7 @@
         </div>
 
         <!-- Organization Name -->
-        <div *ngIf="!isUser" style="width:80%">
+        <div *ngIf="!isUser" style="width:80%" class="setting-input-container">
         <us-input
           [placeholder]="'Organization Name' | translate"
           formControlName="organisationName"
@@ -164,7 +173,7 @@
         ></us-input>
         </div>
         <!-- Mask Type -->
-        <div *ngIf="!isUser" style="width:80%">
+        <div *ngIf="!isUser" style="width:80%" class="setting-input-container">
         <us-select
           [data]="maskTypeArr"
           formControlName="maskType"
@@ -180,7 +189,7 @@
         ></us-select>
         </div>
           <!-- code number -->
-          <div style="width:80%">
+          <div style="width:80%" class="setting-input-container">
             <us-input
               formControlName="countryCode"
               [isDisabled]="false"
