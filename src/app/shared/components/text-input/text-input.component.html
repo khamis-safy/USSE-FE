@@ -140,6 +140,7 @@
         <button (click)="increment()"><i class="si-up"></i></button>
         <button (click)="decrement()"><i class="si-down"></i></button>
       </div>
+      
     </div>
 
     <!-- textarea container ( contains: prefix, input, suffix, icon, steppers ) -->
@@ -225,7 +226,14 @@
       </div>
     </div>
  
+    <div *ngIf="!isTextArea && type !=='number' && maxCharLimit" class="d-flex justify-content-between  mx-2 mt-2" style="width: 98%;">
+      
     
+
+      <div  class="char-count">
+        <span style="color: #868686;">{{ charCount }} / {{ maxCharLimit }}</span> 
+      </div>
+    </div>
 
 
     <!-- error Hint / caption -->

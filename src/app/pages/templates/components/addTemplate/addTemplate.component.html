@@ -1,7 +1,7 @@
 <section class="d-flex flex-column p-4 gap-3 h-100">
 
   <!-- modal header -->
-  <div class="d-flex justify-content-center align-items-center position-relative mb-4 " style="height: 10%;">
+  <div class="d-flex justify-content-center align-items-center position-relative mb-4 " >
     <div *ngIf="!isEdit" class="txt-lg">{{ 'ADD_TEMPLATE' | translate }}</div>
     <div *ngIf="isEdit" class="txt-lg">{{ 'EDIT_TEMPLATE' | translate }}</div>
     <div class=" close-icon position-absolute end-0 top-50 translate-middle-y mx-2">
@@ -74,7 +74,7 @@
   </div>
 
   <!-- modal footer -->
-  <div class="modal-footer justify-content-center gap-2"  style="height: 10%;">
+  <div class="modal-footer justify-content-center gap-2"  >
     <us-button  *ngIf="!isEdit"
     label="{{ 'SAVE' | translate }}"
     size="sm"
