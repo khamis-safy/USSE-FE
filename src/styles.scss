@@ -221,6 +221,7 @@ h1,h2,h3,h4,h5,h6,p{
 .bg-primary-400{ background: var(--clr-primary-400) !important;}
 .bg-primary-200{ background: var(--clr-primary-200) !important;}
 .bg-primary-100{ background: var(--clr-primary-100) !important;}
+.bg-primary-500{ background: var(--clr-primary-500) !important;}
 
 .bg-danger-700{ background: var(--clr-danger-700) !important;}
 .bg-neutral-900{ background-color: var(--clr-neutral-900) !important;}
@@ -2775,16 +2776,29 @@ span.mat-mdc-select-value-text {
 
   }
 }
-@media (max-width:991px){
+// @media (max-width:991px){
 
-  #search {
-      max-width: 265px !important;
-  }
-}
+//   #search {
+//       max-width: 265px !important;
+//   }
+// }
 .rtl{
   .arrow_down_icon{
     right: auto !important;
     left: -28px !important;
   }
+  // for chat module
+  .received-chats-msg{
+    border-radius: 16px 16px 0px 16px !important;
+  }
+  .outgoing-chats-msg{
+    border-radius: 16px 16px  16px 0px !important;
 
+  }
+  .chats-footer{
+    flex-direction: row-reverse !important;
+}
+}
+.nb-theme-default nb-layout .layout {
+  background-color: var(--clr-primary-200) !important;
 }

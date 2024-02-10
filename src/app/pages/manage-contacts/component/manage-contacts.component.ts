@@ -142,7 +142,7 @@ else{
     dialogConfig.width='35vw';
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='465px';
-    dialogConfig.maxHeight='85vh';
+    dialogConfig.maxHeight='630px';
     dialogConfig.disableClose = true;
 
     const dialogRef = this.dialog.open(AddListComponent,dialogConfig);

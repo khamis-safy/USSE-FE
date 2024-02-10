@@ -615,7 +615,8 @@
 "campaign_Randomize_interval_tooltip":"التأخير الذي سيتم تطبيقه بين الرسائل، سيكون تأخيرًا عشوائيًا بين القيم",
 "campaign_Repeat_every_tooltip":"سيتم تكرار هذه الحملة كل أيام محددة",
 "campaign_Sending_out_time_tooltip":"الحدود الزمنية التي يجب إرسال هذه الحملة فيها",
-"read_more":"اقرأ المزيد"
+"learn_more":"معرفة المزيد",
+"Type a message":"اكتب رسالة"
 
 
 }

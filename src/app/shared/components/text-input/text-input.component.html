@@ -230,7 +230,7 @@
       
     
 
-      <div  class="char-count">
+      <div  *ngIf="!hintText && !warning" class="char-count position-absolute" style="margin-top: -3px;">
         <span style="color: #868686;">{{ charCount }} / {{ maxCharLimit }}</span> 
       </div>
     </div>

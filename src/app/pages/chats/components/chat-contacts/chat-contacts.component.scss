@@ -1,0 +1,19 @@
+ul{
+    overflow: auto;
+    max-height: 85vh;
+
+    li{
+        border-bottom: 1px solid #0000001F;
+            .contact-info{
+                cursor: pointer;
+                border-radius: 8px;
+                &:hover{
+                background: var(--clr-primary-500);
+            }
+        }
+    }
+}
+
+#search {
+    height: 50px;
+}

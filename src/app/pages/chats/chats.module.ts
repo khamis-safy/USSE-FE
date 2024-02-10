@@ -4,18 +4,18 @@ import { ChatsComponent } from './component/chats.component';
 import { ChatsRoutes } from './chats.routing';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ChatsService } from './chats.service';
+import { ChatContactsComponent } from './components/chat-contacts/chat-contacts.component';
 
 
 @NgModule({
   imports: [
     CommonModule,
     ChatsRoutes,
-    SharedModule ,
-    ChatsComponent
+    SharedModule,
   ],
   declarations: [
-  
-  
+    ChatsComponent,
+    ChatContactsComponent
   ],
   providers:[ChatsService]
 })

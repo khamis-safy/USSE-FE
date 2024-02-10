@@ -46,14 +46,13 @@
     <ul class="d-flex flex-column">
 
       <li>
-        <a style="border-top: none;" routerLinkActive="active" routerLink="/messages" (click)="closeDrawerAndNavigate()" class="text-neutral-600 d-flex">
+        <a  routerLinkActive="active" routerLink="/messages" (click)="closeDrawerAndNavigate()" class="text-neutral-600 d-flex">
           <div class="icon">
             <img src="assets/icons/message-1.svg" alt="" />
           </div>
           <span >{{ "MESSAGES" | translate }}</span>
         </a>
       </li>
-
       <li>
         <a routerLinkActive="active" routerLink="/compaigns" (click)="closeDrawerAndNavigate()" class="text-neutral-600 d-flex">
           <div class="icon">
@@ -94,6 +93,14 @@
           <span >{{ "DEVICES" | translate }}</span>
         </a>
       </li>
+      <li>
+        <a routerLinkActive="active" routerLink="/chats" (click)="closeDrawerAndNavigate()" class="text-neutral-600 d-flex">
+          <div class="icon">
+            <img src="assets/icons/chats-1.svg" alt="" />
+          </div>
+          <span class="">{{ "CHATS" | translate }}</span>
+        </a>
+      </li>
       <li >
         <a routerLinkActive="active" routerLink="/bots" (click)="closeDrawerAndNavigate()" class="text-neutral-600 d-flex ">
           <div class="icon">
@@ -112,7 +119,7 @@
       </li>
 
     </ul>
-    <div class="versions w-100 d-flex justify-content-between  text-primary-800 " >
+    <div class="versions w-100 d-flex justify-content-around  text-primary-800 " >
       <span [title]="'versions' | translate">{{frontVersion}} / {{backVersion}}</span>
       <div class="icon p-0 m-0 pointer" [title]="'HELP' | translate" >
       <img src="assets/icons/help-1.svg" class="w-100" alt="" />

@@ -1,0 +1,27 @@
+<div class="contacts-container py-3 px-2">
+  <div class="d-flex position-relative row mx-auto my-3" style="width:80%; ">
+    <div class="col-12 col-lg-4 p-0 w-100" >
+      <input
+        #search
+        type="text"
+        class="form-control ps-5 txt-xs w-100"
+        id="search"
+        placeholder="{{ 'searchPlaceholder' | translate }}"
+        (input)="onSearch(search)"
+      />
+    </div>
+    <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
+      <img src="assets/icons/search.svg" alt="" width="14" />
+    </div>
+  </div>
+  <ul class="d-flex flex-column gap-2 px-2">
+    <li class="d-flex w-100 justify-content-between py-2" *ngFor="let contact of contactsObserver|async">
+      <div class="contact-info d-flex w-100 justify-content-between p-3">
+        <span class="cont-name">{{contact.name}}</span>
+        <span class="cont-number">{{contact.mobileNumber}}</span>
+      </div>
+    </li>
+  
+    
+  </ul>
+</div>
