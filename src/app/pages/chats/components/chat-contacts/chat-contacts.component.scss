@@ -1,6 +1,6 @@
 ul{
     overflow: auto;
-    max-height: 85vh;
+    max-height: 80vh;
 
     li{
         border-bottom: 1px solid #0000001F;
@@ -16,4 +16,43 @@ ul{
 
 #search {
     height: 50px;
+}
+.contacts-container-sm{
+    display: none !important;
+}
+@media(max-width:768px){
+    .contacts-container-lg{
+        display: none;
+    }
+    .contacts-container-sm{
+        display: block !important;
+        ul{
+            padding: 0px 15px;
+            background: var(--clr-primary-200);
+
+        }
+    }
+    ul  li  .contact-info  {
+        font-size: 12px !important;
+        padding: 4px !important;
+    }
+}
+li.contact{
+    width: 100%;
+    border: 0.5px solid rgba(255, 255, 255, 0.4);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 0.3px solid #292a3236;
+}
+.deviceContent {
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--clr-neutral-300);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

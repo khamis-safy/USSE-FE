@@ -5,6 +5,8 @@ import { ChatsRoutes } from './chats.routing';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ChatsService } from './chats.service';
 import { ChatContactsComponent } from './components/chat-contacts/chat-contacts.component';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { TimeOnlyPipe } from './pipe/timeOnly.pipe';
 
 
 @NgModule({
@@ -12,10 +14,13 @@ import { ChatContactsComponent } from './components/chat-contacts/chat-contacts.
     CommonModule,
     ChatsRoutes,
     SharedModule,
+    PickerModule,
+    
   ],
   declarations: [
     ChatsComponent,
-    ChatContactsComponent
+    ChatContactsComponent,
+    TimeOnlyPipe
   ],
   providers:[ChatsService]
 })

@@ -149,7 +149,8 @@ import { NavActionsComponent } from './components/nav-actions/nav-actions.compon
     UsButtonComponent,
     UsButtonDirective,
     RouterModule,
-    NavActionsComponent
+    NavActionsComponent,
+    ClickOutsideDirective
 
   ],
   

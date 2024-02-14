@@ -1,4 +1,4 @@
-<div class="contacts-container py-3 px-2">
+<div class="contacts-container-lg py-3 px-2">
   <div class="d-flex position-relative row mx-auto my-3" style="width:80%; ">
     <div class="col-12 col-lg-4 p-0 w-100" >
       <input
@@ -15,7 +15,7 @@
     </div>
   </div>
   <ul class="d-flex flex-column gap-2 px-2">
-    <li class="d-flex w-100 justify-content-between py-2" *ngFor="let contact of contactsObserver|async">
+    <li class="d-flex w-100 justify-content-between py-2" *ngFor="let contact of contacts" (click)="addNewContact(contact)">
       <div class="contact-info d-flex w-100 justify-content-between p-3">
         <span class="cont-name">{{contact.name}}</span>
         <span class="cont-number">{{contact.mobileNumber}}</span>
@@ -24,4 +24,47 @@
   
     
   </ul>
+</div>
+<div class="contacts-container-sm">
+  <div class="chat-header"
+            style="background: var(--clr-primary-500);">
+            <div class="p-3 d-flex justify-content-between align-items-center">
+                <div class="d-flex gap-2">
+                    <div class="back-arrow-blue text-primary-800" (click)="onClose()">
+                        <mat-icon>arrow_back</mat-icon>
+                    </div>
+                    <div class="deviceContent">
+                        <img src="../assets/icons/Icon.svg" alt="">
+                    </div>
+                    <div class="d-flex flex-column gap-1  justify-content-center">
+                        <p class="mb-0 pOut">{{'New_chat' |translate}}</p>
+
+                    </div>
+                </div>
+
+                <div>
+                    <a style="cursor: pointer;">
+                        <img src="assets/icons/search-blue.svg" alt="">
+                    </a>
+                </div>
+
+            </div>
+        
+        </div>
+        <div class="contacts-container">
+          <ul>
+            <li class="my-2   p-3 contact" *ngFor="let contact of contacts" (click)="addNewContact(contact)">
+              <div class="d-flex gap-2 ">
+                  <div class="deviceContent ">
+                    <span>{{chatIcon(contact.name)}}</span>
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                      <p class="mb-1 pOut">{{contact.name}}</p>
+                  
+                  </div>
+              </div>
+            
+            </li>
+          </ul>
+        </div>
 </div>

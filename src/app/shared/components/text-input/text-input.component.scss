@@ -1,5 +1,6 @@
 @import "./../../../../styles.scss";
 @import "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
@@ -84,7 +85,8 @@
   }
   textarea {
     padding: 9px 15px 7px;
-  }
+    font-family: 'Noto Color Emoji', sans-serif;
+    }
   input,
   textarea {
     height: 100%;

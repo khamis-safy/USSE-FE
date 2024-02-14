@@ -252,6 +252,7 @@
 "DELETE_SELECTED_ITEMS_MESSAGE": "Are you sure you want to delete selected items?",
 "CLEAR_LISTS_MESSAGE": "Are you sure you want to clear lists from these contacts?",
 "REMOVE_CONTACTS_MESSAGE": "Are you sure you want to remove these contacts?",
+"DELETE_Chat_MESSAGE":"Are you sure you want to delete that chat ?",
 "CONFIRM": "Confirm",
 "LABEL": "Select File",
 "FILE_SIZE_LIMIT": "file size no more than",
@@ -618,7 +619,8 @@
 "campaign_Repeat_every_tooltip":"this campaign will be repeated every specific days.",
 "campaign_Sending_out_time_tooltip":"the time boundaries that this campaign must be sent at",
 "learn_more":"Learn more",
-"Type a message":"Type a message"
+"Type a message":"Type a message",
+"New_chat":"New Chat"
 
 
 

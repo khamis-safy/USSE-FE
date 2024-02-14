@@ -1,4 +1,4 @@
-<section class=" us-input d-flex gap-lg-4 gap-2" [ngClass]="{'align-items-center': !isTextArea ,'flex-column flex-lg-row':labelTopInMobileView}">
+<section class=" us-input d-flex gap-lg-4 gap-2" [ngClass]="{'flex-column flex-lg-row':labelTopInMobileView}">
   <!-- Label & optional indicator -->
   <ng-container *ngIf="!labelTopInMobileView">
   <div
@@ -213,8 +213,8 @@
             *ngIf="showEmoji || isEmojiClicked"
             [enableSearch]="false"
             [darkMode]="false"
-            set="google"
             [showPreview]="false"
+            
             color="var(--clr-primary-600)">
           </emoji-mart>
       
@@ -230,7 +230,7 @@
       
     
 
-      <div  *ngIf="!hintText && !warning" class="char-count position-absolute" style="margin-top: -3px;">
+      <div  *ngIf="!hintText && !warning" class="char-count">
         <span style="color: #868686;">{{ charCount }} / {{ maxCharLimit }}</span> 
       </div>
     </div>

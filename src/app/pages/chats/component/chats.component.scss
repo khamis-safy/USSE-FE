@@ -6,16 +6,19 @@ h4,
 h5,
 h6,
 span,
-* {
+*:not(mat-icon) {
     font-family: 'Poppins', sans-serif;
 }
+@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
 
 .seletOption {
     cursor: pointer;
     text-decoration: none;
     border: 0px transparent solid !important;
 }
-
+textarea {
+    font-family: 'Noto Color Emoji', sans-serif;
+}
 .searchContainer {
     width: 75%;
 }
@@ -50,13 +53,15 @@ span,
     justify-content: center;
     align-items: center;
 }
-
-.innerContainer,
-.chats-container {
-    background-color: rgba(255, 255, 255, 1);
-    border-radius: 20px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
-
+@media(min-width:767px){
+    .innerContainer,
+    .chats-container {
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 20px;
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+    
+    }
+    
 }
 
 .chats-container {
@@ -100,6 +105,7 @@ span,
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
 }
 
 .chat-contact-img {
@@ -152,7 +158,7 @@ span,
 .sendBtn {
     background-color: var(--clr-primary-800);
     padding: 15px;
-    margin-inline: 10px;
+    margin-inline: 2%;
     border: none;
     box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
     border-radius: 11px;
@@ -264,10 +270,136 @@ textarea.form-control {
 
 .form-control:focus {
     border-color: var(--clr-primary-500);
+    box-shadow: 0px 0px 0px 1px #0071b138;
 }
+
 
 @media(max-width:1400px){
     .pOut{
         font-size: 12px !important;
     }
 }
+@media(min-width:767px){
+    .back-arrow-blue{
+        display: none !important;
+    }
+}
+.back-arrow-blue{
+    align-self: center;
+}
+@media(max-width:768px){
+    section{
+        padding-top: 0 !important;
+    }
+    .contacts-main-container {
+        padding-top: 0 !important;
+        width: 100% !important;
+        max-width: unset !important; 
+        min-width: auto !important; 
+    }
+    .contacts-main-container.inactive {
+        display: none !important;
+    }
+    .chats-container{
+        display: none !important;
+        width: 100% !important;
+        p , span{
+            font-size: 11px;
+        }
+    }
+    .chats-container.active{
+        display: flex !important;
+    }
+    .chat-header{
+        border-radius: 0 !important;
+    }
+    .outgoing-chats-msg,
+    .received-chats-msg {
+        max-width: 65vw !important;
+    }
+    .chat-body{
+        padding: 15px !important;
+    }
+    .chat-message-container{
+        >div{
+            gap: 7px;
+            margin-inline: 15px !important;
+                }
+        background-color: white;
+        gap: 5px !important;
+        border: 1px solid #C7C6C6;
+        border-radius: 8px;
+
+        textarea{
+            border: none !important;
+            height: 36px;
+            font-size: 12px;
+        }
+        .attactmentes{
+            img{
+                width: 13px;
+            }
+        }
+        .emojes-icon{
+            img{
+                width: 18px;
+            }
+        }
+    }
+    .form-control:focus {
+        border-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+
+    }
+    .sendBtn {
+        padding: 10px !important;
+        margin-inline: 5px !important;
+    }
+    .chats-footer {
+        gap: 6px !important;
+        padding: 0px 10px !important;
+        background: transparent !important;
+    }
+    .chat-contact-img {
+        width: 28px !important;
+        height: 28px !important;
+    }
+    .chat-contact-img.small{
+        width: 14px !important;
+        height: 14px !important;
+    }
+    .chat-body .received-chats , .chat-body .outgoing-chats {
+        gap: 10px !important;
+    }
+
+    .chat-messages-container{
+        padding: 0 !important;
+
+    }
+   
+} 
+.emoji-pick {
+    bottom: 123%;
+}
+.status{
+    border-radius: 50%;
+    width: 11px !important;
+    height: 11px !important;
+    &.sent{
+      border: 1px solid var(--clr-primary-800);
+      color: var(--clr-primary-800);
+    }
+    &.pending{
+      color: var(--clr-neutral-0);
+      background-color: var(--clr-neutral-0);
+      border: 1px solid var(--clr-primary-800);
+    }
+    &.delevered{
+      background-color:var(--clr-primary-800) ;
+      color: var(--clr-neutral-0);
+  
+    }
+  
+  
+  }

@@ -1,44 +1,31 @@
-<div class="p-4 px-2 d-flex gap-3" style="border-radius: 15px;    height: 90vh;
-">
+<section [ngClass]="{'chat-messages-container':openChat}" class="p-4 mb-2 px-2 d-flex gap-3"
+    style="border-radius: 15px;    height: 90vh;">
 
     <div style="width: 30%;max-width: 400px;
-    min-width: 290px;" class="mt-1 p-3   d-flex flex-column innerContainer ">
- <form [formGroup]="form"class="d-flex" style=" margin-inline: 20px;">
-    <us-select
-    class="my-3"
-    [isListDevicesDropdown]="true"
-    [labelTopInMobileView]="false"
-    [deviceLableGap]="true"
-      [data]="devices"
-      formControlName="devicesData"
-      [multiSelect]="false"
-      [label]="'Devices' | translate"
-      (onSelect)="onSelect($event)"
-      [loadingText]="deviceLoadingText"
-      [placeholder]="'Select Devices' | translate"
-      [isDisabled]="false"
-      [optional]="true"
-      [enableSearch]="true"
-      [searchbarOnToggler]="true"
-      [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
-      [maxListItemsWithoutSearch]="5"
-
-    ></us-select>
-  </form>
+    min-width: 290px;" class="mt-1 p-3   d-flex flex-column innerContainer contacts-main-container "
+        [ngClass]="{'inactive':openChat}">
+        <form [formGroup]="form" class="d-flex">
+            <us-select class="my-3" [isListDevicesDropdown]="true" [labelTopInMobileView]="false"
+                [deviceLableGap]="true" [data]="devices" formControlName="devicesData" [multiSelect]="false"
+                (onSelect)="onSelect($event)" [loadingText]="deviceLoadingText"
+                [placeholder]="'Select Devices' | translate" [isDisabled]="false" [optional]="true"
+                [enableSearch]="true" [searchbarOnToggler]="true"
+                [searchNoResultText]="'THERE_IS_NO_RESULT' | translate" [maxListItemsWithoutSearch]="5"></us-select>
+        </form>
 
         <div class="d-flex justify-content-between align-items-center  my-2">
 
             <div class="d-flex justify-content-between position-relative searchContainer">
                 <div class=" p-0 w-100">
                     <input #searchInput type="text" class="form-control ps-5  txt-xs" id="searchInput"
-                        placeholder="Search">
+                        placeholder="{{ 'searchPlaceholder' | translate }}" (input)="onSearch(searchInput)">
                 </div>
                 <div class=" px-4  position-absolute start-0 top-50 translate-middle-y">
                     <img src="assets/icons/search.svg" alt="">
                 </div>
             </div>
 
-            <div class="addBtn  py-2" (click)="addNewContact()">
+            <div class="addBtn addBtn_lg  py-2" (click)="addNewContact()">
                 <a style="cursor: pointer;">
                     <img src="../assets/icons/chats-icon.svg" alt="">
                 </a>
@@ -47,29 +34,98 @@
         </div>
         <div class="contacts-container">
             <!-- undelivered -->
-            <div class="my-2   p-3 leftContentDesign">
-                <div class="d-flex gap-2 ">
-                    <div class="deviceContent ">
-                        <img src="../assets/icons/Icon.svg" alt="">
+            <ng-container *ngFor="let chatContact of listChats">
+                <div class="my-2   p-3 leftContentDesign" (click)="navigateToChat(chatContact)">
+                    <div class="d-flex gap-2 ">
+                        <div class="deviceContent ">
+                            <span>{{chatIcon(chatContact.chat?.chatName)}}</span>
+
+                        </div>
+                        <div class="d-flex flex-column justify-content-center ">
+                            <p class="mb-1 pOut">{{chatContact.chat?.chatName}}</p>
+                            <div class=" d-flex gap-2 align-items-center ">
+                                <ng-container *ngIf="chatContact?.lastMessageStatus!=null ">
+                                    <ng-container [ngSwitch]="chatContact?.lastMessageStatus!">
+
+                                        <div *ngSwitchCase="3" class="chat-contact-img small ">
+                                            <span>SA</span>
+                                        </div>
+
+                                        <div *ngSwitchCase="1" >
+                                            <img src="../assets/icons/chats-icon-2.svg" alt="">
+                                        </div>
+
+                                        <div *ngSwitchCase="2" >
+                                            <img  src="../assets/icons/right-blue.svg" alt="">
+                                        </div>
+
+                                        <div *ngSwitchCase="0" class="d-flex justify-content-center align-items-center w-100">
+                                        <span  class="status pending d-flex justify-content-center align-items-center  txt-xs" >
+
+                                        </span>
+                                        </div>
+                                    
+                                            <mat-icon *ngSwitchCase="4" style="display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                            margin: 0 !important;
+                                            padding: 0 !important;
+                                            width: 13px;" class="text-danger txt-sm">error_outline</mat-icon>
+                                    </ng-container>
+                                </ng-container>
+                                <p class="m-0 p-0  pIn" style="max-width: 100px ;text-overflow: ellipsis;overflow: hidden;">
+                                    {{chatContact.lastMessageContent}}</p>
+                            </div>
+                        </div>
+                        <!-- <div class="d-flex flex-column justify-content-center">
+                            <p class="mb-1 pOut">{{chatContact.chat?.chatName}}</p>
+                            <div class=" d-flex align-items-center gap-2">
+                                <ng-container *ngIf="chatContact?.lastMessageStatus!=null ">
+                                    <ng-container [ngSwitch]="chatContact?.lastMessageStatus!">
+
+                                        <div *ngSwitchCase="3" class="chat-contact-img small ">
+                                            <span>SA</span>
+                                        </div>
+
+                                        <div *ngSwitchCase="1" >
+                                            <img src="../assets/icons/chats-icon-2.svg" alt="">
+                                        </div>
+
+                                        <div *ngSwitchCase="2" >
+                                            <img  src="../assets/icons/right-blue.svg" alt="">
+                                        </div>
+
+                                        <div *ngSwitchCase="0" class="d-flex justify-content-center align-items-center w-100">
+                                        <span  class="status pending d-flex justify-content-center align-items-center  txt-xs" >
+
+                                        </span>
+                                        </div>
+                                    
+                                            <mat-icon *ngSwitchCase="4" style="display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                            margin: 0 !important;
+                                            padding: 0 !important;
+                                            width: 13px;" class="text-danger txt-sm">error_outline</mat-icon>
+                                    </ng-container>
+                                </ng-container>
+
+                                <p class="m-0 p-0  pIn" style="max-width: 30% ;text-overflow: ellipsis;overflow: hidden;">
+                                    {{chatContact.lastMessageContent}}dfgdgdgdfgdfgdfgdfgdfgdfgfgdg</p>
+                            </div>
+                        </div> -->
                     </div>
-                    <div class="d-flex flex-column justify-content-center">
-                        <p class="mb-1 pOut">Suporte ADMIN</p>
-                        <div class=" d-flex align-items-center gap-2">
-                            <img  src="../assets/icons/chats-icon-2.svg" alt="">
-                            <p class="m-0 p-0  pIn">
-                                Pesquisar chat</p>
+                    <div>
+                        <div style="cursor: pointer;" (click)="deleteChat(chatContact)">
+                            <img src="../assets/icons/Actionsc.svg" alt="">
                         </div>
                     </div>
-    
                 </div>
-                <div>
-                    <a style="cursor: pointer;">
-                        <img src="../assets/icons/Actionsc.svg" alt="">
-                    </a>
-                </div>
-            </div>
+            </ng-container>
+
             <!-- failed -->
-            <div class="my-2   p-3 leftContentDesign">
+
+            <!-- <div class="my-2   p-3 leftContentDesign">
                 <div class="d-flex gap-2 ">
                     <div class="deviceContent">
                         <img src="../assets/icons/Icon.svg" alt="">
@@ -89,8 +145,9 @@
                     </a>
                 </div>
             </div>
+             -->
             <!-- new message state -->
-            <div class="my-2   p-3 leftContentDesign">
+            <!-- <div class="my-2   p-3 leftContentDesign">
                 <div class="d-flex gap-2 ">
                     <div class="deviceContent">
                         <img src="../assets/icons/Icon.svg" alt="">
@@ -118,10 +175,10 @@
     
                 </div>
     
-            </div>
+            </div> -->
 
             <!-- sent -->
-            <div class="my-2   p-3 leftContentDesign">
+            <!-- <div class="my-2   p-3 leftContentDesign">
                 <div class="d-flex gap-2 ">
                     <div class="deviceContent ">
                         <img src="../assets/icons/Icon.svg" alt="">
@@ -141,10 +198,10 @@
                         <img src="../assets/icons/Actionsc.svg" alt="">
                     </a>
                 </div>
-            </div>
-            
+            </div> -->
+
             <!-- read -->
-            <div class="my-2   p-3 leftContentDesign">
+            <!-- <div class="my-2   p-3 leftContentDesign">
                 <div class="d-flex gap-2 ">
                     <div class="deviceContent">
                         <img src="../assets/icons/Icon.svg" alt="">
@@ -163,24 +220,27 @@
                     </a>
                 </div>
             
-        </div>
+        </div> -->
 
         </div>
 
     </div>
-
-    <div  class=" chats-container pb-0 "  style="background-image: url(../assets/images/chat-background.svg)">
+    <div [ngClass]="{'active':openChat}" class=" chats-container pb-0 "
+        style="background-image: url(../assets/images/chat-background.svg)">
         <!-- Header -->
-        <div
+        <div class="chat-header"
             style=" border-top-left-radius: 20px;border-top-right-radius: 20px; background: var(--clr-primary-500);">
             <div class="p-3 d-flex justify-content-between align-items-center">
                 <div class="d-flex gap-2">
-                    <div class="deviceContent">
-                        <img src="../assets/icons/Icon.svg" alt="">
+                    <div *ngIf="openChat" class="back-arrow-blue text-primary-800" (click)="openChat = false">
+                        <mat-icon>arrow_back</mat-icon>
                     </div>
-                    <div class="d-flex flex-column justify-content-center">
-                        <p class="mb-0 pOut">Suporte ADMIN</p>
-                        <p class="pInHeader mb-0 mt-2">#CU6798H</p>
+                    <div class="deviceContent">
+                        <span>{{chatIcon(chatName)}}</span>
+                    </div>
+                    <div class="d-flex flex-column gap-1  justify-content-center">
+                        <p class="mb-0 pOut">{{chatName}}</p>
+                        <p class="pInHeader mb-0 ">{{targetPhoneNumber}}</p>
 
                     </div>
                 </div>
@@ -194,94 +254,80 @@
             </div>
         </div>
         <!-- Bodey -->
-       
-        <div class="chat-body">
 
-            <div class="received-chats">
-                <div class="chat-contact-img">
-                        <span>SA</span>
-                </div>
-                <div class="received-chats-msg">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, aspernatur provident? A libero accusantium omnis ab ratione explicabo error quod hic nostrum. Nemo, adipisci aspernatur odio beatae dolore perferendis quasi?,</p>
-                    <span class="time">8:00 PM </span>
-                </div>
-            </div>
-            <div class="received-chats">
-                <div class="chat-contact-img">
-                        <span>SA</span>
-                </div>
-                <div class="received-chats-msg">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, aspernatur provident? A libero accusantium omnis ab ratione explicabo error quod hic nostrum. Nemo, adipisci aspernatur odio beatae dolore perferendis quasi?,</p>
-                    <span class="time">8:00 PM</span>
-                </div>
-            </div>
-            <div class="received-chats">
-                <div class="chat-contact-img">
-                        <span>SA</span>
-                </div>
-                <div class="received-chats-msg">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, aspernatur provident? A libero accusantium omnis ab ratione explicabo error quod hic nostrum. Nemo, adipisci aspernatur odio beatae dolore perferendis quasi?,</p>
-                    <span class="time">8:00 PM</span>
-                </div>
-            </div>
-            <div class="d-flex w-100 justify-content-center  align-items-center">
-                <span>Today</span>
-            </div>
-            <div class="outgoing-chats">
+        <div class="chat-body" #chatContainer >
          
-                <div class="outgoing-chats-msg">
-                    <p >Lorem ipsum dolor sit amet consectetur.</p>
-                    <span class="time">18:30 PM</span>
-                </div>
-             
-            </div>
-            <div class="outgoing-chats">
-         
-                <div class="outgoing-chats-msg">
-                    <p >Lorem ipsum dolor sit amet consectetur.</p>
-                    <span class="time">18:30 PM</span>
-                </div>
-             
-            </div>
-            <div class="outgoing-chats">
-                <div class="d-flex flex-column gap-2">
-                    <div class="outgoing-chats-msg">
-                        <p >Lorem ipsum dolor sit amet consectetur.</p>
-                        <span class="time">18:30 PM</span>
+            <ng-container *ngFor="let chat of selectedChat">
+                <ng-container [ngSwitch]="chat?.direction">
+                    <div *ngSwitchCase="false" class="received-chats" >
+                        <div class="chat-contact-img">
+                            <span>{{chatIcon(chat?.chat?.chatName)}}</span>
+                        </div>
+                        <div class="received-chats-msg">
+                            <p>{{chat?.msgBody}}</p>
+                            <span class="time">{{chat?.createdAt |timeOnly}}</span>
+                        </div>
                     </div>
-                    <div class="chat-contact-img small" style="align-self: self-end;">
-                        <span>SA</span>
+                    <div *ngSwitchCase="true" class="outgoing-chats">
+
+                        <div class="outgoing-chats-msg">
+                            <p>{{chat?.msgBody}}</p>
+                            <span class="time">{{chat?.createdAt |timeOnly}}</span>
+                        </div>
+        
                     </div>
-                </div>
-               
+              </ng-container>
                 
-            </div>
+            </ng-container>
+           
+
+
         </div>
         <!-- footer -->
         <div class="chats-footer w-100 p-3 bg-primary-500">
-            <div class="d-flex align-items-center justify-content-around" style="width: 10%; max-width: 106px;    gap: 5px;
-            margin-inline: 10px;">
-                <div class="attactmentes" >
-                    <img src="../assets/icons/Fill 1.svg" alt="">
+            <div class="d-flex gap-3  chat-message-container" style="width: 95%;">
+                <div class="d-flex align-items-center justify-content-around" style="width: 10%; max-width: 70px;    gap: 5px;
+                ">
+                    <div class="attactmentes">
+                        <img src="../assets/icons/Fill 1.svg" alt="">
+                    </div>
+
+                    <ng-container>
+                        <div class="position-relative" (appClickOutside)="showEmoji = false ;isEmojiClicked=false">
+                            <div (click)="isEmojiClicked = !isEmojiClicked" class="emojes-icon"
+                                (mouseover)="!isEmojiClicked && (showEmoji=true)"
+                                (mouseleave)="!isEmojiClicked && (showEmoji=false)">
+                                <img src="../assets/icons/emojes.svg" alt="">
+                            </div>
+
+                            <emoji-mart *ngIf="showEmoji || isEmojiClicked"
+                            (mouseover)="!isEmojiClicked && (showEmoji=true)"
+                                class="emoji-pick chat-emoji-picker  start-0  position-absolute"
+                                (emojiClick)="addEmoji($event)" [enableSearch]="false" [darkMode]="false"
+                                [showPreview]="false" color="var(--clr-primary-600)">
+                            </emoji-mart>
+                        </div>
+
+                    </ng-container>
+
+                </div>
+
+
+
+                <form style="width:95%;" [formGroup]="messageForm" class="d-flex">
+                    <textarea class="form-control" formControlName="message" (click)="getCursorPosition($event)"
+                        [placeholder]="'Type a message' |translate"></textarea>
+                </form>
             </div>
-    
-            <div class="emojes-picker" >
-                    <img src="../assets/icons/emojes.svg" alt="">
-            </div>
-            </div>
-     
-            
-            <div style="width: 83%;">
-                <textarea class="form-control" [placeholder]="'Type a message' |translate"></textarea>
-            </div>
-            
-            
+
+
+
             <button style="width: 5%;" class="sendBtn" style="cursor: pointer;">
                 <img src="../assets/icons/send.svg" alt="">
             </button>
         </div>
-  
+
 
     </div>
 
-</div>
+</section>

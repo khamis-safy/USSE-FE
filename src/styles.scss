@@ -2802,3 +2802,37 @@ span.mat-mdc-select-value-text {
 .nb-theme-default nb-layout .layout {
   background-color: var(--clr-primary-200) !important;
 }
+.rtl{
+  .back-arrow-blue{
+    rotate: 180deg !important;
+  }
+  .chat-message-container{
+    flex-direction: row-reverse !important;
+  }
+}
+@media(max-width:768px)
+{
+  .emoji-pick.chat-emoji-picker{
+    bottom: 45px!important;
+    position: fixed !important;
+    section.emoji-mart {
+      width: 100% !important;
+      box-shadow: var(--shadow-sm);
+
+  }
+    .emoji-mart-scroll {
+      height: 200px;
+      padding: 0 !important;
+    }
+  }
+  .add-new-chat-modal{
+    width: 100vw !important;
+    height: 92vh !important;
+    max-width: 100% !important;
+    top: 8% !important;
+    position: absolute !important;
+  //   .mat-mdc-dialog-container .mdc-dialog__surface {
+  //     border-radius: 25px !important;
+  // }
+  }
+}
