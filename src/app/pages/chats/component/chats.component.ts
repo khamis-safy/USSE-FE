@@ -27,7 +27,7 @@ export class ChatsComponent implements OnInit, AfterViewInit{
   form = new FormGroup({
     devicesData:this.devicesData,
   });
-  cursorPosition:any
+  cursorPosition:any= 0
   messageForm = new FormGroup({
     message:this.message,
   });

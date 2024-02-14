@@ -294,9 +294,8 @@
 
                     <ng-container>
                         <div class="position-relative" (appClickOutside)="showEmoji = false ;isEmojiClicked=false">
-                            <div (click)="isEmojiClicked = !isEmojiClicked" class="emojes-icon"
-                                (mouseover)="!isEmojiClicked && (showEmoji=true)"
-                                (mouseleave)="!isEmojiClicked && (showEmoji=false)">
+                            <div (click)="isEmojiClicked = !isEmojiClicked" class="emojes-icon "
+                                >
                                 <img src="../assets/icons/emojes.svg" alt="">
                             </div>
 
@@ -315,7 +314,7 @@
 
 
                 <form style="width:95%;" [formGroup]="messageForm" class="d-flex">
-                    <textarea class="form-control" formControlName="message" (click)="getCursorPosition($event)"
+                    <textarea class="form-control" formControlName="message" (keyup)="getCursorPosition($event)" (click)="getCursorPosition($event) "
                         [placeholder]="'Type a message' |translate"></textarea>
                 </form>
             </div>
