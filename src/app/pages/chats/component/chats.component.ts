@@ -42,7 +42,7 @@ export class ChatsComponent implements OnInit, AfterViewInit{
   isEmojiClicked: boolean = false;
   @ViewChild('chatContainer') chatContainer: ElementRef;
   readonly scrollThrottleTime = 300; // Adjust as needed
-
+  isDelete:boolean=false;
   selectedChat:ChatById[]=[]
   selectedChatId:any;
   chatName:string='';
@@ -237,11 +237,13 @@ export class ChatsComponent implements OnInit, AfterViewInit{
     }
 
     deleteChat(chat){
+      this.isDelete=true;
       const dialogConfig=new MatDialogConfig();
       dialogConfig.height='50vh';
       dialogConfig.width='35vw';
       dialogConfig.maxWidth='100%';
       dialogConfig.minWidth='465px';
+      dialogConfig.panelClass='custom-dialog-delete-style'
       dialogConfig.data = {
         chatData:{chat:chat}
       };
@@ -250,6 +252,7 @@ export class ChatsComponent implements OnInit, AfterViewInit{
       const dialogRef = this.dialog.open(DeleteModalComponent,dialogConfig);
   
       dialogRef.afterClosed().subscribe(result => {
+        this.isDelete=false;
         if(result){
           this.getListChats();
 
@@ -258,7 +261,8 @@ export class ChatsComponent implements OnInit, AfterViewInit{
     }
     navigateToChat(chat:Chats){
       
-      this.chatName='';
+      if(!this.isDelete){
+        this.chatName='';
       this.targetPhoneNumber='';
       this.selectedChat=[];
       this.selectedChatId=chat.chat.id;
@@ -267,6 +271,7 @@ export class ChatsComponent implements OnInit, AfterViewInit{
       this.getChatById(this.selectedChatId)
       this.updateQueryParams()
       this.openChat=true;
+      }
 
     }
     closeChatPage(){
