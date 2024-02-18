@@ -35,7 +35,8 @@
         <div class="contacts-container">
             <!-- undelivered -->
             <ng-container *ngFor="let chatContact of listChats">
-                <div class="my-2   p-3 leftContentDesign" (click)="navigateToChat(chatContact)">
+                <div class="my-2   p-3 leftContentDesign" [ngClass]="{'active':chatContact.active}"
+                    (click)="navigateToChat(chatContact)">
                     <div class="d-flex gap-2 ">
                         <div class="deviceContent ">
                             <span>{{chatIcon(chatContact.chat?.chatName)}}</span>
@@ -51,21 +52,23 @@
                                             <span>SA</span>
                                         </div>
 
-                                        <div *ngSwitchCase="1" >
+                                        <div *ngSwitchCase="1">
                                             <img src="../assets/icons/chats-icon-2.svg" alt="">
                                         </div>
 
-                                        <div *ngSwitchCase="2" >
-                                            <img  src="../assets/icons/right-blue.svg" alt="">
+                                        <div *ngSwitchCase="2">
+                                            <img src="../assets/icons/right-blue.svg" alt="">
                                         </div>
 
-                                        <div *ngSwitchCase="0" class="d-flex justify-content-center align-items-center w-100">
-                                        <span  class="status pending d-flex justify-content-center align-items-center  txt-xs" >
+                                        <div *ngSwitchCase="0"
+                                            class="d-flex justify-content-center align-items-center w-100">
+                                            <span
+                                                class="status pending d-flex justify-content-center align-items-center  txt-xs">
 
-                                        </span>
+                                            </span>
                                         </div>
-                                    
-                                            <mat-icon *ngSwitchCase="4" style="display: flex;
+
+                                        <mat-icon *ngSwitchCase="4" style="display: flex;
                                             justify-content: center;
                                             align-items: center;
                                             margin: 0 !important;
@@ -73,52 +76,34 @@
                                             width: 13px;" class="text-danger txt-sm">error_outline</mat-icon>
                                     </ng-container>
                                 </ng-container>
-                                <p class="m-0 p-0  pIn" style="max-width: 100px ;text-overflow: ellipsis;overflow: hidden;">
+
+                                <p class="m-0 p-0  pIn"
+                                    style="max-width: 100px ;text-overflow: ellipsis;overflow: hidden;">
                                     {{chatContact.lastMessageContent}}</p>
                             </div>
                         </div>
-                        <!-- <div class="d-flex flex-column justify-content-center">
-                            <p class="mb-1 pOut">{{chatContact.chat?.chatName}}</p>
-                            <div class=" d-flex align-items-center gap-2">
-                                <ng-container *ngIf="chatContact?.lastMessageStatus!=null ">
-                                    <ng-container [ngSwitch]="chatContact?.lastMessageStatus!">
 
-                                        <div *ngSwitchCase="3" class="chat-contact-img small ">
-                                            <span>SA</span>
-                                        </div>
-
-                                        <div *ngSwitchCase="1" >
-                                            <img src="../assets/icons/chats-icon-2.svg" alt="">
-                                        </div>
-
-                                        <div *ngSwitchCase="2" >
-                                            <img  src="../assets/icons/right-blue.svg" alt="">
-                                        </div>
-
-                                        <div *ngSwitchCase="0" class="d-flex justify-content-center align-items-center w-100">
-                                        <span  class="status pending d-flex justify-content-center align-items-center  txt-xs" >
-
-                                        </span>
-                                        </div>
-                                    
-                                            <mat-icon *ngSwitchCase="4" style="display: flex;
-                                            justify-content: center;
-                                            align-items: center;
-                                            margin: 0 !important;
-                                            padding: 0 !important;
-                                            width: 13px;" class="text-danger txt-sm">error_outline</mat-icon>
-                                    </ng-container>
-                                </ng-container>
-
-                                <p class="m-0 p-0  pIn" style="max-width: 30% ;text-overflow: ellipsis;overflow: hidden;">
-                                    {{chatContact.lastMessageContent}}dfgdgdgdfgdfgdfgdfgdfgdfgfgdg</p>
-                            </div>
-                        </div> -->
                     </div>
                     <div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <ng-container
+                                *ngIf="chatContact?.lastMessageStatus ==null && chatContact?.unseenMessagesCount > 0">
+                                
+                                <div class="d-flex flex-column justify-content-center align-items-center mx-3">
+                                    <div class="messages-count"  [ngClass]="{'big':chatContact?.unseenMessagesCount>9999, 'mid':chatContact?.unseenMessagesCount>99} ">
+                                        <span>{{chatContact?.unseenMessagesCount}}</span>
+
+                                    </div>
+                                    
+                                    <span class="msg-time text-primary-800">{{chatContact?.lastMessageDate |toLocalTime}}</span>
+                            </div>
+                            </ng-container>
+
                         <div style="cursor: pointer;" (click)=" deleteChat(chatContact)">
                             <img src="../assets/icons/Actionsc.svg" alt="">
                         </div>
+                    </div>
+
                     </div>
                 </div>
             </ng-container>
@@ -159,22 +144,22 @@
                         </div>
                     </div>
                 </div>
-    
-                <div class="d-flex justify-content-center align-items-center">
+
+                
                     <div class="d-flex flex-column justify-content-center align-items-center mx-3">
                         <div class="messages-count">
                             <span>1800</span>
                         </div>
-                        <span class="msg-time text-primary-800" >8:00 PM</span>
+                        <span class="msg-time text-primary-800">8:00 PM</span>
                     </div>
                     <div>
                         <a style="cursor: pointer;">
                             <img src="../assets/icons/Actionsc.svg" alt="">
                         </a>
                     </div>
-    
+
                 </div>
-    
+
             </div> -->
 
             <!-- sent -->
@@ -255,11 +240,11 @@
         </div>
         <!-- Bodey -->
 
-        <div class="chat-body" #chatContainer >
-         
+        <div class="chat-body" #chatContainer>
+
             <ng-container *ngFor="let chat of selectedChat">
                 <ng-container [ngSwitch]="chat?.direction">
-                    <div *ngSwitchCase="false" class="received-chats" >
+                    <div *ngSwitchCase="false" class="received-chats">
                         <div class="chat-contact-img">
                             <span>{{chatIcon(chat?.chat?.chatName)}}</span>
                         </div>
@@ -274,12 +259,12 @@
                             <p>{{chat?.msgBody}}</p>
                             <span class="time">{{chat?.createdAt |timeOnly}}</span>
                         </div>
-        
+
                     </div>
-              </ng-container>
-                
+                </ng-container>
+
             </ng-container>
-           
+
 
 
         </div>
@@ -294,13 +279,12 @@
 
                     <ng-container>
                         <div class="position-relative" (appClickOutside)="showEmoji = false ;isEmojiClicked=false">
-                            <div (click)="isEmojiClicked = !isEmojiClicked" class="emojes-icon "
-                                >
+                            <div (click)="isEmojiClicked = !isEmojiClicked" class="emojes-icon ">
                                 <img src="../assets/icons/emojes.svg" alt="">
                             </div>
 
                             <emoji-mart *ngIf="showEmoji || isEmojiClicked"
-                            (mouseover)="!isEmojiClicked && (showEmoji=true)"
+                                (mouseover)="!isEmojiClicked && (showEmoji=true)"
                                 class="emoji-pick chat-emoji-picker  start-0  position-absolute"
                                 (emojiClick)="addEmoji($event)" [enableSearch]="false" [darkMode]="false"
                                 [showPreview]="false" color="var(--clr-primary-600)">
@@ -314,14 +298,14 @@
 
 
                 <form style="width:95%;" [formGroup]="messageForm" class="d-flex">
-                    <textarea class="form-control" formControlName="message" (keyup)="getCursorPosition($event)" (click)="getCursorPosition($event) "
-                        [placeholder]="'Type a message' |translate"></textarea>
+                    <textarea class="form-control" formControlName="message" (keyup)="getCursorPosition($event)"
+                        (click)="getCursorPosition($event) " [placeholder]="'Type a message' |translate"></textarea>
                 </form>
             </div>
 
 
 
-            <button style="width: 5%;" class="sendBtn" style="cursor: pointer;">
+            <button style="width: 5%;" class="sendBtn" style="cursor: pointer;" (click)="sendMsg()" [disabled]="messageForm.invalid">
                 <img src="../assets/icons/send.svg" alt="">
             </button>
         </div>

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable, shareReplay } from 'rxjs';
 import { ChatById, Chats } from './interfaces/Chats';
+import * as signalR from "@microsoft/signalr";
 
 
 @Injectable({
@@ -29,5 +30,8 @@ getChatById(email:string,chatId:string,showsNum:number,pageNum:number,search:str
   return this.http.get<ChatById[]>(`${this.api}/getChatById?email=${email}&take=${showsNum}&scroll=${pageNum}&search=${search}&deviceId=${deviceId}&chatId=${chatId}`).pipe(
     shareReplay()
     )
+}
+markChatAsRead(chatId:string):Observable<any>{
+  return this.http.put<any>(`${this.api}/markChatAsRead?id=${chatId}`,null)
 }
 }

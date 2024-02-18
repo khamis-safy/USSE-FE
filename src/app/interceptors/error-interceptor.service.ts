@@ -35,13 +35,12 @@ export class ErrorInterceptorService implements HttpInterceptor {
             document.cookie = removedCookie;
             location.reload();
           }
-          if(error.status!=200 && error.status!=401){
+          if(error.status!=200 && error.status!=401 && typeof(error.error) != 'boolean'){
 
-            // console.error('HTTP error:', error);
   
               // Check if 'error.error' exists before trying to access 'message'
               // Handle the error message as needed (e.g., display it to the user)
-              const errorMessage = error && error.error && this.translate.instant(error.error)? error.error  : 'COMMON.ERR';
+              const errorMessage = error && error?.error && this.translate.instant(error?.error)? error?.error  : 'COMMON.ERR';
               this.toaster.error(this.translate.instant(errorMessage))
             }
 

@@ -96,6 +96,13 @@ textarea {
     border-color: transparent;
 
 }
+.leftContentDesign{
+    &.active{
+        background: var(--clr-primary-500);
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        border-color: transparent;
+    }
+}
 .emojes-icon{cursor: pointer;}
 .deviceContent {
     width: 40px;
@@ -240,18 +247,28 @@ textarea {
     justify-content: space-between;
 }
 .messages-count{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 16px;
     min-height: 16px;
     width: fit-content;
     border-radius: 50%;
     background-color: var(--clr-primary-800);
+    &.mid{
+        padding-block: 2px;
+    }
+    &.big{
+        padding: 2px;
+        border-radius: 50px;      
+    }
     span{
+        display: flex;
+        width: fit-content;
+        height: fit-content;
         font-size: 10px;
         color: white;
-        padding:2px 4px;
+        padding-inline:4px ;
+        min-width: 19px;
+        justify-content: center;
+        align-items: center;
+
 
     }
 }
@@ -260,6 +277,7 @@ textarea {
     text-align: center;
     line-height: 1.3;
     margin-top: 4px;
+    max-width: 50px;
 
 }
 

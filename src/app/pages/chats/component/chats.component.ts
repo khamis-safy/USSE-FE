@@ -4,14 +4,15 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { TranslationService } from 'src/app/shared/services/translation.service';
 import { ChatContactsComponent } from '../components/chat-contacts/chat-contacts.component';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { Observable, Subscription, interval, throttleTime } from 'rxjs';
+import { Observable, Subscription, concatMap,pipe, interval, throttleTime, combineLatest } from 'rxjs';
 import { ChatById, Chats } from '../interfaces/Chats';
 import { ChatsService } from '../chats.service';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessagesService } from '../../messages/messages.service';
 
 @Component({
   selector: 'app-chats',
@@ -22,7 +23,7 @@ export class ChatsComponent implements OnInit, AfterViewInit{
   devices:any;
   deviceLoadingText:string='Loading ...';
   devicesData :any= new FormControl([]);
-  message :any= new FormControl('');
+  message :any= new FormControl('',Validators.required);
 
   form = new FormGroup({
     devicesData:this.devicesData,
@@ -47,14 +48,17 @@ export class ChatsComponent implements OnInit, AfterViewInit{
   selectedChatId:any;
   chatName:string='';
   targetPhoneNumber:string='';
-  queryParamsSubscription: Subscription
+  queryParamsSubscription: Subscription;
+  devicesSub$:Observable<any>;
+  listChatsSub$:Observable<any>;
   constructor( public dialog: MatDialog,
     private translationService:TranslationService,
     private authService:AuthService,
     private chatService:ChatsService,
     private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private messageService:MessagesService
     ){
       this.emojiForm = this.formBuilder.group({
         emojiInput: ['']
@@ -67,7 +71,6 @@ export class ChatsComponent implements OnInit, AfterViewInit{
       if (params['chatId']) {
         this.selectedChatId = params['chatId'];
         this.openChat = true;
-        this.getChatById(this.selectedChatId,'',true);
         this.unSubscripQueryParam()
       } 
     });
@@ -107,52 +110,21 @@ export class ChatsComponent implements OnInit, AfterViewInit{
           return dateA.getTime() - dateB.getTime(); // compare timestamps
         });
         this.selectedChat=res;
-        this.chatName=res[0]?.chat?.chatName;
-        this.targetPhoneNumber=res[0]?.chat?.targetPhoneNumber;
+        // this.chatName=res[0]?.chat?.chatName;
+        // this.targetPhoneNumber=res[0]?.chat?.targetPhoneNumber;
         setTimeout(() => {
           this.scrollToBottom();
         }, 0);
-        if(fromInit){
-          let deviceName = res[0].deviceid.match(/[^_]+_[^_]+_(.*?)_/)?.[1]?.replace(/_/g, ' ');;
-          this.form.patchValue({
-            devicesData: {
-            title:deviceName,
-            value:res[0]?.deviceid,
-            deviceIcon:res[0].msgType
-            }
-  
-            })
-        }
 
       }
     )
 
   }
-  getListChats(){
-    this.chatService.listChats(this.email , 100,0,this.searchKey,this.deviceId).subscribe(
-      (res)=>{
-        this.listChats=res;
-        console.log(this.selectedChatId)
-        if(!this.selectedChatId){
-          this.selectedChatId=res[0].chat.id;
-
-          this.getChatById(this.selectedChatId);
-          console.log('get chat by id called from getListChats')
-
-          this.updateQueryParams();
-        }
-      }
-    )
-  }
-
   getDevices(){
-    console.log("devices")
-
-    this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
+    this.devicesSub$= this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","");
+    this.devicesSub$.subscribe(
       (res)=>{
         let alldevices=res;
-
-
         this.devices = alldevices.map(res=>{
           return {
             title:res.deviceName,
@@ -202,6 +174,58 @@ export class ChatsComponent implements OnInit, AfterViewInit{
 
         })
   }
+  getListChats(){
+  this.listChatsSub$= this.chatService.listChats(this.email , 100,0,this.searchKey,this.deviceId);
+  this.listChatsSub$.subscribe(
+      (res)=>{
+        this.listChats=res;
+        console.log(this.selectedChatId)
+        let chat;
+        if(!this.selectedChatId){
+          this.selectedChatId=res[0].chat.id;
+          this.chatName=res[0]?.chat?.chatName;
+          this.targetPhoneNumber=res[0]?.chat?.targetPhoneNumber;
+          chat=res[0]
+          this.getChatById(this.selectedChatId);
+          this.updateQueryParams();
+          this.listChats.map((chat)=>chat.active=false) ;   
+          this.listChats[0].active=true
+        }
+        else{
+          chat=this.listChats.find((chats)=>chats.chat.id == this.selectedChatId);
+          this.chatName=chat.chat.chatName;
+          this.targetPhoneNumber=chat.chat.targetPhoneNumber;
+          this.getChatById(this.selectedChatId,'',true);
+      
+          this.listChats.map((chat)=>chat.active=false) ;   
+          chat.active=true
+          this.form.patchValue({
+            devicesData: {
+            title:chat?.device.deviceName,
+            value:chat?.device.id,
+            deviceIcon:chat?.device.deviceType
+            }
+  
+            })
+
+        }
+        if(chat.unseenMessagesCount > 0){
+          this.chatService.markChatAsRead(chat.chat.id).subscribe(
+            (res)=>{
+              chat.unseenMessagesCount=0;
+            }
+          )
+        }
+      }
+    )
+  }
+resetForm(){
+  this.messageForm.patchValue(
+    {
+      message:''
+    }
+  )
+}
   onSearch(search){
     this.searchKey=search.value;
     this.getListChats()
@@ -224,6 +248,7 @@ export class ChatsComponent implements OnInit, AfterViewInit{
         this.selectedChatId=result.id;
         this.chatName=result.chatName;
         this.targetPhoneNumber=result.targetPhoneNumber;
+        this.getListChats()
         this.updateQueryParams()
       }
 
@@ -260,18 +285,30 @@ export class ChatsComponent implements OnInit, AfterViewInit{
       });
     }
     navigateToChat(chat:Chats){
-      
-      if(!this.isDelete){
-        this.chatName='';
-      this.targetPhoneNumber='';
-      this.selectedChat=[];
-      this.selectedChatId=chat.chat.id;
-      console.log('from navigateToChat')
-      
-      this.getChatById(this.selectedChatId)
-      this.updateQueryParams()
-      this.openChat=true;
+      if(!chat.active){
+        if(chat.unseenMessagesCount > 0){
+          this.chatService.markChatAsRead(chat.chat.id).subscribe(
+            (res)=>{
+              chat.unseenMessagesCount=0;
+            }
+          )
+        }
+        this.listChats.map((chat)=>chat.active=false)      
+        chat.active=true;
+        if(!this.isDelete){
+          this.chatName='';
+        this.targetPhoneNumber='';
+        this.selectedChat=[];
+        this.selectedChatId=chat.chat.id;
+        this.chatName=chat.chat.chatName;
+        this.targetPhoneNumber=chat.chat.targetPhoneNumber;
+        this.getChatById(this.selectedChatId)
+        this.updateQueryParams()
+        this.openChat=true;
+        }
+  
       }
+      this.resetForm();
 
     }
     closeChatPage(){
@@ -318,5 +355,38 @@ export class ChatsComponent implements OnInit, AfterViewInit{
       if (container.scrollTop + container.clientHeight >= container.scrollHeight - 50 ) {
         this.getChatById(this.selectedChatId);
       }
+    }
+    sendMsg(){
+      let message = this.messageForm.value.message;
+      this.messageService.sendWhatsappBusinessMessage(this.deviceId,[this.targetPhoneNumber],message,null,this.email,[]).subscribe(
+        (res)=>{
+          this.selectedChat.push({
+            id: this.selectedChatId,
+            deviceid: this.deviceId,
+            targetPhoneNumber: this.targetPhoneNumber,
+            direction: true,
+            chat:{chatName:this.chatName},
+            msgBody: message,
+            createdAt:String(Date.now()) ,
+            // updatedAt: string,
+            // isDeleted: false,
+            // isSeened: boolean,
+            // status: number,
+            // applicationUserId:string,
+            // msgType: string,
+            // fileName: any,
+            // fileUrl: any,
+            // campaignId: any,
+            // actionCount: any,
+            // isReply: false,
+            // isEnquiry: false,
+            // enquiryQuestion: number,
+            // botId: any,
+            // isCampaignAction: false
+          })
+          this.resetForm()
+        }
+      )
+      
     }
 }
