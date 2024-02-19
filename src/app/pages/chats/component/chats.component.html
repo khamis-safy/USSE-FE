@@ -49,7 +49,7 @@
                                     <ng-container [ngSwitch]="chatContact?.lastMessageStatus!">
 
                                         <div *ngSwitchCase="3" class="chat-contact-img small ">
-                                            <span>SA</span>
+                                            <span>{{chatIcon(chatContact.chat?.chatName)}}</span>
                                         </div>
 
                                         <div *ngSwitchCase="1">
@@ -77,8 +77,8 @@
                                     </ng-container>
                                 </ng-container>
 
-                                <p class="m-0 p-0  pIn"
-                                    style="max-width: 100px ;text-overflow: ellipsis;overflow: hidden;">
+                                <p class="m-0 p-0 overflow-line-1 pIn"
+                                    style="max-width: 80px ;text-overflow: ellipsis;overflow: hidden;">
                                     {{chatContact.lastMessageContent}}</p>
                             </div>
                         </div>
@@ -108,104 +108,6 @@
                 </div>
             </ng-container>
 
-            <!-- failed -->
-
-            <!-- <div class="my-2   p-3 leftContentDesign">
-                <div class="d-flex gap-2 ">
-                    <div class="deviceContent">
-                        <img src="../assets/icons/Icon.svg" alt="">
-                    </div>
-                    
-                    <div class="d-flex flex-column justify-content-center ">
-                        <p class="mb-1 pOut">Suporte ADMIN</p>
-                        <div class=" d-flex align-items-center ">
-                            <span style="color:#FF0000" class="m-0 p-0  pIn">Failed</span>
-                        </div>
-                    </div>
-                </div>
-    
-                <div>
-                    <a style="cursor: pointer;">
-                        <img src="../assets/icons/Actionsc.svg" alt="">
-                    </a>
-                </div>
-            </div>
-             -->
-            <!-- new message state -->
-            <!-- <div class="my-2   p-3 leftContentDesign">
-                <div class="d-flex gap-2 ">
-                    <div class="deviceContent">
-                        <img src="../assets/icons/Icon.svg" alt="">
-                    </div>
-                    <div class="d-flex flex-column justify-content-center ">
-                        <p class="mb-1 pOut">Suporte ADMIN</p>
-                        <div class=" d-flex align-items-center ">
-                            <p class="m-0 p-0  pIn">Pesquisar chat</p>
-                        </div>
-                    </div>
-                </div>
-
-                
-                    <div class="d-flex flex-column justify-content-center align-items-center mx-3">
-                        <div class="messages-count">
-                            <span>1800</span>
-                        </div>
-                        <span class="msg-time text-primary-800">8:00 PM</span>
-                    </div>
-                    <div>
-                        <a style="cursor: pointer;">
-                            <img src="../assets/icons/Actionsc.svg" alt="">
-                        </a>
-                    </div>
-
-                </div>
-
-            </div> -->
-
-            <!-- sent -->
-            <!-- <div class="my-2   p-3 leftContentDesign">
-                <div class="d-flex gap-2 ">
-                    <div class="deviceContent ">
-                        <img src="../assets/icons/Icon.svg" alt="">
-                    </div>
-                    <div class="d-flex flex-column justify-content-center">
-                        <p class="mb-1 pOut">Suporte ADMIN</p>
-                        <div class=" d-flex align-items-center gap-2">
-                            <img  src="../assets/icons/right-blue.svg" alt="">
-                            <p class="m-0 p-0  pIn">
-                                Pesquisar chat</p>
-                        </div>
-                    </div>
-    
-                </div>
-                <div>
-                    <a style="cursor: pointer;">
-                        <img src="../assets/icons/Actionsc.svg" alt="">
-                    </a>
-                </div>
-            </div> -->
-
-            <!-- read -->
-            <!-- <div class="my-2   p-3 leftContentDesign">
-                <div class="d-flex gap-2 ">
-                    <div class="deviceContent">
-                        <img src="../assets/icons/Icon.svg" alt="">
-                    </div>
-                    <div class="d-flex flex-column justify-content-center ">
-                        <p class="mb-1 pOut">Suporte ADMIN</p>
-                        <div class="chat-contact-img small ">
-                            <span>SA</span>
-                        </div>
-                    </div>
-                </div>
-    
-                <div>
-                    <a style="cursor: pointer;">
-                        <img src="../assets/icons/Actionsc.svg" alt="">
-                    </a>
-                </div>
-            
-        </div> -->
 
         </div>
 
@@ -254,11 +156,45 @@
                         </div>
                     </div>
                     <div *ngSwitchCase="true" class="outgoing-chats">
-
-                        <div class="outgoing-chats-msg">
-                            <p>{{chat?.msgBody}}</p>
-                            <span class="time">{{chat?.createdAt |timeOnly}}</span>
+                        <div class="d-flex flex-column gap-1 align-items-end">
+                            <div class="outgoing-chats-msg">
+                                <p>{{chat?.msgBody}}</p>
+                                <span class="time">{{chat?.createdAt |timeOnly}}</span>
+                            </div>
+                            <ng-container *ngIf="chat?.status!=null ">
+                                <ng-container [ngSwitch]="chat?.status!">
+    
+                                    <div *ngSwitchCase="3" class="chat-contact-img small ">
+                                        <span>{{chatIcon(chat.chat?.chatName)}}</span>
+                                    </div>
+    
+                                    <div *ngSwitchCase="1">
+                                        <img src="../assets/icons/chats-icon-2.svg" alt="">
+                                    </div>
+    
+                                    <div *ngSwitchCase="2">
+                                        <img src="../assets/icons/right-blue.svg" alt="">
+                                    </div>
+    
+                                    <div *ngSwitchCase="0"
+                                        class="d-flex justify-content-center align-items-center w-100">
+                                        <span
+                                            class="status pending d-flex justify-content-center align-items-center  txt-xs">
+    
+                                        </span>
+                                    </div>
+    
+                                    <mat-icon *ngSwitchCase="4" style="display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        margin: 0 !important;
+                                        padding: 0 !important;
+                                        width: 13px;" class="text-danger txt-sm">error_outline</mat-icon>
+                                </ng-container>
+                            </ng-container>
                         </div>
+                     
+
 
                     </div>
                 </ng-container>
@@ -298,14 +234,14 @@
 
 
                 <form style="width:95%;" [formGroup]="messageForm" class="d-flex">
-                    <textarea class="form-control" formControlName="message" (keyup)="getCursorPosition($event)"
+                    <textarea class="form-control" formControlName="message" (keydown.enter)="sendMsg($event)" (keyup)="getCursorPosition($event)"
                         (click)="getCursorPosition($event) " [placeholder]="'Type a message' |translate"></textarea>
                 </form>
             </div>
 
 
 
-            <button style="width: 5%;" class="sendBtn" style="cursor: pointer;" (click)="sendMsg()" [disabled]="messageForm.invalid">
+            <button style="width: 5%;" class="sendBtn" style="cursor: pointer;"  (click)="sendMsg()" [disabled]="messageForm.invalid">
                 <img src="../assets/icons/send.svg" alt="">
             </button>
         </div>

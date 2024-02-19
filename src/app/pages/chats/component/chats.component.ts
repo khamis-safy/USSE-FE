@@ -13,6 +13,7 @@ import { ChatsService } from '../chats.service';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessagesService } from '../../messages/messages.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-chats',
@@ -58,22 +59,22 @@ export class ChatsComponent implements OnInit, AfterViewInit{
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private messageService:MessagesService
+    private messageService:MessagesService,
+   private datePipe: DatePipe
     ){
       this.emojiForm = this.formBuilder.group({
         emojiInput: ['']
       });
   }
   initRouting() {
-  
     // Assign the subscription to queryParamsSubscription
-    this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
-      if (params['chatId']) {
-        this.selectedChatId = params['chatId'];
-        this.openChat = true;
-        this.unSubscripQueryParam()
-      } 
-    });
+    // this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
+    //   if (params['chatId']) {
+    //     this.router.navigateByUrl("/chats")
+
+
+    //   } 
+    // });
   }
   unSubscripQueryParam(){
     if(this.queryParamsSubscription){
@@ -82,12 +83,10 @@ export class ChatsComponent implements OnInit, AfterViewInit{
     }
   }
   updateQueryParams(){
-  
     this.router.navigateByUrl("/chats?chatId="+this.selectedChatId)
   }
   ngOnInit() {
     this.getDevices();
-    console.log(this.openChat)
   }
   ngAfterViewInit() {
   }
@@ -179,7 +178,6 @@ export class ChatsComponent implements OnInit, AfterViewInit{
   this.listChatsSub$.subscribe(
       (res)=>{
         this.listChats=res;
-        console.log(this.selectedChatId)
         let chat;
         if(!this.selectedChatId){
           this.selectedChatId=res[0].chat.id;
@@ -249,7 +247,7 @@ resetForm(){
         this.chatName=result.chatName;
         this.targetPhoneNumber=result.targetPhoneNumber;
         this.getListChats()
-        this.updateQueryParams()
+        // this.updateQueryParams()
       }
 
     });
@@ -300,10 +298,10 @@ resetForm(){
         this.targetPhoneNumber='';
         this.selectedChat=[];
         this.selectedChatId=chat.chat.id;
+        this.updateQueryParams()
         this.chatName=chat.chat.chatName;
         this.targetPhoneNumber=chat.chat.targetPhoneNumber;
         this.getChatById(this.selectedChatId)
-        this.updateQueryParams()
         this.openChat=true;
         }
   
@@ -356,37 +354,86 @@ resetForm(){
         this.getChatById(this.selectedChatId);
       }
     }
-    sendMsg(){
+    sendMsg(event?){
       let message = this.messageForm.value.message;
-      this.messageService.sendWhatsappBusinessMessage(this.deviceId,[this.targetPhoneNumber],message,null,this.email,[]).subscribe(
-        (res)=>{
-          this.selectedChat.push({
-            id: this.selectedChatId,
-            deviceid: this.deviceId,
-            targetPhoneNumber: this.targetPhoneNumber,
-            direction: true,
-            chat:{chatName:this.chatName},
-            msgBody: message,
-            createdAt:String(Date.now()) ,
-            // updatedAt: string,
-            // isDeleted: false,
-            // isSeened: boolean,
-            // status: number,
-            // applicationUserId:string,
-            // msgType: string,
-            // fileName: any,
-            // fileUrl: any,
-            // campaignId: any,
-            // actionCount: any,
-            // isReply: false,
-            // isEnquiry: false,
-            // enquiryQuestion: number,
-            // botId: any,
-            // isCampaignAction: false
-          })
-          this.resetForm()
+      if(message.trim() !== ''){
+        if(event){
+          if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); 
+          }  
         }
-      )
-      
+        this.selectedChat.push({
+          id: this.selectedChatId,
+          deviceid: this.deviceId,
+          targetPhoneNumber: this.targetPhoneNumber,
+          direction: true,
+          chat:{chatName:this.chatName},
+          msgBody: message,
+          createdAt:String(this.convertToUTC(new Date())) ,
+          // updatedAt: string,
+          // isDeleted: false,
+          // isSeened: boolean,
+          status: 1,
+          // applicationUserId:string,
+          // msgType: string,
+          // fileName: any,
+          // fileUrl: any,
+          // campaignId: any,
+          // actionCount: any,
+          // isReply: false,
+          // isEnquiry: false,
+          // enquiryQuestion: number,
+          // botId: any,
+          // isCampaignAction: false
+        })
+        // this.messageService.sendWhatsappBusinessMessage(this.deviceId,[this.targetPhoneNumber],message,null,this.email,[]).subscribe(
+        //   (res)=>{
+        //     this.selectedChat.push({
+        //       id: this.selectedChatId,
+        //       deviceid: this.deviceId,
+        //       targetPhoneNumber: this.targetPhoneNumber,
+        //       direction: true,
+        //       chat:{chatName:this.chatName},
+        //       msgBody: message,
+        //       createdAt:String(new Date()) ,
+        //       // updatedAt: string,
+        //       // isDeleted: false,
+        //       // isSeened: boolean,
+        //       // status: number,
+        //       // applicationUserId:string,
+        //       // msgType: string,
+        //       // fileName: any,
+        //       // fileUrl: any,
+        //       // campaignId: any,
+        //       // actionCount: any,
+        //       // isReply: false,
+        //       // isEnquiry: false,
+        //       // enquiryQuestion: number,
+        //       // botId: any,
+        //       // isCampaignAction: false
+        //     })
+        //     this.resetForm()
+        //   }
+        // )
+        this.resetForm()
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 0);   
+      }
+       
+    }
+    convertToUTC(timecontrol: any): any {
+      const selectedTime = timecontrol;
+  
+      if (selectedTime) {
+        const utcDate = new Date();
+        utcDate.setHours(selectedTime.getHours());
+        utcDate.setMinutes(selectedTime.getMinutes());
+        utcDate.setSeconds(selectedTime.getSeconds());
+  
+        const utcFormattedDate = this.datePipe.transform(utcDate, 'yyyy-MM-dd HH:mm:ss', 'UTC');
+  
+        return utcFormattedDate;
+      }
     }
 }
