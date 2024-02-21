@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -8,24 +8,33 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Observable, Subscription, concatMap,pipe, interval, throttleTime, combineLatest } from 'rxjs';
-import { ChatById, Chats } from '../interfaces/Chats';
+import { ChatById, Chats, chatHub } from '../interfaces/Chats';
 import { ChatsService } from '../chats.service';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessagesService } from '../../messages/messages.service';
 import { DatePipe } from '@angular/common';
+import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { isFileSizeNotAllowed } from 'src/app/shared/methods/fileSizeValidator';
+import { TranslateService } from '@ngx-translate/core';
 
+interface files{
+  fileName:string,
+  fileType:string,
+  fileSize:number
+}
 @Component({
   selector: 'app-chats',
   templateUrl: './chats.component.html',
   styleUrls: ['./chats.component.scss'] ,
 })
-export class ChatsComponent implements OnInit, AfterViewInit{
+export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   devices:any;
   deviceLoadingText:string='Loading ...';
   devicesData :any= new FormControl([]);
   message :any= new FormControl('',Validators.required);
-
+  @ViewChild('fileInput') fileInputRef: ElementRef<HTMLInputElement>;
+  uploadedAttachments:files[]=[];
   form = new FormGroup({
     devicesData:this.devicesData,
   });
@@ -52,6 +61,8 @@ export class ChatsComponent implements OnInit, AfterViewInit{
   queryParamsSubscription: Subscription;
   devicesSub$:Observable<any>;
   listChatsSub$:Observable<any>;
+  filesList: any=[];
+
   constructor( public dialog: MatDialog,
     private translationService:TranslationService,
     private authService:AuthService,
@@ -60,12 +71,15 @@ export class ChatsComponent implements OnInit, AfterViewInit{
     private router: Router,
     private formBuilder: FormBuilder,
     private messageService:MessagesService,
-   private datePipe: DatePipe
+   private datePipe: DatePipe,
+   private toaster:ToasterServices,
+   private translate:TranslateService
     ){
       this.emojiForm = this.formBuilder.group({
         emojiInput: ['']
       });
   }
+ 
   initRouting() {
     // Assign the subscription to queryParamsSubscription
     // this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
@@ -87,6 +101,10 @@ export class ChatsComponent implements OnInit, AfterViewInit{
   }
   ngOnInit() {
     this.getDevices();
+    this.onRecieveMessages();
+    this.onStatusChange();
+    this.chatService.startConnection()
+
   }
   ngAfterViewInit() {
   }
@@ -185,6 +203,7 @@ export class ChatsComponent implements OnInit, AfterViewInit{
           this.targetPhoneNumber=res[0]?.chat?.targetPhoneNumber;
           chat=res[0]
           this.getChatById(this.selectedChatId);
+          this.openChat=true;
           this.updateQueryParams();
           this.listChats.map((chat)=>chat.active=false) ;   
           this.listChats[0].active=true
@@ -283,7 +302,10 @@ resetForm(){
       });
     }
     navigateToChat(chat:Chats){
+      this.openChat=true;
+
       if(!chat.active){
+        this.clearInputData();
         if(chat.unseenMessagesCount > 0){
           this.chatService.markChatAsRead(chat.chat.id).subscribe(
             (res)=>{
@@ -302,7 +324,6 @@ resetForm(){
         this.chatName=chat.chat.chatName;
         this.targetPhoneNumber=chat.chat.targetPhoneNumber;
         this.getChatById(this.selectedChatId)
-        this.openChat=true;
         }
   
       }
@@ -362,65 +383,46 @@ resetForm(){
             event.preventDefault(); 
           }  
         }
-        this.selectedChat.push({
-          id: this.selectedChatId,
-          deviceid: this.deviceId,
-          targetPhoneNumber: this.targetPhoneNumber,
-          direction: true,
-          chat:{chatName:this.chatName},
-          msgBody: message,
-          createdAt:String(this.convertToUTC(new Date())) ,
-          // updatedAt: string,
-          // isDeleted: false,
-          // isSeened: boolean,
-          status: 1,
-          // applicationUserId:string,
-          // msgType: string,
-          // fileName: any,
-          // fileUrl: any,
-          // campaignId: any,
-          // actionCount: any,
-          // isReply: false,
-          // isEnquiry: false,
-          // enquiryQuestion: number,
-          // botId: any,
-          // isCampaignAction: false
-        })
-        // this.messageService.sendWhatsappBusinessMessage(this.deviceId,[this.targetPhoneNumber],message,null,this.email,[]).subscribe(
-        //   (res)=>{
-        //     this.selectedChat.push({
-        //       id: this.selectedChatId,
-        //       deviceid: this.deviceId,
-        //       targetPhoneNumber: this.targetPhoneNumber,
-        //       direction: true,
-        //       chat:{chatName:this.chatName},
-        //       msgBody: message,
-        //       createdAt:String(new Date()) ,
-        //       // updatedAt: string,
-        //       // isDeleted: false,
-        //       // isSeened: boolean,
-        //       // status: number,
-        //       // applicationUserId:string,
-        //       // msgType: string,
-        //       // fileName: any,
-        //       // fileUrl: any,
-        //       // campaignId: any,
-        //       // actionCount: any,
-        //       // isReply: false,
-        //       // isEnquiry: false,
-        //       // enquiryQuestion: number,
-        //       // botId: any,
-        //       // isCampaignAction: false
-        //     })
-        //     this.resetForm()
-        //   }
-        // )
+        this.messageService.sendWhatsappBusinessMessage(this.deviceId,[this.targetPhoneNumber],message,null,this.email,[]).subscribe(
+          (res)=>{
+            this.selectedChat.push({
+              id: this.selectedChatId,
+              deviceid: this.deviceId,
+              targetPhoneNumber: this.targetPhoneNumber,
+              direction: true,
+              chat:{chatName:this.chatName,id:res[0]},
+              msgBody: message,
+              createdAt:String(this.convertToUTC(new Date())) ,
+              status: 1,
+              // updatedAt: string,
+              // isDeleted: false,
+              // isSeened: boolean,
+              // status: number,
+              // applicationUserId:string,
+              // msgType: string,
+              // fileName: any,
+              // fileUrl: any,
+              // campaignId: any,
+              // actionCount: any,
+              // isReply: false,
+              // isEnquiry: false,
+              // enquiryQuestion: number,
+              // botId: any,
+              // isCampaignAction: false
+            })
+            let findChat = this.listChats.find((chat)=>chat.chat.id == this.selectedChatId);
+            findChat.lastMessageContent=message;
+            findChat.lastMessageStatus=1;
+            this.resetForm();
+
+          }
+        )
         this.resetForm()
-        setTimeout(() => {
-          this.scrollToBottom();
-        }, 0);   
+      
       }
-       
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 300); 
     }
     convertToUTC(timecontrol: any): any {
       const selectedTime = timecontrol;
@@ -436,4 +438,163 @@ resetForm(){
         return utcFormattedDate;
       }
     }
+
+    backToChats(){
+      this.clearInputData();
+      this.filesList=[];
+      this.openChat=false
+    }
+    toBase64(file){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
+    }
+    clearInputData(){
+      const fileInput =this.fileInputRef.nativeElement.value='';
+      }
+  async onChangeFile(e) {
+    e.preventDefault();
+    let toBase64String: any = '';
+    let reloadedFiles: string[] = [];
+  
+    for (let item of e?.dataTransfer?.files?.length ? e?.dataTransfer?.files : e?.target?.files?.length ? e?.target?.files : []) {
+        toBase64String = await this.toBase64(item);
+     
+        const isReloaded = this.filesList.some(file => file.url === toBase64String);
+  
+        if(isFileSizeNotAllowed(item.size,this.authService.getAllowedFileSize())){
+          this.toaster.warning(`${this.translate.instant("File_Size_Warning")} ${this.authService.getAllowedFileSize()} MB`)
+        }
+        // Check if the new file matches any existing file based on its base64 representation
+  
+        else if (isReloaded) {
+          reloadedFiles.push(item.name); // Add the name of the reloaded file to the list
+        } 
+        
+        else {
+            this.filesList.push(
+                {
+                    name: item.name,
+                    type: item.type,
+                    url: toBase64String,
+                    size: item.size
+                }
+            );
+        }
+        
+    }
+  
+
+   // Log a message if any file was reloaded
+   if (reloadedFiles.length > 0) {
+    const reloadedFilesMessage = `( ${reloadedFiles.join(', ')} ) ${this.translate.instant("already_uploaded")}`;
+    this.toaster.warning(reloadedFilesMessage)
+  
+  }
+    
+  
+   this.clearInputData()
+  }
+  
+    openFileUploader() {
+      this.fileInputRef.nativeElement.click(); // Programmatically trigger file input click
+    }
+    onRecieveMessages(){
+      this.chatService.receivedMessages$.subscribe((res)=>{
+        if(res.userEmail === this.email){
+          this.updateMessagesOnReceive(res.message);
+
+        }
+      })
+    }
+    onStatusChange(){
+      this.chatService.updatedStatus$.subscribe(
+        (res)=>{
+          if(res.userEmail === this.email){
+            this.updateMessageStatus(res.message);
+  
+          }
+        }
+      )
+    }
+
+    updateMessageStatus(newMessage){
+      let message:chatHub=JSON.parse(newMessage)
+      if(message.Deviceid == this.deviceId ){
+        // update Status on list chats
+        let findChat = this.listChats.find((chat)=>chat.chat.id == message.ChatId);
+        if(findChat){
+          findChat.lastMessageStatus=message.status;
+
+        }
+
+        // in case the message is sent from the current opend chat
+        if(this.selectedChatId === message.ChatId){
+          let foundMesg = this.selectedChat.find(chat => chat.chat.id === message.id);
+          if (foundMesg) {
+            foundMesg.status=message.status;
+            foundMesg.updatedAt=message.updatedAt;
+          }
+          }
+
+      }
+        
+      }
+
+      updateMessagesOnReceive(message){
+        let newMessage:chatHub=JSON.parse(message)
+
+        if(newMessage.Deviceid == this.deviceId){
+            // in case the message is sent from the current opend chat
+            if(this.selectedChatId === newMessage.ChatId){
+              this.selectedChat.push(newMessage);
+              setTimeout(() => {
+                this.scrollToBottom();
+              }, 0);        
+            }
+
+            // in case the message is sent from closedChat and same device
+
+              let foundChat = this.listChats.find((chat)=>chat.chat.id == newMessage.ChatId);
+                if (foundChat) {
+                  if(this.selectedChatId !== newMessage.ChatId){
+                    foundChat.unseenMessagesCount+=1;
+
+                  }
+                  foundChat.lastMessageStatus=newMessage.status;
+                  foundChat.lastMessageContent=newMessage.msgBody;
+                  foundChat.lastMessageDate=newMessage.createdAt;
+                  if(this.listChats.indexOf(foundChat) !== 0){
+                    // Remove the element from its current position
+                    this.listChats.splice(this.listChats.indexOf(foundChat), 1);
+                    // Add the element to the beginning of the array
+                    this.listChats.unshift(foundChat);
+                  }
+              
+                }
+                else{
+                  this.listChats.unshift({
+                    chat: {
+                      id: newMessage.ChatId,
+                      chatName: newMessage.chatName,
+                      targetPhoneNumber: newMessage.targetPhoneNumber,
+                      createdAt: newMessage.createdAt,
+                    },
+                    lastMessageDate: newMessage.createdAt,
+                    lastMessageContent: newMessage.msgBody,
+                    lastMessageDirection: false,
+                    lastMessageStatus: null,
+                    unseenMessagesCount: 1,
+                  })
+                }
+            
+        }
+    
+    }
+    ngOnDestroy() {
+      this.chatService.closeConnection()
+      }
 }

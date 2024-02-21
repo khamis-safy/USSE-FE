@@ -7,6 +7,8 @@ import { ChatsService } from './chats.service';
 import { ChatContactsComponent } from './components/chat-contacts/chat-contacts.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { TimeOnlyPipe } from './pipe/timeOnly.pipe';
+import { AttachmentsComponent } from './components/upload-files/attachments/attachments.component';
+import { AttachTypePipe } from './components/upload-files/attachType.pipe';
 
 
 @NgModule({
@@ -16,11 +18,15 @@ import { TimeOnlyPipe } from './pipe/timeOnly.pipe';
     SharedModule,
     PickerModule,
     
+    
   ],
   declarations: [
     ChatsComponent,
     ChatContactsComponent,
-    TimeOnlyPipe
+    TimeOnlyPipe,
+    AttachmentsComponent,
+    AttachTypePipe
+
   ],
   providers:[ChatsService]
 })

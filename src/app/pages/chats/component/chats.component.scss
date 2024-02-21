@@ -164,7 +164,7 @@ textarea {
 
 .sendBtn {
     background-color: var(--clr-primary-800);
-    padding: 15px;
+    padding: 12px;
     margin-inline: 2%;
     border: none;
     box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
@@ -244,6 +244,7 @@ textarea {
 
 .chats-footer {
     display: flex;
+    padding: 12px !important;
     justify-content: space-between;
 }
 .messages-count{
@@ -283,7 +284,7 @@ textarea {
 
 textarea.form-control {
     resize: none;
-    height: 50px;
+    height: 40px;
 }
 
 .form-control:focus {
@@ -308,6 +309,11 @@ textarea.form-control {
 @media(max-width:768px){
     section{
         padding-top: 0 !important;
+    }
+    .attachments{
+        img{
+            width: 13px;
+        }
     }
     .contacts-main-container {
         padding-top: 0 !important;

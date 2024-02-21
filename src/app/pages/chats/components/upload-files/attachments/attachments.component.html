@@ -1,0 +1,22 @@
+<ul class="attachments-container">
+  <li *ngFor="let file of files ; let i = index">
+    <div class="attach-content-container">
+      <img class='image' *ngIf="file.type?.includes('image') else otherType" [src]="file.url" alt="">
+      <ng-template #otherType>
+        <div class="file-container">
+          <img class='file' [src]="file.name | attachType" alt="" >
+
+        </div>
+
+      </ng-template>
+
+        <div class="attach-details">
+        <span  class="overflow-line-1 fileName">{{ file?.name ? file?.name : ('FILE' + (i + 1)) }}</span>
+        <span class="overflow-line-1 fileSize">{{ file?.size ? calcSize(file.size): '--' }}</span>
+
+      </div>
+    </div>
+    <mat-icon class="mx-1" (click)="remove(file)">close</mat-icon>
+
+  </li>
+</ul>

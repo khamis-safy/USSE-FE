@@ -1,61 +1,86 @@
 export interface Chats {
-chat: chat,
-lastMessageDate: string,
-lastMessageContent: string,
-lastMessageDirection: boolean,
-lastMessageStatus: number,
-unseenMessagesCount:number,
-device:devices,
-active:boolean;
+    chat?: chat,
+    lastMessageDate?: string,
+    lastMessageContent?: string,
+    lastMessageDirection?: boolean,
+    lastMessageStatus?: number,
+    unseenMessagesCount?: number,
+    device?: devices,
+    active?: boolean;
 
 }
-interface chat{
+interface chat {
     id?: string,
-    chatName?:string,
+    chatName?: string,
     targetPhoneNumber?: string,
     createdAt?: string,
     isDeleted?: boolean,
 }
-export interface ChatById   {
+export interface ChatById {
     id?: string,
     deviceid?: string,
     device?: any,
     targetPhoneNumber?: string,
     direction?: boolean,
-    chat?:chat,
+    chat?: chat,
     msgBody?: string,
     createdAt?: string,
     updatedAt?: string,
-    isDeleted?: false,
+    isDeleted?: boolean,
     isSeened?: boolean,
     status?: number,
-    applicationUserId?:string,
+    applicationUserId?: string,
     msgType?: string,
     fileName?: any,
     fileUrl?: any,
     campaignId?: any,
     actionCount?: any,
-    isReply?: false,
-    isEnquiry?: false,
+    isReply?: boolean,
+    isEnquiry?: boolean,
     enquiryQuestion?: number,
     botId?: any,
-    isCampaignAction?: false
-} 
+    isCampaignAction?: boolean
+}
 interface devices {
-    id:string,
-    deviceName:string,
+    id: string,
+    deviceName: string,
     deviceType: string,
-    deviceNumber:string,
+    deviceNumber: string,
     createdAt: string,
-    isConnected: false,
+    isConnected: boolean,
     instanceId: string,
     isDeleted: boolean,
-    delayIntervalInSeconds:number,
-    applicationUserId:string,
+    delayIntervalInSeconds: number,
+    applicationUserId: string,
     host: string,
-    password:string,
+    password: string,
     port: number,
     systemID: string,
     lastUpdate: string,
     token: string
+}
+
+export interface chatHub {
+    id: string,
+    Deviceid: string,
+    targetPhoneNumber: string,
+    direction: boolean,
+    msgBody: string,
+    createdAt: string,
+    updatedAt: string,
+    ChatId: string,
+    isDeleted: boolean,
+    isSeened: boolean,
+    status: number,
+    msgType: string,
+    fileName: string,
+    fileUrl: string,
+    CampaignId: string,
+    actionCount: any,
+    isReply: boolean,
+    isEnquiry: boolean,
+    EnquiryQuestion: number,
+    BotId: string,
+    isCampaignAction: boolean,
+    chatName?:string
 }
