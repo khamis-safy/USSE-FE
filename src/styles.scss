@@ -2400,6 +2400,7 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
     min-height: unset !important;
 
   }
+  .contacts_count_warning,
   .custom-responsive-modal,
   .custom-dialog-edit-user-actions,
   .custom-dialog-add-user-actions,
@@ -2433,7 +2434,7 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   .responsive-dialog-for-actions-style2 {
       height: 77vh !important;
   }
-  
+  .contacts_count_warning,
   .responsive-dialog-for-actions,
   .custom-dialog-warning-modal,
   .responsive-dialog-for-actions-style2,
@@ -2447,6 +2448,11 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   .custom-dialog-add-user-actions{
     height: 83vh !important;
 
+  }
+  .contacts_count_warning{
+    height: 60vh !important;
+    min-height: 393px !important;
+    min-height: 393px !important;
   }
   .custom-dialog-edit-user-actions{
     height: 73vh !important;
