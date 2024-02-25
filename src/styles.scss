@@ -75,9 +75,7 @@ $clr_warning_50: #FDF4DC;
 .nb-theme-default .label{
   font-weight: normal !important;
 }
-/* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap');
+
 *:not(i,mat-icon){
   font-family: 'Poppins', sans-serif ;
 }
