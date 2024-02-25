@@ -32,8 +32,7 @@
             </div>
 
         </div>
-        <div class="contacts-container">
-            <!-- undelivered -->
+        <div class="contacts-container" #contactsContainer>
             <ng-container *ngFor="let chatContact of listChats">
                 <div class="my-2   p-3 leftContentDesign" [ngClass]="{'active':chatContact.active}"
                     (click)="navigateToChat(chatContact)">
@@ -142,7 +141,7 @@
         </div>
         <!-- Bodey -->
 
-        <div class="chat-body" #chatContainer>
+        <div class="chat-body" #chatContainer >
 
             <ng-container *ngFor="let chat of selectedChat">
                 <ng-container [ngSwitch]="chat?.direction">

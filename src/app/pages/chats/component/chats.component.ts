@@ -52,7 +52,8 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   showEmoji: boolean = false;
   isEmojiClicked: boolean = false;
   @ViewChild('chatContainer') chatContainer: ElementRef;
-  readonly scrollThrottleTime = 300; // Adjust as needed
+  @ViewChild('contactsContainer') contactsContainer: ElementRef;
+
   isDelete:boolean=false;
   selectedChat:ChatById[]=[]
   selectedChatId:any;
@@ -62,7 +63,13 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   devicesSub$:Observable<any>;
   listChatsSub$:Observable<any>;
   filesList: any=[];
-
+  chatMessagesCount:number=60;
+  contactsCount: number=60;
+  noMoreMessages:boolean;
+  loadingChat: boolean;
+  counter:number=0;
+  isLoading: boolean;
+  noMoreChats: any;
   constructor( public dialog: MatDialog,
     private translationService:TranslationService,
     private authService:AuthService,
@@ -101,37 +108,161 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   }
   ngOnInit() {
     this.getDevices();
+
+    this.chatService.startConnection()
     this.onRecieveMessages();
     this.onStatusChange();
-    this.chatService.startConnection()
-
   }
   ngAfterViewInit() {
+    this.chatContainer.nativeElement.addEventListener('scroll', this.onScrollToTop.bind(this));
+    this.contactsContainer.nativeElement.addEventListener('scroll', this.onScrollToBottom.bind(this));
+
   }
   scrollToBottom() {
     const container = this.chatContainer.nativeElement;
     container.scrollTop = container.scrollHeight;
   }
-  getChatById(chatId,search?,fromInit?)
+  arraysContainSameObjects(arr1: any[], arr2: any[]): boolean {
+    // Check if arrays have the same length
+    if (arr1.length !== arr2.length) {
+        return false;
+    }
+
+    // Check if every object in arr1 exists in arr2
+    return arr1.every(obj1 => {
+        // Find an object in arr2 with the same ID
+        const obj2 = arr2.find(obj => obj['id'] === obj1['id']);
+        // Check if the object exists in arr2
+        return obj2 !== undefined;
+    });
+}
+sortBasedOnDate(array){
+ return array.sort((a, b) => {
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+    if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+      return 0; // if either date is invalid, don't perform comparison
+    }
+    return dateA.getTime() - dateB.getTime(); // compare timestamps
+  });
+}
+resetValues(){
+  this.noMoreMessages=false;
+  this.isLoading=false;
+  this.chatMessagesCount=60;
+  
+}
+onScrollToTop() {
+  const container = this.chatContainer.nativeElement;
+  if (container.scrollTop < 100 && !this.noMoreMessages && !this.isLoading) {
+    this.isLoading = true;
+
+    // Remember the position of the scroll
+    const previousScrollHeight = container.scrollHeight;
+    const previousScrollTop = container.scrollTop;
+    
+    this.chatService.getChatById(this.email, this.selectedChatId, this.chatMessagesCount, 0, '', this.deviceId)
+      .subscribe(
+        (res) => {
+          if (res.length === 0) {
+            this.noMoreMessages = true;
+          } else {
+            if (this.selectedChat.length === res.length) {
+              this.noMoreMessages = true;
+            } else {
+              this.noMoreMessages = false;
+              res = this.sortBasedOnDate(res);
+              this.selectedChat = res // Append new messages to the beginning of the array
+              setTimeout(() => {
+              // Calculate the height of newly added messages
+              const newMessagesHeight = container.scrollHeight - previousScrollHeight;
+              // Adjust the scroll position to maintain the user's position before loading new messages
+              container.scrollTop = previousScrollTop + newMessagesHeight;
+              this.chatMessagesCount += 30;
+              this.isLoading = false;
+            }, 0);
+            }
+
+          
+          }
+        },
+        (error) => {
+          console.error('Error loading more data:', error);
+          this.isLoading = false;
+        }
+      );
+  }
+}
+onScrollToBottom(){
+  const container = this.contactsContainer.nativeElement;
+
+  // Check if the user has scrolled to the bottom of the container
+  const isNearBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 30;
+
+  if (isNearBottom && !this.noMoreChats && !this.loadingChat) {
+    this.loadingChat = true;
+    let prevContainerHeight = container.scrollHeight;
+    let prevScrollTop = container.scrollTop;
+
+    this.chatService.listChats(this.email, this.contactsCount, 0, '', this.deviceId)
+      .subscribe(
+        (res) => {
+          if (res.length === 0) {
+            this.noMoreChats = true;
+          } else {
+            if (this.listChats.length === res.length) {
+              this.noMoreChats = true;
+            } else {
+              this.noMoreChats = false;
+              this.listChats = res;
+              setTimeout(() => {
+                const newContentHeight = container.scrollHeight - prevContainerHeight;
+                // Adjust the scroll position to maintain the position of the last visible data
+                container.scrollTop +=newContentHeight;
+
+                // container.scrollTop +=(newContentHeight -30);
+
+                this.contactsCount += 30;
+                this.loadingChat = false;
+              }, 0);
+            }
+            
+          }
+        },
+        (error) => {
+          this.loadingChat = false;
+        }
+      );
+  }
+}
+
+
+  getChatById(chatId,search?)
   {
-    let searchVal = search || ''
+    let searchVal = search || '';
     this.chatService.getChatById(this.email,chatId,30,0,searchVal,this.deviceId) 
     .subscribe(
       (res)=>{
-        res.sort((a, b) => {
-          const dateA = new Date(a.createdAt);
-          const dateB = new Date(b.createdAt);
-          if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
-            return 0; // if either date is invalid, don't perform comparison
-          }
-          return dateA.getTime() - dateB.getTime(); // compare timestamps
-        });
-        this.selectedChat=res;
-        // this.chatName=res[0]?.chat?.chatName;
-        // this.targetPhoneNumber=res[0]?.chat?.targetPhoneNumber;
-        setTimeout(() => {
-          this.scrollToBottom();
-        }, 0);
+        if(res.length == 0){
+          this.noMoreMessages=true;
+
+        }
+        else{
+          this.noMoreMessages=false;
+
+          res = this.sortBasedOnDate(res)
+
+        }
+
+        this.selectedChat=res
+
+        
+          setTimeout(() => {
+            this.scrollToBottom();
+            return
+          }, 0);
+        
+       
 
       }
     )
@@ -192,7 +323,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
         })
   }
   getListChats(){
-  this.listChatsSub$= this.chatService.listChats(this.email , 100,0,this.searchKey,this.deviceId);
+  this.listChatsSub$= this.chatService.listChats(this.email , 30,0,this.searchKey,this.deviceId);
   this.listChatsSub$.subscribe(
       (res)=>{
         this.listChats=res;
@@ -212,7 +343,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
           chat=this.listChats.find((chats)=>chats.chat.id == this.selectedChatId);
           this.chatName=chat.chat.chatName;
           this.targetPhoneNumber=chat.chat.targetPhoneNumber;
-          this.getChatById(this.selectedChatId,'',true);
+          this.getChatById(this.selectedChatId,'');
       
           this.listChats.map((chat)=>chat.active=false) ;   
           chat.active=true
@@ -301,9 +432,10 @@ resetForm(){
         }
       });
     }
+
     navigateToChat(chat:Chats){
       this.openChat=true;
-
+      this.resetValues()
       if(!chat.active){
         this.clearInputData();
         if(chat.unseenMessagesCount > 0){
@@ -369,12 +501,7 @@ resetForm(){
 
       }
     }
-    onScroll() {
-      const container = this.chatContainer.nativeElement;
-      if (container.scrollTop + container.clientHeight >= container.scrollHeight - 50 ) {
-        this.getChatById(this.selectedChatId);
-      }
-    }
+  
     sendMsg(event?){
       let message = this.messageForm.value.message;
       if(message.trim() !== ''){

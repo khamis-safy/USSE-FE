@@ -56,7 +56,10 @@ public onStatusChange = ()=>{
   })
 }
 closeConnection(){
-  this.hubConnection.stop();
+  if(this.hubConnection){
+    this.hubConnection.stop();
+  }
+
 }
 listChats(email:string,showsNum:number,pageNum:number,search:string,deviceId:string):Observable<Chats[]>{
   return this.http.get<Chats[]>(`${this.api}/listChats?email=${email}&take=${showsNum}&scroll=${pageNum}&search=${search}&deviceId=${deviceId}`)
