@@ -620,7 +620,12 @@
 "campaign_Sending_out_time_tooltip":"the time boundaries that this campaign must be sent at",
 "learn_more":"Learn more",
 "Type a message":"Type a message",
-"New_chat":"New Chat"
+"New_chat":"New Chat",
+"sentAt":"Sent At ",
+"seenAt":"Seen At ",
+"deliveredAt":"Delivered At ",
+"Error: device is not connected, try to reconnect your device":"Error: device is not connected, try to reconnect your device",
+"Error: at least attachments or message content must be not empty":"Error: at least attachments or message content must be not empty"
 
 
 

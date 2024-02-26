@@ -7,7 +7,7 @@ import { ChatContactsComponent } from '../components/chat-contacts/chat-contacts
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { Observable, Subscription, concatMap,pipe, interval, throttleTime, combineLatest } from 'rxjs';
+import { Observable, Subscription, concatMap,pipe, interval, throttleTime, combineLatest, find } from 'rxjs';
 import { ChatById, Chats, chatHub } from '../interfaces/Chats';
 import { ChatsService } from '../chats.service';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
@@ -53,6 +53,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   isEmojiClicked: boolean = false;
   @ViewChild('chatContainer') chatContainer: ElementRef;
   @ViewChild('contactsContainer') contactsContainer: ElementRef;
+  @ViewChild('MsgsearchInput') MsgsearchInput: ElementRef;
 
   isDelete:boolean=false;
   selectedChat:ChatById[]=[]
@@ -70,6 +71,8 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   counter:number=0;
   isLoading: boolean;
   noMoreChats: any;
+  isSearch:boolean =false;
+  searchVal: string = '';
   constructor( public dialog: MatDialog,
     private translationService:TranslationService,
     private authService:AuthService,
@@ -97,6 +100,12 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
     //   } 
     // });
   }
+  toggleSearch(msg?): void {
+ setTimeout(() => {
+  this.MsgsearchInput.nativeElement.focus();
+
+ }, 100);
+  }
   unSubscripQueryParam(){
     if(this.queryParamsSubscription){
       this.queryParamsSubscription.unsubscribe();
@@ -116,7 +125,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   ngAfterViewInit() {
     this.chatContainer.nativeElement.addEventListener('scroll', this.onScrollToTop.bind(this));
     this.contactsContainer.nativeElement.addEventListener('scroll', this.onScrollToBottom.bind(this));
-
+    
   }
   scrollToBottom() {
     const container = this.chatContainer.nativeElement;
@@ -153,45 +162,53 @@ resetValues(){
   
 }
 onScrollToTop() {
-  const container = this.chatContainer.nativeElement;
-  if (container.scrollTop < 100 && !this.noMoreMessages && !this.isLoading) {
-    this.isLoading = true;
-
-    // Remember the position of the scroll
-    const previousScrollHeight = container.scrollHeight;
-    const previousScrollTop = container.scrollTop;
-    
-    this.chatService.getChatById(this.email, this.selectedChatId, this.chatMessagesCount, 0, '', this.deviceId)
-      .subscribe(
-        (res) => {
-          if (res.length === 0) {
-            this.noMoreMessages = true;
-          } else {
-            if (this.selectedChat.length === res.length) {
+  
+    const container = this.chatContainer.nativeElement;
+    if (container.scrollTop < 100 && container.scrollTop > 90 && !this.noMoreMessages && !this.isLoading ) {
+      if(this.searchVal){
+        this.isLoading = false;
+  
+      }
+      else{
+        this.isLoading = true;
+  
+      }
+      // Remember the position of the scroll
+      const previousScrollHeight = container.scrollHeight;
+      const previousScrollTop = container.scrollTop;
+      
+      this.chatService.getChatById(this.email, this.selectedChatId, this.chatMessagesCount, 0, this.searchVal, this.deviceId)
+        .subscribe(
+          (res) => {
+            if (res.length === 0) {
               this.noMoreMessages = true;
             } else {
-              this.noMoreMessages = false;
-              res = this.sortBasedOnDate(res);
-              this.selectedChat = res // Append new messages to the beginning of the array
-              setTimeout(() => {
-              // Calculate the height of newly added messages
-              const newMessagesHeight = container.scrollHeight - previousScrollHeight;
-              // Adjust the scroll position to maintain the user's position before loading new messages
-              container.scrollTop = previousScrollTop + newMessagesHeight;
-              this.chatMessagesCount += 30;
-              this.isLoading = false;
-            }, 0);
+              if (this.selectedChat.length === res.length) {
+                this.noMoreMessages = true;
+              } else {
+                this.noMoreMessages = false;
+                this.selectedChat =  this.sortBasedOnDate(res);
+                setTimeout(() => {
+                // Calculate the height of newly added messages
+                const newMessagesHeight = container.scrollHeight - previousScrollHeight;
+                // Adjust the scroll position to maintain the user's position before loading new messages
+                container.scrollTop = previousScrollTop + newMessagesHeight;
+                this.chatMessagesCount += 30;
+                this.isLoading = false;
+              }, 0);
+              }
+  
+            
             }
-
-          
+          },
+          (error) => {
+            console.error('Error loading more data:', error);
+            this.isLoading = false;
           }
-        },
-        (error) => {
-          console.error('Error loading more data:', error);
-          this.isLoading = false;
-        }
-      );
-  }
+        );
+    }
+  
+
 }
 onScrollToBottom(){
   const container = this.contactsContainer.nativeElement;
@@ -235,35 +252,38 @@ onScrollToBottom(){
       );
   }
 }
+  onSearchMsg(search){
+    this.searchVal=search.value;
+  this.getChatById(this.selectedChatId,search.value);
 
+}
 
   getChatById(chatId,search?)
   {
-    let searchVal = search || '';
-    this.chatService.getChatById(this.email,chatId,30,0,searchVal,this.deviceId) 
+    this.searchVal = search || '';
+    this.loadingChat = true;
+
+    this.chatService.getChatById(this.email,chatId,30,0,this.searchVal,this.deviceId) 
     .subscribe(
       (res)=>{
+        
         if(res.length == 0){
           this.noMoreMessages=true;
+            this.isLoading=false;
 
+          
+          
         }
         else{
           this.noMoreMessages=false;
-
-          res = this.sortBasedOnDate(res)
-
         }
 
-        this.selectedChat=res
-
-        
+        this.selectedChat =  this.sortBasedOnDate(res);
           setTimeout(() => {
             this.scrollToBottom();
             return
           }, 0);
         
-       
-
       }
     )
 
@@ -504,52 +524,117 @@ resetForm(){
   
     sendMsg(event?){
       let message = this.messageForm.value.message;
-      if(message.trim() !== ''){
+      let newMessage:any=[];
+      if(this.filesList.length > 0 || message.trim() !== ''){
         if(event){
           if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault(); 
           }  
         }
-        this.messageService.sendWhatsappBusinessMessage(this.deviceId,[this.targetPhoneNumber],message,null,this.email,[]).subscribe(
-          (res)=>{
-            this.selectedChat.push({
-              id: this.selectedChatId,
-              deviceid: this.deviceId,
-              targetPhoneNumber: this.targetPhoneNumber,
-              direction: true,
-              chat:{chatName:this.chatName,id:res[0]},
-              msgBody: message,
-              createdAt:String(this.convertToUTC(new Date())) ,
-              status: 1,
-              // updatedAt: string,
-              // isDeleted: false,
-              // isSeened: boolean,
-              // status: number,
-              // applicationUserId:string,
-              // msgType: string,
-              // fileName: any,
-              // fileUrl: any,
-              // campaignId: any,
-              // actionCount: any,
-              // isReply: false,
-              // isEnquiry: false,
-              // enquiryQuestion: number,
-              // botId: any,
-              // isCampaignAction: false
-            })
-            let findChat = this.listChats.find((chat)=>chat.chat.id == this.selectedChatId);
-            findChat.lastMessageContent=message;
-            findChat.lastMessageStatus=1;
-            this.resetForm();
-
+        let attachements = this.filesList.map((file)=>{return file.url})
+          this.messageService.sendWhatsappBusinessMessage(this.deviceId,[this.targetPhoneNumber],message,null,this.email,attachements).subscribe(
+            (res)=>{
+          let mainData:any={id: this.selectedChatId,
+            deviceid: this.deviceId,
+            targetPhoneNumber: this.targetPhoneNumber,
+            direction: true,
+            chat:{chatName:this.chatName,id:res[0]},
+            msgBody: message,
+            createdAt:String(this.convertToUTC(new Date())) ,
+            status: 1
           }
-        )
-        this.resetForm()
-      
+            // in case of uplaoded files 
+          if(this.filesList.length > 0){
+            newMessage = this.filesList.map((file, index) => {
+              let messageWithFile = {
+                  ...mainData, // Spread mainData to retain its properties
+                  fileName: file.name,
+                  fileUrl: file.url
+              };
+              if(index !== 0){
+                messageWithFile.msgBody='';
+              }
+              return messageWithFile;
+          });
+            console.log("new message werfsdfsdf", newMessage)
+
+            }
+            else{
+              newMessage=[mainData];
+
+              console.log("new message" , newMessage)
+
+            }
+
+          
+     
+          this.selectedChat=[...this.selectedChat,...newMessage]
+
+          this.resetForm()
+          this.filesList=[];
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 0);
+        })
+
+
+
+        //   let mainData:any={id: this.selectedChatId,
+        //     deviceid: this.deviceId,
+        //     targetPhoneNumber: this.targetPhoneNumber,
+        //     direction: true,
+        //     chat:{chatName:this.chatName,id:''},
+        //     msgBody: message,
+        //     createdAt:String(this.convertToUTC(new Date())) ,
+        //     status: 1
+        //   }
+        //     // in case of uplaoded files 
+        //   if(this.filesList.length > 0){
+        //     console.log(this.filesList)
+        //     newMessage = this.filesList.map((file, index) => {
+        //       let messageWithFile = {
+        //           ...mainData, // Spread mainData to retain its properties
+        //           fileName: file.name,
+        //           fileUrl: file.url
+        //       };
+        //       if(index !== 0){
+        //         messageWithFile.msgBody='';
+        //       }
+        //       return messageWithFile;
+        //   });
+        //     console.log("new message werfsdfsdf", newMessage)
+
+        //     }
+        //     else{
+        //       newMessage=[mainData];
+
+        //       console.log("new message" , newMessage)
+
+        //     }
+
+          
+        // console.log(this.selectedChat)
+        // console.log("this.selectedChat before add" , this.selectedChat)
+
+        //   this.selectedChat=[...this.selectedChat,...newMessage]
+        //   console.log("this.selectedChat after add" , this.selectedChat)
+
+        //   this.resetForm()
+        //   this.filesList=[];
+        //   setTimeout(() => {
+        //     this.scrollToBottom();
+        //   }, 0);
+
       }
-      setTimeout(() => {
-        this.scrollToBottom();
-      }, 300); 
+    
+
+
+
+    
+    }
+    isImage(fileUrl:string){
+      console.log(fileUrl.includes('image'))
+      return fileUrl.includes('image')
     }
     convertToUTC(timecontrol: any): any {
       const selectedTime = timecontrol;
@@ -655,6 +740,8 @@ resetForm(){
         let findChat = this.listChats.find((chat)=>chat.chat.id == message.ChatId);
         if(findChat){
           findChat.lastMessageStatus=message.status;
+          findChat.lastMessageContent=message.msgBody;
+          findChat.lastMessageDate=newMessage.createdAt;
 
         }
 

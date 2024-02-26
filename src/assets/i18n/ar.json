@@ -618,7 +618,13 @@
 "campaign_Sending_out_time_tooltip":"الحدود الزمنية التي يجب إرسال هذه الحملة فيها",
 "learn_more":"معرفة المزيد",
 "Type a message":"اكتب رسالة",
-"New_chat":"محادثة جديدة"
+"New_chat":"محادثة جديدة",
+"sentAt":" أرسلت",
+"seenAt":" تمت مشاهدتها",
+"deliveredAt":" تم التوصيل",
+"Error: device is not connected, try to reconnect your device":"خطأ: الجهاز غير متصل، حاول إعادة توصيل جهازك",
+"Error: at least attachments or message content must be not empty":"خطأ: على الأقل يجب ألا تكون المرفقات أو محتوى الرسالة فارغة"
+
 
 
 }

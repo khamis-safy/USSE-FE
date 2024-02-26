@@ -1376,6 +1376,10 @@ mat-expansion-panel-body{
   }
   .emoji-pick{
 right: 0 !important;
+&.chat-emoji-picker{
+  right: unset !important;
+
+}
   }
   .buttons_{
     flex-direction: row-reverse;
@@ -2838,5 +2842,13 @@ span.mat-mdc-select-value-text {
   //   .mat-mdc-dialog-container .mdc-dialog__surface {
   //     border-radius: 25px !important;
   // }
+  }
+}
+.rotate-180{
+  rotate: 180deg;
+}
+.rtl{
+  .rotate-180{
+    rotate: 360deg  !important;
   }
 }
