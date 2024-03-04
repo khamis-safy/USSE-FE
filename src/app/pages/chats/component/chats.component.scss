@@ -40,6 +40,7 @@ textarea {
 .contacts-container {
     height: 67vh;
     overflow: auto;
+    padding-inline: 5px;
 
 }
 
@@ -177,7 +178,6 @@ textarea {
 .chat-body {
     display: flex;
     flex-direction: column;
-    gap: 1.8rem;
 
     .received-chats,
     .outgoing-chats {
@@ -185,6 +185,7 @@ textarea {
         align-items: end;
         gap: 1.3rem;
         width: 100%;
+        margin-block: 25px;
     }
 
     .received-chats {
@@ -487,3 +488,7 @@ textarea.form-control {
     }
   }
 
+.image{
+    max-width: 350px;
+
+}

@@ -6,6 +6,7 @@ import { Contacts } from 'src/app/pages/manage-contacts/contacts';
 import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-contacts.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ChatsService } from '../../chats.service';
+import { Chats } from '../../interfaces/Chats';
 
 @Component({
   selector: 'app-chat-contacts',
@@ -15,11 +16,13 @@ import { ChatsService } from '../../chats.service';
 export class ChatContactsComponent implements OnInit {
   allContacts:any=[];
   contacts:any=[];
+  foundChat:Chats;
+
   constructor(private authService:AuthService,
     private listService:ManageContactsService,
     public dialogRef: MatDialogRef<ChatContactsComponent>,
     private chatService:ChatsService,
-    @Inject(MAT_DIALOG_DATA) public data:string) { }
+    @Inject(MAT_DIALOG_DATA) public data:any) { }
 
   ngOnInit() {
     this.getContacts()
@@ -37,19 +40,53 @@ export class ChatContactsComponent implements OnInit {
     );
   
   }
-  addNewContact(contact:Contacts){
-    let data={
-     chatName:contact.name,
-     targetPhoneNumber:contact.mobileNumber,
-     email:this.authService.getUserInfo()?.email,
-     deviceId:this.data
+  async addNewContact(contact: Contacts) {
+    let newContact = {
+        chatName: contact.name,
+        targetPhoneNumber: contact.mobileNumber,
+        email: this.authService.getUserInfo()?.email,
+        deviceId: this.data.deviceId
+    };
+
+    // Now we await the result of isContactExist
+    if (await this.isContactExist(contact.name)) {
+        this.onClose({ isFound: true, foundChat: this.foundChat });
+    } else {
+        this.chatService.addNewChat(newContact).subscribe(
+            (res) => {
+                this.onClose(res);
+            }
+        );
     }
-    this.chatService.addNewChat(data).subscribe(
-      (res)=>{
-        this.onClose(res)
+}
+
+
+  async isContactExist(contactName) {
+    let contact = this.data.chats.find((chat: Chats) => chat.chat.chatName === contactName);
+    if (contact) {
+        this.foundChat = contact;
+        return true;
+    } else {
+        let exists = await this.getChat(contactName);
+        return exists;
+    }
+}
+
+async getChat(chatName) {
+  try {
+      let res = await this.chatService.listChats(this.authService.getUserInfo()?.email, 30, 0, chatName, this.data.deviceId).toPromise();
+      if (res.length > 0) {
+          this.foundChat = res[0];
+          return true;
+      } else {
+          return false;
       }
-    )
+  } catch (error) {
+      console.error("Error while fetching chats:", error);
+      // Handle the error here, e.g., return false or throw an error
+      return false;
   }
+}
   onSearch(event:any){
     this.getContacts(event.value);
   }

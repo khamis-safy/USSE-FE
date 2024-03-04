@@ -34,6 +34,8 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   devicesData :any= new FormControl([]);
   message :any= new FormControl('',Validators.required);
   @ViewChild('fileInput') fileInputRef: ElementRef<HTMLInputElement>;
+  @ViewChild('searchContainer') searchContainer: ElementRef<HTMLInputElement>;
+
   uploadedAttachments:files[]=[];
   form = new FormGroup({
     devicesData:this.devicesData,
@@ -54,6 +56,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   @ViewChild('chatContainer') chatContainer: ElementRef;
   @ViewChild('contactsContainer') contactsContainer: ElementRef;
   @ViewChild('MsgsearchInput') MsgsearchInput: ElementRef;
+  groupedMessages: { [day: string]: ChatById[] } = {};
 
   isDelete:boolean=false;
   selectedChat:ChatById[]=[]
@@ -73,6 +76,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   noMoreChats: any;
   isSearch:boolean =false;
   searchVal: string = '';
+  sortedDays: string[]=[]; 
   constructor( public dialog: MatDialog,
     private translationService:TranslationService,
     private authService:AuthService,
@@ -89,7 +93,6 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
         emojiInput: ['']
       });
   }
- 
   initRouting() {
     // Assign the subscription to queryParamsSubscription
     // this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
@@ -100,12 +103,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
     //   } 
     // });
   }
-  toggleSearch(msg?): void {
- setTimeout(() => {
-  this.MsgsearchInput.nativeElement.focus();
 
- }, 100);
-  }
   unSubscripQueryParam(){
     if(this.queryParamsSubscription){
       this.queryParamsSubscription.unsubscribe();
@@ -117,6 +115,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   }
   ngOnInit() {
     this.getDevices();
+    this.router.navigateByUrl("/chats")
 
     this.chatService.startConnection()
     this.onRecieveMessages();
@@ -127,6 +126,28 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
     this.contactsContainer.nativeElement.addEventListener('scroll', this.onScrollToBottom.bind(this));
     
   }
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: any) {
+    if (!this.searchContainer.nativeElement.contains(event.target) ) {
+      if(this.searchVal === ''){
+        this.isSearch = false;
+      }
+      else{
+        this.isSearch = true
+      }
+    }
+  }
+  toggleSearch(msg?): void {
+    setTimeout(() => {
+    this.isSearch=true
+    if( this.MsgsearchInput)
+    {
+      this.MsgsearchInput.nativeElement.focus();
+    }
+  
+  
+    }, 200);
+    }
   scrollToBottom() {
     const container = this.chatContainer.nativeElement;
     container.scrollTop = container.scrollHeight;
@@ -164,7 +185,7 @@ resetValues(){
 onScrollToTop() {
   
     const container = this.chatContainer.nativeElement;
-    if (container.scrollTop < 100 && container.scrollTop > 90 && !this.noMoreMessages && !this.isLoading ) {
+    if (container.scrollTop < 100 && container.scrollTop > 80 && !this.noMoreMessages && !this.isLoading ) {
       if(this.searchVal){
         this.isLoading = false;
   
@@ -188,6 +209,8 @@ onScrollToTop() {
               } else {
                 this.noMoreMessages = false;
                 this.selectedChat =  this.sortBasedOnDate(res);
+                this.groupMessagesByDay();
+
                 setTimeout(() => {
                 // Calculate the height of newly added messages
                 const newMessagesHeight = container.scrollHeight - previousScrollHeight;
@@ -231,7 +254,15 @@ onScrollToBottom(){
               this.noMoreChats = true;
             } else {
               this.noMoreChats = false;
-              this.listChats = res;
+              let prevChat = this.listChats[0];
+              if(res.includes(prevChat)){
+                this.listChats=res.splice(res.indexOf(prevChat , 1))
+                this.listChats.unshift(prevChat)
+              }
+              else{
+                this.listChats = res;
+
+              }
               setTimeout(() => {
                 const newContentHeight = container.scrollHeight - prevContainerHeight;
                 // Adjust the scroll position to maintain the position of the last visible data
@@ -257,6 +288,55 @@ onScrollToBottom(){
   this.getChatById(this.selectedChatId,search.value);
 
 }
+groupMessagesByDay() {
+  this.groupedMessages = {}; // Clear previous grouping
+
+  this.selectedChat.forEach(chat => {
+    const messageDate = new Date(chat.createdAt);
+    const day = this.getGroupHeader(messageDate);
+
+    // Check if the day already exists in groupedMessages
+    if (!this.groupedMessages[day]) {
+      // If the day doesn't exist, initialize it with an empty array
+      this.groupedMessages[day] = [];
+    }
+
+    // Push the current chat into the array for this day
+    this.groupedMessages[day].push(chat);
+  });
+
+  // Extract keys (days) and sort them
+  this.sortedDays = Object.keys(this.groupedMessages).sort((a, b) => {
+    // Convert keys to dates and compare
+    return new Date(a).getTime() - new Date(b).getTime();
+  });
+
+}
+isString(value: any): boolean {
+  return typeof value === 'string';
+}
+getGroupHeader(messageDate: Date): string {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  if (
+    messageDate.getDate() === today.getDate() &&
+    messageDate.getMonth() === today.getMonth() &&
+    messageDate.getFullYear() === today.getFullYear()
+  ) {
+    return 'Today';
+  } else if (
+    messageDate.getDate() === yesterday.getDate() &&
+    messageDate.getMonth() === yesterday.getMonth() &&
+    messageDate.getFullYear() === yesterday.getFullYear()
+  ) {
+    return 'Yesterday';
+  } else {
+    return messageDate.toDateString(); // Or any other format you prefer for other dates
+  }
+}
+
 
   getChatById(chatId,search?)
   {
@@ -279,6 +359,8 @@ onScrollToBottom(){
         }
 
         this.selectedChat =  this.sortBasedOnDate(res);
+        this.groupMessagesByDay();
+
           setTimeout(() => {
             this.scrollToBottom();
             return
@@ -355,7 +437,7 @@ onScrollToBottom(){
           chat=res[0]
           this.getChatById(this.selectedChatId);
           this.openChat=true;
-          this.updateQueryParams();
+          // this.updateQueryParams();
           this.listChats.map((chat)=>chat.active=false) ;   
           this.listChats[0].active=true
         }
@@ -408,16 +490,26 @@ resetForm(){
     dialogConfig.panelClass='add-new-chat-modal'
     dialogConfig.position =  currentLang=='ar'?{ right: '0'} :{ left: '0'} ;
     dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
-    dialogConfig.data=this.deviceId;
+    dialogConfig.data={deviceId:this.deviceId , chats:this.listChats};
     const dialogRef = this.dialog.open(ChatContactsComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.selectedChatId=result.id;
-        this.chatName=result.chatName;
-        this.targetPhoneNumber=result.targetPhoneNumber;
-        this.getListChats()
-        // this.updateQueryParams()
+        if(result.isFound){
+          this.selectedChatId = result.foundChat.chat.id;
+          this.chatName = result.foundChat.chat.chatName;
+          this.targetPhoneNumber = result.foundChat.chat.targetPhoneNumber;
+          this.getListChats()
+          this.updateQueryParams()
+        }
+        else{
+          this.selectedChatId=result.id;
+          this.chatName=result.chatName;
+          this.targetPhoneNumber=result.targetPhoneNumber;
+          this.getListChats()
+          this.updateQueryParams()
+        }
+      
       }
 
     });
@@ -455,6 +547,7 @@ resetForm(){
 
     navigateToChat(chat:Chats){
       this.openChat=true;
+      this.isSearch=false;
       this.resetValues()
       if(!chat.active){
         this.clearInputData();
@@ -556,19 +649,18 @@ resetForm(){
               }
               return messageWithFile;
           });
-            console.log("new message werfsdfsdf", newMessage)
 
             }
             else{
               newMessage=[mainData];
 
-              console.log("new message" , newMessage)
 
             }
 
           
      
           this.selectedChat=[...this.selectedChat,...newMessage]
+          this.groupMessagesByDay();
 
           this.resetForm()
           this.filesList=[];
@@ -579,52 +671,6 @@ resetForm(){
 
 
 
-        //   let mainData:any={id: this.selectedChatId,
-        //     deviceid: this.deviceId,
-        //     targetPhoneNumber: this.targetPhoneNumber,
-        //     direction: true,
-        //     chat:{chatName:this.chatName,id:''},
-        //     msgBody: message,
-        //     createdAt:String(this.convertToUTC(new Date())) ,
-        //     status: 1
-        //   }
-        //     // in case of uplaoded files 
-        //   if(this.filesList.length > 0){
-        //     console.log(this.filesList)
-        //     newMessage = this.filesList.map((file, index) => {
-        //       let messageWithFile = {
-        //           ...mainData, // Spread mainData to retain its properties
-        //           fileName: file.name,
-        //           fileUrl: file.url
-        //       };
-        //       if(index !== 0){
-        //         messageWithFile.msgBody='';
-        //       }
-        //       return messageWithFile;
-        //   });
-        //     console.log("new message werfsdfsdf", newMessage)
-
-        //     }
-        //     else{
-        //       newMessage=[mainData];
-
-        //       console.log("new message" , newMessage)
-
-        //     }
-
-          
-        // console.log(this.selectedChat)
-        // console.log("this.selectedChat before add" , this.selectedChat)
-
-        //   this.selectedChat=[...this.selectedChat,...newMessage]
-        //   console.log("this.selectedChat after add" , this.selectedChat)
-
-        //   this.resetForm()
-        //   this.filesList=[];
-        //   setTimeout(() => {
-        //     this.scrollToBottom();
-        //   }, 0);
-
       }
     
 
@@ -633,7 +679,6 @@ resetForm(){
     
     }
     isImage(fileUrl:string){
-      console.log(fileUrl.includes('image'))
       return fileUrl.includes('image')
     }
     convertToUTC(timecontrol: any): any {

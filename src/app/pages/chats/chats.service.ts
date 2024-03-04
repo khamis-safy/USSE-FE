@@ -44,14 +44,12 @@ private startHubConnection (): void {
 public onReceiveMessage = ()=>{
   this.hubConnection.on('ReceiveMessage',(email,message)=>{
     this.receivedMessages$.next({userEmail:email,message:message});
-    console.log('onReciveWorks',{userEmail:email,message:message})
 
   })
 }
 public onStatusChange = ()=>{
   this.hubConnection.on('StatusUpdate',(email,message)=>{
     this.updatedStatus$.next({userEmail:email,message:message});
-    console.log('StatusUpdate',{userEmail:email,message:message})
 
   })
 }
