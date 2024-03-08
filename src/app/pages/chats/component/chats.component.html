@@ -158,7 +158,7 @@
         <div class="chat-body" #chatContainer >
             <div class=""  *ngFor="let day of sortedDays">
                 <div class="d-flex justify-content-center">
-                    <span *ngIf="isString(day)">{{ day }}</span>
+                    <span *ngIf="isString(day)">{{ day |translate}}</span>
                     <span *ngIf="!isString(day)">{{ day |toLocalTime}}</span>
                 </div>            <!-- display chat messages -->
                 <ng-container *ngFor="let chat of groupedMessages[day]">

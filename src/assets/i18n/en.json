@@ -625,7 +625,10 @@
 "seenAt":"Seen At ",
 "deliveredAt":"Delivered At ",
 "Error: device is not connected, try to reconnect your device":"Error: device is not connected, try to reconnect your device",
-"Error: at least attachments or message content must be not empty":"Error: at least attachments or message content must be not empty"
+"Error: at least attachments or message content must be not empty":"Error: at least attachments or message content must be not empty",
+"Today":"Today",
+"Yesterday":"Yesterday"
+
 
 
 

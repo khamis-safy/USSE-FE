@@ -623,7 +623,9 @@
 "seenAt":" تمت مشاهدتها",
 "deliveredAt":" تم التوصيل",
 "Error: device is not connected, try to reconnect your device":"خطأ: الجهاز غير متصل، حاول إعادة توصيل جهازك",
-"Error: at least attachments or message content must be not empty":"خطأ: على الأقل يجب ألا تكون المرفقات أو محتوى الرسالة فارغة"
+"Error: at least attachments or message content must be not empty":"خطأ: على الأقل يجب ألا تكون المرفقات أو محتوى الرسالة فارغة",
+"Today":"اليوم",
+"Yesterday":"امس"
 
 
 
