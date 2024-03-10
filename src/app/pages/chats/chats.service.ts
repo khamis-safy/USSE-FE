@@ -29,8 +29,8 @@ startConnection(){
 }
 private createConnection() {
   this.hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl(this.signalRlink) // Specify the URL of your SignalR hub
-    .build();
+  .withUrl(this.signalRlink, { withCredentials: false })
+  .build();
     this.startHubConnection()
 
 }

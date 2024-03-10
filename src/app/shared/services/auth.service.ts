@@ -267,16 +267,11 @@ saveDataToLocalStorage(data){
  
  
  checkExistenceAndValidation(){
-  // if(localStorage.getItem("token") && this.loginService.getCookieValue("refreshToken") && localStorage.getItem("email")){
-  //   const decryptedEmail = this.localStorageService.getDecryptedData("email");
-  //   return this.isEmailValid(decryptedEmail)
-  // }
+  if(localStorage.getItem("token") && this.loginService.getCookieValue("refreshToken") && localStorage.getItem("email")){
+    const decryptedEmail = this.localStorageService.getDecryptedData("email");
+    return this.isEmailValid(decryptedEmail)
+  }
 
-    // for testing singalr
-    if(this.userInfo && this.loginService.getCookieValue("refreshToken"))
-    {
-      return true
-    }
   else{
     return false
   }

@@ -57,6 +57,7 @@ export class ActionComponent implements OnInit{
   @Output() sharedPermissions=new EventEmitter<DeviceSections[]>
   @Input() data:Users;
   deviceLoadingText:string='Loading ...';
+  email:string=this.authService.getUserInfo()?.email;
 
   devices:SelectOption[];
   testData:TestData[];
@@ -238,7 +239,7 @@ return sectionsLevels
 }
 
 getDevices(){
-  this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+  this.authService.getDevices(this.email,10,0,"","").subscribe(
     (res)=>{
      
     let devicesData=res;

@@ -117,8 +117,7 @@ let isTrialUser:boolean;
     }
    else if(res.isEmailAuthonticated && (res.isActive || res.isTrial)){
       // update local storage
-      // for testing singalr
-      // this.authService.saveDataToLocalStorage(this.userInfo);
+      this.authService.saveDataToLocalStorage(this.userInfo);
       this.authService.updateUserInfo(this.userInfo);
   
       this.loginService.storeRefreshTokenInCookie(res.refreshToken);

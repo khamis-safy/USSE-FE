@@ -3,6 +3,7 @@ import { DevicesService } from '../../devices.service';
 import { Subscription, interval, switchMap, takeUntil, timer } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster
   styleUrls: ['./steps.component.scss']
 })
 export class StepsComponent implements OnInit ,OnDestroy {
+  email:string=this.authService.getUserInfo()?.email;
 
 steps:boolean=true;
 isLoading:boolean=false;
@@ -34,7 +36,8 @@ retryCounter:number = 0;
   constructor(private devicesService:DevicesService,
     private  toaster: ToasterServices,
     public dialogRef: MatDialogRef<StepsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any
+    @Inject(MAT_DIALOG_DATA) public data:any,
+    private authService:AuthService,
     ) { }
 
   ngOnInit() {
@@ -79,7 +82,7 @@ onAddClose(event){
 }
 
 initSessionAndCheckStatus(){
-  this.initSessionSubscription= this.devicesService.initWhatsAppB(this.sessionNB,this.portWB,this.servierIDwB,this.host).subscribe(
+  this.initSessionSubscription= this.devicesService.initWhatsAppB(this.email,this.sessionNB,this.portWB,this.servierIDwB,this.host).subscribe(
   (res)=>{
           this.isLoading=false;
           this.addDevice=false;
