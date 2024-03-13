@@ -20,8 +20,8 @@
       <p style="
         margin: 0 !important;
         max-width: 78%;
-    ">{{ translate && (message | translate) !== message ? (message | translate):
-        translate && (message | translate) === message ? ('COMMON.ERR' | translate)
+    ">{{ translate && (message | errorTranslate)? (message | translate):
+        translate && !(message | errorTranslate) ? ('COMMON.ERR' | translate)
       : message }}</p>
     </div>
     <mat-icon class="position-absolute top-0 end-0 m-3 pointer" (click)="onTagClose($event)">close</mat-icon>

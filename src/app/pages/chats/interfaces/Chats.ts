@@ -40,7 +40,7 @@ export interface ChatById {
     enquiryQuestion?: number,
     botId?: any,
     isCampaignAction?: boolean,
-    active?:boolean | false,
+    updatedAtVisible?:boolean | false,
     day?: string
 }
 interface devices {

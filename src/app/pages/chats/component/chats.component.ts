@@ -56,6 +56,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   @ViewChild('chatContainer') chatContainer: ElementRef;
   @ViewChild('contactsContainer') contactsContainer: ElementRef;
   @ViewChild('MsgsearchInput') MsgsearchInput: ElementRef;
+
   groupedMessages: { [day: string]: ChatById[] } = {};
 
   isDelete:boolean=false;
@@ -126,6 +127,16 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
     this.contactsContainer.nativeElement.addEventListener('scroll', this.onScrollToBottom.bind(this));
     
   }
+ 
+ 
+  toggleUpdatedAt(msg){
+    let findMessage = this.selectedChat.find((message)=>message.id == msg.id);
+    this.selectedChat.filter((chat)=>chat.id !== msg.id).map((chat)=>chat.updatedAtVisible = false);
+    findMessage.updatedAtVisible= !findMessage.updatedAtVisible;
+
+    this.groupMessagesByDay();
+  }
+
   @HostListener('document:click', ['$event'])
   onClickOutside(event: any) {
     if (!this.searchContainer.nativeElement.contains(event.target) ) {
@@ -136,7 +147,24 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
         this.isSearch = true
       }
     }
-  }
+    const clickedElement = event.target as HTMLElement;
+
+    // Check if the clicked element or any of its ancestors contain the class "updatedAt"
+    let isClickInsideUpdatedAt = false;
+    let element = clickedElement;
+    while (element) {
+      if (element.classList.contains('message-out')) {
+        isClickInsideUpdatedAt = true;
+        break;
+      }
+      element = element.parentElement;
+    }
+  
+    // Print whether the click occurred inside or outside of the updatedAt element
+    if (!isClickInsideUpdatedAt) {
+      this.selectedChat.map((chat)=>chat.updatedAtVisible = false);  
+      this.groupMessagesByDay();   }
+    }
   toggleSearch(msg?): void {
     setTimeout(() => {
     this.isSearch=true
@@ -800,7 +828,8 @@ resetForm(){
           }
 
       }
-        
+      this.groupMessagesByDay();
+
       }
 
       updateMessagesOnReceive(message){
@@ -851,7 +880,8 @@ resetForm(){
                 }
             
         }
-    
+        this.groupMessagesByDay();
+
     }
     ngOnDestroy() {
       this.chatService.closeConnection()

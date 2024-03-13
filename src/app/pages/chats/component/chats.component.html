@@ -89,7 +89,7 @@
                                 *ngIf="chatContact?.lastMessageStatus ==null && chatContact?.unseenMessagesCount > 0">
                                 
                                 <div class="d-flex flex-column justify-content-center align-items-center mx-3">
-                                    <div class="messages-count"  [ngClass]="{'big':chatContact?.unseenMessagesCount>9999, 'mid':chatContact?.unseenMessagesCount>99} ">
+                                    <div class="messages-count" >
                                         <span>{{chatContact?.unseenMessagesCount}}</span>
 
                                     </div>
@@ -174,15 +174,15 @@
                                     <span class="time">{{ chat?.createdAt | timeOnly }}</span>
                                 </div>
                             </div>
-                            <div *ngSwitchCase="true" class="outgoing-chats">
-                                <div  [ngClass]="{'show':chat.active}" class="updatedAt" *ngIf="chat?.status > 0 && chat?.status < 4 && chat?.updatedAt">
+                            <div *ngSwitchCase="true" class="outgoing-chats ">
+                                <div    [ngClass]="{'show':chat.updatedAtVisible}" class="updatedAt" *ngIf="chat?.status > 0 && chat?.status < 4 && chat?.updatedAt">
                                     <span>{{chat?.status == 1?('sentAt' |translate):
                                         chat?.status == 2?('deliveredAt' |translate):
                                         chat?.status == 3?('seenAt' |translate):''}} 
                                             
                                             {{chat?.updatedAt |timeOnly}}</span>
                                 </div>
-                                <div class="message-out d-flex flex-column gap-1 align-items-end"  (click)="chat.active=!chat.active">
+                                <div class="message-out d-flex flex-column gap-1 align-items-end"  (click)="toggleUpdatedAt(chat)">
                                     <div class="outgoing-chats-msg ">
                                         <p>{{ chat?.msgBody }}</p>
                                         <span class="time">{{ chat?.createdAt | timeOnly }}</span>
@@ -209,6 +209,7 @@
                             </div>
                         </ng-container>
                     </ng-container>
+                    <!-- with files -->
                     <ng-template #withFiles>
                         <ng-container [ngSwitch]="chat?.direction">
                                 <div *ngSwitchCase="false" class="received-chats" [ngClass]="{'align-items-start':(chat?.fileName && chat?.fileName !== '') && chat?.msgBody == ''  && (!chat?.fileUrl.includes('image') || (chat?.fileName | type ) !=='assets/images/image.svg')}">
@@ -232,14 +233,14 @@
                                     </div>
                                 </div>
                                 <div *ngSwitchCase="true" class="outgoing-chats" [ngClass]="{'align-items-start':(chat?.fileName && chat?.fileName !== '') && chat?.msgBody == ''  && (!chat?.fileUrl.includes('image') || (chat?.fileName | type ) !=='assets/images/image.svg')}">
-                                    <div  [ngClass]="{'show':chat.active}" class="updatedAt" *ngIf="chat?.status > 0 && chat?.status < 4 && chat?.updatedAt">
+                                    <div  [ngClass]="{'show':chat.updatedAtVisible}" class="updatedAt" *ngIf="chat?.status > 0 && chat?.status < 4 && chat?.updatedAt">
                                         <span>{{chat?.status == 1?('sentAt' |translate):
                                             chat?.status == 2?('deliveredAt' |translate):
                                             chat?.status == 3?('seenAt' |translate):''}} 
                                                 
                                                 {{chat?.updatedAt |timeOnly}}</span>
                                     </div>
-                                    <div class="message-out d-flex flex-column gap-1 align-items-end" (click)="chat.active=!chat.active">
+                                    <div class="message-out d-flex flex-column gap-1 align-items-end" (click)="toggleUpdatedAt(chat)">
                                         <div class="outgoing-chats-msg" [ngClass]="{'outgoing-files-only': (chat?.fileName && chat?.fileName !== '') && chat?.msgBody == ''  }">
                                             <ng-container *ngIf="chat?.fileName">
                                                 <div *ngIf="(chat.fileUrl.includes('image') || (chat?.fileName | type ) === 'assets/images/image.svg') ; else otherType" class="d-flex justify-content-center ">
