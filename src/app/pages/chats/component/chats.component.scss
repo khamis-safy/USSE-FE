@@ -490,3 +490,10 @@ textarea.form-control {
     max-width: 335px;
 
 }
+@media(max-width:768px){
+
+    .image{
+        max-width: 200px !important;
+
+    }
+}

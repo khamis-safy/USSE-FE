@@ -319,8 +319,14 @@
 
 
                 <form style="width:95%;" [formGroup]="messageForm" class="d-flex">
-                    <textarea class="form-control" formControlName="message" (keydown.enter)="sendMsg($event)" (keyup)="getCursorPosition($event)"
-                        (click)="getCursorPosition($event) " [placeholder]="'Type a message' |translate"></textarea>
+                    <textarea class="form-control"
+                    formControlName="message" 
+                    (keydown.enter)="sendMsg($event)" 
+                    (keyup)="getCursorPosition($event)"
+                    (click)="getCursorPosition($event) "
+                    (input)="detectLanguage($event.target.value)"
+                    [dir]="textDirection"
+                    [placeholder]="'Type a message' |translate"></textarea>
                 </form>
             </div>
 

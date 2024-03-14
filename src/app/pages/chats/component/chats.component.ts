@@ -78,6 +78,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   isSearch:boolean =false;
   searchVal: string = '';
   sortedDays: string[]=[]; 
+  textDirection: string;
   constructor( public dialog: MatDialog,
     private translationService:TranslationService,
     private authService:AuthService,
@@ -882,6 +883,10 @@ resetForm(){
         }
         this.groupMessagesByDay();
 
+    }
+    detectLanguage(text: string) {
+      // Simple detection based on whether the text contains Arabic characters
+      this.textDirection = /[^\u0000-\u007F]/.test(text) ? 'rtl' : 'ltr';
     }
     ngOnDestroy() {
       this.chatService.closeConnection()
