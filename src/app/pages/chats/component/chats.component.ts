@@ -472,29 +472,33 @@ getGroupHeader(messageDate: Date): string {
         }
         else{
           chat=this.listChats.find((chats)=>chats.chat.id == this.selectedChatId);
-          this.chatName=chat.chat.chatName;
-          this.targetPhoneNumber=chat.chat.targetPhoneNumber;
+          if(chat){
+            this.chatName=chat.chat.chatName;
+            this.targetPhoneNumber=chat.chat.targetPhoneNumber;
+            chat.active=true
+            if(chat.unseenMessagesCount > 0){
+              this.chatService.markChatAsRead(chat.chat.id).subscribe(
+                (res)=>{
+                  chat.unseenMessagesCount=0;
+                }
+              )
+            }
+          }
+        
           this.getChatById(this.selectedChatId,'');
       
           this.listChats.map((chat)=>chat.active=false) ;   
-          chat.active=true
-          this.form.patchValue({
-            devicesData: {
-            title:chat?.device.deviceName,
-            value:chat?.device.id,
-            deviceIcon:chat?.device.deviceType
-            }
+          // this.form.patchValue({
+          //   devicesData: {
+          //   title:chat?.device.deviceName,
+          //   value:chat?.device.id,
+          //   deviceIcon:chat?.device.deviceType
+          //   }
   
-            })
+          //   })
 
         }
-        if(chat.unseenMessagesCount > 0){
-          this.chatService.markChatAsRead(chat.chat.id).subscribe(
-            (res)=>{
-              chat.unseenMessagesCount=0;
-            }
-          )
-        }
+
       }
     )
   }
@@ -546,6 +550,7 @@ resetForm(){
   onSelect(device){
     this.deviceId=device.value;
     this.authService.selectedDeviceId=device.value;
+    this.selectedChatId = ""
     this.getListChats();
 
     }
@@ -619,7 +624,12 @@ resetForm(){
     getCursorPosition(e){
       this.cursorPosition = e.target.selectionStart;
     }
- 
+resetChatsOrder(chatContact){
+  if(chatContact){
+    this.listChats.splice(this.listChats.indexOf(chatContact),1);
+    this.listChats.unshift(chatContact)
+  }
+}
     addEmoji(event: any) {
       let emoji =event.emoji.native;
       let val = this.messageForm.value.message;
@@ -663,7 +673,7 @@ resetForm(){
             chat:{chatName:this.chatName,id:res[0]},
             msgBody: message,
             createdAt:String(this.convertToUTC(new Date())) ,
-            status: 1
+            status: 0
           }
             // in case of uplaoded files 
           if(this.filesList.length > 0){
@@ -687,8 +697,9 @@ resetForm(){
             }
 
           
-     
-          this.selectedChat=[...this.selectedChat,...newMessage]
+          this.selectedChat=[...this.selectedChat,...newMessage];
+          let foundChat=this.listChats.find((chat)=>chat.chat.id == this.selectedChatId )
+          this.resetChatsOrder(foundChat)
           this.groupMessagesByDay();
 
           this.resetForm()
@@ -823,7 +834,10 @@ resetForm(){
         if(this.selectedChatId === message.ChatId){
           let foundMesg = this.selectedChat.find(chat => chat.chat.id === message.id);
           if (foundMesg) {
-            foundMesg.status=message.status;
+            if(message.status > foundMesg.status)
+            {
+              foundMesg.status=message.status;
+            }
             foundMesg.updatedAt=message.updatedAt;
           }
           }
@@ -868,7 +882,7 @@ resetForm(){
                   this.listChats.unshift({
                     chat: {
                       id: newMessage.ChatId,
-                      chatName: newMessage.chatName,
+                      chatName: newMessage.ChatName,
                       targetPhoneNumber: newMessage.targetPhoneNumber,
                       createdAt: newMessage.createdAt,
                     },

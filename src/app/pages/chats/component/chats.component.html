@@ -187,6 +187,7 @@
                                         <p>{{ chat?.msgBody }}</p>
                                         <span class="time">{{ chat?.createdAt | timeOnly }}</span>
                                     </div>
+                                    
                                     <ng-container *ngIf="chat?.status != null">
                                         <ng-container [ngSwitch]="chat?.status!">
                                             <div *ngSwitchCase="3" class="chat-contact-img small">
@@ -198,8 +199,8 @@
                                             <div *ngSwitchCase="2">
                                                 <img src="../assets/icons/right-blue.svg" alt="">
                                             </div>
-                                            <div *ngSwitchCase="0" class="d-flex justify-content-center align-items-center w-100">
-                                                <span class="status pending d-flex justify-content-center align-items-center txt-xs"></span>
+                                            <div *ngSwitchCase="0" class="d-flex align-items-center justify-content-end w-100">
+                                                <span class="status pending d-flex align-items-center txt-xs"></span>
                                             </div>
                                             <mat-icon *ngSwitchCase="4" style="display: flex; justify-content: center; align-items: center; margin: 0 !important; padding: 0 !important; width: 13px;" class="text-danger txt-sm">error_outline</mat-icon>
                                         </ng-container>

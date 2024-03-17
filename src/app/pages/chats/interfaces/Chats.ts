@@ -63,6 +63,7 @@ interface devices {
 }
 
 export interface chatHub {
+    ChatName: string;
     id: string,
     Deviceid: string,
     targetPhoneNumber: string,
