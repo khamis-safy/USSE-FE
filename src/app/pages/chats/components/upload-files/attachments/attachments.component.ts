@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class AttachmentsComponent implements OnInit {
 @Input() files:any=[];
-
+@Output() onRemoveFile  = new EventEmitter<any>
   constructor() { }
 
   ngOnInit() {
@@ -21,6 +21,7 @@ calcSize(file){
   }
   remove(file){
     this.files.splice(this.files.indexOf(file),1);
+    this.onRemoveFile.emit(this.files)
     
   }
 }

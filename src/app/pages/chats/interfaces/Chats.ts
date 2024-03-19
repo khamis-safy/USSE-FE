@@ -2,9 +2,12 @@ export interface Chats {
     chat?: chat,
     lastMessageDate?: string,
     lastMessageContent?: string,
+    lastMessageFileName?:string,
+    lastMessageFileUrl?:string,
     lastMessageDirection?: boolean,
     lastMessageStatus?: number,
     unseenMessagesCount?: number,
+    fileType?:string,
     device?: devices,
     active?: boolean;
 

@@ -9,6 +9,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { TimeOnlyPipe } from './pipe/timeOnly.pipe';
 import { AttachmentsComponent } from './components/upload-files/attachments/attachments.component';
 import { AttachTypePipe } from './components/upload-files/attachType.pipe';
+import { LastMsgFileTypePipe } from './pipe/lastMsgFileType.pipe';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { AttachTypePipe } from './components/upload-files/attachType.pipe';
     ChatContactsComponent,
     TimeOnlyPipe,
     AttachmentsComponent,
-    AttachTypePipe
+    AttachTypePipe,
+    LastMsgFileTypePipe
 
   ],
   providers:[ChatsService]

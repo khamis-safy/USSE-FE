@@ -79,6 +79,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   searchVal: string = '';
   sortedDays: string[]=[]; 
   textDirection: string;
+  disable: boolean = true;
   constructor( public dialog: MatDialog,
     private translationService:TranslationService,
     private authService:AuthService,
@@ -458,7 +459,7 @@ getGroupHeader(messageDate: Date): string {
   this.listChatsSub$.subscribe(
       (res)=>{
         this.listChats=res;
-        let chat;
+        let chat:Chats;
         if(!this.selectedChatId){
           this.selectedChatId=res[0].chat.id;
           this.chatName=res[0]?.chat?.chatName;
@@ -469,10 +470,19 @@ getGroupHeader(messageDate: Date): string {
           // this.updateQueryParams();
           this.listChats.map((chat)=>chat.active=false) ;   
           this.listChats[0].active=true
+          if(chat.unseenMessagesCount > 0){
+            this.chatService.markChatAsRead(chat.chat.id).subscribe(
+              (res)=>{
+                chat.unseenMessagesCount=0;
+              }
+            )
+          }
         }
         else{
           chat=this.listChats.find((chats)=>chats.chat.id == this.selectedChatId);
+
           if(chat){
+         
             this.chatName=chat.chat.chatName;
             this.targetPhoneNumber=chat.chat.targetPhoneNumber;
             chat.active=true
@@ -487,7 +497,7 @@ getGroupHeader(messageDate: Date): string {
         
           this.getChatById(this.selectedChatId,'');
       
-          this.listChats.map((chat)=>chat.active=false) ;   
+          // this.listChats.map((chat)=>chat.active=false) ;   
           // this.form.patchValue({
           //   devicesData: {
           //   title:chat?.device.deviceName,
@@ -507,7 +517,8 @@ resetForm(){
     {
       message:''
     }
-  )
+  );
+  this.filesList=[]
 }
   onSearch(search){
     this.searchKey=search.value;
@@ -548,10 +559,13 @@ resetForm(){
     });
   }
   onSelect(device){
-    this.deviceId=device.value;
-    this.authService.selectedDeviceId=device.value;
-    this.selectedChatId = ""
-    this.getListChats();
+    if(device.value !== this.deviceId)
+    {
+      this.deviceId=device.value;
+      this.authService.selectedDeviceId=device.value;
+      this.selectedChatId = ""
+      this.getListChats();  
+    }
 
     }
 
@@ -573,6 +587,7 @@ resetForm(){
       dialogRef.afterClosed().subscribe(result => {
         this.isDelete=false;
         if(result){
+          this.selectedChatId='';
           this.getListChats();
 
         }
@@ -657,7 +672,10 @@ resetChatsOrder(chatContact){
     sendMsg(event?){
       let message = this.messageForm.value.message;
       let newMessage:any=[];
+      this.disable=true;
+
       if(this.filesList.length > 0 || message.trim() !== ''){
+      
         if(event){
           if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault(); 
@@ -695,11 +713,59 @@ resetChatsOrder(chatContact){
 
 
             }
+            let foundChat=this.listChats.find((chat)=>chat.chat.id == this.selectedChatId );
+            if(foundChat){
+              foundChat.lastMessageContent='';
+              foundChat.lastMessageFileName='';
+              foundChat.lastMessageFileUrl='';
+              foundChat.fileType='';
+  
+              foundChat.lastMessageContent=message;
+              foundChat.lastMessageStatus=0;
+              
+              if(this.filesList.length > 0){
+                let fileType=this.filesList[this.filesList.length -1].type
+                if(fileType.includes('image')){
+                  foundChat.fileType=`.${fileType.slice(fileType.indexOf('/') +1)}`;
+                }
+                else{
+                  foundChat.fileType='';
+                }
+                foundChat.lastMessageFileName=this.filesList[this.filesList.length -1].name;
+                foundChat.lastMessageFileUrl=this.filesList[this.filesList.length -1].url;
+              }
+              this.resetChatsOrder(foundChat)
 
-          
+            }
+            else{
+              let chat:any={
+                chat: {
+                  id: this.selectedChatId,
+                  chatName: this.chatName,
+                  targetPhoneNumber: this.targetPhoneNumber,
+                  createdAt:String(this.convertToUTC(new Date())),
+                },
+                lastMessageDate: String(this.convertToUTC(new Date())),
+                lastMessageContent: message,
+                lastMessageDirection: true,
+                lastMessageStatus: 0,
+                unseenMessagesCount: 0,
+              }
+              if(this.filesList.length > 0){
+                let fileType=this.filesList[this.filesList.length -1].type
+                chat.fileType=`.${fileType.slice(fileType.indexOf('/') +1)}`;
+                chat.lastMessageFileName=this.filesList[this.filesList.length -1].name;
+                chat.lastMessageFileUrl=this.filesList[this.filesList.length -1].url;
+              }
+              this.listChats.unshift(chat)
+              this.resetChatsOrder(chat)
+
+            }
+
+
           this.selectedChat=[...this.selectedChat,...newMessage];
-          let foundChat=this.listChats.find((chat)=>chat.chat.id == this.selectedChatId )
-          this.resetChatsOrder(foundChat)
+
+        
           this.groupMessagesByDay();
 
           this.resetForm()
@@ -707,17 +773,20 @@ resetChatsOrder(chatContact){
           setTimeout(() => {
             this.scrollToBottom();
           }, 0);
+        },
+        (err)=>{
+          this.resetForm()
         })
-
+        
 
 
       }
-    
+  
+else{
+  event.preventDefault();
 
-
-
-    
-    }
+}
+}
     isImage(fileUrl:string){
       return fileUrl.includes('image')
     }
@@ -782,9 +851,10 @@ resetChatsOrder(chatContact){
             );
         }
         
+        this.disableButtonOrnot()
     }
   
-
+  
    // Log a message if any file was reloaded
    if (reloadedFiles.length > 0) {
     const reloadedFilesMessage = `( ${reloadedFiles.join(', ')} ) ${this.translate.instant("already_uploaded")}`;
@@ -795,7 +865,7 @@ resetChatsOrder(chatContact){
   
    this.clearInputData()
   }
-  
+
     openFileUploader() {
       this.fileInputRef.nativeElement.click(); // Programmatically trigger file input click
     }
@@ -863,6 +933,10 @@ resetChatsOrder(chatContact){
 
               let foundChat = this.listChats.find((chat)=>chat.chat.id == newMessage.ChatId);
                 if (foundChat) {
+                  foundChat.lastMessageContent='';
+                  foundChat.lastMessageFileName='';
+                  foundChat.lastMessageFileUrl='';
+                  foundChat.fileType='';
                   if(this.selectedChatId !== newMessage.ChatId){
                     foundChat.unseenMessagesCount+=1;
 
@@ -870,6 +944,8 @@ resetChatsOrder(chatContact){
                   foundChat.lastMessageStatus=newMessage.status;
                   foundChat.lastMessageContent=newMessage.msgBody;
                   foundChat.lastMessageDate=newMessage.createdAt;
+                  foundChat.lastMessageFileName = newMessage.fileName;
+                  foundChat.lastMessageFileUrl = newMessage.fileUrl;
                   if(this.listChats.indexOf(foundChat) !== 0){
                     // Remove the element from its current position
                     this.listChats.splice(this.listChats.indexOf(foundChat), 1);
@@ -888,6 +964,9 @@ resetChatsOrder(chatContact){
                     },
                     lastMessageDate: newMessage.createdAt,
                     lastMessageContent: newMessage.msgBody,
+                    lastMessageFileName:newMessage.fileName,
+                    lastMessageFileUrl:newMessage.fileUrl,
+                    fileType:'',
                     lastMessageDirection: false,
                     lastMessageStatus: null,
                     unseenMessagesCount: 1,
@@ -898,10 +977,19 @@ resetChatsOrder(chatContact){
         this.groupMessagesByDay();
 
     }
+    changeTextDir(text){
+      return /[^\u0000-\u007F]/.test(text) ? 'rtl' : 'ltr';
+    }
     detectLanguage(text: string) {
+
       // Simple detection based on whether the text contains Arabic characters
       this.textDirection = /[^\u0000-\u007F]/.test(text) ? 'rtl' : 'ltr';
     }
+    disableButtonOrnot() {
+      this.disable = !(this.filesList.length > 0 || this.message.value.trim() !== '')
+    }
+
+
     ngOnDestroy() {
       this.chatService.closeConnection()
       }

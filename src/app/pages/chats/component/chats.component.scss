@@ -17,8 +17,9 @@ span,
     border: 0px transparent solid !important;
 }
 textarea {
-    font-family: 'Noto Color Emoji', sans-serif !important;
+    font-family:'Poppins', 'Noto Color Emoji' !important;
 }
+
 .searchContainer {
     width: 75%;
 }
@@ -290,8 +291,21 @@ textarea.form-control {
     border-color: var(--clr-primary-500);
     box-shadow: 0px 0px 0px 1px #0071b138;
 }
-
-
+.sendBtn{
+    &.disable{
+        opacity:0.65;
+        }
+}
+.attach-icon{
+    img{
+        width: 13px;
+    }
+    p{
+    max-width: 55px ;
+    text-overflow: ellipsis;
+    overflow: hidden;   
+}
+}
 @media(max-width:1400px){
     .pOut{
         font-size: 12px !important;
@@ -359,6 +373,7 @@ textarea.form-control {
             font-size: 12px;
         }
         .attactmentes{
+            
             img{
                 width: 13px;
             }
