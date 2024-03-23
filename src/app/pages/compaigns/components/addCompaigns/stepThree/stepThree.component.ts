@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class StepThreeComponent implements OnInit ,OnDestroy{
   deviceLoadingText:string=this.translate.instant('Loading')
   @ViewChild("dateTime") dateTime!: ElementRef;
+  email:string=this.authService.getUserInfo()?.email;
 
   permission:DevicesPermissions[];
 
@@ -88,7 +89,7 @@ else{
   }
   getDevices(){
 
-    this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+    this.authService.getDevices(this.email,10,0,"","").subscribe(
       (res)=>{
         let filterdDevices=this.isUser && this.permission? res.filter((dev)=>this.permission.find((devP)=>devP.deviceId==dev.id && devP.value=="FullAccess")):res;
         let activeDevices=filterdDevices.filter((r)=>r.isConnected)

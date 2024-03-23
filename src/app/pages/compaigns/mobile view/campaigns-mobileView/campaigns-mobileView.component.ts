@@ -344,7 +344,7 @@ export class CampaignsMobileViewComponent implements OnInit {
     dialogConfig.minWidth='80%';
     dialogConfig.minHeight='428';
     dialogConfig.disableClose = true;
-    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    dialogConfig.panelClass = 'custom-dialog-delete-style';
     dialogConfig.data =
     {
       compaignData: { compaignId: element.id, action: "delete" }

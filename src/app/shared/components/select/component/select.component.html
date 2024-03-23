@@ -1,60 +1,63 @@
 <section [ngClass]="{fullWidth , smallDropDown ,'flex-column flex-lg-row  gap-lg-4 gap-2':labelTopInMobileView && !forFiteringOnly ,'gap-3':!labelTopInMobileView && !forFiteringOnly}"   class=" us-select-container d-flex align-items-center flex-nowrap" >
-  <ng-container *ngIf="!labelTopInMobileView || forFiteringOnly">
-    <div  class=" label-widget w-25 " [ngClass]="{deviceLableGap }" *ngIf="optional || label" [style]="forFiteringOnly? 'min-width: 0' : 'min-width: 25%'">
-    
-    
-    <label class="txt txt-sm text-nowrap d-flex" (click)="toggleDropdown()">
-      <span class="text-wrap text-black txt txt-sm">{{label}}</span>
-      <span style="color: red;">{{optional ? '' :"*"}}</span>
-      <ng-container *ngIf="withTooltip">
-        <sr-tooltip
-        class="mx-2"
-        [text]="tooltipMsg"
-          [readMoreLink]="tooltipReadMoreLink"
-
-        >
-        </sr-tooltip>
-      </ng-container>
-      </label>
-    <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
-  </div>      
-</ng-container>
-
-
-<ng-container *ngIf="labelTopInMobileView && !forFiteringOnly">
-  <div class="d-none d-lg-block label-widget w-25 " *ngIf="optional || label" style=" min-width: 25%;">
+  <ng-container *ngIf="label">
+    <ng-container *ngIf="!labelTopInMobileView || forFiteringOnly ">
+      <div  class=" label-widget w-25 " [ngClass]="{deviceLableGap }" *ngIf="optional || label" [style]="forFiteringOnly? 'min-width: 0' : 'min-width: 25%'">
+      
+      
+      <label class="txt txt-sm text-nowrap d-flex" (click)="toggleDropdown()">
+        <span class="text-wrap text-black txt txt-sm">{{label}}</span>
+        <span style="color: red;">{{optional ? '' :"*"}}</span>
+        <ng-container *ngIf="withTooltip">
+          <sr-tooltip
+          class="mx-2"
+          [text]="tooltipMsg"
+            [readMoreLink]="tooltipReadMoreLink"
   
-    <label class="txt txt-sm text-nowrap d-flex flex-row" (click)="toggleDropdown()">
-      <span class="text-wrap text-black txt txt-sm">{{label}}</span>
-      <span style="color: red;">{{optional ? '' :"*"}}</span>
-      <ng-container *ngIf="withTooltip">
-        <sr-tooltip
-        class="mx-2"
-        [text]="tooltipMsg"
+          >
+          </sr-tooltip>
+        </ng-container>
+        </label>
+      <!-- <span class="txt txt-body" *ngIf="optional">{{optional}}</span> -->
+    </div>      
+  </ng-container>
+  
+  
+  <ng-container *ngIf="labelTopInMobileView && !forFiteringOnly ">
+    <div class="d-none d-lg-block label-widget w-25 " *ngIf="optional || label" style=" min-width: 25%;">
+    
+      <label class="txt txt-sm text-nowrap d-flex flex-row" (click)="toggleDropdown()">
+        <span class="text-wrap text-black txt txt-sm">{{label}}</span>
+        <span style="color: red;">{{optional ? '' :"*"}}</span>
+        <ng-container *ngIf="withTooltip">
+          <sr-tooltip
+          class="mx-2"
+          [text]="tooltipMsg"
+            [readMoreLink]="tooltipReadMoreLink"
+  
+          >
+          </sr-tooltip>
+        </ng-container>
+        </label>
+    </div>
+    <div class="d-block d-lg-none label-widget w-100" *ngIf="optional || label">
+      <label class="txt  d-flex gap-2 align-items-center text-nowrap txt-sm "  (click)="toggleDropdown()">
+        <span class="text-wrap text-black txt ">{{label}}
+          <em *ngIf="!optional" class="text-danger">*</em>
+        </span> 
+        <ng-container *ngIf="withTooltip">
+          <sr-tooltip
+          
+          [text]="tooltipMsg"
           [readMoreLink]="tooltipReadMoreLink"
-
-        >
-        </sr-tooltip>
-      </ng-container>
+  
+          >
+          </sr-tooltip>
+        </ng-container>
       </label>
-  </div>
-  <div class="d-block d-lg-none label-widget w-100" *ngIf="optional || label">
-    <label class="txt  d-flex gap-2 align-items-center text-nowrap txt-sm "  (click)="toggleDropdown()">
-      <span class="text-wrap text-black txt ">{{label}}
-        <em *ngIf="!optional" class="text-danger">*</em>
-      </span> 
-      <ng-container *ngIf="withTooltip">
-        <sr-tooltip
-        
-        [text]="tooltipMsg"
-        [readMoreLink]="tooltipReadMoreLink"
-
-        >
-        </sr-tooltip>
-      </ng-container>
-    </label>
-  </div>
-</ng-container>
+    </div>
+  </ng-container>
+  
+  </ng-container>
 
 
   <div  class="host {{class}} w-100"  style="width:98%;min-width:13rem;padding: 2px;" [attr.data-count]="value?.length"

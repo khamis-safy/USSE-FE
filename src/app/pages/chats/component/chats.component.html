@@ -1,267 +1,327 @@
-<div class="p-4  d-flex " style="border-radius: 15px;">
+<section [ngClass]="{'chat-messages-container':openChat}" class="p-4 mb-2 px-2 d-flex gap-3"
+    style="border-radius: 15px;    height: 90vh;">
 
-    <div style="width: 30%;" class="my-1 p-3  me-3 d-flex flex-column innerContainer">
-
-        <div class="my-2" style="width: 35%;">
-            <select class="seletOption" aria-label="Default select example">
-                <option selected value="1">Device 1</option>
-                <option value="2">Device 2</option>
-                <option value="3">Device 3</option>
-                <option value="4">Device 4</option>
-                <option value="5">Device 5</option>
-                <option value="6">Device 6</option>
-            </select>
-        </div>
+    <div style="width: 30%;max-width: 400px;
+    min-width: 290px;" class="mt-1 p-3   d-flex flex-column innerContainer contacts-main-container "
+        [ngClass]="{'inactive':openChat}">
+        <form [formGroup]="form" class="d-flex">
+            <us-select class="my-3" [isListDevicesDropdown]="true" [labelTopInMobileView]="false"
+                [deviceLableGap]="true" [data]="devices" formControlName="devicesData" [multiSelect]="false"
+                (onSelect)="onSelect($event)" [loadingText]="deviceLoadingText"
+                [placeholder]="'Select Devices' | translate" [isDisabled]="false" [optional]="true"
+                [enableSearch]="true" [searchbarOnToggler]="true"
+                [searchNoResultText]="'THERE_IS_NO_RESULT' | translate" [maxListItemsWithoutSearch]="5"></us-select>
+        </form>
 
         <div class="d-flex justify-content-between align-items-center  my-2">
 
-            <div class="d-flex justify-content-between position-relative">
-                <div class=" p-0">
+            <div class="d-flex justify-content-between position-relative searchContainer">
+                <div class=" p-0 w-100">
                     <input #searchInput type="text" class="form-control ps-5  txt-xs" id="searchInput"
-                        placeholder="Search">
+                        placeholder="{{ 'searchPlaceholder' | translate }}" (input)="onSearch(searchInput)">
                 </div>
                 <div class=" px-4  position-absolute start-0 top-50 translate-middle-y">
                     <img src="assets/icons/search.svg" alt="">
                 </div>
             </div>
 
-            <div class="reloadBtn ms-3  py-2">
+            <div class="addBtn addBtn_lg  py-2" (click)="addNewContact()">
                 <a style="cursor: pointer;">
                     <img src="../assets/icons/chats-icon.svg" alt="">
                 </a>
             </div>
 
         </div>
+        <div class="contacts-container" #contactsContainer>
+            <ng-container *ngFor="let chatContact of listChats">
+                <div class="my-2   p-3 leftContentDesign" [ngClass]="{'active':chatContact.active}"
+                    (click)="navigateToChat(chatContact)">
+                    <div class="d-flex gap-2 ">
+                        <div class="deviceContent ">
+                            <span>{{chatIcon(chatContact.chat?.chatName)}}</span>
 
-        <div class="my-2   p-3 leftContentDesign">
-            <div class="d-flex ">
-                <div class="deviceContent me-3">
-                    <img src="../assets/icons/Icon.svg" alt="">
-                </div>
-                <div class="d-flex flex-column justify-content-center">
-                    <p class="mb-1 pOut">Suporte ADMIN</p>
-                    <div class=" d-flex align-items-center ">
-                        <img class="me-1" src="../assets/icons/chats-icon-2.svg" alt="">
-                        <p class="m-0 p-0  pIn">
-                            Pesquisar chat</p>
+                        </div>
+                        <div class="d-flex flex-column justify-content-center ">
+                            <p class="mb-1 pOut">{{chatContact.chat?.chatName}}</p>
+                            <div class=" d-flex gap-2 align-items-center ">
+                                <ng-container *ngIf="chatContact?.lastMessageStatus!=null ">
+                                    <ng-container [ngSwitch]="chatContact?.lastMessageStatus!">
+
+                                        <div *ngSwitchCase="3" class="chat-contact-img small ">
+                                            <span>{{chatIcon(chatContact.chat?.chatName)}}</span>
+                                        </div>
+
+                                        <div *ngSwitchCase="1">
+                                            <img src="../assets/icons/chats-icon-2.svg" alt="">
+                                        </div>
+
+                                        <div *ngSwitchCase="2">
+                                            <img src="../assets/icons/right-blue.svg" alt="">
+                                        </div>
+
+                                        <div *ngSwitchCase="0"
+                                            class="d-flex justify-content-center align-items-center w-100">
+                                            <span
+                                                class="status pending d-flex justify-content-center align-items-center  txt-xs">
+
+                                            </span>
+                                        </div>
+
+                                        <mat-icon *ngSwitchCase="4" style="display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                            margin: 0 !important;
+                                            padding: 0 !important;
+                                            width: 13px;" class="text-danger txt-sm">error_outline</mat-icon>
+                                    </ng-container>
+                                </ng-container>
+                                <p *ngIf="chatContact.lastMessageContent && !chatContact.lastMessageFileName"
+                                    [dir]="changeTextDir(chatContact.lastMessageContent)"
+                                    [ngStyle]="{'text-align': changeTextDir(chatContact.lastMessageContent) === 'rtl' ? 'right' : 'left'}"
+                                    class="m-0 p-0 overflow-line-1 pIn"
+                                    style="max-width: 80px ;text-overflow: ellipsis;overflow: hidden;">
+                                    {{chatContact.lastMessageContent}}
+                                </p>
+                                
+                                <div *ngIf="!chatContact.lastMessageContent && chatContact.lastMessageFileName"
+                                    class="attach-icon d-flex align-items-center gap-2">
+                                    <img [src]="(chatContact.fileType ? chatContact.fileType : chatContact.lastMessageFileName) | lastMsgFileType" alt="">
+                                    <p [ngStyle]="{'text-align': changeTextDir(chatContact.lastMessageContent) === 'rtl' ? 'right' : 'left'}"
+                                        [dir]="changeTextDir(chatContact.lastMessageFileName)"
+                                        class="m-0 p-0 overflow-line-1 pIn">{{chatContact.lastMessageFileName}}</p>
+                                </div>
+                                <div *ngIf="chatContact.lastMessageContent && chatContact.lastMessageFileName"
+                                    class="attach-icon d-flex align-items-center gap-2">
+                                    <img [src]="(chatContact.fileType ? chatContact.fileType : chatContact.lastMessageFileName) | lastMsgFileType" alt="">
+                                    <p [ngStyle]="{'text-align': changeTextDir(chatContact.lastMessageContent) === 'rtl' ? 'right' : 'left'}"
+                                        [dir]="changeTextDir(chatContact.lastMessageContent)"
+                                        class="m-0 p-0 overflow-line-1 pIn">{{chatContact.lastMessageContent}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <ng-container
+                                *ngIf="chatContact?.lastMessageStatus ==null && chatContact?.unseenMessagesCount > 0">
+
+                                <div class="d-flex flex-column justify-content-center align-items-center mx-3">
+                                    <div class="messages-count">
+                                        <span>{{chatContact?.unseenMessagesCount}}</span>
+
+                                    </div>
+
+                                    <span class="msg-time text-primary-800">{{chatContact?.lastMessageDate
+                                        |toLocalTime}}</span>
+                                </div>
+                            </ng-container>
+
+                            <div style="cursor: pointer;" (click)=" deleteChat(chatContact)">
+                                <img src="../assets/icons/Actionsc.svg" alt="">
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+            </ng-container>
 
-            </div>
-            <div>
-                <a style="cursor: pointer;">
-                    <img src="../assets/icons/chat-icon-3.svg" alt="">
-                </a>
-            </div>
+
         </div>
-
-        <div class="my-2   p-3 leftContentDesign">
-            <div class="d-flex ">
-                <div class="deviceContent me-3">
-                    <img src="../assets/icons/Icon.svg" alt="">
-                </div>
-                <div class="d-flex flex-column justify-content-center ">
-                    <p class="mb-1 pOut">Suporte ADMIN</p>
-                    <div class=" d-flex align-items-center ">
-                        <p style="color: rgba(255, 0, 0, 1);" class="m-0 p-0  pIn">Failed</p>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <a style="cursor: pointer;">
-                    <img src="../assets/icons/chat-icon-3.svg" alt="">
-                </a>
-            </div>
-        </div>
-
-        <div class="my-2   p-3 leftContentDesign">
-            <div class="d-flex ">
-                <div class="deviceContent me-3">
-                    <img src="../assets/icons/Icon.svg" alt="">
-                </div>
-                <div class="d-flex flex-column justify-content-center ">
-                    <p class="mb-1 pOut">Suporte ADMIN</p>
-                    <div class=" d-flex align-items-center ">
-                        <p class="m-0 p-0  pIn">Pesquisar chat</p>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="d-flex justify-content-center align-items-center">
-                <div class=" d-flex flex-column justify-content-center align-items-center me-2">
-                    <div class="mt-1 mb-1 d-flex justify-content-center align-items-center "
-                        style="background-color: rgba(0, 113, 177, 1); width: 25px;height: 25px; border-radius:50%; color:white;">
-                        <span>2</span>
-                    </div>
-                    <p class="mb-0" style="color: rgba(0, 113, 177, 1); font-size: 12px;">8:00 PM</p>
-                </div>
-                <div>
-                    <a style="cursor: pointer;">
-                        <img src="../assets/icons/chat-icon-3.svg" alt="">
-                    </a>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="my-2   p-3 leftContentDesign">
-            <div class="d-flex ">
-                <div class="deviceContent me-3">
-                    <img src="../assets/icons/Icon.svg" alt="">
-                </div>
-                <div class="d-flex flex-column justify-content-center">
-                    <p class="mb-1 pOut">Suporte ADMIN</p>
-                    <div class=" d-flex align-items-center ">
-                        <img class="me-1" src="../assets/icons/chats-icon4.svg" alt="">
-                        <p class="m-0 p-0  pIn">
-                            Pesquisar chat</p>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <a style="cursor: pointer;">
-                    <img src="../assets/icons/chat-icon-3.svg" alt="">
-                </a>
-            </div>
-        </div>
-
-        <div class="my-2   p-3 leftContentDesign">
-            <div class="d-flex ">
-                <div class="deviceContent me-3">
-                    <img src="../assets/icons/Icon.svg" alt="">
-                </div>
-                <div class="d-flex flex-column justify-content-center">
-                    <p class="mb-1 pOut">Suporte ADMIN</p>
-                    <div class=" d-flex align-items-center ">
-                        <img class="me-1" src="../assets/icons/right-blue.svg" alt="">
-                        <p class="m-0 p-0  pIn">
-                            Pesquisar chat</p>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <a style="cursor: pointer;">
-                    <img src="../assets/icons/chat-icon-3.svg" alt="">
-                </a>
-            </div>
-        </div>
-
-        <div class="my-2   p-3 leftContentDesign">
-            <div class="d-flex ">
-                <div class="deviceContent me-3">
-                    <img src="../assets/icons/Icon.svg" alt="">
-                </div>
-                <div class="d-flex flex-column justify-content-center ">
-                    <p class="mb-1 pOut">Suporte ADMIN</p>
-                    <div class=" d-flex align-items-center ">
-                        <img class="me-1" src="../assets/icons/chats-icon-2.svg" alt="">
-                        <p class="m-0 p-0  pIn">
-                            Pesquisar chat</p>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <a style="cursor: pointer;">
-                    <img src="../assets/icons/chat-icon-3.svg" alt="">
-                </a>
-            </div>
-        </div>
-
-
-
 
     </div>
 
-    <div style="width: 65%; " class="innerContainer pb-0">
+    <div [ngClass]="{'active':openChat}" class=" chats-container pb-0 "
+        style="background-image: url(../assets/images/chat-background.svg)">
         <!-- Header -->
-        <div style="height: 10%; border-top-left-radius: 20px;border-top-right-radius: 20px; background-color: rgba(44, 124, 182, 0.16) ;">
+        <div class="chat-header"
+            style=" border-top-left-radius: 20px;border-top-right-radius: 20px; background: var(--clr-primary-500);">
             <div class="p-3 d-flex justify-content-between align-items-center">
-                <div class="d-flex ">
-                    <div class="deviceContent me-3">
-                        <img src="../assets/icons/Icon.svg" alt="">
+                <div class="d-flex gap-2">
+                    <div *ngIf="openChat" class="back-arrow-blue text-primary-800" (click)="backToChats()">
+                        <mat-icon>arrow_back</mat-icon>
                     </div>
-                    <div class="d-flex flex-column justify-content-center">
-                        <p class="mb-0 pOut">Suporte ADMIN</p>
-                        <p class="pInHeader mb-0 mt-1" >#CU6798H</p>
-                        
+                    <div class="deviceContent">
+                        <span>{{chatIcon(chatName)}}</span>
+                    </div>
+                    <div class="d-flex flex-column gap-1  justify-content-center">
+                        <p class="mb-0 pOut">{{chatName}}</p>
+                        <p class="pInHeader mb-0 ">{{targetPhoneNumber}}</p>
+
                     </div>
                 </div>
-    
-                <div>
-                    <a style="cursor: pointer;">
-                        <img  src="assets/icons/search-blue.svg" alt="">
-                    </a>
+
+                <div [ngClass]="{'msgSearch-container': isSearch}" #searchContainer>
+                    <div *ngIf="!isSearch" style="cursor: pointer;">
+                        <img (click)="toggleSearch()" src="assets/icons/search-blue.svg" alt="">
+                    </div>
+                    <div *ngIf="isSearch" class="d-flex justify-content-between position-relative msg-search">
+                        <div class="p-0 w-100">
+                            <input #MsgsearchInput type="text" class="form-control ps-5 txt-xs" id="messageSearchInput"
+                                (input)="onSearchMsg(MsgsearchInput)"
+                                placeholder="{{ 'searchPlaceholder' | translate }}">
+                        </div>
+                        <div class="px-4 position-absolute start-0 top-50 translate-middle-y">
+                            <img src="assets/icons/search.svg" alt="">
+                        </div>
+
+
+                    </div>
+
+
                 </div>
+
 
             </div>
         </div>
         <!-- Bodey -->
-        <div style="height: 80%; background-image: url(../assets/icons/chats-bg.svg);">
 
-            <div class="received-chats">
-                <div class="received-chats-img bg-primary">
-                </div>
-                <div class="received-msg">
-                    <div class="received-msg-inbox">
-                        <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
-                        <span class="time">8:00 PM </span>
-                    </div>
-                </div>
+        <div class="chat-body" #chatContainer>
+            <div class="" *ngFor="let day of sortedDays">
+                <div class="d-flex justify-content-center">
+                    <span *ngIf="isString(day)">{{ day |translate}}</span>
+                    <span *ngIf="!isString(day)">{{ day |toLocalTime}}</span>
+                </div> <!-- display chat messages -->
+                <ng-container *ngFor="let chat of groupedMessages[day]">
+                    <!-- messages without files -->
+                    <ng-container *ngIf="!chat?.fileName || chat?.fileName === ''; else withFiles">
+                        <ng-container [ngSwitch]="chat?.direction">
+                            <div *ngSwitchCase="false" class="received-chats">
+                                <div class="chat-contact-img">
+                                    <span>{{ chatIcon(chatName) }}</span>
+                                </div>
+                                <div class="received-chats-msg">
+                                    <p>{{ chat?.msgBody }}</p>
+                                    <span class="time">{{ chat?.createdAt | timeOnly }}</span>
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="true" class="outgoing-chats ">
+                                <div [ngClass]="{'show':chat.updatedAtVisible}" class="updatedAt"
+                                    *ngIf="chat?.status > 0 && chat?.status < 4 && chat?.updatedAt">
+                                    <span>{{chat?.status == 1?('sentAt' |translate):
+                                        chat?.status == 2?('deliveredAt' |translate):
+                                        chat?.status == 3?('seenAt' |translate):''}}
+
+                                        {{chat?.updatedAt |timeOnly}}</span>
+                                </div>
+                                <div class="message-out d-flex flex-column gap-1 align-items-end"
+                                    (click)="toggleUpdatedAt(chat)">
+                                    <div class="outgoing-chats-msg ">
+                                        <p>{{ chat?.msgBody }}</p>
+                                        <span class="time">{{ chat?.createdAt | timeOnly }}</span>
+                                    </div>
+
+                                    <ng-container *ngIf="chat?.status != null">
+                                        <ng-container [ngSwitch]="chat?.status!">
+                                            <div *ngSwitchCase="3" class="chat-contact-img small">
+                                                <span>{{ chatIcon(chatName) }}</span>
+                                            </div>
+                                            <div *ngSwitchCase="1">
+                                                <img src="../assets/icons/chats-icon-2.svg" alt="">
+                                            </div>
+                                            <div *ngSwitchCase="2">
+                                                <img src="../assets/icons/right-blue.svg" alt="">
+                                            </div>
+                                            <div *ngSwitchCase="0"
+                                                class="d-flex align-items-center justify-content-end w-100">
+                                                <span class="status pending d-flex align-items-center txt-xs"></span>
+                                            </div>
+                                            <mat-icon *ngSwitchCase="4"
+                                                style="display: flex; justify-content: center; align-items: center; margin: 0 !important; padding: 0 !important; width: 13px;"
+                                                class="text-danger txt-sm">error_outline</mat-icon>
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
+
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                    <!-- with files -->
+                    <ng-template #withFiles>
+                        <ng-container [ngSwitch]="chat?.direction">
+                            <div *ngSwitchCase="false" class="received-chats"
+                                [ngClass]="{'align-items-start':(chat?.fileName && chat?.fileName !== '') && chat?.msgBody == ''  && (!chat?.fileUrl.includes('image') || (chat?.fileName | type ) !=='assets/images/image.svg')}">
+                                <div class="chat-contact-img">
+                                    <span>{{ chatIcon(chatName) }}</span>
+                                </div>
+                                <div class="received-chats-msg"
+                                    [ngClass]="{'received-files-only': (chat?.fileName && chat?.fileName !== '') && chat?.msgBody == '' }">
+                                    <ng-container *ngIf="chat?.fileName">
+                                        <div *ngIf="(chat.fileUrl.includes('image') || (chat?.fileName | type ) === 'assets/images/image.svg'); else otherType"
+                                            class="d-flex justify-content-center ">
+
+                                            <img class="mx-1 mb-1 w-100 image" [src]="chat.fileUrl" alt="">
+                                        </div>
+                                        <ng-template #otherType>
+                                            <a class="pointer" [href]="chat.fileUrl" target="_blank"
+                                                [title]="'open' | translate"><img class="media mb-1"
+                                                    [src]="chat.fileName | type" alt=""></a>
+                                        </ng-template>
+                                    </ng-container>
+                                    <div>
+                                        <p class="mt-1" *ngIf="chat?.msgBody !== '' ">{{ chat?.msgBody }}</p>
+                                        <span class="time">{{ chat?.createdAt | timeOnly }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="true" class="outgoing-chats"
+                                [ngClass]="{'align-items-start':(chat?.fileName && chat?.fileName !== '') && chat?.msgBody == ''  && (!chat?.fileUrl.includes('image') || (chat?.fileName | type ) !=='assets/images/image.svg')}">
+                                <div [ngClass]="{'show':chat.updatedAtVisible}" class="updatedAt"
+                                    *ngIf="chat?.status > 0 && chat?.status < 4 && chat?.updatedAt">
+                                    <span>{{chat?.status == 1?('sentAt' |translate):
+                                        chat?.status == 2?('deliveredAt' |translate):
+                                        chat?.status == 3?('seenAt' |translate):''}}
+
+                                        {{chat?.updatedAt |timeOnly}}</span>
+                                </div>
+                                <div class="message-out d-flex flex-column gap-1 align-items-end"
+                                    (click)="toggleUpdatedAt(chat)">
+                                    <div class="outgoing-chats-msg"
+                                        [ngClass]="{'outgoing-files-only': (chat?.fileName && chat?.fileName !== '') && chat?.msgBody == ''  }">
+                                        <ng-container *ngIf="chat?.fileName">
+                                            <div *ngIf="(chat.fileUrl.includes('image') || (chat?.fileName | type ) === 'assets/images/image.svg') ; else otherType"
+                                                class="d-flex justify-content-center ">
+                                                <img class="mx-1 mb-1 w-100 image" [src]="chat.fileUrl" alt="">
+                                            </div>
+                                            <ng-template #otherType>
+                                                <a class="pointer" [href]="chat.fileUrl" target="_blank"
+                                                    [title]="'open' | translate"><img class="media mb-1"
+                                                        [src]="chat.fileName | type" alt=""></a>
+                                            </ng-template>
+                                        </ng-container>
+                                        <div>
+                                            <p class="mt-1" *ngIf="chat?.msgBody !== '' ">{{ chat?.msgBody }}</p>
+                                            <span class="time">{{ chat?.createdAt | timeOnly }}</span>
+                                        </div>
+                                    </div>
+                                    <ng-container *ngIf="chat?.status != null">
+                                        <ng-container [ngSwitch]="chat?.status!">
+                                            <div *ngSwitchCase="3" class="chat-contact-img small">
+                                                <span>{{ chatIcon(chatName) }}</span>
+                                            </div>
+                                            <div *ngSwitchCase="1">
+                                                <img src="../assets/icons/chats-icon-2.svg" alt="">
+                                            </div>
+                                            <div *ngSwitchCase="2">
+                                                <img src="../assets/icons/right-blue.svg" alt="">
+                                            </div>
+                                            <div *ngSwitchCase="0"
+                                                class="d-flex justify-content-end align-items-center w-100">
+                                                <span class="status pending d-flex align-items-center txt-xs"></span>
+                                            </div>
+                                            <mat-icon *ngSwitchCase="4"
+                                                style="display: flex; justify-content: center; align-items: center; margin: 0 !important; padding: 0 !important; width: 13px;"
+                                                class="text-danger txt-sm">error_outline</mat-icon>
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
+
+                            </div>
+
+                        </ng-container>
+                    </ng-template>
+                </ng-container>
             </div>
-
-            <div class="outgoing-chats">
-                <div class="outgoing-chats-img">
-                    <img src="user1.png">
-                </div>
-                <div class="outgoing-msg">
-                    <div class="outgoing-chats-msg">
-                        <p class="multi-msg">Hi riya , Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nobis deleniti earum magni recusandae assumenda.
-                        </p>
-                        <p class="multi-msg">Lorem ipsum dolor sit amet consectetur.</p>
-                        <span class="time">18:30 PM | July 24 </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="received-chats">
-                <div class="received-chats-img">
-                  <img src="user2.png" />
-                </div>
-                <div class="received-msg">
-                  <div class="received-msg-inbox">
-                    <p class="single-msg">
-                      Hi !! This is message from John Lewis. Lorem ipsum, dolor sit amet
-                      consectetur adipisicing elit. iste distinctio expedita illo!
-                    </p>
-                    <span class="time">18:31 PM | July 24</span>
-                  </div>
-                </div>
-              </div>
-              <div class="outgoing-chats">
-                <div class="outgoing-chats-img">
-                  <img src="user1.png" />
-                </div>
-                <div class="outgoing-msg">
-                  <div class="outgoing-chats-msg">
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, sequi.
-                    </p>
-              
-                    <span class="time">18:34 PM | July 24</span>
-                  </div>
-                </div>
-              </div>
-              
-
-              
-              
-
 
 
 
@@ -269,38 +329,56 @@
 
         </div>
         <!-- footer -->
-        <div class="m-0 d-flex  align-items-center" 
-        style="height: 10%; 
-        border-bottom-left-radius:20px ; border-bottom-right-radius: 20px ; 
-        background-color: rgba(44, 124, 182, 0.16) ;">
+        <div class="attachments-review">
+            <app-attachments (onRemoveFile)="disableButtonOrnot()" [files]="filesList"></app-attachments>
+        </div>
+        <div class="chats-footer w-100 p-3 bg-primary-500">
+            <div class="d-flex gap-3  chat-message-container" style="width: 95%;">
+                <div class="d-flex align-items-center justify-content-around" style="width: 10%; max-width: 70px;    gap: 5px;
+                ">
+                    <div class="attachments pointer" (click)="openFileUploader()">
+                        <input #fileInput class="d-none" multiple type="file" (change)="onChangeFile($event)">
+                        <img src="../assets/icons/Fill 1.svg" alt="">
+                    </div>
 
-        <div class=" ms-5" style="width: 6%;">
-            <a style="cursor: pointer;">
-                <img src="../assets/icons/Fill 1.svg" alt="">
-            </a>
-        </div>
+                    <ng-container>
+                        <div class="position-relative" (appClickOutside)="showEmoji = false ;isEmojiClicked=false">
+                            <div (click)="isEmojiClicked = !isEmojiClicked" class="emojes-icon ">
+                                <img src="../assets/icons/emojes.svg" alt="">
+                            </div>
 
-        <div class=" " style="width: 6%;">
-            <a style="cursor: pointer;">
-                <img src="../assets/icons/emojes.svg" alt="">
-            </a>
-        </div>
-       
-        <div style="width: 65%;">
-            <input class="form-control" type="text" name="message" id="" placeholder="Type a message">
-        </div>
-        
-        <div class="sendBtn mx-5" style="width: 6%;">
-            <a style="cursor: pointer;">
+                            <emoji-mart *ngIf="showEmoji || isEmojiClicked"
+                                (mouseover)="!isEmojiClicked && (showEmoji=true)"
+                                class="emoji-pick chat-emoji-picker  start-0  position-absolute"
+                                (emojiClick)="addEmoji($event)" [enableSearch]="false" [darkMode]="false"
+                                [showPreview]="false" color="var(--clr-primary-600)">
+                            </emoji-mart>
+                        </div>
+
+                    </ng-container>
+
+                </div>
+
+
+
+                <form style="width:95%;" emojiTextarea [formGroup]="messageForm" class="d-flex">
+                    <textarea class=" form-control" id="emojiTextarea" formControlName="message"
+                        (keydown.enter)="sendMsg($event)" (keyup)="getCursorPosition($event)"
+                        (click)="getCursorPosition($event) "
+                        (input)="detectLanguage($event.target.value); disableButtonOrnot()" [dir]="textDirection"
+                        [placeholder]="'Type a message' |translate"></textarea>
+                </form>
+            </div>
+
+
+
+            <button style="width: 5%;" class="sendBtn" [disabled]="disable" [ngClass]="{disable}"
+                style="cursor: pointer;" (click)="sendMsg()">
                 <img src="../assets/icons/send.svg" alt="">
-            </a>
-        </div>
-
-
-
+            </button>
         </div>
 
 
     </div>
 
-</div>
+</section>

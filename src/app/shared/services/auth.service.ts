@@ -271,6 +271,7 @@ saveDataToLocalStorage(data){
     const decryptedEmail = this.localStorageService.getDecryptedData("email");
     return this.isEmailValid(decryptedEmail)
   }
+
   else{
     return false
   }

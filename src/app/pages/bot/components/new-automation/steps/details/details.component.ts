@@ -17,6 +17,7 @@ export class DetailsComponent implements OnInit {
   deviceId:string="";
   message = new FormControl('');
   sessionTimeOut: any = new FormControl(15);
+  email:string=this.authService.getUserInfo()?.email;
 
   form = new FormGroup({
     devicesData:this.devicesData,
@@ -43,7 +44,7 @@ export class DetailsComponent implements OnInit {
   }
   getDevices(){
 
-    this.authService.getDevices(this.devicesService.email,10,0,"","").subscribe(
+    this.authService.getDevices(this.email,10,0,"","").subscribe(
       (res)=>{
 
         let activeDevices=res.filter((r)=>r.isConnected)

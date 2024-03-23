@@ -53,6 +53,7 @@ import { HintMessageComponent } from './components/hint-message/hint-message.com
 import { UsButtonDirective } from '../directives/us-button.directive';
 import { UsButtonComponent } from './components/us-button/us-button.component';
 import { NavActionsComponent } from './components/nav-actions/nav-actions.component';
+import { ErrorTranslatePipe } from './pipes/errorTranslate.pipe';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -105,7 +106,8 @@ import { NavActionsComponent } from './components/nav-actions/nav-actions.compon
     HintMessageComponent,
     UsButtonComponent,
     UsButtonDirective,
-    NavActionsComponent
+    NavActionsComponent,
+    ErrorTranslatePipe
 
   ],
   exports:[
@@ -149,7 +151,8 @@ import { NavActionsComponent } from './components/nav-actions/nav-actions.compon
     UsButtonComponent,
     UsButtonDirective,
     RouterModule,
-    NavActionsComponent
+    NavActionsComponent,
+    ClickOutsideDirective
 
   ],
   

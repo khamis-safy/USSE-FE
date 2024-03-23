@@ -39,7 +39,7 @@
   </ng-container>
 
   <div class="all-options-container d-flex justify-content-between flex-column h-100 overflow-auto px-3">
-    <ul class="d-flex flex-column gap-3">
+    <ul class="d-flex flex-column gap-2">
       <!-- <li>
         <a routerLinkActive="active" routerLink="/dashboard" class="text-neutral-600 d-flex">
           <div class="icon">
@@ -56,14 +56,6 @@
           <span class="">{{ "MESSAGES" | translate }}</span>
         </a>
       </li>
-      <!-- <li>
-        <a routerLinkActive="active" routerLink="/chats" class="text-neutral-600 d-flex">
-          <div class="icon">
-            <img src="assets/icons/chats-1.svg" alt="" />
-          </div>
-          <span class="">{{ "CHATS" | translate }}</span>
-        </a>
-      </li> -->
       <li>
         <a routerLinkActive="active" routerLink="/compaigns" class="text-neutral-600 d-flex">
           <div class="icon">
@@ -102,6 +94,14 @@
             <img src="assets/icons/devices-1.svg" alt="" />
           </div>
           <span class="">{{ "DEVICES" | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLinkActive="active" routerLink="/chats" class="text-neutral-600 d-flex">
+          <div class="icon">
+            <img src="assets/icons/chats-1.svg" alt="" />
+          </div>
+          <span class="">{{ "CHATS" | translate }}</span>
         </a>
       </li>
       <li >
@@ -146,14 +146,15 @@
       </li> -->
   
     </ul>
-    <div class="versions w-100 d-flex justify-content-between  text-primary-800 " style="border-top: 1px solid #C7C6C6; height: 50px;">
-      <span [title]="'versions' | translate">{{frontVersion}} / {{backVersion}}</span>
-      <div class="icon p-0 m-0 pointer" [title]="'HELP' | translate" >
-      <img src="assets/icons/help-1.svg" class="w-100" alt="" />
-      </div>
-    
-     
-    </div>
+  
 
+  </div>
+  <div class="versions mx-3 d-flex justify-content-between  text-primary-800 " style=" border-top: 1px solid #C7C6C6; height: 50px;">
+    <span [title]="'versions' | translate">{{frontVersion}} / {{backVersion}}</span>
+    <div class="icon p-0 m-0 pointer" [title]="'HELP' | translate" >
+    <img src="assets/icons/help-1.svg" class="w-100" alt="" />
+    </div>
+  
+   
   </div>
 </div>

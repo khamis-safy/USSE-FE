@@ -16,7 +16,7 @@ a {
   gap: 30px;
   height: 85vh;
   width: 17vw !important;
-  max-width: 312px !important;
+  max-width: 290px !important;
   min-height: 50vh;
   max-height: 100vh;
   overflow: hidden;
@@ -126,7 +126,7 @@ height: 45px !important;
 }
 
 .sidnav-container{
-  gap: 10px !important;
+  gap: 8px !important;
 }
 .sidnav-container a {
   padding: 11px 11px !important;
@@ -138,8 +138,8 @@ height: 45px !important;
     padding-inline: 15px !important;
 }
   .sidnav-container{
-    width: 224px !important;
-    gap: 12px !important;
+    width: 230px !important;
+    gap: 15px !important;
     .user-options {
       padding: 12px !important;
       // top: 13% !important;
@@ -156,6 +156,8 @@ height: 45px !important;
     .icon{
       img{
         width: 66% !important;
+        min-width: 16px;
+
       }
     } 
    
@@ -169,7 +171,7 @@ li {
   a {
 
     span{
-      font-size: 12px  !important;
+      font-size: 13px  !important;
     }
   }
 }

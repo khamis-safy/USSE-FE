@@ -252,6 +252,7 @@
 "DELETE_SELECTED_ITEMS_MESSAGE": "Are you sure you want to delete selected items?",
 "CLEAR_LISTS_MESSAGE": "Are you sure you want to clear lists from these contacts?",
 "REMOVE_CONTACTS_MESSAGE": "Are you sure you want to remove these contacts?",
+"DELETE_Chat_MESSAGE":"Are you sure you want to delete that chat ?",
 "CONFIRM": "Confirm",
 "LABEL": "Select File",
 "FILE_SIZE_LIMIT": "file size no more than",
@@ -617,7 +618,17 @@
 "campaign_Randomize_interval_tooltip":"the delay that will be applied between the messages, will be randomized delay between the values",
 "campaign_Repeat_every_tooltip":"this campaign will be repeated every specific days.",
 "campaign_Sending_out_time_tooltip":"the time boundaries that this campaign must be sent at",
-"read_more":"Read more"
+"learn_more":"Learn more",
+"Type a message":"Type a message",
+"New_chat":"New Chat",
+"sentAt":"Sent At ",
+"seenAt":"Seen At ",
+"deliveredAt":"Delivered At ",
+"Error: device is not connected, try to reconnect your device":"Error: device is not connected, try to reconnect your device",
+"Error: at least attachments or message content must be not empty":"Error: at least attachments or message content must be not empty",
+"Today":"Today",
+"Yesterday":"Yesterday"
+
 
 
 

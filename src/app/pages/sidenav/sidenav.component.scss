@@ -22,13 +22,13 @@ a {
   
   .all-options-container {
     height: 100%;
-    overflow-y: auto !important;
     padding-inline: 0 !important;
 
   }
   .all-options-container{
     ul {
-    
+      overflow-y: auto !important;
+
       li {
         a {
           gap: 12px;
@@ -119,7 +119,6 @@ a {
   cursor: pointer;
 }
 .user-info{
-  border-bottom: 1px solid #C7C6C6;
   padding-bottom: 10px;
 
 }

@@ -14,7 +14,6 @@ import { environment } from 'src/environments/environment';
 export class DevicesService {
   display:number=10;
   pageNum:number=0;
-  email:string=this.authService.getUserInfo()?.email;
   orderedBy:string="";
   search:string="";
   DevicesPermission:PermissionData;
@@ -36,12 +35,12 @@ getDevices(email:string,showsNum:number,pageNum:number,orderedBy:string,search:s
   return this.http.get<DeviceData[]>(`${this.api}Device/listDevices?email=${email}&take=${showsNum}&scroll=${pageNum}&orderedBy=${orderedBy}&search=${search}`)
 }
 
-initWhatsAppB(sessionName:string,port:number,serverId:number,host?:string):Observable<Init>{
+initWhatsAppB(email : string, sessionName:string,port:number,serverId:number,host?:string):Observable<Init>{
   const query=sessionName && !host?
-   `?email=${this.email}&sessionName=${sessionName}&port=${port}&serverId=${serverId}`
+   `?email=${email}&sessionName=${sessionName}&port=${port}&serverId=${serverId}`
    :sessionName && host?
-   `?email=${this.email}&sessionName=${sessionName}&port=${port}&host=${host}`
-   :`?email=${this.email}`
+   `?email=${email}&sessionName=${sessionName}&port=${port}&host=${host}`
+   :`?email=${email}`
 
   return this.http.post<Init>(`${this.api}Device/InitializeWhatsappBisunessSession${query}`,"")
 }

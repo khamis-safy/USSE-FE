@@ -48,7 +48,7 @@ export class InputComponent implements  AfterViewInit {
   }
   writeValue(value: any): void {
     this.val = value;
-    if (this.isTextArea && this.limitTextarea) {
+    if (this.limitTextarea) {
       // Update the character count for the initial value
       this.charCount = this.val ? this.val.length : 0;
     }
@@ -150,7 +150,7 @@ export class InputComponent implements  AfterViewInit {
 
   onValueChange(element: any) {
     if (this.validators?.length) this.validators.forEach((fn) => fn(element));
-    if(this.isTextArea && this.limitTextarea){
+    if(this.limitTextarea){
         // Update the character count
       this.charCount = this.value ? this.value.length : 0;
 
@@ -160,10 +160,11 @@ export class InputComponent implements  AfterViewInit {
   }
   addEmojiToTextArea(e){
     let val = this.value ? this.value : ""
-    let sym = e.emoji.unified.split('-')
-    let codesArray = []
-    sym.forEach(el => codesArray.push('0x' + el))
-    let emoji = String.fromCodePoint(...codesArray);
+    // let sym = e.emoji.unified.split('-')
+    // let codesArray = []
+    // sym.forEach(el => codesArray.push('0x' + el))
+    // let emoji = String.fromCodePoint(...codesArray);
+    let emoji =e.emoji.native;
     this.value =  val.slice(0, this.curPos) + emoji + val.slice(this.curPos);
     this.isEmojiClicked = true;
   }

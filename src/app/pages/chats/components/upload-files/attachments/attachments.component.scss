@@ -1,0 +1,71 @@
+.attachments-container{
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin: 0;
+    background-color: white;
+    max-height: 300px;
+    overflow: auto;
+    img{
+        &.image{
+            width: 80px;
+            height: 65px;
+            object-fit: cover;
+
+        }
+        &.file{
+            width: 40px;
+        }
+        
+    }
+    .file-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+        height: 65px;
+    }
+    li{
+        display: flex;
+        justify-content: space-between;
+        padding-block: 18px;
+        .attach-content-container{
+            width: 90%;
+
+            display: flex;
+            gap: 10px;
+            .attach-details{
+                width: 80%;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                .fileName{
+                    font-family: Poppins;
+                    font-weight: 600;
+                }
+                .fileSize{
+                    font-family: Poppins;
+                    font-weight: 500;
+ 
+
+                }
+            }
+        }
+      
+    }
+    li:not(:last-of-type){
+        border-bottom: 1px solid #292A32
+        
+       
+    }
+    
+}
+@media(max-width:768px){
+    .fileName,.fileSize{
+    font-size: 12px;
+
+    }
+    .attachments-container li .attach-content-container .attach-details {
+        gap: 4px !important;
+    }
+}

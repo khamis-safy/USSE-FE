@@ -75,9 +75,7 @@ $clr_warning_50: #FDF4DC;
 .nb-theme-default .label{
   font-weight: normal !important;
 }
-/* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap');
+
 *:not(i,mat-icon){
   font-family: 'Poppins', sans-serif ;
 }
@@ -221,6 +219,7 @@ h1,h2,h3,h4,h5,h6,p{
 .bg-primary-400{ background: var(--clr-primary-400) !important;}
 .bg-primary-200{ background: var(--clr-primary-200) !important;}
 .bg-primary-100{ background: var(--clr-primary-100) !important;}
+.bg-primary-500{ background: var(--clr-primary-500) !important;}
 
 .bg-danger-700{ background: var(--clr-danger-700) !important;}
 .bg-neutral-900{ background-color: var(--clr-neutral-900) !important;}
@@ -1377,6 +1376,10 @@ mat-expansion-panel-body{
   }
   .emoji-pick{
 right: 0 !important;
+&.chat-emoji-picker{
+  right: unset !important;
+
+}
   }
   .buttons_{
     flex-direction: row-reverse;
@@ -2399,6 +2402,7 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
     min-height: unset !important;
 
   }
+  .contacts_count_warning,
   .custom-responsive-modal,
   .custom-dialog-edit-user-actions,
   .custom-dialog-add-user-actions,
@@ -2432,7 +2436,7 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   .responsive-dialog-for-actions-style2 {
       height: 77vh !important;
   }
-  
+  .contacts_count_warning,
   .responsive-dialog-for-actions,
   .custom-dialog-warning-modal,
   .responsive-dialog-for-actions-style2,
@@ -2446,6 +2450,11 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
   .custom-dialog-add-user-actions{
     height: 83vh !important;
 
+  }
+  .contacts_count_warning{
+    height: 60vh !important;
+    min-height: 393px !important;
+    min-height: 393px !important;
   }
   .custom-dialog-edit-user-actions{
     height: 73vh !important;
@@ -2775,16 +2784,71 @@ span.mat-mdc-select-value-text {
 
   }
 }
-@media (max-width:991px){
+// @media (max-width:991px){
 
-  #search {
-      max-width: 265px !important;
-  }
-}
+//   #search {
+//       max-width: 265px !important;
+//   }
+// }
 .rtl{
   .arrow_down_icon{
     right: auto !important;
     left: -28px !important;
   }
+  // for chat module
+  .received-chats-msg{
+    border-radius: 16px 16px 0px 16px !important;
+  }
+  .outgoing-chats-msg{
+    border-radius: 16px 16px  16px 0px !important;
 
+  }
+  .chats-footer{
+    flex-direction: row-reverse !important;
+}
+}
+.nb-theme-default nb-layout .layout {
+  background-color: var(--clr-primary-200) !important;
+}
+.rtl{
+  .back-arrow-blue{
+    rotate: 180deg !important;
+  }
+  .chat-message-container{
+    flex-direction: row-reverse !important;
+  }
+}
+@media(max-width:768px)
+{
+  .emoji-pick.chat-emoji-picker{
+    bottom: 45px!important;
+    position: fixed !important;
+    section.emoji-mart {
+      width: 100% !important;
+      box-shadow: var(--shadow-sm);
+
+  }
+    .emoji-mart-scroll {
+      height: 200px;
+      padding: 0 !important;
+    }
+  }
+  .add-new-chat-modal{
+    width: 100vw !important;
+    height: 92vh !important;
+    max-width: 100% !important;
+    top: 8% !important;
+    position: absolute !important;
+  //   .mat-mdc-dialog-container .mdc-dialog__surface {
+  //     border-radius: 25px !important;
+  // }
+  }
+}
+.rotate-180{
+  rotate: 180deg;
+}
+.rtl{
+  .rotate-180{
+    rotate: 360deg  !important;
+  }
 }

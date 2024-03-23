@@ -15,6 +15,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from 'src/app/pages/users/users.service';
 import { AuthService } from '../../services/auth.service';
 import { BotService } from 'src/app/pages/bot/bot.service';
+import { Chats } from 'src/app/pages/chats/interfaces/Chats';
+import { ChatsService } from 'src/app/pages/chats/chats.service';
 
 interface ComponentData {
   contactsData?: { contacts: Contacts[], remove: boolean },
@@ -25,7 +27,7 @@ interface ComponentData {
   compaignData?: { compaignId: string, action: string },
   users?:{userEmail:string,customerEmail:string}
   automationData?: { automationId: string },
-
+  chatData?:{chat:Chats}
 
 
 }
@@ -39,7 +41,6 @@ export class DeleteModalComponent implements OnInit {
   contacts: string[];
   list: string[];
   action;
-
   isLoading = false;
   numOfItems: number = 0;
   isRemoveL: boolean;
@@ -54,6 +55,7 @@ export class DeleteModalComponent implements OnInit {
   isCampaigns: boolean = false;
   isUsers:boolean=false;
   isAutomation:boolean=false;
+  isChats:boolean=false;
   constructor(
     private devicesService: DevicesService,
     private templatesService: TemplatesService,
@@ -64,9 +66,11 @@ export class DeleteModalComponent implements OnInit {
     private usersService:UsersService,
     private authService:AuthService,
     private botService:BotService,
+    private chatService:ChatsService,
     public dialogRef: MatDialogRef<DeleteModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ComponentData,
     private translate:TranslateService,
+    
     
   ) {
   }
@@ -80,6 +84,7 @@ export class DeleteModalComponent implements OnInit {
       this.isLists = false;
       this.isMessages = false
       this.isUsers=false
+      this.isChats=false
 
       this.body = this.data.contactsData.contacts.map(res => res.id)
       this.numOfItems = this.body.length;
@@ -117,7 +122,9 @@ export class DeleteModalComponent implements OnInit {
       this.isTemplates = false;
       this.isLists = true;
       this.isMessages = false;
-      this.isUsers=false
+      this.isUsers=false;
+      this.isChats=false
+
 
     }
     else if (this.data.messagesData) {
@@ -127,6 +134,7 @@ export class DeleteModalComponent implements OnInit {
       this.isLists = false;
       this.isMessages = true;
       this.isUsers=false
+      this.isChats=false
 
 
       this.body = this.data.messagesData.messages.map(res => res.id);
@@ -141,6 +149,7 @@ export class DeleteModalComponent implements OnInit {
       this.isLists = false;
       this.isMessages = false;
       this.isUsers=false
+      this.isChats=false
 
     }
     else if (this.data.compaignData) {
@@ -151,6 +160,7 @@ export class DeleteModalComponent implements OnInit {
       this.isMessages = false;
       this.isCampaigns = true;
       this.isUsers=false
+      this.isChats=false
 
     }
     else if(this.data.users){
@@ -159,7 +169,9 @@ export class DeleteModalComponent implements OnInit {
       this.isTemplates = false;
       this.isLists = false;
       this.isMessages = false;
-      this.isUsers=true
+      this.isUsers=true;
+      this.isChats=false
+
     }
     else if(this.data.automationData){
       this.isContacts = false;
@@ -169,6 +181,19 @@ export class DeleteModalComponent implements OnInit {
       this.isMessages = false;
       this.isUsers=false;
       this.isAutomation=true;
+      this.isChats=false
+
+    }
+    else if(this.data.chatData)
+    {
+      this.isContacts = false;
+      this.isDevices = false;
+      this.isTemplates = false;
+      this.isLists = false;
+      this.isMessages = false;
+      this.isCampaigns = false;
+      this.isUsers=false;
+      this.isChats=true
     }
     else {
       this.isContacts = false;
@@ -177,7 +202,9 @@ export class DeleteModalComponent implements OnInit {
       this.isLists = false;
       this.isMessages = false;
       this.isCampaigns = false;
-      this.isUsers=false
+      this.isUsers=false;
+      this.isChats=false
+
 
     }
 
@@ -246,7 +273,25 @@ this.botService.deleteAutomation(this.data.automationData.automationId,this.auth
 
   }
 
+deleteChat(){
+  this.chatService.deleteChat(this.data.chatData.chat.chat.id,this.authService.getUserInfo()?.email).subscribe(
+    (res) => {
+      this.isLoading = false
 
+      this.onClose(true);
+
+      this.toaster.success(this.translate.instant("COMMON.DELETE_MESSAGES"))
+
+
+    },
+    (err) => {
+      this.isLoading = false
+      this.onClose();
+
+    }
+  )
+
+}
   deleteDevice() {
     this.devicesService.deleteDevice(this.authService.getUserInfo()?.email, this.data.deviceData.deviceId).subscribe(
       (res) => {
@@ -456,6 +501,9 @@ else if(this.isUsers){
 }
 else if(this.isAutomation){
   this.deleteAutomation();
+}
+else if(this.isChats){
+  this.deleteChat()
 }
     else {
       this.deleteDevice();

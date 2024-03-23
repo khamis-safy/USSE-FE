@@ -7,6 +7,18 @@
       </div> 
       <span class="txt-lg main-heading">{{ 'bots' | translate }}</span>
     </div>
+       <us-button
+        *ngIf="isBots"
+        class="add_btn"
+        [label]="'new_automation' | translate"
+        [matIcon]="'add'"
+        [fill]="true"
+        [size]="'md'"
+        [loading]="false"
+        [disabled]="false"
+        [appearance]="'primary'"
+        (clicked)="addAutomation()"
+      ></us-button>
   </div>
   <ng-container *ngIf="isBots">
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" color="transparent"  [(selectedIndex)]="selectedTabIndex"   (selectedTabChange)="changeModal($event)">

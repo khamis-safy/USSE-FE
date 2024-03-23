@@ -59,7 +59,8 @@ export interface UserData{
   apiToken:string,
   timezone:string,
   subscriptions: {name:string,value:string}[],
-  countryCode?:string
+  countryCode?:string,
+  token?:string
 
 }
 

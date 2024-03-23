@@ -24,6 +24,7 @@ export class ToasterServices implements OnInit {
 @Input() icon:string = '';
 @Input() duration: number = 3000;
 progress = 100;
+@Input() translate: boolean =false ;
   constructor(private viewContainerRef : ViewContainerRef) { }
 
 
@@ -33,6 +34,7 @@ progress = 100;
     toasterCustomComponent = this.viewContainerRef.createComponent(ToasterServices);
     toasterCustomComponent.instance.message = this.message;
     toasterCustomComponent.instance.state = this.state;
+    toasterCustomComponent.instance.translate = this.translate;
     toasterCustomComponent.instance.iconClass = this.iconClass;
     toasterCustomComponent.instance.showToaster = true;
     this.showToaster = toasterCustomComponent.instance.showToaster;
@@ -70,6 +72,7 @@ progress = 100;
     if(toasterCustomComponent){
         toasterCustomComponent.destroy();
     }
+    this.translate=false;
     this.message=  message;
     this.state = "success",
     this.getToasterData();
@@ -79,16 +82,21 @@ progress = 100;
     if(toasterCustomComponent){
       toasterCustomComponent.destroy();
     }
+    this.translate=false;
+
     this.message=  message;
     this.state = "warning",
     this.getToasterData();
   }
 
-  error( message:any){
+
+  error( message:any,isTranslate?){
     if(toasterCustomComponent){
       toasterCustomComponent.destroy();
     }
+    this.translate=isTranslate ? true : false;
     this.message=  message;
+
     this.state = "error",
     this.getToasterData();
   }
