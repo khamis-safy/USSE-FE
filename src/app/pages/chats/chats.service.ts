@@ -29,7 +29,7 @@ startConnection(){
 }
 private createConnection() {
   this.hubConnection = new signalR.HubConnectionBuilder()
-  .withUrl(this.signalRlink)
+  .withUrl(this.signalRlink, { withCredentials: false })
   .build();
     this.startHubConnection()
 
