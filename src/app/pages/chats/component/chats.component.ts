@@ -654,6 +654,7 @@ resetChatsOrder(chatContact){
       this.isEmojiClicked = true;
       this.showEmoji = true;
 
+      this.disableButtonOrnot()
 
       
     }
