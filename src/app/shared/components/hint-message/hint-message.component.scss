@@ -3,8 +3,12 @@
     border-radius: 4px;
 
 }
+span{
+    font-size: 14px;
+}
 @media(max-width:768px){
     span{
+        
         font-size: 12px;
         max-width: 78%;
         }

@@ -25,6 +25,7 @@ backToBotComponent(event){
 
 }
 addAutomation(){
+  this.automationData = null
   this.isBots=false;
 }
 }

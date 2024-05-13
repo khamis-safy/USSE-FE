@@ -1575,6 +1575,9 @@ right: 0 !important;
 }
 
 @media (max-width: 1700px) {
+  .mat-mdc-table .mdc-data-table__row {
+    height: 46px !important;
+}
   .import-button , .export-button{  
     height: 39px !important;
     font-size: 11px !important;
@@ -1783,6 +1786,12 @@ button.button-size-md{
 // }
 // }
   
+#search {
+  height: 35px  !important;
+}
+.mat-mdc-paginator-page-size-label {
+    font-size: 11px !important;
+}
 }
 
 

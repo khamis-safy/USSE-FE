@@ -371,7 +371,6 @@ getGroupHeader(messageDate: Date): string {
   getChatById(chatId,search?)
   {
     this.searchVal = search || '';
-    this.loadingChat = true;
 
     this.chatService.getChatById(this.email,chatId,30,0,this.searchVal,this.deviceId) 
     .subscribe(
