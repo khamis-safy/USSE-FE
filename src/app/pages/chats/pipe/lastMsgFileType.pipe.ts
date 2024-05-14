@@ -32,7 +32,7 @@ export class LastMsgFileTypePipe implements PipeTransform {
       "mpeg"
     ];
   const fileTypesMapping = {
-      'txt': 'assets/icons/text.svg',
+      'txt': 'assets/icons/chat-file.svg',
       'pdf': 'assets/icons/chat-pdf.svg',
       'doc': 'assets/icons/chat-word.svg',
       'docx': 'assets/icons/chat-word.svg',

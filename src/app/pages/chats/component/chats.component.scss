@@ -36,6 +36,11 @@ textarea {
     height: 75vh;
     overflow: auto;
     padding: 30px 25px;
+    p{
+        font-family:'Poppins', 'Noto Color Emoji' !important;
+
+    }
+
 }
 
 .contacts-container {
@@ -306,11 +311,7 @@ textarea.form-control {
     overflow: hidden;   
 }
 }
-@media(max-width:1400px){
-    .pOut{
-        font-size: 12px !important;
-    }
-}
+
 @media(min-width:767px){
     .back-arrow-blue{
         display: none !important;
@@ -510,5 +511,36 @@ textarea.form-control {
     .image{
         max-width: 200px !important;
 
+    }
+}
+@media (max-width: 1700px) {
+    .deviceContent {
+        width: 34px !important;
+        height: 34px !important;
+        span{
+            font-size: 12px !important;
+        }
+    }
+    .pOut{
+        font-size: 11px !important;
+    }
+    .messages-count span {
+
+        font-size: 9px !important;
+    }
+    .chat-body .outgoing-chats .outgoing-chats-msg p ,.chat-body .received-chats .received-chats-msg p {
+        font-size: 12px;
+    }
+    .image{
+        max-width: 280px !important;
+    
+    }
+    textarea.form-control {
+        font-size: 12px;
+    }
+    .timestamp{
+        span{
+            font-size: 13px;
+        }
     }
 }
