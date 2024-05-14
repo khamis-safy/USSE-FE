@@ -347,20 +347,17 @@ isString(value: any): boolean {
 }
 getGroupHeader(messageDate: Date): string {
   const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
+  today.setHours(0, 0, 0, 0); // Set the time part to midnight for today
 
-  if (
-    messageDate.getDate() === today.getDate() &&
-    messageDate.getMonth() === today.getMonth() &&
-    messageDate.getFullYear() === today.getFullYear()
-  ) {
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1); // Subtract one day from today to get yesterday
+
+  const messageDateOnly = new Date(messageDate);
+  messageDateOnly.setHours(0, 0, 0, 0); // Set the time part to midnight for comparison
+
+  if (messageDateOnly.getTime() === today.getTime()) {
     return 'Today';
-  } else if (
-    messageDate.getDate() === yesterday.getDate() &&
-    messageDate.getMonth() === yesterday.getMonth() &&
-    messageDate.getFullYear() === yesterday.getFullYear()
-  ) {
+  } else if (messageDateOnly.getTime() === yesterday.getTime()) {
     return 'Yesterday';
   } else {
     return messageDate.toDateString(); // Or any other format you prefer for other dates
@@ -899,10 +896,11 @@ else{
           findChat.lastMessageDate=newMessage.createdAt;
 
         }
-
         // in case the message is sent from the current opend chat
         if(this.selectedChatId === message.ChatId){
-          let foundMesg = this.selectedChat.find(chat => chat.chat.id === message.id);
+          const messageDate = new Date(message.createdAt);
+          const day = this.getGroupHeader(messageDate);
+          let foundMesg = this.groupedMessages[day].find(chat => chat.chat?.id === message.id);
           if (foundMesg) {
             if(message.status > foundMesg.status)
             {
