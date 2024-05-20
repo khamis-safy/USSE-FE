@@ -4,6 +4,7 @@ import { DevicesService } from '../../devices.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
+import { CountryService } from 'src/app/shared/services/country.service';
 
 @Component({
   selector: 'app-addDevice',
@@ -31,10 +32,28 @@ export class AddDeviceComponent implements OnInit {
     mobile:this.mobile
 
   });
+  selectedCountryISO: any;
   constructor(    private toaster: ToasterServices,
-    private devicesService:DevicesService,private authService:AuthService) { }
+    private devicesService:DevicesService,
+    private authService:AuthService,
+    private countryService:CountryService
+  ) { }
 
   ngOnInit() {
+    this.setCountryBasedOnIP();
+  }
+  setCountryBasedOnIP(): void {
+    this.countryService.setCountryBasedOnIP().subscribe(
+      (data) => {
+        const countryName = data.country_name; // Country code from ipapi
+        
+        this.selectedCountryISO = CountryISO[countryName] ; // Default to Egypt if country code not found
+      },
+      (error) => {
+        console.error('IP API error:', error);
+        this.selectedCountryISO = CountryISO.Egypt; // Default to Egypt on error
+      }
+    );
   }
   submitAdd(){
 

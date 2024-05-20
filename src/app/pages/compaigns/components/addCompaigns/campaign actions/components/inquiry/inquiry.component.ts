@@ -7,6 +7,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TranslateService } from '@ngx-translate/core';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
+import { CountryService } from 'src/app/shared/services/country.service';
 
 @Component({
   selector: 'app-inquiry',
@@ -35,6 +36,7 @@ export class InquiryComponent implements OnInit ,AfterViewInit{
  separateDialCode = true;
  SearchCountryField = SearchCountryField;
  CountryISO = CountryISO;
+ selectedCountryISO: any;
  PhoneNumberFormat = PhoneNumberFormat;
   @ViewChild('dialogElement') dialogElement: ElementRef;
   constructor(public dialogRef: MatDialogRef<InquiryComponent>,
@@ -43,11 +45,26 @@ export class InquiryComponent implements OnInit ,AfterViewInit{
     private plugin:PluginsService,
     private toaster:ToasterServices, 
     private translate:TranslateService,
+    private countryService:CountryService
+
   ) { 
  
     }
-
+    setCountryBasedOnIP(): void {
+      this.countryService.setCountryBasedOnIP().subscribe(
+        (data) => {
+          const countryName = data.country_name; // Country code from ipapi
+          this.selectedCountryISO = CountryISO[countryName] ; // Default to Egypt if country code not found
+        },
+        (error) => {
+          console.error('IP API error:', error);
+          this.selectedCountryISO = CountryISO.Egypt; // Default to Egypt on error
+        }
+      );
+    }
+  
   ngOnInit() {
+    this.setCountryBasedOnIP()
     this.myForm = this.fb.group({
       questions: this.fb.array([this.createQuestionControl('')])
     });

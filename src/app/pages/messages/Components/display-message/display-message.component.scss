@@ -1,4 +1,9 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
+.message{
+    font-family:'Poppins', 'Noto Color Emoji' !important;
+
+}
 ._image{
   width: 48px;
   height: 48px;
@@ -15,8 +20,7 @@ h2{
 
 }
 .message{
-  line-height: 34px;
-
+  line-height: 1.8;
 }
 .message-container{
   position: relative;

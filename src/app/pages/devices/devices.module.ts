@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { DevicesService } from './devices.service';
 import { StepsComponent } from './components/steps/steps.component';
 import { AddDeviceComponent } from './components/addDevice/addDevice.component';
+import { AddTLDeviceComponent } from './components/telegramDevice/addTLDevice/addTLDevice.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { AddDeviceComponent } from './components/addDevice/addDevice.component';
   declarations: [
     DevicesComponent,
     StepsComponent,
-    AddDeviceComponent
+    AddDeviceComponent,
+    AddTLDeviceComponent
   ],
   providers:[DevicesService]
 })

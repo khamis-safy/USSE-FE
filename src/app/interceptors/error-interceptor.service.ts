@@ -39,11 +39,17 @@ export class ErrorInterceptorService implements HttpInterceptor {
               // Check if 'error.error' exists before trying to access 'message'
               // Handle the error message as needed (e.g., display it to the user)
               if(error && error?.error ){
-                if(!error.url.includes("reconnectWBSDevice"))
+                if(!error.url.includes("reconnectWBSDevice") || !error.url.includes("addNewTelgramDevice") || !error.url.includes("reconnectTelegramDevice"))
                 {
                   this.toaster.error(error?.error , true)
 
                 }
+                if(error.url.includes("addNewTelgramDevice") || error.url.includes("reconnectTelegramDevice"))
+                  {
+                    if(error?.error?.msg){
+                      this.toaster.error(error?.error?.msg , true)
+                    }
+                  }
               }
               // const errorMessage = error && error?.error && this.translate.instant(error?.error)? error?.error  : 'COMMON.ERR';
               // this.toaster.error(this.translate.instant(errorMessage))

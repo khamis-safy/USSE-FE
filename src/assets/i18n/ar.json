@@ -625,7 +625,16 @@
 "Error: device is not connected, try to reconnect your device":"خطأ: الجهاز غير متصل، حاول إعادة توصيل جهازك",
 "Error: at least attachments or message content must be not empty":"خطأ: على الأقل يجب ألا تكون المرفقات أو محتوى الرسالة فارغة",
 "Today":"اليوم",
-"Yesterday":"امس"
+"Yesterday":"امس",
+"ADD_TL_Device":"إضافة جهاز تليجرام",
+"code_needed":"يرجى إدخال الرمز المرسل إلى تليجرام الخاص بك.",
+"pass_needed":"يرجى إدخال كلمة المرور المرسلة إلى تليجرام الخاص بك.",
+"INVALID_CODE":"الرمز غير صالح. يرجى المحاولة مرة أخرى.",
+"INVALID_PASS":"كلمة المرور غير صالحة. يرجى المحاولة مرة أخرى.",
+"Error! Code Needed": "خطأ! الرمز مطلوب",
+"Error! Password Needed": "خطأ! كلمة المرور مطلوبة",
+"PHONE_CODE_INVALID": "رمز غير صالح",
+"PHONE_PASSWORD_INVALID": "كلمة مرور غير صالحة"
 
 
 

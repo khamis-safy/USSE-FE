@@ -18,6 +18,7 @@ import * as saveAs from 'file-saver';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { Subject, takeUntil } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { AddTLDeviceComponent } from '../components/telegramDevice/addTLDevice/addTLDevice.component';
 
 @Component({
   selector: 'app-devices',
@@ -121,7 +122,10 @@ else{
 }
 this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Create At", "Status","Delay Interval(s)","action"]:['Device Name', 'Device Type', 'Number',"Create At", "Status"];
   }
+  getWidth(element: HTMLElement) {
 
+    return `${element.clientWidth}px`;
+ }
   getDevices(searchVal?){
     let shows=this.devicesService.display;
     let pageNum=searchVal? 0 : this.devicesService.pageNum;
@@ -255,7 +259,14 @@ onPageChange(event){
     this.devicesService.extractChats(this.email,device.id).subscribe(
       (response: any) => {
         // Use FileSaver.js to save the Excel file
-        const filename = `${device.deviceName} whatsapp chats.xlsx`; // Set your desired filename and extension
+        let filename;
+        if(device.deviceType=='TL'){
+           filename = `${device.deviceName} telegram chats.xlsx`; // Set your desired filename and extension
+
+        }
+        if(device.deviceType=='WBS' || device.deviceType=='OWA' ){
+          filename = `${device.deviceName} whatsapp chats.xlsx`;
+         } // Set your desired filename and extension
         saveAs(response, filename);
       }
     )
@@ -317,6 +328,49 @@ onPageChange(event){
 
 
     )
+  }
+  reconnectTlDev(element:DeviceData){
+    let data:any={
+      id:element.id,
+      email: this.email,
+      deviceName:element.deviceName,
+      phoneNumber:element.deviceNumber,
+      token:element.token ,
+      sessionName: element.instanceId,
+      code: null,
+      password: null
+    }
+    this.devicesService.telegramId=element.id;
+    this.devicesService.reconnectTelegramDev(data).subscribe(
+      (res)=>{
+        this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+        this.devicesService.telegramId=''
+      },
+      (err)=>{
+        this.addTLDevice({deviceTl:element,error:err.error})
+      }
+    )
+  }
+  addTLDevice(element?){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.height='88vh';
+    dialogConfig.width='45vw';
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='833px';
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'responsive-dialog-for-actions-style2';
+    if(element){
+      dialogConfig.data=element;
+
+    }
+    const dialogRef = this.dialog.open(AddTLDeviceComponent,dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.getDevices()
+      }
+    });
+
   }
   openDeleteModal(id:string){
     const dialogConfig=new MatDialogConfig();

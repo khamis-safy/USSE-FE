@@ -13,6 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { PluginsService } from 'src/app/services/plugins.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { CountryService } from 'src/app/shared/services/country.service';
 
 interface CheckedCont{
   contacts:Contacts,
@@ -36,6 +37,8 @@ email:string=this.authService.getUserInfo()?.email;
 	SearchCountryField = SearchCountryField;
 	CountryISO = CountryISO;
   PhoneNumberFormat = PhoneNumberFormat;
+  selectedCountryISO: any;
+
   isLoading = false;
 
   selectedLists = new FormControl([]);
@@ -75,11 +78,13 @@ showInputs:boolean=false;
     private translate: TranslateService,
     private cdr: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data:CheckedCont,
+    private countryService:CountryService
   ) {
   }
 
 
   ngOnInit() { 
+    this.setCountryBasedOnIP();
     this.subscribe= this.form2.valueChanges.subscribe(()=>{
       this.invalidName=this.checkIfFieldFound(this.form2.value.fieldName)
 
@@ -104,11 +109,21 @@ showInputs:boolean=false;
       this.isEdit = false;
     }
   }
+  setCountryBasedOnIP(): void {
+    this.countryService.setCountryBasedOnIP().subscribe(
+      (data) => {
+        const countryName = data.country_name; // Country code from ipapi
+        
+        this.selectedCountryISO = CountryISO[countryName] ; // Default to Egypt if country code not found
+      },
+      (error) => {
+        console.error('IP API error:', error);
+        this.selectedCountryISO = CountryISO.Egypt; // Default to Egypt on error
+      }
+    );
+  }
 
-  // ngx-intl-tel
-  // changePreferredCountries() {
-	// 	this.preferredCountries = [CountryISO.India, CountryISO.Canada];
-	// }
+
 
   fillingData(){
     this.form.patchValue({

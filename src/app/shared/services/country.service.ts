@@ -14,5 +14,8 @@ export class CountryService {
       return this.http.get('https://ipapi.co/json/').pipe(map((response: any) => response.country_calling_code));
     }
   
+    setCountryBasedOnIP(): Observable<any> {
+      return this.http.get('https://ipapi.co/json/');
+    }
     
 }

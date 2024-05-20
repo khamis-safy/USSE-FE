@@ -11,6 +11,7 @@ import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-cont
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ContactsWarningComponent } from '../../contactsWarning/contactsWarning.component';
+import { CountryService } from 'src/app/shared/services/country.service';
 interface ListContacts {
   list: any,
   contacts: Contacts[],
@@ -60,17 +61,32 @@ sortBy;
     mobile: this.mobile,
 
   });
+  selectedCountryISO: any;
   constructor(private listService: ManageContactsService,
     private toaster:ToasterServices, 
     private translate:TranslateService,
-    private dialog: MatDialog ) { }
+    private dialog: MatDialog,
+    private countryService:CountryService
+  ) { }
 
   ngOnInit() {
+    this.setCountryBasedOnIP();
     this.getNonListContactsAndLists();
     this.getAllContacts();
 
   }
-
+  setCountryBasedOnIP(): void {
+    this.countryService.setCountryBasedOnIP().subscribe(
+      (data) => {
+        const countryName = data.country_name; // Country code from ipapi
+        this.selectedCountryISO = CountryISO[countryName] ; // Default to Egypt if country code not found
+      },
+      (error) => {
+        console.error('IP API error:', error);
+        this.selectedCountryISO = CountryISO.Egypt; // Default to Egypt on error
+      }
+    );
+  }
   getNonListContactsAndLists() {
     this.getNonListContacts().subscribe(
       (nonListContacts) => {

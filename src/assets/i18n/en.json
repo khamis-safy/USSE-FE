@@ -627,8 +627,16 @@
 "Error: device is not connected, try to reconnect your device":"Error: device is not connected, try to reconnect your device",
 "Error: at least attachments or message content must be not empty":"Error: at least attachments or message content must be not empty",
 "Today":"Today",
-"Yesterday":"Yesterday"
-
+"Yesterday":"Yesterday",
+"ADD_TL_Device":"Add Telegram Device",
+"code_needed":"Please enter the code sent to your Telegram.",
+"pass_needed":"Please enter the password sent to your Telegram.",
+"INVALID_CODE":"Invalid code. Please try again.",
+"INVALID_PASS":"Invalid password. Please try again.",
+"Error! Code Needed":"Error! Code Needed",
+"Error! Password Needed":"Error! Password Needed",
+"PHONE_CODE_INVALID":"Invalid Code",
+"PHONE_PASSWORD_INVALID":"Invalid Password"
 
 
 

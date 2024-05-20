@@ -21,6 +21,13 @@
           <!-- <button mat-menu-item ><img src="assets/icons/sms.svg" alt="" /> SMS</button> -->
           <button mat-menu-item (click)="openStepsModal()"><img src="assets/icons/whatsB.svg" alt="" /> WhatsApp Business</button>
           <!-- <button mat-menu-item ><img src="assets/icons/whats.svg" alt="" /> WhatsApp Official</button> -->
+          <button mat-menu-item (click)="addTLDevice()">
+            <div class="d-flex w-100 gap-1 align-items-center">
+              <img style="max-width: 17px; margin-inline: 2px;" src="assets/icons/telegram.svg" alt="" /> 
+              <span>Telegram</span>
+            </div>
+          </button>
+
         </mat-menu>
       </div>
     </ng-container>
@@ -49,7 +56,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-
+<!-- small screen view -->
     <ng-container  *ngIf="isSmallScreen">
       <div class="d-flex align-items-center justify-content-between my-3" style="gap: 12px;">
   
@@ -70,7 +77,36 @@
         
         </div>
       
- 
+        <ng-container *ngIf="isSmallScreen">
+          <div *ngIf="canEdit" class="menu">
+            <div #addMenu>
+              <button mat-button [matMenuTriggerFor]="menu" class=" add-device-button text-neutral-0 bg-primary-800 rounded-3 p-4">
+                <div class="add-device-menu d-flex align-items-center justify-content-center gap-3">
+                  <div class="icon">
+                    <img src="assets/icons/device.svg" alt="" />
+                  </div>
+                  {{ 'ADD_DEVICE' | translate }}
+                  <div class="icon">
+                    <img src="assets/icons/polygon.svg" alt="" />
+                  </div>
+                </div>
+              </button>
+              <mat-menu #menu="matMenu">
+                <!-- <button mat-menu-item ><img src="assets/icons/sms.svg" alt="" /> SMS</button> -->
+                <!-- <button mat-menu-item (click)="openStepsModal()"><img src="assets/icons/whatsB.svg" alt="" /> WhatsApp Business</button> -->
+                <!-- <button mat-menu-item ><img src="assets/icons/whats.svg" alt="" /> WhatsApp Official</button> -->
+                <button mat-menu-item (click)="addTLDevice()" [style.width]="getWidth(addMenu)">
+                  <div class="d-flex w-100 gap-1 align-items-center">
+                    <img style="max-width: 17px; margin-inline: 2px;" src="assets/icons/telegram.svg" alt="" /> 
+                    <span>Telegram</span>
+                  </div>
+                </button>
+      
+              </mat-menu>
+            </div>
+           
+          </div>
+        </ng-container>
       
     </div>
     
@@ -149,6 +185,7 @@
                     <img class="device-type-icon" *ngSwitchCase="'WBS'" src="assets/icons/whatsB.svg"  style="width: 25px;"  alt="wbs">
                     <img class="device-type-icon" *ngSwitchCase="'OWA'" src="assets/icons/whats.svg" style="width: 25px;"  alt="wbs">
                     <img class="device-type-icon" *ngSwitchCase="'SMS'" src="assets/icons/sms.svg"  style="width: 25px;" alt="wbs">
+                    <img class="device-type-icon" *ngSwitchCase="'TL'" src="assets/icons/telegram.svg" style="width: 24px;" alt="wbs">
 
                   </ng-container>
 
@@ -231,10 +268,13 @@
                 <div class="delete pointer">
                   <img src="assets/icons/Actionsc.svg" alt="" (click)="openDeleteModal(element.id)">
                 </div>
-                <div *ngIf="!element.isConnected && !isReonnect" class="retry pointer" [title]="'reconnect' | translate" (click)="reconnect(element)">
+                <div *ngIf="!element.isConnected && !isReonnect && element.deviceType == 'WBS'" class="retry pointer" [title]="'reconnect' | translate" (click)="reconnect(element)">
                   <img src="assets/icons/reload.svg" alt="">
                 </div>
-                <div *ngIf="element.isConnected && !isTrialCustomer && element.deviceType == 'WBS' " class=" pointer" [title]="'export-chats' | translate" (click)="exportChats(element)">
+                <div *ngIf="!element.isConnected  && element.deviceType == 'TL'&& element.deviceType !== 'WBS'" class="retry pointer" [title]="'reconnect' | translate" (click)="reconnectTlDev(element)">
+                  <img src="assets/icons/reload.svg" alt="">
+                </div>
+                <div *ngIf="element.isConnected && !isTrialCustomer && (element.deviceType == 'WBS' || element.deviceType == 'TL')" class=" pointer" [title]="'export-chats' | translate" (click)="exportChats(element)">
                   <img src="assets/icons/export-dev-chats.svg" alt="" style="width:28px">
                 </div>
               </div>
@@ -267,11 +307,13 @@
             <div class="row row-item" *ngIf="displayedColumns.includes('Device Type')">
               <div class="col row-header">{{ 'DEVICE_TYPE' | translate }}</div>
               <div class="col">
-                <div class=" px-3">
+                <div class="">
                   <ng-container [ngSwitch]="element.deviceType">
                     <img class="device-type-icon" *ngSwitchCase="'WBS'" src="assets/icons/whatsB.svg" style="width: 25px;" alt="wbs">
                     <img class="device-type-icon" *ngSwitchCase="'OWA'" src="assets/icons/whats.svg" style="width: 25px;" alt="wbs">
                     <img class="device-type-icon" *ngSwitchCase="'SMS'" src="assets/icons/sms.svg" style="width: 25px;" alt="wbs">
+                    <img class="device-type-icon" *ngSwitchCase="'TL'" src="assets/icons/telegram.svg" style="width: 24px;" alt="wbs">
+
                   </ng-container>
                 </div>
               </div>
@@ -352,10 +394,13 @@
                   <div class="delete pointer">
                     <img src="assets/icons/Actionsc.svg" alt="" (click)="openDeleteModal(element.id)">
                   </div>
-                  <div *ngIf="!element.isConnected && !isReonnect && element.deviceType !== 'WBS'" class="retry pointer" [title]="'reconnect' | translate" (click)="reconnect(element)">
+                  <!-- <div *ngIf="!element.isConnected && !isReonnect && element.deviceType !== 'WBS'" class="retry pointer" [title]="'reconnect' | translate" (click)="reconnect(element)">
+                    <img src="assets/icons/reload.svg" alt="">
+                  </div> -->
+                  <div *ngIf="!element.isConnected  && element.deviceType == 'TL'&& element.deviceType !== 'WBS'" class="retry pointer" [title]="'reconnect' | translate" (click)="reconnectTlDev(element)">
                     <img src="assets/icons/reload.svg" alt="">
                   </div>
-                  <div *ngIf="element.isConnected && !isTrialCustomer && element.deviceType == 'WBS'" class=" pointer" [title]="'export-chats' | translate" (click)="exportChats(element)">
+                  <div *ngIf="element.isConnected && !isTrialCustomer && (element.deviceType == 'WBS' || element.deviceType == 'TL')" class=" pointer" [title]="'export-chats' | translate" (click)="exportChats(element)">
                     <img src="assets/icons/export-dev-chats.svg" alt="" style="width:28px">
                   </div>
                 </div>
