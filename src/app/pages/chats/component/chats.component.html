@@ -16,10 +16,14 @@
         <div class="d-flex justify-content-between align-items-center  my-2">
 
             <div class="d-flex justify-content-between position-relative searchContainer">
-                <div class=" p-0 w-100">
-                    <input #searchInput type="text" class="form-control ps-5  txt-xs" id="searchInput"
-                        placeholder="{{ 'searchPlaceholder' | translate }}" (input)="onSearch(searchInput)">
-                </div>
+                <form [formGroup]="searchForm" class=" p-0 w-100">
+                    <input #searchInput 
+                    type="text" 
+                    class="form-control ps-5  txt-xs" 
+                    id="searchInput"
+                    placeholder="{{ 'searchPlaceholder' | translate }}" 
+                    formControlName="searchControl">
+                </form>
                 <div class=" px-4  position-absolute start-0 top-50 translate-middle-y">
                     <img src="assets/icons/search.svg" alt="">
                 </div>
@@ -77,7 +81,7 @@
                                 <p *ngIf="chatContact.lastMessageContent && !chatContact.lastMessageFileName"
                                     [dir]="changeTextDir(chatContact.lastMessageContent)"
                                     [ngStyle]="{'text-align': changeTextDir(chatContact.lastMessageContent) === 'rtl' ? 'right' : 'left'}"
-                                    class="m-0 p-0 overflow-line-1 pIn"
+                                    class="msg-body m-0 p-0 overflow-line-1 pIn"
                                     style="max-width: 80px ;text-overflow: ellipsis;overflow: hidden;">
                                     {{chatContact.lastMessageContent}}
                                 </p>
@@ -94,7 +98,7 @@
                                     <img [src]="(chatContact.fileType ? chatContact.fileType : chatContact.lastMessageFileName) | lastMsgFileType" alt="">
                                     <p [ngStyle]="{'text-align': changeTextDir(chatContact.lastMessageContent) === 'rtl' ? 'right' : 'left'}"
                                         [dir]="changeTextDir(chatContact.lastMessageContent)"
-                                        class="m-0 p-0 overflow-line-1 pIn">{{chatContact.lastMessageContent}}</p>
+                                        class="msg-body m-0 p-0 overflow-line-1 pIn">{{chatContact.lastMessageContent}}</p>
                                 </div>
                             </div>
                         </div>
@@ -149,26 +153,27 @@
 
                     </div>
                 </div>
-
-                <div [ngClass]="{'msgSearch-container': isSearch}" #searchContainer>
-                    <div *ngIf="!isSearch" style="cursor: pointer;">
-                        <img (click)="toggleSearch()" src="assets/icons/search-blue.svg" alt="">
-                    </div>
-                    <div *ngIf="isSearch" class="d-flex justify-content-between position-relative msg-search">
-                        <div class="p-0 w-100">
-                            <input #MsgsearchInput type="text" class="form-control ps-5 txt-xs" id="messageSearchInput"
-                                (input)="onSearchMsg(MsgsearchInput)"
-                                placeholder="{{ 'searchPlaceholder' | translate }}">
+                <ng-container *ngIf="!hideSearch">
+                    <div [ngClass]="{'msgSearch-container': isSearch}" #searchContainer>
+                        <div *ngIf="!isSearch" style="cursor: pointer;">
+                            <img (click)="toggleSearch()" src="assets/icons/search-blue.svg" alt="">
                         </div>
-                        <div class="px-4 position-absolute start-0 top-50 translate-middle-y">
-                            <img src="assets/icons/search.svg" alt="">
+                        <div *ngIf="isSearch" class="d-flex justify-content-between position-relative msg-search">
+                            <form [formGroup]="searchMsgForm" class="p-0 w-100">
+                                <input #MsgsearchInput type="text" class="form-control ps-5 txt-xs" id="messageSearchInput"
+                                    formControlName="searchMsg"
+                                    placeholder="{{ 'searchPlaceholder' | translate }}">
+                            </form>
+                            <div class="px-4 position-absolute start-0 top-50 translate-middle-y">
+                                <img src="assets/icons/search.svg" alt="">
+                            </div>
+    
+    
                         </div>
-
-
+    
+    
                     </div>
-
-
-                </div>
+                </ng-container>
 
 
             </div>
@@ -177,10 +182,13 @@
 
         <div class="chat-body" #chatContainer>
             <div class="" *ngFor="let day of sortedDays">
+                
+
                 <div class="d-flex justify-content-center timestamp">
                     <span *ngIf="isString(day)">{{ day |translate}}</span>
                     <span *ngIf="!isString(day)">{{ day |toLocalTime}}</span>
                 </div> <!-- display chat messages -->
+            
                 <ng-container *ngFor="let chat of groupedMessages[day]">
                     <!-- messages without files -->
                     <ng-container *ngIf="!chat?.fileName || chat?.fileName === ''; else withFiles">

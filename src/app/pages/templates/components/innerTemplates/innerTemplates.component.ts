@@ -16,10 +16,10 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { Templates } from '../../templates';
 import { SelectionModel } from '@angular/cdk/collections';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -63,7 +63,11 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
   isSmallScreen: boolean = false;
 
   destroy$: Subject<void> = new Subject<void>();
-  
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
+  searchSub: Subscription;
   dataSource: MatTableDataSource<Templates>;
   constructor(
     public dialog: MatDialog,
@@ -147,75 +151,103 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
     });
 
   }
+  getTemplatesReq(searchVal){
+    let showsNum=this.templatesService.showsNum;
+    let pageNum=searchVal?0 :this.templatesService.pageNum;
+    let email=this.templatesService.email;
+    let orderedBy=this.templatesService.orderedBy;
+    let search=searchVal?searchVal:"";
+    this.loading = true;
+    if(searchVal && this.paginator){
+      this.paginator.pageIndex=0
+    }
+     return this.templatesService.getTemplates(email,showsNum,pageNum,orderedBy,search)
+  }
+  handleGetTemplatesResponce(res,search){
+    this.numRows=res.length;
+    this.loading = false;
+    this.dataSource=new MatTableDataSource<Templates>(res)
+  
+    if(search!=""){
+      this.length=res.length;
+      if(this.length==0){
+        this.notFound=true;
+      }
+      else{
+        this.notFound=false;
+      }
+  }
+  else{
+    this.paginator.pageIndex=this.templatesService.pageNum      
+    this.notFound=false;
 
+    this.templatesCount();
 
-  getTemplates(searchVal?){
-        let showsNum=this.templatesService.showsNum;
-        let pageNum=searchVal?0 :this.templatesService.pageNum;
-        let email=this.templatesService.email;
-        let orderedBy=this.templatesService.orderedBy;
-        let search=searchVal?searchVal:"";
-        this.loading = true;
-        if(searchVal && this.paginator){
-          this.paginator.pageIndex=0
-        }
-         let sub1= this.templatesService.getTemplates(email,showsNum,pageNum,orderedBy,search).subscribe(
+  }
+  }
+handleError(){
+  this.loading = false;
+  this.length=0;
+}
+setupSearchSubscription(): void {
+  this.searchSub = this.searchControl.valueChanges.pipe(
+    debounceTime(1000), // Wait for 1s pause in events
+    distinctUntilChanged(), // Only emit if value is different from previous value
+    switchMap(searchVal => this.getTemplatesReq(searchVal))
+  ).subscribe(
+    res => this.handleGetTemplatesResponce(res,this.searchControl.value),
+    err => this.handleError()
+  );
+  this.subscribtions.push(this.searchSub);
+}
+getTemplates(searchVal?){
+    let search=searchVal?searchVal:"";
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+        this.getTemplatesReq(search).subscribe(
             (res)=>{
-              this.numRows=res.length;
-              this.loading = false;
-              this.dataSource=new MatTableDataSource<Templates>(res)
-            
-              if(search!=""){
-                this.length=res.length;
-                if(this.length==0){
-                  this.notFound=true;
-                }
-                else{
-                  this.notFound=false;
-                }
-            }
-            else{
-              this.paginator.pageIndex=this.templatesService.pageNum      
-              this.notFound=false;
-      
-              this.templatesCount();
-      
-            }
-             },
-             (err)=>{
-              this.loading = false;
-              this.length=0;
+              this.handleGetTemplatesResponce(res,search);
+              this.setupSearchSubscription()
+
+            },
+            (err)=>{
+            this.handleError()
       
             })
-             this.subscribtions.push(sub1)
         }
 
-        templatesCount(){
-          let email=this.templatesService.email;
-          this.loading = true;
+templatesCount(){
+let email=this.templatesService.email;
+this.loading = true;
 
-          this.templatesService.listTemplatesCount(email).subscribe(
-            (res)=>{
-              this.length=res;
-              this.loading = false;
-              if( this.length==0){
-               this.noData=true;
-       
-             
-             }
-             else{
-                this.noData=false;
-       
-            
-              }
-              },
-              (err)=>{
-               
-               this.loading = false;
-               this.length=0;
-               this.noData=true;
-              })
-        }
+this.templatesService.listTemplatesCount(email).subscribe(
+  (res)=>{
+    this.length=res;
+    this.loading = false;
+    if( this.length==0){
+      this.noData=true;
+
+    
+    }
+    else{
+      this.noData=false;
+
+  
+    }
+    },
+    (err)=>{
+      
+      this.loading = false;
+      this.length=0;
+      this.noData=true;
+    })
+}
 
 
 

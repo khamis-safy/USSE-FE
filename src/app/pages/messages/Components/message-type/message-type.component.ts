@@ -5,7 +5,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import { MessagesService } from '../../messages.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Message } from '../../message';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DisplayMessageComponent } from '../display-message/display-message.component';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
@@ -67,6 +67,12 @@ filters:any;
   pageNum: number;
   display: number;
   isSmallScreen: boolean = false;
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
+  searchSub: Subscription;
+  filteration: any;
   constructor(public cdr: ChangeDetectorRef ,
     public dialog: MatDialog,
     private messageService:MessagesService,
@@ -114,6 +120,7 @@ filters:any;
         }
       });
 this.tableData();
+this.filteration=null;
 
 this.permission =this.messageService.devicesPermissions;
 if(this.authService.getUserInfo()?.customerId!=""){
@@ -133,7 +140,6 @@ this.breakpointObserver.observe(['(max-width: 768px)'])
         
       }
     });
-
 
 
     }
@@ -270,52 +276,125 @@ ngAfterViewInit(): void {
   )
 
 }
+setupSearchSubscription(): void {
+  this.searchSub = this.searchControl.valueChanges.pipe(
+    debounceTime(1000), // Wait for 1s pause in events
+    distinctUntilChanged(), // Only emit if value is different from previous value
+    switchMap(searchVal => this.getMessagesReq(this.deviceId,this.msgCategory,this.filteration, searchVal))
+  ).subscribe(
+    res => this.handleGetMessagesResponse(res,this.searchControl.value,this.filteration, this.msgCategory),
+    err => this.handleError()
+  );
+  this.subscribtions.push(this.searchSub);
+}
 
-    getMessages(deviceId:string,msgCat?,filterdItems?,searchVal?){
-      let shows=this.messageService.display;
-      let email=this.messageService.email;
-      let msgCategory=msgCat? msgCat : this.msgCategory;
-      let search=searchVal?searchVal:"";
-      let pageNumber=searchVal?0:this.pageNum
-      if(searchVal && this.paginator){
-        this.paginator.pageIndex=0
-      }
-      this.loading = true;
-      let messagesSub=this.messageService.getMessages(email,msgCategory,shows,pageNumber,search,deviceId,filterdItems).subscribe(
-        (res)=>{
-          this.numRows=res.length;
+getMessagesReq(deviceId:string,msgCat?,filterdItems?,searchVal?){
+  let shows=this.messageService.display;
+  let email=this.messageService.email;
+  let msgCategory=msgCat? msgCat : this.msgCategory;
+  let pageNumber=searchVal?0:this.pageNum
+  if(searchVal && this.paginator){
+    this.paginator.pageIndex=0
+  }
+  this.loading = true;
+  if(this.selection){
+    this.selection.clear()
+  }
+  return this.messageService.getMessages(email,msgCategory,shows,pageNumber,searchVal,deviceId,filterdItems)
+}
 
-          this.loading = false;
-          this.dataSource=new MatTableDataSource<Message>(res)
-
-          //
-          if(search!=""){
-            this.length=res.length;
-            if(this.length==0){
-              this.notFound=true;
-            }
-            else{
-              this.notFound=false;
-            }
-        }
-        else{
-          if(this.paginator){
-            this.paginator.pageIndex=this.pageNum
-          }
-          this.notFound=false;
-          this.getMessagesCount(deviceId,msgCategory,filterdItems);
-
-        }
-        },
-        (err)=>{
-         this.loading = false;
-         this.length=0;
-         this.noData=true;
-
-        }
-      )
-      this.subscribtions.push(messagesSub)
+getMessages(deviceId: string, msgCat?: string, filterdItems?: any, searchVal?: string): void {
+  let search=searchVal?searchVal:"";
+  let msgCategory=msgCat? msgCat : this.msgCategory;
+  if(this.searchSub && !filterdItems){
+    this.searchSub.unsubscribe();
+    this.searchSub=null;
+    this.searchForm.patchValue({
+      searchControl:''
+    })
+  }
+  const messagesSub = this.getMessagesReq(deviceId, msgCategory, filterdItems, search).subscribe(
+    (res) => {  
+    this.handleGetMessagesResponse(res, search,filterdItems,msgCategory);
+    if(!this.searchSub){
+      this.setupSearchSubscription();
     }
+
+    },
+    err => this.handleError()
+  );
+  this.subscribtions.push(messagesSub);
+}
+
+handleGetMessagesResponse(res: Message[], searchVal: string,filterdItems,msgCategory): void {
+  this.numRows = res.length;
+  this.dataSource = new MatTableDataSource<Message>(res);
+  this.loading = false;
+
+  if (searchVal!='') {
+    this.length = res.length;
+    this.notFound = this.length === 0;
+  } else {
+    if (this.paginator) {
+      this.paginator.pageIndex = this.pageNum;
+    }
+    this.notFound = false;
+    this.getMessagesCount(this.deviceId, msgCategory,filterdItems);
+  }
+}
+
+handleError(): void {
+  this.loading = false;
+  this.length = 0;
+  this.noData = true;
+}
+
+
+    // getMessagesBeforeEdit(deviceId:string,msgCat?,filterdItems?,searchVal?){
+    //   let shows=this.messageService.display;
+    //   let email=this.messageService.email;
+    //   let msgCategory=msgCat? msgCat : this.msgCategory;
+    //   let search=searchVal?searchVal:"";
+    //   let pageNumber=searchVal?0:this.pageNum
+    //   if(searchVal && this.paginator){
+    //     this.paginator.pageIndex=0
+    //   }
+    //   this.loading = true;
+    //   let messagesSub=this.messageService.getMessages(email,msgCategory,shows,pageNumber,search,deviceId,filterdItems).subscribe(
+    //     (res)=>{
+    //       this.numRows=res.length;
+
+    //       this.loading = false;
+    //       this.dataSource=new MatTableDataSource<Message>(res)
+
+    //       //
+    //       if(search!=""){
+    //         this.length=res.length;
+    //         if(this.length==0){
+    //           this.notFound=true;
+    //         }
+    //         else{
+    //           this.notFound=false;
+    //         }
+    //     }
+    //     else{
+    //       if(this.paginator){
+    //         this.paginator.pageIndex=this.pageNum
+    //       }
+    //       this.notFound=false;
+    //       this.getMessagesCount(deviceId,msgCategory,filterdItems);
+
+    //     }
+    //     },
+    //     (err)=>{
+    //      this.loading = false;
+    //      this.length=0;
+    //      this.noData=true;
+
+    //     }
+    //   )
+    //   this.subscribtions.push(messagesSub)
+    // }
     getMessagesCount(deviceId,msgCategory,filterdItems?){
       this.loading=true
       let email=this.messageService.email;
@@ -475,12 +554,12 @@ ngAfterViewInit(): void {
   }
   selectFilter(item){
   // this.selectedItems.push(item);
-      let selected= this.selectedItems.map((sel)=>sel.value-1)
-  this.getMessages(this.deviceId,"outbox",selected )  
+      this.filteration= this.selectedItems.map((sel)=>sel.value-1)
+  this.getMessages(this.deviceId,"outbox",this.filteration,this.searchControl.value )  
   }
   deselectFilter(item){
-      let selected= this.selectedItems.map((sel)=>sel.value-1)
-    this.getMessages(this.deviceId,"outbox",selected )   
+      this.filteration= this.selectedItems.map((sel)=>sel.value-1)
+    this.getMessages(this.deviceId,"outbox",this.filteration,this.searchControl.value )   
 
   }
 }

@@ -10,9 +10,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ListData } from '../../list-data';
 import { Contacts } from '../../contacts';
 import { AddContactComponent } from './addContact/addContact.component';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subject, Subscription, fromEvent, map, takeUntil } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, filter, fromEvent, map, switchMap, takeUntil } from 'rxjs';
 import { CONTACTSHEADER } from '../../constants/constants';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -59,9 +59,14 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   notFound: boolean=false;
   display: number;
   pageNum:number;
-  
+  searchControl = new FormControl();
+
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
   isSmallScreen: boolean = false;
   destroy$: Subject<void> = new Subject<void>();
+  searchSub: Subscription;
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -124,6 +129,118 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
       });
 
   }
+
+  getContactsReq(searchVal,canceled?){
+    let shows=this.listService.display;
+    let email=this.authService.getUserInfo()?.email;
+    let orderedBy=this.listService.orderedBy;
+    let pageNumber=searchVal?0:this.pageNum
+    if(searchVal && this.paginator){
+        this.paginator.pageIndex=0
+    }
+   
+   return this.listService.getContacts(email,canceled,shows,pageNumber,orderedBy,searchVal,this.listId)
+  }
+  
+  handleContactsResponse(res: Contacts[], searchVal: string,canceled): void {
+    this.numRows = res.length;
+    this.loading = false;
+    if(this.selection){
+      this.selection.clear();
+    }
+    res.forEach(contact => {
+      contact.hideLeftArrow = true;
+      contact.hideRightArrow = false;
+    });
+    this.dataSource = new MatTableDataSource<Contacts>(res);
+
+    if (searchVal) {
+      this.length = res.length;
+      this.notFound = this.length === 0;
+    } else {
+      if (this.paginator) {
+        this.paginator.pageIndex = this.pageNum;
+      }
+      this.notFound = false;
+      this.contactsCount(canceled);
+    }
+  }
+
+  setupSearchSubscription(): void {
+    this.searchSub= this.searchControl.valueChanges.pipe(
+      debounceTime(1000), // Wait for 1s pause in events
+      distinctUntilChanged(), // Only emit if value is different from previous value
+      switchMap(searchVal => this.getContactsReq(searchVal,this.isCanceled))
+    ).subscribe(
+      (res)=>{
+        this.handleContactsResponse(res,this.searchControl.value,this.isCanceled)
+      },
+       (err)=>{
+        this.loading = false;
+        this.length=0;
+
+       })
+       this.subscribtions.push(this.searchSub)
+  }
+
+    getContacts(searchVal? ,canceled?){
+      if(this.searchSub){
+        this.searchSub.unsubscribe();
+        this.searchSub=null;
+
+        this.searchForm.patchValue({
+          searchControl:''
+        })
+      }
+      let search=searchVal ? searchVal : "";
+      let isCanceledContacts=canceled? canceled :this.isCanceled
+  
+    this.loading = true;
+  
+     let sub1= this.getContactsReq(search,isCanceledContacts).subscribe(
+      (res)=>{
+        this.handleContactsResponse(res,search,isCanceledContacts);
+        this.setupSearchSubscription();
+       },
+         (err)=>{
+          this.loading = false;
+          this.length=0;
+  
+         })
+         this.subscribtions.push(sub1)
+    }
+  
+  
+    contactsCount(isCancel){
+      let email=this.authService.getUserInfo()?.email;
+      this.loading=true;
+  
+      let sub2=this.listService.contactsCount(email,isCancel).subscribe(
+  
+        (res)=>{
+          this.length=res;
+          this.loading = false;
+          if( this.length==0){
+           this.noData=true;
+   
+         
+         }
+         else{
+            this.noData=false;
+   
+        
+          }
+          },
+          (err)=>{
+           
+           this.loading = false;
+           this.length=0;
+           this.noData=true;
+          })
+  this.subscribtions.push(sub2)
+  
+    }
+  
 unCancelSnackBar(){
   let message = `${this.canceledContacts.length} ${this.translate.instant('Item(s) UnCanceled')}`;
   let action =this.translate.instant("Undo")
@@ -177,90 +294,6 @@ unCancelSnackBar(){
 
 
 
-
-
-  getContacts(searchVal? ,canceled?){
-  let shows=this.listService.display;
-  let email=this.authService.getUserInfo()?.email;
-  let orderedBy=this.listService.orderedBy;
-  let search=searchVal ? searchVal : "";
-  let pageNumber=searchVal?0:this.pageNum
-  if(searchVal && this.paginator){
-      this.paginator.pageIndex=0
-  }
- let isCanceledContacts=canceled? canceled :this.isCanceled
-  this.loading = true;
-
-   let sub1= this.listService.getContacts(email,isCanceledContacts,shows,pageNumber,orderedBy,search,this.listId).subscribe(
-      (res)=>{
-        this.numRows=res.length;
-        this.loading = false;
-      
-        res.forEach(contact => {
-          contact.hideLeftArrow = true;
-          contact.hideRightArrow = false;
-        });
-        this.dataSource=new MatTableDataSource<Contacts>(res);
-
-        if(search!=""){
-          this.length=res.length;
-          if(this.length==0){
-            this.notFound=true;
-          }
-          else{
-            this.notFound=false;
-          }
-      }
-      else{
-        if(this.paginator){
-          this.paginator.pageIndex=this.pageNum
-
-        }
-        this.notFound=false;
-
-        this.contactsCount(isCanceledContacts);
-
-      }
-
-       },
-       (err)=>{
-        this.loading = false;
-        this.length=0;
-
-       })
-       this.subscribtions.push(sub1)
-  }
-
-
-  contactsCount(isCancel){
-    let email=this.authService.getUserInfo()?.email;
-    this.loading=true;
-
-    let sub2=this.listService.contactsCount(email,isCancel).subscribe(
-
-      (res)=>{
-        this.length=res;
-        this.loading = false;
-        if( this.length==0){
-         this.noData=true;
- 
-       
-       }
-       else{
-          this.noData=false;
- 
-      
-        }
-        },
-        (err)=>{
-         
-         this.loading = false;
-         this.length=0;
-         this.noData=true;
-        })
-this.subscribtions.push(sub2)
-
-  }
 
 
   /** Whether the number of selected elements matches the total number of rows. */

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { resetFakeAsyncZone } from '@angular/core/testing';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -12,6 +12,8 @@ import { SelectOption } from 'src/app/shared/components/select/select-option.mod
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ContactsWarningComponent } from '../../contactsWarning/contactsWarning.component';
 import { CountryService } from 'src/app/shared/services/country.service';
+import { SelectComponent } from 'src/app/shared/components/select/component/select.component';
+import { Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 interface ListContacts {
   list: any,
   contacts: Contacts[],
@@ -21,7 +23,7 @@ interface ListContacts {
   templateUrl: './select-contacts.component.html',
   styleUrls: ['./select-contacts.component.scss']
 })
-export class SelectContactsComponent implements OnInit {
+export class SelectContactsComponent implements OnInit ,OnDestroy{
 
 allLists:ListContacts[]=[];
 allSelectedLists:ListContacts[]=[];
@@ -61,19 +63,40 @@ sortBy;
     mobile: this.mobile,
 
   });
+  @ViewChild(SelectComponent) usSelectComponent: SelectComponent;
+
   selectedCountryISO: any;
+  searchSub: Subscription=null;
   constructor(private listService: ManageContactsService,
     private toaster:ToasterServices, 
     private translate:TranslateService,
     private dialog: MatDialog,
     private countryService:CountryService
   ) { }
+  ngOnDestroy(): void {
+if(this.searchSub){
+  this.searchSub.unsubscribe()
+}
+  }
 
   ngOnInit() {
     this.setCountryBasedOnIP();
     this.getNonListContactsAndLists();
     this.getAllContacts();
-
+  }
+  ngAfterViewInit() {
+    this.setupSearchSubscription();
+  }
+  setupSearchSubscription(): void {
+  this.searchSub=this.usSelectComponent.onSearch
+    .pipe(
+      debounceTime(1000),
+      distinctUntilChanged(),
+      switchMap(searchVal=>this.getAllContactsReq(searchVal))
+    )
+    .subscribe(res => {
+    this.getAllContactsRes(res,true)
+    });     
   }
   setCountryBasedOnIP(): void {
     this.countryService.setCountryBasedOnIP().subscribe(
@@ -341,7 +364,8 @@ onClose(event:string){
   this.searchForm.patchValue({
     contactsData:[]
   })
-  this.allContacts=[]
+  this.allContacts=[];
+
 }
 changeListSelectionState(state,listContacts:ListContacts){
 
@@ -553,13 +577,11 @@ else{
     }
 
   }
-getAllContacts(search?:string){
-  let searchVal=search?search:""
-
-  
-  this.listService.getContacts(this.listService.email,false,50,0,"",searchVal,"").subscribe(
-    (res)=>{
-      this.allContactsData=res;
+  getAllContactsReq(search){
+    return this.listService.getContacts(this.listService.email,false,50,0,"",search,"")
+  }
+  getAllContactsRes(res,search){
+    this.allContactsData=res;
       if(search){
 
         this.allContacts=this.allContactsData.map(res=>{
@@ -584,10 +606,16 @@ getAllContacts(search?:string){
       else{
         this.allContacts=[];
       }
-},
-      (err)=>{
+  }
+getAllContacts(search?:string){
+  let searchVal=search?search:""
 
-      })
+  
+  this.getAllContactsReq(search).subscribe(
+    (res)=>{
+      this.getAllContactsRes(res,search)
+}
+  )
 }
 // // on select all lists
 selectAllLists(state){
@@ -637,8 +665,12 @@ selectAllContacts(){
 
 }
 onSearch(event:string){
+ 
+  // console.log('event',event)
+  // setTimeout(() => {
+  //   this.getAllContacts(event)
 
-  this.getAllContacts(event)
+  // }, 1000);
 }
 onSelect(event:any){
   let contact=this.allContactsData.find((contact)=>contact.id==event.value)

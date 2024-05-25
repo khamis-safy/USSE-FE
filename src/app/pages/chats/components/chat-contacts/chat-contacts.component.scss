@@ -13,7 +13,20 @@ ul{
         }
     }
 }
+#messageSearchInput{
+    border-radius: 16px;
+    height: 42px;
 
+}
+.msgSearch-container{
+    width: 44%;
+    max-width: 389px;
+    min-width: 175px;
+}
+.msg-search{
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+}
 #search {
     height: 50px;
 }

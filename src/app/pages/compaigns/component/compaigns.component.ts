@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { CAMPAIGNSHEADER } from '../constants/contstants';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-compaigns',
@@ -47,6 +47,12 @@ export class CompaignsComponent implements AfterViewInit ,OnInit,OnDestroy {
   pageNum: number;
   isSmallScreen: boolean = false;
   destroy$: Subject<void> = new Subject<void>();
+  searchSub: any;
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
+  
   constructor(private compaignsService:CompaignsService,
     public dialog: MatDialog, 
     private router:Router,
@@ -194,8 +200,44 @@ backToCompaigns(event){
 this.isCompagins=event;
 this.getCompaigns(this.deviceId);
 }
-  getCompaigns(deviceId:string,searchVal?){
 
+  getCompaigns(deviceId:string,searchVal?){
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+    
+    let search=searchVal?searchVal:"";
+    this.loading = true;
+ 
+    this.getCampaignsReq(deviceId,search).subscribe(
+      (res)=>{
+      this.handleGetCampaignssResponse(deviceId,res,search);
+      this.setupSearchSubscription();
+
+      },
+      (err)=>{
+       this.handleError()
+
+      }
+    )
+  }
+  setupSearchSubscription(): void {
+    this.searchSub = this.searchControl.valueChanges.pipe(
+      debounceTime(1000), // Wait for 1s pause in events
+      distinctUntilChanged(), // Only emit if value is different from previous value
+      switchMap(searchVal => this.getCampaignsReq(this.deviceId,searchVal))
+    ).subscribe(
+      res => this.handleGetCampaignssResponse(this.deviceId,res, this.searchControl.value),
+      err => this.handleError()
+    );
+    this.subscribtions.push(this.searchSub);
+  }
+  
+  getCampaignsReq(deviceId:string,searchVal?){
     let shows=this.compaignsService.display;
     let email=this.authService.getUserInfo()?.email;
     let search=searchVal?searchVal:"";
@@ -204,36 +246,36 @@ this.getCompaigns(this.deviceId);
     if(searchVal && this.paginator){
       this.paginator.pageIndex=0
     }
-    this.compaignsService.getCampaigns(email,shows,pageNumber,search,deviceId).subscribe(
-      (res)=>{
-        this.loading = false;
-        this.dataSource=new MatTableDataSource<compaignDetails>(res);
-        if(search!=""){
-            this.length=res.length;
-            if(this.length==0){
-              this.notFound=true;
-            }
-            else{
-              this.notFound=false;
-            }
+  return  this.compaignsService.getCampaigns(email,shows,pageNumber,search,deviceId)
+    }
+
+  handleGetCampaignssResponse(deviceId,res,search): void {
+    this.loading = false;
+    this.dataSource=new MatTableDataSource<compaignDetails>(res);
+    if(search!=""){
+        this.length=res.length;
+        if(this.length==0){
+          this.notFound=true;
         }
         else{
-          if(this.paginator){
-            this.paginator.pageIndex=this.pageNum
-          }
           this.notFound=false;
-          this.compaignsCount(deviceId);
-
-
         }
-      },
-      (err)=>{
-        this.loading = false;
-        this.length=0;
-        this.noData=true;
-
+    }
+    else{
+      if(this.paginator){
+        this.paginator.pageIndex=this.pageNum
       }
-    )
+      this.notFound=false;
+      this.compaignsCount(deviceId);
+
+
+    }
+  }
+  
+  handleError(): void {
+    this.loading = false;
+    this.length = 0;
+    this.notFound = true;
   }
 compaignsCount(deviceId){
   this.loading=true

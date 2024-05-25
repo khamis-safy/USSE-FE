@@ -47,6 +47,7 @@ public onReceiveMessage = ()=>{
 
   })
 }
+
 public onStatusChange = ()=>{
   this.hubConnection.on('StatusUpdate',(email,message)=>{
     this.updatedStatus$.next({userEmail:email,message:message});

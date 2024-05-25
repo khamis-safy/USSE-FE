@@ -1,4 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ListData } from 'src/app/pages/manage-contacts/list-data';
 import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-contacts.service';
 
@@ -7,35 +9,77 @@ import { ManageContactsService } from 'src/app/pages/manage-contacts/manage-cont
   templateUrl: './stepOne.component.html',
   styleUrls: ['./stepOne.component.scss']
 })
-export class StepOneComponent implements OnInit {
+export class StepOneComponent implements OnInit ,OnDestroy{
   lists: ListData[] = [];
   selectAllStatus:number=0;
   selectedLists:number=0;
   addedLists:ListData[]=[];
   @Output() allSelected = new EventEmitter<ListData[]>;
+  searchSub: any;
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
   constructor( private listService:ManageContactsService) { }
+  ngOnDestroy(): void {
+if(this.searchSub){
+  this.searchSub.unsubscribe()
+}  }
 
   ngOnInit() {
     this.getLists();
   }
+  setupSearchSubscription(): void {
+    this.searchSub = this.searchControl.valueChanges.pipe(
+      debounceTime(1000), // Wait for 1s pause in events
+      distinctUntilChanged(), // Only emit if value is different from previous value
+      switchMap(searchVal => this.getListsReq(searchVal))
+    ).subscribe(
+      res => this.handleGetListssResponse(res),
+      err => this.handleError()
+    );
+  
+  }
+  checkIfListIsfound(list){
+    return this.addedLists.find(li=>li.id == list.id)? 'checked':''
+  }
+  getListsReq(searchVal?){
+
+    return this.listService.getList(this.listService.email, 100, 0,"",searchVal)
+    }
+
+  handleGetListssResponse(res): void {
+    let filterLlist = res.filter((e) => e.totalContacts != 0)
+    this.lists = filterLlist;
+    this.lists.map((e)=>{e.selectionState =this.checkIfListIsfound(e)=='checked'?1:0; e.isChecked=this.checkIfListIsfound(e)})
+  }
+  
+  handleError(): void {
+
+  }
   getLists(search?:string) {
     let searchVal=search?search:"";
-
-    this.listService.getList(this.listService.email, 100, 0,"",searchVal).subscribe(
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+    this.getListsReq(searchVal).subscribe(
       (res) => {
-        let filterLlist = res.filter((e) => e.totalContacts != 0)
-        this.lists = filterLlist;
+        this.handleGetListssResponse(res)
+        this.setupSearchSubscription();
 
       },
       (err) => {
-      ////////////////////////////
 
       }
     )
   }
 
   onSearch(event:any){
-    this.getLists(event.value);
+    // this.getLists(event.value);
   }
 
 // on select list

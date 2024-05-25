@@ -11,6 +11,7 @@ import { compaignDetails } from '../../campaigns';
 import { DevicesPermissions, CompaignsService } from '../../compaigns.service';
 import { CAMPAIGNSHEADER } from '../../constants/contstants';
 import { TranslateService } from '@ngx-translate/core';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-campaigns-mobileView',
@@ -58,7 +59,10 @@ export class CampaignsMobileViewComponent implements OnInit {
     showsSelectedOptions: this.showsSelectedOptions,
 
   });
-
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
   selectedSortingName: string = 'name';
   selectedSortingType: string = 'ASC'
   orderedBy: string = '';
@@ -71,6 +75,7 @@ export class CampaignsMobileViewComponent implements OnInit {
   messagesTableData: any = []
   subscribtions: any=[];
   openedDialogs: any=[];
+  searchSub: any;
   constructor(private compaignsService: CompaignsService,
     public dialog: MatDialog,
     private router: Router,
@@ -212,19 +217,58 @@ export class CampaignsMobileViewComponent implements OnInit {
     this.isCompagins = event;
     this.getCompaigns(this.deviceId);
   }
-  getCompaigns(deviceId: string, searchVal?) {
 
-    let shows = this.compaignsService.display;
-    let email = this.authService.getUserInfo()?.email;
-    let search = searchVal ? searchVal : "";
-    this.loading = true;
-    let pageNumber = searchVal ? 0 : this.pageNum
-    if (searchVal && this.paginator) {
-      this.paginator.pageIndex = 0
+  getCompaigns(deviceId:string,searchVal?){
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+
+      this.searchForm.patchValue({
+        searchControl:''
+      })
     }
-    this.compaignsService.getCampaigns(email, shows, pageNumber, search, deviceId).subscribe(
-      (res) => {
-        this.messagesTableData=res;
+    
+    let search=searchVal?searchVal:"";
+    this.loading = true;
+ 
+    this.getCampaignsReq(deviceId,search).subscribe(
+      (res)=>{
+      this.handleGetCampaignssResponse(deviceId,res,search);
+      this.setupSearchSubscription();
+
+      },
+      (err)=>{
+       this.handleError()
+
+      }
+    )
+  }
+  setupSearchSubscription(): void {
+    this.searchSub = this.searchControl.valueChanges.pipe(
+      debounceTime(1000), // Wait for 1s pause in events
+      distinctUntilChanged(), // Only emit if value is different from previous value
+      switchMap(searchVal => this.getCampaignsReq(this.deviceId,searchVal))
+    ).subscribe(
+      res => this.handleGetCampaignssResponse(this.deviceId,res, this.searchControl.value),
+      err => this.handleError()
+    );
+    this.subscribtions.push(this.searchSub);
+  }
+  
+  getCampaignsReq(deviceId:string,searchVal?){
+    let shows=this.compaignsService.display;
+    let email=this.authService.getUserInfo()?.email;
+    let search=searchVal?searchVal:"";
+    this.loading = true;
+    let pageNumber=searchVal?0:this.pageNum
+    if(searchVal && this.paginator){
+      this.paginator.pageIndex=0
+    }
+  return  this.compaignsService.getCampaigns(email,shows,pageNumber,search,deviceId)
+    }
+
+  handleGetCampaignssResponse(deviceId,res,search): void {
+    this.messagesTableData=res;
         if(search!=""){
           this.length=res.length;
           this.loading = false;
@@ -245,14 +289,12 @@ export class CampaignsMobileViewComponent implements OnInit {
 
 
         }
-      },
-      (err) => {
-        this.loading = false;
-        this.length = 0;
-        this.noData = true;
-
-      }
-    )
+  }
+  
+  handleError(): void {
+    this.loading = false;
+    this.length = 0;
+    this.notFound = true;
   }
   compaignsCount(deviceId) {
     this.loading = true

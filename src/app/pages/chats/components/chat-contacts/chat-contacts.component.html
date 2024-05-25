@@ -1,3 +1,4 @@
+<form [formGroup]="form">
 <div class="contacts-container-lg py-3 px-2">
   <div class="d-flex position-relative row mx-auto my-3" style="width:80%; ">
     <div class="col-12 col-lg-4 p-0 w-100" >
@@ -6,6 +7,7 @@
         type="text"
         class="form-control ps-5 txt-xs w-100"
         id="search"
+        formControlName="searchControl"
         placeholder="{{ 'searchPlaceholder' | translate }}"
         (input)="onSearch(search)"
       />
@@ -26,7 +28,7 @@
   </ul>
 </div>
 <div class="contacts-container-sm">
-  <div class="chat-header"
+  <div  class="chat-header"
             style="background: var(--clr-primary-500);">
             <div class="p-3 d-flex justify-content-between align-items-center">
                 <div class="d-flex gap-2">
@@ -43,9 +45,28 @@
                 </div>
 
                 <div>
-                    <a style="cursor: pointer;">
-                        <img src="assets/icons/search-blue.svg" alt="">
-                    </a>
+
+                  <div (appClickOutside)="toggleSearch(false)">
+                    <div [ngClass]="{'msgSearch-container': isSearch}" #searchContainer>
+                        <div *ngIf="!isSearch" style="cursor: pointer;">
+                            <img (click)="toggleSearch(true)" src="assets/icons/search-blue.svg" alt="">
+                        </div>
+                        <div *ngIf="isSearch" class="d-flex justify-content-between position-relative msg-search">
+                            <div class="p-0 w-100">
+                                <input #MsgsearchInput type="text" class="form-control ps-5 txt-xs" id="messageSearchInput"
+                                    formControlName="searchMsg"
+                                    placeholder="{{ 'searchPlaceholder' | translate }}">
+                            </div>
+                            <div class="px-4 position-absolute start-0 top-50 translate-middle-y">
+                                <img src="assets/icons/search.svg" alt="">
+                            </div>
+    
+    
+                        </div>
+    
+    
+                    </div>
+                </div>            
                 </div>
 
             </div>
@@ -68,3 +89,4 @@
           </ul>
         </div>
 </div>
+</form>

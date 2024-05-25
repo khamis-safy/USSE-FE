@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { LISTDETAILSHEADERS } from 'src/app/pages/manage-contacts/constants/constants';
 import { Contacts } from 'src/app/pages/manage-contacts/contacts';
 import { ListData } from 'src/app/pages/manage-contacts/list-data';
@@ -46,7 +46,10 @@ export class ListDetailsMobileViewComponent implements OnInit ,OnChanges ,OnDest
   cellClick:boolean=false;
   loading:boolean=false;
   subscribtions:Subscription[]=[];
-
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
   @Input() isCanceled:boolean;
   @Input() count:TotalContacts={totalContacts:0,totalCancelContacts:0};
   @Input() listData:any
@@ -94,6 +97,7 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
                             {opitonName:'DEC' , lable:`${this.translate.instant('DESCENDING')}`,isSelected:false}]
   selectedItems: any[];
   isChecked: boolean;
+  searchSub: any;
 
   constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     private toaster: ToasterServices,
@@ -152,7 +156,6 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
         this.displayedColumns= ['select','Name', 'Mobile','Additional Parameters',"Create At"];
 
       }
-
   }
   toggleTopSortingSelect(){
     this.topSortingOptions.forEach((option:{opitonName:string,isSelected:boolean })=>option.isSelected=!option.isSelected);
@@ -275,65 +278,95 @@ onSelect(event){
   this.getContacts();
 
 }
-  getContacts(searchVal?){
 
-    let shows=this.listService.display;
-    let email=this.authService.getUserInfo()?.email;
-    let orderedBy=this.orderedBy;
-    let search=searchVal ? searchVal : "";
-    let pageNumber=searchVal?0:this.pageNum
-    this.loading = true;
-    if(searchVal && this.paginator){
-      this.paginator.pageIndex=0
-  }
-    let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNumber,orderedBy,search,this.listId).subscribe(
-        (res)=>{
-        
-          if(this.isCanceled){
-            this.length=this.count?.totalCancelContacts;
-          
-          }
-          else{
-            this.length=this.count?.totalContacts;
-          }
-          if(this.length==0){
-            this.noData=true
-          }
-          else{
-            this.noData=false
-          }
-          this.numRows=res.length;
-          this.loading = false;
-          this.ListContacts=res;
-          this.listTableData=res
-          if(search!=""){
-            this.length=res.length;
-            if(this.length==0){
-              this.notFound=true;
-            }
-            else{
-              this.notFound=false;
-            }
-        }
-        else{
-          if(this.paginator){
-            this.paginator.pageIndex=this.pageNum
-  
-          }
-          this.notFound=false;
-  
-  
-        }
-
-
-        },
-          (err)=>{
-          this.loading = false;
-
-            this.length=0;
-          })
-          this.subscribtions.push(sub1)
+setupSearchSubscription(): void {
+  this.searchSub = this.searchControl.valueChanges.pipe(
+    debounceTime(1000), // Wait for 1s pause in events
+    distinctUntilChanged(), // Only emit if value is different from previous value
+    switchMap(searchVal => this.getContactsReq(searchVal))
+  ).subscribe(
+    res => this.handleGetContactsResponse(res, this.searchControl.value),
+    err => this.handleError()
+  );
+  this.subscribtions.push(this.searchSub);
 }
+
+getContactsReq(searchVal: string) {
+  const shows = this.listService.display;
+  const email = this.authService.getUserInfo()?.email;
+  const orderedBy = this.orderedBy;
+  const search = searchVal || '';
+  const pageNumber = searchVal ? 0 : this.pageNum;
+
+  if (searchVal && this.paginator) {
+    this.paginator.pageIndex = 0;
+  }
+  if(this.selection){
+    this.selection.clear();
+    this.isChecked=false   
+    if(this.dynamicComponentRef){
+      this.distroyDynamicComponent()
+    }
+   
+
+
+  }
+  return this.listService.getContacts(email, this.isCanceled, shows, pageNumber, orderedBy, search, this.listId);
+}
+
+getContacts(searchVal?: string): void {
+ if(this.searchSub){
+    this.searchSub.unsubscribe();
+    this.searchSub=null;
+
+    this.searchForm.patchValue({
+      searchControl:''
+    })
+  }
+  this.loading = true;
+  const sub1 = this.getContactsReq(searchVal).subscribe(
+    (res) => {
+      this.handleGetContactsResponse(res, searchVal);
+      this.setupSearchSubscription();
+
+    },
+       err => this.handleError()
+  );
+  this.subscribtions.push(sub1);
+}
+
+handleGetContactsResponse(res: Contacts[], searchVal: string): void {
+  if (this.isCanceled) {
+    this.length = this.count?.totalCancelContacts;
+  } else {
+    this.length = this.count?.totalContacts;
+  }
+
+  this.noData = this.length === 0;
+
+  this.numRows = res.length;
+  this.ListContacts = res;
+  this.listTableData = res;
+  this.dataSource = new MatTableDataSource<Contacts>(res);
+  this.loading = false;
+
+  if (searchVal) {
+    this.length = res.length;
+    this.notFound = this.length === 0;
+  } else {
+    if (this.paginator) {
+      this.paginator.pageIndex = this.pageNum;
+    }
+    this.notFound = false;
+  }
+}
+
+handleError(): void {
+  this.loading = false;
+  this.length = 0;
+  this.noData = true;
+}
+
 
 isAllSelected() {
   const numSelected = this.selection.selected.length;

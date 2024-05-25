@@ -8,9 +8,9 @@ import { AddListComponent } from './addList/addList.component';
 import { ManageContactsService } from '../../manage-contacts.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ListData } from '../../list-data';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { LISTHEADERS } from '../../constants/constants';
 import { TranslateService } from '@ngx-translate/core';
@@ -49,8 +49,12 @@ subscribtions:Subscription[]=[];
   display: number;
   pageNum:number;
   isSmallScreen: boolean = false;
-
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
   destroy$: Subject<void> = new Subject<void>();
+  searchSub: Subscription;
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -93,6 +97,8 @@ subscribtions:Subscription[]=[];
           this.isDelete.emit()
         }
       });
+
+
   }
 
   ngAfterViewInit() {
@@ -126,58 +132,134 @@ getListsCount(){
  
   this.subscribtions.push(sub1)
 }
+setupSearchSubscription(): void {
+  this.searchSub = this.searchControl.valueChanges.pipe(
+    debounceTime(1000), // Wait for 1s pause in events
+    distinctUntilChanged(), // Only emit if value is different from previous value
+    switchMap(searchVal => this.getListsReq(searchVal))
+  ).subscribe(
+    res => this.handleGetListsResponse(res, this.searchControl.value),
+    err => this.handleError()
+  );
+  this.subscribtions.push(this.searchSub);
+}
 
-getListData(searchVal?){
+getListsReq(searchVal: string) {
+  const shows = this.listService.display;
+  const email = this.authService.getUserInfo()?.email;
+  const orderedBy = this.listService.orderedBy;
+  const search = searchVal || '';
+  const pageNumber = searchVal ? 0 : this.pageNum;
 
-  let shows=this.listService.display;
-  let email=this.authService.getUserInfo()?.email;
-  let orderedBy=this.listService.orderedBy;
-  let search=searchVal ? searchVal : "";
-  let pageNumber=searchVal?0:this.pageNum
+  if (searchVal && this.paginator) {
+    this.paginator.pageIndex = 0;
+  }
+  if(this.selection){
+    this.selection.clear();
+  }
+  return this.listService.getList(email, shows, pageNumber, orderedBy, search);
+}
 
+getListData(searchVal?: string): void {
+  if(this.searchSub){
+    this.searchSub.unsubscribe();
+    this.searchSub=null;
+
+    this.searchForm.patchValue({
+      searchControl:''
+    })
+  }
   this.loading = true;
+  const sub2 = this.getListsReq(searchVal).subscribe(
+    (res) => {
+      this.handleGetListsResponse(res, searchVal);
+      this.setupSearchSubscription();
 
 
-  if(searchVal && this.paginator){
-    this.paginator.pageIndex=0
-  }
-  let sub2= this.listService.getList(email,shows,pageNumber,orderedBy,search).subscribe(
-    (res)=>{
-      this.loading = false;
+    },
+    err => this.handleError()
+  );
+  this.subscribtions.push(sub2);
+}
 
-        this.numRows=res.length;
-  this.dataSource=new MatTableDataSource<ListData>(res);
-  this.tableData=res;
+handleGetListsResponse(res: ListData[], searchVal: string): void {
+  this.loading = false;
+  this.numRows = res.length;
+  this.dataSource = new MatTableDataSource<ListData>(res);
+  this.tableData = res;
   this.tableData.forEach(element => {
-element.defaultExpanded = true; // Set to true or false based on your logic
-});
-  if(search!=""){
-    this.length=res.length;
-    if(this.length==0){
-      this.notFound=true;
-    }
-    else{
-      this.notFound=false;
-    }
-}
-else{
-  if(this.paginator){
-    this.paginator.pageIndex=this.pageNum
+    element.defaultExpanded = true; // Set to true or false based on your logic
+  });
 
+  if (searchVal) {
+    this.length = res.length;
+    this.notFound = this.length === 0;
+  } else {
+    if (this.paginator) {
+      this.paginator.pageIndex = this.pageNum;
+    }
+    this.notFound = false;
+    this.getListsCount();
   }
-        this.notFound=false;
-        this.getListsCount();
-
-      }
-      },
-      (err)=>{
-        this.loading = false;
-        this.length=0
-
-      }
-      )
-      this.subscribtions.push(sub2)
 }
+
+handleError(): void {
+  this.loading = false;
+  this.length = 0;
+  this.notFound = true;
+}
+
+// getListData(searchVal?){
+
+//   let shows=this.listService.display;
+//   let email=this.authService.getUserInfo()?.email;
+//   let orderedBy=this.listService.orderedBy;
+//   let search=searchVal ? searchVal : "";
+//   let pageNumber=searchVal?0:this.pageNum
+
+//   this.loading = true;
+
+
+//   if(searchVal && this.paginator){
+//     this.paginator.pageIndex=0
+//   }
+//   let sub2= this.listService.getList(email,shows,pageNumber,orderedBy,search).subscribe(
+//     (res)=>{
+//       this.loading = false;
+
+//         this.numRows=res.length;
+//   this.dataSource=new MatTableDataSource<ListData>(res);
+//   this.tableData=res;
+//   this.tableData.forEach(element => {
+// element.defaultExpanded = true; // Set to true or false based on your logic
+// });
+//   if(search!=""){
+//     this.length=res.length;
+//     if(this.length==0){
+//       this.notFound=true;
+//     }
+//     else{
+//       this.notFound=false;
+//     }
+// }
+// else{
+//   if(this.paginator){
+//     this.paginator.pageIndex=this.pageNum
+
+//   }
+//         this.notFound=false;
+//         this.getListsCount();
+
+//       }
+//       },
+//       (err)=>{
+//         this.loading = false;
+//         this.length=0
+
+//       }
+//       )
+//       this.subscribtions.push(sub2)
+// }
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {

@@ -7,7 +7,7 @@ import { ChatContactsComponent } from '../components/chat-contacts/chat-contacts
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { Observable, Subscription, concatMap,pipe, interval, throttleTime, combineLatest, find } from 'rxjs';
+import { Observable, Subscription, concatMap,pipe, interval, throttleTime, combineLatest, find, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ChatById, Chats, chatHub } from '../interfaces/Chats';
 import { ChatsService } from '../chats.service';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
@@ -39,8 +39,20 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   uploadedAttachments:files[]=[];
   form = new FormGroup({
     devicesData:this.devicesData,
+
   });
+  searchControl = new FormControl();
+
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
   cursorPosition:any= 0
+  searchMsg = new FormControl();
+
+  searchMsgForm=new FormGroup({
+    searchMsg:this.searchMsg
+  })
+  
   messageForm = new FormGroup({
     message:this.message,
   });
@@ -80,6 +92,9 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   sortedDays: string[]=[]; 
   textDirection: string;
   disable: boolean = true;
+  hideSearch:boolean=false;
+  subscriptions:Subscription[]=[];
+  searchSub: Subscription;
   constructor( public dialog: MatDialog,
     private translationService:TranslationService,
     private authService:AuthService,
@@ -116,14 +131,57 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   updateQueryParams(){
     this.router.navigateByUrl("/chats?chatId="+this.selectedChatId)
   }
+  closeSubsciptions(){
+    this.subscriptions.map((sub)=>sub.unsubscribe())
+  }
   ngOnInit() {
     this.getDevices();
+ 
+    let searchMsgSub=this.searchMsg.valueChanges.pipe(
+    debounceTime(1000),
+    distinctUntilChanged(),
+    switchMap(search=>this.chatRec(search))
+   ).subscribe(
+    (res)=>{
+        
+      if(res.length == 0){
+        this.noMoreMessages=true;
+          this.isLoading=false;
+      }
+      else{
+        this.noMoreMessages=false;
+      }
+
+      this.selectedChat =  this.sortBasedOnDate(res);
+      this.groupMessagesByDay();
+
+        setTimeout(() => {
+          this.scrollToBottom();
+          return
+        }, 0);
+      
+    }
+   )
+    this.subscriptions.push(searchMsgSub)
     this.router.navigateByUrl("/chats")
 
     this.chatService.startConnection()
     this.onRecieveMessages();
     this.onStatusChange();
   }
+  setupSearchSubscription(): void {
+    this.searchSub= this.searchControl.valueChanges.pipe(
+      debounceTime(1000), // Wait for 1s pause in events
+      distinctUntilChanged(), // Only emit if value is different from previous value
+      switchMap(searchVal => this.listChatsReq(searchVal))
+    ).subscribe(
+      (res) => {
+        this.listChats=res;
+      }
+    );
+    this.subscriptions.push(this.searchSub)
+  }
+  
   ngAfterViewInit() {
     this.chatContainer.nativeElement.addEventListener('scroll', this.onScrollToTop.bind(this));
     this.contactsContainer.nativeElement.addEventListener('scroll', this.onScrollToBottom.bind(this));
@@ -141,6 +199,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: any) {
+   if(!this.hideSearch){
     if (!this.searchContainer.nativeElement.contains(event.target) ) {
       if(this.searchVal === ''){
         this.isSearch = false;
@@ -165,8 +224,13 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
     // Print whether the click occurred inside or outside of the updatedAt element
     if (!isClickInsideUpdatedAt) {
       this.selectedChat.map((chat)=>chat.updatedAtVisible = false);  
-      this.groupMessagesByDay();   }
+      this.groupMessagesByDay();   
     }
+    
+   }
+    }
+
+
   toggleSearch(msg?): void {
     setTimeout(() => {
     this.isSearch=true
@@ -178,10 +242,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   
     }, 200);
     }
-  scrollToBottom() {
-    const container = this.chatContainer.nativeElement;
-    container.scrollTop = container.scrollHeight;
-  }
+
   arraysContainSameObjects(arr1: any[], arr2: any[]): boolean {
     // Check if arrays have the same length
     if (arr1.length !== arr2.length) {
@@ -318,6 +379,10 @@ onScrollToBottom(){
   this.getChatById(this.selectedChatId,search.value);
 
 }
+scrollToBottom() {
+  const container = this.chatContainer.nativeElement;
+  container.scrollTop = container.scrollHeight;
+}
 groupMessagesByDay() {
   this.groupedMessages = {}; // Clear previous grouping
 
@@ -342,6 +407,8 @@ groupMessagesByDay() {
   });
 
 }
+
+
 isString(value: any): boolean {
   return typeof value === 'string';
 }
@@ -364,7 +431,10 @@ getGroupHeader(messageDate: Date): string {
   }
 }
 
+chatRec(search){
+    return this.chatService.getChatById(this.email,this.selectedChatId,30,0,search,this.deviceId) 
 
+}
   getChatById(chatId,search?)
   {
     this.searchVal = search || '';
@@ -450,63 +520,98 @@ getGroupHeader(messageDate: Date): string {
 
         })
   }
+  listChatsReq(search){
+    return  this.chatService.listChats(this.email , 30,0,search,this.deviceId);
+  }
   getListChats(){
   this.listChatsSub$= this.chatService.listChats(this.email , 30,0,this.searchKey,this.deviceId);
+  if(this.searchSub){
+    this.searchSub.unsubscribe();
+    this.searchSub=null;
+
+    this.searchForm.patchValue({
+      searchControl:''
+    })
+  }
   this.listChatsSub$.subscribe(
       (res)=>{
         this.listChats=res;
-        let chat:Chats;
-        if(!this.selectedChatId){
-          this.selectedChatId=res[0].chat.id;
-          this.chatName=res[0]?.chat?.chatName;
-          this.targetPhoneNumber=res[0]?.chat?.targetPhoneNumber;
-          chat=res[0]
-          this.getChatById(this.selectedChatId);
-          this.openChat=true;
-          // this.updateQueryParams();
-          this.listChats.map((chat)=>chat.active=false) ;   
-          this.listChats[0].active=true
-          if(chat.unseenMessagesCount > 0){
-            this.chatService.markChatAsRead(chat.chat.id).subscribe(
-              (res)=>{
-                chat.unseenMessagesCount=0;
+        this.hideSearch=false;
+
+          let chat:Chats;
+          if(!this.searchKey)
+            {
+              if(!this.selectedChatId){
+                if(this.listChats.length <= 0){
+                  this.clearChats()
+                  }
+                  else{
+                    this.selectedChatId=res[0]?.chat?.id;
+                    this.chatName=res[0]?.chat?.chatName;
+                    this.targetPhoneNumber=res[0]?.chat?.targetPhoneNumber;
+                    chat=res[0]
+                    this.getChatById(this.selectedChatId);
+                    this.openChat=true;
+                    // this.updateQueryParams();
+                    if( this.listChats.length>0){
+                      this.listChats.map((chat)=>chat.active=false) ;   
+                      this.listChats[0].active=true
+                    }
+                    
+                    if(chat?.unseenMessagesCount > 0){
+                      this.chatService.markChatAsRead(chat.chat.id).subscribe(
+                        (res)=>{
+                          chat.unseenMessagesCount=0;
+                        }
+                      )
+                    }
+                  }
+             
               }
-            )
-          }
-        }
-        else{
-          chat=this.listChats.find((chats)=>chats.chat.id == this.selectedChatId);
-
-          if(chat){
-         
-            this.chatName=chat.chat.chatName;
-            this.targetPhoneNumber=chat.chat.targetPhoneNumber;
-            chat.active=true
-            if(chat.unseenMessagesCount > 0){
-              this.chatService.markChatAsRead(chat.chat.id).subscribe(
-                (res)=>{
-                  chat.unseenMessagesCount=0;
-                }
-              )
-            }
-          }
-        
-          this.getChatById(this.selectedChatId,'');
+              else{
+                if( this.listChats.length>0){
+    
+                chat=this.listChats.find((chats)=>chats.chat.id == this.selectedChatId);
       
-          // this.listChats.map((chat)=>chat.active=false) ;   
-          // this.form.patchValue({
-          //   devicesData: {
-          //   title:chat?.device.deviceName,
-          //   value:chat?.device.id,
-          //   deviceIcon:chat?.device.deviceType
-          //   }
-  
-          //   })
+                if(chat){
+                  this.chatName=chat.chat.chatName;
+                  this.targetPhoneNumber=chat.chat.targetPhoneNumber;
+                  chat.active=true
+                  if(chat.unseenMessagesCount > 0){
+                    this.chatService.markChatAsRead(chat.chat.id).subscribe(
+                      (res)=>{
+                        chat.unseenMessagesCount=0;
+                      }
+                    )
+                  }
+                }
+              
+                this.getChatById(this.selectedChatId,'');
+              }
 
-        }
+                // this.listChats.map((chat)=>chat.active=false) ;   
+                // this.form.patchValue({
+                //   devicesData: {
+                //   title:chat?.device.deviceName,
+                //   value:chat?.device.id,
+                //   deviceIcon:chat?.device.deviceType
+                //   }
+        
+                //   })
+      
+              }
+            }
+            this.setupSearchSubscription();
 
       }
     )
+  }
+  clearChats(){
+    this.selectedChat=[];
+    this.groupMessagesByDay();
+    this.chatName='';
+    this.targetPhoneNumber='';
+    this.hideSearch=true;
   }
 resetForm(){
   this.messageForm.patchValue(
@@ -518,7 +623,7 @@ resetForm(){
 }
   onSearch(search){
     this.searchKey=search.value;
-    this.getListChats()
+    // this.getListChats()
   }
   addNewContact(){
     const currentLang=this.translationService.getCurrentLanguage()
@@ -535,6 +640,7 @@ resetForm(){
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
+        console.log(result)
         if(result.isFound){
           this.selectedChatId = result.foundChat.chat.id;
           this.chatName = result.foundChat.chat.chatName;
@@ -549,6 +655,7 @@ resetForm(){
           this.getListChats()
           this.updateQueryParams()
         }
+        this.openChat=true
       
       }
 
@@ -593,6 +700,8 @@ resetForm(){
     navigateToChat(chat:Chats){
       this.openChat=true;
       this.isSearch=false;
+      this.hideSearch=false;
+
       this.resetValues()
       if(!chat.active){
         this.clearInputData();
@@ -874,6 +983,7 @@ else{
         }
       })
     }
+   
     onStatusChange(){
       this.chatService.updatedStatus$.subscribe(
         (res)=>{
@@ -884,7 +994,7 @@ else{
         }
       )
     }
-
+  
     updateMessageStatus(newMessage){
       let message:chatHub=JSON.parse(newMessage)
       if(message.Deviceid == this.deviceId ){
@@ -989,6 +1099,7 @@ else{
 
 
     ngOnDestroy() {
-      this.chatService.closeConnection()
+      this.chatService.closeConnection();
+      this.closeSubsciptions();
       }
 }

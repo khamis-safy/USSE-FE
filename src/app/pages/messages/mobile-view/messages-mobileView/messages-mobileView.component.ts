@@ -5,7 +5,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -45,7 +45,12 @@ export class MessagesMobileViewComponent implements OnInit {
       devicesData:this.devicesData,
     });
     
- 
+    searchControl = new FormControl();
+    searchForm = new FormGroup({
+      searchControl:this.searchControl
+    })
+    searchSub: Subscription;
+    filteration: any;
 
 
   showsOptions:SelectOption[]=[
@@ -158,6 +163,7 @@ messagesTableData:any=[]
   }
   // get device's messages
   this.getDevices(this.msgCategory);
+
 
 }
   
@@ -392,7 +398,88 @@ onCheckboxChange(event,element: any) {
   }
 }
 
-      getMessages(deviceId:string,msgCat?,filterdItems?,searchVal?){
+setupSearchSubscription(): void {
+  this.searchSub = this.searchControl.valueChanges.pipe(
+    debounceTime(1000), // Wait for 1s pause in events
+    distinctUntilChanged(), // Only emit if value is different from previous value
+    switchMap(searchVal => this.getMessagesReq(this.deviceId,this.msgCategory,this.filteration, searchVal))
+  ).subscribe(
+    res => this.handleGetMessagesResponse(this.deviceId,res,this.searchControl.value,this.filteration, this.msgCategory),
+    err => this.handleError()
+  );
+  this.subscribtions.push(this.searchSub);
+}
+
+getMessagesReq(deviceId:string,msgCat?,filterdItems?,searchVal?){
+  let shows=this.messageService.display;
+  let email=this.messageService.email;
+  let msgCategory=msgCat? msgCat : this.msgCategory;
+  let pageNumber=searchVal?0:this.pageIndex
+
+  if(searchVal && this.paginator){
+    this.paginator.pageIndex=0
+  }
+  if(this.selection){
+    this.selection.clear();
+    this.isChecked=false   
+    if(this.dynamicComponentRef){
+      this.distroyDynamicComponent()
+    }
+   
+
+
+  }
+  return this.messageService.getMessages(email,msgCategory,shows,pageNumber,searchVal,deviceId,filterdItems)
+   
+
+}
+
+getMessages(deviceId: string, msgCat?: string, filterdItems?: any, searchVal?: string): void {
+  let search=searchVal?searchVal:"";
+  let msgCategory=msgCat? msgCat : this.msgCategory;
+  if(this.searchSub && !filterdItems){
+    this.searchSub.unsubscribe();
+    this.searchSub=null;
+    this.searchForm.patchValue({
+      searchControl:''
+    })
+  }
+  const messagesSub = this.getMessagesReq(deviceId, msgCategory, filterdItems, search).subscribe(
+    (res) => {  
+    this.handleGetMessagesResponse(deviceId,res, search,filterdItems,msgCategory);
+    if(!this.searchSub){
+      this.setupSearchSubscription();
+    }
+
+    },
+    err => this.handleError()
+  );
+  this.subscribtions.push(messagesSub);
+}
+
+handleGetMessagesResponse(deviceId,res: Message[], searchVal: string,filterdItems,msgCategory): void {
+  this.numRows = res.length;
+  this.messagesTableData=res
+  this.loading = false;
+
+  if (searchVal!='') {
+    this.length = res.length;
+    this.notFound = this.length === 0;
+  } else {
+    if (this.paginator) {
+      this.paginator.pageIndex=this.pageIndex
+    }
+    this.notFound = false;
+    this.getMessagesCount(deviceId, msgCategory,filterdItems);
+  }
+}
+
+handleError(): void {
+  this.loading = false;
+  this.length = 0;
+  this.noData = true;
+}
+      getMessagesBeforeE(deviceId:string,msgCat?,filterdItems?,searchVal?){
         let shows=this.messageService.display;
         let email=this.messageService.email;
         let msgCategory=msgCat? msgCat : this.msgCategory;
@@ -645,15 +732,16 @@ onCheckboxChange(event,element: any) {
       this.subscribtions.map(e => e.unsubscribe());
     }
     selectFilter(item){
-    // this.selectedItems.push(item);
-        let selected= this.selectedItems.map((sel)=>sel.value-1)
-    this.getMessages(this.deviceId,"outbox",selected )  
-    }
-    deselectFilter(item){
-        let selected= this.selectedItems.map((sel)=>sel.value-1)
-      this.getMessages(this.deviceId,"outbox",selected )   
-  
-    }
+      // this.selectedItems.push(item);
+          this.filteration= this.selectedItems.map((sel)=>sel.value-1)
+      this.getMessages(this.deviceId,"outbox",this.filteration,this.searchControl.value )  
+      }
+      deselectFilter(item){
+          this.filteration= this.selectedItems.map((sel)=>sel.value-1)
+        this.getMessages(this.deviceId,"outbox",this.filteration,this.searchControl.value )   
+    
+      }
+   
   }
   
 

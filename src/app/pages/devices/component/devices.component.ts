@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DEVICESHEADERS } from '../constants/constants';
 import * as saveAs from 'file-saver';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { AddTLDeviceComponent } from '../components/telegramDevice/addTLDevice/addTLDevice.component';
 
@@ -74,7 +74,12 @@ export class DevicesComponent implements OnInit,OnDestroy{
 
   isSmallScreen: boolean = false;
   destroy$: Subject<void> = new Subject<void>();
-
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
+  subscriptions: any=[];
+  searchSub: any;
   constructor(public dialog: MatDialog,
         private translate: TranslateService,
         private breakpointObserver: BreakpointObserver,
@@ -102,7 +107,6 @@ export class DevicesComponent implements OnInit,OnDestroy{
           }
           })
     this.isTrialCustomer=this.authService.getSubscriptionState().isTrail ? this.authService.getSubscriptionState()?.isTrail : false;
-    this.getDevices();
     this.columns=new FormControl(this.displayedColumns)
     let permission =this.devicesService.DevicesPermission
     let customerId=this.authService.getUserInfo()?.customerId;
@@ -126,7 +130,7 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
 
     return `${element.clientWidth}px`;
  }
-  getDevices(searchVal?){
+ getDevicesReq(searchVal?){
     let shows=this.devicesService.display;
     let pageNum=searchVal? 0 : this.devicesService.pageNum;
     let email=this.authService.getUserInfo()?.email;
@@ -138,35 +142,65 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
       this.paginator.pageIndex=0
     }
     
-    this.devicesService.getDevices(email,shows,pageNum,orderedBy,search).subscribe(
+    return this.devicesService.getDevices(email,shows,pageNum,orderedBy,search)
+ }
+ handleGetDevicesResponce(res,search){
+  this.numRows=res.length;
+  this.loading = false;
+  this.dataSource=new MatTableDataSource<DeviceData>(res);
+  if(search!=""){
+    this.length=res.length;
+    if(this.length==0){
+      this.notFound=true;
+    }
+    else{
+      this.notFound=false;
+    }
+}
+else{
+  if(this.paginator)
+  {
+    this.paginator.pageIndex=this.devicesService.pageNum
+
+  }
+  this.notFound=false;
+  this.getDevicesCount();
+
+}
+ }
+ handleError(){
+  this.loading = false;
+  this.length=0;
+  this.noData=true;
+ }
+ setupSearchSubscription(): void {
+  this.searchSub = this.searchControl.valueChanges.pipe(
+    debounceTime(1000), // Wait for 1s pause in events
+    distinctUntilChanged(), // Only emit if value is different from previous value
+    switchMap(searchVal => this.getDevicesReq(searchVal))
+  ).subscribe(
+    res => this.handleGetDevicesResponce(res,this.searchControl.value),
+    err => this.handleError()
+  );
+  this.subscriptions.push(this.searchSub);
+}
+  getDevices(searchVal?){
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+    let search=searchVal?searchVal:"";
+    this.getDevicesReq(search).subscribe(
       (res)=>{
-        this.numRows=res.length;
-        this.loading = false;
-        this.dataSource=new MatTableDataSource<DeviceData>(res);
-        if(search!=""){
-          this.length=res.length;
-          if(this.length==0){
-            this.notFound=true;
-          }
-          else{
-            this.notFound=false;
-          }
-      }
-      else{
-        if(this.paginator)
-        {
-          this.paginator.pageIndex=this.devicesService.pageNum
-
-        }
-        this.notFound=false;
-        this.getDevicesCount();
-
-      }
+       this.handleGetDevicesResponce(res,search);
+       this.setupSearchSubscription()
        },
        (err)=>{
-        this.loading = false;
-        this.length=0;
-        this.noData=true;
+       this.handleError()
        })
   }
 
@@ -402,5 +436,7 @@ onPageChange(event){
     this.devicesService.pageNum=0;
     this.devicesService.orderedBy='';
     this.devicesService.search='';
+    this.subscriptions.map(e=>e.unsubscribe());
+
   };
 }

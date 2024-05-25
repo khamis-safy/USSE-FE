@@ -15,7 +15,7 @@ import { Automation } from '../../interfaces/automation';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { ContactInfoComponent } from 'src/app/pages/manage-contacts/components/mobile view/contact-info/contact-info.component';
 import { ContactInfoContent } from 'src/app/pages/manage-contacts/components/mobile view/contacts-mobileView/contacts-mobileView.component';
@@ -66,7 +66,11 @@ export class AutomationComponent implements OnInit,AfterViewInit ,OnDestroy {
   WrapperScrollLeft =0;
   WrapperOffsetWidth =250;
 
-
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
+  searchSub: Subscription;
   showsOptions: SelectOption[] = [
     { title: '10', value: 10 },
     { title: '50', value: 50 },
@@ -92,6 +96,7 @@ export class AutomationComponent implements OnInit,AfterViewInit ,OnDestroy {
 
   isSmallScreen: boolean = false;
   destroy$: Subject<void> = new Subject<void>();
+  subscriptions:any=[]
   constructor(private botService : BotService ,
     private authService:AuthService,
     public dialog: MatDialog, 
@@ -103,7 +108,8 @@ export class AutomationComponent implements OnInit,AfterViewInit ,OnDestroy {
     ngOnDestroy(): void {
       this.destroy$.next();
         this.destroy$.complete();
-      
+        this.subscriptions.map(e=>e.unsubscribe());
+
     }
     ngAfterViewInit() {
     if(this.dataSource){
@@ -297,42 +303,70 @@ scrollLeft(element , wrapper){
 
 
 }
-  getAutomations(deviceId,searchVal?){
-    let shows=this.display;
-    let email=this.authService.getUserInfo()?.email;
-    let search=searchVal?searchVal:"";
-    this.loading = true;
-    let pageNumber=searchVal?0:this.pageNum
-    if(searchVal && this.paginator){
-      this.paginator.pageIndex=0
+getAutomationReq(deviceId,searchVal){
+  let shows=this.display;
+  let email=this.authService.getUserInfo()?.email;
+  let search=searchVal?searchVal:"";
+  this.loading = true;
+  let pageNumber=searchVal?0:this.pageNum
+  if(searchVal && this.paginator){
+    this.paginator.pageIndex=0
+  }
+  return this.botService.getAutomations(email,shows,pageNumber,search,deviceId)
+}
+handleGetAutomationsResponce(deviceId,res,search){
+  this.loading = false;
+  this.dataSource=new MatTableDataSource<any>(res);
+  this.accordionData=res;
+  if(search!=""){
+    this.length=res.length;
+    if(this.length==0){
+      this.notFound=true;
     }
-      this.botService.getAutomations(email,shows,pageNumber,search,deviceId).subscribe(
+    else{
+      this.notFound=false;
+    }
+}
+else{
+  this.paginator.pageIndex=this.pageNum
+  this.notFound=false;
+  this.getAutomationsCount(deviceId);
+
+
+}
+}
+handleError(){
+  this.loading = false;
+  this.length=0;
+}
+setupSearchSubscription(): void {
+  this.searchSub = this.searchControl.valueChanges.pipe(
+    debounceTime(1000), // Wait for 1s pause in events
+    distinctUntilChanged(), // Only emit if value is different from previous value
+    switchMap(searchVal => this.getAutomationReq(this.deviceId,searchVal))
+  ).subscribe(
+    res => this.handleGetAutomationsResponce(this.deviceId,res,this.searchControl.value),
+    err => this.handleError()
+  );
+  this.subscriptions.push(this.searchSub);
+}
+  getAutomations(deviceId,searchVal?){
+    let search=searchVal?searchVal:"";
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+   this.getAutomationReq(deviceId,search).subscribe(
         (res)=>{
-          this.loading = false;
-          this.dataSource=new MatTableDataSource<any>(res);
-          this.accordionData=res;
-          if(search!=""){
-            this.length=res.length;
-            if(this.length==0){
-              this.notFound=true;
-            }
-            else{
-              this.notFound=false;
-            }
-        }
-        else{
-          this.paginator.pageIndex=this.pageNum
-          this.notFound=false;
-          this.getAutomationsCount(deviceId);
-
-
-        }
-
+         this.handleGetAutomationsResponce(deviceId,res,search)
+          this.setupSearchSubscription();
         },
         (err)=>{
-          this.loading = false;
-          this.length=0;
-      
+   
+      this.handleError()
   
         }
       )

@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { TranslationService } from 'src/app/shared/services/translation.service';
@@ -82,7 +82,11 @@ export class ContactsMobileViewComponent implements OnInit {
   });
   navActionSubscriptions:Subscription[]=[];
   @ViewChild('dynamicComponentContainer', { read: ViewContainerRef }) dynamicComponentContainer: ViewContainerRef;
-
+  
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
   isChecked:boolean=false;
   pageIndex:number=0;
   
@@ -94,6 +98,7 @@ export class ContactsMobileViewComponent implements OnInit {
   
 bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('ASCENDING')}`, isSelected:true} ,
                             {opitonName:'DEC' , lable:`${this.translate.instant('DESCENDING')}`,isSelected:false}]
+  searchSub: Subscription;
 
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
@@ -156,7 +161,96 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
      
       
       });
+     
+  }
+  setupSearchSubscription(): void {
+    this.searchSub= this.searchControl.valueChanges.pipe(
+      debounceTime(1000), // Wait for 1s pause in events
+      distinctUntilChanged(), // Only emit if value is different from previous value
+      switchMap(searchVal => this.getContactsReq(searchVal,this.isCanceled))
+    ).subscribe(
+      (res)=>{
+        this.handleContactsResponse(res,this.searchControl.value,this.isCanceled)
+      },
+      (err)=>{
+        this.loading = false;
+        this.length=0;
 
+       })
+       this.subscribtions.push(this.searchSub)
+  }
+  getContactsReq(searchVal,canceled?){
+    let shows=this.listService.display;
+    let email=this.authService.getUserInfo()?.email;
+    let orderedBy=this.orderedBy;
+    let pageNumber=searchVal?0:this.pageIndex
+    if(searchVal && this.paginator){
+        this.paginator.pageIndex=0
+    }
+    this.loading = true;
+    if(this.selection){
+      this.selection.clear();
+      this.isChecked=false   
+      if(this.dynamicComponentRef){
+        this.distroyDynamicComponent()
+      }
+     
+  
+  
+    }
+  return  this.listService.getContacts(email,canceled,shows,pageNumber,orderedBy,searchVal,this.listId)
+  }
+  
+  handleContactsResponse(res: Contacts[], search: string,canceled): void {
+    this.numRows=res.length;
+      
+    this.tableData=res;
+    if(search!=""){
+      this.length=res.length;
+      this.loading = false;
+      if(this.length==0){
+        this.notFound=true;
+      }
+      else{
+        this.notFound=false;
+      }
+  }
+  else{
+    if(this.paginator){
+      this.paginator.pageIndex=this.pageIndex
+    }
+    this.notFound=false;
+
+    this.contactsCount(canceled);
+
+  }
+  }
+
+  getContacts(searchVal? ,canceled?){
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+  let search=searchVal ? searchVal : "";
+  let isCanceledContacts=canceled? canceled :this.isCanceled
+  this.loading = true;
+
+   let sub1= this.getContactsReq(search,isCanceledContacts).subscribe(
+      (res)=>{
+       this.handleContactsResponse(res,search,isCanceledContacts)
+       this.setupSearchSubscription();
+
+       },
+       (err)=>{
+        this.loading = false;
+        this.length=0;
+
+      })
+      this.subscribtions.push(sub1)
   }
 
   toggleTopSortingSelect(){
@@ -292,53 +386,7 @@ onCheckboxChange(event,element: any) {
     this.getContacts();
 
   }
-
-  getContacts(searchVal? ,canceled?){
-  let shows=this.listService.display;
-  let email=this.authService.getUserInfo()?.email;
-  let orderedBy=this.orderedBy;
-  let search=searchVal ? searchVal : "";
-  let pageNumber=searchVal?0:this.pageIndex
-  if(searchVal && this.paginator){
-      this.paginator.pageIndex=0
-  }
- let isCanceledContacts=canceled? canceled :this.isCanceled
-  this.loading = true;
-
-   let sub1= this.listService.getContacts(email,isCanceledContacts,shows,pageNumber,orderedBy,search,this.listId).subscribe(
-      (res)=>{
-        this.numRows=res.length;
-      
-        this.tableData=res;
-        if(search!=""){
-          this.length=res.length;
-          this.loading = false;
-          if(this.length==0){
-            this.notFound=true;
-          }
-          else{
-            this.notFound=false;
-          }
-      }
-      else{
-        if(this.paginator){
-          this.paginator.pageIndex=this.pageIndex
-        }
-        this.notFound=false;
-
-        this.contactsCount(isCanceledContacts);
-
-      }
-
-       },
-       (err)=>{
-        this.loading = false;
-        this.length=0;
-
-      })
-      this.subscribtions.push(sub1)
-  }
-
+  
   unCancelSnackBar(){
     let selectedItems = this.selectedItems.map((cont)=>cont.id)
     let message = `${selectedItems.length} ${this.translate.instant('Item(s) UnCanceled')}`;
