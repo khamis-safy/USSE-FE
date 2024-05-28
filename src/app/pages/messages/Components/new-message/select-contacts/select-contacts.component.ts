@@ -90,7 +90,7 @@ if(this.searchSub){
   setupSearchSubscription(): void {
   this.searchSub=this.usSelectComponent.onSearch
     .pipe(
-      debounceTime(1000),
+      debounceTime(700),
       distinctUntilChanged(),
       switchMap(searchVal=>this.getAllContactsReq(searchVal))
     )

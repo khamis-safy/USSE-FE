@@ -43,7 +43,7 @@ export class ChatContactsComponent implements OnInit {
 
   ngOnInit() {
     this.searchControl.valueChanges.pipe(
-      debounceTime(1000), // Wait for 500ms pause in events
+      debounceTime(700), // Wait for 500ms pause in events
       distinctUntilChanged(), // Only emit if value is different from previous value
       switchMap(searchVal => this.getContacts(searchVal))
     ).subscribe(
@@ -102,7 +102,7 @@ export class ChatContactsComponent implements OnInit {
 setUpSearch(){
  
   this.searchSub= this.searchMsg.valueChanges.pipe(
-      debounceTime(1000), // Wait for 500ms pause in events
+      debounceTime(700), // Wait for 500ms pause in events
       distinctUntilChanged(), // Only emit if value is different from previous value
       switchMap(searchVal => this.getContacts(searchVal))
     ).subscribe(

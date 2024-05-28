@@ -368,7 +368,7 @@ ngAfterViewInit(): void {
 }
 setupSearchSubscription(): void {
   this.searchSub = this.searchControl.valueChanges.pipe(
-    debounceTime(1000), // Wait for 1s pause in events
+    debounceTime(700), // Wait for 1s pause in events
     distinctUntilChanged(), // Only emit if value is different from previous value
     switchMap(searchVal => this.getMessagesReq(this.deviceId,this.msgCategory,this.filteration, searchVal))
   ).subscribe(

@@ -161,7 +161,7 @@ else{
 }
 setupSearchSubscription(){
   this.searchSub=this.searchControl.valueChanges.pipe(
-    debounceTime(1000),
+    debounceTime(700),
     distinctUntilChanged(),
     switchMap(searchVal=>this.getUsersReq(searchVal))
   ).subscribe(
