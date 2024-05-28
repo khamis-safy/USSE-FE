@@ -97,9 +97,10 @@ export class DevicesComponent implements OnInit,OnDestroy{
         this.displayed=DEVICESHEADERS
 
       }
-      this.getDevices();
       
     });
+    this.getDevices();
+
         this.displayForm.patchValue({
           showsSelectedOptions: {
           title:'10',

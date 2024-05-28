@@ -19,6 +19,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { TranslationService } from 'src/app/shared/services/translation.service';
 import { AdditonalParamsComponent } from './additonalParams/additonalParams.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ContactsMobileViewComponent } from '../mobile view/contacts-mobileView/contacts-mobileView.component';
 
 @Component({
 
@@ -67,6 +68,8 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
   isSmallScreen: boolean = false;
   destroy$: Subject<void> = new Subject<void>();
   searchSub: Subscription;
+  @ViewChild(ContactsMobileViewComponent) mobileView :ContactsMobileViewComponent
+  isDataCalledInMobile: boolean;
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -84,18 +87,88 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
     if(this.paginator){
       this.paginator.pageSize=this.display
     }
+
   }
-  ngOnInit() {
+  onChangeSecreanSizes(){
     this.breakpointObserver.observe(['(max-width: 768px)'])
     .pipe(takeUntil(this.destroy$))
     .subscribe(result => {
       this.isSmallScreen = result.matches;
       if(!this.isSmallScreen){
-        this.selection.clear()
-        this.getContacts();
+        this.selection.clear();
+        if(this.dataSource){
+
+          if(!this.listService.arraysContainSameObjects(this.dataSource.data,this.mobileView.tableData)){
+            if(this.mobileView.searchControl.value){
+              this.getContacts()
+            }
+            else{
+              this.getDataFromChild(this.mobileView.tableData,'',this.mobileView.isCanceled,this.mobileView.length)
+
+            }
+          }
+        }
+         else{
+
+          if(!this.isDataCalledInMobile){
+            this.getContacts()
+
+          }
+          else{
+            if(this.mobileView.searchControl.value){
+              this.getContacts()
+            }
+            else{
+              this.getDataFromChild(this.mobileView.tableData,'',this.mobileView.isCanceled,this.mobileView.length)
+
+            }
+          }
+         } 
       
+
+      }
+      else{
+
+          if(this.dataSource){
+
+            setTimeout(() => {
+              if(this.searchControl.value){
+                this.mobileView?.getContacts('',this.isCanceled);
+              }
+              else{
+                this.mobileView?.getDataFromParent(this.dataSource.data,'',this.isCanceled,this.length)
+  
+              }
+          }, 100);
+          }
+          else{
+            setTimeout(() => {
+
+              this.mobileView?.getContacts('',this.isCanceled);
+              this.isDataCalledInMobile=true;
+
+            }, 100);
+          }
+        
+        
       }
     });
+  }
+  getDataFromChild(data,search,isCancled,length){
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+    this.handleContactsResponse(data,search,isCancled,length);
+    this.setupSearchSubscription()
+
+  }
+  ngOnInit() {
+  
      if(this.isCanceled){
     if(!this.canEdit){
         this.displayedColumns = ['Name', 'Mobile',"Lists",'Additional Parameters',"Create At"];
@@ -127,7 +200,8 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
           this.isChecked.emit()
         }
       });
-
+    
+this.onChangeSecreanSizes()
   }
 
   getContactsReq(searchVal,canceled?){
@@ -142,7 +216,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
    return this.listService.getContacts(email,canceled,shows,pageNumber,orderedBy,searchVal,this.listId)
   }
   
-  handleContactsResponse(res: Contacts[], searchVal: string,canceled): void {
+  handleContactsResponse(res: Contacts[], searchVal: string,canceled,count?): void {
     this.numRows = res.length;
     this.loading = false;
     if(this.selection){
@@ -162,7 +236,24 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
         this.paginator.pageIndex = this.pageNum;
       }
       this.notFound = false;
-      this.contactsCount(canceled);
+      if(count){
+        this.length=count;
+        this.loading = false;
+        if( this.length==0){
+         this.noData=true;
+ 
+       
+       }
+       else{
+          this.noData=false;
+ 
+      
+        }
+      }
+      else{
+        this.contactsCount(canceled);
+
+      }
     }
   }
 

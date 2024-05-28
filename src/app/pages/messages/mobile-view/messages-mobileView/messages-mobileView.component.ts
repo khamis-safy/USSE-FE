@@ -97,6 +97,7 @@ messagesTableData:any=[]
     display: number;
     isSmallScreen: boolean = false;
     openedDialogs: any = [];
+  alldevices: any=[];
     constructor(public cdr: ChangeDetectorRef ,
       public dialog: MatDialog,
       private messageService:MessagesService,
@@ -162,11 +163,102 @@ messagesTableData:any=[]
     this.isUser=false;
   }
   // get device's messages
-  this.getDevices(this.msgCategory);
 
 
 }
+getDataFromParent(res,messages?,length?){
+  if(this.searchSub){
+    this.searchSub.unsubscribe();
+    this.searchSub=null;
+    this.searchForm.patchValue({
+      searchControl:''
+    })
+  }
+  this.handleResponce(res,messages,length);
+  this.setupSearchSubscription()
+}
+handleResponce(res,messages?,length?){
+  this.alldevices=res;
   
+  if(this.permission){
+    this.alldevices.map((device)=>
+    {
+      let found =this.permission.find((devP)=>devP.deviceId==device.id && devP.value=="None");
+      if(found){
+        this.alldevices.splice(this.alldevices.indexOf(device),1)
+      }
+    }
+    )
+  }
+  this.devices = this.alldevices.map(res=>{
+    return {
+      title:res.deviceName,
+      value:res.id,
+      deviceIcon:res.deviceType
+    }
+  });
+  if(this.devices.length==0){
+    this.loading = false;
+    this.length=0;
+    this.noData=true;
+  }
+  else{
+    this.noData=false
+
+    this.deviceId=res[0].id;
+    this.selectedDeviceId.emit(this.deviceId)
+
+  this.getDevicePermission(this.deviceId);
+
+    if(this.authService.selectedDeviceId ==""){
+
+      this.form.patchValue({
+      devicesData: {
+      title:this.alldevices[0]?.deviceName,
+      value:this.alldevices[0]?.id,
+      deviceIcon:this.alldevices[0].deviceType
+
+      }
+
+      })
+    }
+    else{
+      let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
+      this.deviceId=this.authService.selectedDeviceId;
+      this.selectedDeviceId.emit(this.deviceId)
+
+      this.form.patchValue({
+        devicesData: {
+        title:selected.title,
+        value:selected?.value,
+        deviceIcon:selected.deviceIcon
+
+        }
+
+        })
+    }
+    if(messages){
+      this.numRows = res.length;
+      this.messagesTableData=messages
+      this.length=length;
+      if (this.paginator) {
+        this.paginator.pageIndex = this.pageIndex;
+      }
+    
+      this.notFound = false;
+      if(this.length ==0){
+        this.notFound=true;
+      }
+      this.loading=false
+
+    }
+    else{
+      this.getMessages(this.deviceId);
+    }
+
+}
+}
+
 toggleTopSortingSelect(){
   this.topSortingOptions.forEach((option:{opitonName:string,isSelected:boolean })=>option.isSelected=!option.isSelected);
   this.selectedSortingName= this.topSortingOptions.find((option)=>option.isSelected).opitonName;
@@ -244,68 +336,7 @@ this.getMessages(this.deviceId);
     this.msgCategory=megtype;
     this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
       (res)=>{
-        let alldevices=res;
-  
-        if(this.permission){
-          alldevices.map((device)=>
-          {
-            let found =this.permission.find((devP)=>devP.deviceId==device.id && devP.value=="None");
-            if(found){
-              alldevices.splice(alldevices.indexOf(device),1)
-            }
-          }
-          )
-        }
-        this.devices = alldevices.map(res=>{
-          return {
-            title:res.deviceName,
-            value:res.id,
-            deviceIcon:res.deviceType
-          }
-        });
-        if(this.devices.length==0){
-          this.loading = false;
-          this.length=0;
-          this.noData=true;
-        }
-        else{
-          this.noData=false
-  
-          this.deviceId=res[0].id;
-          this.selectedDeviceId.emit(this.deviceId)
-  
-        this.getDevicePermission(this.deviceId);
-  
-          if(this.authService.selectedDeviceId ==""){
-  
-            this.form.patchValue({
-            devicesData: {
-            title:alldevices[0]?.deviceName,
-            value:alldevices[0]?.id,
-            deviceIcon:alldevices[0].deviceType
-  
-            }
-  
-            })
-          }
-          else{
-            let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
-            this.deviceId=this.authService.selectedDeviceId;
-            this.selectedDeviceId.emit(this.deviceId)
-  
-            this.form.patchValue({
-              devicesData: {
-              title:selected.title,
-              value:selected?.value,
-              deviceIcon:selected.deviceIcon
-  
-              }
-  
-              })
-          }
-          this.getMessages(this.deviceId);
-  
-      }
+      this.handleResponce(res)
     },
       (err)=>{
         this.loading = false;
@@ -479,54 +510,7 @@ handleError(): void {
   this.length = 0;
   this.noData = true;
 }
-      getMessagesBeforeE(deviceId:string,msgCat?,filterdItems?,searchVal?){
-        let shows=this.messageService.display;
-        let email=this.messageService.email;
-        let msgCategory=msgCat? msgCat : this.msgCategory;
-        let search=searchVal?searchVal:"";
-        let pageNumber=searchVal?0:this.pageIndex
-        if(searchVal && this.paginator){
-          this.paginator.pageIndex=0
-        }
-        this.loading = true;
-        let messagesSub=this.messageService.getMessages(email,msgCategory,shows,pageNumber,search,deviceId,filterdItems).subscribe(
-          (res)=>{
-            this.numRows=res.length;
-  
-            
-            // this.dataSource=new MatTableDataSource<Message>(res)
-            this.messagesTableData=res
-            //
-          if(search!=""){
-            this.length=res.length;
-            this.loading = false;
 
-            if(this.length==0){
-              this.notFound=true;
-            }
-            else{
-              this.notFound=false;
-            }
-          }
-          else{
-            if(this.paginator){
-            this.paginator.pageIndex=this.pageIndex
-            }
-            this.notFound=false;
-          
-            this.getMessagesCount(deviceId,msgCategory,filterdItems);
-  
-          }
-          },
-          (err)=>{
-           this.loading = false;
-           this.length=0;
-           this.noData=true;
-  
-          }
-        )
-        this.subscribtions.push(messagesSub)
-      }
       getMessagesCount(deviceId,msgCategory,filterdItems?){
         this.loading=true
         let email=this.messageService.email;

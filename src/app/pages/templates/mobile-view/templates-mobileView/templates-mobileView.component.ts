@@ -99,7 +99,7 @@ export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
       }
       })
 
-    this.getTemplates();
+    // this.getTemplates();
     this.columns = new FormControl(this.displayedColumns);
     this.displayedColumns=this.canEdit?[
       'Template Name',
@@ -195,7 +195,20 @@ export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
     }
      return this.templatesService.getTemplates(email,showsNum,pageNum,orderedBy,search)
   }
-  handleGetTemplatesResponce(res,search){
+  getDataFromParent(data,search,length){
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+  
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+    this.handleGetTemplatesResponce(data,search,length)
+    this.setupSearchSubscription()
+  
+  }
+  handleGetTemplatesResponce(res,search,count?){
     this.numRows=res.length;
               this.templatesTableData=res
               if(this.isCanceled){
@@ -217,8 +230,24 @@ export class TemplatesMobileViewComponent implements OnInit ,OnDestroy{
                 this.paginator.pageIndex=this.pageIndex
               }
               this.notFound=false;
-      
-              this.templatesCount();
+              if(count){
+                this.length=count;
+                this.loading = false;
+                if( this.length==0){
+                  this.noData=true;
+          
+                
+                }
+                else{
+                  this.noData=false;
+          
+              
+                }
+              }
+              else{
+                this.templatesCount();
+
+              }
       
             }
   }

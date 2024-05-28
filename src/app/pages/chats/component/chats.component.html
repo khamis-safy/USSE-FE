@@ -22,6 +22,7 @@
                     class="form-control ps-5  txt-xs" 
                     id="searchInput"
                     placeholder="{{ 'searchPlaceholder' | translate }}" 
+
                     formControlName="searchControl">
                 </form>
                 <div class=" px-4  position-absolute start-0 top-50 translate-middle-y">
@@ -138,6 +139,7 @@
         style="background-image: url(../assets/images/chat-background.svg)">
         <!-- Header -->
         <div class="chat-header"
+        [ngClass]="{'d-none':listChats.length<=0 || selectedChatId==''}"
             style=" border-top-left-radius: 20px;border-top-right-radius: 20px; background: var(--clr-primary-500);">
             <div class="p-3 d-flex justify-content-between align-items-center">
                 <div class="d-flex gap-2">
@@ -339,7 +341,7 @@
         <div class="attachments-review">
             <app-attachments (onRemoveFile)="disableButtonOrnot()" [files]="filesList"></app-attachments>
         </div>
-        <div class="chats-footer w-100 p-3 bg-primary-500">
+        <div *ngIf="listChats?.length>0" class="chats-footer w-100 p-3 bg-primary-500">
             <div class="d-flex gap-3  chat-message-container" style="width: 95%;">
                 <div class="d-flex align-items-center justify-content-around" style="width: 10%; max-width: 70px;    gap: 5px;
                 ">

@@ -76,6 +76,7 @@ export class CampaignsMobileViewComponent implements OnInit {
   subscribtions: any=[];
   openedDialogs: any=[];
   searchSub: any;
+  alldevices: any[];
   constructor(private compaignsService: CompaignsService,
     public dialog: MatDialog,
     private router: Router,
@@ -104,7 +105,7 @@ export class CampaignsMobileViewComponent implements OnInit {
     else {
       this.isUser = false;
     }
-    this.getDevices();
+    // this.getDevices();
 
 
 
@@ -135,69 +136,97 @@ export class CampaignsMobileViewComponent implements OnInit {
     }
 
   }
+  handleResponce(res,campains?,length?){
+    this.alldevices = [];
 
+    this.alldevices = res;
+  
+    if (this.permission) {
+  
+      this.alldevices.map((device) => {
+        let found = this.permission.find((devP) => devP.deviceId == device.id && devP.value == "None");
+        if (found) {
+          this.alldevices.splice(this.alldevices.indexOf(device), 1)
+        }
+      }
+      )
+    }
+  
+    this.devices = this.alldevices.map(res => {
+      return {
+        title: res.deviceName,
+        value: res.id,
+        deviceIcon: res.deviceType
+      }
+    });
+    if (this.devices.length == 0) {
+      this.loading = false;
+      this.length = 0;
+      this.noData = true;
+    }
+    else {
+      this.noData = false
+  
+      this.deviceId = res[0].id;
+  
+      this.getDevicePermission(this.deviceId);
+  
+      if (this.authService.selectedDeviceId == "") {
+  
+        this.form.patchValue({
+          devicesData: {
+            title: this.alldevices[0]?.deviceName,
+            value: this.alldevices[0]?.id,
+            deviceIcon: this.alldevices[0].deviceType
+          }
+  
+        })
+      }
+      else {
+        let selected = this.devices.find((device) => device.value == this.authService.selectedDeviceId)
+        this.deviceId = this.authService.selectedDeviceId;
+        this.form.patchValue({
+          devicesData: {
+            title: selected.title,
+            value: selected?.value,
+            deviceIcon: selected.deviceIcon
+          }
+  
+        })
+      }
+      if(campains){
+        this.messagesTableData=campains;
+        this.length=length;
+        this.loading=false
+        if(this.length ==0){
+          this.notFound=true;
+        }
+      }
+      else{
+        this.getCompaigns(this.deviceId);
+  
+      }
+  
+    }
+  }
+getDataFromParent(res,campains,length){
+  if(this.searchSub){
+    this.searchSub.unsubscribe();
+    this.searchSub=null;
+
+    this.searchForm.patchValue({
+      searchControl:''
+    })
+  }
+  this.handleResponce(res,campains,length);
+  this.setupSearchSubscription()
+
+}
   // get devices data
   getDevices() {
     this.authService.getDevices(this.authService.getUserInfo()?.email, 10, 0, "", "").subscribe(
       (res) => {
-        let alldevices = res;
-
-        if (this.permission) {
-
-          alldevices.map((device) => {
-            let found = this.permission.find((devP) => devP.deviceId == device.id && devP.value == "None");
-            if (found) {
-              alldevices.splice(alldevices.indexOf(device), 1)
-            }
-          }
-          )
-        }
-
-        this.devices = alldevices.map(res => {
-          return {
-            title: res.deviceName,
-            value: res.id,
-            deviceIcon: res.deviceType
-          }
-        });
-        if (this.devices.length == 0) {
-          this.loading = false;
-          this.length = 0;
-          this.noData = true;
-        }
-        else {
-          this.noData = false
-
-          this.deviceId = res[0].id;
-
-          this.getDevicePermission(this.deviceId);
-
-          if (this.authService.selectedDeviceId == "") {
-
-            this.form.patchValue({
-              devicesData: {
-                title: alldevices[0]?.deviceName,
-                value: alldevices[0]?.id,
-                deviceIcon: alldevices[0].deviceType
-              }
-
-            })
-          }
-          else {
-            let selected = this.devices.find((device) => device.value == this.authService.selectedDeviceId)
-            this.deviceId = this.authService.selectedDeviceId;
-            this.form.patchValue({
-              devicesData: {
-                title: selected.title,
-                value: selected?.value,
-                deviceIcon: selected.deviceIcon
-              }
-
-            })
-          }
-          this.getCompaigns(this.deviceId);
-
-        }
+      this.handleResponce(res)
       },
       (err) => {
         this.loading = false;

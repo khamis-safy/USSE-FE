@@ -16,6 +16,7 @@ import { LISTHEADERS } from '../../constants/constants';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { ListsMobileViewComponent } from '../mobile view/lists-mobileView/lists-mobileView.component';
 
 @Component({
   selector: 'app-lists',
@@ -55,6 +56,9 @@ subscribtions:Subscription[]=[];
   })
   destroy$: Subject<void> = new Subject<void>();
   searchSub: Subscription;
+  @ViewChild(ListsMobileViewComponent) mobileView :ListsMobileViewComponent
+  isDataCalledInMobile: boolean;
+
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -71,16 +75,7 @@ subscribtions:Subscription[]=[];
   @Output() isDelete = new EventEmitter<ListData[]>;
 
   ngOnInit() {
-    this.breakpointObserver.observe(['(max-width: 768px)'])
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(result => {
-      this.isSmallScreen = result.matches;
-      if(!this.isSmallScreen){
-        this.selection.clear()
-        this.getListData();
-
-      }
-    });
+   
   
     if(!this.canEdit){
       this.displayedColumns = [ 'Name', 'Create At', 'Total Contacts'];
@@ -97,7 +92,7 @@ subscribtions:Subscription[]=[];
           this.isDelete.emit()
         }
       });
-
+      this.onChangeSecreanSizes();
 
   }
 
@@ -105,6 +100,82 @@ subscribtions:Subscription[]=[];
     if(this.paginator){
       this.paginator.pageSize=this.display
     }
+  }
+  onChangeSecreanSizes(){
+    this.breakpointObserver.observe(['(max-width: 768px)'])
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(result => {
+      this.isSmallScreen = result.matches;
+      if(!this.isSmallScreen){
+        this.selection.clear();
+        if(this.dataSource){
+
+          if(!this.listService.arraysContainSameObjects(this.dataSource.data,this.mobileView.tableData)){
+            if(this.mobileView.searchControl.value){
+              this.getListData()
+
+            }
+            else{
+              this.getDataFromChild(this.mobileView?.tableData,'',this.mobileView.length)
+
+            }
+          }
+        }
+         else{
+          if(!this.isDataCalledInMobile){
+            this.getListData()
+          }
+          else{
+            if(this.mobileView.searchControl.value){
+              this.getListData()
+
+            }
+            else{
+              this.getDataFromChild(this.mobileView?.tableData,'',this.mobileView.length)
+
+            }
+          }
+        } 
+      }
+      else{
+
+          if(this.dataSource){
+            setTimeout(() => {
+              if(this.searchControl.value){
+                this.mobileView?.getListData('');
+  
+              }
+              else{
+                this.mobileView?.getDataFromParent(this.dataSource.data,'',this.length)
+  
+              }
+          }, 100);
+          }
+          else{
+            setTimeout(() => {
+
+              this.mobileView?.getListData('');
+              this.isDataCalledInMobile=true;
+
+            }, 100);
+          }
+        
+        
+      }
+    });
+  }
+  getDataFromChild(data,search,length){
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+    this.handleGetListsResponse(data,search,length)
+    this.setupSearchSubscription()
+
   }
 getListsCount(){
   this.loading=true;
@@ -161,6 +232,7 @@ getListsReq(searchVal: string) {
 }
 
 getListData(searchVal?: string): void {
+
   if(this.searchSub){
     this.searchSub.unsubscribe();
     this.searchSub=null;
@@ -182,7 +254,7 @@ getListData(searchVal?: string): void {
   this.subscribtions.push(sub2);
 }
 
-handleGetListsResponse(res: ListData[], searchVal: string): void {
+handleGetListsResponse(res: ListData[], searchVal: string,count?): void {
   this.loading = false;
   this.numRows = res.length;
   this.dataSource = new MatTableDataSource<ListData>(res);
@@ -199,7 +271,21 @@ handleGetListsResponse(res: ListData[], searchVal: string): void {
       this.paginator.pageIndex = this.pageNum;
     }
     this.notFound = false;
+    if(count){
+      this.length=count;
+      if( this.length==0){
+      this.noData=true;
+  
+      }
+      else{
+        this.noData=false;
+      }
+      this.loading=false
+    }
+    else{
     this.getListsCount();
+   
+    }
   }
 }
 

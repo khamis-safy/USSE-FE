@@ -115,6 +115,6 @@
     </ng-container>
   </div>
   <div *ngIf="isSmallScreen" class="small-screen-view">
-    <app-templates-mobileView  [canEdit]="canEdit" [dataSource]="dataSource" [length]="length"></app-templates-mobileView>
+    <app-templates-mobileView #moibleView  [canEdit]="canEdit" [dataSource]="dataSource" [length]="length"></app-templates-mobileView>
   </div>
 </section>

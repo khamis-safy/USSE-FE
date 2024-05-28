@@ -269,18 +269,18 @@
             <th mat-header-cell *matHeaderCellDef>{{ 'ACTION' | translate }}</th>
             <td mat-cell *matCellDef="let element">
               <div class="actions d-flex align-items-center justify-content-center gap-3">
-                <div class="delete pointer">
+                <button [disabled]="loading" class="rest-style delete pointer">
                   <img src="assets/icons/Actionsc.svg" alt="" (click)="openDeleteModal(element.id)">
-                </div>
-                <div *ngIf="!element.isConnected && !isReonnect && element.deviceType == 'WBS'" class="retry pointer" [title]="'reconnect' | translate" (click)="reconnect(element)">
+                </button>
+                <button [disabled]="loading" *ngIf="!element.isConnected && !isReonnect && element.deviceType == 'WBS'" class=" rest-style retry pointer" [title]="'reconnect' | translate" (click)="reconnect(element)">
                   <img src="assets/icons/reload.svg" alt="">
-                </div>
-                <div *ngIf="!element.isConnected  && element.deviceType == 'TL'&& element.deviceType !== 'WBS'" class="retry pointer" [title]="'reconnect' | translate" (click)="reconnectTlDev(element)">
+                </button>
+                <button [disabled]="loading" *ngIf="!element.isConnected  && element.deviceType == 'TL'&& element.deviceType !== 'WBS'" class="rest-style retry pointer" [title]="'reconnect' | translate" (click)="reconnectTlDev(element)">
                   <img src="assets/icons/reload.svg" alt="">
-                </div>
-                <div *ngIf="element.isConnected && !isTrialCustomer && (element.deviceType == 'WBS' || element.deviceType == 'TL')" class=" pointer" [title]="'export-chats' | translate" (click)="exportChats(element)">
+                </button >
+                <button [disabled]="loading" *ngIf="element.isConnected && !isTrialCustomer && (element.deviceType == 'WBS' || element.deviceType == 'TL')" class="rest-style pointer" [title]="'export-chats' | translate" (click)="exportChats(element)">
                   <img src="assets/icons/export-dev-chats.svg" alt="" style="width:28px">
-                </div>
+                </button >
               </div>
             </td>
           </ng-container>
@@ -395,18 +395,18 @@
               <div class="col row-header">{{ 'ACTION' | translate }}</div>
               <div class="col">
                 <div class="actions d-flex align-items-center justify-content-center gap-3">
-                  <div class="delete pointer">
+                  <button [disabled]="loading" class="delete pointer rest-style">
                     <img src="assets/icons/Actionsc.svg" alt="" (click)="openDeleteModal(element.id)">
-                  </div>
+                  </button>
                   <!-- <div *ngIf="!element.isConnected && !isReonnect && element.deviceType !== 'WBS'" class="retry pointer" [title]="'reconnect' | translate" (click)="reconnect(element)">
                     <img src="assets/icons/reload.svg" alt="">
                   </div> -->
-                  <div *ngIf="!element.isConnected  && element.deviceType == 'TL'&& element.deviceType !== 'WBS'" class="retry pointer" [title]="'reconnect' | translate" (click)="reconnectTlDev(element)">
+                  <button [disabled]="loading" *ngIf="!element.isConnected  && element.deviceType == 'TL'&& element.deviceType !== 'WBS'" class="retry pointer rest-style" [title]="'reconnect' | translate" (click)="reconnectTlDev(element)">
                     <img src="assets/icons/reload.svg" alt="">
-                  </div>
-                  <div *ngIf="element.isConnected && !isTrialCustomer && (element.deviceType == 'WBS' || element.deviceType == 'TL')" class=" pointer" [title]="'export-chats' | translate" (click)="exportChats(element)">
+                  </button>
+                  <button [disabled]="loading" *ngIf="element.isConnected && !isTrialCustomer && (element.deviceType == 'WBS' || element.deviceType == 'TL')" class=" pointer rest-style" [title]="'export-chats' | translate" (click)="exportChats(element)">
                     <img src="assets/icons/export-dev-chats.svg" alt="" style="width:28px">
-                  </div>
+                  </button>
                 </div>
               </div>
             </div>

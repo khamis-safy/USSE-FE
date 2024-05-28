@@ -72,6 +72,7 @@ export class ScheduledMobileViewComponent implements OnInit ,OnDestroy{
       showsSelectedOptions:this.showsSelectedOptions,
      
     });
+  alldevices: any;
     constructor(private messageService:MessagesService,
       public dialog: MatDialog,
       private authService:AuthService,
@@ -83,7 +84,7 @@ export class ScheduledMobileViewComponent implements OnInit ,OnDestroy{
     ngAfterViewInit(): void {
       }
     ngOnInit() {
-     
+    
       this.columns=new FormControl(this.displayedColumns)
       this.displayForm.patchValue({
         showsSelectedOptions: {
@@ -112,31 +113,27 @@ export class ScheduledMobileViewComponent implements OnInit ,OnDestroy{
           this.isUser=false;
         }
   // get device's messages
-      this.getDevices();
   
   
       }
       openNewMessage(){
         this.isOpenNewMessage.emit(true)
       }
-   // get devices data
-   getDevices(){
-    this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
-      (res)=>{
-        let alldevices=res;
+      handleResponce(res,messages?,length?){
+        this.alldevices=res;
         if(this.permission){
   
-          alldevices.map((device)=>
+          this.alldevices.map((device)=>
           {
             let found =this.permission.find((devP)=>devP.deviceId==device.id && devP.value=="None");
             if(found){
-              alldevices.splice(alldevices.indexOf(device),1)
+              this.alldevices.splice(this.alldevices.indexOf(device),1)
             }
           }
           )
         }
   
-        this.devices = alldevices.map(res=>{
+        this.devices = this.alldevices.map(res=>{
           return {
             title:res.deviceName,
             value:res.id,
@@ -158,9 +155,9 @@ export class ScheduledMobileViewComponent implements OnInit ,OnDestroy{
   
             this.form.patchValue({
             devicesData: {
-            title:alldevices[0]?.deviceName,
-            value:alldevices[0]?.id,
-            deviceIcon:alldevices[0].deviceType
+            title:this.alldevices[0]?.deviceName,
+            value:this.alldevices[0]?.id,
+            deviceIcon:this.alldevices[0].deviceType
             }
   
             })
@@ -177,8 +174,23 @@ export class ScheduledMobileViewComponent implements OnInit ,OnDestroy{
   
               })
           }
-          this.getMessages(this.deviceId);
-      }},
+          if(messages){
+            this.numRows=res.length;
+            this.loading = false;
+            this.messagesTableData=messages
+            this.length=length
+           }
+           else{
+            this.getMessages(this.deviceId);
+           }
+      }
+      }
+   // get devices data
+   getDevices(){
+    this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
+      (res)=>{
+        this.handleResponce(res)
+      },
       (err)=>{
         this.loading = false;
         this.length=0;

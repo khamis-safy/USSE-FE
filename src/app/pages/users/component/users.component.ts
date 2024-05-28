@@ -94,9 +94,10 @@ export class UsersComponent implements OnInit, OnDestroy {
       else{
         this.displayed=USERSHEADERS
       }
-      this.getUsers();
       
     });
+    this.getUsers();
+
         this.displayForm.patchValue({
           showsSelectedOptions: {
           title:'10',

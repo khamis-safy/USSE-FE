@@ -27,6 +27,8 @@ import { TEMPLATESHEADERS } from '../constats/contstants';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { DisplayMessageComponent } from 'src/app/pages/messages/Components/display-message/display-message.component';
 import { TranslationService } from 'src/app/shared/services/translation.service';
+import { TemplatesMobileViewComponent } from '../../mobile-view/templates-mobileView/templates-mobileView.component';
+import { arraysContainSameObjects } from 'src/app/shared/methods/arraysContainSameObjects';
 
 @Component({
   selector: 'app-innerTemplates',
@@ -61,6 +63,7 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
     'Action',
   ];
   isSmallScreen: boolean = false;
+  @ViewChild(TemplatesMobileViewComponent) mobileView :TemplatesMobileViewComponent
 
   destroy$: Subject<void> = new Subject<void>();
   searchControl = new FormControl();
@@ -69,6 +72,7 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
   })
   searchSub: Subscription;
   dataSource: MatTableDataSource<Templates>;
+  isDataCalledInMobile: any;
   constructor(
     public dialog: MatDialog,
     private toaster: ToasterServices,
@@ -83,21 +87,73 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
       this.paginator.pageSize=this.templatesService.showsNum
     }
     }
-  ngOnInit() {
-
-    this.breakpointObserver.observe(['(max-width: 768px)'])
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(result => {
-      this.isSmallScreen = result.matches;
-      if(!this.isSmallScreen){
-        this.getTemplates();
-        if(this.paginator){
-          this.paginator.pageSize=this.templatesService.showsNum
-        }
-      }
-      
-    });
+    onChangeSecreanSizes(){
+      this.breakpointObserver.observe(['(max-width: 768px)'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        this.isSmallScreen = result.matches;
+        if(!this.isSmallScreen){
+          if(this.paginator){
+            this.paginator.pageSize=this.templatesService.showsNum
+          }
+          if(this.dataSource){
   
+            if(!arraysContainSameObjects(this.dataSource.data,this.mobileView.templatesTableData)){
+              if(this.mobileView.searchControl.value){
+                this.getTemplates()
+  
+              }
+              else{
+                this.getDataFromChild(this.mobileView?.templatesTableData,'',this.mobileView.length)
+  
+              }
+            }
+          }
+           else{
+            if(!this.isDataCalledInMobile){
+              this.getTemplates()
+            }
+            else{
+              if(this.mobileView.searchControl.value){
+                this.getTemplates()
+  
+              }
+              else{
+                this.getDataFromChild(this.mobileView?.templatesTableData,'',this.mobileView.length)
+  
+              }
+            }
+          } 
+        }
+        else{
+  
+            if(this.dataSource){
+              setTimeout(() => {
+                if(this.searchControl.value){
+                  this.mobileView?.getTemplates();
+    
+                }
+                else{
+                  this.mobileView?.getDataFromParent(this.dataSource.data,'',this.length)
+    
+                }
+            }, 100);
+            }
+            else{
+              setTimeout(() => {
+  
+                this.mobileView?.getTemplates('');
+                this.isDataCalledInMobile=true;
+  
+              }, 100);
+            }
+          
+          
+        }
+      });
+    }
+
+  ngOnInit() {
     this.columns = new FormControl(this.displayedColumns);
     this.displayedColumns=this.canEdit?[
       'Template Name',
@@ -105,7 +161,7 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
       'Created At',
       'Action',
     ]: ['Template Name', 'Message', 'Created At'];
-
+this.onChangeSecreanSizes();
   }
 
 
@@ -163,7 +219,20 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
     }
      return this.templatesService.getTemplates(email,showsNum,pageNum,orderedBy,search)
   }
-  handleGetTemplatesResponce(res,search){
+  getDataFromChild(data,search,length){
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+  
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+    this.handleGetTemplatesResponce(data,search,length)
+    this.setupSearchSubscription()
+  
+  }
+  handleGetTemplatesResponce(res,search,count?){
     this.numRows=res.length;
     this.loading = false;
     this.dataSource=new MatTableDataSource<Templates>(res)
@@ -178,10 +247,28 @@ export class InnerTemplatesComponent implements OnInit ,AfterViewInit,OnDestroy{
       }
   }
   else{
-    this.paginator.pageIndex=this.templatesService.pageNum      
+    if(this.paginator){
+      this.paginator.pageIndex=this.templatesService.pageNum      
+    }
     this.notFound=false;
+    if(count){
+      this.length=count;
+      this.loading = false;
+      if( this.length==0){
+        this.noData=true;
+  
+      
+      }
+      else{
+        this.noData=false;
+  
+    
+      }
+    }
+    else{
+      this.templatesCount();
 
-    this.templatesCount();
+    }
 
   }
   }

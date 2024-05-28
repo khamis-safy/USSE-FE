@@ -20,6 +20,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { TranslationService } from 'src/app/shared/services/translation.service';
 import { AdditonalParamsComponent } from '../../../../contacts/additonalParams/additonalParams.component';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { ListDetailsMobileViewComponent } from '../../mobile-view/listDetails-mobileView/listDetails-mobileView.component';
 
 @Component({
 selector: 'app-list-contacts',
@@ -67,6 +68,9 @@ noData:boolean;
     searchControl:this.searchControl
   })
   searchSub: any;
+  @ViewChild(ListDetailsMobileViewComponent) mobileView :ListDetailsMobileViewComponent
+  isDataCalledInMobile: any;
+
 constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
   private toaster: ToasterServices,
   private listService:ManageContactsService,
@@ -92,16 +96,7 @@ constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
     }
   }
 ngOnInit() {
-  this.breakpointObserver.observe(['(max-width: 768px)'])
-  .pipe(takeUntil(this.destroy$))
-  .subscribe(result => {
-    this.isSmallScreen = result.matches;
-    if(!this.isSmallScreen){
-      this.selection.clear()
-      this.getContacts();
-    
-    }
-  });
+
   this.columns=new FormControl(this.displayedColumns)
   if(!this.canEdit){
     this.displayedColumns= ['select','Name', 'Mobile','Additional Parameters',"Create At"];
@@ -118,69 +113,93 @@ this.selection.changed.subscribe(
       this.isChecked.emit()
     }
   });
+  this.onChangeSecreanSizes()
 }
-// getContacts(searchVal?){
-
-//   let shows=this.listService.display;
-//     let email=this.authService.getUserInfo()?.email;
-//     let orderedBy=this.listService.orderedBy;
-//     let search=searchVal ? searchVal : "";
-//     let pageNumber=searchVal?0:this.pageNum
-//     this.loading = true;
-//     if(searchVal && this.paginator){
-//       this.paginator.pageIndex=0
-//   }
-//     let sub1= this.listService.getContacts(email,this.isCanceled,shows,pageNumber,orderedBy,search,this.listId).subscribe(
-//         (res)=>{
-        
-//           if(this.isCanceled){
-//             this.length=this.count?.totalCancelContacts;
-          
-//           }
-//           else{
-//             this.length=this.count?.totalContacts;
-//           }
-//           if(this.length==0){
-//             this.noData=true
-//           }
-//           else{
-//             this.noData=false
-//           }
-//           this.numRows=res.length;
-//           this.loading = false;
-//           this.ListContacts=res;
-//           this.dataSource=new MatTableDataSource<Contacts>(res)
-//           if(search!=""){
-//             this.length=res.length;
-//             if(this.length==0){
-//               this.notFound=true;
-//             }
-//             else{
-//               this.notFound=false;
-//             }
-//         }
-//         else{
-//           if(this.paginator){
-//             this.paginator.pageIndex=this.pageNum
-  
-//           }
-//           this.notFound=false;
-  
-  
-//         }
 
 
-//         },
-//           (err)=>{
-//           this.loading = false;
+onChangeSecreanSizes(){
+  this.breakpointObserver.observe(['(max-width: 768px)'])
+  .pipe(takeUntil(this.destroy$))
+  .subscribe(result => {
+    this.isSmallScreen = result.matches;
+    if(!this.isSmallScreen){
+      this.selection.clear();
+      if(this.dataSource){
+        if(!this.listService.arraysContainSameObjects(this.dataSource.data,this.mobileView.listTableData)){
+          if(this.mobileView.searchControl.value){
+            this.getContacts();
+          }
+          else{
+            this.getDataFromChild(this.mobileView?.listTableData,'',this.mobileView.length)
 
-//             this.length=0;
-//           })
-//           this.subscribtions.push(sub1)
-//     }
+          }
+
+        }
+      }
+       else{
+
+        if(!this.isDataCalledInMobile){
+          this.getContacts();
+
+        }
+        else{
+          if(this.mobileView.searchControl.value){
+            this.getContacts();
+
+          }
+          else{
+            this.getDataFromChild(this.mobileView?.listTableData,'',this.mobileView.length)
+
+          }
 
 
+        }
+       } 
+    
 
+    }
+    else{
+        if(this.dataSource){
+
+          setTimeout(() => {
+            if(this.searchControl.value){
+              this.mobileView?.getContacts('');
+
+            }
+            else{
+              this.mobileView?.getDataFromParent(this.dataSource.data,'',this.length)  
+
+            }
+
+
+        }, 100);
+        }
+        else{
+          setTimeout(() => {
+
+            this.mobileView?.getContacts('');
+            this.isDataCalledInMobile=true;
+
+          }, 100);
+        }
+      
+      
+    }
+  });
+}
+getDataFromChild(data,search,length){
+  if(this.searchSub){
+    this.searchSub.unsubscribe();
+    this.searchSub=null;
+
+    this.searchForm.patchValue({
+      searchControl:''
+    })
+  }
+  this.handleGetContactsResponse(data,search,length)
+  this.setupSearchSubscription()
+
+}
 setupSearchSubscription(): void {
   this.searchSub = this.searchControl.valueChanges.pipe(
     debounceTime(1000), // Wait for 1s pause in events
@@ -230,13 +249,19 @@ getContacts(searchVal?: string): void {
   this.subscribtions.push(sub1);
 }
 
-handleGetContactsResponse(res: Contacts[], searchVal: string): void {
-  if (this.isCanceled) {
-    this.length = this.count?.totalCancelContacts;
-  } else {
-    this.length = this.count?.totalContacts;
+handleGetContactsResponse(res: Contacts[], searchVal: string,count?): void {
+  if(count){
+    this.length=count
   }
-
+  else{
+    if (this.isCanceled) {
+      this.length = this.count?.totalCancelContacts;
+    } else {
+      this.length = this.count?.totalContacts;
+    }
+  
+  }
+  
   this.noData = this.length === 0;
 
   this.numRows = res.length;

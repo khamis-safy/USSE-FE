@@ -161,6 +161,7 @@ h1,h2,h3,h4,h5,h6,p{
   --clr-neutral-300: #C7C6C6;
   --clr-neutral-400:rgba(217, 217, 217, 1);
   --clr-neutral-200: rgb(243, 243, 243);
+  --clr-neutral-100:#fafafa;
   --clr-neutral-0: #fff;
   // general colors
   // --border-color:var(--bs-gray-500);
@@ -292,6 +293,9 @@ h1,h2,h3,h4,h5,h6,p{
 .txt{
   margin: 0 !important;
   padding: 0;
+}
+.form-control:disabled {
+background: var(--clr-neutral-100) !important;
 }
 // main classes
 body {

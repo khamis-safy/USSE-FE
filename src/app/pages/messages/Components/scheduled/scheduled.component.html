@@ -130,6 +130,6 @@
     </ng-container>
 </div>
 <div *ngIf="isSmallScreen" class="small-screen-view">
-  <app-scheduled-mobileView  (isOpenNewMessage)="openNewMessage($event)"></app-scheduled-mobileView>
+  <app-scheduled-mobileView #moibleView (isOpenNewMessage)="openNewMessage($event)"></app-scheduled-mobileView>
 </div>
 </section>

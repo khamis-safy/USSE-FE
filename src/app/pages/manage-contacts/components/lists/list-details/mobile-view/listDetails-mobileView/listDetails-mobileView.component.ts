@@ -135,7 +135,7 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
       }
       })
     
-    this.getContacts();
+    // this.getContacts();
     this.columns=new FormControl(this.displayedColumns)
   
     this.selection.changed.subscribe(
@@ -334,13 +334,32 @@ getContacts(searchVal?: string): void {
   );
   this.subscribtions.push(sub1);
 }
+getDataFromParent(data,search,length){
+  if(this.searchSub){
+    this.searchSub.unsubscribe();
+    this.searchSub=null;
 
-handleGetContactsResponse(res: Contacts[], searchVal: string): void {
-  if (this.isCanceled) {
-    this.length = this.count?.totalCancelContacts;
-  } else {
-    this.length = this.count?.totalContacts;
+    this.searchForm.patchValue({
+      searchControl:''
+    })
   }
+  this.handleGetContactsResponse(data,search,length)
+  this.setupSearchSubscription()
+
+}
+handleGetContactsResponse(res: Contacts[], searchVal: string,count?): void {
+  if(count){
+    this.length=count
+  }
+  else{
+    if (this.isCanceled) {
+      this.length = this.count?.totalCancelContacts;
+    } else {
+      this.length = this.count?.totalContacts;
+    }
+  
+  }
+
 
   this.noData = this.length === 0;
 

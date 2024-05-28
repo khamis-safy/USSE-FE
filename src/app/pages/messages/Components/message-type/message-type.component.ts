@@ -17,6 +17,8 @@ import { TranslationService } from 'src/app/shared/services/translation.service'
 import { ResendMessagesComponent } from '../resendMessages/resendMessages.component';
 import { TranslateService } from '@ngx-translate/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { arraysContainSameObjects } from 'src/app/shared/methods/arraysContainSameObjects';
+import { MessagesMobileViewComponent } from '../../mobile-view/messages-mobileView/messages-mobileView.component';
 
 @Component({
   selector: 'app-message-type',
@@ -73,6 +75,10 @@ filters:any;
   })
   searchSub: Subscription;
   filteration: any;
+  @ViewChild(MessagesMobileViewComponent) mobileView :MessagesMobileViewComponent
+  alldevices: any[]=[];
+  isDataCalledInMobile: any;
+
   constructor(public cdr: ChangeDetectorRef ,
     public dialog: MatDialog,
     private messageService:MessagesService,
@@ -129,21 +135,166 @@ if(this.authService.getUserInfo()?.customerId!=""){
 else{
   this.isUser=false;
 }
-// get device's messages
-this.breakpointObserver.observe(['(max-width: 768px)'])
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(result => {
-      this.isSmallScreen = result.matches;
-      if(!this.isSmallScreen){
-        this.selection.clear()
-        this.getDevices(this.msgCategory);
-        
-      }
-    });
+this.onChangeSecreanSizes()
+    }
+    onChangeSecreanSizes(){
+      this.breakpointObserver.observe(['(max-width: 768px)'])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        this.isSmallScreen = result.matches;
+        if(!this.isSmallScreen){
+          this.selection.clear()
 
+            if(this.dataSource){
+  
+            if(!arraysContainSameObjects(this.dataSource.data,this.mobileView.messagesTableData)){
+              if(this.mobileView?.searchControl.value || this.mobileView.filteration){
+                this.getDevices(this.msgCategory)
+              }
+              else{
+                this.getDataFromChild(this.mobileView.alldevices,this.mobileView.messagesTableData,this.mobileView.length)
+
+              }
+            }
+          }
+           else{
+            if(!this.isDataCalledInMobile){
+              this.getDevices(this.msgCategory)
+            }
+            else{
+              if(this.mobileView.searchControl?.value  || this.mobileView.filteration){
+                this.getDevices(this.msgCategory)
+              }
+              else{
+                this.getDataFromChild(this.mobileView.alldevices,this.mobileView.messagesTableData,this.mobileView.length)
+
+              }
+            }
+          } 
+        }
+        else{
+  
+            if(this.dataSource){
+              setTimeout(() => {
+                if(this.searchControl.value || this.filteration){
+                  this.mobileView.getDevices(this.mobileView.msgCategory)
+                }
+                else{
+                  this.mobileView?.getDataFromParent(this.alldevices,this.dataSource.data,this.length)
+
+                }
+            }, 100);
+            }
+            else{
+              setTimeout(() => {
+  
+                this.mobileView?.getDevices(this.mobileView.msgCategory);
+                this.isDataCalledInMobile=true;
+  
+              }, 100);
+            }
+          
+          
+        }
+      });
+    }
+    handleResponce(res,messages?,length?){
+      this.alldevices=res;
+
+      if(this.permission){
+        this.alldevices.map((device)=>
+        {
+          let found =this.permission.find((devP)=>devP.deviceId==device.id && devP.value=="None");
+          if(found){
+            this.alldevices.splice(this.alldevices.indexOf(device),1)
+          }
+        }
+        )
+      }
+      this.devices = this.alldevices.map(res=>{
+        return {
+          title:res.deviceName,
+          value:res.id,
+          deviceIcon:res.deviceType
+        }
+      });
+      if(this.devices.length==0){
+        this.loading = false;
+        this.length=0;
+        this.noData=true;
+      }
+      else{
+        this.noData=false
+
+        this.deviceId=res[0].id;
+        this.selectedDeviceId.emit(this.deviceId)
+
+      this.getDevicePermission(this.deviceId);
+
+        if(this.authService.selectedDeviceId ==""){
+
+          this.form.patchValue({
+          devicesData: {
+          title:this.alldevices[0]?.deviceName,
+          value:this.alldevices[0]?.id,
+          deviceIcon:this.alldevices[0].deviceType
+
+          }
+
+          })
+        }
+        else{
+          let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
+          this.deviceId=this.authService.selectedDeviceId;
+          this.selectedDeviceId.emit(this.deviceId)
+
+          this.form.patchValue({
+            devicesData: {
+            title:selected.title,
+            value:selected?.value,
+            deviceIcon:selected.deviceIcon
+
+            }
+
+            })
+        }
+        if(messages){
+          this.numRows = res.length;
+          this.dataSource = new MatTableDataSource<Message>(messages);
+          this.length=length;
+
+          if (this.paginator) {
+            this.paginator.pageIndex = this.pageNum;
+          }
+        
+          this.notFound = false;
+          if(this.length ==0){
+            this.notFound=true;
+          }
+          this.loading=false
+
+        }
+        else{
+          this.getMessages(this.deviceId);
+
+        }
 
     }
+       
 
+    
+    }
+    getDataFromChild(res,messages?,length?){
+      if(this.searchSub){
+        this.searchSub.unsubscribe();
+        this.searchSub=null;
+        this.searchForm.patchValue({
+          searchControl:''
+        })
+      }
+      this.handleResponce(res,messages,length);
+      this.setupSearchSubscription()
+    }
     openNewMessage(event){
       this.isOpenNewMessage.emit(event)
     }
@@ -205,68 +356,7 @@ ngAfterViewInit(): void {
   this.msgCategory=megtype;
   this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
     (res)=>{
-      let alldevices=res;
-
-      if(this.permission){
-        alldevices.map((device)=>
-        {
-          let found =this.permission.find((devP)=>devP.deviceId==device.id && devP.value=="None");
-          if(found){
-            alldevices.splice(alldevices.indexOf(device),1)
-          }
-        }
-        )
-      }
-      this.devices = alldevices.map(res=>{
-        return {
-          title:res.deviceName,
-          value:res.id,
-          deviceIcon:res.deviceType
-        }
-      });
-      if(this.devices.length==0){
-        this.loading = false;
-        this.length=0;
-        this.noData=true;
-      }
-      else{
-        this.noData=false
-
-        this.deviceId=res[0].id;
-        this.selectedDeviceId.emit(this.deviceId)
-
-      this.getDevicePermission(this.deviceId);
-
-        if(this.authService.selectedDeviceId ==""){
-
-          this.form.patchValue({
-          devicesData: {
-          title:alldevices[0]?.deviceName,
-          value:alldevices[0]?.id,
-          deviceIcon:alldevices[0].deviceType
-
-          }
-
-          })
-        }
-        else{
-          let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
-          this.deviceId=this.authService.selectedDeviceId;
-          this.selectedDeviceId.emit(this.deviceId)
-
-          this.form.patchValue({
-            devicesData: {
-            title:selected.title,
-            value:selected?.value,
-            deviceIcon:selected.deviceIcon
-
-            }
-
-            })
-        }
-        this.getMessages(this.deviceId);
-
-    }
+    this.handleResponce(res)
   },
     (err)=>{
       this.loading = false;

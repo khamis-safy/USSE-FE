@@ -41,8 +41,8 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
     devicesData:this.devicesData,
 
   });
-  searchControl = new FormControl();
-
+  searchControl = new FormControl({ value: '', disabled: false });
+  disableSearch:boolean;
   searchForm = new FormGroup({
     searchControl:this.searchControl
   })
@@ -570,7 +570,7 @@ chatRec(search){
               }
               else{
                 if( this.listChats.length>0){
-    
+
                 chat=this.listChats.find((chats)=>chats.chat.id == this.selectedChatId);
       
                 if(chat){
@@ -588,6 +588,9 @@ chatRec(search){
               
                 this.getChatById(this.selectedChatId,'');
               }
+              else{
+                this.clearChats()
+              }
 
                 // this.listChats.map((chat)=>chat.active=false) ;   
                 // this.form.patchValue({
@@ -601,7 +604,22 @@ chatRec(search){
       
               }
             }
+          if(this.listChats.length>0){
+            this.searchControl.enable();
             this.setupSearchSubscription();
+            this.hideSearch=false;
+
+          }
+          else{
+            this.searchControl.disable();
+            this.selectedChatId=''
+            this.hideSearch=true
+            if(this.searchSub){
+              this.searchSub.unsubscribe();
+              this.searchSub=null;
+            }
+          }
+
 
       }
     )
@@ -799,6 +817,8 @@ resetChatsOrder(chatContact){
             createdAt:String(this.convertToUTC(new Date())) ,
             status: 0
           }
+          console.log(mainData)
+
             // in case of uplaoded files 
           if(this.filesList.length > 0){
             newMessage = this.filesList.map((file, index) => {
@@ -996,7 +1016,10 @@ else{
     }
   
     updateMessageStatus(newMessage){
+
       let message:chatHub=JSON.parse(newMessage)
+      console.log('status',message)
+
       if(message.Deviceid == this.deviceId ){
         // update Status on list chats
         let findChat = this.listChats.find((chat)=>chat.chat.id == message.ChatId);
@@ -1022,15 +1045,71 @@ else{
 
       }
       this.groupMessagesByDay();
+      if(newMessage.Deviceid == this.deviceId){
+        // in case the message is sent from the current opend chat
+        if(this.selectedChatId === newMessage.ChatId){
+          this.selectedChat.push(newMessage);
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 0);        
+        }
 
+        // in case the message is sent from closedChat and same device
+
+          let foundChat = this.listChats.find((chat)=>chat.chat.id == newMessage.ChatId);
+            if (foundChat) {
+              foundChat.lastMessageContent='';
+              foundChat.lastMessageFileName='';
+              foundChat.lastMessageFileUrl='';
+              foundChat.fileType='';
+              if(this.selectedChatId !== newMessage.ChatId){
+                foundChat.unseenMessagesCount+=1;
+
+              }
+              foundChat.lastMessageStatus=newMessage.status;
+              foundChat.lastMessageContent=newMessage.msgBody;
+              foundChat.lastMessageDate=newMessage.createdAt;
+              foundChat.lastMessageFileName = newMessage.fileName;
+              foundChat.lastMessageFileUrl = newMessage.fileUrl;
+              if(this.listChats.indexOf(foundChat) !== 0){
+                // Remove the element from its current position
+                this.listChats.splice(this.listChats.indexOf(foundChat), 1);
+                // Add the element to the beginning of the array
+                this.listChats.unshift(foundChat);
+              }
+          
+            }
+            else{
+              this.listChats.unshift({
+                chat: {
+                  id: newMessage.ChatId,
+                  chatName: newMessage.ChatName,
+                  targetPhoneNumber: newMessage.targetPhoneNumber,
+                  createdAt: newMessage.createdAt,
+                },
+                lastMessageDate: newMessage.createdAt,
+                lastMessageContent: newMessage.msgBody,
+                lastMessageFileName:newMessage.fileName,
+                lastMessageFileUrl:newMessage.fileUrl,
+                fileType:'',
+                lastMessageDirection: false,
+                lastMessageStatus: null,
+                unseenMessagesCount: 1,
+              })
+            }
+        
+    }
       }
 
       updateMessagesOnReceive(message){
         let newMessage:chatHub=JSON.parse(message)
-
+        console.log(newMessage)
         if(newMessage.Deviceid == this.deviceId){
             // in case the message is sent from the current opend chat
             if(this.selectedChatId === newMessage.ChatId){
+              if(newMessage.direction){
+                newMessage.status=1
+              }
               this.selectedChat.push(newMessage);
               setTimeout(() => {
                 this.scrollToBottom();
@@ -1038,52 +1117,56 @@ else{
             }
 
             // in case the message is sent from closedChat and same device
-
+            let newChat={
+              chat: {
+                id: newMessage.ChatId,
+                chatName: newMessage.ChatName,
+                targetPhoneNumber: newMessage.targetPhoneNumber,
+                createdAt: newMessage.createdAt,
+              },
+              lastMessageDate: newMessage.createdAt,
+              lastMessageContent: newMessage.msgBody,
+              lastMessageFileName:newMessage.fileName,
+              lastMessageFileUrl:newMessage.fileUrl,
+              fileType:'',
+              lastMessageDirection: newMessage.direction,
+              lastMessageStatus:  newMessage.direction?1:null,
+              unseenMessagesCount: newMessage.direction?0:1,
+            }
               let foundChat = this.listChats.find((chat)=>chat.chat.id == newMessage.ChatId);
                 if (foundChat) {
-                  foundChat.lastMessageContent='';
-                  foundChat.lastMessageFileName='';
-                  foundChat.lastMessageFileUrl='';
-                  foundChat.fileType='';
-                  if(this.selectedChatId !== newMessage.ChatId){
-                    foundChat.unseenMessagesCount+=1;
-
-                  }
-                  foundChat.lastMessageStatus=newMessage.status;
-                  foundChat.lastMessageContent=newMessage.msgBody;
-                  foundChat.lastMessageDate=newMessage.createdAt;
-                  foundChat.lastMessageFileName = newMessage.fileName;
-                  foundChat.lastMessageFileUrl = newMessage.fileUrl;
-                  if(this.listChats.indexOf(foundChat) !== 0){
-                    // Remove the element from its current position
-                    this.listChats.splice(this.listChats.indexOf(foundChat), 1);
-                    // Add the element to the beginning of the array
-                    this.listChats.unshift(foundChat);
-                  }
+                this.updateChatDataWithNewMsg(foundChat,newMessage)
               
                 }
                 else{
-                  this.listChats.unshift({
-                    chat: {
-                      id: newMessage.ChatId,
-                      chatName: newMessage.ChatName,
-                      targetPhoneNumber: newMessage.targetPhoneNumber,
-                      createdAt: newMessage.createdAt,
-                    },
-                    lastMessageDate: newMessage.createdAt,
-                    lastMessageContent: newMessage.msgBody,
-                    lastMessageFileName:newMessage.fileName,
-                    lastMessageFileUrl:newMessage.fileUrl,
-                    fileType:'',
-                    lastMessageDirection: false,
-                    lastMessageStatus: null,
-                    unseenMessagesCount: 1,
-                  })
+                  this.listChats.unshift(newChat)
                 }
-            
-        }
-        this.groupMessagesByDay();
+                this.groupMessagesByDay();
 
+        }
+
+    }
+
+    updateChatDataWithNewMsg(foundChat,newMessage:chatHub){
+      foundChat.lastMessageContent='';
+      foundChat.lastMessageFileName='';
+      foundChat.lastMessageFileUrl='';
+      foundChat.fileType='';
+      if(this.selectedChatId !== newMessage.ChatId && newMessage.direction==false){
+        foundChat.unseenMessagesCount+=1;
+      }
+      foundChat.lastMessageStatus=newMessage.direction?1:null;
+      foundChat.lastMessageContent=newMessage.msgBody;
+      foundChat.lastMessageDate=newMessage.createdAt;
+      foundChat.lastMessageFileName = newMessage.fileName;
+      foundChat.lastMessageFileUrl = newMessage.fileUrl;
+      foundChat.lastMessageDirection=newMessage.direction;
+      if(this.listChats.indexOf(foundChat) !== 0){
+        // Remove the element from its current position
+        this.listChats.splice(this.listChats.indexOf(foundChat), 1);
+        // Add the element to the beginning of the array
+        this.listChats.unshift(foundChat);
+      }
     }
     changeTextDir(text){
       return /[^\u0000-\u007F]/.test(text) ? 'rtl' : 'ltr';

@@ -282,6 +282,6 @@
   </ng-container>
 </div>
 <div *ngIf="isSmallScreen" class="small-screen-view">
-  <app-messages-mobileView [msgCategory]="msgCategory" [canEdit]="canEdit" (isOpenNewMessage)="openNewMessage($event)"></app-messages-mobileView>
+  <app-messages-mobileView #moibleView [msgCategory]="msgCategory" [canEdit]="canEdit" (isOpenNewMessage)="openNewMessage($event)"></app-messages-mobileView>
 </div>
 </section>

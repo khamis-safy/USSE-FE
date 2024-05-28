@@ -122,7 +122,6 @@ export class AutomationComponent implements OnInit,AfterViewInit ,OnDestroy {
     .pipe(takeUntil(this.destroy$))
     .subscribe(result => {
       this.isSmallScreen = result.matches;
-      this.getDevices();
 
       if(!this.isSmallScreen){
         this.openedDialogs.map((dialog)=>{
@@ -134,6 +133,8 @@ export class AutomationComponent implements OnInit,AfterViewInit ,OnDestroy {
       }
       
     });
+    this.getDevices();
+
         this.displayForm.patchValue({
           showsSelectedOptions: {
           title:'10',

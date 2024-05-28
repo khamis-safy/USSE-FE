@@ -103,7 +103,7 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
       }
 
       })
-    this.getListData();
+    // this.getListData();
     if(!this.canEdit){
       this.displayedColumns = [ 'Name', 'Create At', 'Total Contacts'];
 
@@ -225,8 +225,20 @@ getListData(searchVal?: string): void {
   );
   this.subscribtions.push(sub2);
 }
+getDataFromParent(data,search,length){
+  if(this.searchSub){
+    this.searchSub.unsubscribe();
+    this.searchSub=null;
 
-handleGetListsResponse(res: ListData[], searchVal: string): void {
+    this.searchForm.patchValue({
+      searchControl:''
+    })
+  }
+  this.handleGetListsResponse(data,search,length)
+  this.setupSearchSubscription()
+
+}
+handleGetListsResponse(res: ListData[], searchVal: string,count?): void {
   this.numRows = res.length;
   this.dataSource = new MatTableDataSource<ListData>(res);
   this.tableData = res;
@@ -243,7 +255,21 @@ handleGetListsResponse(res: ListData[], searchVal: string): void {
       this.paginator.pageIndex = this.pageNum;
     }
     this.notFound = false;
-    this.getListsCount();
+    if(count){
+      this.length=count;
+      this.loading = false;
+      if( this.length==0){
+      this.noData=true;
+  
+      }
+      else{
+        this.noData=false;
+      }
+    }
+    else{
+      this.getListsCount();
+
+    }
   }
 }
 
@@ -446,11 +472,7 @@ selectAllRows(){
 
     this.getListData();
   }
-  onSearch(event:any){
-    this.selection.clear();
 
-    this.getListData(event.value);
-  }
   toggleActive(data?){
     if(data){
     }

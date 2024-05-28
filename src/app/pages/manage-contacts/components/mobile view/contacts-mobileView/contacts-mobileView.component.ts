@@ -118,7 +118,19 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
   }
 
 
+  getDataFromParent(data,search,isCancled,length){
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
 
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+    this.handleContactsResponse(data,search,isCancled,length);
+    this.setupSearchSubscription()
+
+  }
   ngOnInit() {
     this.form.patchValue({
       showsSelectedOptions: {
@@ -144,7 +156,7 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
       }
     }
 
-    this.getContacts();
+    // this.getContacts();
     this.columns=new FormControl(this.displayedColumns)
 
     this.selection.changed.subscribe(
@@ -201,7 +213,7 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
   return  this.listService.getContacts(email,canceled,shows,pageNumber,orderedBy,searchVal,this.listId)
   }
   
-  handleContactsResponse(res: Contacts[], search: string,canceled): void {
+  handleContactsResponse(res: Contacts[], search: string,canceled,count?): void {
     this.numRows=res.length;
       
     this.tableData=res;
@@ -220,8 +232,24 @@ bottomSortingOptions:any=[{opitonName:'ASC' ,lable:`${this.translate.instant('AS
       this.paginator.pageIndex=this.pageIndex
     }
     this.notFound=false;
+    if(count){
+      this.length=count;
+      this.loading = false;
+      if( this.length==0){
+       this.noData=true;
 
-    this.contactsCount(canceled);
+     
+     }
+     else{
+        this.noData=false;
+
+    
+      }
+    }
+    else{
+      this.contactsCount(canceled);
+
+    }
 
   }
   }

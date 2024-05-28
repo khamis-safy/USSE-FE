@@ -124,6 +124,6 @@
   </div>
   
   <div *ngIf="isSmallScreen" class="small-screen-view">
-    <app-listDetails-mobileView [canEdit]="canEdit" [count]="count" [isCanceled]="isCanceled" (updatedCount)="updateTotalContacts($event)"></app-listDetails-mobileView>
+    <app-listDetails-mobileView #moibleView [canEdit]="canEdit" [count]="count" [isCanceled]="isCanceled" (updatedCount)="updateTotalContacts($event)"></app-listDetails-mobileView>
   </div>
 </section>
