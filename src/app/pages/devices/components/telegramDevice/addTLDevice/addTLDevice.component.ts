@@ -43,6 +43,7 @@ export class AddTLDeviceComponent implements OnInit {
     isIvalidCode:boolean;
     isInvalidPass:boolean;
     isReconnect:boolean;
+    showSteps:boolean=false;
   constructor(public dialogRef: MatDialogRef<AddTLDeviceComponent>,
     private plugin: PluginsService,
     private toaster: ToasterServices,
@@ -57,13 +58,18 @@ export class AddTLDeviceComponent implements OnInit {
   ngOnInit() {
     if(this.data){
       this.isReconnect=true;
-      this.fillFormBasedOnData(this.data)
+      this.fillFormBasedOnData(this.data);
+      this.showSteps=false;
     }
     else{
       this.isReconnect=false;
+      this.showSteps=true;
     }
     this.setCountryBasedOnIP();
 
+  }
+  hideSteps($event){
+    this.showSteps=false;
   }
   fillFormBasedOnData(element){
     let devData:DeviceData=element.deviceTl;
@@ -134,10 +140,10 @@ export class AddTLDeviceComponent implements OnInit {
   checkError(data:any){
     this.isLoading=false;
 
-    if(data.msg === 'Error! Code Needed'){
+    if(data?.msg.includes('Error! Code Needed')){
       this.codeNeeded=true;
     }
-    if(data.msg==='Error! Password Needed'){
+    if(data.msg.includes('Error! Password Needed')){
       this.passNeeded=true;
     }
     if(!this.deviceService.telegramId)
@@ -145,8 +151,8 @@ export class AddTLDeviceComponent implements OnInit {
         this.deviceService.telegramId=data.id;
         
       }
-      this.isInvalidPass=(data.msg==='PHONE_PASSWORD_INVALID');
-      this.isIvalidCode=(data.msg==='PHONE_CODE_INVALID')
+      this.isInvalidPass=(data.msg.includes('PHONE_PASSWORD_INVALID'));
+      this.isIvalidCode=(data.msg.includes('PHONE_CODE_INVALID'))
     
     
     this.updateValidators();

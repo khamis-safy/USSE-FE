@@ -636,7 +636,31 @@
 "Error! Code Needed":"Error! Code Needed",
 "Error! Password Needed":"Error! Password Needed",
 "PHONE_CODE_INVALID":"Invalid Code",
-"PHONE_PASSWORD_INVALID":"Invalid Password"
+"PHONE_PASSWORD_INVALID":"Invalid Password",
+"TlSteps":{
+    "title": "Follow these steps to add Telegram device:",
+    "steps": {
+      "header": "Steps",
+      "step1": "Make sure that you registered telegram on your mobile",
+      "step2": "Register to your Telegram core:",
+      "step3": "Go to API development tools",
+      "step4": "Fill out the form:",
+      "step4_details": {
+        "title": "title:",
+        "name": "name:",
+        "url": "URL:",
+        "platform": "platform: Web",
+        "description": "Description:",
+        "optional": "Description is optional"
+      },
+      "step5": "You will get the required parameters:",
+      "step5_details": {
+        "params": ", those are required for the next step."
+      }
+    }
+  },
+  "and":"and"
+  
 
 
 

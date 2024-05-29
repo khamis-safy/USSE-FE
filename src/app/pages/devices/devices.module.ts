@@ -7,6 +7,7 @@ import { DevicesService } from './devices.service';
 import { StepsComponent } from './components/steps/steps.component';
 import { AddDeviceComponent } from './components/addDevice/addDevice.component';
 import { AddTLDeviceComponent } from './components/telegramDevice/addTLDevice/addTLDevice.component';
+import { AddTLStepsComponent } from './components/telegramDevice/addTLDevice/addTLSteps/addTLSteps.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { AddTLDeviceComponent } from './components/telegramDevice/addTLDevice/ad
     DevicesComponent,
     StepsComponent,
     AddDeviceComponent,
-    AddTLDeviceComponent
+    AddTLDeviceComponent,
+    AddTLStepsComponent
   ],
   providers:[DevicesService]
 })

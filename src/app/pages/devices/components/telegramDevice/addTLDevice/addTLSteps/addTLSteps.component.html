@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-md-6">
+    <h2>{{ 'TlSteps.steps.header' | translate }}</h2>
+    <p>{{ 'TlSteps.steps.step1' | translate }}</p>
+
+    <ol class="custom-list">
+      <li class="main-steps" style="line-height: 1.8;">
+        <span>{{ 'TlSteps.steps.step2' | translate }} </span>
+        <a href="https://my.telegram.org" target="_blank" >https://my.telegram.org</a>
+      </li>
+
+      <li class="main-steps">{{ 'TlSteps.steps.step3' | translate }}</li>
+
+      <li class="main-steps">
+        {{ 'TlSteps.steps.step4' | translate }}
+        <ul class="mx-2">
+          <li><b>{{ 'TlSteps.steps.step4_details.title' | translate }}</b> Qweira</li>
+          <li><b>{{ 'TlSteps.steps.step4_details.name' | translate }}</b> Qweira</li>
+          <li>
+            <b>{{ 'TlSteps.steps.step4_details.url' | translate }} </b>
+            <a href="https://qweira.com/" target="_blank" >Qweira.com</a>
+          </li>
+          <li><b>{{ 'TlSteps.steps.step4_details.platform' | translate }}</b>Web</li>
+          <li><b>{{ 'TlSteps.steps.step4_details.description' | translate }}</b>{{ 'TlSteps.steps.step4_details.optional' | translate }}</li>
+        </ul>
+      </li>
+
+      <li class="main-steps">
+        {{ 'TlSteps.steps.step5' | translate }}
+        <ul class="mt-1">
+          <li style="list-style: none !important;">
+            <b>App api_id  </b>
+            {{'and'|translate}}
+            <b>App api_hash</b>
+            {{ 'TlSteps.steps.step5_details.params' | translate }}
+          </li>
+        </ul>
+      </li>
+    </ol>
+    <us-button [fill]="true"
+    label="{{ 'NEXT' | translate }}"
+    [loading]="false"
+    (clicked)="addTlDevice()" >
+</us-button>
+  </div>
+  <div class="col-md-6">
+    <div class="row">
+      <img src="assets/images/add_TL.svg" alt="Step 1">
+
+    </div>
+  </div>
+</div>
+

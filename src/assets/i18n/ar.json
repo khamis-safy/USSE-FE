@@ -634,7 +634,31 @@
 "Error! Code Needed": "خطأ! الرمز مطلوب",
 "Error! Password Needed": "خطأ! كلمة المرور مطلوبة",
 "PHONE_CODE_INVALID": "رمز غير صالح",
-"PHONE_PASSWORD_INVALID": "كلمة مرور غير صالحة"
+"PHONE_PASSWORD_INVALID": "كلمة مرور غير صالحة",
+"TlSteps":{
+    "title": "اتبع هذه الخطوات لإضافة جهاز Telegram:",
+    "steps": {
+      "header": "الخطوات",
+      "step1": "تأكد من تسجيلك في Telegram على هاتفك المحمول",
+      "step2": "سجل دخول الى حساب التلجرام الخاص بك:",
+      "step3": "انتقل إلى أدوات تطوير API",
+      "step4": "املأ النموذج:",
+      "step4_details": {
+        "title": "العنوان:",
+        "name": "الاسم:",
+        "url": "الرابط:",
+        "platform": "المنصة:",
+        "description": "الوصف:",
+        "optional": "الوصف اختياري"
+      },
+      "step5": "ستحصل على المعلمات المطلوبة:",
+      "step5_details": {
+        "params": "هذه مطلوبة للخطوة التالية."
+      }
+    }
+  },
+  "and":"و"
+  
 
 
 

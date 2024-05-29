@@ -128,8 +128,8 @@ else{
 this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Create At", "Status","Delay Interval(s)","action"]:['Device Name', 'Device Type', 'Number',"Create At", "Status"];
   }
   getWidth(element: HTMLElement) {
-
     return `${element.clientWidth}px`;
+
  }
  getDevicesReq(searchVal?){
     let shows=this.devicesService.display;
@@ -365,6 +365,7 @@ onPageChange(event){
     )
   }
   reconnectTlDev(element:DeviceData){
+    this.loading=true;
     let data:any={
       id:element.id,
       email: this.email,
@@ -388,12 +389,13 @@ onPageChange(event){
   }
   addTLDevice(element?){
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.height='88vh';
-    dialogConfig.width='45vw';
+    dialogConfig.height='fit-content';
+    dialogConfig.width='fit-content';
+    // dialogConfig.panelClass='custom-dialog-preview'
     dialogConfig.maxWidth='100%';
     dialogConfig.minWidth='833px';
     dialogConfig.disableClose = true;
-    dialogConfig.panelClass = 'responsive-dialog-for-actions-style2';
+    dialogConfig.panelClass = 'responsive-dialog-for-TL';
     if(element){
       dialogConfig.data=element;
 
@@ -403,6 +405,9 @@ onPageChange(event){
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.getDevices()
+      }
+      else{
+        this.loading=false;
       }
     });
 

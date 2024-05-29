@@ -44,12 +44,18 @@ export class ErrorInterceptorService implements HttpInterceptor {
                   this.toaster.error(error?.error , true)
 
                 }
-                if(error.url.includes("addNewTelgramDevice") || error.url.includes("reconnectTelegramDevice"))
+                if(error.url.includes("addNewTelgramDevice"))
                   {
                     if(error?.error?.msg){
                       this.toaster.error(error?.error?.msg , true)
                     }
                   }
+                  if(error.url.includes("reconnectTelegramDevice"))
+                    {
+                      if(error?.error?.msg){
+                        this.toaster.error(JSON.parse(error?.error?.msg).msg , true)
+                      }
+                    }
               }
               // const errorMessage = error && error?.error && this.translate.instant(error?.error)? error?.error  : 'COMMON.ERR';
               // this.toaster.error(this.translate.instant(errorMessage))
