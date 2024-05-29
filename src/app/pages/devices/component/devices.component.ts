@@ -404,7 +404,9 @@ onPageChange(event){
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.getDevices()
+        this.getDevices();
+        this.loading=false;
+
       }
       else{
         this.loading=false;

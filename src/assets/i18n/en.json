@@ -644,16 +644,16 @@
       "step1": "Make sure that you registered telegram on your mobile",
       "step2": "Register to your Telegram core:",
       "step3": "Go to API development tools",
-      "step4": "Fill out the form:",
+      "step4": "Fill out the form :",
       "step4_details": {
-        "title": "title:",
-        "name": "name:",
-        "url": "URL:",
-        "platform": "platform: Web",
-        "description": "Description:",
+        "title": "title : ",
+        "name": "name : ",
+        "url": "URL : ",
+        "platform": "platform : ",
+        "description": "Description: ",
         "optional": "Description is optional"
       },
-      "step5": "You will get the required parameters:",
+      "step5": "You will get the required parameters : ",
       "step5_details": {
         "params": ", those are required for the next step."
       }
