@@ -85,17 +85,11 @@ export class AddTLDeviceComponent implements OnInit {
 
   }
   setCountryBasedOnIP(): void {
-    this.countryService.setCountryBasedOnIP().subscribe(
-      (data) => {
-        const countryName = data.country_name; // Country code from ipapi
-        
-        this.selectedCountryISO = CountryISO[countryName] ; // Default to Egypt if country code not found
-      },
-      (error) => {
-        console.error('IP API error:', error);
-        this.selectedCountryISO = CountryISO.Egypt; // Default to Egypt on error
+    this.countryService.selectedCodeISo.subscribe(
+      (countryName)=>{
+        this.selectedCountryISO=CountryISO[countryName]
       }
-    );
+    )
   }
   submit(){
     this.isLoading=true;

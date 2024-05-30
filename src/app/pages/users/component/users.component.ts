@@ -173,7 +173,6 @@ setupSearchSubscription(){
 }
 
   getUsers(searchVal?) {
-    console.log(this.noData)
     let search = searchVal ? searchVal : "";
     if(this.searchSub){
       this.searchSub.unsubscribe();
