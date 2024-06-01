@@ -200,21 +200,22 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   @HostListener('document:click', ['$event'])
   onClickOutside(event: any) {
    if(!this.hideSearch){
-    if (!this.searchContainer.nativeElement.contains(event.target) ) {
+    if (!this.searchContainer?.nativeElement.contains(event.target) ) {
       if(this.searchVal === ''){
         this.isSearch = false;
       }
       else{
         this.isSearch = true
       }
-    }
+    } 
+ 
     const clickedElement = event.target as HTMLElement;
 
     // Check if the clicked element or any of its ancestors contain the class "updatedAt"
     let isClickInsideUpdatedAt = false;
     let element = clickedElement;
     while (element) {
-      if (element.classList.contains('message-out')) {
+      if (element?.classList?.contains('message-out')) {
         isClickInsideUpdatedAt = true;
         break;
       }
@@ -223,11 +224,15 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   
     // Print whether the click occurred inside or outside of the updatedAt element
     if (!isClickInsideUpdatedAt) {
-      this.selectedChat.map((chat)=>chat.updatedAtVisible = false);  
-      this.groupMessagesByDay();   
-    }
+      if(typeof(this.selectedChat[0])!=='string'){
+        
+        this.selectedChat.map((chat)=>chat.updatedAtVisible = false);  
+        this.groupMessagesByDay();   
+      }
     
-   }
+    }
+     }
+  
     }
 
 
@@ -658,7 +663,6 @@ resetForm(){
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        console.log(result)
         if(result.isFound){
           this.selectedChatId = result.foundChat.chat.id;
           this.chatName = result.foundChat.chat.chatName;
@@ -788,7 +792,7 @@ resetChatsOrder(chatContact){
       }
       else{
 
-        return chatName.trim().split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
+        return chatName?.trim().split(" ",2).map((e)=>e.charAt(0).toUpperCase()).join("");
 
       }
     }
@@ -817,7 +821,6 @@ resetChatsOrder(chatContact){
             createdAt:String(this.convertToUTC(new Date())) ,
             status: 0
           }
-          console.log(mainData)
 
             // in case of uplaoded files 
           if(this.filesList.length > 0){
@@ -1018,7 +1021,6 @@ else{
     updateMessageStatus(newMessage){
 
       let message:chatHub=JSON.parse(newMessage)
-      console.log('status',message)
 
       if(message.Deviceid == this.deviceId ){
         // update Status on list chats
@@ -1044,7 +1046,7 @@ else{
           }
 
       }
-      this.groupMessagesByDay();
+      // this.groupMessagesByDay();
       if(newMessage.Deviceid == this.deviceId){
         // in case the message is sent from the current opend chat
         if(this.selectedChatId === newMessage.ChatId){
@@ -1103,7 +1105,6 @@ else{
 
       updateMessagesOnReceive(message){
         let newMessage:chatHub=JSON.parse(message)
-        console.log(newMessage)
         if(newMessage.Deviceid == this.deviceId){
             // in case the message is sent from the current opend chat
             if(this.selectedChatId === newMessage.ChatId){

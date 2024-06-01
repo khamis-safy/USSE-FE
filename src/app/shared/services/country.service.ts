@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, retry } from 'rxjs';
 @Injectable({
     providedIn: 'root'
   })
@@ -18,7 +18,12 @@ export class CountryService {
       return this.http.get('https://ipapi.co/json/');
     }
     getCountryBasedonIP(){
-      this.setCountryBasedOnIP().subscribe(
+      this.setCountryBasedOnIP().pipe(
+        retry({
+          count: 1, // Retry once
+          delay: 600 // Delay of 500ms between retries
+        })
+      ).subscribe(
         (data) => {
           const countryName = data.country_name; // Country code from ipapi
           this.selectedCodeISo.next(countryName)
