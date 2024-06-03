@@ -26,6 +26,7 @@ export class ChatContactsComponent implements OnInit {
     searchMsg:this.searchMsg
 
   })
+  clicked=0;
   hideSearch:boolean=true;
   @ViewChild('MsgsearchInput') MsgsearchInput: ElementRef;
   @ViewChild('searchContainer') searchContainer: ElementRef<HTMLInputElement>;
@@ -69,7 +70,9 @@ export class ChatContactsComponent implements OnInit {
   
   }
   async addNewContact(contact: Contacts) {
-    let newContact = {
+    this.clicked+=1;
+    if(this.clicked==1){
+      let newContact = {
         chatName: contact.name,
         targetPhoneNumber: contact.mobileNumber,
         email: this.authService.getUserInfo()?.email,
@@ -83,9 +86,14 @@ export class ChatContactsComponent implements OnInit {
         this.chatService.addNewChat(newContact).subscribe(
             (res) => {
                 this.onClose(res);
+            },
+            (err)=>{
+              this.onClose()
             }
         );
     }
+    }
+    
 }
 
 
