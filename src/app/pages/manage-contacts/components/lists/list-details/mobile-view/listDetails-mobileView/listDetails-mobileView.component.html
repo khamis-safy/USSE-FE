@@ -2,16 +2,16 @@
   <div class="d-flex align-items-center  my-3" [ngClass]="noData ?'justify-content-end' : 'justify-content-between'" style="gap: 12px;">
 
     <div *ngIf="!noData" class="d-flex position-relative row m-0 input-search-containter" >
-      <div class="col-12 col-lg-4 p-0 w-100" >
+      <form [formGroup]="searchForm"  class="col-12 col-lg-4 p-0 w-100" >
         <input
           #search
           type="text"
           class="form-control ps-5 txt-xs w-100"
           id="search"
           placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
-          (input)="onSearch(search)"
+          formControlName="searchControl"
         />
-      </div>
+      </form>
       <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
         <img src="assets/icons/search.svg" alt="" width="14" />
       </div>

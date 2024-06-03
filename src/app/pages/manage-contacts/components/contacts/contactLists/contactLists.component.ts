@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { ManageContactsService } from '../../../manage-contacts.service';
@@ -11,6 +11,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Contacts } from '../../../contacts';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { FormControl, FormGroup } from '@angular/forms';
 
 interface CheckedCont{
   list:string[],
@@ -23,7 +25,7 @@ interface CheckedCont{
   templateUrl: './contactLists.component.html',
   styleUrls: ['./contactLists.component.scss']
 })
-export class ContactListsComponent implements OnInit ,AfterViewInit {
+export class ContactListsComponent implements OnInit ,AfterViewInit ,OnDestroy{
   isLoading = false;
   numRows;
   dataSource:MatTableDataSource<ListData|Contacts>;
@@ -37,6 +39,11 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
   contacts:boolean=false;
   selection = new SelectionModel<any>(true, []);
   noData:boolean=false;
+  searchSub: Subscription;
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
   constructor(
     private toaster: ToasterServices,
     private listService:ManageContactsService,
@@ -45,6 +52,11 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
     private authService:AuthService,
     @Inject(MAT_DIALOG_DATA) public data: CheckedCont,
   ) { }
+  ngOnDestroy(): void {
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+    }
+  }
 
 
   ngAfterViewInit() {
@@ -105,75 +117,109 @@ export class ContactListsComponent implements OnInit ,AfterViewInit {
 
       this.getListData();
     }
-
+this.setupSearchSubscription();
       }
-
-getListData(searchVal?){
+getDataReq(searchVal){
+  let sup$;
+  if(this.selection){
+    this.selection.clear();
+  }
+if(!this.isFromListDetails){
+  // for lists
   let shows=100;
   let pageNum=this.listService.pageNum;
   let email=this.authService.getUserInfo()?.email;
   let orderedBy="";
   let search=searchVal?searchVal:"";
-  this.listService.getList(email,shows,pageNum,orderedBy,search).subscribe(
-      (res)=>{
-        this.loading=false;
-        this.numRows=res.length;
-        if(res.length == 0){
-          this.noData=true;
-        }
-        else{
-          this.noData=false;
-
-        }
-  this.dataSource=new MatTableDataSource<ListData>(res)
-      },
-      (err)=>{
-        this.loading=false;
-        this.noData=true;
-
-        this.onClose();
-      })
+  
+sup$= this.listService.getList(email,shows,pageNum,orderedBy,search)
 }
-getContactsData(searchVal?){
+else{
   let shows=50;
   let pageNum=0;
   let email=this.authService.getUserInfo()?.email;
   let orderedBy="";
   let search=searchVal?searchVal:"";
 
-    let sub1= this.listService.getContacts(email,false,shows,pageNum,orderedBy,search,"").subscribe(
+  sup$=  this.listService.getContacts(email,false,shows,pageNum,orderedBy,search,"")
+}
+return sup$
+}
+handleGetDataRes(res){
+if(this.isFromListDetails){
+  this.loading=false;
+  this.numRows=res.length;
+  if(res.length == 0){
+    this.noData=true;
+  }
+  else{
+    this.noData=false;
+
+  }
+this.dataSource=new MatTableDataSource<ListData>(res)
+}
+else{
+  this.loading=false;
+  const filterdContacts = res.filter((obj) => !this.data.contacts.map(res=>res.id).includes(obj.id));
+  this.contactsIds=filterdContacts.map((e)=>e.id);
+  if(filterdContacts.length == 0){
+    this.noData=true;
+  }
+  else{
+    this.noData=false;
+
+  }
+
+  if(this.data.listDetails){
+    this.numRows=this.contactsIds.length;
+
+  }
+  else{
+    
+    this.numRows=res.length;
+
+  }
+this.dataSource=new MatTableDataSource<Contacts>(filterdContacts)
+}
+}
+handleError(){
+  this.loading=false;
+  this.noData=true;
+
+  this.onClose();
+}
+getListData(searchVal?){
+  let search=searchVal?searchVal:"";
+
+    this.getDataReq(search).subscribe(
       (res)=>{
-        this.loading=false;
-        const filterdContacts = res.filter((obj) => !this.data.contacts.map(res=>res.id).includes(obj.id));
-        this.contactsIds=filterdContacts.map((e)=>e.id);
-        if(filterdContacts.length == 0){
-          this.noData=true;
-        }
-        else{
-          this.noData=false;
-
-        }
-
-        if(this.data.listDetails){
-          this.numRows=this.contactsIds.length;
-
-        }
-        else{
-          
-          this.numRows=res.length;
-
-        }
-  this.dataSource=new MatTableDataSource<Contacts>(filterdContacts)
+      this.handleGetDataRes(res)
       },
       (err)=>{
-        this.loading=false;
-        this.noData=true;
-
-        this.onClose();
+     this.handleError()
       })
 }
+getContactsData(searchVal?){
 
+  let search=searchVal?searchVal:"";
 
+   this.getDataReq(search).subscribe(
+    res=>this.handleGetDataRes(res),
+    err=>this.handleError()
+   )
+}
+
+setupSearchSubscription(): void {
+  this.searchSub = this.searchControl.valueChanges.pipe(
+    debounceTime(700), // Wait for 1s pause in events
+    distinctUntilChanged(), // Only emit if value is different from previous value
+    switchMap(searchVal => this.getDataReq(searchVal))
+  ).subscribe(
+    res => this.handleGetDataRes(res),
+    err => this.handleError()
+  );
+
+}
 
 onSearch(search){
   

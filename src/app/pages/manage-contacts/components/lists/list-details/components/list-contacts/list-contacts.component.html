@@ -3,9 +3,13 @@
 <ng-container *ngIf="!noData">
   <div class="d-flex justify-content-between align-items-center ">
     <div class="d-flex position-relative row m-0">
-      <div class=" col-12 col-lg-4 p-0">
-        <input #search type="text" class="form-control ps-5  txt-xs" id="search" placeholder="{{ 'SEARCH' | translate }}" (input)="onSearch(search)">
-      </div>
+      <form [formGroup]="searchForm" class=" col-12 col-lg-4 p-0">
+        <input #search type="text" 
+        class="form-control ps-5  txt-xs" 
+        id="search" 
+        placeholder="{{ 'SEARCH' | translate }}" 
+        formControlName="searchControl">
+      </form>
       <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
         <img src="assets/icons/search.svg" alt="" width="14">
       </div>
@@ -120,6 +124,6 @@
   </div>
   
   <div *ngIf="isSmallScreen" class="small-screen-view">
-    <app-listDetails-mobileView [canEdit]="canEdit" [count]="count" [isCanceled]="isCanceled" (updatedCount)="updateTotalContacts($event)"></app-listDetails-mobileView>
+    <app-listDetails-mobileView #moibleView [canEdit]="canEdit" [count]="count" [isCanceled]="isCanceled" (updatedCount)="updateTotalContacts($event)"></app-listDetails-mobileView>
   </div>
 </section>

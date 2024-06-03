@@ -15,6 +15,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { SCHEDULED } from '../constants/messagesConst';
 import { TranslationService } from 'src/app/shared/services/translation.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { ScheduledMobileViewComponent } from '../../mobile-view/scheduled-mobileView/scheduled-mobileView.component';
+import { arraysContainSameObjects } from 'src/app/shared/methods/arraysContainSameObjects';
 
 
 
@@ -53,6 +55,9 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
  isSmallScreen: boolean = false;
  destroy$: Subject<void> = new Subject<void>();
  @Output() isOpenNewMessage= new EventEmitter<any>
+  alldevices: any;
+  @ViewChild(ScheduledMobileViewComponent) mobileView :ScheduledMobileViewComponent
+  isDataCalledInMobile: boolean;
 
   constructor(private messageService:MessagesService,
     public dialog: MatDialog,
@@ -68,7 +73,7 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
     }
     }
   ngOnInit() {
-   
+
     this.columns=new FormControl(this.displayedColumns)
 
     this.selection.changed.subscribe(
@@ -91,41 +96,73 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
       else{
         this.isUser=false;
       }
+      this.onChangeSecreanSizes();
+
+    }
+    onChangeSecreanSizes(){
       this.breakpointObserver.observe(['(max-width: 768px)'])
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => {
         this.isSmallScreen = result.matches;
         if(!this.isSmallScreen){
           this.selection.clear()
-          this.getDevices();
+
+            if(this.dataSource){
+  
+            if(!arraysContainSameObjects(this.dataSource.data,this.mobileView.messagesTableData)){
+              this.handleResponce(this.mobileView.alldevices,this.mobileView.messagesTableData,this.mobileView.length)
+
+            }
+          }
+           else{
+            if(!this.isDataCalledInMobile){
+              this.getDevices()
+            }
+            else{
+              this.handleResponce(this.mobileView.alldevices,this.mobileView.messagesTableData,this.mobileView.length)
+
+            }
+          } 
+        }
+        else{
+  
+            if(this.dataSource){
+              setTimeout(() => {
+                this.mobileView?.handleResponce(this.alldevices,this.dataSource.data,this.length)
+
+            }, 100);
+            }
+            else{
+              setTimeout(() => {
+  
+                this.mobileView?.getDevices()
+                this.isDataCalledInMobile=true;
+  
+              }, 100);
+            }
+          
           
         }
       });
-  
-
-
     }
     openNewMessage(event){
       this.isOpenNewMessage.emit(event)
     }
- // get devices data
- getDevices(){
-  this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
-    (res)=>{
-      let alldevices=res;
+    handleResponce(res,messages?,length?){
+      this.alldevices=res;
       if(this.permission){
 
-        alldevices.map((device)=>
+        this.alldevices.map((device)=>
         {
           let found =this.permission.find((devP)=>devP.deviceId==device.id && devP.value=="None");
           if(found){
-            alldevices.splice(alldevices.indexOf(device),1)
+            this.alldevices.splice(this.alldevices.indexOf(device),1)
           }
         }
         )
       }
 
-      this.devices = alldevices.map(res=>{
+      this.devices = this.alldevices.map(res=>{
         return {
           title:res.deviceName,
           value:res.id,
@@ -147,9 +184,9 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
 
           this.form.patchValue({
           devicesData: {
-          title:alldevices[0]?.deviceName,
-          value:alldevices[0]?.id,
-          deviceIcon:alldevices[0].deviceType
+          title:this.alldevices[0]?.deviceName,
+          value:this.alldevices[0]?.id,
+          deviceIcon:this.alldevices[0].deviceType
           }
 
           })
@@ -166,8 +203,23 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
 
             })
         }
+      if(messages){
+        this.numRows=res.length;
+        this.loading = false;
+        this.dataSource=new MatTableDataSource<Shceduled>(messages)
+        this.length=length
+       }
+       else{
         this.getMessages(this.deviceId);
-    }},
+       }
+    }
+    }
+ // get devices data
+ getDevices(){
+  this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
+    (res)=>{
+      this.handleResponce(res)
+     },
     (err)=>{
       this.loading = false;
       this.length=0;
@@ -208,6 +260,7 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
       this.messageService.listScheduledMessagesCount(email,deviceId).subscribe(
         (res)=>{
           this.length=res;
+          this.loading = false;
         }
         ,(err)=>{
           this.loading = false;

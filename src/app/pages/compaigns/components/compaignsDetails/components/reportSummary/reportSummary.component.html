@@ -69,7 +69,7 @@
   <div class="w-100 p-4 mb-3 summary-container " style="background-color: white; border-radius: 16px; overflow-y: auto; box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);">
     <div>
       <h4 class="txt-lg" style="font-weight: 600">{{ 'MESSAGE_CONTENT' | translate }}</h4>
-      <p>
+      <p class="msg-body">
         {{ statics?.messageContent | translate }}
       </p>
       <div class="d-flex w-100 gap-2 flex-wrap" *ngIf="compaign?.attachments">
@@ -128,7 +128,7 @@
         <div class=" d-flex justify-content-between  mb-4 txt-md" style="min-width: 353px;
         width: fit-content;">
           <span style="font-weight: 500; display: inline-flex ; width: 260px;">{{ 'MessageAfterTimeOut' | translate }}</span> 
-          <span>{{compaign?.sessionTimeOutResponseContent}}</span> 
+          <span class="msg-body">{{compaign?.sessionTimeOutResponseContent}}</span> 
         </div>
 
         <div class=" d-flex justify-content-between  mb-4 txt-md session-time-out" style="width: 335px;">

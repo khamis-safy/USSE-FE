@@ -16,10 +16,8 @@ import { USERSHEADERS } from '../constants/constants';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
-
-
 
 @Component({
 
@@ -69,6 +67,12 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   isSmallScreen: boolean = false;
   destroy$: Subject<void> = new Subject<void>();
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
+  searchSub: Subscription;
+  subscriptions:Subscription[]=[];
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private authService: AuthService,
@@ -90,9 +94,10 @@ export class UsersComponent implements OnInit, OnDestroy {
       else{
         this.displayed=USERSHEADERS
       }
-      this.getUsers();
       
     });
+    this.getUsers();
+
         this.displayForm.patchValue({
           showsSelectedOptions: {
           title:'10',
@@ -103,61 +108,88 @@ export class UsersComponent implements OnInit, OnDestroy {
 
 
   };
+getUsersReq(searchVal){
+  let shows = this.userService.display;
+  let pageNum = searchVal ? 0 : this.userService.pageNum;
+  let orderedBy = this.userService.orderedBy;
+  let search = searchVal ? searchVal : "";
+  let token = this.userService.token;
+
+  this.loading = true;
+  if (searchVal && this.paginator) {
+    this.paginator.pageIndex = 0
+  }
+
+ return this.userService.listCustomersUsers(token, shows, pageNum, orderedBy, search)
+}
+handleGetUsersResponce(res,search){
+  this.loading = false;
+
+  if (res.length === 0) {
+    this.dataSource = new MatTableDataSource<Users>([]); // Empty data source
+    this.length = 0;
+    this.notFound = true;
+    this.noData = search !== "";
+  } else {
+    this.dataSource = new MatTableDataSource<Users>(res);
+    this.length = res.length;
+    this.notFound = false;
+    this.noData = false;
+  }
+
+  if (!search) {
+    if (this.paginator) {
+      this.paginator.pageIndex = this.userService.pageNum;
+    }
+    this.UsersCount();
+  }
+
+}
+handleError(search,err?){
+
+  if(search!=""){
+    this.noData=false
+    this.notFound=true;
+}
+else{
+  this.noData = true;
+}
+  this.length = 0;
+  this.loading = false;
+  this.setupSearchSubscription()
+
+}
+setupSearchSubscription(){
+  this.searchSub=this.searchControl.valueChanges.pipe(
+    debounceTime(700),
+    distinctUntilChanged(),
+    switchMap(searchVal=>this.getUsersReq(searchVal))
+  ).subscribe(
+    res=>this.handleGetUsersResponce(res,this.searchControl.value),
+    err=>this.handleError(this.searchControl.value,err)
+  )
+  this.subscriptions.push(this.searchSub); // Ensure subscriptions are tracked
+
+}
 
   getUsers(searchVal?) {
-    console.log(this.noData)
-    let shows = this.userService.display;
-    let pageNum = searchVal ? 0 : this.userService.pageNum;
-    let orderedBy = this.userService.orderedBy;
     let search = searchVal ? searchVal : "";
-    let token = this.userService.token;
-
-    this.loading = true;
-    if (searchVal && this.paginator) {
-      this.paginator.pageIndex = 0
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null
+      this.searchForm.patchValue({
+        searchControl:''
+      })
     }
-
-    this.userService.listCustomersUsers(token, shows, pageNum, orderedBy, search).subscribe(
+    this.getUsersReq(search).subscribe(
       (res) => {
-        this.loading = false;
-        this.dataSource = new MatTableDataSource<Users>(res);
-        if(search!=""){
-          this.noData=false
-
-          this.length=res.length;
-          if(this.length==0){
-            this.notFound=true;
-
-          }
-          else{
-            this.notFound=false;
-
-          }
-      }
-      else{
-        this.noData=false
-
-        if(this.paginator)
-        {
-        this.paginator.pageIndex=this.userService.pageNum
-        this.notFound=false;
-        }
-        this.UsersCount();
-
-      }
-
-
+      this.handleGetUsersResponce(res,search)
+        this.setupSearchSubscription();
       },
       (err) => {
-        if(search!=""){
-          this.noData=false
-          this.notFound=true;
-      }
-      else{
-        this.noData = true;
-      }
-        this.length = 0;
-        this.loading = false;
+       this.handleError(search);
+       
+
 
       }
 
@@ -214,7 +246,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   onSearch(event: any) {
 
-    this.getUsers(event.value);
+    // this.getUsers(event.value);
   }
 
   changeColumns(event) {
@@ -307,6 +339,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.userService.pageNum = 0;
     this.userService.orderedBy = '';
     this.userService.search = '';
+    this.subscriptions.map((sub)=>sub.unsubscribe())
+
   };
 }
 

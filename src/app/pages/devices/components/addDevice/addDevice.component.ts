@@ -4,6 +4,7 @@ import { DevicesService } from '../../devices.service';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input-gg';
+import { CountryService } from 'src/app/shared/services/country.service';
 
 @Component({
   selector: 'app-addDevice',
@@ -31,10 +32,22 @@ export class AddDeviceComponent implements OnInit {
     mobile:this.mobile
 
   });
+  selectedCountryISO: any;
   constructor(    private toaster: ToasterServices,
-    private devicesService:DevicesService,private authService:AuthService) { }
+    private devicesService:DevicesService,
+    private authService:AuthService,
+    private countryService:CountryService
+  ) { }
 
   ngOnInit() {
+    this.setCountryBasedOnIP();
+  }
+  setCountryBasedOnIP(): void {
+    this.countryService.selectedCodeISo.subscribe(
+      (countryName)=>{
+        this.selectedCountryISO=CountryISO[countryName]
+      }
+    )
   }
   submitAdd(){
 

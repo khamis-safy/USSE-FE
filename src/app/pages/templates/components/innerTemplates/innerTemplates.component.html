@@ -3,16 +3,16 @@
     <ng-container *ngIf="!noData">
       <div class="d-flex justify-content-between mb-1 align-items-center">
         <div class="d-flex position-relative row m-0" style="width:31%; max-width: 389px;    min-width: 223px;">
-          <div class="col-12 col-lg-4 p-0 w-100" >
+          <form [formGroup]="searchForm"  class="col-12 col-lg-4 p-0 w-100" >
             <input
               #search
               type="text"
               class="form-control ps-5 txt-xs w-100"
               id="search"
-              placeholder="{{ 'SEARCH' | translate }}"
-              (input)="onSearch(search)"
+              placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
+              formControlName="searchControl"
             />
-          </div>
+          </form>
           <div
             class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y"
           >
@@ -48,7 +48,7 @@
             <td mat-cell *matCellDef="let element" style="max-width: 135px;">
               <div class="py-2">
                 <div class="d-flex justify-content-center align-items-center flex-column">
-                  <p style="max-width: 100%;" class="overflow-line-4 mb-0">{{ element.messageBody }}</p>
+                  <p style="max-width: 100%;" class="msg-body overflow-line-4 mb-0">{{ element.messageBody }}</p>
                   <ng-container *ngFor="let attachment of element?.attachments">
                     <div *ngIf="attachment?.fileName" class="text-start  pt-2 pb-3">
                       <img *ngIf="(attachment.fileName | type )=='assets/images/image.svg' else otherType"  [src]="attachment.fileName | type" alt="" style=" width: 80px;">
@@ -115,6 +115,6 @@
     </ng-container>
   </div>
   <div *ngIf="isSmallScreen" class="small-screen-view">
-    <app-templates-mobileView  [canEdit]="canEdit" ></app-templates-mobileView>
+    <app-templates-mobileView #moibleView  [canEdit]="canEdit" [dataSource]="dataSource" [length]="length"></app-templates-mobileView>
   </div>
 </section>

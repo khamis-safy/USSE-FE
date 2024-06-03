@@ -5,9 +5,10 @@
       <div class="w-100">
         <form [formGroup]="searchForm">
           <us-select
+          #usSelectComponent
             (onClose)="onClose($event)"
-            (onSearch)="onSearch($event)"
             (onSelect)="onSelect($event)"
+            (onSearch)="onSearch($event)"
             (onDeSelect)="onDeSelect($event)"
             [data]="allContacts"
             [multiSelect]="true"
@@ -155,14 +156,14 @@
               cssClass="rounded-pill border border-1 py-2 txt-input w-100"
               [enableAutoCountrySelect]="true"
               [preferredCountries]="[CountryISO.UnitedArabEmirates]"
-              [enablePlaceholder]="true"
+              [enablePlaceholder]="true" 
               [searchCountryFlag]="true"
               [searchCountryField]="[
                 SearchCountryField.Iso2,
                 SearchCountryField.Name
               ]"
               [selectFirstCountry]="false"
-              [selectedCountryISO]="CountryISO.Egypt"
+              [selectedCountryISO]="selectedCountryISO"
               [maxLength]="15"
               [phoneValidation]="true"
               [separateDialCode]="separateDialCode"

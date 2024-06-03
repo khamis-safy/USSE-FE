@@ -11,6 +11,7 @@ import { compaignDetails } from '../../campaigns';
 import { DevicesPermissions, CompaignsService } from '../../compaigns.service';
 import { CAMPAIGNSHEADER } from '../../constants/contstants';
 import { TranslateService } from '@ngx-translate/core';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-campaigns-mobileView',
@@ -58,7 +59,10 @@ export class CampaignsMobileViewComponent implements OnInit {
     showsSelectedOptions: this.showsSelectedOptions,
 
   });
-
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
   selectedSortingName: string = 'name';
   selectedSortingType: string = 'ASC'
   orderedBy: string = '';
@@ -71,6 +75,8 @@ export class CampaignsMobileViewComponent implements OnInit {
   messagesTableData: any = []
   subscribtions: any=[];
   openedDialogs: any=[];
+  searchSub: any;
+  alldevices: any[];
   constructor(private compaignsService: CompaignsService,
     public dialog: MatDialog,
     private router: Router,
@@ -99,7 +105,7 @@ export class CampaignsMobileViewComponent implements OnInit {
     else {
       this.isUser = false;
     }
-    this.getDevices();
+    // this.getDevices();
 
 
 
@@ -130,69 +136,97 @@ export class CampaignsMobileViewComponent implements OnInit {
     }
 
   }
+  handleResponce(res,campains?,length?){
+    this.alldevices = [];
 
+    this.alldevices = res;
+  
+    if (this.permission) {
+  
+      this.alldevices.map((device) => {
+        let found = this.permission.find((devP) => devP.deviceId == device.id && devP.value == "None");
+        if (found) {
+          this.alldevices.splice(this.alldevices.indexOf(device), 1)
+        }
+      }
+      )
+    }
+  
+    this.devices = this.alldevices.map(res => {
+      return {
+        title: res.deviceName,
+        value: res.id,
+        deviceIcon: res.deviceType
+      }
+    });
+    if (this.devices.length == 0) {
+      this.loading = false;
+      this.length = 0;
+      this.noData = true;
+    }
+    else {
+      this.noData = false
+  
+      this.deviceId = res[0].id;
+  
+      this.getDevicePermission(this.deviceId);
+  
+      if (this.authService.selectedDeviceId == "") {
+  
+        this.form.patchValue({
+          devicesData: {
+            title: this.alldevices[0]?.deviceName,
+            value: this.alldevices[0]?.id,
+            deviceIcon: this.alldevices[0].deviceType
+          }
+  
+        })
+      }
+      else {
+        let selected = this.devices.find((device) => device.value == this.authService.selectedDeviceId)
+        this.deviceId = this.authService.selectedDeviceId;
+        this.form.patchValue({
+          devicesData: {
+            title: selected.title,
+            value: selected?.value,
+            deviceIcon: selected.deviceIcon
+          }
+  
+        })
+      }
+      if(campains){
+        this.messagesTableData=campains;
+        this.length=length;
+        this.loading=false
+        if(this.length ==0){
+          this.notFound=true;
+        }
+      }
+      else{
+        this.getCompaigns(this.deviceId);
+  
+      }
+  
+    }
+  }
+getDataFromParent(res,campains,length){
+  if(this.searchSub){
+    this.searchSub.unsubscribe();
+    this.searchSub=null;
+
+    this.searchForm.patchValue({
+      searchControl:''
+    })
+  }
+  this.handleResponce(res,campains,length);
+  this.setupSearchSubscription()
+
+}
   // get devices data
   getDevices() {
     this.authService.getDevices(this.authService.getUserInfo()?.email, 10, 0, "", "").subscribe(
       (res) => {
-        let alldevices = res;
-
-        if (this.permission) {
-
-          alldevices.map((device) => {
-            let found = this.permission.find((devP) => devP.deviceId == device.id && devP.value == "None");
-            if (found) {
-              alldevices.splice(alldevices.indexOf(device), 1)
-            }
-          }
-          )
-        }
-
-        this.devices = alldevices.map(res => {
-          return {
-            title: res.deviceName,
-            value: res.id,
-            deviceIcon: res.deviceType
-          }
-        });
-        if (this.devices.length == 0) {
-          this.loading = false;
-          this.length = 0;
-          this.noData = true;
-        }
-        else {
-          this.noData = false
-
-          this.deviceId = res[0].id;
-
-          this.getDevicePermission(this.deviceId);
-
-          if (this.authService.selectedDeviceId == "") {
-
-            this.form.patchValue({
-              devicesData: {
-                title: alldevices[0]?.deviceName,
-                value: alldevices[0]?.id,
-                deviceIcon: alldevices[0].deviceType
-              }
-
-            })
-          }
-          else {
-            let selected = this.devices.find((device) => device.value == this.authService.selectedDeviceId)
-            this.deviceId = this.authService.selectedDeviceId;
-            this.form.patchValue({
-              devicesData: {
-                title: selected.title,
-                value: selected?.value,
-                deviceIcon: selected.deviceIcon
-              }
-
-            })
-          }
-          this.getCompaigns(this.deviceId);
-
-        }
+      this.handleResponce(res)
       },
       (err) => {
         this.loading = false;
@@ -212,19 +246,58 @@ export class CampaignsMobileViewComponent implements OnInit {
     this.isCompagins = event;
     this.getCompaigns(this.deviceId);
   }
-  getCompaigns(deviceId: string, searchVal?) {
 
-    let shows = this.compaignsService.display;
-    let email = this.authService.getUserInfo()?.email;
-    let search = searchVal ? searchVal : "";
-    this.loading = true;
-    let pageNumber = searchVal ? 0 : this.pageNum
-    if (searchVal && this.paginator) {
-      this.paginator.pageIndex = 0
+  getCompaigns(deviceId:string,searchVal?){
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+
+      this.searchForm.patchValue({
+        searchControl:''
+      })
     }
-    this.compaignsService.getCampaigns(email, shows, pageNumber, search, deviceId).subscribe(
-      (res) => {
-        this.messagesTableData=res;
+    
+    let search=searchVal?searchVal:"";
+    this.loading = true;
+ 
+    this.getCampaignsReq(deviceId,search).subscribe(
+      (res)=>{
+      this.handleGetCampaignssResponse(deviceId,res,search);
+      this.setupSearchSubscription();
+
+      },
+      (err)=>{
+       this.handleError()
+
+      }
+    )
+  }
+  setupSearchSubscription(): void {
+    this.searchSub = this.searchControl.valueChanges.pipe(
+      debounceTime(700), // Wait for 1s pause in events
+      distinctUntilChanged(), // Only emit if value is different from previous value
+      switchMap(searchVal => this.getCampaignsReq(this.deviceId,searchVal))
+    ).subscribe(
+      res => this.handleGetCampaignssResponse(this.deviceId,res, this.searchControl.value),
+      err => this.handleError()
+    );
+    this.subscribtions.push(this.searchSub);
+  }
+  
+  getCampaignsReq(deviceId:string,searchVal?){
+    let shows=this.compaignsService.display;
+    let email=this.authService.getUserInfo()?.email;
+    let search=searchVal?searchVal:"";
+    this.loading = true;
+    let pageNumber=searchVal?0:this.pageNum
+    if(searchVal && this.paginator){
+      this.paginator.pageIndex=0
+    }
+  return  this.compaignsService.getCampaigns(email,shows,pageNumber,search,deviceId)
+    }
+
+  handleGetCampaignssResponse(deviceId,res,search): void {
+    this.messagesTableData=res;
         if(search!=""){
           this.length=res.length;
           this.loading = false;
@@ -245,14 +318,12 @@ export class CampaignsMobileViewComponent implements OnInit {
 
 
         }
-      },
-      (err) => {
-        this.loading = false;
-        this.length = 0;
-        this.noData = true;
-
-      }
-    )
+  }
+  
+  handleError(): void {
+    this.loading = false;
+    this.length = 0;
+    this.notFound = true;
   }
   compaignsCount(deviceId) {
     this.loading = true

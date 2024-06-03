@@ -548,7 +548,7 @@
 "info":"معلومات",
 "subscriptions":"الاشتراكات",
 "reconnect":"إعادة الاتصال",
-"export-chats" : "تصدير محادثات الواتساب ",
+"export-chats" : "تصدير المحادثات",
 "total_price":"السعر الكلي",
 "subscription":"الاشتراك",
 "Automations":"الآليات",
@@ -625,7 +625,40 @@
 "Error: device is not connected, try to reconnect your device":"خطأ: الجهاز غير متصل، حاول إعادة توصيل جهازك",
 "Error: at least attachments or message content must be not empty":"خطأ: على الأقل يجب ألا تكون المرفقات أو محتوى الرسالة فارغة",
 "Today":"اليوم",
-"Yesterday":"امس"
+"Yesterday":"امس",
+"ADD_TL_Device":"إضافة جهاز تليجرام",
+"code_needed":"يرجى إدخال الرمز المرسل إلى تليجرام الخاص بك.",
+"pass_needed":"يرجى إدخال كلمة المرور المرسلة إلى تليجرام الخاص بك.",
+"INVALID_CODE":"الرمز غير صالح. يرجى المحاولة مرة أخرى.",
+"INVALID_PASS":"كلمة المرور غير صالحة. يرجى المحاولة مرة أخرى.",
+"Error! Code Needed": "خطأ! الرمز مطلوب",
+"Error! Password Needed": "خطأ! كلمة المرور مطلوبة",
+"PHONE_CODE_INVALID": "رمز غير صالح",
+"PHONE_PASSWORD_INVALID": "كلمة مرور غير صالحة",
+"TlSteps":{
+    "title": "اتبع هذه الخطوات لإضافة جهاز Telegram:",
+    "steps": {
+      "header": "الخطوات",
+      "step1": "تأكد من تسجيلك في Telegram على هاتفك المحمول",
+      "step2": "سجل دخول الى حساب التلجرام الخاص بك:",
+      "step3": "انتقل إلى أدوات تطوير API",
+      "step4":"املأ النموذج : ",
+      "step4_details": {
+        "title": "العنوان : ",
+        "name": "الاسم : ",
+        "url": "الرابط : ",
+        "platform": "المنصة : ",
+        "description": "الوصف : ",
+        "optional": "الوصف اختياري"
+      },
+      "step5": "ستحصل على المعلمات المطلوبة:",
+      "step5_details": {
+        "params": "هذه مطلوبة للخطوة التالية."
+      }
+    }
+  },
+  "and":"و"
+  
 
 
 

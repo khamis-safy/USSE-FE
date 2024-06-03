@@ -16,8 +16,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { DEVICESHEADERS } from '../constants/constants';
 import * as saveAs from 'file-saver';
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { AddTLDeviceComponent } from '../components/telegramDevice/addTLDevice/addTLDevice.component';
 
 @Component({
   selector: 'app-devices',
@@ -73,7 +74,12 @@ export class DevicesComponent implements OnInit,OnDestroy{
 
   isSmallScreen: boolean = false;
   destroy$: Subject<void> = new Subject<void>();
-
+  searchControl = new FormControl();
+  searchForm = new FormGroup({
+    searchControl:this.searchControl
+  })
+  subscriptions: any=[];
+  searchSub: any;
   constructor(public dialog: MatDialog,
         private translate: TranslateService,
         private breakpointObserver: BreakpointObserver,
@@ -91,9 +97,10 @@ export class DevicesComponent implements OnInit,OnDestroy{
         this.displayed=DEVICESHEADERS
 
       }
-      this.getDevices();
       
     });
+    this.getDevices();
+
         this.displayForm.patchValue({
           showsSelectedOptions: {
           title:'10',
@@ -101,7 +108,6 @@ export class DevicesComponent implements OnInit,OnDestroy{
           }
           })
     this.isTrialCustomer=this.authService.getSubscriptionState().isTrail ? this.authService.getSubscriptionState()?.isTrail : false;
-    this.getDevices();
     this.columns=new FormControl(this.displayedColumns)
     let permission =this.devicesService.DevicesPermission
     let customerId=this.authService.getUserInfo()?.customerId;
@@ -121,8 +127,11 @@ else{
 }
 this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Create At", "Status","Delay Interval(s)","action"]:['Device Name', 'Device Type', 'Number',"Create At", "Status"];
   }
+  getWidth(element: HTMLElement) {
+    return `${element.clientWidth}px`;
 
-  getDevices(searchVal?){
+ }
+ getDevicesReq(searchVal?){
     let shows=this.devicesService.display;
     let pageNum=searchVal? 0 : this.devicesService.pageNum;
     let email=this.authService.getUserInfo()?.email;
@@ -134,35 +143,65 @@ this.displayedColumns=this.canEdit?['Device Name', 'Device Type', 'Number',"Crea
       this.paginator.pageIndex=0
     }
     
-    this.devicesService.getDevices(email,shows,pageNum,orderedBy,search).subscribe(
+    return this.devicesService.getDevices(email,shows,pageNum,orderedBy,search)
+ }
+ handleGetDevicesResponce(res,search){
+  this.numRows=res.length;
+  this.loading = false;
+  this.dataSource=new MatTableDataSource<DeviceData>(res);
+  if(search!=""){
+    this.length=res.length;
+    if(this.length==0){
+      this.notFound=true;
+    }
+    else{
+      this.notFound=false;
+    }
+}
+else{
+  if(this.paginator)
+  {
+    this.paginator.pageIndex=this.devicesService.pageNum
+
+  }
+  this.notFound=false;
+  this.getDevicesCount();
+
+}
+ }
+ handleError(){
+  this.loading = false;
+  this.length=0;
+  this.noData=true;
+ }
+ setupSearchSubscription(): void {
+  this.searchSub = this.searchControl.valueChanges.pipe(
+    debounceTime(700), // Wait for 1s pause in events
+    distinctUntilChanged(), // Only emit if value is different from previous value
+    switchMap(searchVal => this.getDevicesReq(searchVal))
+  ).subscribe(
+    res => this.handleGetDevicesResponce(res,this.searchControl.value),
+    err => this.handleError()
+  );
+  this.subscriptions.push(this.searchSub);
+}
+  getDevices(searchVal?){
+    if(this.searchSub){
+      this.searchSub.unsubscribe();
+      this.searchSub=null;
+
+      this.searchForm.patchValue({
+        searchControl:''
+      })
+    }
+    let search=searchVal?searchVal:"";
+    this.getDevicesReq(search).subscribe(
       (res)=>{
-        this.numRows=res.length;
-        this.loading = false;
-        this.dataSource=new MatTableDataSource<DeviceData>(res);
-        if(search!=""){
-          this.length=res.length;
-          if(this.length==0){
-            this.notFound=true;
-          }
-          else{
-            this.notFound=false;
-          }
-      }
-      else{
-        if(this.paginator)
-        {
-          this.paginator.pageIndex=this.devicesService.pageNum
-
-        }
-        this.notFound=false;
-        this.getDevicesCount();
-
-      }
+       this.handleGetDevicesResponce(res,search);
+       this.setupSearchSubscription()
        },
        (err)=>{
-        this.loading = false;
-        this.length=0;
-        this.noData=true;
+       this.handleError()
        })
   }
 
@@ -255,7 +294,14 @@ onPageChange(event){
     this.devicesService.extractChats(this.email,device.id).subscribe(
       (response: any) => {
         // Use FileSaver.js to save the Excel file
-        const filename = `${device.deviceName} whatsapp chats.xlsx`; // Set your desired filename and extension
+        let filename;
+        if(device.deviceType=='TL'){
+           filename = `${device.deviceName} telegram chats.xlsx`; // Set your desired filename and extension
+
+        }
+        if(device.deviceType=='WBS' || device.deviceType=='OWA' ){
+          filename = `${device.deviceName} whatsapp chats.xlsx`;
+         } // Set your desired filename and extension
         saveAs(response, filename);
       }
     )
@@ -318,6 +364,66 @@ onPageChange(event){
 
     )
   }
+  reconnectTlDev(element:DeviceData){
+    this.loading=true;
+    let data:any={
+      id:element.id,
+      email: this.email,
+      deviceName:element.deviceName,
+      phoneNumber:element.deviceNumber,
+      token:element.token ,
+      sessionName: element.instanceId,
+      code: null,
+      password: null
+    }
+    this.devicesService.telegramId=element.id;
+    this.devicesService.reconnectTelegramDev(data).subscribe(
+      (res)=>{
+        this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+        this.devicesService.telegramId=''
+      },
+      (err)=>{
+        if(this.dataNeeded(err.error.msg)){
+          this.addTLDevice({deviceTl:element,error:err.error})
+        }
+      }
+    )
+  }
+  dataNeeded(msg:any){
+    return msg.includes('Error! Code Needed') ||
+    msg.includes('Error! Password Needed')  || 
+    msg.includes('Error! Password Needed') || 
+    msg.includes('PHONE_PASSWORD_INVALID') ||
+    msg.includes('PHONE_CODE_INVALID')
+    
+  }
+  addTLDevice(element?){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.height='fit-content';
+    dialogConfig.width='fit-content';
+    // dialogConfig.panelClass='custom-dialog-preview'
+    dialogConfig.maxWidth='100%';
+    dialogConfig.minWidth='833px';
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'responsive-dialog-for-TL';
+    if(element){
+      dialogConfig.data=element;
+
+    }
+    const dialogRef = this.dialog.open(AddTLDeviceComponent,dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.getDevices();
+        this.loading=false;
+
+      }
+      else{
+        this.loading=false;
+      }
+    });
+
+  }
   openDeleteModal(id:string){
     const dialogConfig=new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -348,5 +454,7 @@ onPageChange(event){
     this.devicesService.pageNum=0;
     this.devicesService.orderedBy='';
     this.devicesService.search='';
+    this.subscriptions.map(e=>e.unsubscribe());
+
   };
 }

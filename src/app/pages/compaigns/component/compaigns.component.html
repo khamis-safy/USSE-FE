@@ -34,16 +34,16 @@
             <ng-container *ngIf="!noData">
               <div class="d-flex justify-content-between mb-1 align-items-center">
                 <div class="d-flex position-relative row m-0" style="width:31%; max-width: 389px;    min-width: 223px;">
-                  <div class="col-12 col-lg-4 p-0 w-100" >
+                  <form [formGroup]="searchForm"  class="col-12 col-lg-4 p-0 w-100" >
                     <input
                       #search
                       type="text"
                       class="form-control ps-5 txt-xs w-100"
                       id="search"
-                      placeholder="{{ 'searchPlaceholder' | translate }}"
-                      (input)="onSearch(search)"
+                      placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
+                      formControlName="searchControl"
                     />
-                  </div>
+                  </form>
                   <div class="icon px-4 w-fit position-absolute start-0 top-50 translate-middle-y">
                     <img src="assets/icons/search.svg" alt="" width="14" />
                   </div>
@@ -171,7 +171,7 @@
 
     </div>
     <div *ngIf="isSmallScreen" class="small-screen-view">
-      <app-campaigns-mobileView  (addCampaign)="addCampaigns()" ></app-campaigns-mobileView>
+      <app-campaigns-mobileView  #moibleView  (addCampaign)="addCampaigns()" ></app-campaigns-mobileView>
     </div>
  </section>
 

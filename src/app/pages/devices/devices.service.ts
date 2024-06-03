@@ -17,6 +17,7 @@ export class DevicesService {
   orderedBy:string="";
   search:string="";
   DevicesPermission:PermissionData;
+  telegramId:any;
   private api: string = environment.api;
 
 constructor(private http:HttpClient,
@@ -91,4 +92,10 @@ extractChats(email: string, deviceId: string): Observable<any> {
     responseType: 'blob', // Set the responseType to 'blob'
   });
 }
+addTelegramDev(data):Observable<any>{
+  return this.http.post<any>(`${this.api}Device/addNewTelgramDevice`,data)
 }
+reconnectTelegramDev(data):Observable<any>{
+  return this.http.put<any>(`${this.api}Device/reconnectTelegramDevice`,data)
+}}
+

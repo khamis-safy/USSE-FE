@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { ToasterServices } from '../../../us-toaster/us-toaster.component';
 import { TranslateService } from '@ngx-translate/core';
 import { TIMEZONES } from './constants/constant';
+import { CountryService } from 'src/app/shared/services/country.service';
 
 @Component({
 
@@ -46,10 +47,13 @@ export class SettingComponent implements OnInit , OnDestroy{
   subscribe:any;
   userInfo: any;
   isUser:boolean;
+  selectedCountryISO: any;
     constructor(public dialogRef: MatDialogRef<SettingComponent>,
       private translate:TranslateService,
       private authService:AuthService,
       private toaster:ToasterServices,
+      private countryService:CountryService
+
       ) {
      this.maskTypeArr=[
       {title:translate.instant('Sender'),value:'S'},
@@ -62,12 +66,19 @@ export class SettingComponent implements OnInit , OnDestroy{
       title:`${translate.instant(timezone.title)} `,
       value:timezone.index
     }})
-   
-     }
+  
+    }
   ngOnDestroy(): void {
   }
+  setCountryBasedOnIP(): void {
+    this.countryService.selectedCodeISo.subscribe(
+      (countryName)=>{
+        this.selectedCountryISO=CountryISO[countryName]
+      }
+    )
+  }
   ngOnInit(): void {
-   
+   this.setCountryBasedOnIP();
     // this.getUserByEmail()
     if(this.authService.getUserInfo()?.customerId==""){
       this.isUser=false;

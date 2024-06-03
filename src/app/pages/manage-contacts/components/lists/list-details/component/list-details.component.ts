@@ -50,7 +50,6 @@ export class ListDetailsComponent implements OnInit ,AfterViewInit , OnDestroy{
   }
   ngAfterViewInit() {
     this.listContacts.count=this.count;
-    this.listContacts.getContacts();
         }
         getWidth(element: HTMLElement) {
 
