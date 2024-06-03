@@ -383,9 +383,19 @@ onPageChange(event){
         this.devicesService.telegramId=''
       },
       (err)=>{
-        this.addTLDevice({deviceTl:element,error:err.error})
+        if(this.dataNeeded(err.error.msg)){
+          this.addTLDevice({deviceTl:element,error:err.error})
+        }
       }
     )
+  }
+  dataNeeded(msg:any){
+    return msg.includes('Error! Code Needed') ||
+    msg.includes('Error! Password Needed')  || 
+    msg.includes('Error! Password Needed') || 
+    msg.includes('PHONE_PASSWORD_INVALID') ||
+    msg.includes('PHONE_CODE_INVALID')
+    
   }
   addTLDevice(element?){
     const dialogConfig = new MatDialogConfig();
