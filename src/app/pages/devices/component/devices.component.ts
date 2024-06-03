@@ -311,7 +311,6 @@ onPageChange(event){
     this.isReonnect=true;
     this.devicesService.reconnectWPPDevice(device.id,this.email).subscribe(
       (res)=>{
-
         this.getDevices();
       },
       (error) => {
@@ -379,8 +378,9 @@ onPageChange(event){
     this.devicesService.telegramId=element.id;
     this.devicesService.reconnectTelegramDev(data).subscribe(
       (res)=>{
-        this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+        this.getDevices();
         this.devicesService.telegramId=''
+        this.loading=false;
       },
       (err)=>{
         if(this.dataNeeded(err.error.msg)){
