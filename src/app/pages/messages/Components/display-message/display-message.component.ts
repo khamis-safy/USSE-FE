@@ -1,6 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit ,OnDestroy} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Message, Shceduled } from '../../message';
+import { TimeZoneServiceService } from 'src/app/shared/services/timeZoneService.service';
 export interface Display{
   message?:Message,
   isScheduleM?:boolean,
@@ -14,7 +15,7 @@ export interface Display{
   templateUrl: './display-message.component.html',
   styleUrls: ['./display-message.component.scss']
 })
-export class DisplayMessageComponent implements OnInit {
+export class DisplayMessageComponent implements OnInit ,OnDestroy{
 message:Message;
 userName:any;
 schedule:Shceduled;
@@ -23,12 +24,15 @@ isScheduleN:boolean=false;
 isScheduleM:boolean=false;
 template:any;
 isTemplate:boolean;
-
+selectedTimeZone:number=0;
+sub:any;
 recipients:any;
   constructor( public dialogRef: MatDialogRef<DisplayMessageComponent>
-            ,@Inject(MAT_DIALOG_DATA) public data:Display) { }
-
+            ,@Inject(MAT_DIALOG_DATA) public data:Display,
+            private timeZoneService:TimeZoneServiceService
+          ) { }
   ngOnInit() {
+    this.setTimeZone();
     this.isScheduleM=this.data?.isScheduleM?true:false;
     this.isScheduleN=this.data?.isScheduleN?true:false;
     if(this.isScheduleN){
@@ -63,8 +67,19 @@ recipients:any;
     // console.log(this.test.split(".").pop())
 
   }
+  setTimeZone(){
+    this.sub = this.timeZoneService.timezone$.subscribe(
+      res=> this.selectedTimeZone=res
+
+    )
+  }
   onClose(data?) {
     this.dialogRef.close(data);
   }
+  ngOnDestroy(){
+    if(this.sub){
+      this.sub.unsubscribe()
 
+    }
+  }
 }

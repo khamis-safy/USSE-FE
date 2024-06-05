@@ -91,7 +91,7 @@
           <ng-container matColumnDef="Created At">
             <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'CREATED_AT' | translate }}</th>
             <td class="text-center" mat-cell *matCellDef="let element">
-              {{ element.createdAt | toLocalTime }}
+              {{ element.createdAt | toLocalTime:selectedTimeZone }}
             </td>
           </ng-container>
   
@@ -99,7 +99,7 @@
           <ng-container matColumnDef="Scheduled At">
             <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'SCHEDULED_AT' | translate }}</th>
             <td class="text-center" mat-cell *matCellDef="let element">
-              {{ element.scheduledAt | toLocalTime }}
+              {{ element.scheduledAt | toLocalTime:selectedTimeZone }}
             </td>
           </ng-container>
   
@@ -130,6 +130,6 @@
     </ng-container>
 </div>
 <div *ngIf="isSmallScreen" class="small-screen-view">
-  <app-scheduled-mobileView #moibleView (isOpenNewMessage)="openNewMessage($event)"></app-scheduled-mobileView>
+  <app-scheduled-mobileView #moibleView  [selectedTimeZone]="selectedTimeZone" (isOpenNewMessage)="openNewMessage($event)"></app-scheduled-mobileView>
 </div>
 </section>

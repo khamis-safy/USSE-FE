@@ -34,7 +34,7 @@
 
 
         <div class="date-time d-flex justify-content-center ">
-          <span class="txt-sm text-neutral-500 p-2">{{message?.createdAt  | toLocalTime}}</span>
+          <span class="txt-sm text-neutral-500 p-2">{{message?.createdAt  | toLocalTime:selectedTimeZone }}</span>
         </div>
       </div>
       <div class="message-container">

@@ -5,10 +5,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TimeOnlyPipe implements PipeTransform {
 
-  transform(utcDate: string): any {
+  transform(utcDate: string,selectedTimeZone?:number): any {
     if (utcDate) {
+      let timezoneOffset = (selectedTimeZone && typeof(selectedTimeZone)=='number')?selectedTimeZone:0 
+
       utcDate = utcDate.indexOf('Z') > -1 ? utcDate : (utcDate + 'Z');
       const localDate = new Date(utcDate);
+      localDate.setHours(localDate.getUTCHours() + timezoneOffset);
 
       const day = localDate.getDate();
       const month = localDate.getMonth() + 1; // Months are 0-indexed, so add 1

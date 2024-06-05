@@ -201,13 +201,13 @@
           <!-- Received At Column -->
           <div class="row row-item" *ngIf="displayedColumns.includes('Received At')">
             <div class="col row-header">{{ 'RECEIVED_AT_LABEL' | translate }}</div>
-            <div class="col ">{{ element.createdAt | toLocalTime }}</div>
+            <div class="col ">{{ element.createdAt | toLocalTime:selectedTimeZone }}</div>
           </div>
       
           <!-- Updated At Column -->
           <div class="row row-item" *ngIf="displayedColumns.includes('Updated At')">
             <div class="col row-header">{{ 'UPDATED_AT_LABEL' | translate }}</div>
-            <div class="col ">{{ element.updatedAt | toLocalTime }}</div>
+            <div class="col ">{{ element.updatedAt | toLocalTime:selectedTimeZone }}</div>
           </div>
       
           <!-- Status Column -->

@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { CompaignsService, DevicesPermissions } from '../../../compaigns.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { TranslateService } from '@ngx-translate/core';
+import { TimeZoneServiceService } from 'src/app/shared/services/timeZoneService.service';
 
 @Component({
   selector: 'app-stepThree',
@@ -36,17 +37,30 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   isUser: boolean;
   @Output() formValidityChange = new EventEmitter<boolean>(true);
   @Output() isSelectedDevices = new EventEmitter<boolean>(true);
+  sub: any;
 
-  constructor( private translate:TranslateService,private devicesService:DevicesService,private datePipe: DatePipe,private compaignsService:CompaignsService,private authService:AuthService) { }
+  constructor( private translate:TranslateService,
+    private devicesService:DevicesService,
+    private datePipe: DatePipe,
+    private compaignsService:CompaignsService,
+    private authService:AuthService,
+    private timeZoneService:TimeZoneServiceService
+
+  
+  ) { }
   ngOnDestroy(): void {
 
     this.timeSub$.unsubscribe();
     this.formSub$.unsubscribe()
-
+    if(this.sub){
+      this.sub.unsubscribe()
+    }
   }
 
 
   ngOnInit() {
+    this.setTimeZone();
+
     this.getDevices()
     this.isSelectedDevices.emit(false);
 
@@ -70,7 +84,12 @@ else{
 
    });
   }
+  setTimeZone(){
+    this.sub = this.timeZoneService.timezone$.subscribe(
+      res=> this.setDefaultTime()
 
+    )
+  }
   deviceSelection(){
     if(this.deviceId)
     {
@@ -135,8 +154,9 @@ else{
        })
   }
   setDefaultTime(){
-    this.dateFormControl.setValue(new Date());
+    let currentTime = this.timeZoneService.getCurrentTime(this.timeZoneService.getTimezone());
 
+    this.dateFormControl.setValue(currentTime);
   }
   onSelect(event){
     this.authService.selectedDeviceId=event.value

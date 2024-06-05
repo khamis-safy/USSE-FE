@@ -19,6 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { arraysContainSameObjects } from 'src/app/shared/methods/arraysContainSameObjects';
 import { MessagesMobileViewComponent } from '../../mobile-view/messages-mobileView/messages-mobileView.component';
+import { TimeZoneServiceService } from 'src/app/shared/services/timeZoneService.service';
 
 @Component({
   selector: 'app-message-type',
@@ -78,6 +79,7 @@ filters:any;
   @ViewChild(MessagesMobileViewComponent) mobileView :MessagesMobileViewComponent
   alldevices: any[]=[];
   isDataCalledInMobile: any;
+  selectedTimeZone:number=0;
 
   constructor(public cdr: ChangeDetectorRef ,
     public dialog: MatDialog,
@@ -85,7 +87,9 @@ filters:any;
     private authService:AuthService,
     private translate:TranslateService,
     private translationService:TranslationService,
-    private breakpointObserver: BreakpointObserver){
+    private breakpointObserver: BreakpointObserver,
+    private timeZoneService:TimeZoneServiceService
+  ){
       this.display=this.messageService.getUpdatedDisplayNumber()
       this.pageNum=this.messageService.pageNum;
 
@@ -106,6 +110,8 @@ filters:any;
     ]
 
   ngOnInit() {
+    this.setTimeZone();
+
     this.filteringForm.patchValue({
       filterdData:this.selectedItems
     }
@@ -136,6 +142,13 @@ else{
   this.isUser=false;
 }
 this.onChangeSecreanSizes()
+    }
+    setTimeZone(){
+      let sub = this.timeZoneService.timezone$.subscribe(
+        res=> this.selectedTimeZone=res
+  
+      )
+      this.subscribtions.push(sub)
     }
     onChangeSecreanSizes(){
       this.breakpointObserver.observe(['(max-width: 768px)'])

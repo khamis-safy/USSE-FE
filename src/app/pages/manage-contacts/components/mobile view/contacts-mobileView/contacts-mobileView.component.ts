@@ -49,6 +49,7 @@ export class ContactsMobileViewComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   openedDialogs:any=[];
 @Input() canEdit:boolean;
+@Input() selectedTimeZone :number=0;
   listTableData:ListData[]=[]
   deletedContacts:string[]=[];
   canceledContacts:string[]=[];
@@ -59,8 +60,6 @@ export class ContactsMobileViewComponent implements OnInit {
   selection = new SelectionModel<Contacts>(true, []);
   subscribtions:Subscription[]=[];
   @Input() listId:string="";
-
- 
   isSearch: boolean;
   noData: boolean=false;
   notFound: boolean=false;

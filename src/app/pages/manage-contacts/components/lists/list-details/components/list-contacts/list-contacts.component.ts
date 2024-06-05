@@ -70,6 +70,7 @@ noData:boolean;
   searchSub: any;
   @ViewChild(ListDetailsMobileViewComponent) mobileView :ListDetailsMobileViewComponent
   isDataCalledInMobile: any;
+  @Input() selectedTimeZone :number=0;
 
 constructor(private activeRoute:ActivatedRoute,public dialog: MatDialog,
   private toaster: ToasterServices,

@@ -52,6 +52,7 @@ export class MessagesMobileViewComponent implements OnInit {
     searchSub: Subscription;
     filteration: any;
 
+    @Input() selectedTimeZone :number=0;
 
   showsOptions:SelectOption[]=[
     {title:'10',value:10},

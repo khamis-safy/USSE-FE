@@ -191,13 +191,13 @@
         <!-- Received at Column -->
         <ng-container matColumnDef="Received At">
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'RECEIVED_AT_LABEL' | translate }}</th>
-          <td class="text-center" mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime  }}</td>
+          <td class="text-center" mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime:selectedTimeZone  }}</td>
         </ng-container>
 
         <!-- Updated At Column -->
         <ng-container matColumnDef="Updated At">
           <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'UPDATED_AT_LABEL' | translate }}</th>
-          <td class="text-center" mat-cell *matCellDef="let element">{{ element.updatedAt | toLocalTime  }}</td>
+          <td class="text-center" mat-cell *matCellDef="let element">{{ element.updatedAt | toLocalTime:selectedTimeZone  }}</td>
         </ng-container>
 
         <!-- Status Column -->
@@ -282,6 +282,6 @@
   </ng-container>
 </div>
 <div *ngIf="isSmallScreen" class="small-screen-view">
-  <app-messages-mobileView #moibleView [msgCategory]="msgCategory" [canEdit]="canEdit" (isOpenNewMessage)="openNewMessage($event)"></app-messages-mobileView>
+  <app-messages-mobileView #moibleView  [selectedTimeZone]="selectedTimeZone" [msgCategory]="msgCategory" [canEdit]="canEdit" (isOpenNewMessage)="openNewMessage($event)"></app-messages-mobileView>
 </div>
 </section>

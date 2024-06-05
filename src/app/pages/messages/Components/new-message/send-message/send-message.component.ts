@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MessagesService } from '../../../messages.service';
 import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
+import { TimeZoneServiceService } from 'src/app/shared/services/timeZoneService.service';
 
 @Component({
   selector: 'app-send-message',
@@ -31,16 +32,20 @@ utcDateTime;
 timeSub$;
 isUser: boolean;
   permission:DevicesPermissions[];
+  sub: any;
   constructor(private devicesService:DevicesService,
     private dateService:NbDateService<Date>,
     private datePipe: DatePipe,
     private messageService:MessagesService,
-    private authService:AuthService) {
+    private authService:AuthService,
+    private timeZoneService:TimeZoneServiceService
+  ) {
 
     // this.selectedDate=dateService.today();
    }
 
   ngOnInit() {
+    this.setTimeZone();
 
     // this.getDevices();
     this.isSelectedDevices.emit(false);
@@ -58,8 +63,17 @@ else{
   this.isUser=false;
 }
   }
+  setTimeZone(){
+    this.sub = this.timeZoneService.timezone$.subscribe(
+      res=> this.setDefaultTime()
+
+    )
+  }
   ngOnDestroy(): void {
-    this.timeSub$.unsubscribe()
+    this.timeSub$.unsubscribe();
+    if(this.sub){
+      this.sub.unsubscribe()
+    }
   }
   convertToUTC(timecontrol) {
     const selectedTime =timecontrol.value;
@@ -84,31 +98,7 @@ else{
           }
         });
         
-        // if(this.authService.selectedDeviceId ==""){
-
-        //   this.form.patchValue({
-        //   devicesData: {
-        //   title:this.devices[0]?.title,
-        //   value:this.devices[0]?.value
-        //   }
-
-        //   })
-        // }
-        // else{
-        //   let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId);
-        //   if(selected){
-
-        //     this.deviceId=this.authService.selectedDeviceId;
-        //     this.form.patchValue({
-        //       devicesData: {
-        //       title:selected.title,
-        //       value:selected?.value
-        //       }
-  
-        //       })
-        //   }
-        // }
-        // console.log(this.devices)
+    
         if(activeDevices.length==0){
           this.deviceLoadingText='No Results'
         }
@@ -119,8 +109,10 @@ else{
        })
   }
   setDefaultTime(){
-    this.dateFormControl.setValue(new Date());
+    let currentTime = this.timeZoneService.getCurrentTime(this.timeZoneService.getTimezone());
 
+    this.dateFormControl.setValue(currentTime);
+    
   }
   onSelect(event){
     this.deviceId=event.value;

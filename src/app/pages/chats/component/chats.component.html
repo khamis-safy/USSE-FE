@@ -117,7 +117,7 @@
                                     </div>
 
                                     <span class="msg-time text-primary-800">{{chatContact?.lastMessageDate
-                                        |toLocalTime}}</span>
+                                        |toLocalTime:selectedTimeZone}}</span>
                                 </div>
                             </ng-container>
 
@@ -188,7 +188,7 @@
 
                 <div class="d-flex justify-content-center timestamp">
                     <span *ngIf="isString(day)">{{ day |translate}}</span>
-                    <span *ngIf="!isString(day)">{{ day |toLocalTime}}</span>
+                    <span *ngIf="!isString(day)">{{ day |toLocalTime:selectedTimeZone}}</span>
                 </div> <!-- display chat messages -->
             
                 <ng-container *ngFor="let chat of groupedMessages[day]">
@@ -201,7 +201,7 @@
                                 </div>
                                 <div class="received-chats-msg">
                                     <p>{{ chat?.msgBody }}</p>
-                                    <span class="time">{{ chat?.createdAt | timeOnly }}</span>
+                                    <span class="time">{{ chat?.createdAt | timeOnly:selectedTimeZone }}</span>
                                 </div>
                             </div>
                             <div *ngSwitchCase="true" class="outgoing-chats ">
@@ -211,13 +211,13 @@
                                         chat?.status == 2?('deliveredAt' |translate):
                                         chat?.status == 3?('seenAt' |translate):''}}
 
-                                        {{chat?.updatedAt |timeOnly}}</span>
+                                        {{chat?.updatedAt |timeOnly:selectedTimeZone}}</span>
                                 </div>
                                 <div class="message-out d-flex flex-column gap-1 align-items-end"
                                     (click)="toggleUpdatedAt(chat)">
                                     <div class="outgoing-chats-msg ">
                                         <p>{{ chat?.msgBody }}</p>
-                                        <span class="time">{{ chat?.createdAt | timeOnly }}</span>
+                                        <span class="time">{{ chat?.createdAt | timeOnly:selectedTimeZone }}</span>
                                     </div>
 
                                     <ng-container *ngIf="chat?.status != null">
@@ -269,7 +269,7 @@
                                     </ng-container>
                                     <div>
                                         <p class="mt-1" *ngIf="chat?.msgBody !== '' ">{{ chat?.msgBody }}</p>
-                                        <span class="time">{{ chat?.createdAt | timeOnly }}</span>
+                                        <span class="time">{{ chat?.createdAt | timeOnly:selectedTimeZone }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -281,7 +281,7 @@
                                         chat?.status == 2?('deliveredAt' |translate):
                                         chat?.status == 3?('seenAt' |translate):''}}
 
-                                        {{chat?.updatedAt |timeOnly}}</span>
+                                        {{chat?.updatedAt |timeOnly:selectedTimeZone}}</span>
                                 </div>
                                 <div class="message-out d-flex flex-column gap-1 align-items-end"
                                     (click)="toggleUpdatedAt(chat)">
@@ -300,7 +300,7 @@
                                         </ng-container>
                                         <div>
                                             <p class="mt-1" *ngIf="chat?.msgBody !== '' ">{{ chat?.msgBody }}</p>
-                                            <span class="time">{{ chat?.createdAt | timeOnly }}</span>
+                                            <span class="time">{{ chat?.createdAt | timeOnly:selectedTimeZone }}</span>
                                         </div>
                                     </div>
                                     <ng-container *ngIf="chat?.status != null">

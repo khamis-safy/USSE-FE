@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -73,6 +73,8 @@ export class ScheduledMobileViewComponent implements OnInit ,OnDestroy{
      
     });
   alldevices: any;
+  @Input() selectedTimeZone :number=0;
+
     constructor(private messageService:MessagesService,
       public dialog: MatDialog,
       private authService:AuthService,

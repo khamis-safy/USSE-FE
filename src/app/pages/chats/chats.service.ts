@@ -14,8 +14,11 @@ export class ChatsService {
   private api: string = `${environment.api}Chat`;
   private signalRlink = `${environment.signalR}`
   private hubConnection: signalR.HubConnection;
-  receivedMessages$=new BehaviorSubject<any>([]);
-  updatedStatus$ = new BehaviorSubject<any>([]);
+  receivedMessages=new BehaviorSubject<any>([]);
+  updatedStatus= new BehaviorSubject<any>([]);
+  receivedMessages$: Observable<any> = this.receivedMessages.asObservable();
+  updatedStatus$: Observable<any> = this.updatedStatus.asObservable();
+
 
 constructor(private http:HttpClient) { 
  
@@ -43,14 +46,14 @@ private startHubConnection (): void {
 }
 public onReceiveMessage = ()=>{
   this.hubConnection.on('ReceiveMessage',(email,message)=>{
-    this.receivedMessages$.next({userEmail:email,message:message});
+    this.receivedMessages.next({userEmail:email,message:message});
 
   })
 }
 
 public onStatusChange = ()=>{
   this.hubConnection.on('StatusUpdate',(email,message)=>{
-    this.updatedStatus$.next({userEmail:email,message:message});
+    this.updatedStatus.next({userEmail:email,message:message});
 
   })
 }

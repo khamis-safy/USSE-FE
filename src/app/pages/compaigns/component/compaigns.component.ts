@@ -15,6 +15,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Subject, Subscription, debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { CampaignsMobileViewComponent } from '../mobile view/campaigns-mobileView/campaigns-mobileView.component';
 import { arraysContainSameObjects } from 'src/app/shared/methods/arraysContainSameObjects';
+import { TimeZoneServiceService } from 'src/app/shared/services/timeZoneService.service';
 
 @Component({
   selector: 'app-compaigns',
@@ -57,11 +58,13 @@ export class CompaignsComponent implements AfterViewInit ,OnInit,OnDestroy {
   @ViewChild(CampaignsMobileViewComponent) mobileView :CampaignsMobileViewComponent
   alldevices: any[];
   isDataCalledInMobile: any;
+  selectedTimeZone:number=0;
 
   constructor(private compaignsService:CompaignsService,
     public dialog: MatDialog, 
     private router:Router,
     private authService:AuthService,
+    private timeZoneService:TimeZoneServiceService,
     private breakpointObserver: BreakpointObserver
     ){
     this.display=compaignsService.getUpdatedDisplayNumber();
@@ -70,6 +73,7 @@ export class CompaignsComponent implements AfterViewInit ,OnInit,OnDestroy {
 
 
   ngOnInit() {
+    this.setTimeZone();
 
 // set default device to be first one
 
@@ -83,6 +87,13 @@ else{
 }
     this.columns=new FormControl(this.displayedColumns)
 this.onChangeSecreanSizes();
+  }
+  setTimeZone(){
+    let sub = this.timeZoneService.timezone$.subscribe(
+      res=> this.selectedTimeZone=res
+
+    )
+    this.subscribtions.push(sub)
   }
   onChangeSecreanSizes(){
     this.breakpointObserver.observe(['(max-width: 768px)'])

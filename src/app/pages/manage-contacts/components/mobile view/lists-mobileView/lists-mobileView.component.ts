@@ -58,6 +58,8 @@ export class ListsMobileViewComponent implements OnInit {
     searchControl:this.searchControl
   })
   searchSub: any;
+  @Input() selectedTimeZone :number=0;
+
   constructor(public dialog: MatDialog,
     private toaster: ToasterServices,
     private listService:ManageContactsService,

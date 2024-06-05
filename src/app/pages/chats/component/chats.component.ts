@@ -17,6 +17,7 @@ import { DatePipe } from '@angular/common';
 import { ToasterServices } from 'src/app/shared/components/us-toaster/us-toaster.component';
 import { isFileSizeNotAllowed } from 'src/app/shared/methods/fileSizeValidator';
 import { TranslateService } from '@ngx-translate/core';
+import { TimeZoneServiceService } from 'src/app/shared/services/timeZoneService.service';
 
 interface files{
   fileName:string,
@@ -35,6 +36,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   message :any= new FormControl('',Validators.required);
   @ViewChild('fileInput') fileInputRef: ElementRef<HTMLInputElement>;
   @ViewChild('searchContainer') searchContainer: ElementRef<HTMLInputElement>;
+  selectedTimeZone:number=0;
 
   uploadedAttachments:files[]=[];
   form = new FormGroup({
@@ -105,7 +107,9 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
     private messageService:MessagesService,
    private datePipe: DatePipe,
    private toaster:ToasterServices,
-   private translate:TranslateService
+   private translate:TranslateService,
+   private timeZoneService:TimeZoneServiceService
+
     ){
       this.emojiForm = this.formBuilder.group({
         emojiInput: ['']
@@ -136,7 +140,8 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   }
   ngOnInit() {
     this.getDevices();
- 
+    this.setTimeZone();
+
     let searchMsgSub=this.searchMsg.valueChanges.pipe(
     debounceTime(700),
     distinctUntilChanged(),
@@ -168,6 +173,13 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
     this.chatService.startConnection()
     this.onRecieveMessages();
     this.onStatusChange();
+  }
+   setTimeZone(){
+    let sub = this.timeZoneService.timezone$.subscribe(
+      res=> this.selectedTimeZone=res
+
+    )
+    this.subscriptions.push(sub)
   }
   setupSearchSubscription(): void {
     this.searchSub= this.searchControl.valueChanges.pipe(
@@ -1021,7 +1033,6 @@ else{
     updateMessageStatus(newMessage){
 
       let message:chatHub=JSON.parse(newMessage)
-
       if(message.Deviceid == this.deviceId ){
         // update Status on list chats
         let findChat = this.listChats.find((chat)=>chat.chat.id == message.ChatId);

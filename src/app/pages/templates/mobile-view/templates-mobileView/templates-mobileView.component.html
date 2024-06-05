@@ -133,7 +133,7 @@
         <!-- Created At Column -->
         <div class="row row-item" *ngIf="displayedColumns.includes('Created At')">
           <div class="col row-header">{{ 'CREATED_AT' | translate }}</div>
-          <div class="col ">{{ element.createdAt | toLocalTime }}</div>
+          <div class="col ">{{ element.createdAt | toLocalTime:selectedTimeZone }}</div>
         </div>
   
         <!-- Action Column -->

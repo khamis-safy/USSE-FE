@@ -17,6 +17,7 @@ import { TranslationService } from 'src/app/shared/services/translation.service'
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { ScheduledMobileViewComponent } from '../../mobile-view/scheduled-mobileView/scheduled-mobileView.component';
 import { arraysContainSameObjects } from 'src/app/shared/methods/arraysContainSameObjects';
+import { TimeZoneServiceService } from 'src/app/shared/services/timeZoneService.service';
 
 
 
@@ -58,12 +59,15 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
   alldevices: any;
   @ViewChild(ScheduledMobileViewComponent) mobileView :ScheduledMobileViewComponent
   isDataCalledInMobile: boolean;
+  selectedTimeZone:number=0;
 
   constructor(private messageService:MessagesService,
     public dialog: MatDialog,
     private authService:AuthService,
     private translationService:TranslationService,
-    private breakpointObserver: BreakpointObserver){
+    private breakpointObserver: BreakpointObserver,
+    private timeZoneService:TimeZoneServiceService
+  ){
       this.display=this.messageService.getUpdatedDisplayNumber()
       this.pageNum=this.messageService.pageNum;
     }
@@ -73,6 +77,7 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
     }
     }
   ngOnInit() {
+    this.setTimeZone();
 
     this.columns=new FormControl(this.displayedColumns)
 
@@ -98,6 +103,13 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
       }
       this.onChangeSecreanSizes();
 
+    }
+    setTimeZone(){
+      let sub = this.timeZoneService.timezone$.subscribe(
+        res=> this.selectedTimeZone=res
+  
+      )
+      this.subscribtions.push(sub)
     }
     onChangeSecreanSizes(){
       this.breakpointObserver.observe(['(max-width: 768px)'])

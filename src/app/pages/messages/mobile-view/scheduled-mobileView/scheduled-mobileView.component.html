@@ -120,7 +120,7 @@
       <!-- Scheduled At Column -->
        <div class="row w-100" >
         <div class="col row-header">{{ 'SCHEDULED_AT' | translate }}</div>
-        <div class="col ">{{ element.scheduledAt | toLocalTime }}</div>
+        <div class="col ">{{ element.scheduledAt | toLocalTime:selectedTimeZone }}</div>
       </div>
         
         </mat-expansion-panel-header>
@@ -165,7 +165,7 @@
         <!-- Created At Column -->
         <div class="row row-item" *ngIf="displayedColumns.includes('Created At')">
           <div class="col row-header">{{ 'CREATED_AT' | translate }}</div>
-          <div class="col ">{{ element.createdAt | toLocalTime }}</div>
+          <div class="col ">{{ element.createdAt | toLocalTime:selectedTimeZone }}</div>
         </div>
     
       

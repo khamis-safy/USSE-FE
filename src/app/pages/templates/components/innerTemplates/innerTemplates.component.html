@@ -71,7 +71,7 @@
           <!-- Created At Column -->
           <ng-container matColumnDef="Created At" >
             <th class="text-center" mat-header-cell *matHeaderCellDef>{{ 'CREATED_AT' | translate }}</th>
-            <td class="text-center" mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime   }}</td>
+            <td class="text-center" mat-cell *matCellDef="let element">{{ element.createdAt | toLocalTime:selectedTimeZone   }}</td>
           </ng-container>
   
           <!-- Action Column -->
@@ -115,6 +115,6 @@
     </ng-container>
   </div>
   <div *ngIf="isSmallScreen" class="small-screen-view">
-    <app-templates-mobileView #moibleView  [canEdit]="canEdit" [dataSource]="dataSource" [length]="length"></app-templates-mobileView>
+    <app-templates-mobileView #moibleView [selectedTimeZone]="selectedTimeZone" [canEdit]="canEdit" [dataSource]="dataSource" [length]="length"></app-templates-mobileView>
   </div>
 </section>
