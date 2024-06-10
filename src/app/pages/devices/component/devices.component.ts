@@ -401,6 +401,7 @@ onPageChange(event){
         if(this.dataNeeded(err.error.msg)){
           this.addTLDevice({deviceTl:element,error:err.error})
         }
+        this.loading=false;
       }
     )
   }

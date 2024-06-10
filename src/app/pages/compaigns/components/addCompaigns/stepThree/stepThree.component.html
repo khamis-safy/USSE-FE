@@ -29,7 +29,9 @@
           [formControl]="dateFormControl"
           nzUse12Hours
           [nzShowTime]="{ nzFormat: 'hh:mm a',nzUse12Hours: true }"
-
+          (nzOnOk)="convertToUTC(dateFormControl)"
+          (nzOnCalendarChange)="convertToUTC(dateFormControl)"
+          (nzOnOpenChange)="convertToUTC(dateFormControl)"
       ></nz-date-picker>
       </div>
     </div>

@@ -76,13 +76,7 @@ if(this.authService.getUserInfo()?.customerId!=""){
 else{
   this.isUser=false;
 }
-    // this.getDevices();
-    this.convertToUTC(this.dateFormControl)
-    this.timeSub$ = this.dateFormControl.valueChanges.subscribe(res=>{
-    this.convertToUTC(this.dateFormControl);
 
-
-   });
   }
   setTimeZone(){
     this.sub = this.timeZoneService.timezone$.subscribe(
@@ -100,11 +94,12 @@ else{
     }
   }
   convertToUTC(timecontrol) {
-    const selectedTime =timecontrol.value;
+    const selectedTime =new Date(timecontrol.value);
     if (selectedTime) {
-      this.utcDateTime = this.datePipe.transform(selectedTime,`yyyy-MM-ddTHH:mm:ss`, 'UTC');
+      const utcTime = new Date(selectedTime.getTime() - this.timeZoneService.getTimezone() * 60 * 60 * 1000);
+      this.utcDateTime = this.datePipe.transform(utcTime,`yyyy-MM-ddTHH:mm:ss`);
     }
-
+    
   }
   getDevices(){
 
@@ -155,8 +150,8 @@ else{
   }
   setDefaultTime(){
     let currentTime = this.timeZoneService.getCurrentTime(this.timeZoneService.getTimezone());
-
     this.dateFormControl.setValue(currentTime);
+    this.convertToUTC(this.dateFormControl)
   }
   onSelect(event){
     this.authService.selectedDeviceId=event.value

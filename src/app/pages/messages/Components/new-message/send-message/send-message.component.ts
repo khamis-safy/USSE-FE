@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {  Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NbDateService } from '@nebular/theme';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { MessagesService } from '../../../messages.service';
 import { DevicesPermissions } from 'src/app/pages/compaigns/compaigns.service';
 import { TimeZoneServiceService } from 'src/app/shared/services/timeZoneService.service';
+
 
 @Component({
   selector: 'app-send-message',
@@ -19,14 +20,15 @@ export class SendMessageComponent implements OnInit ,OnDestroy{
   devices:SelectOption[];
   deviceLoadingText:string='Loading ...';
   devicesData:any = new FormControl([]);
-  dateFormControl:any = new FormControl('');
+  dateFormControl:FormControl = new FormControl();
   @Output() isSelectedDevices = new EventEmitter<boolean>(true);
 
   // selectedDevices:string[]=[];
   deviceId:string;
   form = new FormGroup({
     devicesData:this.devicesData,
-    dateFormControl:this.dateFormControl
+    dateFormControl:this.dateFormControl,
+
   });
 utcDateTime;
 timeSub$;
@@ -38,23 +40,18 @@ isUser: boolean;
     private datePipe: DatePipe,
     private messageService:MessagesService,
     private authService:AuthService,
-    private timeZoneService:TimeZoneServiceService
+    private timeZoneService:TimeZoneServiceService,
+
   ) {
 
     // this.selectedDate=dateService.today();
    }
-
+   
   ngOnInit() {
+    this.getDevices();
+    this.isSelectedDevices.emit(false);
     this.setTimeZone();
 
-    // this.getDevices();
-    this.isSelectedDevices.emit(false);
-    this.convertToUTC(this.dateFormControl)
-    this.timeSub$ = this.dateFormControl.valueChanges.subscribe(res=>{
-     this.convertToUTC(this.dateFormControl);
-
-
-    });
     this.permission =this.messageService.devicesPermissions;
 if(this.authService.getUserInfo()?.customerId!=""){
   this.isUser=true;
@@ -62,28 +59,37 @@ if(this.authService.getUserInfo()?.customerId!=""){
 else{
   this.isUser=false;
 }
+
   }
   setTimeZone(){
+  
     this.sub = this.timeZoneService.timezone$.subscribe(
-      res=> this.setDefaultTime()
+      res=> {
+        this.setDefaultTime();
+
+      }
 
     )
   }
+  setDefaultTime(){
+    let currentTime = this.timeZoneService.getCurrentTime(this.timeZoneService.getTimezone());
+    this.dateFormControl.setValue(currentTime);
+    this.convertToUTC(this.dateFormControl)
+  }
+  convertToUTC(timecontrol) {
+      const selectedTime =new Date(timecontrol.value);
+    if (selectedTime) {
+      const utcTime = new Date(selectedTime.getTime() - this.timeZoneService.getTimezone() * 60 * 60 * 1000);
+      this.utcDateTime = this.datePipe.transform(utcTime,`yyyy-MM-ddTHH:mm:ss`);
+    }
+    
+  }
   ngOnDestroy(): void {
-    this.timeSub$.unsubscribe();
     if(this.sub){
       this.sub.unsubscribe()
     }
   }
-  convertToUTC(timecontrol) {
-    const selectedTime =timecontrol.value;
-    if (selectedTime) {
-      this.utcDateTime = this.datePipe.transform(selectedTime,`yyyy-MM-ddTHH:mm:ss`, 'UTC');
-    }
-    else {
-      
-    }
-  }
+
   getDevices(){
 
     this.authService.getDevices(this.authService.getUserInfo()?.email,10,0,"","").subscribe(
@@ -108,12 +114,7 @@ else{
 
        })
   }
-  setDefaultTime(){
-    let currentTime = this.timeZoneService.getCurrentTime(this.timeZoneService.getTimezone());
 
-    this.dateFormControl.setValue(currentTime);
-    
-  }
   onSelect(event){
     this.deviceId=event.value;
     // this.authService.selectedDeviceId=event.value
