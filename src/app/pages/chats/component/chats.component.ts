@@ -1196,5 +1196,6 @@ else{
     ngOnDestroy() {
       this.chatService.closeConnection();
       this.closeSubsciptions();
+      this.subscriptions.map((sub)=>sub.unsubscribe())
       }
 }
