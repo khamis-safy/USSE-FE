@@ -7,11 +7,14 @@ import { AuthService } from '../services/auth.service';
 export class ToLocalTimePipe implements PipeTransform {
 constructor(private authService:AuthService){}
   transform(utcDate: string,selectedTimeZone?:number): any {
-    let timezoneOffset = (selectedTimeZone && typeof(selectedTimeZone)=='number')?selectedTimeZone:0 
+    let timezoneOffset = selectedTimeZone;
     if (utcDate) {
       utcDate = utcDate.indexOf('Z') > -1 ? utcDate : (utcDate + 'Z');
       const localDate = new Date(utcDate);
-      localDate.setHours(localDate.getUTCHours() + timezoneOffset);
+      if(timezoneOffset){
+        localDate.setHours(localDate.getUTCHours() + timezoneOffset);
+
+      }
       const day = localDate.getDate();
       const month = localDate.getMonth() + 1; // Months are 0-indexed, so add 1
       const year = localDate.getFullYear();

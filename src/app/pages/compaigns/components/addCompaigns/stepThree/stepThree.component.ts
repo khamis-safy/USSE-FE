@@ -87,11 +87,18 @@ else{
   }
   convertToUTC(timecontrol) {
     const selectedTime =new Date(timecontrol.value);
+    let timezone=this.timeZoneService.getTimezone(); 
     if (selectedTime) {
-      const utcTime = new Date(selectedTime.getTime() - this.timeZoneService.getTimezone() * 60 * 60 * 1000);
-      this.utcDateTime = this.datePipe.transform(utcTime,`yyyy-MM-ddTHH:mm:ss`);
+      if(timezone)
+        {  const utcTime = new Date(selectedTime.getTime() - timezone * 60 * 60 * 1000);
+          this.utcDateTime = this.datePipe.transform(utcTime,`yyyy-MM-ddTHH:mm:ss`);
+
+        }
+        else{
+          this.utcDateTime = this.datePipe.transform(selectedTime,`yyyy-MM-ddTHH:mm:ss`, 'UTC');
+        }
     }
-    
+   
   }
   getDevices(){
 

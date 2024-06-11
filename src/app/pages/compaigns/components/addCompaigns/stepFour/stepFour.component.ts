@@ -311,13 +311,25 @@ setDefaultTime() {
   }
   convertToUTC(timecontrol: any): any {
     const selectedTime = timecontrol.value;
-
+    let timezone = this.timeZoneService.getTimezone();
+   
     if (selectedTime) {
-
-      const utcTime = new Date(selectedTime.getTime() - this.timeZoneService.getTimezone() * 60 * 60 * 1000);
+       if(timezone){
+       const utcTime = new Date(selectedTime.getTime() - timezone * 60 * 60 * 1000);
   
       const utcDateTime = this.datePipe.transform(utcTime, 'HH:mm:ss');
       return utcDateTime;
+    }
+     else{
+      const timeOnly = new Date();
+      timeOnly.setHours(selectedTime.getHours());
+      timeOnly.setMinutes(selectedTime.getMinutes());
+      timeOnly.setSeconds(selectedTime.getSeconds());
+
+      const utcTime = this.datePipe.transform(timeOnly, 'HH:mm:ss', 'UTC');
+
+      return utcTime;
+     }
     }
   }
 

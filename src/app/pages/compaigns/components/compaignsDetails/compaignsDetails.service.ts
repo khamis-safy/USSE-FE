@@ -65,7 +65,8 @@ export class CompaignsDetailsService {
   
     // Get the current date and time in UTC
     const utcDate = new Date(Date.UTC(0, 0, 0, hours, minutes));
-  
+  if(timezone){
+
     utcDate.setHours(utcDate.getUTCHours() + timezone);
     
     
@@ -81,5 +82,16 @@ export class CompaignsDetailsService {
     const formattedTime = `${formattedHour}:${minutes} ${amPm}`;
     // Return local hours and minutes as a string
     return formattedTime;
+  }
+  else{
+    const timezoneOffset = new Date().getTimezoneOffset();
+
+  // Adjust hours and minutes for the local time zone offset
+  const localHours = (utcDate.getUTCHours() - Math.floor(timezoneOffset / 60)).toString().padStart(2, '0');
+  const localMinutes = (utcDate.getUTCMinutes() - (timezoneOffset % 60)).toString().padStart(2, '0');
+
+  // Return local hours and minutes as a string
+  return `${localHours}:${localMinutes}`;
+  }
   }
 }

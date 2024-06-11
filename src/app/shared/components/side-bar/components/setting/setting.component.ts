@@ -193,7 +193,7 @@ this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value;
           this.authService.userInfo.phoneNumber=res.phoneNumber
           this.authService.userInfo.apiToken=res.apiToken;
           this.authService.userInfo.countryCode=code;
-          this.timezoneService.setTimezone(parseInt(res?.timezone))
+          this.timezoneService.setTimezone(res?.timezone)
 
       this.onClose(true);
         },
