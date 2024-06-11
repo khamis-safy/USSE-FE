@@ -50,7 +50,6 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
   ) { }
   ngOnDestroy(): void {
 
-    this.timeSub$.unsubscribe();
     this.formSub$.unsubscribe()
     if(this.sub){
       this.sub.unsubscribe()
@@ -59,8 +58,6 @@ export class StepThreeComponent implements OnInit ,OnDestroy{
 
 
   ngOnInit() {
-    this.setTimeZone();
-
     this.getDevices()
     this.isSelectedDevices.emit(false);
 
@@ -78,12 +75,7 @@ else{
 }
 
   }
-  setTimeZone(){
-    this.sub = this.timeZoneService.timezone$.subscribe(
-      res=> this.setDefaultTime()
 
-    )
-  }
   deviceSelection(){
     if(this.deviceId)
     {
@@ -114,31 +106,6 @@ else{
             deviceIcon:res.deviceType
           }
         });
-        // if(this.authService.selectedDeviceId ==""){
-
-        //   this.form.patchValue({
-        //   devicesData: {
-        //   title:this.devices[0]?.title,
-        //   value:this.devices[0]?.value
-        //   }
-
-        //   })
-        // }
-        // else{
-        //   let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId);
-        //   if(selected){
-
-        //     this.deviceId=this.authService.selectedDeviceId;
-        //     this.form.patchValue({
-        //       devicesData: {
-        //       title:selected.title,
-        //       value:selected?.value
-        //       }
-  
-        //       })
-        //   }
-        // }
-        // console.log(this.devices)
         if(activeDevices.length==0){
           this.deviceLoadingText=this.translate.instant('No Results')
         }

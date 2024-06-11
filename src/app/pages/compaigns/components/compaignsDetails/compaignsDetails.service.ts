@@ -70,8 +70,6 @@ export class CompaignsDetailsService {
     
     
     let hour = utcDate.getHours();
-    let minute = utcDate.getMinutes();
-
     // Convert hours to 12-hour format and determine AM/PM
     const amPm = hour >= 12 ? 'PM' : 'AM';
     hour = hour % 12 || 12; // Handle 0 as 12 for 12-hour format

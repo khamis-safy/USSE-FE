@@ -2409,6 +2409,7 @@ mat-tab-header.mat-mdc-tab-header::-webkit-scrollbar {
 .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__leading, .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__notch, .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__trailing {
   border-color: var(--clr-primary-800)  !important;
 }
+
 @media only screen and (max-width: 768px) {
   .new-campaign.stepper .mat-horizontal-stepper-wrapper .mat-horizontal-content-container {
     overflow-y: hidden !important; 
@@ -2887,3 +2888,30 @@ span.mat-mdc-select-value-text {
         border-radius: 25px !important;
     }
 }
+
+.ant-picker-panel {
+  
+    .ant-picker-footer > :last-child{
+  display: none !important;
+    }
+    .custom-btn-ok{
+      border: none !important;
+      outline: none !important;
+      width: fit-content;
+      border: none;
+      height:30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px;
+      margin-block:3px ;
+      &:hover{
+        filter: brightness(0.95);
+        -webkit-filter: brightness(0.95);
+      }
+  
+    }
+}
+
+
+

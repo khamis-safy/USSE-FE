@@ -1,4 +1,4 @@
-import {  Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {  Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NbDateService } from '@nebular/theme';
 import { DevicesService } from 'src/app/pages/devices/devices.service';
@@ -15,7 +15,7 @@ import { TimeZoneServiceService } from 'src/app/shared/services/timeZoneService.
   templateUrl: './send-message.component.html',
   styleUrls: ['./send-message.component.scss']
 })
-export class SendMessageComponent implements OnInit ,OnDestroy{
+export class SendMessageComponent implements OnInit ,OnDestroy {
   @ViewChild("dateTime") dateTime!: ElementRef;
   devices:SelectOption[];
   deviceLoadingText:string='Loading ...';
@@ -30,6 +30,7 @@ export class SendMessageComponent implements OnInit ,OnDestroy{
     dateFormControl:this.dateFormControl,
 
   });
+
 utcDateTime;
 timeSub$;
 isUser: boolean;
@@ -41,7 +42,6 @@ isUser: boolean;
     private messageService:MessagesService,
     private authService:AuthService,
     private timeZoneService:TimeZoneServiceService,
-
   ) {
 
     // this.selectedDate=dateService.today();
@@ -50,7 +50,7 @@ isUser: boolean;
   ngOnInit() {
     this.getDevices();
     this.isSelectedDevices.emit(false);
-    this.setTimeZone();
+    this.setDefaultTime();
 
     this.permission =this.messageService.devicesPermissions;
 if(this.authService.getUserInfo()?.customerId!=""){
@@ -61,16 +61,7 @@ else{
 }
 
   }
-  setTimeZone(){
-  
-    this.sub = this.timeZoneService.timezone$.subscribe(
-      res=> {
-        this.setDefaultTime();
 
-      }
-
-    )
-  }
   setDefaultTime(){
     let currentTime = this.timeZoneService.getCurrentTime(this.timeZoneService.getTimezone());
     this.dateFormControl.setValue(currentTime);

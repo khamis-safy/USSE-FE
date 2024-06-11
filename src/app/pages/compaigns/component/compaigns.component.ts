@@ -100,59 +100,62 @@ this.onChangeSecreanSizes();
     .pipe(takeUntil(this.destroy$))
     .subscribe(result => {
       this.isSmallScreen = result.matches;
-      if(!this.isSmallScreen){
-       
-          if(this.dataSource){
+      if(this.isCompagins){
+          if(!this.isSmallScreen){
 
-          if(!arraysContainSameObjects(this.dataSource.data,this.mobileView.messagesTableData)){
-            if(this.mobileView?.searchControl.value){
-              this.getDevices()
+          
+              if(this.dataSource){
+
+              if(!arraysContainSameObjects(this.dataSource?.data,this.mobileView?.messagesTableData)){
+                if(this.mobileView?.searchControl.value){
+                  this.getDevices()
+                }
+                else{
+                  this.getDataFromChild(this.mobileView?.alldevices,this.mobileView?.messagesTableData,this.mobileView?.length)
+
+                }
+              }
             }
             else{
-              this.getDataFromChild(this.mobileView.alldevices,this.mobileView.messagesTableData,this.mobileView.length)
-
-            }
-          }
-        }
-         else{
-          if(!this.isDataCalledInMobile){
-            this.getDevices()
-          }
-          else{
-            if(this.mobileView.searchControl?.value){
-              this.getDevices()
-            }
-            else{
-              this.getDataFromChild(this.mobileView.alldevices,this.mobileView.messagesTableData,this.mobileView.length)
-
-            }
-          }
-        } 
-      }
-      else{
-
-          if(this.dataSource){
-            setTimeout(() => {
-              if(this.searchControl.value){
-                this.mobileView.getDevices();
+              if(!this.isDataCalledInMobile){
+                this.getDevices()
               }
               else{
-                this.mobileView?.getDataFromParent(this.alldevices,this.dataSource.data,this.length)
+                if(this.mobileView?.searchControl?.value){
+                  this.getDevices()
+                }
+                else{
+                  this.getDataFromChild(this.mobileView?.alldevices,this.mobileView?.messagesTableData,this.mobileView?.length)
 
+                }
               }
-          }, 100);
+            } 
           }
           else{
-            setTimeout(() => {
 
-              this.mobileView?.getDevices();
-              this.isDataCalledInMobile=true;
+              if(this.dataSource){
+                setTimeout(() => {
+                  if(this.searchControl.value){
+                    this.mobileView?.getDevices();
+                  }
+                  else{
+                    this.mobileView?.getDataFromParent(this.alldevices,this.dataSource.data,this.length)
 
-            }, 100);
+                  }
+              }, 100);
+              }
+              else{
+                setTimeout(() => {
+
+                  this.mobileView?.getDevices();
+                  this.isDataCalledInMobile=true;
+
+                }, 100);
+              }
+            
+            
           }
-        
-        
-      }
+    }
     });
   }
   handleResponce(res,campaigns?,length?){

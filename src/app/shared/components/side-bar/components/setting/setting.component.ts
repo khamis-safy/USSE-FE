@@ -170,7 +170,7 @@ this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value;
 
       this.loading=true;
       let mobile=this.form.value.mobile? this.form.value.mobile.e164Number:null;
-      const data=this.selectedZone?{
+      const data={
         token: this.authService.getRefreshToken(),
         apiToken: this.apiToken.value,
         contactName: this.form.value.contactName,
@@ -179,15 +179,6 @@ this.selectedZone=this.timeZones.find((time)=>time.index==zone.value).value;
         maskType: this.form.value.maskType.value,
         phoneNumber: mobile,
         countryCode:code
-      }:{
-        token: this.authService.getRefreshToken(),
-        apiToken: this.apiToken.value,
-        contactName: this.form.value.contactName,
-        organisationName: this.form.value.organisationName,
-        maskType: this.form.value.maskType.value,
-        phoneNumber: mobile,
-        countryCode:code
-
       }
 
       this.authService.editProfile(data).subscribe(

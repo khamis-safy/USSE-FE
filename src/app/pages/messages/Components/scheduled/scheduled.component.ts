@@ -121,8 +121,8 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
 
             if(this.dataSource){
   
-            if(!arraysContainSameObjects(this.dataSource.data,this.mobileView.messagesTableData)){
-              this.handleResponce(this.mobileView.alldevices,this.mobileView.messagesTableData,this.mobileView.length)
+            if(!arraysContainSameObjects(this.dataSource.data,this.mobileView?.messagesTableData)){
+              this.handleResponce(this.mobileView?.alldevices,this.mobileView?.messagesTableData,this.mobileView?.length)
 
             }
           }
@@ -131,7 +131,7 @@ export class ScheduledComponent implements OnInit ,AfterViewInit ,OnDestroy{
               this.getDevices()
             }
             else{
-              this.handleResponce(this.mobileView.alldevices,this.mobileView.messagesTableData,this.mobileView.length)
+              this.handleResponce(this.mobileView?.alldevices,this.mobileView?.messagesTableData,this.mobileView?.length)
 
             }
           } 

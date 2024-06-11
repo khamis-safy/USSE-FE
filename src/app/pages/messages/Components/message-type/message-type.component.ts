@@ -160,12 +160,12 @@ this.onChangeSecreanSizes()
 
             if(this.dataSource){
   
-            if(!arraysContainSameObjects(this.dataSource.data,this.mobileView.messagesTableData)){
-              if(this.mobileView?.searchControl.value || this.mobileView.filteration){
+            if(!arraysContainSameObjects(this.dataSource.data,this.mobileView?.messagesTableData)){
+              if(this.mobileView?.searchControl.value || this.mobileView?.filteration){
                 this.getDevices(this.msgCategory)
               }
               else{
-                this.getDataFromChild(this.mobileView.alldevices,this.mobileView.messagesTableData,this.mobileView.length)
+                this.getDataFromChild(this.mobileView?.alldevices,this.mobileView?.messagesTableData,this.mobileView?.length)
 
               }
             }
@@ -175,11 +175,11 @@ this.onChangeSecreanSizes()
               this.getDevices(this.msgCategory)
             }
             else{
-              if(this.mobileView.searchControl?.value  || this.mobileView.filteration){
+              if(this.mobileView?.searchControl?.value  || this.mobileView?.filteration){
                 this.getDevices(this.msgCategory)
               }
               else{
-                this.getDataFromChild(this.mobileView.alldevices,this.mobileView.messagesTableData,this.mobileView.length)
+                this.getDataFromChild(this.mobileView?.alldevices,this.mobileView?.messagesTableData,this.mobileView?.length)
 
               }
             }
@@ -190,7 +190,7 @@ this.onChangeSecreanSizes()
             if(this.dataSource){
               setTimeout(() => {
                 if(this.searchControl.value || this.filteration){
-                  this.mobileView.getDevices(this.mobileView.msgCategory)
+                  this.mobileView?.getDevices(this.mobileView?.msgCategory)
                 }
                 else{
                   this.mobileView?.getDataFromParent(this.alldevices,this.dataSource.data,this.length)
@@ -201,7 +201,7 @@ this.onChangeSecreanSizes()
             else{
               setTimeout(() => {
   
-                this.mobileView?.getDevices(this.mobileView.msgCategory);
+                this.mobileView?.getDevices(this.mobileView?.msgCategory);
                 this.isDataCalledInMobile=true;
   
               }, 100);
