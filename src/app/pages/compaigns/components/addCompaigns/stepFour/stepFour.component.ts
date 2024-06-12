@@ -314,7 +314,7 @@ setDefaultTime() {
     let timezone = this.timeZoneService.getTimezone();
    
     if (selectedTime) {
-       if(timezone){
+       if(timezone !== null){
        const utcTime = new Date(selectedTime.getTime() - timezone * 60 * 60 * 1000);
   
       const utcDateTime = this.datePipe.transform(utcTime, 'HH:mm:ss');

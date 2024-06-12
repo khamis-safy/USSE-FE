@@ -10,7 +10,7 @@ export class TimeOnlyPipe implements PipeTransform {
       let timezoneOffset = selectedTimeZone
       utcDate = utcDate.indexOf('Z') > -1 ? utcDate : (utcDate + 'Z');
       const localDate = new Date(utcDate);
-      if(timezoneOffset){
+      if(timezoneOffset !== null){
         localDate.setHours(localDate.getUTCHours() + timezoneOffset);
 
       }

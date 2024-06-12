@@ -15,7 +15,7 @@ private timezoneSubject = new BehaviorSubject<number>(0); // Default to UTC
 timezone$: Observable<number> = this.timezoneSubject.asObservable().pipe(shareReplay());
 
 setTimezone(timezone: any) {
-  let timeZoneOffset=timezone ? parseInt(timezone):null
+  let timeZoneOffset = (timezone !== null && timezone !== undefined) ? parseInt(timezone) : null;
   this.timezoneSubject.next(timeZoneOffset);
 }
 
@@ -26,7 +26,7 @@ getTimezone(): number {
 
 // Method to convert the current UTC time to a specific timezone offset
 getCurrentTime(timezoneOffset): Date {
-  if(timezoneOffset)
+  if(timezoneOffset !== null)
     { const timezoneValue = timezoneOffset;
       const sign = timezoneValue >= 0 ? '+' : '-';
       const timezone = `UTC${sign}${Math.abs(timezoneValue)}`;

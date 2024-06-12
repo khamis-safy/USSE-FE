@@ -1,17 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 
 @Pipe({
   name: 'toLocalTime'
 })
 export class ToLocalTimePipe implements PipeTransform {
-constructor(private authService:AuthService){}
+constructor(){}
   transform(utcDate: string,selectedTimeZone?:number): any {
     let timezoneOffset = selectedTimeZone;
     if (utcDate) {
       utcDate = utcDate.indexOf('Z') > -1 ? utcDate : (utcDate + 'Z');
       const localDate = new Date(utcDate);
-      if(timezoneOffset){
+      if(timezoneOffset !== null){
         localDate.setHours(localDate.getUTCHours() + timezoneOffset);
 
       }
