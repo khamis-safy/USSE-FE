@@ -145,7 +145,7 @@ getRedirectURL(){
  }
  updateUserInfo(data?){
   this.userInfo=data
-  this.timezoneService.setTimezone(parseInt(this.userInfo.timezone))
+  this.timezoneService.setTimezone(this.userInfo.timezone)
 
 }
 
