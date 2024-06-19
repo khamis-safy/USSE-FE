@@ -659,7 +659,14 @@
       }
     }
   },
-  "and":"and"
+  "and":"and",
+  "left":"Left",
+  "right":"Right",
+  "direction":"Direction",
+  "start_from":"Starts From letter",
+  "hidden_letters":"Hidden Letters",
+  "hide_options":"Hide information"
+
   
 
 

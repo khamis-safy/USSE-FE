@@ -54,6 +54,7 @@ import { UsButtonDirective } from '../directives/us-button.directive';
 import { UsButtonComponent } from './components/us-button/us-button.component';
 import { NavActionsComponent } from './components/nav-actions/nav-actions.component';
 import { ErrorTranslatePipe } from './pipes/errorTranslate.pipe';
+import { HideOptionsComponent } from './components/hideOptions/hideOptions.component';
 
 // import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
@@ -107,7 +108,8 @@ import { ErrorTranslatePipe } from './pipes/errorTranslate.pipe';
     UsButtonComponent,
     UsButtonDirective,
     NavActionsComponent,
-    ErrorTranslatePipe
+    ErrorTranslatePipe,
+    HideOptionsComponent
 
   ],
   exports:[

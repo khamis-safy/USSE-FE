@@ -665,3 +665,20 @@
   }
 
 }
+.us-select-container{
+  &.fullWidthOptions{
+    width: 100% !important;
+    min-width: unset !important;
+    .host{
+      min-width: unset !important;
+      height: 100% !important;
+        }
+    .host .toggler {
+      height: 100% !important;
+  
+  }
+  .txt-sm {
+    font-size: 10px !important;
+}
+  }
+}
