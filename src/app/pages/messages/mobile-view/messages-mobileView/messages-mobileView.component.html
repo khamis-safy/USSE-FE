@@ -92,6 +92,29 @@
 
     <form [formGroup]="form" class="d-flex">
       <us-select
+      [labelTopInMobileView]="false"
+      [isListDevicesDropdown]="true"
+      [deviceLableGap]="true"
+      [data]="devices"
+      formControlName="devicesData"
+      [multiSelect]="true"
+      [label]="'Devices' | translate"
+      (onSelect)="onSelectDev($event)"
+      (onDeSelect)="deselectDev($event)"
+      [loadingText]="deviceLoadingText | translate"
+      [placeholder]="'Select Devices' | translate"
+      [isDisabled]="false"
+      [optional]="true"
+      [enableSearch]="true"
+      [searchbarOnToggler]="true"
+      [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
+      [maxListItemsWithoutSearch]="5"
+      [isPlaceholderFixed]="true"
+      [forFiteringOnly]="true"
+    ></us-select>
+
+
+      <!-- <us-select
       [isListDevicesDropdown]="true"
       [deviceLableGap]="true"
       [labelTopInMobileView]="false"
@@ -109,7 +132,7 @@
         [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
         [maxListItemsWithoutSearch]="5"
   
-      ></us-select>
+      ></us-select> -->
     </form>
     <div *ngIf="msgCategory == 'outbox'" class="filter-dropDown">
       <form [formGroup]="filteringForm" class="d-flex" >
@@ -119,7 +142,7 @@
           [data]="filters"
           formControlName="filterdData"
           [multiSelect]="true"
-          [loadingText]="deviceLoadingText"
+          [loadingText]="deviceLoadingText | translate"
           [isDisabled]="false"
           (onSelect)="selectFilter($event)"
           (onDeSelect)="deselectFilter($event)"
@@ -174,7 +197,12 @@
             <div class="col row-header">{{ 'DEVICE_NAME_LABEL' | translate }}</div>
             <div class="col" style="font-weight: normal;">{{ element.device?.deviceName }}</div>
           </div>
-      
+          <!-- groupName Column -->
+          <div class="row row-item" *ngIf="displayedColumns.includes('Group Name')">
+            <div class="col row-header">{{ 'group_name' | translate }}</div>
+            <div class="col" style="font-weight: normal;">{{ element.groupName ?element.groupName:'' }}</div>
+          </div>
+ 
         <!-- Messages Column -->
         <div class="row row-item" *ngIf="displayedColumns.includes('Messages')">
           <div class="col row-header">{{ 'MESSAGES_LABEL' | translate }}</div>

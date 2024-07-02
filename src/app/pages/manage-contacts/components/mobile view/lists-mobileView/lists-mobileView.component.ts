@@ -307,6 +307,8 @@ createDynamicComponent(selectedLists) {
   let sub3 =  navActionsComponentInstance.updateData.subscribe((res) => {
     if(res){
       this.distroyDynamicComponent();
+      this.pageNum=0;
+
       this.getListData();
     }
   });

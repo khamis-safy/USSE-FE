@@ -118,7 +118,8 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     dialogRef.afterClosed().subscribe(result => {
       this.messageType.selection.clear();
       let id=this.messageType.deviceId
-      this.messageType.getMessages(id);
+      this.messageType.pageNum=0;
+      this.messageType.getMessages(this.messageType.filteredDevices);
 
     });
   }
@@ -143,7 +144,7 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.messageType.selection.clear();
-        this.messageType.getMessages(this.deviceID,"failed")
+        this.messageType.getMessages(this.messageType.filteredDevices,"failed")
       }
     });
   }
@@ -160,6 +161,8 @@ export class MessagesComponent implements OnInit , AfterViewInit,OnDestroy{
     // this.messageService.pageNum=0;
     // this.messageService.orderedBy='';
     this.messageService.search='';
+    this.isChecked=[]
+    // this.cdr.detectChanges(); 
   }
   openNewMessage(){
     this.isMessages=false;

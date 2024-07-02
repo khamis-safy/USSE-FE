@@ -339,6 +339,7 @@ this.getContacts();
     });
     let sub3 =  navActionsComponentInstance.updateData.subscribe((res) => {
       if(res){
+        this.pageIndex=0;
         this.getContacts();
         this.distroyDynamicComponent();
         

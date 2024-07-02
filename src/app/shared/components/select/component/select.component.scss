@@ -592,9 +592,12 @@
   
   }
 }
-@media (max-width: 1700px){
+.deviceLableGap{
+  min-width:4rem  !important;
+}
+@media (min-width: 767px){
   .deviceLableGap{
-    min-width: 18% !important;
+    min-width: 3rem !important;
   }
 }
 @media (max-width:991px){

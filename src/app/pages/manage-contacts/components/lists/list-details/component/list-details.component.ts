@@ -146,7 +146,9 @@ this.router.navigateByUrl('contacts?tab=lists')
       if(result){
         if(result.errors == 'noErrors'){
           this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
+          
           this.getListData();
+          this.listContacts.pageNum=0;
           this.listContacts.getContacts();        
         }
         else{
@@ -282,6 +284,7 @@ this.router.navigateByUrl('contacts?tab=lists')
         if(result == 'noErrors'){
           this.toaster.success( this.translate.instant("COMMON.SUCC_MSG"));
           this.getListData();
+          this.listContacts.pageNum=0
           this.listContacts.getContacts();        
         }
         else{

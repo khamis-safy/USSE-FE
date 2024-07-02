@@ -143,7 +143,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
                 this.mobileView?.getDataFromParent(this.dataSource.data,'',this.isCanceled,this.length)
   
               }
-          }, 100);
+          }, 0);
           }
           else{
             setTimeout(() => {
@@ -151,7 +151,7 @@ export class ContactsComponent  implements OnInit , AfterViewInit ,OnDestroy {
               this.mobileView?.getContacts('',this.isCanceled);
               this.isDataCalledInMobile=true;
 
-            }, 100);
+            }, 0);
           }
         
         
@@ -457,8 +457,6 @@ unCancelSnackBar(){
       if(result){
         this.getContacts();
             }
-
-
     });
 
   }
@@ -568,7 +566,6 @@ ngOnDestroy(){
   this.destroy$.next();
   this.destroy$.complete();
   this.selection.clear();
-
   this.subscribtions.map(e=>e.unsubscribe());
 }
 

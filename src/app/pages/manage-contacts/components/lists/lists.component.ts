@@ -156,7 +156,7 @@ subscribtions:Subscription[]=[];
                 this.mobileView?.getDataFromParent(this.dataSource.data,'',this.length)
   
               }
-          }, 100);
+          }, 0);
           }
           else{
             setTimeout(() => {
@@ -164,7 +164,7 @@ subscribtions:Subscription[]=[];
               this.mobileView?.getListData('');
               this.isDataCalledInMobile=true;
 
-            }, 100);
+            }, 0);
           }
         
         
@@ -485,7 +485,6 @@ handleError(): void {
     this.destroy$.next();
     this.destroy$.complete();
     this.selection.clear();
-  
     this.subscribtions.map(e=>e.unsubscribe());
   }
 

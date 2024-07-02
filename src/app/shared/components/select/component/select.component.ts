@@ -119,7 +119,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   filteredOptions!: SelectOption[]; // the options that being filtered by search
   isOpen = false; // to toggle dropdown list
   isTouched = false; // to handle on touched only once
-  searchText!: string;
+  searchText: string=null;
   isThrottling!: boolean;
 
   onChange = (value: any) => {}; // to register value accessor method onChange

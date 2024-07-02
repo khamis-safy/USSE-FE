@@ -8,7 +8,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { SelectOption } from 'src/app/shared/components/select/select-option.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Observable, Subscription, concatMap,pipe, interval, throttleTime, combineLatest, find, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
-import { ChatById, Chats, chatHub } from '../interfaces/Chats';
+import { ChatById, Chats, chatHub, chatsData } from '../interfaces/Chats';
 import { ChatsService } from '../chats.service';
 import { DeleteModalComponent } from 'src/app/shared/components/delete-modal/delete-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -30,8 +30,8 @@ interface files{
   styleUrls: ['./chats.component.scss'] ,
 })
 export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
-  devices:any;
-  deviceLoadingText:string='Loading ...';
+  devices:any=[];
+  deviceLoadingText:string='Loading';
   devicesData :any= new FormControl([]);
   message :any= new FormControl('',Validators.required);
   @ViewChild('fileInput') fileInputRef: ElementRef<HTMLInputElement>;
@@ -60,7 +60,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   });
   deviceId:any
   // listChatsObservable$:Observable<Chats[]>;
-  listChats:Chats[]=[];
+  listChats:chatsData[]=[];
   email=this.authService.getUserInfo()?.email;
   searchKey:string='';
   openChat:boolean=false;
@@ -97,6 +97,8 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
   hideSearch:boolean=false;
   subscriptions:Subscription[]=[];
   searchSub: Subscription;
+  filteredDevices: any=[];
+  isGroupe: boolean=false;
   constructor( public dialog: MatDialog,
     private translationService:TranslationService,
     private authService:AuthService,
@@ -188,7 +190,7 @@ export class ChatsComponent implements OnInit, AfterViewInit,OnDestroy{
       switchMap(searchVal => this.listChatsReq(searchVal))
     ).subscribe(
       (res) => {
-        this.listChats=res;
+        this.listChats=res.data;
       }
     );
     this.subscriptions.push(this.searchSub)
@@ -355,20 +357,20 @@ onScrollToBottom(){
     this.chatService.listChats(this.email, this.contactsCount, 0, '', this.deviceId)
       .subscribe(
         (res) => {
-          if (res.length === 0) {
+          if (res.data.length === 0) {
             this.noMoreChats = true;
           } else {
-            if (this.listChats.length === res.length) {
+            if (this.listChats.length === res.data.length) {
               this.noMoreChats = true;
             } else {
               this.noMoreChats = false;
               let prevChat = this.listChats[0];
-              if(res.includes(prevChat)){
-                this.listChats=res.splice(res.indexOf(prevChat , 1))
+              if(res.data.includes(prevChat)){
+                this.listChats=res.data.splice(res.data.indexOf(prevChat , 1))
                 this.listChats.unshift(prevChat)
               }
               else{
-                this.listChats = res;
+                this.listChats = res.data;
 
               }
               setTimeout(() => {
@@ -504,30 +506,30 @@ chatRec(search){
           this.deviceId=res[0].id;
 
 
-        if(this.authService.selectedDeviceId ==""){
+        // if(this.authService.selectedDeviceId ==""){
 
-          this.form.patchValue({
-          devicesData: {
-          title:alldevices[0]?.deviceName,
-          value:alldevices[0]?.id,
-          deviceIcon:alldevices[0].deviceType
-          }
+        //   this.form.patchValue({
+        //   devicesData: {
+        //   title:alldevices[0]?.deviceName,
+        //   value:alldevices[0]?.id,
+        //   deviceIcon:alldevices[0].deviceType
+        //   }
 
-          })
+        //   })
         
-        }
-        else{
-          let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
-          this.deviceId=this.authService.selectedDeviceId;
-          this.form.patchValue({
-            devicesData: {
-            title:selected.title,
-            value:selected?.value,
-            deviceIcon:selected.deviceIcon
-            }
+        // }
+        // else{
+        //   let selected= this.devices.find((device)=>device.value==this.authService.selectedDeviceId)
+        //   this.deviceId=this.authService.selectedDeviceId;
+        //   this.form.patchValue({
+        //     devicesData: {
+        //     title:selected.title,
+        //     value:selected?.value,
+        //     deviceIcon:selected.deviceIcon
+        //     }
 
-            })
-        }
+        //     })
+        // }
         this.getListChats();
         this.initRouting()
 
@@ -538,10 +540,10 @@ chatRec(search){
         })
   }
   listChatsReq(search){
-    return  this.chatService.listChats(this.email , 30,0,search,this.deviceId);
+    return  this.chatService.listChats(this.email , 30,0,search,this.filteredDevices);
   }
   getListChats(){
-  this.listChatsSub$= this.chatService.listChats(this.email , 30,0,this.searchKey,this.deviceId);
+  this.listChatsSub$= this.chatService.listChats(this.email , 30,0,this.searchKey,this.filteredDevices);
   if(this.searchSub){
     this.searchSub.unsubscribe();
     this.searchSub=null;
@@ -551,11 +553,11 @@ chatRec(search){
     })
   }
   this.listChatsSub$.subscribe(
-      (res)=>{
-        this.listChats=res;
+      (res:Chats)=>{
+        this.listChats=res.data;
         this.hideSearch=false;
 
-          let chat:Chats;
+          let chat:chatsData;
           if(!this.searchKey)
             {
               if(!this.selectedChatId){
@@ -563,10 +565,11 @@ chatRec(search){
                   this.clearChats()
                   }
                   else{
-                    this.selectedChatId=res[0]?.chat?.id;
-                    this.chatName=res[0]?.chat?.chatName;
-                    this.targetPhoneNumber=res[0]?.chat?.targetPhoneNumber;
-                    chat=res[0]
+                    this.selectedChatId=res.data[0]?.chat?.id;
+                    this.chatName=res.data[0].chat?.chatName;
+                    this.targetPhoneNumber=res.data[0].chat?.targetPhoneNumber;
+                    chat=res.data[0];
+                    this.deviceId=chat.device.id
                     this.getChatById(this.selectedChatId);
                     this.openChat=true;
                     // this.updateQueryParams();
@@ -593,6 +596,7 @@ chatRec(search){
                 if(chat){
                   this.chatName=chat.chat.chatName;
                   this.targetPhoneNumber=chat.chat.targetPhoneNumber;
+                  this.deviceId=chat.device.id
                   chat.active=true
                   if(chat.unseenMessagesCount > 0){
                     this.chatService.markChatAsRead(chat.chat.id).subscribe(
@@ -660,7 +664,7 @@ resetForm(){
     this.searchKey=search.value;
     // this.getListChats()
   }
-  addNewContact(){
+  addNewContact(deviceId){
     const currentLang=this.translationService.getCurrentLanguage()
     const dialogConfig=new MatDialogConfig();
     dialogConfig.height='100vh';
@@ -670,7 +674,7 @@ resetForm(){
     dialogConfig.panelClass='add-new-chat-modal'
     dialogConfig.position =  currentLang=='ar'?{ right: '0'} :{ left: '0'} ;
     dialogConfig.direction = currentLang=='en'? "ltr" :"rtl";
-    dialogConfig.data={deviceId:this.deviceId , chats:this.listChats};
+    dialogConfig.data={deviceId:deviceId , chats:this.listChats};
     const dialogRef = this.dialog.open(ChatContactsComponent,dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -705,7 +709,17 @@ resetForm(){
     }
 
     }
+    onSelectDev(device){
+      this.selectedChatId = ""
+      this.filteredDevices.push(device.value);
+      this.getListChats();  
 
+    }
+    deselectDev(device){
+      this.selectedChatId = ""
+      this.filteredDevices.splice(this.filteredDevices.indexOf(device.value),1)
+      this.getListChats();  
+    }
     deleteChat(chat){
       this.isDelete=true;
       const dialogConfig=new MatDialogConfig();
@@ -731,11 +745,11 @@ resetForm(){
       });
     }
 
-    navigateToChat(chat:Chats){
+    navigateToChat(chat:chatsData){
       this.openChat=true;
       this.isSearch=false;
       this.hideSearch=false;
-
+      this.isGroupe=chat.chat.channelType >1
       this.resetValues()
       if(!chat.active){
         this.clearInputData();
@@ -756,6 +770,7 @@ resetForm(){
         this.updateQueryParams()
         this.chatName=chat.chat.chatName;
         this.targetPhoneNumber=chat.chat.targetPhoneNumber;
+        this.deviceId=chat.device.id
         this.getChatById(this.selectedChatId)
         }
   
@@ -1033,7 +1048,7 @@ else{
     updateMessageStatus(newMessage){
 
       let message:chatHub=JSON.parse(newMessage)
-      if(message.Deviceid == this.deviceId ){
+      if(this.filteredDevices.includes(message.Deviceid)){
         // update Status on list chats
         let findChat = this.listChats.find((chat)=>chat.chat.id == message.ChatId);
         if(findChat){
@@ -1116,8 +1131,8 @@ else{
 
       updateMessagesOnReceive(message){
         let newMessage:chatHub=JSON.parse(message)
-        if(newMessage.Deviceid == this.deviceId){
-            // in case the message is sent from the current opend chat
+        if(this.filteredDevices.includes(message.Deviceid)){
+          // in case the message is sent from the current opend chat
             if(this.selectedChatId === newMessage.ChatId){
               if(newMessage.direction){
                 newMessage.status=1
@@ -1144,6 +1159,9 @@ else{
               lastMessageDirection: newMessage.direction,
               lastMessageStatus:  newMessage.direction?1:null,
               unseenMessagesCount: newMessage.direction?0:1,
+              device:{id:newMessage.Deviceid},
+              targetPhoneNumber:newMessage.targetPhoneNumber
+
             }
               let foundChat = this.listChats.find((chat)=>chat.chat.id == newMessage.ChatId);
                 if (foundChat) {
@@ -1159,7 +1177,7 @@ else{
 
     }
 
-    updateChatDataWithNewMsg(foundChat,newMessage:chatHub){
+    updateChatDataWithNewMsg(foundChat:chatsData,newMessage:chatHub){
       foundChat.lastMessageContent='';
       foundChat.lastMessageFileName='';
       foundChat.lastMessageFileUrl='';
@@ -1173,6 +1191,13 @@ else{
       foundChat.lastMessageFileName = newMessage.fileName;
       foundChat.lastMessageFileUrl = newMessage.fileUrl;
       foundChat.lastMessageDirection=newMessage.direction;
+      if(foundChat.chat.channelType>1){
+        foundChat.targetPhoneNumber=newMessage.targetPhoneNumber
+      }
+      foundChat.device={
+        id:newMessage.Deviceid,
+
+      };
       if(this.listChats.indexOf(foundChat) !== 0){
         // Remove the element from its current position
         this.listChats.splice(this.listChats.indexOf(foundChat), 1);

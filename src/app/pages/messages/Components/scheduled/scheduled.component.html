@@ -9,24 +9,27 @@
         max-width: 512px;">
           <form [formGroup]="form"class="d-flex" style=" margin-inline: 20px;">
             <us-select
-            class="mx-3"
             [labelTopInMobileView]="false"
-              [isListDevicesDropdown]="true"
-              [deviceLableGap]="true"
-              [data]="devices"
-              formControlName="devicesData"
-              [multiSelect]="false"
-              [label]="'Devices' | translate"
-              (onSelect)="onSelect($event)"
-              [loadingText]="deviceLoadingText"
-              [placeholder]="'Select Devices' | translate"
-              [isDisabled]="false"
-              [optional]="true"
-              [enableSearch]="true"
-              [searchbarOnToggler]="true"
-              [searchNoResultText]="'there is no result' | translate"
-              [maxListItemsWithoutSearch]="5"
-            ></us-select>
+            class="mx-3"
+            [isListDevicesDropdown]="true"
+            [deviceLableGap]="true"
+            [data]="devices"
+            formControlName="devicesData"
+            [multiSelect]="true"
+            [label]="'Devices' | translate"
+            (onSelect)="onSelectDev($event)"
+            (onDeSelect)="deselectDev($event)"
+            [loadingText]="deviceLoadingText | translate"
+            [placeholder]="'Select Devices' | translate"
+            [isDisabled]="false"
+            [optional]="true"
+            [enableSearch]="true"
+            [searchbarOnToggler]="true"
+            [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
+            [maxListItemsWithoutSearch]="5"
+            [isPlaceholderFixed]="true"
+            [forFiteringOnly]="true"
+          ></us-select>
           </form>
           <mat-form-field class="us-select">
             <mat-label class="txt-caption">

@@ -38,6 +38,7 @@
           <ng-container  matColumnDef="select">
             <th class="checkBox" mat-header-cell *matHeaderCellDef>
               <mat-checkbox
+              [ngClass]="{'d-none':loading}"
                 color="ch-color"
                 (change)="$event ? toggleAllRows() : null"
                 [checked]="selection.hasValue() && isAllSelected()"

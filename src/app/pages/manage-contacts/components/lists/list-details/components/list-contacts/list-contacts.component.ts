@@ -173,7 +173,7 @@ onChangeSecreanSizes(){
             }
 
 
-        }, 100);
+        }, 0);
         }
         else{
           setTimeout(() => {
@@ -181,7 +181,7 @@ onChangeSecreanSizes(){
             this.mobileView?.getContacts('');
             this.isDataCalledInMobile=true;
 
-          }, 100);
+          }, 0);
         }
       
       

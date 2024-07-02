@@ -1,16 +1,35 @@
 <section [ngClass]="{'chat-messages-container':openChat}" class="p-4 mb-2 px-2 d-flex gap-3"
     style="border-radius: 15px;    height: 90vh;">
 
-    <div style="width: 30%;max-width: 400px;
-    min-width: 290px;" class="mt-1 p-3   d-flex flex-column innerContainer contacts-main-container "
+    <div style="width: 45%;
+    max-width: 458px;
+    min-width: 385px;" class="mt-1 p-3   d-flex flex-column innerContainer contacts-main-container "
         [ngClass]="{'inactive':openChat}">
         <form [formGroup]="form" class="d-flex">
-            <us-select class="my-3" [isListDevicesDropdown]="true" [labelTopInMobileView]="false"
-                [deviceLableGap]="true" [data]="devices" formControlName="devicesData" [multiSelect]="false"
-                (onSelect)="onSelect($event)" [loadingText]="deviceLoadingText"
-                [placeholder]="'Select Devices' | translate" [isDisabled]="false" [optional]="true"
-                [enableSearch]="true" [searchbarOnToggler]="true"
-                [searchNoResultText]="'THERE_IS_NO_RESULT' | translate" [maxListItemsWithoutSearch]="5"></us-select>
+            <us-select
+            [labelTopInMobileView]="false"
+            class="my-3"
+            [isListDevicesDropdown]="true"
+            [deviceLableGap]="true"
+            [data]="devices"
+            formControlName="devicesData"
+            [multiSelect]="true"
+            (onSelect)="onSelectDev($event)"
+            (onDeSelect)="deselectDev($event)"
+            [enableDropdownWhileSearching]="false"
+            [loadingText]="deviceLoadingText | translate"
+            [placeholder]="'Select Devices' | translate"
+            [isDisabled]="false"
+            [optional]="true"
+            [enableSearch]="true"
+            [searchbarOnToggler]="true"
+            [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
+            [maxListItemsWithoutSearch]="5"
+            [forFiteringOnly]="true"
+            [fixedPlaceholder]="true"
+          ></us-select>
+          
+        
         </form>
 
         <div class="d-flex justify-content-between align-items-center  my-2">
@@ -30,24 +49,51 @@
                 </div>
             </div>
 
-            <div class="addBtn addBtn_lg  py-2" (click)="addNewContact()">
+            <div mat-icon-button [matMenuTriggerFor]="menu" class="addBtn addBtn_lg  py-2" >
                 <a style="cursor: pointer;">
                     <img src="../assets/icons/chats-icon.svg" alt="">
                 </a>
             </div>
 
+                <mat-menu #menu="matMenu">
+                    <ng-container *ngFor="let device of devices">
+                      <button  mat-menu-item (click)="addNewContact(device.value)">
+                        <div class="d-flex gap-2 align-items-center ">
+                            <img  [src]="device.deviceIcon | deviceType" alt="" style="width:18px">
+                            <span class="txt-xs">{{device.title}}</span>
+                        </div>
+                      </button>
+                     
+                    </ng-container>
+                  </mat-menu>
+                  
         </div>
         <div class="contacts-container" #contactsContainer>
             <ng-container *ngFor="let chatContact of listChats">
                 <div class="my-2   p-3 leftContentDesign" [ngClass]="{'active':chatContact.active}"
                     (click)="navigateToChat(chatContact)">
                     <div class="d-flex gap-2 ">
-                        <div class="deviceContent ">
+                        <div *ngIf="chatContact.chat.channelType ==1 ; else group" class="deviceContent ">
                             <span>{{chatIcon(chatContact.chat?.chatName)}}</span>
-
                         </div>
+                        <ng-template #group>
+                            <img src="assets/icons/groups.svg" class="deviceContent" alt="">
+                        </ng-template>
                         <div class="d-flex flex-column justify-content-center ">
-                            <p class="mb-1 pOut">{{chatContact.chat?.chatName}}</p>
+                            <div class="d-flex gap-lg-3 gap-2 align-items-center">
+                                    <span [dir]="changeTextDir(chatContact.lastMessageContent)"
+                                    [ngStyle]="{'text-align': changeTextDir(chatContact.lastMessageContent) === 'rtl' ? 'right' : 'left'}"
+                                    class="pOut overflow overflow-line-1 "
+                                    >{{chatContact.chat?.chatName}}</span>
+                                <div class="d-flex gap-1 align-items-center">
+                                    <img id="devType" [src]="chatContact.device?.deviceType | deviceType" alt="" style="width:15px">
+                                    <span
+                                    [dir]="changeTextDir(chatContact.lastMessageContent)"
+                                    [ngStyle]="{'text-align': changeTextDir(chatContact.lastMessageContent) === 'rtl' ? 'right' : 'left'}"
+                                    class="pOut overflow text-primary-800  overflow-line-1 "
+                                    >{{chatContact.device?.deviceName}}</span>
+                                </div>
+                            </div>
                             <div class=" d-flex gap-2 align-items-center ">
                                 <ng-container *ngIf="chatContact?.lastMessageStatus!=null && chatContact?.lastMessageDirection ">
                                     <ng-container [ngSwitch]="chatContact?.lastMessageStatus!">
@@ -146,9 +192,12 @@
                     <div *ngIf="openChat" class="back-arrow-blue text-primary-800" (click)="backToChats()">
                         <mat-icon>arrow_back</mat-icon>
                     </div>
-                    <div class="deviceContent">
+                    <div *ngIf="!isGroupe ; else iconGroup"  class="deviceContent">
                         <span>{{chatIcon(chatName)}}</span>
                     </div>
+                    <ng-template #iconGroup>
+                        <img src="assets/icons/groups.svg" class="deviceContent" alt="">
+                    </ng-template>
                     <div class="d-flex flex-column gap-1  justify-content-center">
                         <p class="mb-0 pOut">{{chatName}}</p>
                         <p class="pInHeader mb-0 ">{{targetPhoneNumber}}</p>
@@ -157,10 +206,10 @@
                 </div>
                 <ng-container *ngIf="!hideSearch">
                     <div [ngClass]="{'msgSearch-container': isSearch}" #searchContainer>
-                        <div *ngIf="!isSearch" style="cursor: pointer;">
+                        <div *ngIf="!isSearch && sortedDays.length>0" style="cursor: pointer;">
                             <img (click)="toggleSearch()" src="assets/icons/search-blue.svg" alt="">
                         </div>
-                        <div *ngIf="isSearch" class="d-flex justify-content-between position-relative msg-search">
+                        <div *ngIf="isSearch && sortedDays.length>0" class="d-flex justify-content-between position-relative msg-search">
                             <form [formGroup]="searchMsgForm" class="p-0 w-100">
                                 <input #MsgsearchInput type="text" class="form-control ps-5 txt-xs" id="messageSearchInput"
                                     formControlName="searchMsg"
@@ -197,9 +246,12 @@
                         <ng-container [ngSwitch]="chat?.direction">
                             <div *ngSwitchCase="false" class="received-chats">
                                 <div class="chat-contact-img">
-                                    <span>{{ chatIcon(chatName) }}</span>
+                                    <span>{{ isGroupe? chatIcon(chat?.targetPhoneNumber) : chatIcon(chatName) }}</span>
                                 </div>
                                 <div class="received-chats-msg">
+                                    <span *ngIf="chat.channelType !==1" class="text-primary-800 font-w-700 txt-xs">
+                                        {{chat?.targetPhoneNumber}}
+                                        </span>
                                     <p>{{ chat?.msgBody }}</p>
                                     <span class="time">{{ chat?.createdAt | timeOnly:selectedTimeZone }}</span>
                                 </div>

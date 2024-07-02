@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit ,OnDestroy} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Message, Shceduled } from '../../message';
+import { Message, Shceduled, ShceduledData, messageData } from '../../message';
 import { TimeZoneServiceService } from 'src/app/shared/services/timeZoneService.service';
 export interface Display{
-  message?:Message,
+  message?:messageData,
   isScheduleM?:boolean,
   isScheduleN?:boolean,
-  schedule?:Shceduled,
+  schedule?:ShceduledData,
   recipients?:{number:string} [],
   template?:any
 }
@@ -16,9 +16,9 @@ export interface Display{
   styleUrls: ['./display-message.component.scss']
 })
 export class DisplayMessageComponent implements OnInit ,OnDestroy{
-message:Message;
+message:messageData;
 userName:any;
-schedule:Shceduled;
+schedule:ShceduledData;
 test:string= "6781dde0-7946-4d49-ad27-a95421f19ff8.jpg";
 isScheduleN:boolean=false;
 isScheduleM:boolean=false;

@@ -70,6 +70,7 @@ export class InputComponent implements  AfterViewInit {
   // Inputs
   @Input() set value(value: any) {
     this.val = value;
+   
     if(this.isTextArea){
       this.onChange(this.maskedMsg);
 
@@ -89,6 +90,7 @@ export class InputComponent implements  AfterViewInit {
   @Input() error?: boolean; // change styles for error appearance
   @Input() warning?: boolean=false; // change styles for warning appearance
   @Input() fullWidth?: boolean; // take full width of the parent
+  @Input() fullWidthAndHeight: boolean = false;
   @Input() hideSteppers?: boolean=false; // hide steppers butttons
   @Input() isCriteria?: boolean = false;
   @Input() trailingIcon?: boolean; // set icon to the END of the input [ in the START by default ]
@@ -167,7 +169,12 @@ export class InputComponent implements  AfterViewInit {
         // Emit the initial character count
         this.input.emit(this.val);
       }
+      if(this.isTextArea){
+        this.getOriginalMessage(this.value)
+  
+      }
     }, 0);
+   
   }
   increment() {
     // increase the value of the number input
@@ -280,6 +287,7 @@ onSelectionChange(event: MouseEvent): void {
         endPosition:endPos,
         length:selectedText.length
       }
+      
       this.isTextSelected = true;
   } else {
       this.isTextSelected = false;
@@ -315,6 +323,7 @@ uplayMaskingOnSelectedTxt(maskingData: maskingData) {
   this.originalMsg = this.getMaskedMessage(currentMessage, this.maskingMsg.originalText, maskingData.selectionStartPos, maskingData.selectionEndPos);
   this.value = this.originalMsg;
   this.updateMessages();
+
 }
 
 getMaskedMessage(currentMessage, maskedText, startPos, endPos) {
@@ -323,6 +332,29 @@ getMaskedMessage(currentMessage, maskedText, startPos, endPos) {
     maskedText +
     currentMessage.substring(endPos);
   return updatedMsg;
+}
+getOriginalMessage(maskedMessage){
+  if(this.isTextArea){
+    this.maskedMsg=maskedMessage;
+    const regex = /\[\w+\s*,\s*\d+\s*,\s*\d+\s*,\s*[a-zA-Z]\]/g; // Updated regex to handle spaces around commas
+    let matches = maskedMessage.match(regex);
+    
+      if (matches) {
+        matches.forEach(match => {
+          let originalText = match.substring(match.indexOf('['), match.indexOf(','))+']';
+          this.arrayOfMasks.push({
+            originalText: originalText,
+            maskedText: match,
+            index: maskedMessage.indexOf(match)
+          });
+    
+          // Replace maskedText with originalText in originalMsg
+          this.originalMsg = maskedMessage.replace(match, originalText);
+        });
+      }
+    
+    this.value=this.originalMsg;
+  }
 }
 
 getOriginalMasked(message: string) {
@@ -346,7 +378,12 @@ getOriginalMasked(message: string) {
     return [];
   }
 }
-
+setFocus(id){
+  const inputElement = document.getElementById(id) as HTMLInputElement;
+  if (inputElement) {
+    inputElement.focus();
+  }
+}
 updateMessages() {
   this.originalMsg = this.value;
   this.maskedMsg = this.originalMsg;
@@ -357,7 +394,6 @@ updateMessages() {
     let maskedText = this.getMaskedText(mask);
     this.maskedMsg = this.maskedMsg.replace(mask, maskedText);
   });
-  console.log(this.maskedMsg);
   this.onChange(this.maskedMsg);
 }
 

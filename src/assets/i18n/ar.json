@@ -663,7 +663,8 @@
   "direction":"الاتجاه",
   "start_from":"البدء من",
   "hidden_letters":"عدد الاحرف المراد اخفاءها",
-  "hide_options":"خيارات الإخفاء"
+  "hide_options":"خيارات الإخفاء",
+  "group_name":"اسم المجموعة"
   
 
 

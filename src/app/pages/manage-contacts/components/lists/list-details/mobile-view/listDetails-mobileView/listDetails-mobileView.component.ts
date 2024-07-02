@@ -211,6 +211,7 @@ createDynamicComponent(selectedContacts) {
   });
   let sub3 =  navActionsComponentInstance.updateData.subscribe((res) => {
     if(res){
+      this.pageIndex=0;
       this.getContacts();
       this.getListData();
       this.distroyDynamicComponent();
@@ -219,6 +220,7 @@ createDynamicComponent(selectedContacts) {
   });
   let sub4 = navActionsComponentInstance.updateCanceledData.subscribe((res)=>{
     if(res){
+      this.pageIndex=0;
       this.getContacts();
       this.getListData();
       this.distroyDynamicComponent();

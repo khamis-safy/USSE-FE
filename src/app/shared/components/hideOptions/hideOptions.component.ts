@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { TranslateService } from '@ngx-translate/core';
+import { InputComponent } from '../text-input/text-input.component';
 
 @Component({
   selector: 'app-hideOptions',
@@ -10,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HideOptionsComponent implements OnInit, AfterViewInit, OnChanges {
   active: boolean = false;
+  @ViewChild('startInput') startInput:InputComponent
   directions: any =
     [
       { title: this.translate.instant('left'), value: 'l' },
@@ -27,10 +29,8 @@ export class HideOptionsComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   directionControl :any= new FormControl([],Validators.required);
-  hiddenLettersControl:any = new FormControl([],Validators.required);
+  hiddenLettersControl:any = new FormControl(null,Validators.required);
   startFromControl:any = new FormControl([],Validators.required);
-  hiddenLetters:number;
-  startFrom:any;
   form = new FormGroup({
     directionControl:this.directionControl,
     hiddenLettersControl:this.hiddenLettersControl,
@@ -42,17 +42,19 @@ export class HideOptionsComponent implements OnInit, AfterViewInit, OnChanges {
   }
   constructor(private translate: TranslateService) { }
   ngOnChanges(changes: SimpleChanges): void {
-    for(let i =0 ; i<=this.optionsData.length -1;i++){
-      this.lettersCount.push(
-        {title:i+1 , value: i+1}
-      )
-    }
+   
   }
-
+  isValidNumers(){
+    return (this.startFromControl.value && parseInt(this.startFromControl.value) < 1) 
+      || (this.hiddenLettersControl.value &&  parseInt(this.hiddenLettersControl.value) < 1)
+  }
+  onClick(id){
+    this.startInput.setFocus(id)
+  }
   ngOnInit() {
     this.form.patchValue({
       directionControl:this.directions[0],
-      startFromControl:this.lettersCount[0]
+      startFromControl:1
     })
   }
   toggleActive() {
@@ -66,8 +68,8 @@ export class HideOptionsComponent implements OnInit, AfterViewInit, OnChanges {
       selectionEndPos:this.optionsData.endPosition,
       selectedText:this.optionsData.selectedText,
       maskingOptions:{
-        startFrom:this.form.value.startFromControl.value,
-        numberOfLetters:this.form.value.hiddenLettersControl.value,
+        startFrom:this.startFromControl.value,
+        numberOfLetters:this.hiddenLettersControl.value,
         direction:this.form.value.directionControl.value
       }
     })

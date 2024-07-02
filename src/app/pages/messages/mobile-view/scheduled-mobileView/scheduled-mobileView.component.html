@@ -78,15 +78,16 @@
 
   <form [formGroup]="form" class="d-flex">
     <us-select
-    [isListDevicesDropdown]="true"
-    [deviceLableGap]="true"
-    [labelTopInMobileView]="false"
+      [labelTopInMobileView]="false"
+      [isListDevicesDropdown]="true"
+      [deviceLableGap]="true"
       [data]="devices"
       formControlName="devicesData"
-      [multiSelect]="false"
+      [multiSelect]="true"
       [label]="'Devices' | translate"
-      (onSelect)="onSelect($event)"
-      [loadingText]="deviceLoadingText"
+      (onSelect)="onSelectDev($event)"
+      (onDeSelect)="deselectDev($event)"
+      [loadingText]="deviceLoadingText | translate"
       [placeholder]="'Select Devices' | translate"
       [isDisabled]="false"
       [optional]="true"
@@ -94,7 +95,8 @@
       [searchbarOnToggler]="true"
       [searchNoResultText]="'THERE_IS_NO_RESULT' | translate"
       [maxListItemsWithoutSearch]="5"
-
+      [isPlaceholderFixed]="true"
+      [forFiteringOnly]="true"
     ></us-select>
   </form>
  
