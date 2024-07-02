@@ -2982,3 +2982,10 @@ span.mat-mdc-select-value-text {
 }
 
 }
+.deviceLableGap{
+  min-width: 80px  !important }
+.rtl{
+  .label-widget.deviceLableGap{
+    min-width: 65px !important ;
+  }
+}
